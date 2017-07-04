@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 6-giu-2017 12.08.24 by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+    <class name="it.portalECI.DTO.RuoloDTO" table="RUOLO">
+        <id name="id" type="int">
+            <column name="ID" />
+            <generator class="increment" />
+        </id>
+        <property name="sigla" type="java.lang.String">
+            <column name="SIGLA" />
+        </property>
+        <property name="descrizione" type="java.lang.String">
+            <column name="DESCRIZIONE_ruolo" />
+        </property>
+         <set name="listaPermessi" table="ruolo_permessi"
+        	inverse="false" lazy="false" fetch="select" cascade="all" >
+            <key>
+                <column name="id_ruolo" not-null="true" />
+            </key>
+            <many-to-many entity-name="it.portalECI.DTO.PermessoDTO">
+                <column name="id_permesso" not-null="true" />
+            </many-to-many>
+        </set>
+    </class>
+</hibernate-mapping>

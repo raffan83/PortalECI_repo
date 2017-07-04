@@ -2887,7 +2887,4 @@ function eliminaCompany(){
 	  $("#myModalDettaglioPunto").modal();
   }
  
-   $(function(){
-		pleaseWaitDiv = $('#pleaseWaitDialog');
-		pleaseWaitDiv.modal('hide');  
-   });
+   

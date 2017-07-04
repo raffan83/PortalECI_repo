@@ -1,0 +1,38 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 15-feb-2017 11.20.27 by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+    <class name="it.portalECI.DTO.CompanyDTO" table="COMPANY">
+        <id name="id" type="java.lang.Integer">
+            <column name="ID" />
+            <generator class="increment" />
+        </id>
+        <property name="denominazione" type="java.lang.String">
+            <column name="DENOMINAZIONE" />
+        </property>
+        <property name="pIva" type="java.lang.String" access="field">
+            <column name="PIVA" />
+        </property>
+        <property name="indirizzo" type="java.lang.String">
+            <column name="INDIRIZZO" />
+        </property>
+        <property name="comune" type="java.lang.String">
+            <column name="COMUNE" />
+        </property>
+        <property name="cap" type="java.lang.String">
+            <column name="CAP" />
+        </property>
+        
+         <property name="Mail" type="java.lang.String">
+            <column name="mail" />
+        </property>
+        
+        <property name="telefono" type="java.lang.String">
+            <column name="TELEFONO" />
+        </property>
+        <property name="codAffiliato" type="java.lang.String">
+            <column name="COD_AFFILIATO" />
+        </property>
+    </class>
+</hibernate-mapping>

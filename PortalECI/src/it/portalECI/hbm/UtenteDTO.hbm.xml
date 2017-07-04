@@ -1,0 +1,58 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 15-feb-2017 9.36.43 by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+    <class name="it.portalECI.DTO.UtenteDTO" table="users">
+      
+        <id name="id" type="int">
+            <column name="ID" />
+            <generator class="increment" />
+        </id>
+        <property name="user" type="java.lang.String">
+            <column name="USER" />
+        </property>
+        <property name="passw" type="java.lang.String">
+            <column name="PASSW" />
+        </property>
+        <property name="nominativo" type="java.lang.String">
+            <column name="NOMINATIVO" />
+        </property>
+          <property name="nome" type="java.lang.String">
+            <column name="NOME" />
+        </property>
+        <property name="cognome" type="java.lang.String">
+            <column name="COGNOME" />
+        </property>
+        <property name="indirizzo" type="java.lang.String">
+            <column name="INDIRIZZO" />
+        </property>
+        <property name="comune" type="java.lang.String">
+            <column name="COMUNE" />
+        </property>
+        <property name="cap" type="java.lang.String">
+            <column name="CAP" />
+        </property>
+        <property name="EMail" type="java.lang.String">
+            <column name="E_MAIL" />
+        </property>
+        <property name="telefono" type="java.lang.String">
+            <column name="TELEFONO" />
+        </property>
+            <many-to-one name="company" class="it.portalECI.DTO.CompanyDTO" fetch="join" lazy="false">
+            <column name="id_company" />
+        </many-to-one>
+        <property name="tipoutente" type="java.lang.String">
+            <column name="TIPOUTENTE" />
+        </property>
+        <set name="listaRuoli" table="ruolo_utenti"
+        	inverse="false" lazy="false" fetch="select" cascade="all" >
+            <key>
+                <column name="id_utente" not-null="true" />
+            </key>
+            <many-to-many entity-name="it.portalECI.DTO.RuoloDTO">
+                <column name="id_ruolo" not-null="true" />
+            </many-to-many>
+        </set>
+    </class>
+</hibernate-mapping>

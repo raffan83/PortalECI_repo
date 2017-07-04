@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 6-giu-2017 12.16.10 by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+    <class name="it.portalECI.DTO.PermessoDTO" table="PERMESSI">
+        <id name="idPermesso" type="int">
+            <column name="ID" />
+            <generator class="increment" />
+        </id>
+        <property name="descrizione" type="java.lang.String">
+            <column name="descrizione_permesso" />
+        </property>
+        <property name="chiave_permesso" type="java.lang.String">
+            <column name="CHIAVE_PERMESSO" />
+        </property>
+        <property name="statoPermesso" type="int">
+            <column name="chiave_stato" />
+        </property>
+    </class>
+</hibernate-mapping>
