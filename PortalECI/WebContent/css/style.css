@@ -1,0 +1,681 @@
+/*.modal {
+    display:    none;
+    position:   fixed;
+    z-index:    1000;
+    top:        0;
+    left:       0;
+    height:     100%;
+    width:      100%;
+    background: rgba( 255, 255, 255, .8 ) 
+                url('http://i.stack.imgur.com/FhHRx.gif') 
+                50% 50% 
+                no-repeat;
+}
+ */
+
+.loading {
+    position: relative;
+    pointer-events: none;
+    cursor: not-allowed;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+.loading:after {
+    position: absolute;
+    content: '';
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(255,255,255,0.5) url('http://i.stack.imgur.com/FhHRx.gif') no-repeat center center;
+    z-index: 110;
+}
+
+* {
+box-sizing: border-box;
+}
+
+*:focus {
+	outline: none;
+}
+
+.centered {
+	text-align:center;
+}
+/* INIZIO LOGIN*/
+
+.login-page,
+.register-page {
+  background:#fff  url(../images/bg.png) no-repeat center top;
+  background-size:cover;
+}
+
+.login-box {	
+
+
+}
+
+
+.app-title {
+font-family:Impact, Charcoal, sans-serif;
+text-align: center;
+color: #777;
+}
+
+.login-form {
+text-align: center;
+}
+.control-group {
+margin-bottom: 10px;
+}
+
+.modal {
+
+    overflow-y: scroll;
+}
+body.noScroll { /* ...or body.dialogShowing */
+  overflow: hidden;
+}
+#tabPM td{
+	vertical-align:middle;
+}
+/* #tabPM td:before{
+	vertical-align:middle;
+	top:auto;
+} */
+.bigText{
+	font-size:40px;
+	cursor:pointer;
+}
+#calendario .fc-event-container{
+	text-align:center;
+	
+}
+/* 
+ input {
+text-align: center;
+background-color: #ECF0F1;
+border: 2px solid transparent;
+border-radius: 3px;
+font-size: 16px;
+font-weight: 200;
+padding: 10px 0;
+width: 250px;
+transition: border .5s;
+}
+
+input:focus {
+border: 2px solid #3498DB;
+box-shadow: none;
+}
+
+
+
+.login-link {
+  font-size: 12px;
+  color: #444;
+  display: block;
+	margin-top: 12px;
+}
+
+FINE LOGIN
+.button_ {
+   border: 1px solid #999999;
+   background: #a30000;
+   background: -webkit-gradient(linear, left top, left bottom, from(#ff8a8a), to(#a30000));
+   background: -webkit-linear-gradient(top, #ff8a8a, #a30000);
+   background: -moz-linear-gradient(top, #ff8a8a, #a30000);
+   background: -ms-linear-gradient(top, #ff8a8a, #a30000);
+   background: -o-linear-gradient(top, #ff8a8a, #a30000);
+  
+   background-image: -ms-linear-gradient(top, #ff8a8a 0%, #a30000 100%);
+   padding: 5px;
+   -webkit-border-radius: 6px;
+   -moz-border-radius: 6px;
+   border-radius: 6px;
+   -webkit-box-shadow: rgba(255,255,255,0.4) 0 1px 0, inset rgba(255,255,255,0.4) 0 1px 0;
+   -moz-box-shadow: rgba(255,255,255,0.4) 0 1px 0, inset rgba(255,255,255,0.4) 0 1px 0;
+   box-shadow: rgba(255,255,255,0.4) 0 1px 0, inset rgba(255,255,255,0.4) 0 1px 0;
+   text-shadow: #999999 0 1px 0;
+   color: #f2eaea;
+   font-size: 16px;
+   font-family: helvetica, serif;
+   text-decoration: none;
+   text-align:center;
+	width:60px;
+	height:30px;
+   vertical-align: middle;
+   
+   
+   }
+.button_:hover {
+   border: 1px solid #ffea00;
+   text-shadow: #ffea00 0 1px 0;
+   background: #a30000;
+   background: -webkit-gradient(linear, left top, left bottom, from(#ff8a8a), to(#a30000));
+   background: -webkit-linear-gradient(top, #ff8a8a, #a30000);
+   background: -moz-linear-gradient(top, #ff8a8a, #a30000);
+   background: -ms-linear-gradient(top, #ff8a8a, #a30000);
+   background: -o-linear-gradient(top, #ff8a8a, #a30000);
+   background-image: -ms-linear-gradient(top, #ff8a8a 0%, #a30000 100%);
+   color: #fff;
+   }
+.button_:active {
+   text-shadow: #999999 0 1px 0;
+   border: 1px solid #999999;
+   background: #ff8a8a;
+   background: -webkit-gradient(linear, left top, left bottom, from(#a30000), to(#a30000));
+   background: -webkit-linear-gradient(top, #a30000, #ff8a8a);
+   background: -moz-linear-gradient(top, #a30000, #ff8a8a);
+   background: -ms-linear-gradient(top, #a30000, #ff8a8a);
+   background: -o-linear-gradient(top, #a30000, #ff8a8a);
+   background-image: -ms-linear-gradient(top, #a30000 0%, #ff8a8a 100%);
+   color: #fff;
+   }
+   
+
+SIDE BAR
+ul.menu {list-style:none; margin:0; padding:0}
+ul.menu * {margin:0; padding:0}
+ul.menu a {display:block; color:#000; text-decoration:none}
+ul.menu li {position:relative; float:left; margin-right:2px}
+ul.menu ul {position:absolute; top:26px; left:0; background:#d1d1d1; display:none; opacity:0; list-style:none}
+ul.menu ul li {position:relative; border:1px solid #aaa; border-top:none; width:148px; margin:0}
+ul.menu ul li a {display:block; padding:3px 7px 5px; background-color:#d1d1d1}
+ul.menu ul li a:hover {background-color:#c5c5c5}
+ul.menu ul ul {left:148px; top:-1px}
+ul.menu .menulink {border:1px solid #aaa; padding:5px 7px 7px; font-weight:bold; width:134px}
+ul.menu .topline {border-top:1px solid #aaa}
+
+ul.tab {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    border: 1px solid #ccc;
+    background-color: #f1f1f1;
+}
+
+Float the list items side by side
+ul.tab li {float: left;}
+
+Style the links inside the list items
+ul.tab li a {
+    display: inline-block;
+    color: black;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+    transition: 0.3s;
+    font-size: 14px;
+    font-family: verdana, arial, helvetica, sans-serif;
+}
+
+Change background color of links on hover
+ul.tab li a:hover {
+    background-color: #ddd;
+}
+
+Create an active/current tablink class
+ul.tab li a:focus, .active {
+    background-color: #ccc;
+}
+
+Style the tab content
+.tabcontent {
+    display: none;
+    padding: 6px 12px;
+    border: 1px solid #ccc;
+    border-top: none;
+}
+
+.myTab table {
+            margin-left: 20px;
+     	}
+     .myTab th{
+      			color: #000000;
+    			font-family: verdana, arial, helvetica, sans-serif;
+    			font-size: 80%;
+    			text-decoration: none;
+     			background-color: #ffffff;
+     			height:20px;
+     			margin-bottom: 0px;
+     			margin-top: 0px;
+     	}
+     	
+     	 .myTab tr{
+      			color: #000000;
+    			font-family: verdana, arial, helvetica, sans-serif;
+    			font-size: 75%;
+    			text-decoration: none
+     			background-color: #ffffff
+     	}
+     	 .myTab td{
+      			color: #000000;
+    			font-family: verdana, arial, helvetica, sans-serif;
+    			font-size: 90%;
+    			text-decoration: none;
+     			background-color: #ffffff;
+     			padding: 0;
+     	}
+     	.myTab thead
+     	{
+     	height: 20px;
+     	}
+
+.prenota_ric td 
+{
+	color:yellow;
+}
+
+.prenota_conf td 
+{
+	color:red;
+}
+.bg{
+width: 100%; height: 75%; top: 0; left: 0;
+background: url(../images/wallPaper_2.jpg) no-repeat center top; position: fixed; z-index: 99;
+background-size: contain;
+background-position: center;
+}
+
+.bg_intro{
+width: 100%; height: 100%; top: 0; left: 0;
+background: url(../images/logo_acc_bg.jpg) no-repeat center top; position: fixed; z-index: 99;
+background-size: contain;
+}
+.description
+{
+display:none
+}
+
+.testo1 {
+    color: #000000;
+    font-family: verdana, arial, helvetica, sans-serif;
+    font-size:12px;
+    cursor: pointer;
+}
+.boxscorrevole {
+	border: 1px solid #BB0204;
+	overflow: auto;
+	width: 100%;
+	height: 100%;
+	position: relative;
+	background-color : #EDEDED;
+
+}
+
+.sfondodati {
+	background: #EDEDED;
+	border: 1px solid #EE1C25;
+	margin-left:20px;
+	margin-right:20px;
+	-webkit-box-shadow: 9px 11px 6px 1px rgba(0,0,0,0.67);
+    -moz-box-shadow: 9px 11px 6px 1px rgba(0,0,0,0.67);
+    box-shadow: 9px 11px 6px 1px rgba(0,0,0,0.67);
+     font-family: verdana, arial, helvetica, sans-serif;
+    font-size: 100%;
+}
+
+.campo {
+    font-family: verdana, arial, helvetica, sans-serif;
+    font-size: 62.5%;
+    text-decoration: none;
+	margin-bottom: 5px;
+	margin-right: 10px;
+}
+.testo10 {
+    color: #000000;
+    font-family: verdana, arial, helvetica, sans-serif;
+    font-size: 54.5%;
+    text-decoration: none
+}
+.esitoPositivo{
+    color: red;
+    font-family: verdana, arial, helvetica, sans-serif;
+    font-size:10px;
+    text-decoration: none
+}
+
+.esitoPositivoVerde{
+    color: green;
+    font-family: verdana, arial, helvetica, sans-serif;
+    font-size:12px;
+    text-decoration: none
+}
+.esitoNegativoRosso{
+    color: red;
+    font-family: verdana, arial, helvetica, sans-serif;
+    font-size:12px;
+    text-decoration: none
+}
+
+
+.button {
+	color: #333333;
+	font-family: verdana, arial, helvetica, sans-serif;
+	font-size: 62.5%;
+	padding:2px;
+	width: 150px;
+	text-decoration: none;
+	border: 1px solid #6C6C6C;
+	background-color : #BEBEBE;
+	cursor: pointer;
+}
+.buttonLarge {
+	color: #333333;
+	font-family: verdana, arial, helvetica, sans-serif;
+	font-size: 62.5%;
+	padding:2px;
+	width: 140px;
+	text-decoration: none;
+	border: 1px solid #6C6C6C;
+	background-color : #BEBEBE;
+	cursor: pointer;
+}
+.sfondocolore {
+	background: #EE1C25
+
+}
+.camporeadonlyleft {
+	color: #000000;
+	font-family: verdana, arial, helvetica, sans-serif;
+    font-size: 10px;
+    margin-bottom: 5px;
+	margin-right: 10px;
+	border: 1px solid #8E8D8D;
+	background: #DDDCDC;
+	
+}
+.testo14 {
+    color: #000000;
+    font-family: verdana, arial, helvetica, sans-serif;
+    font-size: 87.5%;
+    text-decoration: none;
+    font-weight: bold;
+    
+}
+
+.logout {
+
+    font-family: Arial;
+    font-size: 75%;
+    text-decoration: none;
+    cursor: pointer;
+    
+}
+
+.testo12 {
+    color: #000000;
+    font-family: verdana, arial, helvetica, sans-serif;
+    font-size: 75%;
+    text-decoration: none
+}
+.testo12rosso {
+    color: red;
+    font-family: verdana, arial, helvetica, sans-serif;
+    font-size: 75%;
+     font-weight:bold;
+    text-decoration: none
+}
+.testo18rosso {
+    color: red;
+    font-family: verdana, arial, helvetica, sans-serif;
+    font-size:100%;
+    font-weight:bold;
+    text-decoration: none
+}
+.testo12verde {
+    color: green;
+    font-family: verdana, arial, helvetica, sans-serif;
+    font-size: 75%;
+    text-decoration: none
+}
+.testo12bianco {
+	background:white;
+    color: #000000;
+    font-family: verdana, arial, helvetica, sans-serif;
+    font-size: 75%;
+    text-decoration: none
+}
+.buttonSB {
+	color: #333333;
+	font-family: verdana, arial, helvetica, sans-serif;
+	font-size: 62.5%;
+	padding:2px;
+	width: 150px;
+	text-decoration: none;
+	border: 1px solid #6C6C6C;
+	background-color : #BEBEBE;
+	cursor: pointer;
+}
+.button4 { 
+	border: none; 
+	background: url('../images/white-1.png') no-repeat top left; 
+	padding: 4px 26px; 
+	}
+	
+.button4:active 
+	{ border: none;
+	background: url('../images/white-2.png') no-repeat top left; 
+	padding: 4px 26px; 
+	}
+	.modal {
+    display:    none;
+    position:   fixed;
+    z-index:    1000;
+    top:        0;
+    left:       0;
+    height:     100%;
+    width:      100%;
+    background: rgba( 255, 255, 255, .8 ) 
+                url('../images/ajax-loader.gif') 
+                50% 50% 
+                no-repeat;
+}
+
+ 
+body.loading {
+    overflow: hidden;   
+}
+
+ 
+body.loading .modal {
+    display: block;
+}
+.cerchio {
+	width:100px;
+	height:100px;
+	border-radius:50px;
+	background:red;
+	margin-left:20px;
+	margin-bottom:10px;
+}
+
+.cerchio_giallo {
+	width:30px;
+	height:30px;
+	border-radius:15px;
+	backgroud:yellow;
+	margin-left:0px;
+	margin-bottom:0px;
+	font-size: 100%
+}
+
+.cerchio_rosso {
+	width:30px;
+	height:30px;
+	border-radius:15px;
+	background:yellow;
+	margin-left:20px;
+	margin-bottom:10px;
+}
+
+span.panelTitleTxt 
+{
+   display:block;
+   width:100px;
+   height: 100%;
+   margin: 0 auto;
+   font-size: 3em;
+   font-weight: bold;
+   text-align: center;
+   
+}
+
+span.panelTitleTxt:hover
+{
+  cursor: pointer;
+   
+}
+.errorDialog .ui-widget-header {
+  background: purple;
+}
+ */
+
+ 
+#tabPM thead td{
+	vertical-align:middle;
+	font-weight:bold;
+}
+.dt-buttons{
+	
+	float:right;
+}
+
+.modal {
+  text-align: center;
+  padding: 0!important;
+}
+
+.modal:before {
+  content: '';
+  display: inline-block;
+  height: 100%;
+  vertical-align: middle;
+  margin-right: -4px;
+}
+
+.modal-dialog {
+  display: inline-block;
+  text-align: left;
+  vertical-align: middle;
+}
+#tblAppendGrid{
+	width:100%;
+}
+#tblAppendGrid .error{
+	
+	background-color:#ffc9c9;
+}
+#tblAppendGrid thead td{
+	text-align:center;
+	padding:10px 0;
+}
+
+#tblAppendGrid label.error{
+	
+	background-color:#ffffff;
+	font-size:10px;
+	color:#ff0000;
+}
+
+#myModal{
+	word-wrap: break-word;
+}
+
+.table .table-bordered .table-inverse .dataTable tbody [rowspan],
+.table .table-bordered .table-inverse .dataTable tbody [rowspan] ~ th,
+.table .table-bordered .table-inverse .dataTable tbody [rowspan] ~ td,
+.table .table-bordered .table-inverse .dataTable tfoot {
+  border-top: 1px solid #a1a1a1;
+}
+
+.table .table-bordered .table-inverse .dataTable{
+	border-collapse: collapse;
+}
+
+
+table.table-bordered.dataTable th:last-child, table.table-bordered.dataTable th:last-child, table.table-bordered.dataTable td:last-child, table.table-bordered.dataTable td:last-child {
+    border-right-width: 1px;
+}
+
+
+dataTables.bootstrap.min.css:1
+table.table-bordered.dataTable th, table.table-bordered.dataTable td {
+    border-left-width: 0;
+}
+
+
+.table-bordered > thead > tr > th, .table-bordered > tbody > tr > th, .table-bordered > tfoot > tr > th, .table-bordered > thead > tr > td, .table-bordered > tbody > tr > td, .table-bordered > tfoot > tr > td {
+    border: 1px solid #d1d1d1;
+}
+.table-bordered{
+	 border: 1px solid #d1d1d1;
+}
+
+.modal-fullscreen .modal-dialog {
+  margin: 10px;
+  margin-right: auto;
+  margin-left: auto;
+  width: 100%;
+}
+
+
+@media (min-width: 768px) {
+  .modal-fullscreen .modal-dialog {
+    width: 750px;
+  }
+}
+@media (min-width: 992px) {
+  .modal-fullscreen .modal-dialog {
+    width: 970px;
+  }
+}
+@media (min-width: 1200px) {
+  .modal-fullscreen .modal-dialog {
+     width: 96%;
+  }
+}
+.ui-widget-header{
+	    background: #f1f1f1;
+	    font-size:10px;
+}
+.actionClass{
+	min-width:180px;
+	
+}
+
+
+.bigLabelTable{
+	font-size:16px !important;
+}
+#apporvaSelectedButtonGroup{
+	
+	margin-top: 10px;
+}
+
+.ui-widget-content input, .ui-widget-content select, .ui-widget-content button, .ui-widget-content, ui-widget-header{
+	font-size:10px;
+}
+.ui-widget-content input, .ui-widget-content select{
+	height:34px;
+}
+
+.select2MVOpt .select2-results__options li{
+		font-size:10px !important;
+	
+}
+.box{
+	
+	overflow:hidden;
+}
+.select2-container--default .select2-selection--single .select2-selection__placeholder {
+    color: #000 !important;
+}
+
