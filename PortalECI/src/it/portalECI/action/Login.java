@@ -62,7 +62,7 @@ public class Login extends HttpServlet {
 		        	 request.getSession().setAttribute("userObj", utente);
 		        	 request.getSession().setAttribute("usrCompany", utente.getCompany());
 		        	
-		        	RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/dashboard.jsp");
+		        	RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/page/dashboard.jsp");
 		        	dispatcher.forward(request,response);
 		        }
 		        else
@@ -76,7 +76,7 @@ public class Login extends HttpServlet {
 			catch(Exception ex)
 	    	{
 	    	     request.setAttribute("error",ECIException.callException(ex));
-	    		 RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/error.jsp");
+	    		 RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/page/error.jsp");
 	    	     dispatcher.forward(request,response);	
 	    	}  
 		}

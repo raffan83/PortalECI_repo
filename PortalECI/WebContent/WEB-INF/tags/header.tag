@@ -21,7 +21,7 @@
 
   <!-- iCheck -->
   <link rel="stylesheet" href="plugins/iCheck/square/blue.css">
-   <link rel="stylesheet" href="css/skins/skin-red-light.min.css">
+
    
    <link rel="stylesheet" href="css/style_css.css">
    <link rel="stylesheet" href="css/prism.css">
@@ -44,7 +44,7 @@
 
   <!-- Theme style -->
   <link rel="stylesheet" href="css/AdminLTE.css">
-
+   <link rel="stylesheet" href="css/skins/skin-red.css">
   <link href="css/style.css" rel="stylesheet" type="text/css">
 
 

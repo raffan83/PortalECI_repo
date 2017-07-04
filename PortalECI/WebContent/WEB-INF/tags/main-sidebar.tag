@@ -15,19 +15,8 @@
       <!-- Sidebar Menu -->
       <ul class="sidebar-menu">
         <li class="header">Menu</li>
-        <!-- Optionally, you can add icons to the links -->
-        <li class="treeview">
-          <a href="#"><i class="fa fa-user"></i> <span>Anagrafica</span>
-            <span class="pull-right-container">
-              <i class="fa fa-angle-left pull-right"></i>
-            </span>
-          </a>
-          <ul class="treeview-menu">
-            <li><a href="areaUtente.do">Gestione Anagrafica</a></li>
-          </ul>
-        </li>
         
-        <li class="treeview">
+  <!--       <li class="treeview">
           <a href="#"><i class="fa fa-link"></i> <span>Commesse</span>
             <span class="pull-right-container">
               <i class="fa fa-angle-left pull-right"></i>
@@ -36,51 +25,8 @@
           <ul class="treeview-menu">
             <li><a href="gestioneCommessa.do">Gestione Commessa</a></li>
           </ul>
-        </li>
-         <li class="treeview">
-          <a href="#"><i class="fa fa-link"></i> <span>Gestione Certificati</span>
-            <span class="pull-right-container">
-              <i class="fa fa-angle-left pull-right"></i>
-            </span>
-          </a>
-          <ul class="treeview-menu">
-            <li><a href="listaCertificati.do?action=lavorazione">Certificati</a></li>
-          </ul>
-        </li>
-        <li class="treeview">
-          <a href="#"><i class="fa fa-link"></i> <span>Strumenti</span>
-            <span class="pull-right-container">
-              <i class="fa fa-angle-left pull-right"></i>
-            </span>
-          </a>
-          <ul class="treeview-menu">
-               <!--   <li><a href="#" onclick="explore('listaStrumenti.do');">Gestione Strumenti</a></li>-->
-    			<li><a href="#" onclick="callAction('listaStrumentiNew.do',null,true);">Gestione Strumenti</a></li>
-
-          </ul>
-        </li>
-        <li class="treeview">
-          <a href="#"><i class="fa fa-link"></i> <span>Campioni</span>
-            <span class="pull-right-container">
-              <i class="fa fa-angle-left pull-right"></i>
-            </span>
-          </a>
-          <ul class="treeview-menu">
-			<li><a href="listaCampioni.do"><i class="fa fa-link"></i>Lista Campioni</a></li>
-			<li><a href="scadenziario.do"><i class="fa fa-link"></i>Scadenziario</a></li>
-          </ul>
-        </li>
-        <li class="treeview">
-          <a href="#"><i class="fa fa-link"></i> <span>Prenotazione Campioni</span>
-            <span class="pull-right-container">
-              <i class="fa fa-angle-left pull-right"></i>
-            </span>
-          </a>
-          <ul class="treeview-menu">
-			<li><a href="listaPrenotazioni.do"><i class="fa fa-link"></i>Prenotazioni</a></li>
-			<li><a href="listaPrenotazioniRichieste.do"><i class="fa fa-link"></i>Richieste</a></li>
-          </ul>
-        </li>
+        </li> -->
+       <!-- 
         <li class="treeview">
           <a href="#"><i class="fa fa-link"></i> <span>Downloads Utility</span>
             <span class="pull-right-container">
@@ -90,7 +36,7 @@
           <ul class="treeview-menu">
 			<li><a href="downloadCalver.do"><i class="fa fa-link"></i>Calver Desktop</a></li>
           </ul>
-        </li>
+        </li> -->
          <li class="treeview">
           <a href="#"><i class="fa fa-group"></i> <span>Configurazioni</span>
             <span class="pull-right-container">
