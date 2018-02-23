@@ -16,7 +16,7 @@
       <ul class="sidebar-menu">
         <li class="header">Menu</li>
         
-  <!--       <li class="treeview">
+         <li class="treeview">
           <a href="#"><i class="fa fa-link"></i> <span>Commesse</span>
             <span class="pull-right-container">
               <i class="fa fa-angle-left pull-right"></i>
@@ -25,7 +25,7 @@
           <ul class="treeview-menu">
             <li><a href="gestioneCommessa.do">Gestione Commessa</a></li>
           </ul>
-        </li> -->
+        </li>
        <!-- 
         <li class="treeview">
           <a href="#"><i class="fa fa-link"></i> <span>Downloads Utility</span>
