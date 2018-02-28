@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+                                   "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 2-dic-2016 16.04.21 by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+ <class name="it.portalECI.DTO.SedeDTO" table="SEDE">
+  <id name="__id" type="int">
+   <column name="__ID"/>
+   <generator class="assigned"/>
+  </id>
+  <property generated="never" lazy="false" name="indirizzo" type="java.lang.String">
+   <column name="INDIRIZZO"/>
+  </property>
+  <property generated="never" lazy="false" name="comune" type="java.lang.String">
+   <column name="COMUNE"/>
+  </property>
+  <property generated="never" lazy="false" name="cap" type="java.lang.String">
+   <column name="CAP"/>
+  </property>
+  <property generated="never" lazy="false" name="id__cliente_" type="java.lang.Integer">
+   <column name="ID__CLIENTE_"/>
+  </property>
+  <property generated="never" lazy="false" name="id__provincia_" type="java.lang.Integer">
+   <column name="ID__PROVINCIA_"/>
+  </property>
+ </class>
+</hibernate-mapping>

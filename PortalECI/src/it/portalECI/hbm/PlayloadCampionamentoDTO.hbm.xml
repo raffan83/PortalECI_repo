@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+                                   "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 13-apr-2017 11.24.04 by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+ <class name="it.portalECI.DTO.PlayloadCampionamentoDTO" table="PLAYLOAD_CAMPIONAMENTO">
+  <id name="id" type="int">
+   <column name="ID"/>
+   <generator class="increment"/>
+  </id>
+  <many-to-one class="it.portalECI.DTO.InterventoCampionamentoDTO"
+   fetch="join" name="intervento">
+   <column name="ID_INTERVENTO_CAMPIONAMENTO"/>
+  </many-to-one>
+  <many-to-one class="it.portalECI.DTO.DatasetCampionamentoDTO"
+   fetch="join" name="dataset">
+   <column name="ID_DATASET_CAMPIONAMENTO"/>
+  </many-to-one>
+  <!--  		<property name="idInterventoCampionamento" type="int">
+            <column name="ID_INTERVENTO_CAMPIONAMENTO" />
+        </property> -->
+  <property generated="never" lazy="false" name="id_punto" type="integer">
+   <column name="id_punto"/>
+  </property>
+  <property generated="never" lazy="false" name="valore_misurato" type="java.lang.String">
+   <column name="VALORE_MISURATO"/>
+  </property>
+ </class>
+</hibernate-mapping>

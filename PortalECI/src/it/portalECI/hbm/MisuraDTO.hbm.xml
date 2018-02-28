@@ -1,0 +1,56 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 9-mag-2017 15.18.55 by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+    <class name="it.portalECI.DTO.MisuraDTO" table="MISURA">
+        <id name="id" type="int">
+            <column name="ID" />
+            <generator class="increment" />
+        </id>
+        <many-to-one name="intervento" class="it.portalECI.DTO.InterventoDTO" fetch="join" lazy="false">
+        
+            <column name="id_INTERVENTO" />
+        </many-to-one>
+        <many-to-one name="interventoDati" class="it.portalECI.DTO.InterventoDatiDTO" fetch="join" lazy="false">
+            <column name="id_INTERVENTO_DATI" />
+        </many-to-one>
+        <property name="dataMisura" type="java.util.Date">
+            <column name="DATAMISURA" />
+        </property>
+        <many-to-one name="statoRicezione" class="it.portalECI.DTO.StatoRicezioneStrumentoDTO" fetch="join" lazy="false">
+            <column name="id_STATO_RICEZIONE" />
+        </many-to-one>
+        <many-to-one name="strumento" class="it.portalECI.DTO.StrumentoDTO" fetch="join" lazy="false">
+            <column name="id_STRUMENTO" />
+        </many-to-one>
+        <many-to-one name="user" class="it.portalECI.DTO.UtenteDTO" fetch="join" lazy="false">
+            <column name="id_USER" />
+        </many-to-one>
+        <property name="temperatura" type="java.math.BigDecimal">
+            <column name="TEMPERATURA" />
+        </property>
+        <property name="umidita" type="java.math.BigDecimal">
+            <column name="UMIDITA" />
+        </property>
+         <property name="tipoFirma" type="integer">
+            <column name="TIPOFIRMA" />
+        </property>
+        
+         <set name="listaPunti" table="punto_misura"
+				inverse="true" lazy="false" fetch="select" order-by="id asc">
+            <key>
+                <column name="id_misura" not-null="true" />
+            </key>
+            <one-to-many class="it.portalECI.DTO.PuntoMisuraDTO" />
+   		</set>
+   		
+   <property name="obsoleto" type="java.lang.String">
+            <column name="obsoleto" />
+        </property>
+        
+         <property name="nCertificato" type="java.lang.String">
+            <column name="nCertificato" />
+        </property>
+    </class>
+</hibernate-mapping>

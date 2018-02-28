@@ -1,0 +1,45 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 2-mar-2017 10.26.03 by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+    <class name="it.portalECI.DTO.PrenotazioneDTO" table="PRENOTAZIONI_CAMPIONE">
+        <id name="id" type="int">
+            <column name="ID" />
+            <generator class="assigned" />
+        </id>
+        <many-to-one name="campione" class="it.portalECI.DTO.CampioneDTO" fetch="join" lazy="false" cascade="save-update">
+            <column name="id_campione" />
+        </many-to-one>
+         <many-to-one name="companyRichiedente" class="it.portalECI.DTO.CompanyDTO" fetch="join" lazy="false">
+            <column name="id_company_richiesta" />
+        </many-to-one>
+         <many-to-one name="userRichiedente" class="it.portalECI.DTO.UtenteDTO" fetch="join" lazy="false">
+            <column name="id_user_richiesta" />
+        </many-to-one>
+        <property name="dataRichiesta" type="java.sql.Date">
+            <column name="DATARICHIESTA" />
+        </property>
+        <property name="dataGestione" type="java.sql.Date">
+            <column name="DATAGESTIONE" />
+        </property>
+         <many-to-one name="stato" class="it.portalECI.DTO.StatoPrenotazioneDTO" fetch="join" lazy="false">
+            <column name="stato" />
+        </many-to-one>
+        <property name="prenotatoDal" type="java.sql.Date">
+            <column name="PRENOTATODAL" />
+        </property>
+        <property name="prenotatoAl" type="java.sql.Date">
+            <column name="PRENOTATOAL" />
+        </property>
+        <property name="note" type="java.lang.String">
+            <column name="NOTE" />
+        </property>
+         <property name="noteApprovazione" type="java.lang.String">
+            <column name="NOTEAPPROVAZIONE" />
+        </property>
+         <property name="dataApprovazione" type="java.sql.Date">
+            <column name="DATAAPPROVAZIONE" />
+        </property>
+    </class>
+</hibernate-mapping>

@@ -1,0 +1,47 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+    <class name="it.portalECI.DTO.AccessorioDTO" table="accessorio">
+       
+        <id name="id" type="int">
+            <column name="id" />
+            <generator class="increment" />
+        </id>
+        <many-to-one name="company" class="it.portalECI.DTO.CompanyDTO" fetch="join" lazy="false">
+            <column name="company_id" />
+        </many-to-one>
+        <property name="nome" type="java.lang.String">
+            <column name="nome" />
+        </property>
+        <property name="descrizione" type="java.lang.String">
+            <column name="descrizione" />
+        </property>
+       <property name="quantitaFisica" type="int">
+            <column name="quantita_fisica" />
+        </property>
+        <property name="quantitaPrenotata" type="int">
+            <column name="quantita_prenotata" />
+        </property>
+ 		<many-to-one name="tipologia" class="it.portalECI.DTO.TipologiaAccessoriDTO" fetch="join" lazy="false">
+            <column name="tipologia_id" />
+        </many-to-one>
+        <property name="componibile" type="java.lang.String">
+            <column name="componibile" />
+        </property>
+        <property name="idComponibili" type="java.lang.String">
+            <column name="id_componibili" />
+        </property>
+        <property name="capacita" type="int">
+            <column name="capacita" />
+        </property>
+        <property name="unitaMisura" type="java.lang.String">
+            <column name="um" />
+        </property>
+        	<many-to-one name="user" class="it.portalECI.DTO.UtenteDTO" fetch="join" lazy="false">
+            <column name="idUser" />
+        </many-to-one>
+
+    </class>
+</hibernate-mapping>

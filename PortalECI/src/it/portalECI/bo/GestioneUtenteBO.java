@@ -2,6 +2,7 @@ package it.portalECI.bo;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import org.apache.commons.fileupload.FileItem;
 import org.hibernate.Session;
@@ -50,5 +51,12 @@ public class GestioneUtenteBO {
 		return toRet;
 	}
 
+	public static List<UtenteDTO> getTecnici(String tipo, Session session){
+		
+		List<UtenteDTO> result = GestioneUtenteDAO.getListaTecnici(tipo, session);
+		
+		return result;
+		
+	}
 
 }

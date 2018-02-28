@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 5-mag-2017 15.31.29 by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+    <class name="it.portalECI.DTO.ScadenzaDTO" table="SCADENZA">
+        <id name="id" type="int">
+            <column name="_ID" />
+            <generator class="increment" />
+        </id>
+        <property name="freq_mesi" type="int">
+            <column name="freq_verifica_mesi" />
+        </property>
+        <property name="dataUltimaVerifica" type="java.sql.Date">
+            <column name="data_ultima_verifica" />
+        </property>
+        <property name="dataProssimaVerifica" type="java.sql.Date">
+            <column name="data_prossima_verifica" />
+        </property>
+          <property generated="never" lazy="false" name="dataEmissione" type="java.sql.Date">
+   		<column name="DATA_EMISSIONE"/>
+ 		 </property>
+        <many-to-one name="tipo_rapporto" class="it.portalECI.DTO.TipoRapportoDTO" fetch="join">
+            <column name="id__tipo_rapporto_" />
+        </many-to-one>
+        <property name="idStrumento" type="java.lang.Integer">
+            <column name="id__strumento_" />
+        </property> 
+    </class>
+</hibernate-mapping>

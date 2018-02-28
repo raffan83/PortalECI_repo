@@ -1,0 +1,36 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+    <class name="it.portalECI.DTO.PrenotazioniDotazioneDTO" table="prenotazioni_dotazioni">
+       
+        <id name="id" type="int">
+            <column name="id" />
+            <generator class="increment" />
+        </id>
+
+          <many-to-one name="intervento" class="it.portalECI.DTO.InterventoCampionamentoDTO" cascade="all">
+            <column name="ID_INTERVENTO_CAMPIONAMENTO" />
+        </many-to-one>
+        <many-to-one name="dotazione" class="it.portalECI.DTO.DotazioneDTO" fetch="join" lazy="false">
+            <column name="dotazione_id" />
+        </many-to-one>
+         <many-to-one name="userRichiedente" class="it.portalECI.DTO.UtenteDTO" fetch="join" lazy="false">
+            <column name="user_richiedente" />
+        </many-to-one>
+        <property name="note" type="java.lang.String">
+            <column name="note" />
+        </property>
+         <property name="dataRichiesta" type="java.sql.Date">
+            <column name="data_richiesta" />
+        </property>
+       	 <property name="prenotatoDal" type="java.sql.Date">
+            <column name="prenotato_dal" />
+        </property>
+         <property name="prenotatoAl" type="java.sql.Date">
+            <column name="prenotato_al" />
+        </property>
+
+    </class>
+</hibernate-mapping>

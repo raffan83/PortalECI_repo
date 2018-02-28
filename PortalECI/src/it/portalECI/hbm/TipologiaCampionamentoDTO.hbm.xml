@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 13-apr-2017 11.24.04 by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+    <class name="it.portalECI.DTO.TipologiaCampionamentoDTO" table="TIPOLOGIA_CAMPIONAMENTO">
+        <id name="id" type="int">
+            <column name="ID" />
+			<generator class="increment"/>
+        </id>
+   		 <many-to-one name="tipoCampionamento" class="it.portalECI.DTO.TipoCampionamentoDTO" fetch="join">
+            <column name="ID_TIPO_CAMPIONAMENTO" />
+        </many-to-one>
+        <property name="descrizione" type="java.lang.String">
+            <column name="descrizione" />
+        </property>   
+      
+    </class>
+</hibernate-mapping>

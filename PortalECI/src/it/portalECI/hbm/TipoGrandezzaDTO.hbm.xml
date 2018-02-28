@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 23-feb-2017 16.13.58 by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+    <class name="it.portalECI.DTO.TipoGrandezzaDTO" table="TIPO_GRANDEZZA">
+        <id name="id" type="int">
+            <column name="__ID" />
+            <generator class="assigned" />
+        </id>
+        <property name="nome" type="java.lang.String">
+            <column name="NOME" />
+        </property>
+        <set name="listaUM" table="tipo_grandezza__unita_misura_"
+        	inverse="false" lazy="false" fetch="select" cascade="all" >
+            <key>
+                <column name="id__tipo_grandezza_" not-null="true" />
+            </key>
+            <many-to-many entity-name="it.portalECI.DTO.UnitaMisuraDTO">
+                <column name="id__unita_misura_" not-null="true" />
+            </many-to-many>
+        </set>
+    </class>
+</hibernate-mapping>

@@ -1,0 +1,113 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+                                   "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 2-dic-2016 15.43.19 by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping package="it.portalECI.DTO">
+ <class name="it.portalECI.DTO.StrumentoDTO" table="STRUMENTO">
+  <id name="__id" type="int">
+   <column name="__ID"/>
+   <generator class="increment"/>
+  </id>
+  <property generated="never" lazy="false" name="denominazione" type="java.lang.String">
+   <column name="DENOMINAZIONE"/>
+  </property>
+  <property generated="never" lazy="false" name="matricola" type="java.lang.String">
+   <column name="MATRICOLA"/>
+  </property>
+  <property generated="never" lazy="false" name="codice_interno" type="java.lang.String">
+   <column name="CODICE_INTERNO"/>
+  </property>
+  <property generated="never" lazy="false" name="risoluzione" type="java.lang.String">
+   <column name="RISOLUZIONE"/>
+  </property>
+  <property generated="never" lazy="false" name="campo_misura" type="java.lang.String">
+   <column name="CAMPO_MISURA"/>
+  </property>
+  <property generated="never" lazy="false" name="reparto" type="java.lang.String">
+   <column name="REPARTO"/>
+  </property>
+  <property generated="never" lazy="false" name="utilizzatore" type="java.lang.String">
+   <column name="UTILIZZATORE"/>
+  </property>
+  <property generated="never" lazy="false" name="costruttore" type="java.lang.String">
+   <column name="COSTRUTTORE"/>
+  </property>
+  <property generated="never" lazy="false" name="modello" type="java.lang.String">
+   <column name="MODELLO"/>
+  </property>
+  <property generated="never" lazy="false" name="note" type="java.lang.String">
+   <column name="NOTE"/>
+  </property>
+
+  <property generated="never" lazy="false" name="id__sede_" type="java.lang.Integer">
+   <column name="id__sede_new"/>
+  </property>
+    <property generated="never" lazy="false" name="id_cliente" type="java.lang.Integer">
+   <column name="id_cliente"/>
+  </property>
+  <property generated="never" lazy="false" name="id__template_rapporto" type="java.lang.Integer">
+   <column name="ID__TEMPLATE_RAPPORTO_"/>
+  </property>
+  
+   <many-to-one name="stato_strumento" class="it.portalECI.DTO.StatoStrumentoDTO" fetch="join" lazy="false">
+     <column name="id__stato_strumento_" />
+  </many-to-one>
+  
+  <many-to-one name="tipo_strumento" class="it.portalECI.DTO.TipoStrumentoDTO" fetch="join" lazy="false">
+     <column name="id__tipo_strumento_" />
+  </many-to-one>
+            
+  <many-to-one name="luogo" class="it.portalECI.DTO.LuogoVerificaDTO" fetch="join" lazy="false">
+     <column name="id__luogo_verifica_" />
+  </many-to-one>
+  
+  <property generated="never" lazy="false" name="interpolazione" type="java.lang.Integer">
+   <column name="INTERPOLAZIONE"/>
+  </property>
+  
+  <many-to-one name="company" class="it.portalECI.DTO.CompanyDTO" lazy="false" fetch="join">
+   <column name="id__company_" />
+  </many-to-one>
+            
+  <many-to-one name="classificazione" class="it.portalECI.DTO.ClassificazioneDTO" lazy="false" fetch="join">
+   <column name="id__classificazione_" />
+   </many-to-one>
+    
+    <many-to-one name="userCreation" class="it.portalECI.DTO.UtenteDTO" lazy="false" fetch="join">
+   <column name="user_creation" />
+   </many-to-one>
+ <set name="listaScadenzeDTO" table="scadenza_dto"
+				inverse="true" lazy="false" fetch="select" >
+            <key>
+                <column name="id__strumento_" not-null="true" />
+            </key>
+            <one-to-many class="it.portalECI.DTO.ScadenzaDTO" />
+   </set>
+            
+            <set name="listaProcedure" table="strumento__procedura_"
+        	inverse="false" lazy="false" fetch="select" cascade="all" >
+            <key>
+                <column name="id__strumento_" not-null="true" />
+            </key>
+            <many-to-many entity-name="it.portalECI.DTO.ProceduraDTO">
+                <column name="id__procedura_" not-null="true" />
+            </many-to-many>
+        </set>
+        
+         <set name="listaDocumentiEsterni" table="documenti_esterni"
+				inverse="true" lazy="false" fetch="select" >
+            <key>
+                <column name="id_strumento" not-null="true" />
+            </key>
+            <one-to-many class="it.portalECI.DTO.DocumentiEsterniStrumentoDTO" />
+   </set>
+        
+        <many-to-one name="userModifica" class="it.portalECI.DTO.UtenteDTO" lazy="false" fetch="join">
+   			<column name="modificato_da" />
+   		</many-to-one>
+   		
+   		<property generated="never" lazy="false" name="dataModifica" type="java.sql.Date">
+   			<column name="data_modifica"/>
+  		</property>
+ </class>
+</hibernate-mapping>

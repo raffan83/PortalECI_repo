@@ -1,0 +1,34 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 13-apr-2017 11.24.04 by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+    <class name="it.portalECI.DTO.TipoCampionamentoDTO" table="TIPO_CAMPIONAMENTO">
+        <id name="id" type="int">
+            <column name="ID" />
+			<generator class="increment"/>
+        </id>
+        <property name="codice" type="java.lang.String">
+            <column name="codice" />
+        </property>
+        <property name="descrizione" type="java.lang.String">
+            <column name="descrizione" />
+        </property>
+        <property name="nomeScheda" type="java.lang.String">
+            <column name="nome_scheda" />
+        </property>    
+        <property name="codiceScheda" type="java.lang.String">
+            <column name="codice_scheda" />
+        </property>  
+        <property name="revisioneScheda" type="java.lang.String">
+            <column name="revisione_scheda" />
+        </property>    
+        <set name="listaDatasetCampionamentoDTO" table="dataset_campionamento"
+				inverse="true" lazy="false" fetch="select" order-by="id asc">
+            <key>
+                <column name="id_tipo_campionamento" not-null="true" />
+            </key>
+            <one-to-many class="it.portalECI.DTO.DatasetCampionamentoDTO" />
+        </set>
+    </class>
+</hibernate-mapping>

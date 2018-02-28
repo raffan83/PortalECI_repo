@@ -1,0 +1,105 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 9-mag-2017 15.47.38 by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+    <class name="it.portalECI.DTO.PuntoMisuraDTO" table="punto_misura">
+        <id name="id" type="int">
+            <column name="ID" />
+            <generator class="increment" />
+        </id>
+        <property name="id_misura" type="int">
+            <column name="ID_MISURA" />
+        </property>
+        <property name="id_tabella" type="int">
+            <column name="ID_TABELLA" />
+        </property>
+         <property name="id_ripetizione" type="int">
+            <column name="ID_RIPETIZIONE" />
+        </property>
+        <property name="ordine" type="int">
+            <column name="ORDINE" />
+        </property>
+        <property name="tipoProva" type="java.lang.String">
+            <column name="TIPOPROVA" />
+        </property>
+        <property name="tipoVerifica" type="java.lang.String">
+            <column name="TIPOVERIFICA" />
+        </property>
+        <property name="um" type="java.lang.String">
+            <column name="UM" />
+        </property>
+        <property name="valoreCampione" type="java.math.BigDecimal">
+            <column name="VALORECAMPIONE" />
+        </property>
+        <property name="valoreMedioCampione" type="java.math.BigDecimal">
+            <column name="VALOREMEDIOCAMPIONE" />
+        </property>
+        <property name="valoreStrumento" type="java.math.BigDecimal">
+            <column name="VALORESTRUMENTO" />
+        </property>
+        <property name="valoreMedioStrumento" type="java.math.BigDecimal">
+            <column name="VALOREMEDIOSTRUMENTO" />
+        </property>
+        <property name="scostamento" type="java.math.BigDecimal">
+            <column name="SCOSTAMENTO" />
+        </property>
+        <property name="accettabilita" type="java.math.BigDecimal">
+            <column name="ACCETTABILITA" />
+        </property>
+        <property name="incertezza" type="java.math.BigDecimal">
+            <column name="INCERTEZZA" />
+        </property>
+        <property name="esito" type="java.lang.String">
+            <column name="ESITO" />
+        </property>
+        <property name="desc_Campione" type="java.lang.String">
+            <column name="DESC_CAMPIONE" />
+        </property>
+        <property name="desc_parametro" type="java.lang.String">
+            <column name="DESC_PARAMETRO" />
+        </property>
+        <property name="misura" type="java.math.BigDecimal">
+            <column name="MISURA" />
+        </property>
+        <property name="um_calc" type="java.lang.String">
+            <column name="UM_CALC" />
+        </property>
+        <property name="risoluzione_campione" type="java.math.BigDecimal">
+            <column name="RISOLUZIONE_CAMPIONE" />
+        </property>
+        <property name="risoluzione_misura" type="java.math.BigDecimal">
+            <column name="RISOLUZIONE_MISURA" />
+        </property>
+        <property name="fondoScala" type="java.math.BigDecimal">
+            <column name="FONDO_SCALA" />
+        </property>
+        <property name="interpolazione" type="int">
+            <column name="INTERPOLAZIONE" />
+        </property>
+        <property name="fm" type="java.lang.String">
+            <column name="FM" />
+        </property>
+        <property name="selConversione" type="int">
+            <column name="SELCONVERSIONE" />
+        </property>
+          <property name="selTolleranza" type="int">
+            <column name="SELTOLLERANZA" />
+        </property>
+        <property name="letturaCampione" type="java.math.BigDecimal">
+            <column name="LETTURACAMPIONE" />
+        </property>
+        <property name="per_util" type="double">
+            <column name="PERC_UTIL" />
+        </property>
+        <property name="obsoleto" type="java.lang.String">
+            <column name="obsoleto" />
+        </property>
+        <property name="applicabile" type="java.lang.String">
+            <column name="applicabile" />
+        </property>
+             <property name="dgt" type="java.math.BigDecimal">
+            <column name="dgt" />
+        </property>
+    </class>
+</hibernate-mapping>
