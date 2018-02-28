@@ -4,15 +4,24 @@ package it.portalECI.DAO;
 
 import it.portalECI.Util.Costanti;
 
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+
 import java.util.Properties;
+
+import org.hibernate.Session;
 
 public class DirectMySqlDAO {
 	
 	private static  final String getPassword="SELECT PASSWORD(?)";  
+	
+	
+	
+	
+	
 	
 	public static Connection getConnection()throws Exception {
 		Connection con = null;
@@ -80,4 +89,21 @@ public class DirectMySqlDAO {
 		return toReturn;
 	}
 
+	
+	
+	
+
+private static String replace(String string) {
+	
+	if(string!=null)
+	{
+		string=string.replace(";"," ");
+	}
+	return string;
+}
+
+
+
+
+	
 }
