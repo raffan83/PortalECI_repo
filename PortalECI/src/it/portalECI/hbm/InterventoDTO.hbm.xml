@@ -29,9 +29,7 @@
         <many-to-one name="tecnico_verificatore" class="it.portalECI.DTO.UtenteDTO" access="field" fetch="join" lazy="false">
             <column name="id_tecnico_verificatore" />
         </many-to-one>
-       <!--  <property name="id_tecnico_verificatore" type="int">
-            <column name="id_tecnico_verificatore" />
-        </property>    -->     
+   
         <many-to-one name="statoIntervento" class="it.portalECI.DTO.StatoInterventoDTO" fetch="join" lazy="false">
             <column name="id_stato_intervento" />
         </many-to-one>
@@ -39,24 +37,8 @@
             <column name="id_company" />
         </many-to-one>
         
-        <property name="nomePack" type="java.lang.String">
-            <column name="nomePack" />
-        </property>
+     
         
-        <set name="listaInterventoDatiDTO" table="intervento_dto"
-				inverse="true" lazy="false" fetch="select" order-by="id asc">
-            <key>
-                <column name="id_intervento" not-null="true" />
-            </key>
-            <one-to-many class="it.portalECI.DTO.InterventoDatiDTO" />
-        </set>
-        <set name="schedaConsegnaDTO" table="intervento_dto"
-				inverse="true" lazy="false" fetch="select" order-by="id asc">
-            <key>
-                <column name="id_intervento" />
-            </key>
-            <one-to-many class="it.portalECI.DTO.SchedaConsegnaDTO" />
-        </set>
         
         
     </class>

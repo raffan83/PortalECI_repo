@@ -16,10 +16,9 @@ public class InterventoDTO {
 	private String idCommessa="";
 	StatoInterventoDTO statoIntervento;
 	private CompanyDTO company;
-	private String nomePack="";
+	
 	private UtenteDTO tecnico_verificatore;
-	private Set<InterventoDatiDTO> listaInterventoDatiDTO = new HashSet<InterventoDatiDTO>(0);
-	private Set<SchedaConsegnaDTO> schedaConsegnaDTO = new HashSet<SchedaConsegnaDTO>(0);
+	
 	
 	public Date getDataCreazione() {
 		return dataCreazione;
@@ -98,38 +97,6 @@ public class InterventoDTO {
 	}
 
 
-	public String getNomePack() {
-		return nomePack;
-	}
-
-
-	public void setNomePack(String nomePack) {
-		this.nomePack = nomePack;
-	}
-
-
-	
-
-
-	public Set<InterventoDatiDTO> getListaInterventoDatiDTO() {
-		return listaInterventoDatiDTO;
-	}
-
-
-	public void setListaInterventoDatiDTO(
-			Set<InterventoDatiDTO> listaInterventoDatiDTO) {
-		this.listaInterventoDatiDTO = listaInterventoDatiDTO;
-	}
-
-
-	public Set<SchedaConsegnaDTO> getSchedaConsegnaDTO() {
-		return schedaConsegnaDTO;
-	}
-
-
-	public void setSchedaConsegnaDTO(Set<SchedaConsegnaDTO> schedaConsegnaDTO) {
-		this.schedaConsegnaDTO = schedaConsegnaDTO;
-	}
 
 
 	public UtenteDTO getTecnico_verificatore() {

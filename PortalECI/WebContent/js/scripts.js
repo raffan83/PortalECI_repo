@@ -447,8 +447,7 @@ function Controllo() {
 	          			        '<span class="label label-info">APERTO</span>',
 	          			        user.nominativo,
 	          			        tecnico.nominativo,
-	          			      intervento.nomePack,
-	          			      '<a class="btn" onclick="callAction(\'gestioneInterventoDati.do?idIntervento='+intervento.id+'\');"> <i class="fa fa-arrow-right"></i> </a>'
+	          			      	'<a class="btn" onclick="callAction(\'gestioneInterventoDati.do?idIntervento='+intervento.id+'\');"> <i class="fa fa-arrow-right"></i> </a>'
 	          			    ] ).draw();
 	          			  	
 	          		

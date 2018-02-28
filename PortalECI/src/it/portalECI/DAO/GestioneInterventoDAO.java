@@ -1,11 +1,7 @@
 package it.portalECI.DAO;
 
 import it.portalECI.DTO.InterventoDTO;
-import it.portalECI.DTO.InterventoDatiDTO;
-import it.portalECI.DTO.MisuraDTO;
-import it.portalECI.DTO.ObjSavePackDTO;
-import it.portalECI.DTO.PrenotazioneDTO;
-import it.portalECI.DTO.StrumentoDTO;
+
 
 import java.util.ArrayList;
 import java.util.List;
@@ -67,177 +63,7 @@ public class GestioneInterventoDAO {
 
 
 
-	public static boolean isPresentStrumento(int id, StrumentoDTO strumento, Session session) {
-		
-		Query query=null;
-		boolean isPresent=false;
-		List<MisuraDTO> misura=null;
-		try {
-			Session session1=SessionFacotryDAO.get().openSession();	
-			session1.beginTransaction();
-			
-		String s_query = "from MisuraDTO WHERE intervento.id = :_intervento AND strumento.__id =:_strumento";
-						  
-	    query = session1.createQuery(s_query);
-	    query.setParameter("_intervento",id);
-	    query.setParameter("_strumento",strumento.get__id());
-		
-	    misura=(List<MisuraDTO>)query.list();
-		
-	    session1.getTransaction().commit();
-		session1.close();
-		
-	    if(misura.size()>0)
-	    {
-	    	return true;
-	    }
-	    	else
-	    {
-	    	return false;
-	    }
-	    
-	    
-		
-	     } catch(Exception e)
-	     {
-	    	 e.printStackTrace();
-	     }
-		
-		
-		return isPresent;
-		
-	}
-
-
-
-	public static void misuraObsoleta(MisuraDTO misura, Session session) throws Exception
-	{
-		
-		Query query=null;
-		
 	
-		
-		String s_query = "update MisuraDTO SET obsoleto='S' WHERE id = :_id";
-						  
-	    query = session.createQuery(s_query);
-	    query.setParameter("_id",misura.getId());
-		
-	   query.executeUpdate();	
-	     	
-	}
-
-
-
-	public static void puntoMisuraObsoleto(int idTemp)throws Exception {
-		
-		Query query=null;
-		
-		Session session=SessionFacotryDAO.get().openSession();	
-		session.beginTransaction();
-		
-		String s_query = "update PuntoMisuraDTO SET obsoleto='S' WHERE id_misura =:_idMisura";
-						  
-	    query = session.createQuery(s_query);
-	    query.setParameter("_idMisura",idTemp);
-	   
-		
-	   query.executeUpdate();
-		
-
-		session.getTransaction().commit();
-		session.close();
-
-	     	
-	}
-
-
-
-	public static MisuraDTO getMisuraObsoleta(int id, String idStr)throws Exception {
-		
-		Query query=null;
-		MisuraDTO misura=null;
-
-			
-		Session session = SessionFacotryDAO.get().openSession();
-	    
-		session.beginTransaction();
-		
-		String s_query = "from MisuraDTO WHERE intervento.id = :_idIntervento AND strumento.__id=:_idStrumento AND obsoleto='N'";
-					  //  from MisuraDTO WHERE intervento.id =36              
-	    query = session.createQuery(s_query);
-	    query.setParameter("_idIntervento",id);
-	    query.setParameter("_idStrumento",Integer.parseInt(idStr));
-		
-	    misura=(MisuraDTO)query.list().get(0);
-		session.getTransaction().commit();
-		session.close();
-
-	     
-		return misura;
-	}
-
-
-
-	public static void update(InterventoDTO intervento, Session session) {
-	
-		session.update(intervento);
-		
-	}
-
-
-
-	public static ArrayList<MisuraDTO> getListaMirureByInterventoDati(int idInterventoDati) {
-		Query query=null;
-		
-		ArrayList<MisuraDTO> misura=null;
-		try {
-		Session session =SessionFacotryDAO.get().openSession();
-		session.beginTransaction();
-		
-		
-		String s_query = "from MisuraDTO WHERE interventoDati.id = :_interventoDati";
-						  
-	    query = session.createQuery(s_query);
-	    query.setParameter("_interventoDati",idInterventoDati);
-		
-	    misura=(ArrayList<MisuraDTO>)query.list();
-
-	     } 
-		catch(Exception e)
-	     {
-	    	 e.printStackTrace();
-	    	 throw e;
-	     }
-		
-		return misura;
-	}
-
-	public static ArrayList<MisuraDTO> getListaMirureByIntervento(int idIntervento) {
-		Query query=null;
-		
-		ArrayList<MisuraDTO> misura=null;
-		try {
-		Session session =SessionFacotryDAO.get().openSession();
-		session.beginTransaction();
-		
-		
-		String s_query = "from MisuraDTO WHERE intervento.id = :_idIntervento";
-						  
-	    query = session.createQuery(s_query);
-	    query.setParameter("_idIntervento",idIntervento);
-		
-	    misura=(ArrayList<MisuraDTO>)query.list();
-
-	     } 
-		catch(Exception e)
-	     {
-	    	 e.printStackTrace();
-	    	 throw e;
-	     }
-		
-		return misura;
-	}
-
 
 	public static void update(InterventoDTO intervento) {
 		Session s = SessionFacotryDAO.get().openSession();
@@ -252,10 +78,7 @@ public class GestioneInterventoDAO {
 
 
 
-	public static void updateInterventoDati(InterventoDatiDTO interventoDati,Session session) {
-		
-		session.update(interventoDati);
-	}
+	
 
 
 

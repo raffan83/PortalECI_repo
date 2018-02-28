@@ -10,62 +10,13 @@
   <property name="hibernate.dialect">org.hibernate.dialect.MySQLInnoDBDialect</property>
   <property name="hbm2ddl.auto">update</property>
   
-<!--   <mapping class="UtenteDTO" package="it.portalECI.DTO" resource="it/portalECI/hbm/UtenteDTO.hbm.xml"/>
+  <mapping class="UtenteDTO" package="it.portalECI.DTO" resource="it/portalECI/hbm/UtenteDTO.hbm.xml"/>
   <mapping class="CompanyDTO" package="it.portalECI.DTO" resource="it/portalECI/hbm/CompanyDTO.hbm.xml"/>
   <mapping class="RuoloDTO" package="it.portalECI.DTO" resource="it/portalECI/hbm/RuoloDTO.hbm.xml"/>
   <mapping class="PermessoDTO" package="it.portalECI.DTO" resource="it/portalECI/hbm/PermessoDTO.hbm.xml"/>
-   -->
   
-    <mapping class="UtenteDTO" package="it.portalECI.DTO" resource="it/portalECI/hbm/UtenteDTO.hbm.xml"/>
-  <mapping class="CompanyDTO" package="it.portalECI.DTO" resource="it/portalECI/hbm/CompanyDTO.hbm.xml"/>
-  <mapping class="StrumentoDTO" package="it.portalECI.DTO" resource="it/portalECI/hbm/StrumentoDTO.hbm.xml"/>
-  <mapping class="ClienteDTO" package="it.portalECI.DTO" resource="it/portalECI/hbm/ClienteDTO.hbm.xml"/>
-  <mapping class="SedeDTO" package="it.portalECI.DTO" resource="it/portalECI/hbm/SedeDTO.hbm.xml"/>
-  <mapping class="TipoStrumentoDTO" package="it.portalECI.DTO" resource="it/portalECI/hbm/TipoStrumentoDTO.hbm.xml"/>
-  <mapping class="TipoRapportoDTO" package="it.portalECI.DTO" resource="it/portalECI/hbm/TipoRapportoDTO.hbm.xml"/>
-  <mapping class="TipoMisuraDTO" package="it.portalECI.DTO" resource="it/portalECI/hbm/TipoMisuraDTO.hbm.xml"/>
-  <mapping class="CampioneDTO" package="it.portalECI.DTO" resource="it/portalECI/hbm/CampioneDTO.hbm.xml"/>
-  <!-- <mapping class="ValoreCampioneDTO" package="it.portalECI.DTO" resource="it/portalECI/hbm/ValoreCampioneDTO.hbm.xml"/> -->
-  <mapping class="TipoCampioneDTO" package="it.portalECI.DTO" resource="it/portalECI/hbm/TipoCampioneDTO.hbm.xml"/>
-  <mapping class="TipoGrandezzaDTO" package="it.portalECI.DTO" resource="it/portalECI/hbm/TipoGrandezzaDTO.hbm.xml"/>
-  <mapping class="UnitaMisuraDTO" package="it.portalECI.DTO" resource="it/portalECI/hbm/UnitaMisuraDTO.hbm.xml"/>
-  <mapping class="PrenotazioneDTO" package="it.portalECI.DTO" resource="it/portalECI/hbm/PrenotazioneDTO.hbm.xml"/>
-  <mapping class="StatoPrenotazioneDTO" package="it.portalECI.DTO" resource="it/portalECI/hbm/StatoPrenotazioneDTO.hbm.xml"/>
-  <mapping class="ClassificazioneDTO" package="it.portalECI.DTO" resource="it/portalECI/hbm/ClassificazioneDTO.hbm.xml"/>
   <mapping class="InterventoDTO" package="it.portalECI.DTO" resource="it/portalECI/hbm/InterventoDTO.hbm.xml"/>
   <mapping class="StatoInterventoDTO" package="it.portalECI.DTO" resource="it/portalECI/hbm/StatoInterventoDTO.hbm.xml"/>
-  <mapping class="InterventoDatiDTO" package="it.portalECI.DTO" resource="it/portalECI/hbm/InterventoDatiDTO.hbm.xml"/>
-  <mapping class="StatoPackDTO" package="it.portalECI.DTO" resource="it/portalECI/hbm/StatoPackDTO.hbm.xml"/>
-  <mapping class="ScadenzaDTO" package="it.portalECI.DTO" resource="it/portalECI/hbm/ScadenzaDTO.hbm.xml"/>
-  <mapping class="StatoStrumentoDTO" package="it.portalECI.DTO" resource="it/portalECI/hbm/StatoStrumentoDTO.hbm.xml"/>
-  <mapping class="LuogoVerificaDTO" package="it.portalECI.DTO" resource="it/portalECI/hbm/LuogoVerificaDTO.hbm.xml"/>
-  <mapping class="StatoRicezioneStrumentoDTO" package="it.portalECI.DTO" resource="it/portalECI/hbm/StatoRicezioneStrumentoDTO.hbm.xml"/>
-  <mapping class="MisuraDTO" package="it.portalECI.DTO" resource="it/portalECI/hbm/MisuraDTO.hbm.xml"/>
-  <mapping class="PuntoMisuraDTO" package="it.portalECI.DTO" resource="it/portalECI/hbm/PuntoMisuraDTO.hbm.xml"/>
-  <mapping class="CertificatoDTO" package="it.portalECI.DTO" resource="it/portalECI/hbm/CertificatoDTO.hbm.xml"/>
-  <mapping class="StatoCertificatoDTO" package="it.portalECI.DTO" resource="it/portalECI/hbm/StatoCertificatoDTO.hbm.xml"/>
-  <mapping class="CertificatoCampioneDTO" package="it.portalECI.DTO" resource="it/portalECI/hbm/CertificatoCampioneDTO.hbm.xml"/>
-  <mapping class="RuoloDTO" package="it.portalECI.DTO" resource="it/portalECI/hbm/RuoloDTO.hbm.xml"/>
-  <mapping class="PermessoDTO" package="it.portalECI.DTO" resource="it/portalECI/hbm/PermessoDTO.hbm.xml"/>
-  <mapping class="ProceduraDTO" package="it.portalECI.DTO" resource="it/portalECI/hbm/ProceduraDTO.hbm.xml"/>
-  
- 	<mapping class="AccessorioDTO" package="it.portalECI.DTO" resource="it/portalECI/hbm/AccessorioDTO.hbm.xml"/>
-    <mapping class="TipologiaAccessoriDTO" package="it.portalECI.DTO" resource="it/portalECI/hbm/TipologiaAccessoriDTO.hbm.xml"/>
-
-	<mapping class="DotazioneDTO" package="it.portalECI.DTO" resource="it/portalECI/hbm/DotazioneDTO.hbm.xml"/>
-    <mapping class="TipologiaDotazioniDTO" package="it.portalECI.DTO" resource="it/portalECI/hbm/TipologiaDotazioniDTO.hbm.xml"/>
-    <mapping class="PrenotazioniDotazioneDTO" package="it.portalECI.DTO" resource="it/portalECI/hbm/PrenotazioniDotazioneDTO.hbm.xml"/>
-    <mapping class="PrenotazioneAccessorioDTO" package="it.portalECI.DTO" resource="it/portalECI/hbm/PrenotazioneAccessorioDTO.hbm.xml"/>
-    <mapping class="InterventoCampionamentoDTO" package="it.portalECI.DTO" resource="it/portalECI/hbm/InterventoCampionamentoDTO.hbm.xml"/>
-<!--     <mapping class="LogMagazzinoDTO" package="it.portalECI.DTO" resource="it/portalECI/hbm/LogMagazzinoDTO.hbm.xml"/>
- --> 	<mapping class="TipoCampionamentoDTO" package="it.portalECI.DTO" resource="it/portalECI/hbm/TipoCampionamentoDTO.hbm.xml"/>
- 	<mapping class="DatasetCampionamentoDTO" package="it.portalECI.DTO" resource="it/portalECI/hbm/DatasetCampionamentoDTO.hbm.xml"/>
-  	<mapping class="PlayloadCampionamentoDTO" package="it.portalECI.DTO" resource="it/portalECI/hbm/PlayloadCampionamentoDTO.hbm.xml"/>	
- 	<!-- <mapping class="TipoTrendDTO" package="it.portalECI.DTO" resource="it/portalECI/hbm/TipoTrendDTO.hbm.xml"/>	
- 	<mapping class="TrendDTO" package="it.portalECI.DTO" resource="it/portalECI/hbm/TrendDTO.hbm.xml"/>	 -->
- 	<mapping class="DocumentiEsterniStrumentoDTO" package="it.portalECI.DTO" resource="it/portalECI/hbm/DocumentiEsterniStrumentoDTO.hbm.xml"/>	
- 	<mapping class="TipologiaCampionamentoDTO" package="it.portalECI.DTO" resource="it/portalECI/hbm/TipologiaCampionamentoDTO.hbm.xml"/>
- 	<mapping class="SchedaConsegnaDTO" package="it.portalECI.DTO" resource="it/portalECI/hbm/SchedaConsegnaDTO.hbm.xml"/>
   
      
  </session-factory>

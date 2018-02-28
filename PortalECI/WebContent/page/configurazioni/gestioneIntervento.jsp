@@ -167,7 +167,6 @@
  <th>Stato</th>
  <th>Responsabile</th>
  <th>Tecnico Verificatore</th>
- <th>Nome Pack</th>
  <td></td>
  </tr></thead>
  
@@ -214,7 +213,7 @@
 	
 		<td>${intervento.user.nominativo}</td>
 		 <td>${intervento.tecnico_verificatore.nominativo}</td> 
-		<td>${intervento.nomePack}</td>
+		
 		<td>
 			<a class="btn customTooltip" title="Click per aprire il dettaglio dell'Intervento" onclick="callAction('gestioneInterventoDati.do?idIntervento=${intervento.id}');">
                 <i class="fa fa-arrow-right"></i>
@@ -370,8 +369,8 @@
 						   { responsivePriority: 1, targets: 0 },
     	                   { responsivePriority: 3, targets: 2 },
     	                   { responsivePriority: 4, targets: 3 },
-    	                   { responsivePriority: 2, targets: 6 },
-    	                   { orderable: false, targets: 6 },
+    	                   { responsivePriority: 2, targets: 5 },
+    	                   { orderable: false, targets: 5 },
     	                   { width: "50px", targets: 0 },
     	                   { width: "250px", targets: 1 },
     	                   { width: "80px", targets: 3 },
