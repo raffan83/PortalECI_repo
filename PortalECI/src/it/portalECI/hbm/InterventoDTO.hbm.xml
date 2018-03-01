@@ -1,0 +1,45 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 13-apr-2017 11.24.04 by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+    <class name="it.portalECI.DTO.InterventoDTO" table="INTERVENTO">
+        <id name="id" type="int">
+            <column name="ID" />
+            <generator class="native" />
+        </id>
+        <property name="dataCreazione" type="java.util.Date">
+            <column name="DATA_CREAZIONE" />
+        </property>
+        <property name="idSede" type="int">
+            <column name="ID__SEDE_" />
+        </property>
+        <property name="id_cliente" type="int">
+            <column name="ID_CLIENTE" />
+        </property>
+        <property name="nome_sede" type="java.lang.String">
+            <column name="NOME_SEDE" />
+        </property>
+        <many-to-one name="user" class="it.portalECI.DTO.UtenteDTO" access="field" fetch="join" lazy="false">
+            <column name="id__user_creation" />
+        </many-to-one>
+        <property name="idCommessa" type="java.lang.String">
+            <column name="ID_COMMESSA" />
+        </property>
+        <many-to-one name="tecnico_verificatore" class="it.portalECI.DTO.UtenteDTO" access="field" fetch="join" lazy="false">
+            <column name="id_tecnico_verificatore" />
+        </many-to-one>
+   
+        <many-to-one name="statoIntervento" class="it.portalECI.DTO.StatoInterventoDTO" fetch="join" lazy="false">
+            <column name="id_stato_intervento" />
+        </many-to-one>
+          <many-to-one name="company" class="it.portalECI.DTO.CompanyDTO" fetch="join" lazy="false">
+            <column name="id_company" />
+        </many-to-one>
+        
+     
+        
+        
+        
+    </class>
+</hibernate-mapping>

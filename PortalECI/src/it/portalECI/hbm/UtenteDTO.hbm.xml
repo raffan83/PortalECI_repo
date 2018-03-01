@@ -45,6 +45,9 @@
         <property name="tipoutente" type="java.lang.String">
             <column name="TIPOUTENTE" />
         </property>
+        <property name="trasversale" type="int">
+            <column name="trasversale" />
+        </property>
         <set name="listaRuoli" table="ruolo_utenti"
         	inverse="false" lazy="false" fetch="select" cascade="all" >
             <key>

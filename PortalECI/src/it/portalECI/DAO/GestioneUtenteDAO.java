@@ -36,4 +36,19 @@ public static void save(Session session, UtenteDTO utente)throws Exception {
 }
 
 
+public static List<UtenteDTO> getListaTecnici(String tipo, Session session) {
+	
+	Query query  = session.createQuery( "from UtenteDTO WHERE tipoutente= :tipo");
+	query.setParameter("tipo", tipo);
+	
+	List<UtenteDTO> result =query.list();
+	
+	if(result.size()>0)
+	{			
+		return result;
+	}
+	return null;
+}
+
+
 }
