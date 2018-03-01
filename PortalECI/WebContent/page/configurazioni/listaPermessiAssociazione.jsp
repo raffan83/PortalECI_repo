@@ -130,7 +130,7 @@
 	tabPermessi = $('#tabPermessi').DataTable();
   // Apply the search
   tabPermessi.columns().eq( 0 ).each( function ( colIdx ) {
-      $( 'input', tabPermessi.column( colIdx ).header() ).on( 'keyup change', function () {
+      $( 'input', tabPermessi.column( colIdx ).header() ).on( 'keyup', function () {
     	  tabPermessi
               .column( colIdx )
               .search( this.value )

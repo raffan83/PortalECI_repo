@@ -130,7 +130,7 @@
 	tabRuoli = $('#tabRuoli').DataTable();
   // Apply the search
   tabRuoli.columns().eq( 0 ).each( function ( colIdx ) {
-      $( 'input', tabRuoli.column( colIdx ).header() ).on( 'keyup change', function () {
+      $( 'input', tabRuoli.column( colIdx ).header() ).on( 'keyup', function () {
     	  tabRuoli
               .column( colIdx )
               .search( this.value )
