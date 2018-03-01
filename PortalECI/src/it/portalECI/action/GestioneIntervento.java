@@ -1,10 +1,12 @@
 package it.portalECI.action;
 
 import it.portalECI.DAO.SessionFacotryDAO;
+import it.portalECI.DTO.CategoriaVerificaDTO;
 import it.portalECI.DTO.CommessaDTO;
 import it.portalECI.DTO.CompanyDTO;
 import it.portalECI.DTO.InterventoDTO;
 import it.portalECI.DTO.StatoInterventoDTO;
+import it.portalECI.DTO.TipoVerificaDTO;
 import it.portalECI.DTO.UtenteDTO;
 import it.portalECI.Exception.ECIException;
 import it.portalECI.Util.Utility;
@@ -106,9 +108,13 @@ public class GestioneIntervento extends HttpServlet {
 			
 			
 			List<UtenteDTO> users = GestioneUtenteBO.getTecnici("2", session);
+			ArrayList<TipoVerificaDTO> tipi_verifica = GestioneInterventoBO.getTipoVerifica(session);
+			ArrayList<CategoriaVerificaDTO> categorie_verifica = GestioneInterventoBO.getCategoriaVerifica(session);
 			
-			request.getSession().setAttribute("tecnici", users);
+			request.getSession().setAttribute("tipi_verifica", tipi_verifica);
+			request.getSession().setAttribute("categorie_verifica", categorie_verifica);
 			request.getSession().setAttribute("listaInterventi", listaInterventi);
+			request.getSession().setAttribute("tecnici", users);
 
 			RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/page/configurazioni/gestioneIntervento.jsp");
 	     	dispatcher.forward(request,response);
@@ -119,20 +125,27 @@ public class GestioneIntervento extends HttpServlet {
 		
 			
 				
-			String json = request.getParameter("dataIn");
+			//String json = request.getParameter("dataIn");
+		String id_tecnico = request.getParameter("tecnico");
+		String id_tipo=request.getParameter("tipo");
+		String id_categoria=request.getParameter("categoria");
+
+		if(!id_categoria.equals("null")) {
+	
 			
-			JsonElement jelement = new JsonParser().parse(json);
-			UtenteDTO tecnico = GestioneUtenteBO.getUtenteById(json, session);
+			UtenteDTO tecnico = GestioneUtenteBO.getUtenteById(id_tecnico, session);
+			CategoriaVerificaDTO categoria = GestioneInterventoBO.getCategoriaVerifica(id_categoria, session);
+			TipoVerificaDTO tipo = GestioneInterventoBO.getTipoVerifica(id_tipo.substring(0, id_tipo.indexOf("_")), session);
 
 		    CommessaDTO comm=(CommessaDTO)request.getSession().getAttribute("commessa");
 			InterventoDTO intervento= new InterventoDTO();
 			intervento.setDataCreazione(Utility.getActualDateSQL());
-			//intervento.setPressoDestinatario(Integer.parseInt(jelement.getAsJsonObject().get("tecnico").toString().replaceAll("\"", "")));
-			//intervento.setId_tecnico_verificatore(Integer.parseInt(jelement.getAsJsonObject().get("tecnico").toString().replaceAll("\"", "")));
 			intervento.setTecnico_verificatore(tecnico);
 			intervento.setUser((UtenteDTO)request.getSession().getAttribute("userObj"));
 			intervento.setIdSede(comm.getK2_ANAGEN_INDR());
 			intervento.setId_cliente(comm.getID_ANAGEN());
+			intervento.setCat_verifica(categoria);
+			intervento.setTipo_verifica(tipo);
 			
 			String nomeCliente="";
 			
@@ -151,26 +164,24 @@ public class GestioneIntervento extends HttpServlet {
 			CompanyDTO cmp =(CompanyDTO)request.getSession().getAttribute("usrCompany");
 			intervento.setCompany(cmp);
 			
-			//String filename = GestioneStrumentoBO.creaPacchetto(comm.getID_ANAGEN(),comm.getK2_ANAGEN_INDR(),cmp,comm.getID_ANAGEN_NOME(),session,intervento);
-			
-			//intervento.setNomePack(filename);
-			
-//			intervento.setnStrumentiGenerati(GestioneStrumentoBO.getListaStrumentiPerSediAttiviNEW(""+comm.getID_ANAGEN(),""+comm.getK2_ANAGEN_INDR(),cmp.getId(), session).size());
-//			intervento.setnStrumentiMisurati(0);
-//			intervento.setnStrumentiNuovi(0);
-			
+						
 			GestioneInterventoBO.save(intervento,session);
 			
 			Gson gson = new Gson();
 		
-			// 2. Java object to JSON, and assign to a String
 			String jsonInString = gson.toJson(intervento);
 
-			
 			myObj.addProperty("success", true);
 			myObj.addProperty("intervento", jsonInString);
 			out.print(myObj);
+		}else {
+			
+			myObj.addProperty("success", false);
+			myObj.addProperty("messaggio", "Campo non selezionato!");
+			out.print(myObj);
+			
 		}
+	}
 		if(action !=null && action.equals("chiudi")){
 			 
 			

@@ -1,28 +1,14 @@
 package it.portalECI.bo;
 
 import it.portalECI.DAO.GestioneInterventoDAO;
-import it.portalECI.DAO.SQLLiteDAO;
-import it.portalECI.DAO.SessionFacotryDAO;
-
-import it.portalECI.DTO.CommessaDTO;
+import it.portalECI.DTO.CategoriaVerificaDTO;
 import it.portalECI.DTO.InterventoDTO;
+import it.portalECI.DTO.TipoVerificaDTO;
 
-import it.portalECI.DTO.UtenteDTO;
-import it.portalECI.Util.Costanti;
-import java.sql.Connection;
-import java.sql.SQLException;
-import java.text.SimpleDateFormat;
-
-import java.io.File;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Set;
 
-import org.apache.commons.fileupload.FileItem;
+import java.util.List;
+
 import org.hibernate.Session;
 
 public class GestioneInterventoBO {
@@ -41,15 +27,30 @@ public class GestioneInterventoBO {
 		
 	}
 
+	public static ArrayList<TipoVerificaDTO> getTipoVerifica(Session session){
+		
+		return GestioneInterventoDAO.getListaTipoVerifica(session);
+	}
+	
+	
+	public static TipoVerificaDTO getTipoVerifica(String id,  Session session) {
+		return GestioneInterventoDAO.getTipoVerifica(id,  session);
+	}
+	
+	public static ArrayList<CategoriaVerificaDTO> getCategoriaVerifica(Session session){
+		
+		return GestioneInterventoDAO.getListaCategoriaVerifica(session);
+	}
 
+	public static CategoriaVerificaDTO getCategoriaVerifica(String id,  Session session) {
+		return GestioneInterventoDAO.getCategoriaVerifica(id, session);
+	}
 
 	public static InterventoDTO getIntervento(String idIntervento) {
 
 		return GestioneInterventoDAO.getIntervento(idIntervento);
 
 	}
-
-	
 
 	
 	

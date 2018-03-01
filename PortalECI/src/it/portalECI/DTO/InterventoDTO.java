@@ -18,6 +18,8 @@ public class InterventoDTO {
 	private CompanyDTO company;
 	
 	private UtenteDTO tecnico_verificatore;
+	private TipoVerificaDTO tipo_verifica;
+	private CategoriaVerificaDTO cat_verifica;
 	
 	
 	public Date getDataCreazione() {
@@ -106,6 +108,26 @@ public class InterventoDTO {
 
 	public void setTecnico_verificatore(UtenteDTO tecnico_verificatore) {
 		this.tecnico_verificatore = tecnico_verificatore;
+	}
+
+
+	public TipoVerificaDTO getTipo_verifica() {
+		return tipo_verifica;
+	}
+
+
+	public void setTipo_verifica(TipoVerificaDTO tipo_verifica) {
+		this.tipo_verifica = tipo_verifica;
+	}
+
+
+	public CategoriaVerificaDTO getCat_verifica() {
+		return cat_verifica;
+	}
+
+
+	public void setCat_verifica(CategoriaVerificaDTO cat_verifica) {
+		this.cat_verifica = cat_verifica;
 	}
 	
 	

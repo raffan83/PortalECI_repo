@@ -398,11 +398,14 @@ function Controllo() {
 	  	   
    }
    
-   function saveInterventoFromModal(idCommessa){
+   function saveInterventoFromModal(){
 
-	   var str=$('#tecnici').val();
+	   var str1=$('#tecnici').val();
+	   var str2=$('#select1').val();
+	   var str3=$('#select2').val();
  
-	  	  if(str.length != 0){
+	   
+	  	  if(str1!= null){
 	  		  $('#myModal').modal('hide')
 	  		  //var dataArr={"tecnico":str};
 	            
@@ -413,32 +416,25 @@ function Controllo() {
 	          	  type: "POST",
 	          	  url: "gestioneIntervento.do?action=new",
 	          	  //data: "dataIn="+JSON.stringify(dataArr),
-	          	data: "dataIn="+str,
+	          	//data: "dataIn="+str1,
+	          	data : "tecnico="+str1 + "&categoria=" +str2 +"&tipo="+str3,
+	          	//'id='+ encodeURIComponent(id) + '&name='+ encodeURIComponent(name)
 	          	  dataType: "json",
 
 	          	  success: function( data, textStatus) {
 
 	          		  if(data.success)
 	          		  { 
-	          			  	$('#errorMsg').html("<h3 class='label label-primary' style=\"color:green\">"+textStatus+"</h3>");
-	          			  	//callAction("gestioneIntervento.do?idCommessa="+idCommessa);
-	          			  	
+//	          			  	$('#errorMsg').html("<h3 class='label label-primary' style=\"color:green\">"+textStatus+"</h3>");
 	          			  var table = $('#tabPM').DataTable();
 
-	          	//"{"id":19,"dataCreazione":"mag 3, 2017","idSede":1,"id_cliente":7011,"nome_sede":"SEDE OPERATIVA","user":{"id":1,"user":"admin","passw":"*F28AA01DCF16C082DC04B36CB2F245431FA0CFED","nominativo":"Amministratore","nome":"Admin - Name","cognome":"Admin - Surname","indirizzo":"Via Tofaro 42/c","comune":"Sora","cap":"03039","EMail":"info@stisrl.com","telefono":"0776181501","idCompany":4132,"tipoutente":"AM"},"idCommessa":"201700001","statoIntervento":{"id":1},"pressoDestinatario":0,"company":{"id":4132,"denominazione":"STI - Sviluppo e Tecnologie Industriali S.r.l","pIva":"01862150602","indirizzo":"Via Tofaro 42/b","comune":"Sora","cap":"03039","mail":"info@stisrl.com","telefono":"0776181501","codAffiliato":"001"},"nomePack":"CM413203052017044229","nStrumentiGenerati":0,"nStrumentiMisurati":0,"nStrumentiNuovi":0,"listaInterventoDatiDTO":[]}"	
 	          			intervento = JSON.parse(data.intervento);
-//	          			  
-//	          			  if(intervento.pressoDestinatario == 0){
-//	          				presso = "IN SEDE";
-//	          			}else if(intervento.pressoDestinatario == 1){
-//	          				presso = "PRESSO CLIENTE";
-//	          			}else{
-//	          				presso = "-";
-//	          			}
-	          			
+
 	          			  var user = intervento.user;
 	          			  var tecnico =intervento.tecnico_verificatore;
 	          			var dataCreazione = moment(intervento.dataCreazione,"MMM DD, YYYY",'it');
+	          			var tipo_verifica=intervento.tipo_verifica;
+	          			var cat_verifica=intervento.cat_verifica;
 	          			var rowNode =  table.row.add( [
 	          			        '<a class="btn" onclick="callAction(\'gestioneInterventoDati.do?idIntervento='+intervento.id+'\');">'+intervento.id+'</a>',
 	          			        //'<span class="label label-info">'+presso+'</span>',
@@ -447,6 +443,8 @@ function Controllo() {
 	          			        '<span class="label label-info">APERTO</span>',
 	          			        user.nominativo,
 	          			        tecnico.nominativo,
+	          			        cat_verifica.codice,
+	             			    tipo_verifica.codice,
 	          			      	'<a class="btn" onclick="callAction(\'gestioneInterventoDati.do?idIntervento='+intervento.id+'\');"> <i class="fa fa-arrow-right"></i> </a>'
 	          			    ] ).draw();
 	          			  	

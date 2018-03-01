@@ -17,7 +17,9 @@
   
   <mapping class="InterventoDTO" package="it.portalECI.DTO" resource="it/portalECI/hbm/InterventoDTO.hbm.xml"/>
   <mapping class="StatoInterventoDTO" package="it.portalECI.DTO" resource="it/portalECI/hbm/StatoInterventoDTO.hbm.xml"/>
+  <mapping class="TipoVerificaDTO" package="it.portalECI.DTO" resource="it/portalECI/hbm/TipoVerificaDTO.hbm.xml"/>
+  <mapping class="CategoriaVerificaDTO" package="it.portalECI.DTO" resource="it/portalECI/hbm/CategoriaVerificaDTO.hbm.xml"/>
   
-     
+  
  </session-factory>
 </hibernate-configuration>

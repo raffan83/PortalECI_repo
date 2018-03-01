@@ -167,6 +167,9 @@
  <th>Stato</th>
  <th>Responsabile</th>
  <th>Tecnico Verificatore</th>
+ <th>Codice Categoria</th>
+ <th>Codice Verifica</th>
+
  <td></td>
  </tr></thead>
  
@@ -213,7 +216,9 @@
 	
 		<td>${intervento.user.nominativo}</td>
 		 <td>${intervento.tecnico_verificatore.nominativo}</td> 
-		
+		 <td>${intervento.cat_verifica.codice }</td>
+		 <td>${intervento.tipo_verifica.codice }</td>
+		 		
 		<td>
 			<a class="btn customTooltip" title="Click per aprire il dettaglio dell'Intervento" onclick="callAction('gestioneInterventoDati.do?idIntervento=${intervento.id}');">
                 <i class="fa fa-arrow-right"></i>
@@ -247,30 +252,56 @@
     <div class="modal-content">
      <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="myModalLabel">Tecnico verificatore</h4>
+        <h4 class="modal-title" id="myModalLabel">Nuovo Intervento</h4>
       </div>
        <div class="modal-body">
 
         
         
         	<div class="form-group">
+        	<label>Tecnico Verificatore</label>
 				<select class="form-control" id="tecnici" class="selectpicker">
-				
+				<option value="" disabled selected>Seleziona Tecnico...</option>
 				<c:forEach items="${tecnici}" var="tecnico">
-				  <option value=${tecnico.id}>${tecnico.nome} ${tecnico.cognome}</option>
-				 <!--  <option value=1>Presso il Cliente</option>
-				  <option value=2>Misto - Cliente - Sede</option> -->
-				  </c:forEach>
+				  <option value="${tecnico.id}">${tecnico.nominativo} </option>
+				</c:forEach>
 				</select>
-
                 </div>
+        
+        
+            <div class="form-group">
+                  <label>Categoria Verifica</label>
+                  <select name="select1" id="select1" data-placeholder="Seleziona Categoria..."  class="form-control select2" aria-hidden="true" data-live-search="true">
+                  <option value="" disabled selected>Seleziona Categoria...</option>
+                      <c:forEach items="${categorie_verifica}" var="categoria">
+                           <option value="${categoria.id}">${categoria.codice}</option> 
+
+                     </c:forEach>
+                  </select> 
+        </div>
+        
+             <div class="form-group">
+                  <label>Tipo Verifica</label>
+                  <select name="select2" id="select2" data-placeholder="Seleziona Tipo"  disabled class="form-control select2" aria-hidden="true" data-live-search="true">
+                		<option value="" disabled selected>Seleziona Tipo...</option>
+                		<c:forEach items="${tipi_verifica}" var="tipo">                		
+                        <option value="${tipo.id}_${tipo.id_categoria}">${tipo.codice}</option>     
+                             
+                     	</c:forEach>
+
+                  </select>
+                  
+        </div>
+        
+        
+        
         
         
   		<div id="empty" class="testo12"></div>
   		 </div>
       <div class="modal-footer">
 
-        <button type="button" class="btn btn-danger"onclick="saveInterventoFromModal('${commessa.ID_COMMESSA}')"  >Salva</button>
+        <button type="button" class="btn btn-danger"onclick="saveInterventoFromModal()"  >Salva</button>
       </div>
     </div>
   </div>
@@ -549,6 +580,63 @@ tableAttiìvita.columns.adjust().draw();
    	})
     
     });
+    
+    
+    
+    
+
+     //$body = $("body");
+
+
+     
+     $("#tecnici").change(function(){
+    	 
+    	 $("#tecnici option[value='']").remove();
+     });
+
+      $("#select1").change(function() {
+    
+    	  $("#select1 option[value='']").remove();
+    	  $("#select2 option[value='']").remove(); 
+    	  if ($(this).data('options') == undefined) 
+    	  {
+    	    /*Taking an array of all options-2 and kind of embedding it on the select1*/
+    	    $(this).data('options', $('#select2 option').clone());
+    	  }
+    	  
+    	  var id = $(this).val();
+    	 
+    	  var options = $(this).data('options');
+
+    	  var opt=[];
+    	
+
+	
+    	   for(var  i=0; i<options.length;i++)
+    	   {
+    		var str=options[i].value; 
+    	
+    		 if(str.substring(str.indexOf("_")+1,str.length)==id)
+    		{ 
+    			
+    
+    		
+    			opt.push(options[i]);
+    		  }   
+    	   }
+    	 $("#select2").prop("disabled", false);
+    	 
+    	  $('#select2').html(opt);
+    	  
+    	  $("#select2").trigger("chosen:updated");
+    	  
+    	 
+    		$("#select2").change();  
+    	  
+    	
+    	});
+      
+   
   </script>
   
 </jsp:attribute> 
