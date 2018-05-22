@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 15-feb-2017 11.20.27 by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+    <class name="it.portalECI.DTO.TipoVerificaDTO" table="TIPO_VERIFICA">
+        <id name="id" type="java.lang.Integer">
+            <column name="Id" />
+            <generator class="increment" />
+        </id>
+        <property name="id_categoria" type="java.lang.Integer">
+            <column name="id_categoria" />
+        </property>
+        <property name="descrizione" type="java.lang.String">
+            <column name="descrizione" />
+        </property>
+        <property name="codice" type="java.lang.String">
+            <column name="codice" />
+        </property>
+       
+    </class>
+</hibernate-mapping>

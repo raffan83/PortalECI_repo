@@ -114,7 +114,7 @@
 	tabUtenti = $('#tabUtenti').DataTable();
   // Apply the search
   tabUtenti.columns().eq( 0 ).each( function ( colIdx ) {
-      $( 'input', tabUtenti.column( colIdx ).header() ).on( 'keyup change', function () {
+      $( 'input', tabUtenti.column( colIdx ).header() ).on( 'keyup', function () {
     	  tabUtenti
               .column( colIdx )
               .search( this.value )

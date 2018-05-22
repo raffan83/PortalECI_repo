@@ -7,7 +7,7 @@
 <%@attribute name="extra_css" fragment="true" %>
 <%@attribute name="extra_js_header" fragment="true" %>
 <%@attribute name="extra_js_footer" fragment="true" %>
-<%@attribute name="body_area" fragment="true" %>
+<%@attribute name="body_area" fragment="true" %> 
 
 <html>
  <head>

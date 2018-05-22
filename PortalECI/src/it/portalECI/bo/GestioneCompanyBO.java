@@ -5,7 +5,7 @@ import org.hibernate.Session;
 import it.portalECI.DAO.GestioneCompanyDAO;
 
 import it.portalECI.DTO.CompanyDTO;
-import it.portalECI.DTO.RuoloDTO;
+
 
 
 public class GestioneCompanyBO {

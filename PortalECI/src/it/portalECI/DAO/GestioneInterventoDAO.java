@@ -1,7 +1,9 @@
 package it.portalECI.DAO;
 
+import it.portalECI.DTO.CategoriaVerificaDTO;
 import it.portalECI.DTO.InterventoDTO;
-
+import it.portalECI.DTO.TipoVerificaDTO;
+import it.portalECI.DTO.UtenteDTO;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -78,9 +80,52 @@ public class GestioneInterventoDAO {
 
 
 
+	public static ArrayList<TipoVerificaDTO> getListaTipoVerifica(Session session){
+		
+		ArrayList<TipoVerificaDTO> lista =null;
+		
+		Query query = session.createQuery("from TipoVerificaDTO");
+		
+		return lista= (ArrayList<TipoVerificaDTO>)query.list();
+		
+	}
 	
+	public static TipoVerificaDTO getTipoVerifica(String id, Session session) {
+		
+		Query query = session.createQuery("from TipoVerificaDTO where id= :id");
+		query.setParameter("id", Integer.parseInt(id));
+		List<TipoVerificaDTO> result =query.list();
+		
+		if(result.size()>0)
+		{	
+		return result.get(0);
+		}
+		return null;
+	}
 
+	
+	public static CategoriaVerificaDTO getCategoriaVerifica(String id, Session session) {
+		
+		Query query = session.createQuery("from CategoriaVerificaDTO where id= :id");
+		query.setParameter("id", Integer.parseInt(id));
+		List<CategoriaVerificaDTO> result =query.list();
+		
+		if(result.size()>0)
+		{	
+		return result.get(0);
+		}
+		return null;
+	}
 
+	public static ArrayList<CategoriaVerificaDTO> getListaCategoriaVerifica(Session session){
+		
+		ArrayList<CategoriaVerificaDTO> lista =null;
+		
+		Query query = session.createQuery("from CategoriaVerificaDTO");
+		
+		return lista= (ArrayList<CategoriaVerificaDTO>)query.list();
+		
+	}
 
 	public static ArrayList<InterventoDTO> getListaInterventiDaSede(String idCliente, String idSede, Integer idCompany,
 			Session session) {

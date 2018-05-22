@@ -36,6 +36,12 @@
           <many-to-one name="company" class="it.portalECI.DTO.CompanyDTO" fetch="join" lazy="false">
             <column name="id_company" />
         </many-to-one>
+         <many-to-one name="tipo_verifica" class="it.portalECI.DTO.TipoVerificaDTO" access="field" fetch="join" lazy="false">
+            <column name="id_tipo" />
+        </many-to-one>
+        <many-to-one name="cat_verifica" class="it.portalECI.DTO.CategoriaVerificaDTO" access="field" fetch="join" lazy="false">
+            <column name="id_categoria" />
+        </many-to-one>
         
      
         
