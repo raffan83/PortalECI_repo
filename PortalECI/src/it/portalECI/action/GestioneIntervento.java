@@ -8,7 +8,6 @@ import it.portalECI.DTO.InterventoDTO;
 import it.portalECI.DTO.StatoInterventoDTO;
 import it.portalECI.DTO.TipoVerificaDTO;
 import it.portalECI.DTO.UtenteDTO;
-import it.portalECI.Exception.ECIException;
 import it.portalECI.Util.Utility;
 import it.portalECI.bo.GestioneCommesseBO;
 import it.portalECI.bo.GestioneInterventoBO;

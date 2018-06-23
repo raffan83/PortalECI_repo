@@ -1,5 +1,7 @@
 package it.portalECI.DTO;
 
+import com.google.gson.JsonObject;
+
 public class TipoVerificaDTO {
 	
 	private int id;
@@ -29,6 +31,16 @@ public class TipoVerificaDTO {
 	}
 	public void setCodice(String codice) {
 		this.codice = codice;
+	}
+	
+	public JsonObject getTipoVerificaJsonObject() {
+		JsonObject jobj = new JsonObject();
+		jobj.addProperty("id", this.id);
+		jobj.addProperty("id_categoria", this.id_categoria);
+		jobj.addProperty("descrizione", this.descrizione);
+		jobj.addProperty("codice", this.codice);
+		
+		return jobj;
 	}
 
 }

@@ -5,6 +5,8 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 
+import com.google.gson.JsonObject;
+
 // default package
 // Generated 15-feb-2017 9.30.19 by Hibernate Tools 3.4.0.CR1
 
@@ -276,5 +278,26 @@ public class UtenteDTO implements Serializable {
 
 	public void setResetToken(String resetToken) {
 		this.resetToken = resetToken;
+	}
+	
+	public JsonObject getUtenteJsonObject() {
+		JsonObject userjobj = new JsonObject();
+		userjobj.addProperty("id", this.id);
+		userjobj.addProperty("user", this.user);
+		userjobj.addProperty("passw", this.passw);
+		userjobj.addProperty("nominativo", this.nominativo);
+		userjobj.addProperty("nome", this.nome);
+		userjobj.addProperty("cognome", this.cognome);
+		userjobj.addProperty("indirizzo", this.indirizzo);
+		userjobj.addProperty("comune", this.comune);
+		userjobj.addProperty("cap", this.cap);
+		userjobj.addProperty("EMail", this.EMail);
+		userjobj.addProperty("telefono", this.telefono);
+		if(this.company!=null) {
+			userjobj.add("company", this.company.getCompanyJsonObject());
+		}
+		userjobj.addProperty("tipoutente", this.tipoutente);
+		
+		return userjobj;
 	}
 }

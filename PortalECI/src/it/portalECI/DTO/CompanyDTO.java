@@ -1,6 +1,6 @@
 package it.portalECI.DTO;
 
-
+import com.google.gson.JsonObject;
 
 public class CompanyDTO  {
 
@@ -115,5 +115,21 @@ public class CompanyDTO  {
 	public void setCodAffiliato(String codAffiliato) {
 		this.codAffiliato = codAffiliato;
 	}
-
+	
+	public JsonObject getCompanyJsonObject() {
+		
+		JsonObject companyjobj = new JsonObject();
+		companyjobj.addProperty("id", this.id);
+		companyjobj.addProperty("denominazione", this.denominazione);
+		companyjobj.addProperty("pIva", this.pIva);
+		companyjobj.addProperty("indirizzo", this.indirizzo);
+		companyjobj.addProperty("comune", this.comune);
+		companyjobj.addProperty("cap", this.cap);
+		companyjobj.addProperty("mail", this.mail);
+		companyjobj.addProperty("telefono", this.telefono);
+		companyjobj.addProperty("codAffiliato", this.codAffiliato);
+		
+		return companyjobj;
+		
+	}
 }

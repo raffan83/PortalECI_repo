@@ -1,5 +1,7 @@
 package it.portalECI.DTO;
 
+import com.google.gson.JsonObject;
+
 public class StatoInterventoDTO 
 {
 	int id=1;
@@ -18,5 +20,12 @@ public class StatoInterventoDTO
 		this.descrizione = descrizione;
 	}
 	
+	public JsonObject getStatoInterventoJsonObject() {
+		JsonObject jobj = new JsonObject();
+		jobj.addProperty("id", this.id);
+		jobj.addProperty("descrizione", this.descrizione);
+		
+		return jobj;
+	}
 	
 }

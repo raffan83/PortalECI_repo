@@ -4,6 +4,8 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 
+import com.google.gson.JsonObject;
+
 public class CommessaDTO implements Serializable{
 
 
@@ -121,6 +123,37 @@ public class CommessaDTO implements Serializable{
 		N_ORDINE = n_ORDINE;
 	}
 	
+	
+	public JsonObject getCommessaJsonObject() {
+		JsonObject jobj = new JsonObject();
+		
+		jobj.addProperty("ID_COMMESSA", this.ID_COMMESSA);
+		jobj.addProperty("DT_COMMESSA", this.DT_COMMESSA.getTime());
+		jobj.addProperty("FIR_CHIUSURA_DT", this.FIR_CHIUSURA_DT.getTime());
+		jobj.addProperty("ID_ANAGEN", this.ID_ANAGEN);
+		jobj.addProperty("ID_ANAGEN_NOME", this.ID_ANAGEN_NOME);
+		jobj.addProperty("DESCR", this.DESCR);
+		jobj.addProperty("SYS_STATO", this.SYS_STATO);
+		jobj.addProperty("ID_ANAGEN_COMM", this.ID_ANAGEN_COMM);
+		jobj.addProperty("K2_ANAGEN_INDR", this.K2_ANAGEN_INDR);
+		jobj.addProperty("ANAGEN_INDR_DESCR", this.ANAGEN_INDR_DESCR);
+		jobj.addProperty("ANAGEN_INDR_INDIRIZZO", this.ANAGEN_INDR_INDIRIZZO);
+		jobj.addProperty("INDIRIZZO_PRINCIPALE", this.INDIRIZZO_PRINCIPALE);
+		jobj.addProperty("NOTE_GEN", this.NOTE_GEN);
+		jobj.addProperty("N_ORDINE", this.N_ORDINE);
+		
+		if(this.listaAttivita!=null) {
+			JsonObject attivitajobj = new JsonObject();
+			
+			for(AttivitaMilestoneDTO attivita : this.listaAttivita) {
+				attivitajobj.add(Integer.toString(attivita.getId_riga()), attivita.getListaAttivitaJsonObject());
+			}
+			jobj.add("listaAttivita", attivitajobj);
+		}
+	
+		
+		return jobj;
+	}
 	
 	
 }

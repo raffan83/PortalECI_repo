@@ -4,6 +4,8 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
+import com.google.gson.JsonObject;
+
 public class InterventoDTO {
 
 	
@@ -130,5 +132,29 @@ public class InterventoDTO {
 		this.cat_verifica = cat_verifica;
 	}
 	
-	
+	public JsonObject getInterventoJsonObject() {
+		JsonObject jobj = new JsonObject();
+		jobj.addProperty("id", this.id);
+		jobj.addProperty("dataCreazione", this.dataCreazione.getTime());
+		jobj.addProperty("idSede", this.idSede);
+		jobj.addProperty("id_cliente", this.id_cliente);
+		jobj.addProperty("nome_sede", this.nome_sede);
+		jobj.addProperty("idCommessa", this.idCommessa);
+		
+		if(this.user!=null)
+			jobj.add("user", this.user.getUtenteJsonObject());
+		
+		if(this.statoIntervento!=null)
+			jobj.add("statoIntervento", this.statoIntervento.getStatoInterventoJsonObject());
+		if(this.company!=null)
+			jobj.add("company", this.company.getCompanyJsonObject());
+		if(this.tecnico_verificatore!=null)
+			jobj.add("tecnico_verificatore", this.tecnico_verificatore.getUtenteJsonObject());
+		if(this.tipo_verifica!=null)
+			jobj.add("tipo_verifica", this.tipo_verifica.getTipoVerificaJsonObject());
+		if(this.cat_verifica!=null)
+			jobj.add("cat_verifica", this.cat_verifica.getCategoriaVerificaJsonObject());		
+		
+		return jobj;
+	}
 }

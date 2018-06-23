@@ -50,82 +50,65 @@ public class GestioneCommesseDAO {
 		
 		ArrayList<CommessaDTO> listaCommesse = new ArrayList<>();
 		
-		try
-		{
+		try{
+			con =ManagerSQLServer.getConnectionSQL();
+			String categ="";
 		
-		con =ManagerSQLServer.getConnectionSQL();
-		
-		String categ="";
-		
-		if(!categoria.equals("")){
-			
-			
-			String[] listaCategorie=categoria.split(";");
+			if(!categoria.equals("")){
+				String[] listaCategorie=categoria.split(";");
 
-			for (int i = 0; i < listaCategorie.length; i++) {
-				
-				categ=categ+" AND TB_CATEG_COM='"+listaCategorie[i]+"'";
+				for (int i = 0; i < listaCategorie.length; i++) {
+					categ=categ+" AND TB_CATEG_COM='"+listaCategorie[i]+"'";
+				}
 			}
-			
-		}
 		
-		if(user.isTras())
-		{
-			if(!categ.equals(""))
-			{
-				String query=querySqlServerComTras.concat(" WHERE ").concat(categ.substring(5,categ.length()));
-				pst=con.prepareStatement(query);
+			if(user.isTras()){
+				if(!categ.equals("")){
+					String query=querySqlServerComTras.concat(" WHERE ").concat(categ.substring(5,categ.length()));
+					pst=con.prepareStatement(query);
+				}else{
+					pst=con.prepareStatement(querySqlServerComTras);
+				}
+			}else{
+				pst=con.prepareStatement(querySqlServerCommon+categ);
+				pst.setInt(1, company.getId());
 			}
-			else
-			{
-				pst=con.prepareStatement(querySqlServerComTras);
-			}
-		}
-		else
-		{
-			pst=con.prepareStatement(querySqlServerCommon+categ);
-			pst.setInt(1, company.getId());
-		}
 
-		rs=pst.executeQuery();
+			rs=pst.executeQuery();
 		
-		CommessaDTO commessa=null;
-		while(rs.next())
-		{
-			commessa= new CommessaDTO();
-			String idCommessa=rs.getString(1);
-			commessa.setID_COMMESSA(idCommessa);
-			commessa.setDT_COMMESSA(rs.getDate(2));
-			commessa.setFIR_CHIUSURA_DT(rs.getDate(3));
-			commessa.setID_ANAGEN(rs.getInt(4));
-			commessa.setID_ANAGEN_NOME(rs.getString(5));
-			commessa.setDESCR(rs.getString(6));
-			commessa.setID_ANAGEN_COMM(company.getId());
-			commessa.setSYS_STATO(rs.getString(7));
-			commessa.setK2_ANAGEN_INDR(rs.getInt(8));
-			commessa.setANAGEN_INDR_DESCR(null);
-			String indirizzoSede=rs.getString(10);
-			if (indirizzoSede!=null)
-			{
-				commessa.setANAGEN_INDR_INDIRIZZO(indirizzoSede+" - "+rs.getString(11)+" ("+rs.getString(12)+")");
-			}
-			else
-			{
-				commessa.setANAGEN_INDR_INDIRIZZO("");
-			}
+			CommessaDTO commessa=null;
+			while(rs.next()){
+				commessa= new CommessaDTO();
+				String idCommessa=rs.getString(1);
+				commessa.setID_COMMESSA(idCommessa);
+				commessa.setDT_COMMESSA(rs.getDate(2));
+				commessa.setFIR_CHIUSURA_DT(rs.getDate(3));
+				commessa.setID_ANAGEN(rs.getInt(4));
+				commessa.setID_ANAGEN_NOME(rs.getString(5));
+				commessa.setDESCR(rs.getString(6));
+				commessa.setID_ANAGEN_COMM(company.getId());
+				commessa.setSYS_STATO(rs.getString(7));
+				commessa.setK2_ANAGEN_INDR(rs.getInt(8));
+				commessa.setANAGEN_INDR_DESCR(null);
+				String indirizzoSede=rs.getString(10);
+				if (indirizzoSede!=null){
+					commessa.setANAGEN_INDR_INDIRIZZO(indirizzoSede+" - "+rs.getString(11)+" ("+rs.getString(12)+")");
+				}else{
+					commessa.setANAGEN_INDR_INDIRIZZO("");
+				}
 		
-			commessa.setINDIRIZZO_PRINCIPALE(rs.getString(13)+" - "+rs.getString(14)+" ("+rs.getString(15)+")");
-			commessa.setNOTE_GEN(rs.getString(16));
-			commessa.setN_ORDINE(rs.getString(17));
+				commessa.setINDIRIZZO_PRINCIPALE(rs.getString(13)+" - "+rs.getString(14)+" ("+rs.getString(15)+")");
+				commessa.setNOTE_GEN(rs.getString(16));
+				commessa.setN_ORDINE(rs.getString(17));
 
-			listaCommesse.add(commessa);
+				listaCommesse.add(commessa);
 			
+			}
+		
+		}catch (Exception e) {
+			throw e;
 		}
 		
-		}catch (Exception e) 
-		{
-		throw e;
-		}
 		return listaCommesse;
 	}
 
@@ -137,94 +120,69 @@ public class GestioneCommesseDAO {
 		ResultSet rsA=null;
 		
 		CommessaDTO commessa=null;
-		try
-		{
-		con =ManagerSQLServer.getConnectionSQL();
-		
-		
+		try{
+			con =ManagerSQLServer.getConnectionSQL();
 			pst=con.prepareStatement(querySqlServerComId);
-	
-		
-		pst.setString(1, idCommessa);
-		
-		
-	
-		
-		rs=pst.executeQuery();
-		
-		
-		while(rs.next())
-		{
-			commessa= new CommessaDTO();
-
-			commessa.setID_COMMESSA(idCommessa);
-			commessa.setDT_COMMESSA(rs.getDate(2));
-			commessa.setFIR_CHIUSURA_DT(rs.getDate(3));
-			commessa.setID_ANAGEN(rs.getInt(4));
-			commessa.setID_ANAGEN_NOME(rs.getString(5));
-			commessa.setDESCR(rs.getString(6));
-			commessa.setSYS_STATO(rs.getString(7));
-			commessa.setK2_ANAGEN_INDR(rs.getInt(8));
-			commessa.setANAGEN_INDR_DESCR("");
-			String indirizzoSede=rs.getString(10);
-			if (indirizzoSede!=null)
-			{
-				commessa.setANAGEN_INDR_INDIRIZZO(indirizzoSede+" - "+rs.getString(11)+" ("+rs.getString(12)+")");
-			}
-			else
-			{
-				commessa.setANAGEN_INDR_INDIRIZZO("");
-			}
+			pst.setString(1, idCommessa);
 			
-			commessa.setINDIRIZZO_PRINCIPALE(rs.getString(13)+" - "+rs.getString(14)+" ("+rs.getString(15)+")");
-			commessa.setNOTE_GEN(rs.getString(16));
-			commessa.setN_ORDINE(rs.getString(17));
-			commessa.setID_ANAGEN_COMM(rs.getInt(18));
-			
-			pstA=con.prepareStatement(querySqlAttivitaCom);
-			pstA.setString(1,idCommessa);
-			rsA=pstA.executeQuery();
+			rs=pst.executeQuery();
+		
+			while(rs.next()){
+				commessa= new CommessaDTO();
 
-			while(rsA.next())
-			{
-				AttivitaMilestoneDTO attivita = new AttivitaMilestoneDTO();
-				attivita.setId_riga(rsA.getInt("RIGA"));
-				attivita.setDescrizioneAttivita(rsA.getString("DESC_ATT"));
-				attivita.setNoteAttivita(rsA.getString("NOTE_ATT"));
-				attivita.setDescrizioneArticolo(rsA.getString("DESC_ART"));
-				attivita.setQuantita(rsA.getString("QUANTITA"));
-				attivita.setCodiceArticolo(rsA.getString("CODICEARTICOLO"));
+				commessa.setID_COMMESSA(idCommessa);
+				commessa.setDT_COMMESSA(rs.getDate(2));
+				commessa.setFIR_CHIUSURA_DT(rs.getDate(3));
+				commessa.setID_ANAGEN(rs.getInt(4));
+				commessa.setID_ANAGEN_NOME(rs.getString(5));
+				commessa.setDESCR(rs.getString(6));
+				commessa.setSYS_STATO(rs.getString(7));
+				commessa.setK2_ANAGEN_INDR(rs.getInt(8));
+				commessa.setANAGEN_INDR_DESCR("");
+				String indirizzoSede=rs.getString(10);
+				if (indirizzoSede!=null){
+					commessa.setANAGEN_INDR_INDIRIZZO(indirizzoSede+" - "+rs.getString(11)+" ("+rs.getString(12)+")");
+				}else{
+					commessa.setANAGEN_INDR_INDIRIZZO("");
+				}
+			
+				commessa.setINDIRIZZO_PRINCIPALE(rs.getString(13)+" - "+rs.getString(14)+" ("+rs.getString(15)+")");
+				commessa.setNOTE_GEN(rs.getString(16));
+				commessa.setN_ORDINE(rs.getString(17));
+				commessa.setID_ANAGEN_COMM(rs.getInt(18));
+			
+				pstA=con.prepareStatement(querySqlAttivitaCom);
+				pstA.setString(1,idCommessa);
+				rsA=pstA.executeQuery();
+
+				while(rsA.next()){
+					AttivitaMilestoneDTO attivita = new AttivitaMilestoneDTO();
+					attivita.setId_riga(rsA.getInt("RIGA"));
+					attivita.setDescrizioneAttivita(rsA.getString("DESC_ATT"));
+					attivita.setNoteAttivita(rsA.getString("NOTE_ATT"));
+					attivita.setDescrizioneArticolo(rsA.getString("DESC_ART"));
+					attivita.setQuantita(rsA.getString("QUANTITA"));
+					attivita.setCodiceArticolo(rsA.getString("CODICEARTICOLO"));
 				
-				String codAggreg=rsA.getString("CODAGG");
+					String codAggreg=rsA.getString("CODAGG");
 				
-				if(codAggreg!=null)
-				{
-					ArrayList<AttivitaMilestoneDTO> listaAttivitaAggregate=getListaAttivitaAggregate(con,codAggreg,attivita);
+					if(codAggreg!=null){
+						ArrayList<AttivitaMilestoneDTO> listaAttivitaAggregate=getListaAttivitaAggregate(con,codAggreg,attivita);
 					
-					for(AttivitaMilestoneDTO attivitaAggragata: listaAttivitaAggregate)
-					{
-						commessa.getListaAttivita().add(attivitaAggragata);
+						for(AttivitaMilestoneDTO attivitaAggragata: listaAttivitaAggregate){
+							commessa.getListaAttivita().add(attivitaAggragata);
+						}
+					}else{
+						attivita.setCodiceAggregatore("CAMPIONAMENTO_"+attivita.getId_riga());
+						commessa.getListaAttivita().add(attivita);
 					}
 				}
-				else
-				{
-					attivita.setCodiceAggregatore("CAMPIONAMENTO_"+attivita.getId_riga());
-					commessa.getListaAttivita().add(attivita);
-				}
-		
-				
-				
-				
+				rsA.close();
+				pstA.close();			
 			}
-			rsA.close();
-			pstA.close();
-			
-			
-		}
 		
-		}catch (Exception e) 
-		{
-		throw e;
+		}catch (Exception e) {
+			throw e;
 		}
 		return commessa;
 	}
@@ -233,8 +191,7 @@ public class GestioneCommesseDAO {
 		
 		ArrayList<AttivitaMilestoneDTO> listaAttivita= new ArrayList<AttivitaMilestoneDTO>();
 		
-		try 
-		{
+		try {
 			String[] listaArticoli=codAggreg.split(",");
 		
 			for (int i = 0; i < listaArticoli.length; i++) {
@@ -246,8 +203,7 @@ public class GestioneCommesseDAO {
 				
 				AttivitaMilestoneDTO att=null;
 				
-				while(rs.next())
-				{
+				while(rs.next()){
 					att= new AttivitaMilestoneDTO();
 					att.setId_riga(attivita.getId_riga());
 					att.setDescrizioneAttivita(attivita.getDescrizioneAttivita());
@@ -258,16 +214,11 @@ public class GestioneCommesseDAO {
 					att.setCodiceAggregatore("CAMPIONAMENTO_"+attivita.getId_riga());
 				    
 				    listaAttivita.add(att);
-				}
-				
-				
+				}				
 			}
-			
-		} 
-		catch (Exception e) {
+		} catch (Exception e) {
 			throw e;
 		}
 		return listaAttivita;
 	}
-
 }
