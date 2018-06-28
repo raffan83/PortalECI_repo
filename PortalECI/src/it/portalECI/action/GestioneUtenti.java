@@ -66,138 +66,129 @@ public class GestioneUtenti extends HttpServlet {
    
         response.setContentType("application/json");
         try{
-        	 String action =  request.getParameter("action");
+        	String action =  request.getParameter("action");
 	  
-	    	 	if(action.equals("nuovo"))
-	    	 		
-	    	 		{
-	    	 			String nome = request.getParameter("nome");
-	    	 			String cognome = request.getParameter("cognome");
-	    	 			String user = request.getParameter("user");
-	    	 			String passw = request.getParameter("passw");
-	    	 			String indirizzo = request.getParameter("indirizzo");
-	    	 			String comune = request.getParameter("comune");
-	    	 			String cap = request.getParameter("cap");
-	    	 			String email = request.getParameter("email");
-	    	 			String telefono = request.getParameter("telefono");
-	    	 			String companyId = request.getParameter("company");
+	    	if(action.equals("nuovo")){
+	    		String nome = request.getParameter("nome");
+	    	 	String cognome = request.getParameter("cognome");
+	    	 	String user = request.getParameter("user");
+	    	 	String passw = request.getParameter("passw");
+	    	 	String indirizzo = request.getParameter("indirizzo");
+	    	 	String comune = request.getParameter("comune");
+	    	 	String cap = request.getParameter("cap");
+	    	 	String email = request.getParameter("email");
+	    	 	String telefono = request.getParameter("telefono");
+	    	 	String companyId = request.getParameter("company");
 
-	    	 			CompanyDTO company = GestioneCompanyBO.getCompanyById(companyId, session);
-	    	 				    	 			
-	    	 			UtenteDTO utente = new UtenteDTO();
-	    	 			utente.setNome(nome);
-	    	 			utente.setCognome(cognome);
-	    	 			utente.setUser(user);
-	    	 			utente.setPassw(DirectMySqlDAO.getPassword(passw));
-	    	 			utente.setIndirizzo(indirizzo);
-	    	 			utente.setComune(comune);
-	    	 			utente.setCap(cap);
-	    	 			utente.setEMail(email);
-	    	 			utente.setTelefono(telefono);
-	    	 			utente.setCompany(company);
-	    	 			utente.setNominativo(nome+" "+cognome);
-	    	 		
-	    	 			//GestioneUtenteBO.save(utente,session);
-
-	    	 			int success = GestioneUtenteBO.saveUtente(utente, action, session);
-	    	 			if(success==0)
-	    				{
-	    					myObj.addProperty("success", true);
-	    					myObj.addProperty("messaggio","Utente salvato con successo");
-	    					session.getTransaction().commit();
-	    					session.close();
-	    				
-	    				}
-	    				if(success==1)
-	    				{
-	    					
-	    					myObj.addProperty("success", false);
-	    					myObj.addProperty("messaggio","Errore Salvataggio");
-	    					
-	    					session.getTransaction().rollback();
-	    			 		session.close();
-	    			 		
-	    				} 
-	    	 		
-		 			 	
-	    	 		}
+	    	 	CompanyDTO company = GestioneCompanyBO.getCompanyById(companyId, session);
+	    	 			    	 			
+	    	 	UtenteDTO utente = new UtenteDTO();
+	    	 	utente.setNome(nome);
+	    	 	utente.setCognome(cognome);
+	    	 	utente.setUser(user);
+	    	 	utente.setPassw(DirectMySqlDAO.getPassword(passw));
+	    	 	utente.setIndirizzo(indirizzo);
+	    	 	utente.setComune(comune);
+	    	 	utente.setCap(cap);
+	    	 	utente.setEMail(email);
+	    	 	utente.setTelefono(telefono);
+	    	 	utente.setCompany(company);
+	    	 	utente.setNominativo(nome+" "+cognome);
 	    	 	
-	    	 	if(action.equals("modifica")){
-	    	 			
-	    	 			String id = request.getParameter("id");
+	    	 	//GestioneUtenteBO.save(utente,session);
 
-	    	 			String nome = request.getParameter("nome");
-	    	 			String cognome = request.getParameter("cognome");
-	    	 			String user = request.getParameter("user");
-	    	 			String passw = request.getParameter("passw");
-	    	 			String indirizzo = request.getParameter("indirizzo");
-	    	 			String comune = request.getParameter("comune");
-	    	 			String cap = request.getParameter("cap");
-	    	 			String EMail = request.getParameter("email");
-	    	 			String telefono = request.getParameter("telefono");
-	    	 			String companyId = request.getParameter("company");
+	    	 	int success = GestioneUtenteBO.saveUtente(utente, action, session);
+	    	 	if(success==0){
+	    	 		myObj.addProperty("success", true);
+	    	 		myObj.addProperty("messaggio","Utente salvato con successo");
+	    	 		session.getTransaction().commit();
+	    	 		session.close();
+	    				
+	    	 	}
+	    	 	if(success==1){
+	    	 		
+	    	 		myObj.addProperty("success", false);
+	    	 		myObj.addProperty("messaggio","Errore Salvataggio");
+	    					
+	    	 		session.getTransaction().rollback();
+	    	 		session.close();
+	    			 		
+	    	 	} 
+	    	 				 			 	
+	    	}
+	    	 	
+	    	if(action.equals("modifica")){
+	    	 			
+	    		String id = request.getParameter("id");
+
+	    		String nome = request.getParameter("nome");
+	    		String cognome = request.getParameter("cognome");
+	    		String user = request.getParameter("user");
+	    		String passw = request.getParameter("passw");
+	    		String indirizzo = request.getParameter("indirizzo");
+	    		String comune = request.getParameter("comune");
+	    		String cap = request.getParameter("cap");
+	    		String EMail = request.getParameter("email");
+	    		String telefono = request.getParameter("telefono");
+	    		String companyId = request.getParameter("company");
 	    	 				
 	    	 			
-	    	 			UtenteDTO utente = GestioneUtenteBO.getUtenteById(id, session);
+	    		UtenteDTO utente = GestioneUtenteBO.getUtenteById(id, session);
 	    	 			
 	    	 			
-	    	 			if(nome != null && !nome.equals("")){
-	    	 				utente.setNome(nome);
-	    	 			}
-	    	 			if(cognome != null && !cognome.equals("")){
-		    	 			utente.setCognome(cognome);
-	    	 			}
-	    	 			if(user != null && !user.equals("")){
-		    	 			utente.setUser(user);
-	    	 			}
-	    	 			if(passw != null && !passw.equals("")){
-		    	 			utente.setPassw(passw);
-	    	 			}
-	    	 			if(indirizzo != null && !indirizzo.equals("")){
-		    	 			utente.setIndirizzo(indirizzo);
-	    	 			}
-	    	 			if(comune != null && !comune.equals("")){
-		    	 			utente.setComune(comune);
-	    	 			}
-	    	 			if(cap != null && !cap.equals("")){
-		    	 			utente.setCap(cap);
-	    	 			}
-	    	 			if(EMail != null && !EMail.equals("")){
-		    	 			utente.setEMail(EMail);
-	    	 			}
-	    	 			if(telefono != null && !telefono.equals("")){
-		    	 			utente.setTelefono(telefono);
-	    	 			}
+	    		if(nome != null && !nome.equals("")){
+	    			utente.setNome(nome);
+	    		}
+	    		if(cognome != null && !cognome.equals("")){
+	    			utente.setCognome(cognome);
+	    		}
+	    		if(user != null && !user.equals("")){
+	    			utente.setUser(user);
+	    		}
+	    		if(passw != null && !passw.equals("")){
+	    			utente.setPassw(passw);
+	    		}
+	    		if(indirizzo != null && !indirizzo.equals("")){
+	    			utente.setIndirizzo(indirizzo);
+	    		}
+	    		if(comune != null && !comune.equals("")){
+	    			utente.setComune(comune);
+	    		}
+	    		if(cap != null && !cap.equals("")){
+	    			utente.setCap(cap);
+	    		}
+	    		if(EMail != null && !EMail.equals("")){
+	    			utente.setEMail(EMail);
+	    		}
+	    		if(telefono != null && !telefono.equals("")){
+	    			utente.setTelefono(telefono);
+	    		}
+	    			
+	    		utente.setNominativo(utente.getNome()+" "+utente.getCognome());
 	    	 			
-	    	 			utente.setNominativo(utente.getNome()+" "+utente.getCognome());
+	    		if(companyId != null && !companyId.equals("")){
+	    			CompanyDTO company = GestioneCompanyBO.getCompanyById(companyId, session);
+	    			utente.setCompany(company);
+	    		}
+	    		
+	    		int success = GestioneUtenteBO.saveUtente(utente, action, session);
 	    	 			
-	    	 			if(companyId != null && !companyId.equals("")){
-		    	 			CompanyDTO company = GestioneCompanyBO.getCompanyById(companyId, session);
-	    	 				utente.setCompany(company);
-	    	 			}
-	    	 			
-
-	    	 			int success = GestioneUtenteBO.saveUtente(utente, action, session);
-	    	 			
-	    	 			if(success==0)
-	    				{
-	    					myObj.addProperty("success", true);
-	    					myObj.addProperty("messaggio","Salvato con Successo");
-	    					session.getTransaction().commit();
-	    					session.close();
-	    				
-	    				}
-	    				if(success==1)
-	    				{
+	    		if(success==0){
+	    			myObj.addProperty("success", true);
+	    			myObj.addProperty("messaggio","Salvato con Successo");
+	    			session.getTransaction().commit();
+	    			session.close();
+	    			
+	    		}
+	    		if(success==1){
 	    					
-	    					myObj.addProperty("success", false);
-	    					myObj.addProperty("messaggio","Errore Salvataggio");
-	    					
-	    					session.getTransaction().rollback();
-	    			 		session.close();
-	    			 		
-	    				} 
-	    	 		}
+	    			myObj.addProperty("success", false);
+	    			myObj.addProperty("messaggio","Errore Salvataggio");
+	    			
+	    			session.getTransaction().rollback();
+	    			session.close();
+	    		} 
+	    	}
 	   
 	       	out.println(myObj.toString());
 
@@ -211,5 +202,4 @@ public class GestioneUtenti extends HttpServlet {
         	out.println(myObj.toString());
         } 
 	}
-
 }

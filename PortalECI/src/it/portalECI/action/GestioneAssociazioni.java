@@ -52,12 +52,10 @@ public class GestioneAssociazioni extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
 		if(Utility.validateSession(request,response,getServletContext()))return;
-
 		
 		response.setContentType("text/html");
 		
-		try 
-		{
+		try {
 			
 			ArrayList<UtenteDTO> listaUtenti =  (ArrayList<UtenteDTO>) GestioneAccessoDAO.getListUser();
 			ArrayList<PermessoDTO> listaPermessi =  (ArrayList<PermessoDTO>) GestioneAccessoDAO.getListPermission();
@@ -70,15 +68,12 @@ public class GestioneAssociazioni extends HttpServlet {
 
 			RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/page/configurazioni/gestioneAssociazioni.jsp");
 	     	dispatcher.forward(request,response);
-		} 
-		catch (Exception ex) {
+		} catch (Exception ex) {
 			
-		//	ex.printStackTrace();
-		     request.setAttribute("error",ECIException.callException(ex));
-			 RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/error.jsp");
-		     dispatcher.forward(request,response);
+			//	ex.printStackTrace();
+		    request.setAttribute("error",ECIException.callException(ex));
+			RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/error.jsp");
+		    dispatcher.forward(request,response);
 		}
-	
 	}
-
 }

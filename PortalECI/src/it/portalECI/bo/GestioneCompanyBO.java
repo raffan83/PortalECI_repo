@@ -9,10 +9,8 @@ import it.portalECI.DTO.CompanyDTO;
 
 
 public class GestioneCompanyBO {
-
 	
 	public static CompanyDTO getCompanyById(String id_str, Session session) throws Exception {
-
 
 		return GestioneCompanyDAO.getCompanyById(id_str, session);
 	}
@@ -21,27 +19,22 @@ public class GestioneCompanyBO {
 		int toRet=0;
 		
 		try{
-		int idCompany=0;
+			int idCompany=0;
 		
-		if(action.equals("modifica")){
-			session.update(company);
-			idCompany=company.getId();
-		}
-		else if(action.equals("nuovo")){
-			idCompany=(Integer) session.save(company);
-
-		}
+			if(action.equals("modifica")){
+				session.update(company);
+				idCompany=company.getId();
+			}else if(action.equals("nuovo")){
+				idCompany=(Integer) session.save(company);
+			}
 		
-		toRet=0;	
+			toRet=0;	
 			
-		}catch (Exception ex)
-		{
+		}catch (Exception ex){
 			toRet=1;
-			throw ex;
-	 		
-	 		
+			throw ex;	 			 		
 		}
-		return toRet;
-		
+		return toRet;	
 	}
+	
 }

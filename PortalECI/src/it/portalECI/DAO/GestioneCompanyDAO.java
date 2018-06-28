@@ -12,21 +12,17 @@ import org.hibernate.Session;
 public class GestioneCompanyDAO {
 
 
-public static CompanyDTO getCompanyById(String id, Session session)throws HibernateException, Exception {
+	public static CompanyDTO getCompanyById(String id, Session session)throws HibernateException, Exception {
 
-
-	Query query  = session.createQuery( "from CompanyDTO WHERE id= :_id");
+		Query query  = session.createQuery( "from CompanyDTO WHERE id= :_id");
 	
-	query.setParameter("_id", Integer.parseInt(id));
-	List<CompanyDTO> result =query.list();
+		query.setParameter("_id", Integer.parseInt(id));
+		List<CompanyDTO> result =query.list();
 	
-	if(result.size()>0)
-	{			
-		return result.get(0);
+		if(result.size()>0){			
+			return result.get(0);
+		}
+		return null;	
 	}
-	return null;
 	
-}
-
-
 }

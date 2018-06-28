@@ -65,8 +65,7 @@ public class ListaRuoli extends HttpServlet {
 		
 		response.setContentType("text/html");
 		
-		try 
-		{
+		try {
 			String idUtente = request.getParameter("idUtente");
 			if(idUtente != null && !idUtente.equals("")){
 				ArrayList<RuoloDTO> listaRuoli =  (ArrayList<RuoloDTO>) GestioneAccessoDAO.getListRole();
@@ -91,16 +90,13 @@ public class ListaRuoli extends HttpServlet {
 		     	dispatcher.forward(request,response);
 			}
 			session.close();
-		} 
-		catch (Exception ex) {
+		} catch (Exception ex) {
 			
 		//	ex.printStackTrace();
 			session.close();
 		     request.setAttribute("error",ECIException.callException(ex));
 			 RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/error.jsp");
 		     dispatcher.forward(request,response);
-		}
-	
+		}	
 	}
-
 }

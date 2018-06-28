@@ -67,11 +67,9 @@ public class GestioneRuoli extends HttpServlet {
        	 	
         	String action =  request.getParameter("action");
        	 	
-        	if(action !=null )
-       	 	{
+        	if(action !=null ){
 				
-    	 		if(action.equals("nuovo"))
-    	 		{
+    	 		if(action.equals("nuovo")){
     	 			String sigla = request.getParameter("sigla");
     	 			String descrizione = request.getParameter("descrizione");
     
@@ -82,9 +80,7 @@ public class GestioneRuoli extends HttpServlet {
     	 			RuoloDTO ruolo = new RuoloDTO();
     	 			ruolo.setSigla(sigla);
     	 			ruolo.setDescrizione(descrizione);
-
-    	 			
-
+    	 		
     	 			if(!permessi.equals("") && permessi != null){
     	 				String[] explode = permessi.split(",");
     	 			
@@ -99,16 +95,14 @@ public class GestioneRuoli extends HttpServlet {
     	 			
     	 			
     	 			int success = GestioneRuoloBO.saveRuolo(ruolo, action, session);
-    	 			if(success==0)
-    				{
+    	 			if(success==0){
     					myObj.addProperty("success", true);
     					myObj.addProperty("messaggio","Salvato con Successo");
     					session.getTransaction().commit();
     					session.close();
     				
     				}
-    				if(success==1)
-    				{
+    				if(success==1){
     					
     					myObj.addProperty("success", false);
     					myObj.addProperty("messaggio","Errore Salvataggio");
@@ -118,7 +112,6 @@ public class GestioneRuoli extends HttpServlet {
     			 		
     				} 
     	 			
-
     	 			myObj.addProperty("success", true);
 	 			 	myObj.addProperty("messaggio", "Ruolo salvato con successo");  
 	 			 	
@@ -141,16 +134,14 @@ public class GestioneRuoli extends HttpServlet {
 
 
     	 			int success = GestioneRuoloBO.saveRuolo(ruolo, action, session);
-    	 			if(success==0)
-    				{
+    	 			if(success==0){
     					myObj.addProperty("success", true);
     					myObj.addProperty("messaggio","Salvato con Successo");
     					session.getTransaction().commit();
     					session.close();
     				
     				}
-    				if(success==1)
-    				{
+    				if(success==1){
     					
     					myObj.addProperty("success", false);
     					myObj.addProperty("messaggio","Errore Salvataggio");
@@ -159,21 +150,15 @@ public class GestioneRuoli extends HttpServlet {
     			 		session.close();
     			 		
     				} 
-    	 			
-    	 			
-    	 			
-    	 			
+    	 			    	 			    	 			    	 			
     	 			myObj.addProperty("success", true);
 	 			 	myObj.addProperty("messaggio", "Utente modificato con successo");  
     	 		}else if(action.equals("elimina")){
     	 			
     	 			String id = request.getParameter("id");
-
-    	 				
-    	 			
+    	 				    	 			
     	 			RuoloDTO ruolo = GestioneRuoloBO.getRuoloById(id, session);
     	 			
-
     	 			/*
     	 			 * TO DO Elimina Ruolo
     	 			 */
@@ -200,5 +185,4 @@ public class GestioneRuoli extends HttpServlet {
         	out.println(myObj.toString());
         } 
 	}
-
 }

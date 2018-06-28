@@ -12,43 +12,34 @@ import org.hibernate.Session;
 
 public class GestioneUtenteDAO {
 
+	public static UtenteDTO getUtenteById(String id, Session session)throws HibernateException, Exception {
 
-public static UtenteDTO getUtenteById(String id, Session session)throws HibernateException, Exception {
-
-
-	Query query  = session.createQuery( "from UtenteDTO WHERE id= :_id");
+		Query query  = session.createQuery( "from UtenteDTO WHERE id= :_id");
 	
-	query.setParameter("_id", Integer.parseInt(id));
-	List<UtenteDTO> result =query.list();
+		query.setParameter("_id", Integer.parseInt(id));
+		List<UtenteDTO> result =query.list();
 	
-	if(result.size()>0)
-	{			
-		return result.get(0);
+		if(result.size()>0){			
+			return result.get(0);
+		}
+		return null;	
 	}
-	return null;
-	
-}
 
-public static void save(Session session, UtenteDTO utente)throws Exception {
-	
-	session.save(utente);
-	
-}
-
-
-public static List<UtenteDTO> getListaTecnici(String tipo, Session session) {
-	
-	Query query  = session.createQuery( "from UtenteDTO WHERE tipoutente= :tipo");
-	query.setParameter("tipo", tipo);
-	
-	List<UtenteDTO> result =query.list();
-	
-	if(result.size()>0)
-	{			
-		return result;
+	public static void save(Session session, UtenteDTO utente)throws Exception {	
+		session.save(utente);	
 	}
-	return null;
-}
 
+	public static List<UtenteDTO> getListaTecnici(String tipo, Session session) {
+	
+		Query query  = session.createQuery( "from UtenteDTO WHERE tipoutente= :tipo");
+		query.setParameter("tipo", tipo);
+	
+		List<UtenteDTO> result =query.list();
+	
+		if(result.size()>0){			
+			return result;
+		}
+		return null;
+	}
 
 }

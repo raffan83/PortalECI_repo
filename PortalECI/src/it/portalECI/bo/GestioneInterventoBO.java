@@ -14,21 +14,14 @@ import org.hibernate.Session;
 public class GestioneInterventoBO {
 
 	public static List<InterventoDTO> getListaInterventi(String idCommessa, Session session) throws Exception {
-
-
 		return GestioneInterventoDAO.getListaInterventi(idCommessa,session);
 	}
 
 	public static void save(InterventoDTO intervento, Session session) throws Exception {
-
-		session.save(intervento);
-
-		
-		
+		session.save(intervento);			
 	}
 
 	public static ArrayList<TipoVerificaDTO> getTipoVerifica(Session session){
-		
 		return GestioneInterventoDAO.getListaTipoVerifica(session);
 	}
 	
@@ -38,7 +31,6 @@ public class GestioneInterventoBO {
 	}
 	
 	public static ArrayList<CategoriaVerificaDTO> getCategoriaVerifica(Session session){
-		
 		return GestioneInterventoDAO.getListaCategoriaVerifica(session);
 	}
 
@@ -47,22 +39,14 @@ public class GestioneInterventoBO {
 	}
 
 	public static InterventoDTO getIntervento(String idIntervento) {
-
 		return GestioneInterventoDAO.getIntervento(idIntervento);
-
 	}
 
-	
-	
 
-	public static void update(InterventoDTO intervento, Session session) {
-		
+
+	public static void update(InterventoDTO intervento, Session session) {		
 		session.update(intervento);
-	
 	}
-
-	
-	
 
 
 	public static ArrayList<InterventoDTO> getListaInterventiDaSede(String idCliente, String idSede, Integer idCompany,
@@ -80,5 +64,14 @@ public class GestioneInterventoBO {
 		// TODO Auto-generated method stub
 		return GestioneInterventoDAO.getListaSediInterventi();
 	}
-
+	
+	public static ArrayList<InterventoDTO> getListaInterventiTecnico(Session session, int idTecnicoVerificatore) {
+		// TODO Auto-generated method stub
+		return GestioneInterventoDAO.getListaInterventiTecnico( session,  idTecnicoVerificatore);
+	}
+	
+	public static InterventoDTO getInterventoTecnico(Session session, int idTecnicoVerificatore , int idIntervento) {
+		// TODO Auto-generated method stub
+		return GestioneInterventoDAO.getInterventoTecnico( session,  idTecnicoVerificatore,idIntervento);
+	}
 }

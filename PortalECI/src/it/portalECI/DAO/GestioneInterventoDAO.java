@@ -33,9 +33,7 @@ public class GestioneInterventoDAO {
 		lista=query.list();
 		
 		return lista;
-		}
-
-
+	}
 
 	public static InterventoDTO  getIntervento(String idIntervento) {
 		
@@ -43,29 +41,23 @@ public class GestioneInterventoDAO {
 		InterventoDTO intervento=null;
 		try {
 			
-		Session session = SessionFacotryDAO.get().openSession();
+			Session session = SessionFacotryDAO.get().openSession();
 	    
-		session.beginTransaction();
+			session.beginTransaction();
 		
-		String s_query = "from InterventoDTO WHERE id = :_id";
-	    query = session.createQuery(s_query);
-	    query.setParameter("_id",Integer.parseInt(idIntervento));
+			String s_query = "from InterventoDTO WHERE id = :_id";
+			query = session.createQuery(s_query);
+			query.setParameter("_id",Integer.parseInt(idIntervento));
 		
-	    intervento=(InterventoDTO)query.list().get(0);
-		session.getTransaction().commit();
-		session.close();
+			intervento=(InterventoDTO)query.list().get(0);
+			session.getTransaction().commit();
+			session.close();
 
-	     } catch(Exception e)
-	     {
-	    	 e.printStackTrace();
-	     }
-		return intervento;
-		
+	    } catch(Exception e){
+	    	e.printStackTrace();
+	    }
+		return intervento;		
 	}
-
-
-
-	
 
 	public static void update(InterventoDTO intervento) {
 		Session s = SessionFacotryDAO.get().openSession();
@@ -74,12 +66,9 @@ public class GestioneInterventoDAO {
 		s.update(intervento);
 		
 		s.getTransaction().commit();
-		s.close();
-		
+		s.close();		
 	}
-
-
-
+	
 	public static ArrayList<TipoVerificaDTO> getListaTipoVerifica(Session session){
 		
 		ArrayList<TipoVerificaDTO> lista =null;
@@ -96,13 +85,11 @@ public class GestioneInterventoDAO {
 		query.setParameter("id", Integer.parseInt(id));
 		List<TipoVerificaDTO> result =query.list();
 		
-		if(result.size()>0)
-		{	
-		return result.get(0);
+		if(result.size()>0){	
+			return result.get(0);
 		}
 		return null;
 	}
-
 	
 	public static CategoriaVerificaDTO getCategoriaVerifica(String id, Session session) {
 		
@@ -110,9 +97,8 @@ public class GestioneInterventoDAO {
 		query.setParameter("id", Integer.parseInt(id));
 		List<CategoriaVerificaDTO> result =query.list();
 		
-		if(result.size()>0)
-		{	
-		return result.get(0);
+		if(result.size()>0){	
+			return result.get(0);
 		}
 		return null;
 	}
@@ -130,70 +116,86 @@ public class GestioneInterventoDAO {
 	public static ArrayList<InterventoDTO> getListaInterventiDaSede(String idCliente, String idSede, Integer idCompany,
 			Session session) {
 		ArrayList<InterventoDTO> lista =null;
-		
-		
+				
 		Query query  = session.createQuery( "from InterventoDTO WHERE id__sede_= :_idSede AND company.id=:_idCompany AND id_cliente=:_idcliente");
 		
-				query.setParameter("_idSede", Integer.parseInt(idSede));
-				query.setParameter("_idCompany", idCompany);
-				query.setParameter("_idcliente",  Integer.parseInt(idCliente));
-				
-		
+		query.setParameter("_idSede", Integer.parseInt(idSede));
+		query.setParameter("_idCompany", idCompany);
+		query.setParameter("_idcliente",  Integer.parseInt(idCliente));
+						
 		lista=(ArrayList<InterventoDTO>) query.list();
 		
 		return lista;
 	}
 
-
-
+	public static ArrayList<InterventoDTO> getListaInterventiTecnico(Session session, int idTecnicoVerificatore ) {
+		ArrayList<InterventoDTO> lista =null;
+		
+		session.beginTransaction();
+		Query query  = session.createQuery( "from InterventoDTO WHERE id_tecnico_verificatore= :_id_tecnico_verificatore");
+		
+		query.setParameter("_id_tecnico_verificatore", idTecnicoVerificatore);
+				
+		lista=(ArrayList<InterventoDTO>)query.list();
+		
+		return lista;
+	}
+	
+	public static InterventoDTO getInterventoTecnico(Session session, int idTecnicoVerificatore,int idIntervento ) {
+				
+		session.beginTransaction();
+		Query query  = session.createQuery( "from InterventoDTO WHERE id_tecnico_verificatore= :_id_tecnico_verificatore AND id= :_id_intervento");
+		
+		query.setParameter("_id_tecnico_verificatore", idTecnicoVerificatore);
+		query.setParameter("_id_intervento", idIntervento);
+		List<InterventoDTO> result =query.list();
+		
+		if(result.size()>0){	
+			return result.get(0);
+		}
+		return null;
+	}
+	
 	public static ArrayList<Integer> getListaClientiInterventi() {
 		Query query=null;
 		
 		ArrayList<Integer> lista=null;
 		try {
-		Session session =SessionFacotryDAO.get().openSession();
-		session.beginTransaction();
-		
-		
-		String s_query = "select DISTINCT(int.id_cliente) from InterventoDTO as int";
+			Session session =SessionFacotryDAO.get().openSession();
+			session.beginTransaction();
+				
+			String s_query = "select DISTINCT(int.id_cliente) from InterventoDTO as int";
 						  
-	    query = session.createQuery(s_query);
+			query = session.createQuery(s_query);
  		
-	    lista=(ArrayList<Integer>)query.list();
+			lista=(ArrayList<Integer>)query.list();
 
-	     } 
-		catch(Exception e)
-	     {
-	    	 e.printStackTrace();
+	    } catch(Exception e){
+	    	e.printStackTrace();
 	    	 throw e;
-	     }
+	    }
 		
 		return lista;
 	}
-
-
 
 	public static ArrayList<Integer> getListaSediInterventi() {
 		Query query=null;
 		
 		ArrayList<Integer> lista=null;
 		try {
-		Session session =SessionFacotryDAO.get().openSession();
-		session.beginTransaction();
-		
-		
-		String s_query = "select DISTINCT(int.idSede) from InterventoDTO as int";
+			Session session =SessionFacotryDAO.get().openSession();
+			session.beginTransaction();
+				
+			String s_query = "select DISTINCT(int.idSede) from InterventoDTO as int";
 						  
-	    query = session.createQuery(s_query);
+			query = session.createQuery(s_query);
  		
-	    lista=(ArrayList<Integer>)query.list();
+			lista=(ArrayList<Integer>)query.list();
 
-	     } 
-		catch(Exception e)
-	     {
-	    	 e.printStackTrace();
-	    	 throw e;
-	     }
+	    } catch(Exception e){
+	    	e.printStackTrace();
+	    	throw e;
+	    }
 		
 		return lista;
 	}

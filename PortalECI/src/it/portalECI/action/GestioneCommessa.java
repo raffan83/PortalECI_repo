@@ -48,7 +48,7 @@ public class GestioneCommessa extends HttpServlet {
 	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
-		if(Utility.validateSession(request,response,getServletContext()))return;
+		if(Utility.validateSession(request,response,getServletContext())) return;
 		
 		response.setContentType("text/html");
 		 
@@ -64,14 +64,12 @@ public class GestioneCommessa extends HttpServlet {
 			RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/page/configurazioni/gestioneCommessa.jsp");
 	     	dispatcher.forward(request,response);
 			
-		} 
-		catch(Exception ex)
-    	{
-   		 ex.printStackTrace();
-   	     request.setAttribute("error",ECIException.callException(ex));
-   		 RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/error.jsp");
-   	     dispatcher.forward(request,response);	
-   	}  
+		}catch(Exception ex){
+   		 	ex.printStackTrace();
+   		 	request.setAttribute("error",ECIException.callException(ex));
+   		 	RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/error.jsp");
+   		 	dispatcher.forward(request,response);	
+		}  
 	}
 
 }

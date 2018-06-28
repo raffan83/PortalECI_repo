@@ -19,19 +19,13 @@ public class DirectMySqlDAO {
 	private static  final String getPassword="SELECT PASSWORD(?)";  
 	
 	
-	
-	
-	
-	
+		
 	public static Connection getConnection()throws Exception {
 		Connection con = null;
-		try
-		{
+		try{
 			Class.forName("com.mysql.jdbc.Driver").newInstance();
 			con = DriverManager.getConnection(Costanti.CON_STR_MYSQL);
-		}
-		catch(Exception e)
-		{
+		}catch(Exception e){
 			e.printStackTrace();
 			throw e;
 		}
@@ -44,17 +38,13 @@ public class DirectMySqlDAO {
 		Properties prop = System.getProperties();
 
 		prop.put("jdbc.drivers","sun.jdbc.odbc.JdbcOdbcDriver");
-
 		
 		System.setProperties(prop); 
-		try
-		{
+		try{
 			Class.forName("sun.jdbc.odbc.JdbcOdbcDriver");
 			con = DriverManager.getConnection("jdbc:odbc:;DRIVER=Microsoft Access Driver (*.mdb);DBQ="+path);
 			
-		}
-		catch(Exception e)
-		{
+		}catch(Exception e){
 			e.printStackTrace();
 			throw e;
 		}
@@ -62,8 +52,7 @@ public class DirectMySqlDAO {
 	}
 
 
-	public static String getPassword(String pwd) throws Exception
-	{
+	public static String getPassword(String pwd) throws Exception{
 		String toReturn="";
 		PreparedStatement pst=null;
 		ResultSet rs= null;
@@ -75,13 +64,11 @@ public class DirectMySqlDAO {
 			rs=pst.executeQuery();
 			rs.next();
 			toReturn=rs.getString(1);
-		}catch(Exception ex)
-		{
+		}catch(Exception ex){
 			ex.printStackTrace();
 			throw ex;
 			
-		}finally
-		{
+		}finally{
 			pst.close();
 			con.close();
 		}
@@ -89,21 +76,13 @@ public class DirectMySqlDAO {
 		return toReturn;
 	}
 
-	
-	
-	
 
-private static String replace(String string) {
+	private static String replace(String string) {
 	
-	if(string!=null)
-	{
-		string=string.replace(";"," ");
+		if(string!=null){
+			string=string.replace(";"," ");
+		}
+		return string;
 	}
-	return string;
-}
-
-
-
-
 	
 }

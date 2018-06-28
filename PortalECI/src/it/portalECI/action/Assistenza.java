@@ -62,23 +62,17 @@ public class Assistenza extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
 		if(Utility.validateSession(request,response,getServletContext()))return;
-
-		
-			 
+					
 		try {
 
 			RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/assistenza.jsp");
 	     	dispatcher.forward(request,response);
 			
-		} 
-		catch(Exception ex)
-    	{
+		}catch(Exception ex){
    		 	ex.printStackTrace();
    	     	request.setAttribute("error",ECIException.callException(ex));
    		 	RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/error.jsp");
    	     	dispatcher.forward(request,response);	
-    	} 
-	
+    	} 	
 	}
-
 }

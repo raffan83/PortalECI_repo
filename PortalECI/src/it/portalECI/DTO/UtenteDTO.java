@@ -42,9 +42,6 @@ public class UtenteDTO implements Serializable {
 	public UtenteDTO() {
 	}
 
-
-
-
 	public UtenteDTO(int id, String user, String passw, String nominativo,
 			String nome, String cognome, String indirizzo, String comune,
 			String cap, String EMail, String telefono, CompanyDTO _company,
@@ -190,68 +187,53 @@ public class UtenteDTO implements Serializable {
 	}
 
 	
-	public boolean checkPermesso(String chiavePermesso)
-	{
-		 Iterator<RuoloDTO> iterator = listaRuoli.iterator(); 
+	public boolean checkPermesso(String chiavePermesso){
+		Iterator<RuoloDTO> iterator = listaRuoli.iterator(); 
 	      
-		   while (iterator.hasNext()){
-			   
+		while (iterator.hasNext()){
 			RuoloDTO ruolo= (RuoloDTO) iterator.next(); 
-			  
-			
+			  			
 			Iterator<PermessoDTO> iteratorPermessi=(Iterator<PermessoDTO>) ruolo.getListaPermessi().iterator();
 			
-			while(iteratorPermessi.hasNext())
-			{
+			while(iteratorPermessi.hasNext()){
 				PermessoDTO permesso=iteratorPermessi.next();
 				
-				if(permesso.getChiave_permesso().equals(chiavePermesso))
-				{
+				if(permesso.getChiave_permesso().equals(chiavePermesso)){
 					return true;
 				}
-			}
-		   
-		   }
+			}		   
+		}
 		   
 		return false;
 	}
 
-	public int getTrasversale()
-	{
+	public int getTrasversale(){
 		return trasversale;
 	}
 	
 	
-	public boolean isTras()
-	{
-		if(trasversale==0)
-		{
+	public boolean isTras(){
+		if(trasversale==0){
 			return false;
-		}
-		else
-		{
+		}else{
 			return true;
 		}
 	}
 	
-	public void setTrasversale(int i)
-	{
+	public void setTrasversale(int i){
 		trasversale=i;
 	}
 	
-	public boolean checkRuolo(String siglaRuolo)
-	{
-		 Iterator<RuoloDTO> iterator = listaRuoli.iterator(); 
+	public boolean checkRuolo(String siglaRuolo){
+		Iterator<RuoloDTO> iterator = listaRuoli.iterator(); 
 	      
-		   while (iterator.hasNext()){
-			   
+		while (iterator.hasNext()){			  
 			RuoloDTO ruolo= (RuoloDTO) iterator.next(); 
 			
-			if(ruolo.getSigla().equals(siglaRuolo))
-			{
+			if(ruolo.getSigla().equals(siglaRuolo)){
 				return true;
 			}
-		   }
+		}
 		   
 		return false;
 	}
@@ -261,20 +243,13 @@ public class UtenteDTO implements Serializable {
 		return company;
 	}
 
-
 	public void setCompany(CompanyDTO company) {
 		this.company = company;
 	}
 
-
-
-
 	public String getResetToken() {
 		return resetToken;
 	}
-
-
-
 
 	public void setResetToken(String resetToken) {
 		this.resetToken = resetToken;
@@ -284,7 +259,6 @@ public class UtenteDTO implements Serializable {
 		JsonObject userjobj = new JsonObject();
 		userjobj.addProperty("id", this.id);
 		userjobj.addProperty("user", this.user);
-		userjobj.addProperty("passw", this.passw);
 		userjobj.addProperty("nominativo", this.nominativo);
 		userjobj.addProperty("nome", this.nome);
 		userjobj.addProperty("cognome", this.cognome);

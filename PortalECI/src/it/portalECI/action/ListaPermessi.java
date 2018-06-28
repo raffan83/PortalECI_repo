@@ -61,13 +61,13 @@ public class ListaPermessi extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
 		if(Utility.validateSession(request,response,getServletContext()))return;
+		
 		Session session = SessionFacotryDAO.get().openSession();
 		session.beginTransaction();
 		
 		response.setContentType("text/html");
 		
-		try 
-		{
+		try {
 			String idRuolo = request.getParameter("idRuolo");
 			if(idRuolo != null && !idRuolo.equals("")){
 
@@ -90,15 +90,12 @@ public class ListaPermessi extends HttpServlet {
 			}
 			session.close();
 			
-		} 
-		catch (Exception ex) {
+		} catch (Exception ex) {
 			
 		//	ex.printStackTrace();
 		     request.setAttribute("error",ECIException.callException(ex));
 			 RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/error.jsp");
 		     dispatcher.forward(request,response);
 		}
-	
 	}
-
 }

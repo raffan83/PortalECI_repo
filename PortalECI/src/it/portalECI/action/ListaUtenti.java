@@ -65,8 +65,7 @@ public class ListaUtenti extends HttpServlet {
 		
 		response.setContentType("text/html");
 		
-		try 
-		{
+		try {
 			
 			String idRuolo = request.getParameter("idRuolo");
 			if(idRuolo != null && !idRuolo.equals("")){
@@ -95,17 +94,13 @@ public class ListaUtenti extends HttpServlet {
 		     	dispatcher.forward(request,response);
 			}
 			session.close();
+						
+		} catch (Exception ex) {
 			
-			
-		} 
-		catch (Exception ex) {
-			
-		//	ex.printStackTrace();
-		     request.setAttribute("error",ECIException.callException(ex));
-			 RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/error.jsp");
-		     dispatcher.forward(request,response);
+			//	ex.printStackTrace();
+			request.setAttribute("error",ECIException.callException(ex));
+			RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/error.jsp");
+			dispatcher.forward(request,response);
 		}
-	
 	}
-
 }

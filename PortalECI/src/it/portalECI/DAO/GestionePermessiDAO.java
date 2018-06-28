@@ -12,22 +12,17 @@ import org.hibernate.Session;
 
 public class GestionePermessiDAO {
 
+	public static PermessoDTO getPermessoById(String id, Session session)throws HibernateException, Exception {
 
-public static PermessoDTO getPermessoById(String id, Session session)throws HibernateException, Exception {
-
-
-	Query query  = session.createQuery( "from PermessoDTO WHERE id= :_id");
+		Query query  = session.createQuery( "from PermessoDTO WHERE id= :_id");
 	
-	query.setParameter("_id", Integer.parseInt(id));
-	List<PermessoDTO> result =query.list();
+		query.setParameter("_id", Integer.parseInt(id));
+		List<PermessoDTO> result =query.list();
 	
-	if(result.size()>0)
-	{			
-		return result.get(0);
+		if(result.size()>0){			
+			return result.get(0);
+		}
+		return null;	
 	}
-	return null;
-	
-}
-
 
 }

@@ -11,6 +11,7 @@ public class SessionFacotryDAO {
 		sessionFactory = new Configuration().configure().buildSessionFactory();
 		return sessionFactory;
 	}
+	
 	public static void shutDown(SessionFactory sf) throws Exception {
 		if ( sf != null ) 
 		{
@@ -18,28 +19,27 @@ public class SessionFacotryDAO {
 		}
 	}*/
 
-	 private static final SessionFactory sessionFactory = buildSessionFactory();
+	private static final SessionFactory sessionFactory = buildSessionFactory();
 
-	    private static SessionFactory buildSessionFactory() {
-	        try {
-	            // Create the SessionFactory from hibernate.cfg.xml
-	            return new Configuration().configure().buildSessionFactory();
-	        }
-	        catch (Throwable ex) {
-	            // Make sure you log the exception, as it might be swallowed
-	            System.err.println("Initial SessionFactory creation failed." + ex);
-	            throw new ExceptionInInitializerError(ex);
-	        }
-	    }
+	private static SessionFactory buildSessionFactory() {
+		try {
+			// Create the SessionFactory from hibernate.cfg.xml
+			return new Configuration().configure().buildSessionFactory();
+		}catch (Throwable ex) {
+			// Make sure you log the exception, as it might be swallowed
+			System.err.println("Initial SessionFactory creation failed." + ex);
+			throw new ExceptionInInitializerError(ex);
+		}
+	}
 
-	    public static SessionFactory get() {
-	        return sessionFactory;
-	    }
+	public static SessionFactory get() {
+		return sessionFactory;
+	}
 	    
-	    public static void shutDown(SessionFactory sf) throws Exception {
-			if ( sf != null ) 
-			{
-				sf.close();
-			}
-	    }
+	public static void shutDown(SessionFactory sf) throws Exception {
+		if ( sf != null ) {
+			sf.close();
+		}
+	}
+	
 }

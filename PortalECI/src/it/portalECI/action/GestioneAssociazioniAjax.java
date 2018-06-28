@@ -64,7 +64,6 @@ public class GestioneAssociazioniAjax extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
 		if(Utility.validateSession(request,response,getServletContext()))return;
-
 		
 		Session session =SessionFacotryDAO.get().openSession();
 		session.beginTransaction();
@@ -73,8 +72,7 @@ public class GestioneAssociazioniAjax extends HttpServlet {
 		JsonObject myObj = new JsonObject();
 		PrintWriter out = response.getWriter();
 		
-		try 
-		{
+		try {
 			String action = request.getParameter("action");
 			if(action != null && !action.equals("")){
 				
@@ -88,16 +86,14 @@ public class GestioneAssociazioniAjax extends HttpServlet {
 					utente.getListaRuoli().add(ruolo);
 					int success = GestioneUtenteBO.saveUtente(utente, "modifica", session);
 					
-    	 			if(success==0)
-    				{
+    	 			if(success==0){
     					myObj.addProperty("success", true);
     					myObj.addProperty("messaggio","Salvato con Successo");
     					session.getTransaction().commit();
-    					session.close();
-    				
+    					session.close();    				
     				}
-    				if(success==1)
-    				{
+    				
+    	 			if(success==1){
     					
     					myObj.addProperty("success", false);
     					myObj.addProperty("messaggio","Errore Salvataggio");
@@ -106,9 +102,7 @@ public class GestioneAssociazioniAjax extends HttpServlet {
     			 		session.close();
     			 		
     				} 
-					
-					
-					
+														
 					myObj.addProperty("success", true);
 					myObj.addProperty("message", "OK");
 			        out.println(myObj.toString());
@@ -124,16 +118,15 @@ public class GestioneAssociazioniAjax extends HttpServlet {
 					utente.getListaRuoli().remove(ruolo);
 					int success = GestioneUtenteBO.saveUtente(utente, "modifica", session);
 					
-    	 			if(success==0)
-    				{
+    	 			if(success==0){
     					myObj.addProperty("success", true);
     					myObj.addProperty("messaggio","Salvato con Successo");
     					session.getTransaction().commit();
     					session.close();
     				
     				}
-    				if(success==1)
-    				{
+    	 			
+    				if(success==1){
     					
     					myObj.addProperty("success", false);
     					myObj.addProperty("messaggio","Errore Salvataggio");
@@ -142,9 +135,7 @@ public class GestioneAssociazioniAjax extends HttpServlet {
     			 		session.close();
     			 		
     				} 
-					
-					
-					
+															
 					myObj.addProperty("success", true);
 					myObj.addProperty("message", "OK");
 			        out.println(myObj.toString());
@@ -160,23 +151,20 @@ public class GestioneAssociazioniAjax extends HttpServlet {
 					utente.getListaRuoli().add(ruolo);
 					int success = GestioneUtenteBO.saveUtente(utente, "modifica", session);
 					
-    	 			if(success==0)
-    				{
+    	 			if(success==0){
     					myObj.addProperty("success", true);
     					myObj.addProperty("messaggio","Salvato con Successo");
     					session.getTransaction().commit();
-    					session.close();
-    				
+    					session.close();    				
     				}
-    				if(success==1)
-    				{
+    	 			
+    				if(success==1){
     					
     					myObj.addProperty("success", false);
     					myObj.addProperty("messaggio","Errore Salvataggio");
     					
     					session.getTransaction().rollback();
-    			 		session.close();
-    			 		
+    			 		session.close();    			 		
     				} 
 					
 					myObj.addProperty("success", true);
@@ -194,26 +182,21 @@ public class GestioneAssociazioniAjax extends HttpServlet {
 					utente.getListaRuoli().remove(ruolo);
 					int success = GestioneUtenteBO.saveUtente(utente, "modifica", session);
 					
-    	 			if(success==0)
-    				{
+    	 			if(success==0){
     					myObj.addProperty("success", true);
     					myObj.addProperty("messaggio","Salvato con Successo");
     					session.getTransaction().commit();
-    					session.close();
-    				
+    					session.close();    				
     				}
-    				if(success==1)
-    				{
-    					
+    				
+    	 			if(success==1){    					
     					myObj.addProperty("success", false);
     					myObj.addProperty("messaggio","Errore Salvataggio");
     					
     					session.getTransaction().rollback();
-    			 		session.close();
-    			 		
+    			 		session.close();    			 		
     				} 
-					
-					
+										
 					myObj.addProperty("success", true);
 					myObj.addProperty("message", "OK");
 			        out.println(myObj.toString());
@@ -229,23 +212,20 @@ public class GestioneAssociazioniAjax extends HttpServlet {
 					ruolo.getListaPermessi().add(permesso);
 					int success = GestioneRuoloBO.saveRuolo(ruolo, "modifica", session);
 					
-    	 			if(success==0)
-    				{
+    	 			if(success==0){
     					myObj.addProperty("success", true);
     					myObj.addProperty("messaggio","Salvato con Successo");
     					session.getTransaction().commit();
-    					session.close();
-    				
+    					session.close();    				
     				}
-    				if(success==1)
-    				{
+    				
+    	 			if(success==1){
     					
     					myObj.addProperty("success", false);
     					myObj.addProperty("messaggio","Errore Salvataggio");
     					
     					session.getTransaction().rollback();
-    			 		session.close();
-    			 		
+    			 		session.close();    			 		
     				} 
 					
 					myObj.addProperty("success", true);
@@ -263,45 +243,39 @@ public class GestioneAssociazioniAjax extends HttpServlet {
 					ruolo.getListaPermessi().remove(permesso);
 					int success = GestioneRuoloBO.saveRuolo(ruolo, "modifica", session);
 					
-    	 			if(success==0)
-    				{
+    	 			if(success==0){
     					myObj.addProperty("success", true);
     					myObj.addProperty("messaggio","Salvato con Successo");
     					session.getTransaction().commit();
     					session.close();
     				
     				}
-    				if(success==1)
-    				{
+    	 			
+    				if(success==1){
     					
     					myObj.addProperty("success", false);
     					myObj.addProperty("messaggio","Errore Salvataggio");
     					
     					session.getTransaction().rollback();
-    			 		session.close();
-    			 		
+    			 		session.close();    			 		
     				} 
     				
 					myObj.addProperty("success", true);
 					myObj.addProperty("message", "OK");
 			        out.println(myObj.toString());
 				}
-				
-				
+								
 			}else{
 				myObj.addProperty("success", false);
 				myObj.addProperty("message", "No Action");
 		        out.println(myObj.toString());
 			}
-		} 
-		catch (Exception ex) {
+		} catch (Exception ex) {
 			
 		//	ex.printStackTrace();
-		     request.setAttribute("error",ECIException.callException(ex));
-			 RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/error.jsp");
-		     dispatcher.forward(request,response);
-		}
-	
+			request.setAttribute("error",ECIException.callException(ex));
+			RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/error.jsp");
+		    dispatcher.forward(request,response);
+		}	
 	}
-
 }

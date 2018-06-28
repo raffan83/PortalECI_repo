@@ -23,7 +23,7 @@ import com.sun.xml.internal.bind.v2.runtime.unmarshaller.XsiNilLoader.Array;
 
 public class SQLLiteDAO {
 
-private static String sqlCreateStrumentTable="CREATE TABLE tblStrumenti(id Integer primary key autoincrement , " +
+	private static String sqlCreateStrumentTable="CREATE TABLE tblStrumenti(id Integer primary key autoincrement , " +
 																		"indirizzo varchar(255),"+
 																		"denominazione varchar(255),"+
 																		"codice_interno varchar(255),"+
@@ -49,7 +49,7 @@ private static String sqlCreateStrumentTable="CREATE TABLE tblStrumenti(id Integ
 																		"strumentoModificato varchar(1)," +
 																		"luogo_verifica varchar(255));";
 
-private static String sqlCreateCMPTable="CREATE TABLE tblCampioni(id_camp Integer," +
+	private static String sqlCreateCMPTable="CREATE TABLE tblCampioni(id_camp Integer," +
 																  "codice varchar(255) ,"+
 		    													  "matricola varchar(255),"+
 		    													  "modello varchar(255),"+
@@ -70,9 +70,9 @@ private static String sqlCreateCMPTable="CREATE TABLE tblCampioni(id_camp Intege
 		    													  "tipoGrandezza varchar(255)," +
 		    													  "abilitato varchar(1));";
 
-private static String sqlCreateMISTab="CREATE TABLE tblMisure(id Integer primary key autoincrement , id_str Integer, dataMisura Date, temperatura decimal(30,15) , umidita decimal(30,15),tipoFirma Integer ,statoRicezione Intgeger,statoMisura Integer);";
+	private static String sqlCreateMISTab="CREATE TABLE tblMisure(id Integer primary key autoincrement , id_str Integer, dataMisura Date, temperatura decimal(30,15) , umidita decimal(30,15),tipoFirma Integer ,statoRicezione Intgeger,statoMisura Integer);";
 
-private static String sqlCreateMisOpt="CREATE TABLE tblTabelleMisura(id Integer primary key autoincrement,id_misura Integer," +
+	private static String sqlCreateMisOpt="CREATE TABLE tblTabelleMisura(id Integer primary key autoincrement,id_misura Integer," +
 																	 "id_tabella Integer," +
 																	 "id_ripetizione Integer," +
 																	 "ordine Integer," +
@@ -107,61 +107,61 @@ private static String sqlCreateMisOpt="CREATE TABLE tblTabelleMisura(id Integer 
 																	 "applicabile varchar(1)," +
 																	 "dgt varchar(255));";
 
-private static String sqlCreateTipoStr_tipoGra="CREATE TABLE tbl_ts_tg(id_tipo_grandezza Integer ," +
+	private static String sqlCreateTipoStr_tipoGra="CREATE TABLE tbl_ts_tg(id_tipo_grandezza Integer ," +
 																	 "id_tipo_strumento Integer);";
 
-private static String sqlCreateClassificazione="CREATE TABLE tbl_classificazione(id Integer ," +
+	private static String sqlCreateClassificazione="CREATE TABLE tbl_classificazione(id Integer ," +
 		 															   "descrizione Varchar(255));";
 
-private static String sqlCreateLuogoVerifica="CREATE TABLE tbl_luogoVerifica(id Integer ," +
+	private static String sqlCreateLuogoVerifica="CREATE TABLE tbl_luogoVerifica(id Integer ," +
 		   									 "descrizione Varchar(255));";
 
-private static String sqlCreateTipoRapporto="CREATE TABLE tbl_tipoRapporto(id Integer ," +
+	private static String sqlCreateTipoRapporto="CREATE TABLE tbl_tipoRapporto(id Integer ," +
 		   															"descrizione Varchar(255));";
 
-private static String sqlCreateStatoStumento="CREATE TABLE tbl_statoStrumento(id Integer ," +
+	private static String sqlCreateStatoStumento="CREATE TABLE tbl_statoStrumento(id Integer ," +
 		   															"descrizione Varchar(255));";
 
-private static String sqlCreateTipoStumento="CREATE TABLE tbl_tipoStrumento(id Integer ," +
+	private static String sqlCreateTipoStumento="CREATE TABLE tbl_tipoStrumento(id Integer ," +
 																			"descrizione Varchar(255));";
 			
-private static String sqlCreateGeneral="CREATE TABLE tbl_general(id Integer ," +
+	private static String sqlCreateGeneral="CREATE TABLE tbl_general(id Integer ," +
 																	"sede varchar(255),upload varchar(1));";
 
-private static String sqlCreateFattoriMoltiplicativi="CREATE TABLE tbl_fattori_moltiplicativi (descrizione varchar(20)," +
+	private static String sqlCreateFattoriMoltiplicativi="CREATE TABLE tbl_fattori_moltiplicativi (descrizione varchar(20)," +
 																							   "sigla varchar(2)," +
 																							   "potenza double(2,0)," +
 																							   "fm decimal(60,30))";
 
 
-private static String sqlCreateTableConversione="CREATE TABLE tbl_conversione (id int(11) ,um_da varchar(100) ,um_a varchar(100) , " +
+	private static String sqlCreateTableConversione="CREATE TABLE tbl_conversione (id int(11) ,um_da varchar(100) ,um_a varchar(100) , " +
 											"fattoreConversione decimal(60,30) ,um varchar(100) ,tipo_misura varchar(100) ," +
 											"validita varchar(20) ,potenza Integer(5));"; 
 
-private static String sqlCreateTableCampioniUtilizzati="CREATE TABLE tblCampioniUtilizzati(id Integer primary key autoincrement,id_misura Integer," +
+	private static String sqlCreateTableCampioniUtilizzati="CREATE TABLE tblCampioniUtilizzati(id Integer primary key autoincrement,id_misura Integer," +
 																	 "id_tabellaMisura Integer,"+
 																	  "desc_parametro varchar(100)," +
 																	  "desc_campione varchar(100));"; 
 
 
-private static String sqlCreateGeneralCampionamento="CREATE TABLE tbl_general(commessa varchar(255),cliente varchar(255)," +
+	private static String sqlCreateGeneralCampionamento="CREATE TABLE tbl_general(commessa varchar(255),cliente varchar(255)," +
 																			 "temp_tras decimal(5,2)," +
 																			 "data_prelievo date," +
 																			 "id_tipoCampionamento Integer,id_tipologiaCampionamento Integer,upload varchar(1))";
 
-private static String sqlCreateDataSetCampionamento="CREATE TABLE tbl_dataset_campionamento (id int(11),id_tipo_campionamento int(11) ,nome_campo varchar(100)," +
+	private static String sqlCreateDataSetCampionamento="CREATE TABLE tbl_dataset_campionamento (id int(11),id_tipo_campionamento int(11) ,nome_campo varchar(100)," +
 																						"tipo_campo varchar(100)," +
 																						"codice_campo varchar(100),composite varcaher(255))";
 
-private static String sqlCreatePlayLoadCampionamento="CREATE TABLE tbl_playload_campionamento (id Integer primary key autoincrement," +
+	private static String sqlCreatePlayLoadCampionamento="CREATE TABLE tbl_playload_campionamento (id Integer primary key autoincrement," +
 																							"id_dataset_campionamento int(11),id_punto Integer," +
 																							"valore_misurato varchar(50))";
 
-private static String sqlCreatePuntoCampionamento="CREATE TABLE tbl_punto_campionamento (id Integer primary key autoincrement ," +
+	private static String sqlCreatePuntoCampionamento="CREATE TABLE tbl_punto_campionamento (id Integer primary key autoincrement ," +
 																	"nome_punto varchar(50)," +
 																	"data date, ora varchar(5))";
 
-public static Connection getConnection(String path, String nomeFile) throws ClassNotFoundException, SQLException {
+	public static Connection getConnection(String path, String nomeFile) throws ClassNotFoundException, SQLException {
 		
 		Class.forName("org.sqlite.JDBC");
 		
@@ -170,126 +170,104 @@ public static Connection getConnection(String path, String nomeFile) throws Clas
 		return con;
 	}
 
-public static Connection getConnection(String nameFile) throws ClassNotFoundException, SQLException {
+	public static Connection getConnection(String nameFile) throws ClassNotFoundException, SQLException {
 	
-	Class.forName("org.sqlite.JDBC");
+		Class.forName("org.sqlite.JDBC");
 	
-	Connection con=DriverManager.getConnection("jdbc:sqlite:"+nameFile);
+		Connection con=DriverManager.getConnection("jdbc:sqlite:"+nameFile);
 	
-	return con;
-}
-
-public static void createDB(Connection con) throws SQLException {
-	
-	try
-	{
-	PreparedStatement pst =con.prepareStatement(sqlCreateStrumentTable);
-	pst.execute();
-	
-	PreparedStatement pstCM =con.prepareStatement(sqlCreateCMPTable);
-	pstCM.execute();
-	
-	PreparedStatement pstMisure=con.prepareStatement(sqlCreateMISTab);
-	pstMisure.execute();
-	
-	
-	PreparedStatement pstMis =con.prepareStatement(sqlCreateMisOpt);
-	pstMis.execute();
-	
-	PreparedStatement pstCampAss =con.prepareStatement(sqlCreateTipoStr_tipoGra);
-	pstCampAss.execute();
-	
-	PreparedStatement pstFatMolt =con.prepareStatement(sqlCreateFattoriMoltiplicativi);
-	pstFatMolt.execute();
-	
-	PreparedStatement pstConversione =con.prepareStatement(sqlCreateTableConversione);
-	pstConversione.execute();
-	
-	PreparedStatement pstCampioniUtilizzati =con.prepareStatement(sqlCreateTableCampioniUtilizzati);
-	pstCampioniUtilizzati.execute();
-	
-	PreparedStatement pstClass =con.prepareStatement(sqlCreateClassificazione);
-	pstClass.execute();
-	
-	PreparedStatement psttipoRapporto =con.prepareStatement(sqlCreateTipoRapporto);
-	psttipoRapporto.execute();
-	
-	PreparedStatement pstStatoStrumento =con.prepareStatement(sqlCreateStatoStumento);
-	pstStatoStrumento.execute();
-	
-	PreparedStatement psttipoStrumento=con.prepareStatement(sqlCreateTipoStumento);
-	psttipoStrumento.execute();
-	
-	PreparedStatement pstgeneral=con.prepareStatement(sqlCreateGeneral);
-	pstgeneral.execute();
-	
-	PreparedStatement pstLuogoVerifica=con.prepareStatement(sqlCreateLuogoVerifica);
-	pstLuogoVerifica.execute();
-	
+		return con;
 	}
-	
-	catch 
-	(Exception e) 
-	{
-		throw e;
-	}
-}
 
-public static void cerateDBCampionamento(Connection con) throws Exception {
+	public static void createDB(Connection con) throws SQLException {
 	
-	try
-	{
+		try{
+			PreparedStatement pst =con.prepareStatement(sqlCreateStrumentTable);
+			pst.execute();
 	
-		PreparedStatement pstGen =con.prepareStatement(sqlCreateGeneralCampionamento);
-		pstGen.execute();
-		
-		PreparedStatement pstDataSet =con.prepareStatement(sqlCreateDataSetCampionamento);
-		pstDataSet.execute();
-		
-		PreparedStatement pstPlayLoad =con.prepareStatement(sqlCreatePlayLoadCampionamento);
-		pstPlayLoad.execute();
-		
-		PreparedStatement punto =con.prepareStatement(sqlCreatePuntoCampionamento);
-		punto.execute();
+			PreparedStatement pstCM =con.prepareStatement(sqlCreateCMPTable);
+			pstCM.execute();
 	
-	}
-	
-	catch (Exception e) 
-	
-	{
-		throw e;
-	}
-	
-}
-
-
-
-public static Date getDataChiusura(Connection con) throws Exception {
+			PreparedStatement pstMisure=con.prepareStatement(sqlCreateMISTab);
+			pstMisure.execute();
 	
 	
-	PreparedStatement pst=null;
-	ResultSet rs=null;
-	Date dateReturn=null;
-	SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-	try 
-	{
-		pst=con.prepareStatement("SELECT data_prelievo FROM tbl_general");
-		rs=pst.executeQuery();
-		while (rs.next()) {
-			
-			dateReturn=sdf.parse(rs.getString(1));
-			
+			PreparedStatement pstMis =con.prepareStatement(sqlCreateMisOpt);
+			pstMis.execute();
+	
+			PreparedStatement pstCampAss =con.prepareStatement(sqlCreateTipoStr_tipoGra);
+			pstCampAss.execute();
+	
+			PreparedStatement pstFatMolt =con.prepareStatement(sqlCreateFattoriMoltiplicativi);
+			pstFatMolt.execute();
+	
+			PreparedStatement pstConversione =con.prepareStatement(sqlCreateTableConversione);
+			pstConversione.execute();
+	
+			PreparedStatement pstCampioniUtilizzati =con.prepareStatement(sqlCreateTableCampioniUtilizzati);
+			pstCampioniUtilizzati.execute();
+	
+			PreparedStatement pstClass =con.prepareStatement(sqlCreateClassificazione);
+			pstClass.execute();
+	
+			PreparedStatement psttipoRapporto =con.prepareStatement(sqlCreateTipoRapporto);
+			psttipoRapporto.execute();
+	
+			PreparedStatement pstStatoStrumento =con.prepareStatement(sqlCreateStatoStumento);
+			pstStatoStrumento.execute();
+	
+			PreparedStatement psttipoStrumento=con.prepareStatement(sqlCreateTipoStumento);
+			psttipoStrumento.execute();
+	
+			PreparedStatement pstgeneral=con.prepareStatement(sqlCreateGeneral);
+			pstgeneral.execute();
+	
+			PreparedStatement pstLuogoVerifica=con.prepareStatement(sqlCreateLuogoVerifica);
+			pstLuogoVerifica.execute();
+	
+		}catch (Exception e) {
+			throw e;
 		}
-	} 
-	
-	catch (Exception e) 
-	{
-		e.printStackTrace();
-		throw e;
 	}
-	return dateReturn;
+
+	public static void cerateDBCampionamento(Connection con) throws Exception {
 	
-}
+		try{
+	
+			PreparedStatement pstGen =con.prepareStatement(sqlCreateGeneralCampionamento);
+			pstGen.execute();
+		
+			PreparedStatement pstDataSet =con.prepareStatement(sqlCreateDataSetCampionamento);
+			pstDataSet.execute();
+		
+			PreparedStatement pstPlayLoad =con.prepareStatement(sqlCreatePlayLoadCampionamento);
+			pstPlayLoad.execute();
+		
+			PreparedStatement punto =con.prepareStatement(sqlCreatePuntoCampionamento);
+			punto.execute();	
+		}catch (Exception e) {
+			throw e;
+		}	
+	}
 
-
+	public static Date getDataChiusura(Connection con) throws Exception {
+	
+		PreparedStatement pst=null;
+		ResultSet rs=null;
+		Date dateReturn=null;
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		try {
+			pst=con.prepareStatement("SELECT data_prelievo FROM tbl_general");
+			rs=pst.executeQuery();
+			while (rs.next()) {
+			
+				dateReturn=sdf.parse(rs.getString(1));
+			
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw e;
+		}
+		return dateReturn;	
+	}
 }

@@ -10,9 +10,7 @@ import it.portalECI.DTO.RuoloDTO;
 
 public class GestioneRuoloBO {
 
-	
 	public static RuoloDTO getRuoloById(String id_str, Session session) throws Exception {
-
 
 		return GestioneRuoloDAO.getRuoloById(id_str, session);
 	}
@@ -21,28 +19,22 @@ public class GestioneRuoloBO {
 		int toRet=0;
 		
 		try{
-		int idRuolo=0;
+			int idRuolo=0;
 		
-		if(action.equals("modifica")){
-			session.update(ruolo);
-			idRuolo=ruolo.getId();
-		}
-		else if(action.equals("nuovo")){
-			idRuolo=(Integer) session.save(ruolo);
-
-		}
+			if(action.equals("modifica")){
+				session.update(ruolo);
+				idRuolo=ruolo.getId();
+			}else if(action.equals("nuovo")){
+				idRuolo=(Integer) session.save(ruolo);
+			}
 		
-		toRet=0;	
+			toRet=0;	
 			
-		}catch (Exception ex)
-		{
+		}catch (Exception ex){
 			toRet=1;
-			throw ex;
-	 		
-	 		
+			throw ex;	 			 	
 		}
-		return toRet;
-		
+		return toRet;		
 	}
 
 }

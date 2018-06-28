@@ -61,26 +61,20 @@ public class ListaCompany extends HttpServlet {
 		
 		response.setContentType("text/html");
 		
-		try 
-		{
+		try {
 			
  			ArrayList<CompanyDTO> listaCompany =  (ArrayList<CompanyDTO>) GestioneAccessoDAO.getListCompany();
  
-
 	        request.getSession().setAttribute("listaCompany",listaCompany);
-
 
 			RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/page/configurazioni/listaCompany.jsp");
 	     	dispatcher.forward(request,response);
-		} 
-		catch (Exception ex) {
+		} catch (Exception ex) {
 			
 		//	ex.printStackTrace();
 		     request.setAttribute("error",ECIException.callException(ex));
 			 RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/error.jsp");
 		     dispatcher.forward(request,response);
 		}
-	
 	}
-
 }

@@ -18,31 +18,27 @@ public class GestioneAccessoDAO {
 	public static UtenteDTO controllaAccesso(String user, String pwd) throws Exception {
 		UtenteDTO utente=null;
 		Session session=null;
-		try
-		{
-		session=SessionFacotryDAO.get().openSession();
+		try{
+			session=SessionFacotryDAO.get().openSession();
 		
-		session.beginTransaction();
-		Query query  = session.createQuery( "from UtenteDTO WHERE user= :_user AND passw=:_passw" );
-		query.setParameter("_user", user);
-		query.setParameter("_passw", DirectMySqlDAO.getPassword(pwd));
+			session.beginTransaction();
+			Query query  = session.createQuery( "from UtenteDTO WHERE user= :_user AND passw=:_passw" );
+			query.setParameter("_user", user);
+			query.setParameter("_passw", DirectMySqlDAO.getPassword(pwd));
 	    
-		List<UtenteDTO> result =query.list();
-		if(result.size()>0)
-		{			
-			return result.get(0);
-		}
-		session.getTransaction().commit();
-		session.close();
-		}
-		catch (Exception e) {
+			List<UtenteDTO> result =query.list();
+			if(result.size()>0){			
+				return result.get(0);
+			}
+			session.getTransaction().commit();
+			session.close();
+		}catch (Exception e) {
 			throw e;
 		}
 		return utente;
 	}
 	
-	public static CompanyDTO getCompany(int id_user) throws HibernateException, Exception
-	{
+	public static CompanyDTO getCompany(int id_user) throws HibernateException, Exception{
 		CompanyDTO comp=null;
 		Session session=SessionFacotryDAO.get().openSession();
 		
@@ -51,35 +47,28 @@ public class GestioneAccessoDAO {
 		query.setParameter("_id_comp", id_user);
 	    
 		List<CompanyDTO> result =query.list();
-		if(result.size()>0)
-		{			
+		if(result.size()>0){			
 			return result.get(0);
 		}
 		session.getTransaction().commit();
 		session.close();
 		
-		return comp;
-		
-		
+		return comp;	
 	}
-	public static List<CompanyDTO> getListCompany() throws HibernateException, Exception
-	{
+	
+	public static List<CompanyDTO> getListCompany() throws HibernateException, Exception{
 		CompanyDTO comp=null;
 		Session session=SessionFacotryDAO.get().openSession();
 		
 		session.beginTransaction();
 		Query query  = session.createQuery( "from CompanyDTO" );
-
 	    
 		List<CompanyDTO> result =query.list();
-		
-	
+			
 		session.getTransaction().commit();
 		session.close();
 		
-		return result;
-		
-		
+		return result;	
 	}
 	
 	public static void updateUser(UtenteDTO user){
@@ -102,8 +91,7 @@ public class GestioneAccessoDAO {
 
 	}
 	
-	public static List<UtenteDTO> getListUser() throws HibernateException, Exception
-	{
+	public static List<UtenteDTO> getListUser() throws HibernateException, Exception{
 		
 		Session session=SessionFacotryDAO.get().openSession();
 		
@@ -112,17 +100,14 @@ public class GestioneAccessoDAO {
 		Query query  = session.createQuery( "from UtenteDTO" );
 	    
 		List<UtenteDTO> result =query.list();
-	
-		
-		
+				
 		session.getTransaction().commit();
 		session.close();
 		
 		return result;	
 	}
 	
-	public static List<RuoloDTO> getListRole() throws HibernateException, Exception
-	{
+	public static List<RuoloDTO> getListRole() throws HibernateException, Exception{
 		
 		Session session=SessionFacotryDAO.get().openSession();
 		
@@ -138,8 +123,7 @@ public class GestioneAccessoDAO {
 		return result;	
 	}
 	
-	public static List<PermessoDTO> getListPermission() throws HibernateException, Exception
-	{
+	public static List<PermessoDTO> getListPermission() throws HibernateException, Exception{
 		
 		Session session=SessionFacotryDAO.get().openSession();
 		
@@ -154,5 +138,4 @@ public class GestioneAccessoDAO {
 		
 		return result;	
 	}
-
 }
