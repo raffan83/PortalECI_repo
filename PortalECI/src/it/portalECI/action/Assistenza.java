@@ -42,6 +42,9 @@ public class Assistenza extends HttpServlet {
      * @see HttpServlet#HttpServlet()
      */
     public Assistenza() {
+    	
+    	
+    	
         super();
         // TODO Auto-generated constructor stub
     }
