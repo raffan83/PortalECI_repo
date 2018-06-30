@@ -30,6 +30,34 @@
             		</li>
           		</ul>
         	</li>
+        	<li class="treeview">
+        	 	<a href="#">
+        	 		<i class="fa fa-wrench "></i> 
+        	 		<span>Interventi</span>
+            		<span class="pull-right-container">
+              			<i class="fa fa-angle-left pull-right"></i>
+            		</span>
+          		</a>
+          		<ul class="treeview-menu">
+            		<li>
+            			<a href="gestioneListaInterventi.do">Gestione Intervento</a>
+            		</li>
+          		</ul>
+        	</li>
+        	<li class="treeview">
+        	 	<a href="#">
+        	 		<i class="fa fa-question"></i> 
+        	 		<span>Questionari</span>
+            		<span class="pull-right-container">
+              			<i class="fa fa-angle-left pull-right"></i>
+            		</span>
+          		</a>
+          		<ul class="treeview-menu">
+            		<li>
+            			<a href="gestioneListaQuestionari.do">Gestione Questionario</a>
+            		</li>
+          		</ul>
+        	</li>
        		<!-- <li class="treeview">
           		<a href="#"><i class="fa fa-link"></i> <span>Downloads Utility</span>
             		<span class="pull-right-container">

@@ -38,8 +38,8 @@ public class GestioneInterventoBO {
 		return GestioneInterventoDAO.getCategoriaVerifica(id, session);
 	}
 
-	public static InterventoDTO getIntervento(String idIntervento) {
-		return GestioneInterventoDAO.getIntervento(idIntervento);
+	public static InterventoDTO getIntervento(String idIntervento,Session session) {
+		return GestioneInterventoDAO.getIntervento(idIntervento, session);
 	}
 
 
@@ -74,4 +74,9 @@ public class GestioneInterventoBO {
 		// TODO Auto-generated method stub
 		return GestioneInterventoDAO.getInterventoTecnico( session,  idTecnicoVerificatore,idIntervento);
 	}
+	
+	/*public static List<Map> getTuttiInterventi(Session session) throws Exception{
+		// TODO Auto-generated method stub
+		return GestioneInterventoDAO.getTuttiInterventi( session);
+	}*/
 }

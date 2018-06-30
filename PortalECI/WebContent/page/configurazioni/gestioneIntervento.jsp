@@ -195,8 +195,16 @@
 																</td>		
 																<td>${intervento.user.nominativo}</td>
 		 														<td>${intervento.tecnico_verificatore.nominativo}</td> 
-		 														<td>${intervento.cat_verifica.codice }</td>
-		 														<td>${intervento.tipo_verifica.codice }</td>		 		
+		 														<td>
+		 															<c:forEach items="${intervento.cat_verifica}" var="cat_verifica" varStatus="loop">
+		 																${cat_verifica.codice }<br/>
+		 															</c:forEach>
+		 														</td>
+		 														<td>
+		 															<c:forEach items="${intervento.tipo_verifica}" var="tipo_verifica" varStatus="loop">
+		 																${tipo_verifica.codice }<br/>
+		 															</c:forEach>
+		 														</td>		 		
 																<td>
 																	<a class="btn customTooltip" title="Click per aprire il dettaglio dell'Intervento" onclick="callAction('gestioneInterventoDati.do?idIntervento=${intervento.id}');">
                 														<i class="fa fa-arrow-right"></i>
@@ -233,28 +241,48 @@
 												</c:forEach>
 											</select>
                 						</div>
-              
-            							<div class="form-group">
-                  							<label>Categoria Verifica</label>
-                  							<select name="select1" id="select1" data-placeholder="Seleziona Categoria..."  class="form-control select2" aria-hidden="true" data-live-search="true">
-                  								<option value="" disabled selected>Seleziona Categoria...</option>
-                      							<c:forEach items="${categorie_verifica}" var="categoria">
-                           							<option value="${categoria.id}">${categoria.codice}</option> 	
-                     							</c:forEach>
-                  							</select> 
-        								</div>
+              							<div class="row">
+            								<div class="form-group col-sm-5">
+	                  							<label>Categoria Verifica</label>
+    	              							<select name="select1" id="select1" data-placeholder="Seleziona Categoria..."  class="form-control select2" aria-hidden="true" data-live-search="true">
+        	          								<option value="" disabled selected>Seleziona Categoria...</option>
+            	          							<c:forEach items="${categorie_verifica}" var="categoria">
+                	           							<option value="${categoria.id}">${categoria.codice}</option> 	
+                    	 							</c:forEach>
+                  								</select> 
+        									</div>
         
-							            <div class="form-group">
-                  							<label>Tipo Verifica</label>
-                  							<select name="select2" id="select2" data-placeholder="Seleziona Tipo"  disabled class="form-control select2" aria-hidden="true" data-live-search="true">
-                								<option value="" disabled selected>Seleziona Tipo...</option>
-                								<c:forEach items="${tipi_verifica}" var="tipo">                		
-                        							<option value="${tipo.id}_${tipo.id_categoria}">${tipo.codice}</option>     	                            
-                     							</c:forEach>
-                 							</select>                  
-        								</div>                                     
-  										
+							    	        <div class="form-group col-sm-5">
+                  								<label>Tipo Verifica</label>
+                  								<select name="select2" id="select2" data-placeholder="Seleziona Tipo"  disabled class="form-control select2" aria-hidden="true" data-live-search="true">
+                									<option value="" disabled selected>Seleziona Tipo...</option>
+                									<c:forEach items="${tipi_verifica}" var="tipo">                		
+	                        							<option value="${tipo.id}_${tipo.id_categoria}">${tipo.codice}</option>     	                            
+    	                 							</c:forEach>
+        	         							</select>                  
+        									</div>    
+        									<div class="form-group col-sm-2">
+        										<label></label>
+                  								<button onclick="addRow()"><i class="fa fa-plus"></i></button>              
+        									</div>                                     
+  										</div>						
+  										<div class="row">
+  											<table id="tabVerifica" class="table table-bordered table-hover dataTable table-striped" role="grid" width="100%">
+ 												<thead>
+ 													<tr class="active">
+ 														<th>Categoria Verifica</th>
+ 														<th>Tipo Verifica</th> 														
+ 														<td></td>
+													</tr>
+												</thead>
+ 												<tbody id="bodytabVerifica"> 			
+ 													
+												
+ 												</tbody>
+ 											</table>  
+  										</div>
   										<div id="empty" class="testo12"></div>
+  										
   		 							</div>
       								<div class="modal-footer">
 						        		<button type="button" class="btn btn-danger"onclick="saveInterventoFromModal()"  >Salva</button>
@@ -524,6 +552,32 @@
     				$("#select2").change();  
     	      	
     			});	        
+      			
+				function addRow(){
+					var categorie_verifica=$('#select1').val();
+					var tipi_verifica=$('#select2').val();									
+					
+					if(categorie_verifica!=null && tipi_verifica!=null){
+						if($("#" +tipi_verifica).length == 0) {						 										
+						
+							$("#bodytabVerifica").append('<tr class="categoriaTipiRow" id="'+tipi_verifica+'" role="row" >'+
+								'<td >'+$('#select1').find('[value='+categorie_verifica+']').text()+'</td>'+
+								'<td >'+$('#select2').find('[value='+tipi_verifica+']').text()+'</td>'+																														 		
+								'<td><a class="btn customTooltip" title="Click per aprire il dettaglio dell\'Intervento" onclick="removeRow(\''+tipi_verifica+'\')"><i class="fa fa-minus"></i></a></td></tr>');
+					
+							/*$('#select1').find('[value='+categorie_verifica+']').remove();
+							$('#select2').find('[value='+tipi_verifica+']').remove();*/
+						}else{							
+							$('#empty').html("La coppia Categoria Verifica/Tipo Verifica selezionata è già stata inserita!");
+						}
+					}else{						
+						$('#empty').html("Scegli la categoria di verifica e il tipo verifica per procedere!");
+					}
+				}
+      			
+      			function removeRow(tipi_verifica){
+      				$("#"+tipi_verifica).remove();
+      			}
   			</script>	  
 	</jsp:attribute> 
 </t:layout>

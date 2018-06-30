@@ -1,5 +1,8 @@
 package it.portalECI.DTO;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import com.google.gson.JsonObject;
 
 public class CategoriaVerificaDTO {
@@ -8,6 +11,7 @@ public class CategoriaVerificaDTO {
 	private String descrizione;
 	private String codice;
 	
+	private Set<InterventoDTO> intervento= new HashSet<InterventoDTO>();
 	
 	public int getId() {
 		return id;
@@ -26,6 +30,13 @@ public class CategoriaVerificaDTO {
 	}
 	public void setCodice(String codice) {
 		this.codice = codice;
+	}
+	
+	public Set<InterventoDTO> getIntervento() {
+		return intervento;
+	}
+	public void setIntervento(Set<InterventoDTO> intervento) {
+		this.intervento = intervento;
 	}
 	
 	public JsonObject getCategoriaVerificaJsonObject() {

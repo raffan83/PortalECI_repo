@@ -1,5 +1,6 @@
 package it.portalECI.DTO;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
@@ -20,9 +21,11 @@ public class InterventoDTO {
 	private CompanyDTO company;
 	
 	private UtenteDTO tecnico_verificatore;
-	private TipoVerificaDTO tipo_verifica;
-	private CategoriaVerificaDTO cat_verifica;
+	//private TipoVerificaDTO tipo_verifica;
+	//private CategoriaVerificaDTO cat_verifica;
 	
+	private Set<TipoVerificaDTO> tipo_verifica= new HashSet<TipoVerificaDTO>();
+	private Set<CategoriaVerificaDTO> cat_verifica= new HashSet<CategoriaVerificaDTO>();
 	
 	public Date getDataCreazione() {
 		return dataCreazione;
@@ -111,9 +114,22 @@ public class InterventoDTO {
 	public void setTecnico_verificatore(UtenteDTO tecnico_verificatore) {
 		this.tecnico_verificatore = tecnico_verificatore;
 	}
+	
+	public Set<TipoVerificaDTO> getTipo_verifica() {
+		return tipo_verifica;
+	}
+	public void setTipo_verifica(Set<TipoVerificaDTO> tipo_verifica) {
+		this.tipo_verifica = tipo_verifica;
+	}
+	
+	public Set<CategoriaVerificaDTO> getCat_verifica() {
+		return cat_verifica;
+	}
+	public void setCat_verifica(Set<CategoriaVerificaDTO> cat_verifica) {
+		this.cat_verifica = cat_verifica;
+	}
 
-
-	public TipoVerificaDTO getTipo_verifica() {
+	/*public TipoVerificaDTO getTipo_verifica() {
 		return tipo_verifica;
 	}
 
@@ -130,7 +146,7 @@ public class InterventoDTO {
 
 	public void setCat_verifica(CategoriaVerificaDTO cat_verifica) {
 		this.cat_verifica = cat_verifica;
-	}
+	}*/
 	
 	public JsonObject getInterventoJsonObject() {
 		JsonObject jobj = new JsonObject();
@@ -150,10 +166,29 @@ public class InterventoDTO {
 			jobj.add("company", this.company.getCompanyJsonObject());
 		if(this.tecnico_verificatore!=null)
 			jobj.add("tecnico_verificatore", this.tecnico_verificatore.getUtenteJsonObject());
-		if(this.tipo_verifica!=null)
-			jobj.add("tipo_verifica", this.tipo_verifica.getTipoVerificaJsonObject());
-		if(this.cat_verifica!=null)
-			jobj.add("cat_verifica", this.cat_verifica.getCategoriaVerificaJsonObject());		
+		
+		/*if(this.tipo_verifica!=null)
+			jobj.add("tipo_verifica", this.tipo_verifica.getTipoVerificaJsonObject());*/
+		if(this.tipo_verifica!=null) {
+			JsonObject tipo_verificajobj = new JsonObject();
+			
+			for(TipoVerificaDTO tipo_verifica : this.tipo_verifica) {
+				tipo_verificajobj.add(Integer.toString(tipo_verifica.getId()), tipo_verifica.getTipoVerificaJsonObject());
+			}
+			jobj.add("cat_verifica", tipo_verificajobj);
+		}
+		
+		/*if(this.cat_verifica!=null)
+			jobj.add("cat_verifica", this.cat_verifica.getCategoriaVerificaJsonObject());*/		
+		
+		if(this.cat_verifica!=null) {
+			JsonObject cat_verificajobj = new JsonObject();
+			
+			for(CategoriaVerificaDTO cat_verifica : this.cat_verifica) {
+				cat_verificajobj.add(Integer.toString(cat_verifica.getId()), cat_verifica.getCategoriaVerificaJsonObject());
+			}
+			jobj.add("cat_verifica", cat_verificajobj);
+		}
 		
 		return jobj;
 	}

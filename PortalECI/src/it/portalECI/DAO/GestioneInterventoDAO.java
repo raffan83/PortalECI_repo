@@ -1,12 +1,19 @@
 package it.portalECI.DAO;
 
+import it.portalECI.DTO.AttivitaMilestoneDTO;
 import it.portalECI.DTO.CategoriaVerificaDTO;
+import it.portalECI.DTO.CommessaDTO;
 import it.portalECI.DTO.InterventoDTO;
 import it.portalECI.DTO.TipoVerificaDTO;
 import it.portalECI.DTO.UtenteDTO;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.hibernate.Query;
 import org.hibernate.Session;
@@ -18,40 +25,51 @@ public class GestioneInterventoDAO {
 			"Left join stato_intervento  b  ON a.id_stato_intervento=b.id  " +
 			"left join users u on a.id__user_creation=u.ID " +
 			"where id_Commessa=?";
-
 	
+	/*private static String querySqlServerCom="SELECT ID_COMMESSA,DT_COMMESSA,FIR_CHIUSURA_DT, B.ID_ANAGEN,b.NOME," +
+			"a.DESCR,a.SYS_STATO,C.K2_ANAGEN_INDIR,C.DESCR,C.INDIR,C.CITTA,C.CODPROV,b.INDIR AS INDIRIZZO_PRINCIPALE,b.CITTA AS CITTAPRINCIPALE, b.CODPROV AS CODICEPROVINCIA,NOTE_GEN,N_ORDINE, ID_ANAGEN_COMM " +
+			"FROM BWT_COMMESSA AS a " +
+			"LEFT JOIN BWT_ANAGEN AS b ON  a.ID_ANAGEN=b.ID_ANAGEN " +
+			"LEFT JOIN BWT_ANAGEN_INDIR AS c on a.K2_ANAGEN_INDIR=c.K2_ANAGEN_INDIR AND a.ID_ANAGEN=c.ID_ANAGEN ";*/
 
 	public static List<InterventoDTO> getListaInterventi(String idCommessa, Session session) throws Exception {
 		
 		List<InterventoDTO> lista =null;
 			
 		session.beginTransaction();
-		Query query  = session.createQuery( "from InterventoDTO WHERE id_commessa= :_id_commessa");
+		Query query;  
+		if(idCommessa!=null) {
+			query= session.createQuery( "from InterventoDTO WHERE id_commessa= :_id_commessa");
 		
-		query.setParameter("_id_commessa", idCommessa);
-				
+			query.setParameter("_id_commessa", idCommessa);		
+		}else {
+			query= session.createQuery( "from InterventoDTO");
+		}
+		
 		lista=query.list();
-		
+			
 		return lista;
 	}
+	
 
-	public static InterventoDTO  getIntervento(String idIntervento) {
+	public static InterventoDTO  getIntervento(String idIntervento, Session session) {
 		
 		Query query=null;
 		InterventoDTO intervento=null;
 		try {
-			
-			Session session = SessionFacotryDAO.get().openSession();
-	    
-			session.beginTransaction();
 		
 			String s_query = "from InterventoDTO WHERE id = :_id";
 			query = session.createQuery(s_query);
 			query.setParameter("_id",Integer.parseInt(idIntervento));
 		
 			intervento=(InterventoDTO)query.list().get(0);
-			session.getTransaction().commit();
-			session.close();
+			
+			
+			if(query.list().size()>0){	
+				return (InterventoDTO) query.list().get(0);
+			}
+			return null;
+						
 
 	    } catch(Exception e){
 	    	e.printStackTrace();
@@ -81,7 +99,7 @@ public class GestioneInterventoDAO {
 	
 	public static TipoVerificaDTO getTipoVerifica(String id, Session session) {
 		
-		Query query = session.createQuery("from TipoVerificaDTO where id= :id");
+		Query query = session.createQuery("from TipoVerificaDTO where Id= :id");
 		query.setParameter("id", Integer.parseInt(id));
 		List<TipoVerificaDTO> result =query.list();
 		
@@ -93,7 +111,7 @@ public class GestioneInterventoDAO {
 	
 	public static CategoriaVerificaDTO getCategoriaVerifica(String id, Session session) {
 		
-		Query query = session.createQuery("from CategoriaVerificaDTO where id= :id");
+		Query query = session.createQuery("from CategoriaVerificaDTO where Id= :id");
 		query.setParameter("id", Integer.parseInt(id));
 		List<CategoriaVerificaDTO> result =query.list();
 		

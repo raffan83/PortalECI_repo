@@ -17,8 +17,10 @@ import it.portalECI.bo.GestioneUtenteBO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -108,60 +110,75 @@ public class GestioneIntervento extends HttpServlet {
 		 									
 				//String json = request.getParameter("dataIn");
 				String id_tecnico = request.getParameter("tecnico");
-				String id_tipo=request.getParameter("tipo");
-				String id_categoria=request.getParameter("categoria");
+				Set<CategoriaVerificaDTO> categorielist = new HashSet<CategoriaVerificaDTO>();
+				Set<TipoVerificaDTO> tipoverificalist = new HashSet<TipoVerificaDTO>();
+				//String id_categoria=request.getParameter("categoria");
+
+				String[] categoriaTipo=request.getParameterValues("categoriaTipo");
+
+				//if(!id_categoria.equals("null")) {
+				for( int i = 0; i <= categoriaTipo.length - 1; i++){
+					
+					String id_tipo=categoriaTipo[i].substring(0, categoriaTipo[i].indexOf("_"));
+					String id_categoria=categoriaTipo[i].substring(categoriaTipo[i].indexOf("_")+1, categoriaTipo[i].length());
+System.out.println(id_categoria +"--"+ id_tipo);			
+					tipoverificalist.add(GestioneInterventoBO.getTipoVerifica(id_tipo, session));
+					categorielist.add(GestioneInterventoBO.getCategoriaVerifica(id_categoria, session));
+				}
 				
-				if(!id_categoria.equals("null")) {				
-					UtenteDTO tecnico = GestioneUtenteBO.getUtenteById(id_tecnico, session);
-					CategoriaVerificaDTO categoria = GestioneInterventoBO.getCategoriaVerifica(id_categoria, session);
-					TipoVerificaDTO tipo = GestioneInterventoBO.getTipoVerifica(id_tipo.substring(0, id_tipo.indexOf("_")), session);
-
-					CommessaDTO comm=(CommessaDTO)request.getSession().getAttribute("commessa");
-					InterventoDTO intervento= new InterventoDTO();
-					intervento.setDataCreazione(Utility.getActualDateSQL());
-					intervento.setTecnico_verificatore(tecnico);
-					intervento.setUser((UtenteDTO)request.getSession().getAttribute("userObj"));
-					intervento.setIdSede(comm.getK2_ANAGEN_INDR());
-					intervento.setId_cliente(comm.getID_ANAGEN());
-					intervento.setCat_verifica(categoria);
-					intervento.setTipo_verifica(tipo);
+				UtenteDTO tecnico = GestioneUtenteBO.getUtenteById(id_tecnico, session);
+				//CategoriaVerificaDTO categoria = GestioneInterventoBO.getCategoriaVerifica(id_categoria, session);
+				//TipoVerificaDTO tipo = GestioneInterventoBO.getTipoVerifica(id_tipo, session);
+				
+				CommessaDTO comm=(CommessaDTO)request.getSession().getAttribute("commessa");
+				InterventoDTO intervento= new InterventoDTO();
+				intervento.setDataCreazione(Utility.getActualDateSQL());
+				intervento.setTecnico_verificatore(tecnico);
+				intervento.setUser((UtenteDTO)request.getSession().getAttribute("userObj"));
+				intervento.setIdSede(comm.getK2_ANAGEN_INDR());
+				intervento.setId_cliente(comm.getID_ANAGEN());
+					
+				if(!tipoverificalist.isEmpty()) {
+					intervento.setTipo_verifica(tipoverificalist);
+					intervento.setCat_verifica(categorielist);
+				}
+				
+				String nomeCliente="";
+				
+				if(comm.getANAGEN_INDR_INDIRIZZO()!=null && comm.getANAGEN_INDR_INDIRIZZO().length()>0){
+					nomeCliente=comm.getID_ANAGEN_NOME()+ " - "+ comm.getANAGEN_INDR_INDIRIZZO();
+				}else{
+					nomeCliente=comm.getID_ANAGEN_NOME()+ " - "+ comm.getINDIRIZZO_PRINCIPALE(); 
+				}
 			
-					String nomeCliente="";
+				intervento.setNome_sede(nomeCliente);
+				intervento.setIdCommessa(""+comm.getID_COMMESSA());
+				intervento.setStatoIntervento(new StatoInterventoDTO());
 			
-					if(comm.getANAGEN_INDR_INDIRIZZO()!=null && comm.getANAGEN_INDR_INDIRIZZO().length()>0){
-						nomeCliente=comm.getID_ANAGEN_NOME()+ " - "+ comm.getANAGEN_INDR_INDIRIZZO();
-					}else{
-						nomeCliente=comm.getID_ANAGEN_NOME()+ " - "+ comm.getINDIRIZZO_PRINCIPALE(); 
-					}
-			
-					intervento.setNome_sede(nomeCliente);
-					intervento.setIdCommessa(""+comm.getID_COMMESSA());
-					intervento.setStatoIntervento(new StatoInterventoDTO());
-			
-					CompanyDTO cmp =(CompanyDTO)request.getSession().getAttribute("usrCompany");
-					intervento.setCompany(cmp);
+				CompanyDTO cmp =(CompanyDTO)request.getSession().getAttribute("usrCompany");
+				intervento.setCompany(cmp);
 								
-					GestioneInterventoBO.save(intervento,session);
+				GestioneInterventoBO.save(intervento,session);
 			
-					Gson gson = new Gson();
+				//Gson gson = new Gson();
 		
-					String jsonInString = gson.toJson(intervento);
-
-					myObj.addProperty("success", true);
-					myObj.addProperty("intervento", jsonInString);
-					out.print(myObj);
-				}else {
+				//String jsonInString = gson.toJson(intervento);
+					
+				myObj.addProperty("success", true);
+				myObj.add("intervento", intervento.getInterventoJsonObject());
+				out.print(myObj);
+				/*}else {
 			
 					myObj.addProperty("success", false);
 					myObj.addProperty("messaggio", "Campo non selezionato!");
 					out.print(myObj);
 			
-				}
+				}*/
 			}
 			if(action !=null && action.equals("chiudi")){
 			 									
 				String idIntervento = request.getParameter("idIntervento" );
-				InterventoDTO intervento = GestioneInterventoBO.getIntervento(idIntervento);
+				InterventoDTO intervento = GestioneInterventoBO.getIntervento(idIntervento, session);
 			
 				StatoInterventoDTO stato = new StatoInterventoDTO();
 				stato.setId(2);
@@ -183,7 +200,7 @@ public class GestioneIntervento extends HttpServlet {
 			if(action !=null && action.equals("apri")){			 					
 			
 				String idIntervento = request.getParameter("idIntervento" );
-				InterventoDTO intervento = GestioneInterventoBO.getIntervento(idIntervento);
+				InterventoDTO intervento = GestioneInterventoBO.getIntervento(idIntervento, session);
 			
 				StatoInterventoDTO stato = new StatoInterventoDTO();
 				stato.setId(1);
