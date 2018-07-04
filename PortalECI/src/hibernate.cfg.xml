@@ -6,7 +6,7 @@
   		<property name="hibernate.connection.driver_class">com.mysql.jdbc.Driver</property>
   		<property name="hibernate.connection.password">root</property>
  		<!--   <property name="hibernate.connection.url">jdbc:mysql://192.168.3.99:3306/eci_db</property>-->
-		<property name="hibernate.connection.url">jdbc:mysql://158.58.172.111:3306/eci_db</property>
+		<property name="hibernate.connection.url">jdbc:mysql://212.237.23.231:3306/eci_db</property>
   		<property name="hibernate.connection.username">root</property>
   		<property name="hibernate.dialect">org.hibernate.dialect.MySQLInnoDBDialect</property>
   		<property name="hbm2ddl.auto">update</property>
