@@ -11,7 +11,7 @@ public class CategoriaVerificaDTO {
 	private String descrizione;
 	private String codice;
 	
-	private Set<InterventoDTO> intervento= new HashSet<InterventoDTO>();
+	//private Set<InterventoDTO> intervento= new HashSet<InterventoDTO>();
 	
 	public int getId() {
 		return id;
@@ -32,12 +32,12 @@ public class CategoriaVerificaDTO {
 		this.codice = codice;
 	}
 	
-	public Set<InterventoDTO> getIntervento() {
+	/*public Set<InterventoDTO> getIntervento() {
 		return intervento;
 	}
 	public void setIntervento(Set<InterventoDTO> intervento) {
 		this.intervento = intervento;
-	}
+	}*/
 	
 	public JsonObject getCategoriaVerificaJsonObject() {
 		JsonObject jobj = new JsonObject();

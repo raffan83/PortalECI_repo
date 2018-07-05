@@ -25,7 +25,7 @@ public class InterventoDTO {
 	//private CategoriaVerificaDTO cat_verifica;
 	
 	private Set<TipoVerificaDTO> tipo_verifica= new HashSet<TipoVerificaDTO>();
-	private Set<CategoriaVerificaDTO> cat_verifica= new HashSet<CategoriaVerificaDTO>();
+	//private Set<CategoriaVerificaDTO> cat_verifica= new HashSet<CategoriaVerificaDTO>();
 	
 	public Date getDataCreazione() {
 		return dataCreazione;
@@ -122,12 +122,12 @@ public class InterventoDTO {
 		this.tipo_verifica = tipo_verifica;
 	}
 	
-	public Set<CategoriaVerificaDTO> getCat_verifica() {
+	/*public Set<CategoriaVerificaDTO> getCat_verifica() {
 		return cat_verifica;
 	}
 	public void setCat_verifica(Set<CategoriaVerificaDTO> cat_verifica) {
 		this.cat_verifica = cat_verifica;
-	}
+	}*/
 
 	/*public TipoVerificaDTO getTipo_verifica() {
 		return tipo_verifica;
@@ -175,20 +175,20 @@ public class InterventoDTO {
 			for(TipoVerificaDTO tipo_verifica : this.tipo_verifica) {
 				tipo_verificajobj.add(Integer.toString(tipo_verifica.getId()), tipo_verifica.getTipoVerificaJsonObject());
 			}
-			jobj.add("cat_verifica", tipo_verificajobj);
+			jobj.add("tipo_verifica", tipo_verificajobj);
 		}
 		
 		/*if(this.cat_verifica!=null)
 			jobj.add("cat_verifica", this.cat_verifica.getCategoriaVerificaJsonObject());*/		
 		
-		if(this.cat_verifica!=null) {
+		/*if(this.cat_verifica!=null) {
 			JsonObject cat_verificajobj = new JsonObject();
 			
 			for(CategoriaVerificaDTO cat_verifica : this.cat_verifica) {
 				cat_verificajobj.add(Integer.toString(cat_verifica.getId()), cat_verifica.getCategoriaVerificaJsonObject());
 			}
 			jobj.add("cat_verifica", cat_verificajobj);
-		}
+		}*/
 		
 		return jobj;
 	}

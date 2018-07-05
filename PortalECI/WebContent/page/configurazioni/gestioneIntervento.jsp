@@ -196,8 +196,8 @@
 																<td>${intervento.user.nominativo}</td>
 		 														<td>${intervento.tecnico_verificatore.nominativo}</td> 
 		 														<td>
-		 															<c:forEach items="${intervento.cat_verifica}" var="cat_verifica" varStatus="loop">
-		 																${cat_verifica.codice }<br/>
+		 															<c:forEach items="${intervento.tipo_verifica}" var="tipo_verifica" varStatus="loop">
+		 																${tipo_verifica.categoria.codice }<br/>
 		 															</c:forEach>
 		 														</td>
 		 														<td>
@@ -257,7 +257,7 @@
                   								<select name="select2" id="select2" data-placeholder="Seleziona Tipo"  disabled class="form-control select2" aria-hidden="true" data-live-search="true">
                 									<option value="" disabled selected>Seleziona Tipo...</option>
                 									<c:forEach items="${tipi_verifica}" var="tipo">                		
-	                        							<option value="${tipo.id}_${tipo.id_categoria}">${tipo.codice}</option>     	                            
+	                        							<option value="${tipo.id}_${tipo.categoria.id}">${tipo.codice}</option>     	                            
     	                 							</c:forEach>
         	         							</select>                  
         									</div>    

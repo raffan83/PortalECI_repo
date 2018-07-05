@@ -15,14 +15,14 @@
             <column name="codice" />
         </property>
         
-        <set name="intervento" table="intervento__categoriaverifica_tipoverifica" inverse="true" lazy="true" fetch="select">
+        <!-- <set name="intervento" table="intervento__categoriaverifica_tipoverifica" inverse="true" lazy="true" fetch="select">
             <key>
                 <column name="categoria_verifica_id" not-null="true" />
             </key>
             <many-to-many entity-name="it.portalECI.DTO.InterventoDTO">
                 <column name="intervento_id" not-null="true" />
             </many-to-many>
-        </set>
+        </set> -->
         
     </class>
 </hibernate-mapping>

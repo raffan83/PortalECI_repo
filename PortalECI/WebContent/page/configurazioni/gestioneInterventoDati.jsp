@@ -87,8 +87,8 @@
                 									<li class="list-group-item">
                   										<b>Categoria Verifica</b>
                   										<a class="pull-right">
-                  											<c:forEach items="${intervento.getCat_verifica()}" var="cat_verifica" varStatus="loop">                											
-		 														${cat_verifica.getCodice() }<br/>
+                  											<c:forEach items="${intervento.getTipo_verifica()}" var="tipo_verifica" varStatus="loop">                											
+		 														${cat_verifica.getCategoria().getCodice() }<br/>
 		 													</c:forEach>		 														
                   										</a>
                 									</li>

@@ -17,8 +17,8 @@ public class GestioneInterventoBO {
 		return GestioneInterventoDAO.getListaInterventi(idCommessa,session);
 	}
 
-	public static void save(InterventoDTO intervento, Session session) throws Exception {
-		session.save(intervento);			
+	public static Integer save(InterventoDTO intervento, Session session) throws Exception {
+		return (Integer) session.save(intervento);			
 	}
 
 	public static ArrayList<TipoVerificaDTO> getTipoVerifica(Session session){

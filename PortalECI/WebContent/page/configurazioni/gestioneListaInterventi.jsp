@@ -42,6 +42,43 @@
 													</div>
 												</div>
 												<div class="box-body">
+													<!--  -->
+													<label>Scegli su quale Categoria Verifica e Tipo Verifica effettuare la ricerca:</label>
+													<div class="row" style="margin-bottom:25px; position:relative;">        
+														<div class="col-sm-3">    											
+	                  										<label >Categoria Verifica</label>
+	                  								
+    	              										<select name="selectCatVer" id="selectCatVer" data-placeholder="Seleziona Categoria..."  class="form-control select2" aria-hidden="true" data-live-search="true">
+        	          											<option value="" disabled selected>Seleziona Categoria...</option>
+            	          										<c:forEach items="${categorie_verifica}" var="categoria">
+	                	           									<option value="${categoria.id}">${categoria.codice}</option> 	
+    	                	 									</c:forEach>
+            	      										</select> 
+        												</div>											    
+        												<div class="col-xs-3">
+        													<label >Tipo Verifica</label>        												
+                  											<select name="selectTipoVer" id="selectTipoVer" data-placeholder="Seleziona Tipo..."  disabled class="form-control select2" aria-hidden="true" data-live-search="true">
+                												<option value="" disabled selected>Seleziona Tipo...</option>
+                												<c:forEach items="${tipi_verifica}" var="tipo">                		
+	                        										<option value="${tipo.id}_${tipo.categoria.id}">${tipo.codice}</option>     	                            
+    	                 										</c:forEach>
+        	         										</select>
+        	         									</div>  
+														<div class="col-sm-2 " style="position: absolute; bottom: 0; right:0;">
+															<button class="btn btn-default" onclick="cerca()">
+																<i class="glyphicon glyphicon-search"></i>
+															 	Cerca
+															</button>    
+														
+															<button class="btn btn-default pull-right" onclick="annulla()">
+																<i class="glyphicon glyphicon-remove"></i>
+															 	Annulla
+															</button>
+														</div>         
+        												                                     
+  													</div>			
+													<!--  -->
+													
               										<table id="tabPM" class="table table-bordered table-hover dataTable table-striped" role="grid" width="100%">
  														<thead>
  															<tr class="active"> 
@@ -95,12 +132,16 @@
 																	</td>
 																	<td>
 																		<c:out value='${intervento.getTecnico_verificatore().getNominativo()}'/>
+																	</td>							
+																	<td>
+																		<c:forEach items="${intervento.getTipo_verifica()}" var="tipoVerifica" varStatus="myIndex">																			
+																			<c:out value='${tipoVerifica.getCategoria().getCodice()}'/>	<br/>																		
+																		</c:forEach>
 																	</td>
 																	<td>
-																		<c:out value='${intervento.getCat_verifica().getCodice()}'/>
-																	</td>
-																	<td>
-																		<c:out value='${intervento.getTipo_verifica().getCodice()}'/>
+																		<c:forEach items="${intervento.getTipo_verifica()}" var="tipoVerifica" varStatus="myIndex">																			
+																			<c:out value='${tipoVerifica.getCodice()}'/><br/>								
+																		</c:forEach>
 																	</td>																															
         															<td>
 																		<fmt:formatDate pattern="dd/MM/yyyy" value='${intervento.getDataCreazione() }' type='date' />
@@ -238,7 +279,57 @@
 			        	theme: 'tooltipster-light'
 			    	});
 			  	} );
+    	 		
+    	 		$("#selectCatVer").change(function() {    
+    	  			if ($(this).data('options') == undefined) {
+    	    			$(this).data('options', $('#selectTipoVer option').clone());
+    	  			}
+    	  
+    	  			var id = $(this).val();	    	
+    	  			var options = $(this).data('options');	
+    	  			var opt=[];    	
+					
+		    	   for(var  i=0; i<options.length;i++){
+    					var str=options[i].value; 	    	
+    		 			
+    					if(str.substring(str.indexOf("_")+1,str.length)==id){     			        		
+    						opt.push(options[i]);
+    		  			}   
+    	   			}
+    	 			
+		    	   	$("#selectTipoVer").prop("disabled", false);    	 
+    	  		   	$('#selectTipoVer').html(opt);
+    	  
+			    	$("#selectTipoVer").trigger("chosen:updated");    	      	 
+    				$("#selectTipoVer").change();  
+    	      	
+    			});
+    	 		
+    	 		
+    	 		
     		});
+    		
+    		function cerca(){
+    			var categorie_verifica=$('#selectCatVer').val();
+				var tipi_verifica=$('#selectTipoVer').val();
+				
+    			table.column(6).search($('#selectCatVer').find('[value='+categorie_verifica+']').text()).column(7).search($('#selectTipoVer').find('[value='+categorie_verifica+']').text()).draw();
+    		}
+    		
+			function annulla(){
+				
+				$("#selectCatVer").val(null).trigger("change");
+				
+				$("#selectTipoVer").val(null).trigger("change");
+				$('#selectTipoVer').select2({
+				    placeholder: "Seleziona Tipo..."
+				  });
+				
+				$("#selectTipoVer").prop("disabled", true); 
+				
+								
+				table.search( '' ).columns().search( '' ).draw();
+    		}
     
   		</script>
   

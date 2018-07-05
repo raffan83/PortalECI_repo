@@ -8,7 +8,7 @@ import com.google.gson.JsonObject;
 public class TipoVerificaDTO {
 	
 	private int id;
-	private int id_categoria;
+	private CategoriaVerificaDTO categoria;
 	private String descrizione;
 	private String codice;
 	
@@ -20,11 +20,11 @@ public class TipoVerificaDTO {
 	public void setId(int id) {
 		this.id = id;
 	}
-	public int getId_categoria() {
-		return id_categoria;
+	public CategoriaVerificaDTO getCategoria() {
+		return categoria;
 	}
-	public void setId_categoria(int id_categoria) {
-		this.id_categoria = id_categoria;
+	public void setCategoria(CategoriaVerificaDTO categoria) {
+		this.categoria = categoria;
 	}
 	public String getDescrizione() {
 		return descrizione;
@@ -49,7 +49,9 @@ public class TipoVerificaDTO {
 	public JsonObject getTipoVerificaJsonObject() {
 		JsonObject jobj = new JsonObject();
 		jobj.addProperty("id", this.id);
-		jobj.addProperty("id_categoria", this.id_categoria);
+		if(this.categoria!=null)
+			jobj.add("categoria", this.categoria.getCategoriaVerificaJsonObject());
+		
 		jobj.addProperty("descrizione", this.descrizione);
 		jobj.addProperty("codice", this.codice);
 		

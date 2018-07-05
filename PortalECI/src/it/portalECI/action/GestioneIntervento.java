@@ -121,7 +121,7 @@ public class GestioneIntervento extends HttpServlet {
 					
 					String id_tipo=categoriaTipo[i].substring(0, categoriaTipo[i].indexOf("_"));
 					String id_categoria=categoriaTipo[i].substring(categoriaTipo[i].indexOf("_")+1, categoriaTipo[i].length());
-System.out.println(id_categoria +"--"+ id_tipo);			
+		
 					tipoverificalist.add(GestioneInterventoBO.getTipoVerifica(id_tipo, session));
 					categorielist.add(GestioneInterventoBO.getCategoriaVerifica(id_categoria, session));
 				}
@@ -140,7 +140,7 @@ System.out.println(id_categoria +"--"+ id_tipo);
 					
 				if(!tipoverificalist.isEmpty()) {
 					intervento.setTipo_verifica(tipoverificalist);
-					intervento.setCat_verifica(categorielist);
+					//intervento.setCat_verifica(categorielist);
 				}
 				
 				String nomeCliente="";
@@ -166,6 +166,7 @@ System.out.println(id_categoria +"--"+ id_tipo);
 					
 				myObj.addProperty("success", true);
 				myObj.add("intervento", intervento.getInterventoJsonObject());
+			
 				out.print(myObj);
 				/*}else {
 			

@@ -15,9 +15,11 @@ import javax.servlet.http.HttpServletResponse;
 import org.hibernate.Session;
 
 import it.portalECI.DAO.SessionFacotryDAO;
+import it.portalECI.DTO.CategoriaVerificaDTO;
 import it.portalECI.DTO.CommessaDTO;
 import it.portalECI.DTO.CompanyDTO;
 import it.portalECI.DTO.InterventoDTO;
+import it.portalECI.DTO.TipoVerificaDTO;
 import it.portalECI.DTO.UtenteDTO;
 import it.portalECI.Exception.ECIException;
 import it.portalECI.Util.Utility;
@@ -65,7 +67,13 @@ public class GestioneListaInterventi extends HttpServlet {
 					
 			List<InterventoDTO> listaInterventi =GestioneInterventoBO.getListaInterventi(null,session) ;
 			
+
+			ArrayList<TipoVerificaDTO> tipi_verifica = GestioneInterventoBO.getTipoVerifica(session);
+			ArrayList<CategoriaVerificaDTO> categorie_verifica = GestioneInterventoBO.getCategoriaVerifica(session);
+			
 			request.getSession().setAttribute("listaInterventi", listaInterventi);
+			request.getSession().setAttribute("tipi_verifica", tipi_verifica);
+			request.getSession().setAttribute("categorie_verifica", categorie_verifica);
 			
 			RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/page/configurazioni/gestioneListaInterventi.jsp");
 	     	dispatcher.forward(request,response);

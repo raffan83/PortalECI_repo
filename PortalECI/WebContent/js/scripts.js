@@ -373,23 +373,31 @@ function saveInterventoFromModal(){
 //	          		$('#errorMsg').html("<h3 class='label label-primary' style=\"color:green\">"+textStatus+"</h3>");
 					var table = $('#tabPM').DataTable();
 
-					intervento = JSON.parse(data.intervento);
+					intervento = data.intervento;
 
 					var user = intervento.user;
 					var tecnico =intervento.tecnico_verificatore;
-					var dataCreazione = moment(intervento.dataCreazione,"MMM DD, YYYY",'it');
-					var tipo_verifica=intervento.tipo_verifica;
-					var cat_verifica=intervento.cat_verifica;
+					//var dataCreazione = moment(intervento.dataCreazione,"MMM DD, YYYY",'it');
+					var dataCreazione = moment(intervento.dataCreazione).format('DD/MM/YYYY');
+					var tipo_verifica="";
+					var cat_verifica="";				
+					
+					$.each(intervento.tipo_verifica, function() {
+						tipo_verifica+=this.codice+"<br/>";
+						cat_verifica+=this.categoria.codice+"<br/>";
+					});
+				
+					
 					var rowNode =  table.row.add( [
 						'<a class="btn" onclick="callAction(\'gestioneInterventoDati.do?idIntervento='+intervento.id+'\');">'+intervento.id+'</a>',
 						//'<span class="label label-info">'+presso+'</span>',
 						intervento.nome_sede,
-						dataCreazione.format('DD/MM/YYYY'),
+						dataCreazione,
 						'<span class="label label-info">APERTO</span>',
 						user.nominativo,
 						tecnico.nominativo,
-						cat_verifica.codice,
-						tipo_verifica.codice,
+						cat_verifica,
+						tipo_verifica,
 						'<a class="btn" onclick="callAction(\'gestioneInterventoDati.do?idIntervento='+intervento.id+'\');"> <i class="fa fa-arrow-right"></i> </a>'
 						] ).draw();
 	          			  		          		

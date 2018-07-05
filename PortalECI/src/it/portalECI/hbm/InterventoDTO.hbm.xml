@@ -56,7 +56,7 @@
             </many-to-many>
         </set>
      
-        <set name="cat_verifica" table="intervento__categoriaverifica_tipoverifica" 
+       <!--  <set name="cat_verifica" table="intervento__categoriaverifica_tipoverifica" 
         	inverse="false" lazy="true" fetch="select" cascade="all" >
             <key>
                 <column name="intervento_id" not-null="true" />
@@ -64,7 +64,7 @@
             <many-to-many entity-name="it.portalECI.DTO.CategoriaVerificaDTO">
                 <column name="categoria_verifica_id" not-null="true" />
             </many-to-many>
-        </set>
+        </set> -->
         
         
     </class>
