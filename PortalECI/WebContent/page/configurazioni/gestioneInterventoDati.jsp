@@ -71,11 +71,11 @@
   																<c:when test="${intervento.getStatoIntervento().getDescrizione().equals('CHIUSO')}">
     																<span class="label label-danger">CHIUSO</span>
   																</c:when>
-  																<c:when test="${intervento.getStatoIntervento().getDescrizione().equals('APERTO')}">
-    																<span class="label label-success">APERTO</span>
+  																<c:when test="${intervento.getStatoIntervento().getDescrizione().equals('CREATO')}">
+    																<span class="label label-success">CREATO</span>
   																</c:when>
   																<c:otherwise>
-    																<span class="label label-info">-</span>
+    																<span class="label label-info">${intervento.getStatoIntervento().getDescrizione()}</span>
 	 															</c:otherwise>
 															</c:choose>  
 														</a>
@@ -88,7 +88,7 @@
                   										<b>Categoria Verifica</b>
                   										<a class="pull-right">
                   											<c:forEach items="${intervento.getTipo_verifica()}" var="tipo_verifica" varStatus="loop">                											
-		 														${cat_verifica.getCategoria().getCodice() }<br/>
+		 														${tipo_verifica.getCategoria().getCodice() } &nbsp
 		 													</c:forEach>		 														
                   										</a>
                 									</li>
@@ -96,7 +96,7 @@
                   										<b>Tipo Verifica</b>                   										
                   										<a class="pull-right">
                   											<c:forEach items="${intervento.getTipo_verifica()}" var="tipo_verifica" varStatus="loop">
-		 														${tipo_verifica.getCodice() }<br/>
+		 														${tipo_verifica.getCodice() } &nbsp
 		 													</c:forEach>		 														
                   										</a>
                   										
@@ -121,15 +121,10 @@
 		      									<table id="tabPM" class="table table-bordered table-hover dataTable table-striped" role="grid" width="100%">
  													<thead>
  														<tr class="active">
- 															<th>ID</th>
- 															<th>Sede</th>
- 															<th>Data Creazione</th>
- 															<th>Stato</th>
- 															<th>Responsabile</th>
- 															<th>Tecnico Verificatore</th>
+ 															<th>ID</th> 															
  															<th>Codice Categoria</th>
  															<th>Codice Verifica</th>
-
+ 															<th>Stato</th>
  															<td></td>
 														</tr>
 													</thead>

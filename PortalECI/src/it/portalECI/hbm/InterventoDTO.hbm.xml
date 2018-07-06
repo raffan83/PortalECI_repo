@@ -35,16 +35,7 @@
         </many-to-one>
           <many-to-one name="company" class="it.portalECI.DTO.CompanyDTO" fetch="join" lazy="false">
             <column name="id_company" />
-        </many-to-one>
-        
-        
-        
-         <!-- <many-to-one name="tipo_verifica" class="it.portalECI.DTO.TipoVerificaDTO" access="field" fetch="join" lazy="false">
-            <column name="id_tipo" />
-        </many-to-one>
-        <many-to-one name="cat_verifica" class="it.portalECI.DTO.CategoriaVerificaDTO" access="field" fetch="join" lazy="false">
-            <column name="id_categoria" />
-        </many-to-one>-->
+        </many-to-one>         
         
         <set name="tipo_verifica" table="intervento__categoriaverifica_tipoverifica" 
         	inverse="false" lazy="true" fetch="select" cascade="all" >
@@ -54,18 +45,7 @@
             <many-to-many entity-name="it.portalECI.DTO.TipoVerificaDTO">
                 <column name="tipo_verifica_id" not-null="true" />
             </many-to-many>
-        </set>
-     
-       <!--  <set name="cat_verifica" table="intervento__categoriaverifica_tipoverifica" 
-        	inverse="false" lazy="true" fetch="select" cascade="all" >
-            <key>
-                <column name="intervento_id" not-null="true" />
-            </key>
-            <many-to-many entity-name="it.portalECI.DTO.CategoriaVerificaDTO">
-                <column name="categoria_verifica_id" not-null="true" />
-            </many-to-many>
-        </set> -->
-        
-        
+        </set>           
+                
     </class>
 </hibernate-mapping>

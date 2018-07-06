@@ -12,10 +12,8 @@ import javax.servlet.http.HttpServletResponse;
 import org.hibernate.Session;
 
 import it.portalECI.DAO.SessionFacotryDAO;
-import it.portalECI.DTO.CommessaDTO;
 import it.portalECI.DTO.InterventoDTO;
 import it.portalECI.Util.Utility;
-import it.portalECI.bo.GestioneCommesseBO;
 import it.portalECI.bo.GestioneInterventoBO;
 
 /**
@@ -53,9 +51,7 @@ public class GestioneInterventoDati extends HttpServlet {
 		
 		String idIntervento=request.getParameter("idIntervento");
 		
-		InterventoDTO intervento= GestioneInterventoBO.getIntervento(idIntervento, session);
-		
-		System.out.println(intervento.getIdCommessa());
+		InterventoDTO intervento= GestioneInterventoBO.getIntervento(idIntervento, session);		
 
 		request.getSession().setAttribute("intervento", intervento);
 		

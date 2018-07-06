@@ -1,8 +1,10 @@
 package it.portalECI.DTO;
 
+import java.io.Serializable;
+
 import com.google.gson.JsonObject;
 
-public class CompanyDTO  {
+public class CompanyDTO implements Serializable{
 
 	private Integer id;
 	private String denominazione;

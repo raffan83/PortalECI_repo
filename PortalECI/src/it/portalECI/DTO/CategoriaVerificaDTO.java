@@ -1,11 +1,12 @@
 package it.portalECI.DTO;
 
+import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 
 import com.google.gson.JsonObject;
 
-public class CategoriaVerificaDTO {
+public class CategoriaVerificaDTO implements Serializable{
 	
 	private int id;
 	private String descrizione;

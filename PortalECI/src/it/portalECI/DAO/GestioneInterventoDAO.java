@@ -1,19 +1,12 @@
 package it.portalECI.DAO;
 
-import it.portalECI.DTO.AttivitaMilestoneDTO;
 import it.portalECI.DTO.CategoriaVerificaDTO;
-import it.portalECI.DTO.CommessaDTO;
 import it.portalECI.DTO.InterventoDTO;
+import it.portalECI.DTO.StatoInterventoDTO;
 import it.portalECI.DTO.TipoVerificaDTO;
-import it.portalECI.DTO.UtenteDTO;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.hibernate.Query;
 import org.hibernate.Session;
@@ -150,10 +143,11 @@ public class GestioneInterventoDAO {
 		ArrayList<InterventoDTO> lista =null;
 		
 		session.beginTransaction();
-		Query query  = session.createQuery( "from InterventoDTO WHERE id_tecnico_verificatore= :_id_tecnico_verificatore");
+		Query query  = session.createQuery( "from InterventoDTO WHERE id_tecnico_verificatore= :_id_tecnico_verificatore AND id_stato_intervento= :_id_stato_intervento");
 		
 		query.setParameter("_id_tecnico_verificatore", idTecnicoVerificatore);
-				
+		query.setParameter("_id_stato_intervento", StatoInterventoDTO.CREATO);		
+		
 		lista=(ArrayList<InterventoDTO>)query.list();
 		
 		return lista;

@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 
+import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 
 public class CommessaDTO implements Serializable{
@@ -143,10 +144,10 @@ public class CommessaDTO implements Serializable{
 		jobj.addProperty("N_ORDINE", this.N_ORDINE);
 		
 		if(this.listaAttivita!=null) {
-			JsonObject attivitajobj = new JsonObject();
+			JsonArray attivitajobj = new JsonArray();
 			
 			for(AttivitaMilestoneDTO attivita : this.listaAttivita) {
-				attivitajobj.add(Integer.toString(attivita.getId_riga()), attivita.getListaAttivitaJsonObject());
+				attivitajobj.add( attivita.getListaAttivitaJsonObject());
 			}
 			jobj.add("listaAttivita", attivitajobj);
 		}

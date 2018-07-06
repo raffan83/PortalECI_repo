@@ -1,11 +1,12 @@
 package it.portalECI.DTO;
 
+import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 
 import com.google.gson.JsonObject;
 
-public class TipoVerificaDTO {
+public class TipoVerificaDTO implements Serializable{
 	
 	private int id;
 	private CategoriaVerificaDTO categoria;
@@ -49,6 +50,7 @@ public class TipoVerificaDTO {
 	public JsonObject getTipoVerificaJsonObject() {
 		JsonObject jobj = new JsonObject();
 		jobj.addProperty("id", this.id);
+		
 		if(this.categoria!=null)
 			jobj.add("categoria", this.categoria.getCategoriaVerificaJsonObject());
 		

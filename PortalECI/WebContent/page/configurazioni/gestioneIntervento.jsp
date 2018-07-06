@@ -177,16 +177,23 @@
 																	</c:if>
 																</td>
 																<td class="centered">	
-	 																<c:if test="${userObj.checkPermesso('CAMBIO_STATO_INTERVENTO_METROLOGIA')}"> 	 			 
+	 																<c:if test="${userObj.checkPermesso('CAMBIO_STATO_INTERVENTO_METROLOGIA')}">ff
 																		<c:if test="${intervento.statoIntervento.id == 0}">
-																			<a href="#" class="customTooltip" title="Click per chiudere l'Intervento"  onClick="chiudiIntervento(${intervento.id},1,'${loop.index}')" id="statoa_${intervento.id}"> <span class="label label-info">${intervento.statoIntervento.descrizione}</span></a>
+																			<a href="#" class="customTooltip" title="Click per chiudere l'Intervento" onClick="chiudiIntervento(${intervento.id},1,'${loop.index}')" id="statoa_${intervento.id}">
+																				 <span class="label label-info">${intervento.statoIntervento.descrizione}</span>
+																			</a>
 																		</c:if>		
 																		<c:if test="${intervento.statoIntervento.id == 1}">
-																			<a href="#" class="customTooltip" title="Click per chiudere l'Intervento"  onClick="chiudiIntervento(${intervento.id},1,'${loop.index}')" id="statoa_${intervento.id}"> <span class="label label-success">${intervento.statoIntervento.descrizione}</span></a>
+																			<a href="#" class="customTooltip" title="Click per chiudere l'Intervento" onClick="chiudiIntervento(${intervento.id},1,'${loop.index}')" id="statoa_${intervento.id}">
+																				<span class="label label-success">${intervento.statoIntervento.descrizione}</span>
+																			</a>
 																		</c:if>		
-																		<c:if test="${intervento.statoIntervento.id == 2}">
-																			<a href="#" class="customTooltip" title="Click per aprire l'Intervento"  onClick="apriIntervento(${intervento.id},1,'${loop.index}')" id="statoa_${intervento.id}"> <span class="label label-warning">${intervento.statoIntervento.descrizione}</span></a>
+																		<c:if test="${intervento.statoIntervento.id == 7}">
+																			<a href="#" class="customTooltip" title="Click per aprire l'Intervento"  onClick="apriIntervento(${intervento.id},1,'${loop.index}')" id="statoa_${intervento.id}">
+																				<span class="label label-warning">${intervento.statoIntervento.descrizione}</span>
+																			</a>
 																		</c:if>
+																		
 																	</c:if>
 	
 	 																<c:if test="${!userObj.checkPermesso('CAMBIO_STATO_INTERVENTO_METROLOGIA')}"> 	
@@ -241,7 +248,7 @@
 												</c:forEach>
 											</select>
                 						</div>
-              							<div class="row">
+              							<div class="row" style="position:relative;">
             								<div class="form-group col-sm-5">
 	                  							<label>Categoria Verifica</label>
     	              							<select name="select1" id="select1" data-placeholder="Seleziona Categoria..."  class="form-control select2" aria-hidden="true" data-live-search="true">
@@ -261,28 +268,28 @@
     	                 							</c:forEach>
         	         							</select>                  
         									</div>    
-        									<div class="form-group col-sm-2">
-        										<label></label>
-                  								<button onclick="addRow()"><i class="fa fa-plus"></i></button>              
+        									<div class="form-group col-sm-2 text-center" style="position: absolute;	bottom: 0; right: 0;">        									
+                  								<button class="btn-sm" onclick="addRow()"><i class="fa fa-plus"></i></button>              
         									</div>                                     
-  										</div>						
+  										</div>		
+  														
   										<div class="row">
+  											<div class="col-sm-12 ">		
   											<table id="tabVerifica" class="table table-bordered table-hover dataTable table-striped" role="grid" width="100%">
- 												<thead>
- 													<tr class="active">
- 														<th>Categoria Verifica</th>
- 														<th>Tipo Verifica</th> 														
- 														<td></td>
-													</tr>
-												</thead>
- 												<tbody id="bodytabVerifica"> 			
+ 													<thead>
+ 														<tr class="active">
+ 															<th>Categoria Verifica</th>
+ 															<th>Tipo Verifica</th> 														
+ 															<td></td>
+														</tr>
+													</thead>
+ 													<tbody id="bodytabVerifica"> 			
  													
 												
- 												</tbody>
- 											</table>  
+ 													</tbody>
+ 												</table>  
+  											</div>
   										</div>
-  										<div id="empty" class="testo12"></div>
-  										
   		 							</div>
       								<div class="modal-footer">
 						        		<button type="button" class="btn btn-danger"onclick="saveInterventoFromModal()"  >Salva</button>
@@ -517,6 +524,15 @@
 				    $('#myModal').on('hidden.bs.modal', function (e) {
    	  					$('#noteApp').val("");
    	 					$('#empty').html("");
+   	 					
+   	 					$("#select1").val(null).trigger("change");
+   	 					$("#tecnici").val(null).trigger("change");
+   						$("#select2").val(null).trigger("change");
+   					
+   					
+   						$("#select2").prop("disabled", true); 
+   					
+   						$(".categoriaTipiRow").remove();
    					})    
     			});
                 

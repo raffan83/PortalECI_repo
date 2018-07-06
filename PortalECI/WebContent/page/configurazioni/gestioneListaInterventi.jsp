@@ -64,17 +64,17 @@
     	                 										</c:forEach>
         	         										</select>
         	         									</div>  
-														<div class="col-sm-2 " style="position: absolute; bottom: 0; right:0;">
-															<button class="btn btn-default" onclick="cerca()">
-																<i class="glyphicon glyphicon-search"></i>
-															 	Cerca
-															</button>    
 														
-															<button class="btn btn-default pull-right" onclick="annulla()">
-																<i class="glyphicon glyphicon-remove"></i>
-															 	Annulla
-															</button>
-														</div>         
+														<button class="btn btn-default" onclick="cerca()" style="position: absolute; bottom: 0;">
+															<i class="glyphicon glyphicon-search"></i>
+														 	Cerca
+														</button>    
+														
+														<button class="btn btn-default pull-right col-sm-offset-2" onclick="annulla()" style="position: absolute; bottom: 0;">
+															<i class="glyphicon glyphicon-remove"></i>
+															 Annulla
+														</button>
+														         
         												                                     
   													</div>			
 													<!--  -->
@@ -121,11 +121,11 @@
   																				<c:when test="${intervento.getStatoIntervento().getDescrizione().equals('CHIUSO')}">
     																				<span class="label label-danger">CHIUSO</span>
   																				</c:when>
-  																				<c:when test="${intervento.getStatoIntervento().getDescrizione().equals('APERTO')}">
-    																				<span class="label label-success">APERTO</span>
+  																				<c:when test="${intervento.getStatoIntervento().getDescrizione().equals('CREATO')}">
+    																				<span class="label label-success">CREATO</span>
   																				</c:when>
   																				<c:otherwise>
-    																				<span class="label label-info">-</span>
+    																				<span class="label label-info">${intervento.getStatoIntervento().getDescrizione()}</span>
 	 																			</c:otherwise>
 																			</c:choose>  
 																		</a>

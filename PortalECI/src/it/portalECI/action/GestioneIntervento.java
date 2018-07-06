@@ -18,7 +18,6 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
@@ -32,9 +31,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.hibernate.Session;
 
 import com.google.gson.Gson;
-import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
 
 /**
  * Servlet implementation class GestioneIntervento
@@ -71,6 +68,7 @@ public class GestioneIntervento extends HttpServlet {
 		JsonObject myObj = new JsonObject();
 		PrintWriter  out = response.getWriter();
 		String action=request.getParameter("action");
+	
 		try {												
 			
 			if(action ==null || action.equals("")){
@@ -84,11 +82,18 @@ public class GestioneIntervento extends HttpServlet {
 				List<InterventoDTO> listaInterventi =GestioneInterventoBO.getListaInterventi(idCommessa,session);	
 			
 				if(comm.getSYS_STATO().equals("1CHIUSA")) {
-					StatoInterventoDTO stato = new StatoInterventoDTO();
-					stato.setId(2);
-					stato.setDescrizione("CHIUSO");
-					for (InterventoDTO intervento :listaInterventi) {
-						intervento.setStatoIntervento(stato);
+					
+					for (InterventoDTO intervento :listaInterventi) {					
+						
+						try {
+							intervento.cambioStatoIntervento(StatoInterventoDTO.CHIUSO);
+						}catch(IllegalStateException e) {
+							/*myObj.addProperty("success", false);
+							myObj.addProperty("messaggio", e.getMessage());
+							
+							out.print(myObj);
+							return;*/
+						}	
 						GestioneInterventoBO.update(intervento, session);
 					}
 				}
@@ -107,16 +112,13 @@ public class GestioneIntervento extends HttpServlet {
 			}
 			
 			if(action !=null && action.equals("new")){
-		 									
-				//String json = request.getParameter("dataIn");
+		 												
 				String id_tecnico = request.getParameter("tecnico");
 				Set<CategoriaVerificaDTO> categorielist = new HashSet<CategoriaVerificaDTO>();
 				Set<TipoVerificaDTO> tipoverificalist = new HashSet<TipoVerificaDTO>();
-				//String id_categoria=request.getParameter("categoria");
 
 				String[] categoriaTipo=request.getParameterValues("categoriaTipo");
-
-				//if(!id_categoria.equals("null")) {
+			
 				for( int i = 0; i <= categoriaTipo.length - 1; i++){
 					
 					String id_tipo=categoriaTipo[i].substring(0, categoriaTipo[i].indexOf("_"));
@@ -127,8 +129,6 @@ public class GestioneIntervento extends HttpServlet {
 				}
 				
 				UtenteDTO tecnico = GestioneUtenteBO.getUtenteById(id_tecnico, session);
-				//CategoriaVerificaDTO categoria = GestioneInterventoBO.getCategoriaVerifica(id_categoria, session);
-				//TipoVerificaDTO tipo = GestioneInterventoBO.getTipoVerifica(id_tipo, session);
 				
 				CommessaDTO comm=(CommessaDTO)request.getSession().getAttribute("commessa");
 				InterventoDTO intervento= new InterventoDTO();
@@ -139,8 +139,7 @@ public class GestioneIntervento extends HttpServlet {
 				intervento.setId_cliente(comm.getID_ANAGEN());
 					
 				if(!tipoverificalist.isEmpty()) {
-					intervento.setTipo_verifica(tipoverificalist);
-					//intervento.setCat_verifica(categorielist);
+					intervento.setTipo_verifica(tipoverificalist);				
 				}
 				
 				String nomeCliente="";
@@ -152,44 +151,48 @@ public class GestioneIntervento extends HttpServlet {
 				}
 			
 				intervento.setNome_sede(nomeCliente);
-				intervento.setIdCommessa(""+comm.getID_COMMESSA());
-				intervento.setStatoIntervento(new StatoInterventoDTO());
-			
+				intervento.setIdCommessa(""+comm.getID_COMMESSA());				
+				
+				try {
+					intervento.cambioStatoIntervento(StatoInterventoDTO.CREATO);
+				}catch(IllegalStateException e) {
+					myObj.addProperty("success", false);
+					myObj.addProperty("messaggio", e.getMessage());
+					
+					out.print(myObj);
+					return;
+				}
+				
 				CompanyDTO cmp =(CompanyDTO)request.getSession().getAttribute("usrCompany");
 				intervento.setCompany(cmp);
 								
-				GestioneInterventoBO.save(intervento,session);
-			
-				//Gson gson = new Gson();
-		
-				//String jsonInString = gson.toJson(intervento);
+				GestioneInterventoBO.save(intervento,session);				
 					
 				myObj.addProperty("success", true);
 				myObj.add("intervento", intervento.getInterventoJsonObject());
 			
 				out.print(myObj);
-				/*}else {
-			
-					myObj.addProperty("success", false);
-					myObj.addProperty("messaggio", "Campo non selezionato!");
-					out.print(myObj);
-			
-				}*/
+				
 			}
 			if(action !=null && action.equals("chiudi")){
 			 									
 				String idIntervento = request.getParameter("idIntervento" );
 				InterventoDTO intervento = GestioneInterventoBO.getIntervento(idIntervento, session);
-			
-				StatoInterventoDTO stato = new StatoInterventoDTO();
-				stato.setId(2);
-				intervento.setStatoIntervento(stato);		
-							
+						
+				try {
+					intervento.cambioStatoIntervento(StatoInterventoDTO.CHIUSO);
+				}catch(IllegalStateException e) {
+					myObj.addProperty("success", false);
+					myObj.addProperty("messaggio", e.getMessage());
+					
+					out.print(myObj);
+					return;
+				}
+				
 				GestioneInterventoBO.update(intervento,session);
 				
 				Gson gson = new Gson();
 			
-				// 2. Java object to JSON, and assign to a String
 				String jsonInString = gson.toJson(intervento);
 					
 				myObj.addProperty("success", true);
@@ -202,16 +205,21 @@ public class GestioneIntervento extends HttpServlet {
 			
 				String idIntervento = request.getParameter("idIntervento" );
 				InterventoDTO intervento = GestioneInterventoBO.getIntervento(idIntervento, session);
-			
-				StatoInterventoDTO stato = new StatoInterventoDTO();
-				stato.setId(1);
-				intervento.setStatoIntervento(stato);		
 						
+				try {
+					intervento.cambioStatoIntervento(StatoInterventoDTO.CREATO);
+				}catch(IllegalStateException e) {
+					myObj.addProperty("success", false);
+					myObj.addProperty("messaggio", e.getMessage());
+					
+					out.print(myObj);
+					return;
+				}
+				
 				GestioneInterventoBO.update(intervento,session);
 				
 				Gson gson = new Gson();
-			
-				// 2. Java object to JSON, and assign to a String
+						
 				String jsonInString = gson.toJson(intervento);
 					
 				myObj.addProperty("success", true);

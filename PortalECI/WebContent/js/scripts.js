@@ -393,7 +393,7 @@ function saveInterventoFromModal(){
 						//'<span class="label label-info">'+presso+'</span>',
 						intervento.nome_sede,
 						dataCreazione,
-						'<span class="label label-info">APERTO</span>',
+						'<span class="label label-info">CREATO</span>',
 						user.nominativo,
 						tecnico.nominativo,
 						cat_verifica,
