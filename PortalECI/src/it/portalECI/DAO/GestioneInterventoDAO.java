@@ -143,7 +143,10 @@ public class GestioneInterventoDAO {
 		ArrayList<InterventoDTO> lista =null;
 		
 		session.beginTransaction();
+		
+		//CAMBIARE QUERY IN CASO DI TEST IN LOCALE PER FAR SCARICARE SOLO GLI INTERVENTI NELLO STATO CREATO
 		Query query  = session.createQuery( "from InterventoDTO WHERE id_tecnico_verificatore= :_id_tecnico_verificatore AND id_stato_intervento= :_id_stato_intervento");
+		//Query query  = session.createQuery( "from InterventoDTO WHERE id_tecnico_verificatore= :_id_tecnico_verificatore");
 		
 		query.setParameter("_id_tecnico_verificatore", idTecnicoVerificatore);
 		query.setParameter("_id_stato_intervento", StatoInterventoDTO.CREATO);		

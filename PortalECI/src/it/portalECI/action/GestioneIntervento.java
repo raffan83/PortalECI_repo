@@ -109,12 +109,9 @@ public class GestioneIntervento extends HttpServlet {
 
 				RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/page/configurazioni/gestioneIntervento.jsp");
 				dispatcher.forward(request,response);
-			}
-			
-			if(action !=null && action.equals("new")){
+			}else if(action !=null && action.equals("new")){
 		 												
-				String id_tecnico = request.getParameter("tecnico");
-				Set<CategoriaVerificaDTO> categorielist = new HashSet<CategoriaVerificaDTO>();
+				String id_tecnico = request.getParameter("tecnico");				
 				Set<TipoVerificaDTO> tipoverificalist = new HashSet<TipoVerificaDTO>();
 
 				String[] categoriaTipo=request.getParameterValues("categoriaTipo");
@@ -125,7 +122,6 @@ public class GestioneIntervento extends HttpServlet {
 					String id_categoria=categoriaTipo[i].substring(categoriaTipo[i].indexOf("_")+1, categoriaTipo[i].length());
 		
 					tipoverificalist.add(GestioneInterventoBO.getTipoVerifica(id_tipo, session));
-					categorielist.add(GestioneInterventoBO.getCategoriaVerifica(id_categoria, session));
 				}
 				
 				UtenteDTO tecnico = GestioneUtenteBO.getUtenteById(id_tecnico, session);
@@ -173,8 +169,7 @@ public class GestioneIntervento extends HttpServlet {
 			
 				out.print(myObj);
 				
-			}
-			if(action !=null && action.equals("chiudi")){
+			}else if(action !=null && action.equals("chiudi")){
 			 									
 				String idIntervento = request.getParameter("idIntervento" );
 				InterventoDTO intervento = GestioneInterventoBO.getIntervento(idIntervento, session);
@@ -200,8 +195,7 @@ public class GestioneIntervento extends HttpServlet {
 				myObj.addProperty("messaggio", "Intervento chiuso");
 			
 				out.print(myObj);
-			}
-			if(action !=null && action.equals("apri")){			 					
+			}else if(action !=null && action.equals("apri")){			 					
 			
 				String idIntervento = request.getParameter("idIntervento" );
 				InterventoDTO intervento = GestioneInterventoBO.getIntervento(idIntervento, session);
@@ -224,6 +218,85 @@ public class GestioneIntervento extends HttpServlet {
 					
 				myObj.addProperty("success", true);
 				myObj.addProperty("intervento", jsonInString);
+				myObj.addProperty("messaggio", "Intervento aperto");
+			
+				out.print(myObj);
+			}else if(action !=null && action.equals("update")){			 					
+				
+				Set<TipoVerificaDTO> tipoverificalist = new HashSet<TipoVerificaDTO>();
+				
+				String id_tecnico = request.getParameter("tecnico");	
+				String idIntervento = request.getParameter("idIntervento" );
+				String[] categoriaTipo=request.getParameterValues("categoriaTipo");
+								
+				InterventoDTO intervento = GestioneInterventoBO.getIntervento(idIntervento, session);
+						
+				if(intervento.getStatoIntervento().getId()!=StatoInterventoDTO.CREATO) {
+					myObj.addProperty("success", false);
+					myObj.addProperty("messaggio", "Errore! L'intervento \u00E8 gi\u00E0 stato scaricato dal tecnico.");
+					out.print(myObj);
+					return;
+				}
+				
+				for( int i = 0; i <= categoriaTipo.length - 1; i++){				
+					String id_tipo=categoriaTipo[i].substring(0, categoriaTipo[i].indexOf("_"));
+				
+					tipoverificalist.add(GestioneInterventoBO.getTipoVerifica(id_tipo, session));
+				}
+				
+				UtenteDTO tecnico = GestioneUtenteBO.getUtenteById(id_tecnico, session);							
+				if(intervento.getTecnico_verificatore()!=tecnico) {
+					intervento.setTecnico_verificatore(tecnico);
+				}
+				
+				if(!tipoverificalist.isEmpty()) {
+					intervento.setTipo_verifica(tipoverificalist);				
+				}
+				
+				
+				GestioneInterventoBO.update(intervento,session);
+				
+				//Gson gson = new Gson();
+						
+				//String jsonInString = gson.toJson(intervento);
+					
+				myObj.addProperty("success", true);
+				//myObj.addProperty("intervento", jsonInString);
+				myObj.addProperty("messaggio", "Intervento modificato con successo");
+			
+				out.print(myObj);
+			}else if(action !=null && action.equals("cambioStato")){			 					
+			
+				String idIntervento = request.getParameter("idIntervento" );
+				String stato = request.getParameter("stato" );
+				InterventoDTO intervento = GestioneInterventoBO.getIntervento(idIntervento, session);
+				
+				int idStato;
+				if(stato.equals("CHIUSO")) {
+					idStato=StatoInterventoDTO.CHIUSO;
+				}else if(stato.equals("ANNULLATO")) {
+					idStato=StatoInterventoDTO.ANNULLATO;
+				}else {
+					myObj.addProperty("success", false);
+					myObj.addProperty("messaggio", "Errore imprevisto durante il passaggio di stato dell'intervento!");
+					
+					out.print(myObj);
+					return;
+				}
+				
+				try {
+					intervento.cambioStatoIntervento(idStato);
+				}catch(IllegalStateException e) {
+					myObj.addProperty("success", false);
+					myObj.addProperty("messaggio", e.getMessage());
+					
+					out.print(myObj);
+					return;
+				}
+				
+				GestioneInterventoBO.update(intervento,session);			
+					
+				myObj.addProperty("success", true);
 				myObj.addProperty("messaggio", "Intervento aperto");
 			
 				out.print(myObj);

@@ -235,7 +235,9 @@
     						<div class="modal-dialog" role="document">
     							<div class="modal-content">
      								<div class="modal-header">
-        								<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        								<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        									<span aria-hidden="true">&times;</span>
+        								</button>
         								<h4 class="modal-title" id="myModalLabel">Nuovo Intervento</h4>
       								</div>
        								<div class="modal-body">             
@@ -579,7 +581,7 @@
 							$("#bodytabVerifica").append('<tr class="categoriaTipiRow" id="'+tipi_verifica+'" role="row" >'+
 								'<td >'+$('#select1').find('[value='+categorie_verifica+']').text()+'</td>'+
 								'<td >'+$('#select2').find('[value='+tipi_verifica+']').text()+'</td>'+																														 		
-								'<td><a class="btn customTooltip" title="Click per aprire il dettaglio dell\'Intervento" onclick="removeRow(\''+tipi_verifica+'\')"><i class="fa fa-minus"></i></a></td></tr>');
+								'<td><a class="btn customTooltip" title="Click per eliminare la riga" onclick="removeRow(\''+tipi_verifica+'\')"><i class="fa fa-minus"></i></a></td></tr>');
 					
 							/*$('#select1').find('[value='+categorie_verifica+']').remove();
 							$('#select2').find('[value='+tipi_verifica+']').remove();*/

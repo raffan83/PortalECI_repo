@@ -104,7 +104,7 @@
 																		</a>
 																	</td>
 																	<td>
-																		<a href="#" class="btn customTooltip customlink" title="Click per aprire il dettaglio dell'Intervento" onclick="callAction('gestioneIntervento.do?idCommessa=${intervento.getIdCommessa()}');">
+																		<a href="#" class="btn customTooltip customlink" title="Click per aprire il dettaglio della Commessa" onclick="callAction('gestioneIntervento.do?idCommessa=${intervento.getIdCommessa()}');">
 																			<c:out value='${intervento.getIdCommessa()}'/>
 																		</a>
 																	</td>
