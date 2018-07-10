@@ -1,0 +1,17 @@
+<?xml version='1.0' encoding='UTF-8'?>  
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+	<class name="it.portalECI.DTO.OpzioneRispostaQuestionarioDTO" table="OPZIONE_QUESTIONARIO">
+		<id name="id">
+			<generator class="identity"></generator>
+		</id>
+		<property name="testo">
+			<column name="testo" length="1024"/>
+		</property>
+		<many-to-one name="risposta" class="it.portalECI.DTO.RispostaSceltaQuestionarioDTO">
+            <column name="risposta_id" not-null="true" />
+        </many-to-one>
+	</class>
+</hibernate-mapping>

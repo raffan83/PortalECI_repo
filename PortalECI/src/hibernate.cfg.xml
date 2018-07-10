@@ -9,7 +9,7 @@
 		<property name="hibernate.connection.url">jdbc:mysql://212.237.23.231:3306/eci_db</property>
   		<property name="hibernate.connection.username">root</property>
   		<property name="hibernate.dialect">org.hibernate.dialect.MySQLInnoDBDialect</property>
-  		<property name="hbm2ddl.auto">update</property>
+  		<property name="hibernate.hbm2ddl.auto">update</property>
   
   		<mapping class="UtenteDTO" package="it.portalECI.DTO" resource="it/portalECI/hbm/UtenteDTO.hbm.xml"/>
   		<mapping class="CompanyDTO" package="it.portalECI.DTO" resource="it/portalECI/hbm/CompanyDTO.hbm.xml"/>
@@ -20,7 +20,11 @@
   		<mapping class="StatoInterventoDTO" package="it.portalECI.DTO" resource="it/portalECI/hbm/StatoInterventoDTO.hbm.xml"/>
   		<mapping class="TipoVerificaDTO" package="it.portalECI.DTO" resource="it/portalECI/hbm/TipoVerificaDTO.hbm.xml"/>
   		<mapping class="CategoriaVerificaDTO" package="it.portalECI.DTO" resource="it/portalECI/hbm/CategoriaVerificaDTO.hbm.xml"/>
-  
+  		
+  		<mapping class="OpzioneRispostaQuestionarioDTO" package="it.portalECI.DTO" resource="it/portalECI/hbm/OpzioneRispostaQuestionarioDTO.hbm.xml"/>
+  		<mapping class="RispostaQuestionario" package="it.portalECI.DTO" resource="it/portalECI/hbm/RispostaQuestionario.hbm.xml"/>
+  		<mapping class="DomandaQuestionarioDTO" package="it.portalECI.DTO" resource="it/portalECI/hbm/DomandaQuestionarioDTO.hbm.xml"/>
+  		<mapping class="QuestionarioDTO" package="it.portalECI.DTO" resource="it/portalECI/hbm/QuestionarioDTO.hbm.xml"/>
   
  	</session-factory>
 </hibernate-configuration>

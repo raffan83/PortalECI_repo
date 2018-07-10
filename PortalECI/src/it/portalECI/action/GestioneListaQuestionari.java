@@ -10,12 +10,17 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.hibernate.Session;
+
+import it.portalECI.DAO.SessionFacotryDAO;
 import it.portalECI.DTO.CommessaDTO;
 import it.portalECI.DTO.CompanyDTO;
+import it.portalECI.DTO.QuestionarioDTO;
 import it.portalECI.DTO.UtenteDTO;
 import it.portalECI.Exception.ECIException;
 import it.portalECI.Util.Utility;
 import it.portalECI.bo.GestioneCommesseBO;
+import it.portalECI.bo.GestioneQuestionarioBO;
 
 /**
  * Servlet implementation class GestioneUtenti
@@ -52,12 +57,15 @@ public class GestioneListaQuestionari extends HttpServlet {
 			CompanyDTO company =(CompanyDTO)request.getSession().getAttribute("usrCompany");
 			
 			UtenteDTO user = (UtenteDTO)request.getSession().getAttribute("userObj");
+			
+			Session session=SessionFacotryDAO.get().openSession();
+			session.beginTransaction();
 					
-		//	ArrayList<QuestionarioDTO> listaQuestionari =GestioneQuestionarioBO.getListaQuestionari(company,"",user);
+			ArrayList<QuestionarioDTO> listaQuestionari =(ArrayList<QuestionarioDTO>) GestioneQuestionarioBO.getListaQuestionari(session);
 			
-			//request.getSession().setAttribute("listaQuestionari", listaQuestionari);
+			request.getSession().setAttribute("listaQuestionari", listaQuestionari);
 			
-			RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/page/configurazioni/gestioneListaQuestionario.jsp");
+			RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/page/questionario/listaQuestionario.jsp");
 	     	dispatcher.forward(request,response);
 			
 		}catch(Exception ex){

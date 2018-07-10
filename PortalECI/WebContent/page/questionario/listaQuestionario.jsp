@@ -42,62 +42,25 @@
 													</div>
 												</div>
 												<div class="box-body">
-              										<table id="tabPM" class="table table-bordered table-hover dataTable table-striped" role="grid" width="100%">
+              										<table id="tabellaQuestionari" class="table table-bordered table-hover dataTable table-striped" role="grid" width="100%">
  														<thead>
  															<tr class="active"> 
  																<th>ID questionario</th>
- 																<!--<th>Cliente</th>
- 																<th>Sede</th>
- 																<th>Stato Richiedente</th>
- 																<th>Data Apertura</th>
- 																<th>Data Chiusura</th>
- 																<td></td>-->
+ 																<th>Tipo</th>
+ 																<th>Titolo</th>
  															</tr>
  														</thead>
  
  														<tbody> 
   															<c:forEach items="${listaQuestionari}" var="questionario">
- 																<tr role="row" id="${questionario.ID_COMMESSA}">
+ 																<tr role="row" id="questionario_${questionario.id}">
 																	<td>
-																		<a href="#" class="btn customTooltip customlink" title="Click per aprire il dettaglio della Commessa" onclick="callAction('gestioneIntervento.do?idCommessa=${commessa.ID_COMMESSA}');">
-																			${questionario.ID_COMMESSA}
+																		<a href="#" class="btn customTooltip customlink" title="Click per aprire il dettaglio del questionario" onclick="callAction('');">
+																			${questionario.id}
 																		</a>
 																	</td>
-																	<td>
-																		<c:out value="${questionario.ID_ANAGEN_NOME}"/>
-																	</td>
-																	<td>
-																		<c:out value="${questionario.ANAGEN_INDR_DESCR}"/>  <c:out value="${questionario.ANAGEN_INDR_INDIRIZZO}"/>
-																	</td>
-																	<td class="centered">
- 																		<c:choose>
-  																			<c:when test="${questionario.SYS_STATO == '1CHIUSA'}">
-    																			<span class="label label-danger">CHIUSA</span>
-  																			</c:when>
-  																			<c:when test="${questionario.SYS_STATO == '1APERTA'}">
-    																			<span class="label label-success">APERTA</span>
-  																			</c:when>
-  																			<c:when test="${questionario.SYS_STATO == '0CREATA'}">
-    																			<span class="label label-warning">CREATA</span>
-  																			</c:when>
-  																			<c:otherwise>
-    																			<span class="label label-info">-</span>
-  																			</c:otherwise>
-																		</c:choose> 
-																	</td>
-																	<td>
-																		<fmt:formatDate pattern="dd/MM/yyyy" value="${questionario.DT_COMMESSA}" type='date' />
-																	</td>
-																	<td>
-																		<c:if test="${not empty questionario.FIR_CHIUSURA_DT}">
-   																			<fmt:formatDate pattern="dd/MM/yyyy" value="${questionario.FIR_CHIUSURA_DT}" />
-																		</c:if>
-																	</td>
-																	<td>
-																		<a class="btn customTooltip" title="Click per aprire il dettaglio del Questionario" onclick="callAction('gestioneIntervento.do?idQuestionario=${questionario.ID_COMMESSA}');">
-                															<i class="fa fa-arrow-right"></i>
-            															</a>
-        															</td>
+																	<td>${questionario.tipo.codice }</td>
+																	<td>${questionario.titolo}</td>
 																</tr>
 															</c:forEach>
  														</tbody>
@@ -176,7 +139,7 @@
   		<script type="text/javascript">
    
     		$(document).ready(function() {
-     			table = $('#tabPM').DataTable({
+     			table = $('#tabellaQuestionari').DataTable({
     				language: {
   	        			emptyTable : 	"Nessun dato presente nella tabella",
   	        			info	:"Vista da _START_ a _END_ di _TOTAL_ elementi",
@@ -210,10 +173,8 @@
     	      		scrollX: false,
     	      		columnDefs: [
 						{ responsivePriority: 1, targets: 0 },
-    	                { responsivePriority: 3, targets: 2 },
-    	                { responsivePriority: 4, targets: 3 },
-    	                { responsivePriority: 2, targets: 6 },
-    	                { orderable: false, targets: 6 },
+    	                { responsivePriority: 1, targets: 1 },
+    	                { responsivePriority: 2, targets: 2 },
     	            ],             
     	            buttons: [ {
     	            	extend: 'copy',
@@ -237,7 +198,7 @@
     	            }]    	        	     
     	    	});
     			
-     			table.buttons().container().appendTo( '#tabPM_wrapper .col-sm-6:eq(1)' );
+     			table.buttons().container().appendTo( '#tabellaQuestionari_wrapper .col-sm-6:eq(1)' );
      	   
  				/* $('#tabPM').on( 'dblclick','tr', function () {
        				var id = $(this).attr('id');       		
@@ -255,8 +216,8 @@
        	 			$('#empty').html("");
        			})
     
-    			$('#tabPM thead th').each( function () {
-        			var title = $('#tabPM thead th').eq( $(this).index() ).text();
+    			$('#tabellaQuestionari thead th').each( function () {
+        			var title = $('#tabellaQuestionari thead th').eq( $(this).index() ).text();
         			$(this).append( '<div><input class="inputsearchtable" style="width:100%" type="text" /></div>');
 				} );
        			
@@ -265,7 +226,7 @@
 				});
  
     			// DataTable
-  				table = $('#tabPM').DataTable();
+  				table = $('#tabellaQuestionari').DataTable();
     
     			// Apply the search
     			table.columns().eq( 0 ).each( function ( colIdx ) {
@@ -276,7 +237,7 @@
     			
     			table.columns.adjust().draw();
     
-    	 		$('#tabPM').on( 'page.dt', function () {
+    	 		$('#tabellaQuestionari').on( 'page.dt', function () {
 					$('.customTooltip').tooltipster({
 			        	theme: 'tooltipster-light'
 			    	});
