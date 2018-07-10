@@ -27,7 +27,6 @@
 
 			    <!-- Main content -->
     			<section class="content">
-
 					<div class="row">
         				<div class="col-xs-12">
           					<div class="box">
@@ -45,22 +44,22 @@
               										<table id="tabellaQuestionari" class="table table-bordered table-hover dataTable table-striped" role="grid" width="100%">
  														<thead>
  															<tr class="active"> 
- 																<th>ID questionario</th>
  																<th>Tipo</th>
  																<th>Titolo</th>
+ 																<td></td>
  															</tr>
  														</thead>
  
  														<tbody> 
   															<c:forEach items="${listaQuestionari}" var="questionario">
  																<tr role="row" id="questionario_${questionario.id}">
-																	<td>
-																		<a href="#" class="btn customTooltip customlink" title="Click per aprire il dettaglio del questionario" onclick="callAction('');">
-																			${questionario.id}
-																		</a>
-																	</td>
 																	<td>${questionario.tipo.codice }</td>
 																	<td>${questionario.titolo}</td>
+																	<td>
+																		<a href="gestioneQuestionario.do?idQuestionario=${questionario.id}" class="btn customTooltip customlink" title="Click per aprire il dettaglio del questionario">
+																			<i class="fa fa-edit fa-2x"></i>
+																		</a>
+																	</td>
 																</tr>
 															</c:forEach>
  														</tbody>
@@ -175,6 +174,7 @@
 						{ responsivePriority: 1, targets: 0 },
     	                { responsivePriority: 1, targets: 1 },
     	                { responsivePriority: 2, targets: 2 },
+    	                { orderable: false, targets: 2 },
     	            ],             
     	            buttons: [ {
     	            	extend: 'copy',

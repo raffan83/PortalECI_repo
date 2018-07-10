@@ -15,4 +15,9 @@ public class GestioneQuestionarioDAO {
 		return result;
 	}
 
+	public static QuestionarioDTO getQuestionarioById(Integer idQuestionario, Session session) {
+		QuestionarioDTO questionario  = (QuestionarioDTO) session.get( QuestionarioDTO.class, idQuestionario);
+		return questionario;
+	}
+
 }

@@ -11,4 +11,9 @@ public class GestioneQuestionarioBO {
 	public static List<QuestionarioDTO> getListaQuestionari(Session session) {
 		return GestioneQuestionarioDAO.getListaQuestionari(session); 
 	}
+
+	public static QuestionarioDTO getQuestionarioById(Integer idQuestionario, Session session) {
+		return GestioneQuestionarioDAO.getQuestionarioById(idQuestionario, session);
+	}
+
 }
