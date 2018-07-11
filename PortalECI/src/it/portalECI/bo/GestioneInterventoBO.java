@@ -1,9 +1,13 @@
 package it.portalECI.bo;
 
 import it.portalECI.DAO.GestioneInterventoDAO;
+import it.portalECI.DAO.GestioneStatoInterventoDAO;
 import it.portalECI.DTO.CategoriaVerificaDTO;
 import it.portalECI.DTO.InterventoDTO;
+import it.portalECI.DTO.QuestionarioDTO;
+import it.portalECI.DTO.StatoInterventoDTO;
 import it.portalECI.DTO.TipoVerificaDTO;
+import it.portalECI.DTO.VerbaleDTO;
 
 import java.util.ArrayList;
 
@@ -15,6 +19,39 @@ public class GestioneInterventoBO {
 
 	public static List<InterventoDTO> getListaInterventi(String idCommessa, Session session) throws Exception {
 		return GestioneInterventoDAO.getListaInterventi(idCommessa,session);
+	}
+	
+	public static boolean scaricaIntervento(InterventoDTO intervento, Session session) {
+		boolean result=false;
+			
+		
+			if(buildVerbali( intervento, session)) {
+				intervento.cambioStatoIntervento(GestioneStatoInterventoDAO.getStatoInterventoById(StatoInterventoDTO.SCARICATO, session));
+				update(intervento, session);
+				result=true;
+			}
+		return result;
+	}
+
+	private static boolean buildVerbali(InterventoDTO intervento, Session session) {
+		//TODO BUILD REAL INSTANCE OF QUESTIONARIO FOR THIS INTERVENTO
+		boolean result =true;
+		if(intervento!=null) {
+			for(TipoVerificaDTO tipoVerifica:intervento.getTipo_verifica()) {
+				//retrieve questionario for tipoVerificaCodice
+				String codiceVerifica= tipoVerifica.getCodice();
+				VerbaleDTO verbale= GestioneQuestionarioBO.buildVerbaleByQuestionario(codiceVerifica, session);
+				System.out.println("verbale CREATO : "+(verbale!=null?verbale.getId():-1));
+				if(verbale==null) {
+					result=false;
+				}else {
+					intervento.addToVerbali(verbale);
+				}
+			}
+		}else {
+			result=false;
+		}
+		return result;
 	}
 
 	public static Integer save(InterventoDTO intervento, Session session) throws Exception {
@@ -63,6 +100,11 @@ public class GestioneInterventoBO {
 	public static ArrayList<Integer> getListaSediInterventi() {
 		// TODO Auto-generated method stub
 		return GestioneInterventoDAO.getListaSediInterventi();
+	}
+	
+	public static ArrayList<InterventoDTO> getListaInterventiDownload(Session session, int idTecnicoVerificatore) {
+		// TODO Auto-generated method stub
+		return GestioneInterventoDAO.getListaInterventiDownload( session,  idTecnicoVerificatore);
 	}
 	
 	public static ArrayList<InterventoDTO> getListaInterventiTecnico(Session session, int idTecnicoVerificatore) {

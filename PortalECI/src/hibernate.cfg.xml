@@ -25,6 +25,13 @@
   		<mapping class="RispostaQuestionario" package="it.portalECI.DTO" resource="it/portalECI/hbm/RispostaQuestionario.hbm.xml"/>
   		<mapping class="DomandaQuestionarioDTO" package="it.portalECI.DTO" resource="it/portalECI/hbm/DomandaQuestionarioDTO.hbm.xml"/>
   		<mapping class="QuestionarioDTO" package="it.portalECI.DTO" resource="it/portalECI/hbm/QuestionarioDTO.hbm.xml"/>
-  
+  		
+  		
+  		<mapping class="OpzioneRispostaVerbaleDTO" package="it.portalECI.DTO" resource="it/portalECI/hbm/OpzioneRispostaVerbaleDTO.hbm.xml"/>
+  		<mapping class="RispostaVerbaleDTO" package="it.portalECI.DTO" resource="it/portalECI/hbm/RispostaVerbaleDTO.hbm.xml"/>
+  		<mapping class="DomandaVerbaleDTO" package="it.portalECI.DTO" resource="it/portalECI/hbm/DomandaVerbaleDTO.hbm.xml"/>
+  		<mapping class="VerbaleDTO" package="it.portalECI.DTO" resource="it/portalECI/hbm/VerbaleDTO.hbm.xml"/>
+  		<mapping class="StatoVerbaleDTO" package="it.portalECI.DTO" resource="it/portalECI/hbm/StatoVerbaleDTO.hbm.xml"/>
+  	
  	</session-factory>
 </hibernate-configuration>

@@ -1,7 +1,9 @@
 package it.portalECI.DTO;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import com.google.gson.JsonArray;
@@ -30,6 +32,8 @@ public class InterventoDTO implements Serializable{
 	private UtenteDTO tecnico_verificatore;
 	
 	private Set<TipoVerificaDTO> tipo_verifica= new HashSet<TipoVerificaDTO>();
+	
+	private List<VerbaleDTO> verbali;
 	
 	public Date getDataCreazione() {
 		return dataCreazione;
@@ -119,6 +123,21 @@ public class InterventoDTO implements Serializable{
 	}
 	
 	
+	
+	public List<VerbaleDTO> getVerbali() {
+		return verbali;
+	}
+	public void setVerbali(List<VerbaleDTO> verbali) {
+		this.verbali = verbali;
+	}
+	
+	public void addToVerbali(VerbaleDTO verbale) {
+		if(this.verbali==null) {
+			this.verbali= new ArrayList<>();
+		}
+		this.verbali.add(verbale);
+	}
+	
 	public JsonObject getInterventoJsonObject() {
 		JsonObject jobj = new JsonObject();
 		jobj.addProperty("id", this.id);
@@ -128,17 +147,17 @@ public class InterventoDTO implements Serializable{
 		jobj.addProperty("nome_sede", this.nome_sede);
 		jobj.addProperty("idCommessa", this.idCommessa);
 		
-		if(this.user!=null)
-			jobj.add("user", this.user.getUtenteJsonObject());
+		//if(this.user!=null)
+		//	jobj.add("user", this.user.getUtenteJsonObject());
 		
-		if(this.statoIntervento!=null)
+		if(this.getStatoIntervento()!=null)
 			jobj.add("statoIntervento", this.statoIntervento.getStatoInterventoJsonObject());
 		
 		if(this.company!=null)
 			jobj.add("company", this.company.getCompanyJsonObject());
 		
-		if(this.tecnico_verificatore!=null)
-			jobj.add("tecnico_verificatore", this.tecnico_verificatore.getUtenteJsonObject());
+		//if(this.tecnico_verificatore!=null)
+		//	jobj.add("tecnico_verificatore", this.tecnico_verificatore.getUtenteJsonObject());
 			
 		if(this.tipo_verifica!=null) {
 			JsonArray tipo_verificajobj = new JsonArray();
@@ -149,53 +168,61 @@ public class InterventoDTO implements Serializable{
 			jobj.add("tipo_verifica", tipo_verificajobj);
 		}		
 		
+		if(this.verbali!=null) {
+			JsonArray verbaliobj = new JsonArray();
+			
+			for(VerbaleDTO verbale : this.verbali) {
+				verbaliobj.add(verbale.getVerbaleJsonObject());
+			}
+			jobj.add("verbali", verbaliobj);
+		}		
+		
 		return jobj;
 	}
 	
-	public Boolean cambioStatoIntervento(int newStato) throws IllegalStateException{
+	public Boolean cambioStatoIntervento(StatoInterventoDTO newStato) throws IllegalStateException{
 		
-		StatoInterventoDTO stato = new StatoInterventoDTO();
 
 		//se nuovo
-		if(this.statoIntervento==null && newStato== StatoInterventoDTO.CREATO) {	
-			stato.setId(newStato);	
-		}else if(this.statoIntervento!=null && newStato==this.statoIntervento.id) {
+		if(this.statoIntervento==null && newStato.getId()== StatoInterventoDTO.CREATO) {	
+			
+		}else if(this.statoIntervento!=null && newStato.getId()==this.statoIntervento.id) {
 			//se uguale allo stato esistente
 			return true;
 		}else if(this.statoIntervento!=null && this.statoIntervento.id== StatoInterventoDTO.CREATO){
-			if(newStato== StatoInterventoDTO.SCARICATO || newStato==StatoInterventoDTO.ANNULLATO || newStato==StatoInterventoDTO.CHIUSO) {				
-				stato.setId(newStato);				
+			if(newStato.getId()== StatoInterventoDTO.SCARICATO || newStato.getId()==StatoInterventoDTO.ANNULLATO || newStato.getId()==StatoInterventoDTO.CHIUSO) {				
+				
 			}else {
 				throw new IllegalStateException("Passaggio di Stato non consentito!");				
 			}
 		}else if(this.statoIntervento!=null && this.statoIntervento.id==StatoInterventoDTO.DA_VERIFICARE) {
-			if(newStato== StatoInterventoDTO.ANNULLATO || newStato==StatoInterventoDTO.IN_VERIFICA || newStato==StatoInterventoDTO.CHIUSO) {				
-				stato.setId(newStato);				
-			}else if(newStato!= StatoInterventoDTO.SCARICATO){
+			if(newStato.getId()== StatoInterventoDTO.ANNULLATO || newStato.getId()==StatoInterventoDTO.IN_VERIFICA || newStato.getId()==StatoInterventoDTO.CHIUSO) {				
+								
+			}else if(newStato.getId()!= StatoInterventoDTO.SCARICATO){
 				throw new IllegalStateException("Passaggio di Stato non consentito!");	
 			}
 		}else if(this.statoIntervento!=null && this.statoIntervento.id==StatoInterventoDTO.IN_VERIFICA) {
-			if(newStato== StatoInterventoDTO.VERIFICATO || newStato==StatoInterventoDTO.ANNULLATO || newStato==StatoInterventoDTO.CHIUSO) {				
-				stato.setId(newStato);		
-			}else if(newStato!= StatoInterventoDTO.SCARICATO){
+			if(newStato.getId()== StatoInterventoDTO.VERIFICATO || newStato.getId()==StatoInterventoDTO.ANNULLATO || newStato.getId()==StatoInterventoDTO.CHIUSO) {				
+				
+			}else if(newStato.getId()!= StatoInterventoDTO.SCARICATO){
 				throw new IllegalStateException("Passaggio di Stato non consentito!");	
 			}
 		}else if(this.statoIntervento!=null && this.statoIntervento.id==StatoInterventoDTO.SCARICATO) {
-			if(newStato==StatoInterventoDTO.CHIUSO) {				
-				stato.setId(newStato);		
-			}else if(newStato!= StatoInterventoDTO.SCARICATO){
+			if(newStato.getId()==StatoInterventoDTO.CHIUSO) {				
+						
+			}else if(newStato.getId()!= StatoInterventoDTO.SCARICATO){
 				throw new IllegalStateException("Passaggio di Stato non consentito!");	
 			}
 		}else if(this.statoIntervento!=null && this.statoIntervento.id==StatoInterventoDTO.VERIFICATO) {
-			if(newStato==StatoInterventoDTO.CHIUSO) {				
-				stato.setId(newStato);		
-			}else if(newStato!= StatoInterventoDTO.SCARICATO){
+			if(newStato.getId()==StatoInterventoDTO.CHIUSO) {				
+						
+			}else if(newStato.getId()!= StatoInterventoDTO.SCARICATO){
 				throw new IllegalStateException("Passaggio di Stato non consentito!");	
 			}else {
 				return true;
 			}
 		}else if(this.statoIntervento!=null && this.statoIntervento.id==StatoInterventoDTO.CHIUSO){
-			if(newStato!=StatoInterventoDTO.SCARICATO) {
+			if(newStato.getId()!=StatoInterventoDTO.SCARICATO) {
 				throw new IllegalStateException("Passaggio di Stato non consentito!");	
 			}else {
 				return true;
@@ -204,7 +231,7 @@ public class InterventoDTO implements Serializable{
 			throw new IllegalStateException("Passaggio di Stato non consentito!");	
 		}		
 		
-		this.setStatoIntervento(stato);
+		this.setStatoIntervento(newStato);
 		
 		return true;
 	}

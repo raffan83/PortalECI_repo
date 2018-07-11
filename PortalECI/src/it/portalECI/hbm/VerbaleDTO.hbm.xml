@@ -1,0 +1,45 @@
+<?xml version='1.0' encoding='UTF-8'?>  
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+	<class name="it.portalECI.DTO.VerbaleDTO" table="Verbale">
+		<id name="id">
+			<generator class="identity"></generator>
+		</id>
+		<property name="createDate" update="false" insert="false" generated="insert"/>
+  		<property name="updateDate" update="false" insert="false" generated="always"/>
+  		
+		<property name="questionarioID">
+			<column name="questionarioID" />
+		</property> 
+		
+		<property name="codiceVerifica">
+			<column name="codiceVerifica" length="256"/>
+		</property> 
+		<property name="descrizioneVerifica">
+			<column name="descrizioneVerifica" length="256"/>
+		</property> 
+		 <many-to-one name="stato" class="it.portalECI.DTO.StatoVerbaleDTO" fetch="join" lazy="false">
+            <column name="id_stato_verbale" />
+        </many-to-one>
+		
+
+		<list name="domandeVerbale" table="DOMANDA_VERBALE" inverse="false" lazy="true" fetch="select" cascade="all">
+			<key>
+				<column name="verbale_id"></column>
+			</key>
+			<list-index column="idx_vr"></list-index>
+			<one-to-many class="it.portalECI.DTO.DomandaVerbaleDTO"/>
+		</list>
+<!-- 		
+		<list name="domandeSchedaTecnica" table="DOMANDA_QUESTIONARIO" inverse="false" lazy="true" fetch="select" cascade="all">
+			<key>
+				<column name="questionario_id"></column>
+			</key>
+			<list-index column="idx_st"></list-index>
+			<one-to-many class="it.portalECI.DTO.DomandaQuestionarioDTO"/>
+		</list>
+		 -->
+	</class>
+</hibernate-mapping> 

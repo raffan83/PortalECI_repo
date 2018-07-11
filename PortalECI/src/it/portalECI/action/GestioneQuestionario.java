@@ -40,7 +40,7 @@ public class GestioneQuestionario extends HttpServlet {
 
 		Integer id = null;
 		try {
-			id = Integer.parseUnsignedInt(idQuestionario);
+			id = Integer.parseInt(idQuestionario);
 		}catch (NumberFormatException e) {
 			response.sendRedirect("gestioneListaQuestionari.do");
 			return;

@@ -139,10 +139,10 @@ public class GestioneInterventoDAO {
 		return lista;
 	}
 
-	public static ArrayList<InterventoDTO> getListaInterventiTecnico(Session session, int idTecnicoVerificatore ) {
+	public static ArrayList<InterventoDTO> getListaInterventiDownload(Session session, int idTecnicoVerificatore ) {
 		ArrayList<InterventoDTO> lista =null;
 		
-		session.beginTransaction();
+		//session.beginTransaction();
 		
 		//CAMBIARE QUERY IN CASO DI TEST IN LOCALE PER FAR SCARICARE SOLO GLI INTERVENTI NELLO STATO CREATO
 		Query query  = session.createQuery( "from InterventoDTO WHERE id_tecnico_verificatore= :_id_tecnico_verificatore AND id_stato_intervento= :_id_stato_intervento");
@@ -151,6 +151,19 @@ public class GestioneInterventoDAO {
 		query.setParameter("_id_tecnico_verificatore", idTecnicoVerificatore);
 		query.setParameter("_id_stato_intervento", StatoInterventoDTO.CREATO);		
 		
+		lista=(ArrayList<InterventoDTO>)query.list();
+		
+		return lista;
+	}
+	
+	
+	public static ArrayList<InterventoDTO> getListaInterventiTecnico(Session session, int idTecnicoVerificatore ) {
+		ArrayList<InterventoDTO> lista =null;
+	
+		//CAMBIARE QUERY IN CASO DI TEST IN LOCALE PER FAR SCARICARE
+		Query query  = session.createQuery( "from InterventoDTO WHERE id_tecnico_verificatore= :_id_tecnico_verificatore");
+		//Query query  = session.createQuery( "from InterventoDTO WHERE id_tecnico_verificatore= :_id_tecnico_verificatore");
+		query.setParameter("_id_tecnico_verificatore", idTecnicoVerificatore);
 		lista=(ArrayList<InterventoDTO>)query.list();
 		
 		return lista;

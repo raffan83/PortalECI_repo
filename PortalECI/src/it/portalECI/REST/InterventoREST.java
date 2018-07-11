@@ -13,6 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.hibernate.Session;
 
 import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
 import it.portalECI.DAO.GestioneAccessoDAO;
@@ -23,7 +24,7 @@ import it.portalECI.DTO.UtenteDTO;
 import it.portalECI.Exception.ECIException;
 import it.portalECI.bo.GestioneInterventoBO;
 
-@WebServlet(name="InterventoREST" , urlPatterns = { "/rest/intervento" })
+@WebServlet(name="InterventoREST" , urlPatterns = { "/rest/interventi" })
 
 public class InterventoREST extends HttpServlet {
 	private static final long serialVersionUID = 1L;
@@ -43,12 +44,13 @@ public class InterventoREST extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 //READ		
     	response.setContentType("application/json");
-		JsonObject myObj = new JsonObject();
+    	JsonArray responseJson = new JsonArray();
 		PrintWriter out = response.getWriter();
 		
 		try{			
 			String user=request.getParameter("username");
 			String pwd=request.getParameter("password");
+			
 			
 			UtenteDTO utente=GestioneAccessoDAO.controllaAccesso(user,pwd);
 			
@@ -58,63 +60,53 @@ public class InterventoREST extends HttpServlet {
 			  
 				Session session=SessionFacotryDAO.get().openSession();
 				session.beginTransaction();
-				String action=request.getParameter("action");
+				String action=request.getParameter("action")!=null?request.getParameter("action"):"list";
 					
-				if(idIntervento==null) {
-					ArrayList<InterventoDTO> listaInterventi = GestioneInterventoBO.getListaInterventiTecnico( session, utente.getId());
-
-					JsonArray singleObj = new JsonArray();
-					for(InterventoDTO intervento : listaInterventi) {						
-						
-						singleObj.add( intervento.getInterventoJsonObject());
-						
-						try {
-							intervento.cambioStatoIntervento(StatoInterventoDTO.SCARICATO);
-							GestioneInterventoBO.update(intervento, session);
-						}catch(IllegalStateException e) {
-							myObj.addProperty("success", false);
-							myObj.addProperty("messaggio", e.getMessage());
-							
-							out.print(myObj);
-							return;
+				if(idIntervento==null) {	
+					//lista interventi
+					ArrayList<InterventoDTO> listaInterventi = null;
+					if(action.equals("download") )
+						listaInterventi = GestioneInterventoBO.getListaInterventiDownload( session, utente.getId());
+					else if(action.equals("list"))
+						listaInterventi = GestioneInterventoBO.getListaInterventiTecnico( session, utente.getId());
+					else {
+						response.setStatus(response.SC_BAD_REQUEST);
+						return;
+					}
+					for(InterventoDTO intervento : listaInterventi) {
+						if(action.equals("download") ) {
+							if(GestioneInterventoBO.scaricaIntervento(intervento,session)) {
+								responseJson.add( intervento.getInterventoJsonObject());
+							}
+						}else if(action.equals("list")){
+							listaInterventi = GestioneInterventoBO.getListaInterventiTecnico( session, utente.getId());
+							responseJson.add( intervento.getInterventoJsonObject());
 						}
 			   		}
-					myObj.add("listaInterventi", singleObj);
-				}else {					
+					
+				}else {	
+					//dettaglio intervento
 					InterventoDTO intervento = GestioneInterventoBO.getInterventoTecnico( session, utente.getId(), Integer.parseInt(idIntervento));
-			   		
-					if(intervento==null) {
-						myObj.addProperty("Errore", "Intervento inesistente o non associata all'utente");
-			   		}else {
-			   			myObj.add("Intervento", intervento.getInterventoJsonObject());
-			   			
-			   			try {
-							intervento.cambioStatoIntervento(StatoInterventoDTO.SCARICATO);
-							GestioneInterventoBO.update(intervento, session);
-						}catch(IllegalStateException e) {
-							myObj.addProperty("success", false);
-							myObj.addProperty("messaggio", e.getMessage());
-							
-							out.print(myObj);
-							return;
-						}
+					if(intervento!=null) {
+							responseJson.add(intervento.getInterventoJsonObject());		
 			   		}
-					
 				}
-			   		
 				session.getTransaction().commit();
 				session.close();	
 			   		
-//fine intervento
+				//fine intervento
 			}else{		        				
-				myObj.addProperty("error", "Username o Password non validi");
+				response.setStatus(response.SC_UNAUTHORIZED);
+				return;
 			}		
 			
-		}catch(Exception ex){			
-			myObj.add("error", ECIException.callExceptionJsonObject(ex));
+		}catch(Exception ex){		
+			response.setStatus(response.SC_INTERNAL_SERVER_ERROR);
+			responseJson.add(ECIException.callExceptionJsonObject(ex));
+			ex.printStackTrace();
 		}  
 				
-		out.println(myObj);
+		out.println(responseJson);
 		
 		
 	}

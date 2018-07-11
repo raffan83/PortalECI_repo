@@ -1,5 +1,6 @@
 package it.portalECI.action;
 
+import it.portalECI.DAO.GestioneStatoInterventoDAO;
 import it.portalECI.DAO.SessionFacotryDAO;
 import it.portalECI.DTO.CategoriaVerificaDTO;
 import it.portalECI.DTO.CommessaDTO;
@@ -86,7 +87,7 @@ public class GestioneIntervento extends HttpServlet {
 					for (InterventoDTO intervento :listaInterventi) {					
 						
 						try {
-							intervento.cambioStatoIntervento(StatoInterventoDTO.CHIUSO);
+							intervento.cambioStatoIntervento(GestioneStatoInterventoDAO.getStatoInterventoById(StatoInterventoDTO.CHIUSO, session));
 						}catch(IllegalStateException e) {
 							/*myObj.addProperty("success", false);
 							myObj.addProperty("messaggio", e.getMessage());
@@ -150,7 +151,8 @@ public class GestioneIntervento extends HttpServlet {
 				intervento.setIdCommessa(""+comm.getID_COMMESSA());				
 				
 				try {
-					intervento.cambioStatoIntervento(StatoInterventoDTO.CREATO);
+					
+					intervento.cambioStatoIntervento(GestioneStatoInterventoDAO.getStatoInterventoById(StatoInterventoDTO.CREATO, session));
 				}catch(IllegalStateException e) {
 					myObj.addProperty("success", false);
 					myObj.addProperty("messaggio", e.getMessage());
@@ -175,7 +177,7 @@ public class GestioneIntervento extends HttpServlet {
 				InterventoDTO intervento = GestioneInterventoBO.getIntervento(idIntervento, session);
 						
 				try {
-					intervento.cambioStatoIntervento(StatoInterventoDTO.CHIUSO);
+					intervento.cambioStatoIntervento(GestioneStatoInterventoDAO.getStatoInterventoById(StatoInterventoDTO.CHIUSO, session));
 				}catch(IllegalStateException e) {
 					myObj.addProperty("success", false);
 					myObj.addProperty("messaggio", e.getMessage());
@@ -201,7 +203,7 @@ public class GestioneIntervento extends HttpServlet {
 				InterventoDTO intervento = GestioneInterventoBO.getIntervento(idIntervento, session);
 						
 				try {
-					intervento.cambioStatoIntervento(StatoInterventoDTO.CREATO);
+					intervento.cambioStatoIntervento(GestioneStatoInterventoDAO.getStatoInterventoById(StatoInterventoDTO.CREATO, session));
 				}catch(IllegalStateException e) {
 					myObj.addProperty("success", false);
 					myObj.addProperty("messaggio", e.getMessage());
@@ -285,7 +287,8 @@ public class GestioneIntervento extends HttpServlet {
 				}
 				
 				try {
-					intervento.cambioStatoIntervento(idStato);
+					
+					intervento.cambioStatoIntervento(GestioneStatoInterventoDAO.getStatoInterventoById(idStato, session));
 				}catch(IllegalStateException e) {
 					myObj.addProperty("success", false);
 					myObj.addProperty("messaggio", e.getMessage());

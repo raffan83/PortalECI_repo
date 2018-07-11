@@ -45,7 +45,15 @@
             <many-to-many entity-name="it.portalECI.DTO.TipoVerificaDTO">
                 <column name="tipo_verifica_id" not-null="true" />
             </many-to-many>
-        </set>           
+        </set>     
+        
+       <list name="verbali" table="intervento_verbali" inverse="false" lazy="true" fetch="select" cascade="all">
+			<key>
+				<column name="verbale_id"></column>
+			</key>
+			<list-index column="idx_vr"></list-index>
+			<one-to-many class="it.portalECI.DTO.VerbaleDTO"/>
+		</list>
                 
     </class>
 </hibernate-mapping>

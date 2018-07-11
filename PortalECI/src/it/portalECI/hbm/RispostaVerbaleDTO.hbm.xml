@@ -1,0 +1,56 @@
+<?xml version='1.0' encoding='UTF-8'?>  
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+	<class name="it.portalECI.DTO.RispostaVerbaleDTO" table="RISPOSTA_VERBALE" discriminator-value="RES">
+		<id name="id">
+			<generator class="identity"></generator>
+		</id>
+
+		<discriminator column="tipo" type="string"></discriminator>
+		
+		<property name="tipo" insert="false" update="false">
+			<column name="tipo"/>
+		</property> 
+		
+		<property name="placeholder">
+			<column name="PLACEHOLDER" length="256"/>
+		</property> 
+
+		<subclass name="it.portalECI.DTO.RispostaTestoVerbaleDTO"	discriminator-value="RES_TEXT"></subclass>
+		
+		<subclass name="it.portalECI.DTO.RispostaSceltaVerbaleDTO"	discriminator-value="RES_CHOICE">
+						
+			<property name="multipla" type="boolean">
+				<column name="multipla"/>
+			</property>
+					
+			<list name="opzioni" table="OPZIONE_VERBALE" inverse="false" lazy="true" fetch="select" cascade="all">
+				<key>
+					<column name="risposta_id"></column>
+				</key>
+				<list-index column="idx"></list-index>
+				<one-to-many class="it.portalECI.DTO.OpzioneRispostaVerbaleDTO"/>
+			</list>
+			
+		</subclass>
+		
+		<subclass name="it.portalECI.DTO.RispostaFormulaVerbaleDTO" discriminator-value="RES_FORMULA">
+						
+			<property name="valore1">
+				<column name="valore1" length="256"/>
+			</property> 
+			<property name="valore2">
+				<column name="valore2" length="256"/>
+			</property> 
+			<property name="operatore">
+				<column name="operatore" length="256"/>
+			</property> 
+			<property name="risultato">
+				<column name="risultato" length="256"/>
+			</property> 
+		</subclass>
+		
+	</class>
+</hibernate-mapping> 
