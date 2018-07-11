@@ -19,8 +19,12 @@
 		</property> 
 		<property name="descrizioneVerifica">
 			<column name="descrizioneVerifica" length="256"/>
-		</property> 
-		 <many-to-one name="stato" class="it.portalECI.DTO.StatoVerbaleDTO" fetch="join" lazy="false">
+		</property>
+		<property name="codiceCategoria">
+			<column name="codiceCategoria" length="256"/>
+		</property>  
+		
+		<many-to-one name="stato" class="it.portalECI.DTO.StatoVerbaleDTO" fetch="join" lazy="false">
             <column name="id_stato_verbale" />
         </many-to-one>
 		

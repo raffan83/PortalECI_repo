@@ -160,7 +160,7 @@ public class GestioneInterventoDAO {
 	public static ArrayList<InterventoDTO> getListaInterventiTecnico(Session session, int idTecnicoVerificatore ) {
 		ArrayList<InterventoDTO> lista =null;
 	
-		//CAMBIARE QUERY IN CASO DI TEST IN LOCALE PER FAR SCARICARE
+		
 		Query query  = session.createQuery( "from InterventoDTO WHERE id_tecnico_verificatore= :_id_tecnico_verificatore");
 		//Query query  = session.createQuery( "from InterventoDTO WHERE id_tecnico_verificatore= :_id_tecnico_verificatore");
 		query.setParameter("_id_tecnico_verificatore", idTecnicoVerificatore);
@@ -206,6 +206,9 @@ public class GestioneInterventoDAO {
 		return lista;
 	}
 
+	
+	
+	
 	public static ArrayList<Integer> getListaSediInterventi() {
 		Query query=null;
 		

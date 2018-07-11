@@ -25,39 +25,7 @@ public class GestioneQuestionarioBO {
 		return GestioneQuestionarioDAO.getQuestionarioById(idQuestionario, session);
 	}
 	
-	public static VerbaleDTO buildVerbaleByQuestionario(String codiceVerifica, Session session) {
-		VerbaleDTO result=null;
-		QuestionarioDTO questionario= GestioneQuestionarioDAO.getQuestionarioForVerbaleInstance(codiceVerifica, session);
-		if(questionario!=null) {
-			VerbaleDTO verbale = new VerbaleDTO();
-			verbale.setQuestionarioID(questionario.getId());
-			verbale.setCodiceVerifica(questionario.getTipo().getCodice());
-			verbale.setDescrizioneVerifica(questionario.getTipo().getCategoria().getDescrizione()+" - "+questionario.getTipo().getDescrizione());
-			verbale.setStato(GestioneStatoVerbaleDAO.getStatoVerbaleById(StatoVerbaleDTO.CREATO, session));
-			if(questionario.getDomandeVerbale()!=null) {
-				for(DomandaQuestionarioDTO domanda:questionario.getDomandeVerbale()) {
-					DomandaVerbaleDTO domandaVerbaleDTO = new DomandaVerbaleDTO();
-					domandaVerbaleDTO.setObbligatoria(domanda.getObbligatoria());
-					domandaVerbaleDTO.setPlaceholder(domanda.getPlaceholder());
-					domandaVerbaleDTO.setTesto(domanda.getTesto());
-					if(domanda.getRisposta()!=null) {
-						RispostaVerbaleDTO rispostaVerbaleDTO = new RispostaVerbaleDTO();
-						rispostaVerbaleDTO.setPlaceholder(domanda.getRisposta().getPlaceholder());
-						rispostaVerbaleDTO.setTipo(domanda.getRisposta().getTipo());
-						GestioneRispostaVerbaleDAO.save(rispostaVerbaleDTO,session);
-						domandaVerbaleDTO.setRisposta(rispostaVerbaleDTO);
-					}
-					GestioneDomandaVerbaleDAO.save(domandaVerbaleDTO, session);
-					verbale.addToDomande(domandaVerbaleDTO);
-				}
-			}
-			GestioneVerbaleDAO.save(verbale, session);
-			
-			result=verbale;
-		}
-			
-		return result;
-	}
+	
 	
 	
 	

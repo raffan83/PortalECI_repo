@@ -23,7 +23,6 @@ public class GestioneInterventoBO {
 	
 	public static boolean scaricaIntervento(InterventoDTO intervento, Session session) {
 		boolean result=false;
-			
 		
 			if(buildVerbali( intervento, session)) {
 				intervento.cambioStatoIntervento(GestioneStatoInterventoDAO.getStatoInterventoById(StatoInterventoDTO.SCARICATO, session));
@@ -37,15 +36,12 @@ public class GestioneInterventoBO {
 		//TODO BUILD REAL INSTANCE OF QUESTIONARIO FOR THIS INTERVENTO
 		boolean result =true;
 		if(intervento!=null) {
-			for(TipoVerificaDTO tipoVerifica:intervento.getTipo_verifica()) {
+			for(VerbaleDTO verbale:intervento.getVerbali()) {
 				//retrieve questionario for tipoVerificaCodice
-				String codiceVerifica= tipoVerifica.getCodice();
-				VerbaleDTO verbale= GestioneQuestionarioBO.buildVerbaleByQuestionario(codiceVerifica, session);
-				System.out.println("verbale CREATO : "+(verbale!=null?verbale.getId():-1));
+				verbale= GestioneVerbaleBO.buildVerbaleByQuestionario(verbale, session);
+				System.out.println("verbale TROVATO : "+(verbale!=null?verbale.getId():-1));
 				if(verbale==null) {
 					result=false;
-				}else {
-					intervento.addToVerbali(verbale);
 				}
 			}
 		}else {

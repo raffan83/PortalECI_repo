@@ -1,20 +1,5 @@
 package it.portalECI.action;
 
-import it.portalECI.DAO.GestioneStatoInterventoDAO;
-import it.portalECI.DAO.SessionFacotryDAO;
-import it.portalECI.DTO.CategoriaVerificaDTO;
-import it.portalECI.DTO.CommessaDTO;
-import it.portalECI.DTO.CompanyDTO;
-import it.portalECI.DTO.InterventoDTO;
-import it.portalECI.DTO.StatoInterventoDTO;
-import it.portalECI.DTO.TipoVerificaDTO;
-import it.portalECI.DTO.UtenteDTO;
-import it.portalECI.Util.Utility;
-import it.portalECI.bo.GestioneCommesseBO;
-import it.portalECI.bo.GestioneInterventoBO;
-
-import it.portalECI.bo.GestioneUtenteBO;
-
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
@@ -33,6 +18,22 @@ import org.hibernate.Session;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
+
+import it.portalECI.DAO.GestioneStatoInterventoDAO;
+import it.portalECI.DAO.SessionFacotryDAO;
+import it.portalECI.DTO.CategoriaVerificaDTO;
+import it.portalECI.DTO.CommessaDTO;
+import it.portalECI.DTO.CompanyDTO;
+import it.portalECI.DTO.InterventoDTO;
+import it.portalECI.DTO.StatoInterventoDTO;
+import it.portalECI.DTO.TipoVerificaDTO;
+import it.portalECI.DTO.UtenteDTO;
+import it.portalECI.DTO.VerbaleDTO;
+import it.portalECI.Util.Utility;
+import it.portalECI.bo.GestioneCommesseBO;
+import it.portalECI.bo.GestioneInterventoBO;
+import it.portalECI.bo.GestioneUtenteBO;
+import it.portalECI.bo.GestioneVerbaleBO;
 
 /**
  * Servlet implementation class GestioneIntervento
@@ -114,6 +115,7 @@ public class GestioneIntervento extends HttpServlet {
 		 												
 				String id_tecnico = request.getParameter("tecnico");				
 				Set<TipoVerificaDTO> tipoverificalist = new HashSet<TipoVerificaDTO>();
+				List<VerbaleDTO> verbali = new ArrayList<>();
 
 				String[] categoriaTipo=request.getParameterValues("categoriaTipo");
 			
@@ -121,8 +123,15 @@ public class GestioneIntervento extends HttpServlet {
 					
 					String id_tipo=categoriaTipo[i].substring(0, categoriaTipo[i].indexOf("_"));
 					String id_categoria=categoriaTipo[i].substring(categoriaTipo[i].indexOf("_")+1, categoriaTipo[i].length());
-		
-					tipoverificalist.add(GestioneInterventoBO.getTipoVerifica(id_tipo, session));
+					TipoVerificaDTO tipoVerificaDTO = GestioneInterventoBO.getTipoVerifica(id_tipo, session); 
+					tipoverificalist.add(tipoVerificaDTO);
+					VerbaleDTO verbale =GestioneVerbaleBO.buildVerbale(tipoVerificaDTO.getCodice(), session);
+					if(verbale !=null) {
+						verbali.add(verbale);
+					}else {
+						throw new Exception("Questionario inesistente per Codice Verifica : "+tipoVerificaDTO.getCodice());
+					}
+					
 				}
 				
 				UtenteDTO tecnico = GestioneUtenteBO.getUtenteById(id_tecnico, session);
@@ -137,6 +146,9 @@ public class GestioneIntervento extends HttpServlet {
 					
 				if(!tipoverificalist.isEmpty()) {
 					intervento.setTipo_verifica(tipoverificalist);				
+				}
+				if(!verbali.isEmpty()) {	
+					intervento.setVerbali(verbali);				
 				}
 				
 				String nomeCliente="";
@@ -163,7 +175,10 @@ public class GestioneIntervento extends HttpServlet {
 				
 				CompanyDTO cmp =(CompanyDTO)request.getSession().getAttribute("usrCompany");
 				intervento.setCompany(cmp);
-								
+				
+				//Genero Instanza Verbali per questo intervento
+				
+				
 				GestioneInterventoBO.save(intervento,session);				
 					
 				myObj.addProperty("success", true);
@@ -226,6 +241,7 @@ public class GestioneIntervento extends HttpServlet {
 			}else if(action !=null && action.equals("update")){			 					
 				
 				Set<TipoVerificaDTO> tipoverificalist = new HashSet<TipoVerificaDTO>();
+				List<VerbaleDTO> verbali = new ArrayList(); 
 				
 				String id_tecnico = request.getParameter("tecnico");	
 				String idIntervento = request.getParameter("idIntervento" );
@@ -242,8 +258,24 @@ public class GestioneIntervento extends HttpServlet {
 				
 				for( int i = 0; i <= categoriaTipo.length - 1; i++){				
 					String id_tipo=categoriaTipo[i].substring(0, categoriaTipo[i].indexOf("_"));
-				
-					tipoverificalist.add(GestioneInterventoBO.getTipoVerifica(id_tipo, session));
+					TipoVerificaDTO tipoVerificaDTO = GestioneInterventoBO.getTipoVerifica(id_tipo, session); 
+					tipoverificalist.add(tipoVerificaDTO);
+					VerbaleDTO verbaleTarget=null;
+					if(intervento.getVerbali()!=null) {
+						for(VerbaleDTO verbale : intervento.getVerbali()) {
+							if(tipoVerificaDTO.getCodice().equals(verbale.getCodiceVerifica())) {
+								verbaleTarget =verbale;
+								break;
+							}
+						}
+					} 
+					
+					if(verbaleTarget==null) {
+						//Nuova categoria su update
+						verbaleTarget =GestioneVerbaleBO.buildVerbale(tipoVerificaDTO.getCodice(), session);
+					}
+					verbali.add(verbaleTarget);
+					
 				}
 				
 				UtenteDTO tecnico = GestioneUtenteBO.getUtenteById(id_tecnico, session);							
@@ -253,6 +285,10 @@ public class GestioneIntervento extends HttpServlet {
 				
 				if(!tipoverificalist.isEmpty()) {
 					intervento.setTipo_verifica(tipoverificalist);				
+				}
+				
+				if(!verbali.isEmpty()) {
+					intervento.setVerbali(verbali);				
 				}
 				
 				
@@ -315,9 +351,13 @@ public class GestioneIntervento extends HttpServlet {
 			myObj.addProperty("success", false);	
 			if(action !=null && action.equals("new")){
 				myObj.addProperty("messaggio", "Errore creazione intervento.");
+				if(ex.getMessage()!=null && !ex.getMessage().isEmpty())
+					myObj.addProperty("dettaglio", ex.getMessage());
 			}
 			if(action !=null && action.equals("chiudi")){
 				myObj.addProperty("messaggio", "Errore chiusura intervento.");
+				if(ex.getMessage()!=null && !ex.getMessage().isEmpty())
+					myObj.addProperty("dettaglio", ex.getMessage());
 			}
 			out.print(myObj);
 	   	     

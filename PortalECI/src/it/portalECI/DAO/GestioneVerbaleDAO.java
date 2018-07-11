@@ -6,6 +6,7 @@ import org.hibernate.Query;
 import org.hibernate.Session;
 
 import it.portalECI.DTO.QuestionarioDTO;
+import it.portalECI.DTO.StatoVerbaleDTO;
 import it.portalECI.DTO.VerbaleDTO;
 
 public class GestioneVerbaleDAO {
@@ -25,4 +26,6 @@ public class GestioneVerbaleDAO {
 		session.save(verbale);
 	}
 
+	
+	
 }

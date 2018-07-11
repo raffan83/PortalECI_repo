@@ -14,6 +14,7 @@ public class VerbaleDTO implements Serializable {
 	private int questionarioID;
 	private Date createDate;
 	private Date updateDate;
+	private String codiceCategoria;
 	private String codiceVerifica;
 	private String descrizioneVerifica;
 	private StatoVerbaleDTO stato;
@@ -53,6 +54,16 @@ public class VerbaleDTO implements Serializable {
 
 	public void setStato(StatoVerbaleDTO stato) {
 		this.stato = stato;
+	}
+	
+	
+
+	public String getCodiceCategoria() {
+		return codiceCategoria;
+	}
+
+	public void setCodiceCategoria(String codiceCategoria) {
+		this.codiceCategoria = codiceCategoria;
 	}
 
 	public List<DomandaVerbaleDTO> getDomandeVerbale() {
