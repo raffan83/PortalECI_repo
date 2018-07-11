@@ -56,8 +56,11 @@
 																	<td>${questionario.tipo.codice }</td>
 																	<td>${questionario.titolo}</td>
 																	<td>
+																		<a href="gestioneQuestionario.do?idQuestionario=${questionario.id}&action=modifica" class="btn customTooltip customlink" title="Click per modificare il questionario">
+																			<i class="fa fa-edit"></i>
+																		</a>
 																		<a href="gestioneQuestionario.do?idQuestionario=${questionario.id}" class="btn customTooltip customlink" title="Click per aprire il dettaglio del questionario">
-																			<i class="fa fa-edit fa-2x"></i>
+																			<i class="fa fa-arrow-right"></i>
 																		</a>
 																	</td>
 																</tr>
