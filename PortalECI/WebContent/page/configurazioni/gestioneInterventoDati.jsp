@@ -66,18 +66,8 @@
                 									<li class="list-group-item">
                   										<b>Stato</b> 
                   										<!-- <a class="pull-right">${intervento.getStatoIntervento().getDescrizione()}</a>-->
-                  										<a class="pull-right">
-				 											<c:choose>
-  																<c:when test="${intervento.getStatoIntervento().getDescrizione().equals('CHIUSO')}">
-    																<span class="label label-danger">CHIUSO</span>
-  																</c:when>
-  																<c:when test="${intervento.getStatoIntervento().getDescrizione().equals('CREATO')}">
-    																<span class="label label-success">CREATO</span>
-  																</c:when>
-  																<c:otherwise>
-    																<span class="label label-info">${intervento.getStatoIntervento().getDescrizione()}</span>
-	 															</c:otherwise>
-															</c:choose>  
+                  										<a class="pull-right">				 											
+    														<span class="label label-info" style="color:#000000 !important; background-color:${intervento.statoIntervento.getColore(intervento.statoIntervento.id)} !important;">${intervento.getStatoIntervento().getDescrizione()}</span>
 														</a>
                 									</li>
                 									<li class="list-group-item">

@@ -116,18 +116,8 @@
 																	</td>
 																	<td>
 																		<!--<c:out value='${intervento.getStatoIntervento().getDescrizione()}'/>-->
-																		<a class="centered">
-				 															<c:choose>
-  																				<c:when test="${intervento.getStatoIntervento().getDescrizione().equals('CHIUSO')}">
-    																				<span class="label label-danger">CHIUSO</span>
-  																				</c:when>
-  																				<c:when test="${intervento.getStatoIntervento().getDescrizione().equals('CREATO')}">
-    																				<span class="label label-success">CREATO</span>
-  																				</c:when>
-  																				<c:otherwise>
-    																				<span class="label label-info">${intervento.getStatoIntervento().getDescrizione()}</span>
-	 																			</c:otherwise>
-																			</c:choose>  
+																		<a class="centered">					
+    																		<span class="label label-info" style="color:#000000 !important; background-color:${intervento.statoIntervento.getColore(intervento.statoIntervento.id)} !important;" >${intervento.getStatoIntervento().getDescrizione()}</span>
 																		</a>
 																	</td>
 																	<td>
