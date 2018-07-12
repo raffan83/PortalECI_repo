@@ -42,7 +42,7 @@
         										<ul class="list-group list-group-unbordered">
         											<li class="list-group-item">
                   										<b>ID Commessa</b>                   										
-                  										<a href="#" class="btn customTooltip customlink pull-right" title="Click per aprire il dettaglio della Commessa" onclick="callAction('gestioneIntervento.do?idCommessa=${intervento.getIdCommessa()}');">
+                  										<a href="#" class="btn customTooltip customlink pull-right  pr-0" title="Click per aprire il dettaglio della Commessa" onclick="callAction('gestioneIntervento.do?idCommessa=${intervento.getIdCommessa()}');">
 															<c:out value='${intervento.getIdCommessa()}'/>
 														</a>
                 									</li>
@@ -103,11 +103,13 @@
                 									</li>                									                									  
                 									
         										</ul>
-        										<div class="row">        											
-        											<button class="btn btn-default pull-right" onClick="$('#modalModificaIntervento').modal('show');" style="margin-right:10px">
-        												<i class="glyphicon glyphicon-edit"></i>
-        												 Modifica
-        											</button>  
+        										<div class="row">    
+        											<c:if test='${intervento.getStatoIntervento().getDescrizione()!="CHIUSO" && intervento.getStatoIntervento().getDescrizione()!="ANNULLATO" }'>    											
+        												<button class="btn btn-default pull-right" onClick="$('#modalModificaIntervento').modal('show');" style="margin-right:10px">
+        													<i class="glyphicon glyphicon-edit"></i>
+        												 	Modifica
+        												</button>  
+        											</c:if>
         											<button class="btn btn-default pull-right" onClick="$('#modalCambioStato').modal('show');" style="margin-right:10px">
         												<i class="glyphicon glyphicon-transfer"></i>
         												 Cambio Stato
@@ -122,7 +124,7 @@
         							<div class="col-xs-12">
 										<div class="box box-danger box-solid">
 											<div class="box-header with-border">
-	 											Lista Verifiche
+	 											Lista Verbali
 												<div class="box-tools pull-right">		
 													<button data-widget="collapse" class="btn btn-box-tool"><i class="fa fa-minus"></i></button>
 												</div>
@@ -131,15 +133,39 @@
 		      									<table id="tabPM" class="table table-bordered table-hover dataTable table-striped" role="grid" width="100%">
  													<thead>
  														<tr class="active">
- 															<th>ID</th> 															
- 															<th>Codice Categoria</th>
+ 															<th>Codice Categoria</th> 															
  															<th>Codice Verifica</th>
+ 															<th>Data Creazione</th>
+ 															<th>Descrizione Verifica</th>
  															<th>Stato</th>
  															<td></td>
 														</tr>
 													</thead>
  													<tbody>
- 														
+ 														<c:forEach items="${intervento.verbali}" var="verbali"> 
+ 															<tr role="row">
+																<td>
+  																	${verbali.getCodiceCategoria()}
+																</td>
+																<td>
+  																	${verbali.getCodiceVerifica()}
+																</td>	
+																<td>
+  																	${verbali.getCreateDate()}
+																</td>	
+																<td>
+  																	${verbali.getDescrizioneVerifica()}
+																</td>
+																<td>
+  																	${verbali.getStato().getDescrizione()}
+																</td>
+																<td>
+																	<!-- <a class="btn customTooltip" title="Click per aprire il dettaglio del Verbale" onclick="callAction('gestioneInterventoDati.do?idIntervento=${intervento.id}');">
+                														<i class="fa fa-arrow-right"></i>
+            														</a> -->
+        														</td>															
+															</tr>	 
+														</c:forEach>
  													</tbody>
  												</table>  
 											</div>
