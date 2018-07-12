@@ -1,5 +1,8 @@
 package it.portalECI.DTO;
 
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+
 public class RispostaVerbaleDTO {
 	
 	public static final String TIPO_TESTO="RES_TEXT";
@@ -41,6 +44,27 @@ public class RispostaVerbaleDTO {
 
 	public void setPlaceholder(String placeholder) {
 		this.placeholder = placeholder;
+	}
+
+	public JsonElement getJsonObject() {
+		JsonObject jobj = new JsonObject();
+		
+		jobj.addProperty("id", this.id);
+	
+		jobj.addProperty("testo", this.tipo);
+			
+//		if(this.risposta!=null) {
+//			JsonArray domandeVerbaleobj = new JsonArray();
+//			
+//			for(RispostaVerbaleDTO domanda : this.risposta) {
+//				domandeVerbaleobj.add(domanda.getDomandaJsonObject());
+//			}
+//			jobj.add("domande", domandeVerbaleobj);
+//		}
+		
+		
+		
+		return jobj;
 	}
 	
 }

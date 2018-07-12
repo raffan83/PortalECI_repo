@@ -1,4 +1,4 @@
-package it.portalECI.REST;
+package it.portalECI.rest;
 
 import java.io.IOException;
 import java.io.PrintWriter;

@@ -394,7 +394,7 @@ function saveInterventoFromModal(){
 						intervento.nome_sede,
 						dataCreazione,
 						'<span class="label label-info">CREATO</span>',
-						user.nominativo,
+						//user.nominativo,
 						tecnico.nominativo,
 						cat_verifica,
 						tipo_verifica,

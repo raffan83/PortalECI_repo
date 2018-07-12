@@ -1,5 +1,9 @@
 package it.portalECI.DTO;
 
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+
 public class DomandaVerbaleDTO {
 	
 	private int id;
@@ -58,6 +62,32 @@ public class DomandaVerbaleDTO {
 
 	public void setVerbale(VerbaleDTO verbale) {
 		this.verbale= verbale;
+	}
+
+	public JsonElement getDomandaJsonObject() {
+		JsonObject jobj = new JsonObject();
+		
+		jobj.addProperty("id", this.id);
+	
+		jobj.addProperty("testo", this.testo);
+		jobj.addProperty("obbligatoria", this.obbligatoria);
+		if(risposta!=null) {
+			JsonObject rispostaobj = new JsonObject();
+			jobj.add("risposta", this.risposta.getJsonObject());
+		}
+			
+//		if(this.risposta!=null) {
+//			JsonArray domandeVerbaleobj = new JsonArray();
+//			
+//			for(RispostaVerbaleDTO domanda : this.risposta) {
+//				domandeVerbaleobj.add(domanda.getDomandaJsonObject());
+//			}
+//			jobj.add("domande", domandeVerbaleobj);
+//		}
+		
+		
+		
+		return jobj;
 	}
 
 
