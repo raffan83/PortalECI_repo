@@ -42,8 +42,8 @@
         										<ul class="list-group list-group-unbordered">
         											<li class="list-group-item">
                   										<b>ID Commessa</b>                   										
-                  										<a href="#" class="btn customTooltip customlink pull-right  pr-0" title="Click per aprire il dettaglio della Commessa" onclick="callAction('gestioneIntervento.do?idCommessa=${intervento.getIdCommessa()}');">
-															<c:out value='${intervento.getIdCommessa()}'/>
+                  										<a href="#" class="customTooltip customlink pull-right" title="Click per aprire il dettaglio della Commessa" onclick="callAction('gestioneIntervento.do?idCommessa=${intervento.getIdCommessa()}');">
+															${intervento.getIdCommessa()}
 														</a>
                 									</li>
                 									<li class="list-group-item">
@@ -67,7 +67,7 @@
                   										<b>Stato</b> 
                   										<!-- <a class="pull-right">${intervento.getStatoIntervento().getDescrizione()}</a>-->
                   										<a class="pull-right">				 											
-    														<span class="label label-info" style="color:#000000 !important; background-color:${intervento.statoIntervento.getColore(intervento.statoIntervento.id)} !important;">${intervento.getStatoIntervento().getDescrizione()}</span>
+    														<span class="label" style="color:#000000 !important; background-color:${intervento.statoIntervento.getColore(intervento.statoIntervento.id)} !important;">${intervento.getStatoIntervento().getDescrizione()}</span>
 														</a>
                 									</li>
                 									<li class="list-group-item">
@@ -94,7 +94,7 @@
                 									
         										</ul>
         										<div class="row">    
-        											<c:if test='${intervento.getStatoIntervento().getDescrizione()!="CHIUSO" && intervento.getStatoIntervento().getDescrizione()!="ANNULLATO" }'>    											
+        											<c:if test='${intervento.getStatoIntervento().getDescrizione()!="CHIUSO" && intervento.getStatoIntervento().getDescrizione()!="ANNULLATO" && intervento.getStatoIntervento().getDescrizione()!="SCARICATO"}'>    											
         												<button class="btn btn-default pull-right" onClick="$('#modalModificaIntervento').modal('show');" style="margin-right:10px">
         													<i class="glyphicon glyphicon-edit"></i>
         												 	Modifica
@@ -132,27 +132,27 @@
 														</tr>
 													</thead>
  													<tbody>
- 														<c:forEach items="${intervento.verbali}" var="verbali"> 
+ 														<c:forEach items="${intervento.verbali}" var="verbale"> 
  															<tr role="row">
 																<td>
-  																	${verbali.getCodiceCategoria()}
+  																	${verbale.getCodiceCategoria()}
 																</td>
 																<td>
-  																	${verbali.getCodiceVerifica()}
+  																	${verbale.getCodiceVerifica()}
 																</td>	
 																<td>
-  																	${verbali.getCreateDate()}
+  																	${verbale.getCreateDate()}
 																</td>	
 																<td>
-  																	${verbali.getDescrizioneVerifica()}
+  																	${verbale.getDescrizioneVerifica()}
 																</td>
 																<td>
-  																	${verbali.getStato().getDescrizione()}
+																	<span class="label" style="color:#000000 !important; background-color:${verbale.getStato().getColore(verbale.getStato().getId())} !important;">${verbale.getStato().getDescrizione()}</span>  																	
 																</td>
 																<td>
-																	<!-- <a class="btn customTooltip" title="Click per aprire il dettaglio del Verbale" onclick="callAction('gestioneInterventoDati.do?idIntervento=${intervento.id}');">
+																	<a class="btn customTooltip" title="Click per aprire il dettaglio del Verbale" onclick="callAction('gestioneVerbale.do?idVerbale=${verbale.id}');">
                 														<i class="fa fa-arrow-right"></i>
-            														</a> -->
+            														</a>
         														</td>															
 															</tr>	 
 														</c:forEach>
@@ -276,12 +276,12 @@
 											<label class="col-sm-12" style="text-align:center;">Attenzione, sicuro di voler modificare lo stato di questo intervento? </label>
                   							
                   							<div class="col-sm-12" style="margin:5px ; text-align:center;">
-                  								<button type="button  pull-left" class="btn-sm " onclick="salvaCambioStato('ANNULLATO')">
+                  								<button type="button  pull-left" class="btn-sm " onclick="salvaCambioStato('ANNULLATO')" style="color:#000000 !important; background-color:${intervento.statoIntervento.getColore(6)} !important;">
                   									<i class="glyphicon glyphicon-remove"></i>
                   									ANNULLATO
                   								</button>
 										
-												<button type="button  pull-right" class="btn-sm" onclick="salvaCambioStato('CHIUSO')">
+												<button type="button  pull-right" class="btn-sm" onclick="salvaCambioStato('CHIUSO')" style="color:#000000 !important; background-color:${intervento.statoIntervento.getColore(7)} !important;">
 													<i class="glyphicon glyphicon-remove"></i>
 													CHIUSO
 												</button>
@@ -473,7 +473,7 @@
 						}else{
 							pleaseWaitDiv.modal('hide');
 							
-							$('#modalErrorDiv').html(data.messaggio);
+							$('#modalErrorDiv').html(data.messaggio+' '+data.dettaglio);
 							$('#myModalError').removeClass();
 							$('#myModalError').addClass("modal modal-danger");
 							$('#myModalError').modal('show');

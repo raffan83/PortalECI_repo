@@ -393,7 +393,7 @@ function saveInterventoFromModal(){
 						//'<span class="label label-info">'+presso+'</span>',
 						intervento.nome_sede,
 						dataCreazione,
-						'<span class="label label-info" style="color:#000000 !important; background-color:#fff" !important">CREATO</span>',
+						'<span class="label " style="color:#000000 !important; background-color:#E4E5E0" !important">CREATO</span>',
 						user.nominativo,
 						tecnico.nominativo,
 						cat_verifica,
@@ -402,7 +402,7 @@ function saveInterventoFromModal(){
 						] ).draw();
 	          			  		          		
 				}else{
-					$('#modalErrorDiv').html(data.messaggio);
+					$('#modalErrorDiv').html(data.messaggio+' '+data.dettaglio);
 					$('#myModalError').removeClass();
 					$('#myModalError').addClass("modal modal-danger");
 					$('#myModalError').modal('show');

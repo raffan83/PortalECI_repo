@@ -28,7 +28,7 @@
             <column name="id_stato_verbale" />
         </many-to-one>
 		
-
+		
 		<list name="domandeVerbale" table="DOMANDA_VERBALE" inverse="false" lazy="true" fetch="select" cascade="all">
 			<key>
 				<column name="verbale_id"></column>
@@ -36,6 +36,11 @@
 			<list-index column="idx_vr"></list-index>
 			<one-to-many class="it.portalECI.DTO.DomandaVerbaleDTO"/>
 		</list>
+		
+		
+		<many-to-one name="intervento" class="it.portalECI.DTO.InterventoDTO"
+            column="intervento_id" not-null="false"/>
+		
 <!-- 		
 		<list name="domandeSchedaTecnica" table="DOMANDA_QUESTIONARIO" inverse="false" lazy="true" fetch="select" cascade="all">
 			<key>
