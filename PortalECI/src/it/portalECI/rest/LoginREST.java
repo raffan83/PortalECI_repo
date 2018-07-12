@@ -16,6 +16,7 @@ import com.google.gson.JsonObject;
 import it.portalECI.DAO.GestioneAccessoDAO;
 import it.portalECI.DTO.UtenteDTO;
 import it.portalECI.Exception.ECIException;
+import it.portalECI.rest.secure.JWTUtility;
 
 @WebServlet(name="loginREST" , urlPatterns = { "/rest/login" })
 
@@ -49,23 +50,12 @@ public class LoginREST extends HttpServlet {
 			if(utente!=null){
 				//generate JWT
 			   	myObj.add("userObj", utente.getUtenteJsonObject());
-			   	
+				myObj.addProperty("access_toke", JWTUtility.getJWTAcessToken(utente));
 			   	
 			}else{
 				response.setStatus(response.SC_UNAUTHORIZED);
 				myObj.addProperty("error", "Username o Password non validi");
 			}
-			
-				
-			/*UtenteDTO utente= new UtenteDTO( 12,  "macrosolution",  "macrosolution",  "macrosolution", "macrosolution",  "macrosolution",  "macrosolution",  "macrosolution", "03100",  "macrosolution@it.it",  "macrosolution", null, "AM");
-			RuoloDTO ruolo=new RuoloDTO();
-			ruolo.setId(1);
-			ruolo.setDescrizione("AM");
-			ruolo.setSigla("AM");
-			Set<RuoloDTO> lista= new HashSet<RuoloDTO>();
-		        	
-			lista.add(ruolo);
-			utente.setListaRuoli(lista);*/		    				
 			
 		}catch(Exception ex){
 			//request.setAttribute("error",ECIException.callException(ex));	

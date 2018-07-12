@@ -38,6 +38,30 @@ public class GestioneAccessoDAO {
 		return utente;
 	}
 	
+	public static UtenteDTO retrieveByJWSINfo(String user, int id) throws Exception {
+		UtenteDTO utente=null;
+		Session session=null;
+		try{
+			session=SessionFacotryDAO.get().openSession();
+		
+			session.beginTransaction();
+			Query query  = session.createQuery( "from UtenteDTO WHERE user= :_user AND id=:_id" );
+			query.setParameter("_user", user);
+			query.setParameter("_id", id);
+	    
+			List<UtenteDTO> result =query.list();
+			if(result.size()>0){			
+				return result.get(0);
+			}
+			session.getTransaction().commit();
+			session.close();
+		}catch (Exception e) {
+			throw e;
+		}
+		return utente;
+	
+	}
+	
 	public static CompanyDTO getCompany(int id_user) throws HibernateException, Exception{
 		CompanyDTO comp=null;
 		Session session=SessionFacotryDAO.get().openSession();

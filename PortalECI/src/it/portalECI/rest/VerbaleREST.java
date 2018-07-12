@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.google.gson.JsonObject;
 
+import it.portalECI.DTO.UtenteDTO;
 import it.portalECI.Util.Utility;
 
 @WebServlet(name="VerbaleREST" , urlPatterns = { "/rest/verbale" })
@@ -32,11 +33,8 @@ public class VerbaleREST extends HttpServlet {
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 //READ		
-		// TODO Auto-generated method stub
-		//doPost(request,response);
-		
-		//if(Utility.validateSession(request,response,getServletContext()))return;
-		
+		UtenteDTO utente=(UtenteDTO) request.getAttribute("user");
+		System.out.println("UTENTE DA RICHIESTA : "+utente);
 		response.setContentType("application/json");
 		JsonObject myObj = new JsonObject();
 		PrintWriter out = response.getWriter();

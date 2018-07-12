@@ -24,7 +24,7 @@ import it.portalECI.DTO.UtenteDTO;
 import it.portalECI.Exception.ECIException;
 import it.portalECI.bo.GestioneInterventoBO;
 
-@WebServlet(name="InterventoREST" , urlPatterns = { "/rest/interventi" })
+@WebServlet(name="InterventoREST" , urlPatterns = { "/rest/intervento" })
 
 public class InterventoREST extends HttpServlet {
 	private static final long serialVersionUID = 1L;
@@ -47,12 +47,14 @@ public class InterventoREST extends HttpServlet {
     	JsonArray responseJson = new JsonArray();
 		PrintWriter out = response.getWriter();
 		
-		try{			
+		try{	
+			//Diabeld After inserto into Token Auth
 			String user=request.getParameter("username");
 			String pwd=request.getParameter("password");
-			
-			
 			UtenteDTO utente=GestioneAccessoDAO.controllaAccesso(user,pwd);
+			
+			//Enabeld After inserto into Token Auth
+			//UtenteDTO utente=(UtenteDTO) request.getAttribute("x-user");
 			
 			String idIntervento=request.getParameter("id");  
 			
