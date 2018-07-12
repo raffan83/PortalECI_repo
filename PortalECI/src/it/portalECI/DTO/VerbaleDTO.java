@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 
 public class VerbaleDTO implements Serializable {
@@ -122,7 +123,16 @@ public class VerbaleDTO implements Serializable {
 		jobj.addProperty("id", this.id);
 	
 		jobj.addProperty("codiceVerifica", this.codiceVerifica);
+		jobj.addProperty("codiceCategoria", this.codiceCategoria);
 		jobj.addProperty("descrizioneVerifica", this.descrizioneVerifica);
+		if(this.domandeVerbale!=null) {
+			JsonArray domandeVerbaleobj = new JsonArray();
+			
+			for(DomandaVerbaleDTO domanda : this.domandeVerbale) {
+				domandeVerbaleobj.add(domanda.getDomandaJsonObject());
+			}
+			jobj.add("domande", domandeVerbaleobj);
+		}		
 		
 		
 		return jobj;

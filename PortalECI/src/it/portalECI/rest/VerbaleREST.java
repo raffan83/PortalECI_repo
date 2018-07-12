@@ -1,4 +1,4 @@
-package it.portalECI.REST;
+package it.portalECI.rest;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -11,19 +11,17 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.google.gson.JsonObject;
 
-import it.portalECI.DAO.GestioneAccessoDAO;
-import it.portalECI.DTO.UtenteDTO;
-import it.portalECI.Exception.ECIException;
+import it.portalECI.Util.Utility;
 
-@WebServlet(name="loginREST" , urlPatterns = { "/rest/login" })
+@WebServlet(name="VerbaleREST" , urlPatterns = { "/rest/verbale" })
 
-public class LoginREST extends HttpServlet {
+public class VerbaleREST extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public LoginREST() {
+    public VerbaleREST() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -31,7 +29,7 @@ public class LoginREST extends HttpServlet {
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
-    @Override
+	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 //READ		
 		// TODO Auto-generated method stub
@@ -42,7 +40,7 @@ public class LoginREST extends HttpServlet {
 		response.setContentType("application/json");
 		JsonObject myObj = new JsonObject();
 		PrintWriter out = response.getWriter();
-		myObj.addProperty("result", "dentro loginREST doGet");
+		myObj.addProperty("result", "dentro VerbaleREST doGet");
 		out.println(myObj);
 	}
 
@@ -52,38 +50,15 @@ public class LoginREST extends HttpServlet {
 	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 //CREATE		
+		//if(Utility.validateSession(request,response,getServletContext()))return;
+
+		//Session session =SessionFacotryDAO.get().openSession();
+		//session.beginTransaction();
+		
 		response.setContentType("application/json");
 		JsonObject myObj = new JsonObject();
 		PrintWriter out = response.getWriter();
-		
-		try{			
-			String user=request.getParameter("username");
-			String pwd=request.getParameter("password");
-			
-			UtenteDTO utente=GestioneAccessoDAO.controllaAccesso(user,pwd);
-			        
-			if(utente!=null){					        	
-			   	myObj.add("userObj", utente.getUtenteJsonObject());
-			}else{		        				
-				myObj.addProperty("error", "Username o Password non validi");
-			}
-			
-				
-			/*UtenteDTO utente= new UtenteDTO( 12,  "macrosolution",  "macrosolution",  "macrosolution", "macrosolution",  "macrosolution",  "macrosolution",  "macrosolution", "03100",  "macrosolution@it.it",  "macrosolution", null, "AM");
-			RuoloDTO ruolo=new RuoloDTO();
-			ruolo.setId(1);
-			ruolo.setDescrizione("AM");
-			ruolo.setSigla("AM");
-			Set<RuoloDTO> lista= new HashSet<RuoloDTO>();
-		        	
-			lista.add(ruolo);
-			utente.setListaRuoli(lista);*/		    				
-			
-		}catch(Exception ex){
-			//request.setAttribute("error",ECIException.callException(ex));			
-			myObj.add("error", ECIException.callExceptionJsonObject(ex));
-		}  
-				
+		myObj.addProperty("result", "dentro VerbaleREST doPost");
 		out.println(myObj);
 	
 	}
@@ -99,7 +74,7 @@ public class LoginREST extends HttpServlet {
 		response.setContentType("application/json");
 		JsonObject myObj = new JsonObject();
 		PrintWriter out = response.getWriter();
-		myObj.addProperty("result", "dentro loginREST doDelete");
+		myObj.addProperty("result", "dentro VerbaleREST doDelete");
 		out.println(myObj);
 	}
 	
@@ -113,7 +88,7 @@ public class LoginREST extends HttpServlet {
 		response.setContentType("application/json");
 		JsonObject myObj = new JsonObject();
 		PrintWriter out = response.getWriter();
-		myObj.addProperty("result", "dentro loginREST doPut");
+		myObj.addProperty("result", "dentro VerbaleREST doPut");
 		out.println(myObj);
 	}
 
