@@ -69,24 +69,54 @@
 												</div>
 											</div>
 											<div class="box-body">
-              									<table id="tabellaDomande" class="table table-bordered table-hover dataTable table-striped" role="grid" width="100%">
- 													<thead>
- 														<tr class="active"> 
- 															<th>Domanda</th>
- 															<th>Tipo</th>
- 														</tr>
- 													</thead>
- 													<tbody>
- 														<c:forEach items="${questionario.domandeVerbale}" var="domanda"> 
- 															<tr role="row">
-																<td>
-  																	${domanda.testo}
-																</td>
-																<td>${domanda.risposta.tipo }</td>
-															</tr>	 
-														</c:forEach>
- 													</tbody>
- 												</table>  
+												<c:forEach items="${questionario.domandeVerbale }" var="domanda" >
+        											<ul class="list-group list-group">
+	                									<li class="list-group-item">
+	                  										<b>Testo della domanda</b> 
+	                  										<a class="pull-right">${domanda.testo}</a>
+	                									</li>
+	                									<li class="list-group-item">
+	                  										<b>Placeholder della domanda</b> 
+	                  										<a class="pull-right">${domanda.placeholder}</a>
+	                									</li>
+	                									<li class="list-group-item">
+	                  										<b>Domanda obbligatoria</b> 
+	                  										<a class="pull-right">${domanda.obbligatoria?'SI':'NO'}</a>
+	                									</li>
+	                									<li class="list-group-item">
+	                  										<b>Tipo di risposta</b> 
+	                  										<a class="pull-right">${domanda.risposta.tipo}</a>
+	                									</li>
+	                									<c:if test="${domanda.risposta.tipo=='RES_CHOICE'}">
+		                									<li class="list-group-item">
+		                										<b>Opzioni</b>
+		                										<a class="pull-right">
+																	<c:forEach items="${domanda.risposta.opzioni }" var="opzione">
+					                  									${opzione.testo}<br/>
+																	</c:forEach>
+																</a>
+					                						</li>
+				                						</c:if>
+	                									<c:if test="${domanda.risposta.tipo=='RES_FORMULA'}">
+		                									<li class="list-group-item">
+		                  										<b>Operazione</b> 
+		                  										<a class="pull-right">${domanda.risposta.operatore}</a>
+		                									</li>
+		                									<li class="list-group-item">
+		                  										<b>Nome primo valore</b> 
+		                  										<a class="pull-right">${domanda.risposta.valore1}</a>
+		                									</li>
+		                									<li class="list-group-item">
+		                  										<b>Nome secondo valore</b> 
+		                  										<a class="pull-right">${domanda.risposta.valore2}</a>
+		                									</li>
+		                									<li class="list-group-item">
+		                  										<b>Nome risultato</b> 
+		                  										<a class="pull-right">${domanda.risposta.risultato}</a>
+		                									</li>
+				                						</c:if>
+				                					</ul>
+												</c:forEach>
 											</div>
 										</div>
             							<!-- /.box-body -->
@@ -129,76 +159,6 @@
         						</div>
         					</div>
    						</div>
-        						                                    
-  						
-  						<div id="myModal" class="modal fade" role="dialog" aria-labelledby="myLargeModalLabel">
-    						<div class="modal-dialog" role="document">
-    							<div class="modal-content">
-     								<div class="modal-header">
-        								<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-        									<span aria-hidden="true">&times;</span>
-        								</button>
-        								<h4 class="modal-title" id="myModalLabel">Nuovo Intervento</h4>
-      								</div>
-       								<div class="modal-body">             
-        								<div class="form-group">
-        									<label>Tecnico Verificatore</label>
-											<select class="form-control" id="tecnici" class="selectpicker">
-												<option value="" disabled selected>Seleziona Tecnico...</option>
-												<c:forEach items="${tecnici}" var="tecnico">
-				  									<option value="${tecnico.id}">${tecnico.nominativo} </option>
-												</c:forEach>
-											</select>
-                						</div>
-              							<div class="row" style="position:relative;">
-            								<div class="form-group col-sm-5">
-	                  							<label>Categoria Verifica</label>
-    	              							<select name="select1" id="select1" data-placeholder="Seleziona Categoria..."  class="form-control select2" aria-hidden="true" data-live-search="true">
-        	          								<option value="" disabled selected>Seleziona Categoria...</option>
-            	          							<c:forEach items="${categorie_verifica}" var="categoria">
-                	           							<option value="${categoria.id}">${categoria.codice}</option> 	
-                    	 							</c:forEach>
-                  								</select> 
-        									</div>
-        
-							    	        <div class="form-group col-sm-5">
-                  								<label>Tipo Verifica</label>
-                  								<select name="select2" id="select2" data-placeholder="Seleziona Tipo"  disabled class="form-control select2" aria-hidden="true" data-live-search="true">
-                									<option value="" disabled selected>Seleziona Tipo...</option>
-                									<c:forEach items="${tipi_verifica}" var="tipo">                		
-	                        							<option value="${tipo.id}_${tipo.categoria.id}">${tipo.codice}</option>     	                            
-    	                 							</c:forEach>
-        	         							</select>                  
-        									</div>    
-        									<div class="form-group col-sm-2 text-center" style="position: absolute;	bottom: 0; right: 0;">        									
-                  								<button class="btn-sm" onclick="addRow()"><i class="fa fa-plus"></i></button>              
-        									</div>                                     
-  										</div>		
-  														
-  										<div class="row">
-  											<div class="col-sm-12 ">		
-  											<table id="tabVerifica" class="table table-bordered table-hover dataTable table-striped" role="grid" width="100%">
- 													<thead>
- 														<tr class="active">
- 															<th>Categoria Verifica</th>
- 															<th>Tipo Verifica</th> 														
- 															<td></td>
-														</tr>
-													</thead>
- 													<tbody id="bodytabVerifica"> 			
- 													
-												
- 													</tbody>
- 												</table>  
-  											</div>
-  										</div>
-  		 							</div>
-      								<div class="modal-footer">
-						        		<button type="button" class="btn btn-danger"onclick="saveInterventoFromModal()"  >Salva</button>
-      								</div>
-			    				</div>
-  							</div>
-						</div>
 
   						<div id="myModalError" class="modal fade" role="dialog" aria-labelledby="myLargeModalLabel">
     						<div class="modal-dialog" role="document">
