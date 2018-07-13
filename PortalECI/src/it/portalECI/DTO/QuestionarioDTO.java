@@ -13,8 +13,8 @@ public class QuestionarioDTO implements Serializable {
 	private Date updateDate;
 	private String titolo;
 	private TipoVerificaDTO tipo;
-	private List<DomandaQuestionarioDTO> domandeVerbale;
-	private List<DomandaQuestionarioDTO> domandeSchedaTecnica;
+	private List<DomandaVerbaleQuestionarioDTO> domandeVerbale;
+	private List<DomandaSchedaTecnicaQuestionarioDTO> domandeSchedaTecnica;
 	
 	//TODO: dovrò aggiungere i template per schedatecnica e verbale
 		
@@ -58,19 +58,19 @@ public class QuestionarioDTO implements Serializable {
 		this.tipo = tipo;
 	}
 
-	public List<DomandaQuestionarioDTO> getDomandeVerbale() {
+	public List<DomandaVerbaleQuestionarioDTO> getDomandeVerbale() {
 		return domandeVerbale;
 	}
 
-	public void setDomandeVerbale(List<DomandaQuestionarioDTO> domandeVerbale) {
+	public void setDomandeVerbale(List<DomandaVerbaleQuestionarioDTO> domandeVerbale) {
 		this.domandeVerbale = domandeVerbale;
 	}
 
-	public List<DomandaQuestionarioDTO> getDomandeSchedaTecnica() {
+	public List<DomandaSchedaTecnicaQuestionarioDTO> getDomandeSchedaTecnica() {
 		return domandeSchedaTecnica;
 	}
 
-	public void setDomandeSchedaTecnica(List<DomandaQuestionarioDTO> domandeSchedaTecnica) {
+	public void setDomandeSchedaTecnica(List<DomandaSchedaTecnicaQuestionarioDTO> domandeSchedaTecnica) {
 		this.domandeSchedaTecnica = domandeSchedaTecnica;
 	}
 

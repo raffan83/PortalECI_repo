@@ -3,11 +3,11 @@
 "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
 
 <hibernate-mapping>
-	<class name="it.portalECI.DTO.DomandaQuestionarioDTO" table="DOMANDA_QUESTIONARIO">
+	<class name="it.portalECI.DTO.DomandaQuestionarioDTO" table="DOMANDA_QUESTIONARIO" discriminator-value="DOM">
 		<id name="id">
 			<generator class="identity"></generator>
 		</id>
-		
+
 		<property name="testo">
 			<column name="testo" length="1024"/>
 		</property> 
@@ -18,9 +18,22 @@
 			<column name="placeholder" length="256"/>
 		</property> 
 		
-		<one-to-one name="risposta" class="it.portalECI.DTO.RispostaQuestionario" cascade="all" constrained="true"></one-to-one>
-		<many-to-one name="questionario" class="it.portalECI.DTO.QuestionarioDTO">
-            <column name="questionario_id" not-null="true" />
-        </many-to-one>
+<!-- 		<one-to-one name="risposta" class="it.portalECI.DTO.RispostaQuestionario" cascade="all"></one-to-one> -->
+		<many-to-one name="risposta" class="it.portalECI.DTO.RispostaQuestionario" column="risposta_id" not-null="true" cascade="all" unique="true" />
+		
+		<joined-subclass name="it.portalECI.DTO.DomandaVerbaleQuestionarioDTO" table="DOMANDA_VERBALE_QUESTIONARIO">
+			<key column="DOMANDA_QUESTIONARIO_ID"/>
+   			<many-to-one name="questionario" class="it.portalECI.DTO.QuestionarioDTO">
+	            <column name="questionario_id" not-null="true" />
+	        </many-to-one>
+   			
+   		</joined-subclass>
+   		<joined-subclass name="it.portalECI.DTO.DomandaSchedaTecnicaQuestionarioDTO" table="DOMANDA_SCHEDA_TECNICA_QUESTIONARIO">
+ 			<key column="DOMANDA_QUESTIONARIO_ID"/>
+  			<many-to-one name="questionario" class="it.portalECI.DTO.QuestionarioDTO">
+	            <column name="questionario_id" not-null="true" />
+	        </many-to-one>
+   		</joined-subclass>
+        
 	</class>
 </hibernate-mapping> 

@@ -25,7 +25,7 @@
     		
     		<!-- Main content -->
     		<section class="content">
-            <form class="form-horizontal" action="gestioneQuestionario.do" method="POST">
+            <form class="form" action="gestioneQuestionario.do" method="POST">
 				<c:if test="${questionario.id!=null}">
 					<input type="hidden" name="idQuestionario" value="${questionario.id}" >
 					<input type="hidden" name="_method" value="put" />
@@ -43,7 +43,7 @@
 													<button data-widget="collapse" class="btn btn-box-tool"><i class="fa fa-minus"></i></button>
 												</div>
 											</div>
-											<div class="box-body">	
+											<div class="box-body form-horizontal">	
 												<div class="form-group">
 													<label for="titolo-input" class="col-sm-2 control-label">Titolo</label>
 													<div class="col-sm-10">
@@ -86,24 +86,19 @@
 												</div>
 											</div>
 											<div class="box-body">
-              									<table id="tabellaDomande" class="table table-bordered table-hover dataTable table-striped" role="grid">
- 													<thead>
- 														<tr class="active"> 
- 															<th>Domanda</th>
- 															<th>Tipo</th>
- 														</tr>
- 													</thead>
- 													<tbody>
- 														<c:forEach items="${questionario.domandeVerbale}" var="domanda"> 
- 															<tr role="row">
-																<td>
-  																	${domanda.testo}
-																</td>
-																<td>${domanda.risposta.tipo }</td>
-															</tr>	 
-														</c:forEach>
- 													</tbody>
- 												</table>  
+												<div id="listaDomandeVerbale" class="row">
+													<c:forEach items="${questionario.domandeVerbale}" var="domanda">
+														<c:set var="domanda" value="${domanda}" scope="request"></c:set>
+														<jsp:include page="domanda/formDomanda.jsp"></jsp:include>
+													</c:forEach>
+												</div>
+												<div class="row margin-botton">
+													<div class="col-xs-12">
+														<a class="btn btn-default pull-right" onclick="aggiungiDomanda('','Verbale')">
+															<i class="fa fa-plus"></i> Aggiungi domanda
+														</a>
+													</div>
+												</div>
 											</div>
 										</div>
             							<!-- /.box-body -->
@@ -112,32 +107,27 @@
         						</div>                                          
              					<div class="row">
         							<div class="col-xs-12">
-										<div class="box box-danger box-solid collapsed-box">
+										<div class="box box-danger box-solid">
 											<div class="box-header with-border">
 	 											Lista domande scheda tecnica
 												<div class="box-tools pull-right">		
-													<button data-widget="collapse" class="btn btn-box-tool"><i class="fa fa-plus"></i></button>
+													<button data-widget="collapse" class="btn btn-box-tool"><i class="fa fa-minus"></i></button>
 												</div>
 											</div>
 											<div class="box-body">
-              									<table id="tabellaDomande" class="table table-bordered table-hover dataTable table-striped" role="grid">
- 													<thead>
- 														<tr class="active"> 
- 															<th>Domanda</th>
- 															<th>Tipo</th>
- 														</tr>
- 													</thead>
- 													<tbody>
- 														<c:forEach items="${questionario.domandeSchedaTecnica}" var="domanda"> 
- 															<tr role="row">
-																<td>
-  																	${domanda.testo}
-																</td>
-																<td>${domanda.risposta.tipo }</td>
-															</tr>	 
-														</c:forEach>
- 													</tbody>
- 												</table>  
+												<div id="listaDomandeSchedaTecnica" class="row">
+													<c:forEach items="${questionario.domandeSchedaTecnica}" var="domanda">
+														<c:set var="domanda" value="${domanda}" scope="request"></c:set>
+														<jsp:include page="domanda/formDomanda.jsp"></jsp:include>
+													</c:forEach>
+												</div>
+												<div class="row margin-botton">
+													<div class="col-xs-12">
+														<a class="btn btn-default pull-right" onclick="aggiungiDomanda('','SchedaTecnica')">
+															<i class="fa fa-plus"></i> Aggiungi domanda
+														</a>
+													</div>
+												</div>
 											</div>
 										</div>
             							<!-- /.box-body -->
