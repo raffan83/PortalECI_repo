@@ -1,5 +1,7 @@
 package it.portalECI.bo;
 
+import java.util.List;
+
 import org.hibernate.Session;
 
 import it.portalECI.DAO.GestioneDomandaVerbaleDAO;
@@ -19,6 +21,9 @@ import it.portalECI.DTO.VerbaleDTO;
 
 public class GestioneVerbaleBO {
 	
+	public static List<VerbaleDTO> getListaVerbali(Session session) throws Exception {
+		return GestioneVerbaleDAO.getListaVerbali(session);
+	}
 	
 	public static VerbaleDTO getVerbale(String idVerbale,Session session) {
 		return GestioneVerbaleDAO.getVerbale(idVerbale, session);

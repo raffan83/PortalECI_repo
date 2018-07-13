@@ -1,8 +1,6 @@
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@taglib prefix="t" tagdir="/WEB-INF/tags"%>
 <%@page import="java.text.SimpleDateFormat"%>
-<%@page import="it.portalECI.DTO.CommessaDTO"%>
-<%@page import="java.util.ArrayList"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 
 <t:layout title="Dashboard" bodyClass="skin-red sidebar-mini wysihtml5-supported">
@@ -20,8 +18,8 @@
 				<!-- Content Header (Page header) -->
     			<section class="content-header">
       				<h1>
-        				Lista Commesse
-        				<small>Fai click per entrare nel dettaglio della commessa</small>
+        				Lista Verbali
+        				<small>Fai click per entrare nel dettaglio del Verbale</small>
       				</h1>
     			</section>
 
@@ -41,60 +39,56 @@
 														<button data-widget="collapse" class="btn btn-box-tool"><i class="fa fa-minus"></i></button>
 													</div>
 												</div>
-												<div class="box-body">
+												<div class="box-body">												
+													
               										<table id="tabPM" class="table table-bordered table-hover dataTable table-striped" role="grid" width="100%">
  														<thead>
  															<tr class="active"> 
- 																<th>ID commessa</th>
- 																<th>Cliente</th>
- 																<th>Sede</th>
- 																<th>Stato Richiedente</th>
- 																<th>Data Apertura</th>
- 																<th>Data Chiusura</th>
+ 																<th>ID Verbale</th>
+ 																<th>ID Intervento</th>
+ 																<th>Sede Cliente</th>
+ 																<th>Codice Categoria</th>
+ 																<th>Codice Verifica</th>
+ 																<th>Descrizione Verifica</th>
+ 																<th>Stato</th>
+ 																<th>Data Creazione</th>
  																<td></td>
  															</tr>
  														</thead>
  
  														<tbody> 
-  															<c:forEach items="${listaCommesse}" var="commessa">
- 																<tr role="row" id="${commessa.ID_COMMESSA}">
+  															<c:forEach items="${listaVerbali}" var="verbale">  															
+ 																<tr role="row" id="${verbale.getId()}">
 																	<td>
-																		<a href="#" class="btn customTooltip customlink" title="Click per aprire il dettaglio della Commessa" onclick="callAction('gestioneIntervento.do?idCommessa=${commessa.ID_COMMESSA}');">
-																			${commessa.ID_COMMESSA}
+																		<a href="#" class="btn customTooltip customlink" title="Click per aprire il dettaglio del Verbale" onclick="callAction('gestioneVerbale.do?idVerbale=${verbale.getId()}');">
+																			<c:out value='${verbale.getId()}'/>
+																		</a>
+																	</td>	
+																	<td>
+																		<a href="#" class="btn customTooltip customlink" title="Click per aprire il dettaglio dell'Intervento" onclick="callAction('gestioneInterventoDati.do?idIntervento=${verbale.getIntervento().getId()}');">
+																			${verbale.getIntervento().getId()}
 																		</a>
 																	</td>
 																	<td>
-																		<c:out value="${commessa.ID_ANAGEN_NOME}"/>
+																		<c:out value='${verbale.getIntervento().getNome_sede()}'/>
 																	</td>
 																	<td>
-																		<c:out value="${commessa.ANAGEN_INDR_DESCR}"/>  <c:out value="${commessa.ANAGEN_INDR_INDIRIZZO}"/>
-																	</td>
-																	<td class="centered">
- 																		<c:choose>
-  																			<c:when test="${commessa.SYS_STATO == '1CHIUSA'}">
-    																			<span class="label label-danger">CHIUSA</span>
-  																			</c:when>
-  																			<c:when test="${commessa.SYS_STATO == '1APERTA'}">
-    																			<span class="label label-success">APERTA</span>
-  																			</c:when>
-  																			<c:when test="${commessa.SYS_STATO == '0CREATA'}">
-    																			<span class="label label-warning">CREATA</span>
-  																			</c:when>
-  																			<c:otherwise>
-    																			<span class="label label-info">-</span>
-  																			</c:otherwise>
-																		</c:choose> 
+																		<c:out value='${verbale.getCodiceCategoria()}'/>
 																	</td>
 																	<td>
-																		<fmt:formatDate pattern="dd/MM/yyyy" value="${commessa.DT_COMMESSA}" type='date' />
+																		<c:out value='${verbale.getCodiceVerifica()}'/>
 																	</td>
 																	<td>
-																		<c:if test="${not empty commessa.FIR_CHIUSURA_DT}">
-   																			<fmt:formatDate pattern="dd/MM/yyyy" value="${commessa.FIR_CHIUSURA_DT}" />
-																		</c:if>
+																		<c:out value='${verbale.getDescrizioneVerifica()}'/>
 																	</td>
 																	<td>
-																		<a class="btn customTooltip" title="Click per aprire il dettaglio della Commessa" onclick="callAction('gestioneIntervento.do?idCommessa=${commessa.ID_COMMESSA}');">
+																		<span class="label" style="color:#000000 !important; background-color:${verbale.getStato().getColore(verbale.getStato().getId())} !important;">${verbale.getStato().getDescrizione()}</span>  																	
+																	</td>
+        															<td>
+																		<fmt:formatDate pattern="dd/MM/yyyy" value='${verbale.getCreateDate()}' type='date' />
+																	</td>
+																	<td>
+																		<a class="btn customTooltip" title="Click per aprire il dettaglio del Verbale" onclick="callAction('gestioneVerbale.do?idVerbale=${verbale.getId()}');">
                 															<i class="fa fa-arrow-right"></i>
             															</a>
         															</td>
@@ -111,47 +105,7 @@
         					</div>
         					<!-- /.col -->
  						</div>
-					</div>
-
-  					<div id="myModal" class="modal fade" role="dialog" aria-labelledby="myLargeModalLabel">
-    					<div class="modal-dialog" role="document">
-    						<div class="modal-content">
-     							<div class="modal-header">
-        							<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        							<h4 class="modal-title" id="myModalLabel">Approvazione</h4>
-      							</div>
-       							<div class="modal-body">     
-        							<div class="form-group">		
-                  						<textarea class="form-control" rows="3" id="noteApp" placeholder="Entra una nota ..."></textarea>
-                					</div>               
-  									<div id="empty" class="label label-danger testo12"></div>
-  		 						</div>
-      							<div class="modal-footer">
-        							<button type="button" class="btn btn-primary" onclick="approvazioneFromModal('app')"  >Approva</button>
-        							<button type="button" class="btn btn-danger"onclick="approvazioneFromModal('noApp')"  >Non Approva</button>
-      							</div>
-    						</div>
-  						</div>
-					</div>
-
-  					<div id="myModalError" class="modal fade" role="dialog" aria-labelledby="myLargeModalLabel">
-    					<div class="modal-dialog" role="document">
-    						<div class="modal-content">
-     							<div class="modal-header">
-        							<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        							<h4 class="modal-title" id="myModalLabel">Messaggio</h4>
-      							</div>
-       							<div class="modal-body">
-									<div id="myModalErrorContent">			
-									</div>		   
-  									<div id="empty" class="label label-danger testo12"></div>
-  		 						</div>
-      							<div class="modal-footer">		
-        							<button type="button" class="btn btn-outline" data-dismiss="modal">Chiudi</button>
-      							</div>
-    						</div>
-  						</div>
-					</div>
+					</div>  	
 
 				    <div id="errorMsg"><!-- Place at bottom of page --></div> 
 				</section>  
@@ -208,6 +162,7 @@
     	      		targets: 0,
     	      		responsive: true,
     	      		scrollX: false,
+	      			order: [[ 0, "desc" ]],
     	      		columnDefs: [
 						{ responsivePriority: 1, targets: 0 },
     	                { responsivePriority: 3, targets: 2 },
@@ -238,22 +193,7 @@
     	    	});
     			
      			table.buttons().container().appendTo( '#tabPM_wrapper .col-sm-6:eq(1)' );
-     	   
- 				/* $('#tabPM').on( 'dblclick','tr', function () {
-       				var id = $(this).attr('id');       		
-       				var row = table.row('#'+id);
-       				data = row.data();           
-     	    		
-       				if(data){
-     	    	 		row.child.hide();
-             			$( "#myModal" ).modal();
-     	    		}
-       			}); */
-       	           	    
-       	 		$('#myModal').on('hidden.bs.modal', function (e) {
-       	  			$('#noteApp').val("");
-       	 			$('#empty').html("");
-       			})
+     	    		       	           	           	 	
     
     			$('#tabPM thead th').each( function () {
         			var title = $('#tabPM thead th').eq( $(this).index() ).text();
@@ -281,8 +221,9 @@
 			        	theme: 'tooltipster-light'
 			    	});
 			  	} );
+    	 		
     		});
-    
+    		    
   		</script>
   
   

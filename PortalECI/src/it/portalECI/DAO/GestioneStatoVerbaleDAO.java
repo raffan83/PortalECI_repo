@@ -5,10 +5,7 @@ import java.util.List;
 import org.hibernate.Query;
 import org.hibernate.Session;
 
-import it.portalECI.DTO.QuestionarioDTO;
-import it.portalECI.DTO.StatoInterventoDTO;
 import it.portalECI.DTO.StatoVerbaleDTO;
-import it.portalECI.DTO.VerbaleDTO;
 
 public class GestioneStatoVerbaleDAO {
 	

@@ -4,7 +4,6 @@ import it.portalECI.DAO.GestioneInterventoDAO;
 import it.portalECI.DAO.GestioneStatoInterventoDAO;
 import it.portalECI.DTO.CategoriaVerificaDTO;
 import it.portalECI.DTO.InterventoDTO;
-import it.portalECI.DTO.QuestionarioDTO;
 import it.portalECI.DTO.StatoInterventoDTO;
 import it.portalECI.DTO.TipoVerificaDTO;
 import it.portalECI.DTO.VerbaleDTO;

@@ -128,7 +128,7 @@
             										<!-- /.tab-content -->
           										</div>
              
-	  											<div id="empty" class="testo12"></div>
+	  											<div id="empty" class="label label-danger testo12"></div>
   			 								</div>
       										<div class="modal-footer">
 												<span id="ulError" class="pull-left"></span>
@@ -174,7 +174,7 @@
             										<!-- /.tab-content -->
           										</div>        
   											
-	  											<div id="empty" class="testo12"></div>
+	  											<div id="empty" class="label label-danger testo12"></div>
   			 								</div>
       										
       										<div class="modal-footer">

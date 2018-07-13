@@ -211,6 +211,7 @@
     	      		targets: 0,
     	      		responsive: true,
     	      		scrollX: false,
+	      			order: [[ 0, "desc" ]],
     	      		columnDefs: [
 						{ responsivePriority: 1, targets: 0 },
     	                { responsivePriority: 3, targets: 2 },

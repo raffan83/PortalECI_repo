@@ -292,7 +292,7 @@
  												</table>  
   											</div>
   										</div>
-  										<div id="empty" class="testo12"></div>
+  										<div id="empty" class=" label label-danger testo12"></div>
   		 							</div>
       								<div class="modal-footer">
 						        		<button type="button" class="btn btn-danger"onclick="saveInterventoFromModal()"  >Salva</button>
@@ -311,7 +311,7 @@
        								<div class="modal-body">
 										<div id="modalErrorDiv">				
 										</div>	   
-  										<div id="empty" class="testo12"></div>
+  										<div id="empty" class=" label label-danger testo12"></div>
   		 							</div>
       								<div class="modal-footer">
         								<button type="button" class="btn btn-outline" data-dismiss="modal">Chiudi</button>

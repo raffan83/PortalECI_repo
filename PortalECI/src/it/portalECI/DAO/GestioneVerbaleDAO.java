@@ -9,7 +9,7 @@ import it.portalECI.DTO.VerbaleDTO;
 
 public class GestioneVerbaleDAO {
 	
-	public static List<VerbaleDTO> getListaVerabali(Session session){
+	public static List<VerbaleDTO> getListaVerbali(Session session){
 		Query query  = session.createQuery( "from VerbaleDTO");
 		List<VerbaleDTO> result = query.list();
 		return result;
