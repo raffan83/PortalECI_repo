@@ -2,6 +2,7 @@ package it.portalECI.action;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -16,8 +17,10 @@ import it.portalECI.DAO.SessionFacotryDAO;
 import it.portalECI.DTO.CategoriaVerificaDTO;
 import it.portalECI.DTO.InterventoDTO;
 import it.portalECI.DTO.TipoVerificaDTO;
+import it.portalECI.DTO.UtenteDTO;
 import it.portalECI.Util.Utility;
 import it.portalECI.bo.GestioneInterventoBO;
+import it.portalECI.bo.GestioneUtenteBO;
 
 /**
  * Servlet implementation class GestioneIntervento
@@ -58,12 +61,14 @@ public class GestioneInterventoDati extends HttpServlet {
 
 		ArrayList<TipoVerificaDTO> tipi_verifica = GestioneInterventoBO.getTipoVerifica(session);
 		ArrayList<CategoriaVerificaDTO> categorie_verifica = GestioneInterventoBO.getCategoriaVerifica(session);
+		List<UtenteDTO> users = GestioneUtenteBO.getTecnici("2", session);
 		
 		request.getSession().setAttribute("intervento", intervento);
 					
 	
 		request.getSession().setAttribute("tipi_verifica", tipi_verifica);
 		request.getSession().setAttribute("categorie_verifica", categorie_verifica);
+		request.getSession().setAttribute("tecnici", users);
 
 		
 		

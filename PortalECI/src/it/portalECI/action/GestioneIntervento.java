@@ -251,7 +251,7 @@ public class GestioneIntervento extends HttpServlet {
 						
 				if(intervento.getStatoIntervento().getId()!=StatoInterventoDTO.CREATO) {
 					myObj.addProperty("success", false);
-					myObj.addProperty("messaggio", "Errore! L'intervento \u00E8 gi\u00E0 stato scaricato dal tecnico.");
+					myObj.addProperty("messaggio", "Errore! L'intervento \u00E8 gi\u00E0 stato scaricato o lavorato dal tecnico.");
 					out.print(myObj);
 					return;
 				}
@@ -260,7 +260,9 @@ public class GestioneIntervento extends HttpServlet {
 					String id_tipo=categoriaTipo[i].substring(0, categoriaTipo[i].indexOf("_"));
 					TipoVerificaDTO tipoVerificaDTO = GestioneInterventoBO.getTipoVerifica(id_tipo, session); 
 					tipoverificalist.add(tipoVerificaDTO);
+					
 					VerbaleDTO verbaleTarget=null;
+					
 					if(intervento.getVerbali()!=null) {
 						for(VerbaleDTO verbale : intervento.getVerbali()) {
 							if(tipoVerificaDTO.getCodice().equals(verbale.getCodiceVerifica())) {
@@ -273,10 +275,21 @@ public class GestioneIntervento extends HttpServlet {
 					if(verbaleTarget==null) {
 						//Nuova categoria su update
 						verbaleTarget =GestioneVerbaleBO.buildVerbale(tipoVerificaDTO.getCodice(), session);
+						
+						if(verbaleTarget ==null) {														
+							myObj.addProperty("success", false);
+							myObj.addProperty("messaggio", "Questionario inesistente per Codice Verifica : "+tipoVerificaDTO.getCodice());
+							
+							out.print(myObj);
+							return;
+						}
+						
 					}
 					verbali.add(verbaleTarget);
 					
 				}
+				
+				
 				
 				UtenteDTO tecnico = GestioneUtenteBO.getUtenteById(id_tecnico, session);							
 				if(intervento.getTecnico_verificatore()!=tecnico) {
@@ -294,12 +307,7 @@ public class GestioneIntervento extends HttpServlet {
 				
 				GestioneInterventoBO.update(intervento,session);
 				
-				//Gson gson = new Gson();
-						
-				//String jsonInString = gson.toJson(intervento);
-					
 				myObj.addProperty("success", true);
-				//myObj.addProperty("intervento", jsonInString);
 				myObj.addProperty("messaggio", "Intervento modificato con successo");
 			
 				out.print(myObj);
@@ -353,8 +361,7 @@ public class GestioneIntervento extends HttpServlet {
 				myObj.addProperty("messaggio", "Errore creazione intervento.");
 				if(ex.getMessage()!=null && !ex.getMessage().isEmpty())
 					myObj.addProperty("dettaglio", ex.getMessage());
-			}
-			if(action !=null && action.equals("chiudi")){
+			}else if(action !=null && action.equals("chiudi")){
 				myObj.addProperty("messaggio", "Errore chiusura intervento.");
 				if(ex.getMessage()!=null && !ex.getMessage().isEmpty())
 					myObj.addProperty("dettaglio", ex.getMessage());
