@@ -22,6 +22,7 @@ public class VerbaleDTO implements Serializable {
 	private String codiceVerifica;
 	private String descrizioneVerifica;
 	private StatoVerbaleDTO stato;
+	private InterventoDTO intervento;
 	private List<DomandaVerbaleDTO> domandeVerbale;
 	//private List<DomandaQuestionarioDTO> domandeSchedaTecnica;
 	
@@ -60,7 +61,13 @@ public class VerbaleDTO implements Serializable {
 		this.stato = stato;
 	}
 	
+	public InterventoDTO getIntervento() {
+		return intervento;
+	}
 	
+	public void setIntervento(InterventoDTO intervento) {
+		this.intervento = intervento;
+	}
 
 	public String getCodiceCategoria() {
 		return codiceCategoria;

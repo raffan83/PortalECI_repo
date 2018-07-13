@@ -117,7 +117,7 @@
 																	<td>
 																		<!--<c:out value='${intervento.getStatoIntervento().getDescrizione()}'/>-->
 																		<a class="centered">					
-    																		<span class="label label-info" style="color:#000000 !important; background-color:${intervento.statoIntervento.getColore(intervento.statoIntervento.id)} !important;" >${intervento.getStatoIntervento().getDescrizione()}</span>
+    																		<span class="label" style="color:#000000 !important; background-color:${intervento.statoIntervento.getColore(intervento.statoIntervento.id)} !important;" >${intervento.getStatoIntervento().getDescrizione()}</span>
 																		</a>
 																	</td>
 																	<td>
@@ -211,6 +211,7 @@
     	      		targets: 0,
     	      		responsive: true,
     	      		scrollX: false,
+	      			order: [[ 0, "desc" ]],
     	      		columnDefs: [
 						{ responsivePriority: 1, targets: 0 },
     	                { responsivePriority: 3, targets: 2 },

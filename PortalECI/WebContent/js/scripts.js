@@ -351,9 +351,9 @@ function saveInterventoFromModal(){
 		listCatVer+="&categoriaTipo="+item.id;
 	});
 	
-	   
-	if(str1!= null){
-		$('#myModal').modal('hide')
+	if(listCatVer==""){
+		$('#empty').html("Devi inserire almeno un 'Tipo Verifica' per poter creare l'intervento!"); 
+	}else if(str1!= null){
 		//var dataArr={"tecnico":str};
 	            
 		pleaseWaitDiv = $('#pleaseWaitDialog');
@@ -370,6 +370,8 @@ function saveInterventoFromModal(){
 			success: function( data, textStatus) {
 
 				if(data.success){ 
+
+					$('#myModal').modal('hide')
 //	          		$('#errorMsg').html("<h3 class='label label-primary' style=\"color:green\">"+textStatus+"</h3>");
 					var table = $('#tabPM').DataTable();
 
@@ -393,7 +395,7 @@ function saveInterventoFromModal(){
 						//'<span class="label label-info">'+presso+'</span>',
 						intervento.nome_sede,
 						dataCreazione,
-						'<span class="label label-info" style="color:#000000 !important; background-color:#fff" !important">CREATO</span>',
+						'<span class="label " style="color:#000000 !important; background-color:#E4E5E0" !important">CREATO</span>',
 						user.nominativo,
 						tecnico.nominativo,
 						cat_verifica,
@@ -402,7 +404,7 @@ function saveInterventoFromModal(){
 						] ).draw();
 	          			  		          		
 				}else{
-					$('#modalErrorDiv').html(data.messaggio);
+					$('#modalErrorDiv').html(data.messaggio+' '+data.dettaglio);
 					$('#myModalError').removeClass();
 					$('#myModalError').addClass("modal modal-danger");
 					$('#myModalError').modal('show');
@@ -418,7 +420,7 @@ function saveInterventoFromModal(){
 			}
 		});
 	}else{
-		$('#empty').html("Il campo non pu&ograve; essere vuoto"); 
+		$('#empty').html("Il campo 'Tecnico Verificatore' non pu&ograve; essere vuoto"); 
 	}
 	  	   
 }

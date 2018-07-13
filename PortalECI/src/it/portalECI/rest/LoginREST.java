@@ -49,7 +49,7 @@ public class LoginREST extends HttpServlet {
 			        
 			if(utente!=null){
 				//generate JWT
-			   	myObj.add("userObj", utente.getUtenteJsonObject());
+			   	myObj.add("userObj", utente.getUtenteJsonObject(true));
 				myObj.addProperty("access_toke", JWTUtility.getJWTAcessToken(utente));
 			   	
 			}else{

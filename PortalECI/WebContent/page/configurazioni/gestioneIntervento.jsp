@@ -197,7 +197,7 @@
 																	</c:if>
 	
 	 																<c:if test="${!userObj.checkPermesso('CAMBIO_STATO_INTERVENTO_METROLOGIA')}"> 	
-	 																	<a href="#" id="stato_${intervento.id}"> <span class="label label-warning" style="color:#000000 !important; background-color:${intervento.statoIntervento.getColore(intervento.statoIntervento.id)} !important;">${intervento.statoIntervento.descrizione}</span></a>
+	 																	<a href="#" id="stato_${intervento.id}"> <span class="label" style="color:#000000 !important; background-color:${intervento.statoIntervento.getColore(intervento.statoIntervento.id)} !important;">${intervento.statoIntervento.descrizione}</span></a>
 																	</c:if>
 																</td>		
 																<td>${intervento.user.nominativo}</td>
@@ -292,6 +292,7 @@
  												</table>  
   											</div>
   										</div>
+  										<div id="empty" class=" label label-danger testo12"></div>
   		 							</div>
       								<div class="modal-footer">
 						        		<button type="button" class="btn btn-danger"onclick="saveInterventoFromModal()"  >Salva</button>
@@ -310,7 +311,7 @@
        								<div class="modal-body">
 										<div id="modalErrorDiv">				
 										</div>	   
-  										<div id="empty" class="testo12"></div>
+  										<div id="empty" class=" label label-danger testo12"></div>
   		 							</div>
       								<div class="modal-footer">
         								<button type="button" class="btn btn-outline" data-dismiss="modal">Chiudi</button>

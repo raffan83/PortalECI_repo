@@ -66,14 +66,14 @@
               			</li>
             		</ul>
           		</li>
-          		<li class="">
+          		<!-- <li class="">
            			<a href="http://www.accpoint.com" class="">
-              			<!-- The user image in the navbar-->
+              			<!- - The user image in the navbar- ->
               			<i class="fa fa-globe"></i>
-              			<!-- hidden-xs hides the username on small devices so only the image appears. -->
-              			<!-- <span class="hidden-xs">ACCPOINT</span> -->
+              			<!- - hidden-xs hides the username on small devices so only the image appears. - ->
+              			<!- - <span class="hidden-xs">ACCPOINT</span> - ->
             		</a>
-          		</li>
+          		</li>-->
            		<li class="">
            			<a href="assistenza.do" class="">
               			<!-- The user image in the navbar-->

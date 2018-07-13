@@ -148,7 +148,7 @@ public class InterventoDTO implements Serializable{
 		jobj.addProperty("idCommessa", this.idCommessa);
 		
 		if(this.user!=null)
-			jobj.add("user", this.user.getUtenteJsonObject());
+			jobj.add("user", this.user.getUtenteJsonObject(false));
 		
 		if(this.getStatoIntervento()!=null)
 			jobj.add("statoIntervento", this.statoIntervento.getStatoInterventoJsonObject());
@@ -157,7 +157,7 @@ public class InterventoDTO implements Serializable{
 			jobj.add("company", this.company.getCompanyJsonObject());
 		
 		if(this.tecnico_verificatore!=null)
-			jobj.add("tecnico_verificatore", this.tecnico_verificatore.getUtenteJsonObject());
+			jobj.add("tecnico_verificatore", this.tecnico_verificatore.getUtenteJsonObject(false));
 			
 		if(this.tipo_verifica!=null) {
 			JsonArray tipo_verificajobj = new JsonArray();
