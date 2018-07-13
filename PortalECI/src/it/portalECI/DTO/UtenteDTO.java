@@ -255,10 +255,14 @@ public class UtenteDTO implements Serializable {
 		this.resetToken = resetToken;
 	}
 	
-	public JsonObject getUtenteJsonObject() {
+	public JsonObject getUtenteJsonObject(Boolean withPassword) {
 		JsonObject userjobj = new JsonObject();
 		userjobj.addProperty("id", this.id);
 		userjobj.addProperty("user", this.user);
+		
+		if(withPassword) {
+			userjobj.addProperty("passw", this.passw);
+		}
 		userjobj.addProperty("nominativo", this.nominativo);
 		userjobj.addProperty("nome", this.nome);
 		userjobj.addProperty("cognome", this.cognome);
