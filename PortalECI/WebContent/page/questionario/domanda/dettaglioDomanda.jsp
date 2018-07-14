@@ -12,7 +12,7 @@
 <%
 	DomandaQuestionarioDTO domanda = (DomandaQuestionarioDTO) request.getAttribute("domanda");
 
-	/*org.hibernate.Session hibernateSession = (org.hibernate.Session) request.getAttribute("hibernateSession");
+	org.hibernate.Session hibernateSession = (org.hibernate.Session) request.getAttribute("hibernateSession");
 	List<OpzioneRispostaQuestionarioDTO> lista_opzioni = new ArrayList<OpzioneRispostaQuestionarioDTO>();
 	
 	if(domanda!=null && domanda.getRisposta().getTipo().equals("RES_FORMULA")){
@@ -25,7 +25,7 @@
 		request.setAttribute("risposta",risp);
 	}
 	
-	request.setAttribute("lista_opzioni",lista_opzioni);*/
+	request.setAttribute("lista_opzioni",lista_opzioni);
 %>
 
 
@@ -42,21 +42,25 @@
 		<b>Domanda obbligatoria</b> 
 		<a class="pull-right">${domanda.obbligatoria?'SI':'NO'}</a>
 	</li>
-	<li class="list-group-item">
-		<b>Tipo di risposta</b>
-		<a class="pull-right">${domanda.risposta.tipo}</a>
-	</li>
 	<c:if test="${domanda.risposta.tipo=='RES_CHOICE'}">
 		<li class="list-group-item">
+			<b>Tipo di risposta</b>
+			<a class="pull-right">Scelta multipla</a>
+		</li>
+		<li class="list-group-item" style="display: block;">
 			<b>Opzioni</b> 
 			<a class="pull-right">
 				<c:forEach items="${risposta.opzioni }" var="opzione">
-       				${opzione.testo}<br />
+       				${opzione.testo}, 
 				</c:forEach>
 			</a>
 		</li>
 	</c:if>
-	<c:if test="${risposta.tipo=='RES_FORMULA'}">
+	<c:if test="${domanda.risposta.tipo=='RES_FORMULA'}">
+		<li class="list-group-item">
+			<b>Tipo di risposta</b>
+			<a class="pull-right">Formula</a>
+		</li>
 		<li class="list-group-item">
 			<b>Operazione</b>
 			<a class="pull-right">${risposta.operatore}</a>
@@ -72,6 +76,12 @@
 		<li class="list-group-item">
 			<b>Nome risultato</b>
 			<a class="pull-right">${risposta.risultato}</a>
+		</li>
+	</c:if>
+	<c:if test="${domanda.risposta.tipo=='RES_TEXT'}">
+		<li class="list-group-item">
+			<b>Tipo di risposta</b>
+			<a class="pull-right">Testo libero</a>
 		</li>
 	</c:if>
 </ul>
