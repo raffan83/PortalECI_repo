@@ -94,7 +94,7 @@
                 									
         										</ul>
         										<div class="row">    
-        											<c:if test='${intervento.getStatoIntervento().getDescrizione()!="CHIUSO" && intervento.getStatoIntervento().getDescrizione()!="ANNULLATO" && intervento.getStatoIntervento().getDescrizione()!="SCARICATO"}'>    											
+        											<c:if test='${intervento.getStatoIntervento().getDescrizione().equals("CREATO")}'>    											
         												<button class="btn btn-default pull-right" onClick="$('#modalModificaIntervento').modal('show');" style="margin-right:10px">
         													<i class="glyphicon glyphicon-edit"></i>
         												 	Modifica
@@ -413,8 +413,9 @@
 				});
 				
 				   
-				if(str1!= null){
-					$('#modalModificaIntervento').modal('hide')
+				if(listCatVer==""){
+					$('#empty').html("Devi inserire almeno un 'Tipo Verifica'!"); 
+				}else if(str1!= null){					
 					
 					pleaseWaitDiv = $('#pleaseWaitDialog');
 					pleaseWaitDiv.modal();
@@ -425,9 +426,11 @@
 						data : "idIntervento=${intervento.getId()}&tecnico="+str1 +listCatVer,				
 						dataType: "json",
 						success: function( data, textStatus) {
-
+							
+							
 							if(data.success){ 
-									
+								$('#modalModificaIntervento').modal('hide');
+								
 								location.reload();
 				          			  		          		
 							}else{
@@ -450,7 +453,7 @@
 						}
 					});
 				}else{
-					$('#empty').html("Il campo non pu&ograve; essere vuoto"); 
+					$('#empty').html("Il campo 'Tecnico Verificatore' non pu&ograve; essere vuoto"); 
 				}
 				  	   
 			}
