@@ -10,13 +10,17 @@ public class RispostaQuestionario {
 	private int id;
 	private String tipo;
 	private String placeholder;
+	private DomandaQuestionarioDTO domanda;
 	
-	public RispostaQuestionario() {
+	public DomandaQuestionarioDTO getDomanda() {
+		return domanda;
 	}
 
-	public RispostaQuestionario(int id, String placeholder) {
-		this.id = id;
-		this.placeholder = placeholder;
+	public void setDomanda(DomandaQuestionarioDTO domanda) {
+		this.domanda = domanda;
+	}
+
+	public RispostaQuestionario() {
 	}
 
 	public int getId() {

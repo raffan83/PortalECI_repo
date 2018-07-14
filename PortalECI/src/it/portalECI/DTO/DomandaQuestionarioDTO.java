@@ -8,6 +8,8 @@ public class DomandaQuestionarioDTO {
 	private String placeholder;
 	private RispostaQuestionario risposta;
 	private QuestionarioDTO questionario;
+	private int posizione;
+
 	
 	public DomandaQuestionarioDTO() {
 	}
@@ -58,6 +60,14 @@ public class DomandaQuestionarioDTO {
 
 	public void setQuestionario(QuestionarioDTO questionario) {
 		this.questionario = questionario;
+	}
+
+	public int getPosizione() {
+		return posizione;
+	}
+
+	public void setPosizione(int order) {
+		this.posizione = order;
 	}
 
 

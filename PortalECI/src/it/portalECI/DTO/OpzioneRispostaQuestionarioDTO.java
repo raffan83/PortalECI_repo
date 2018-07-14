@@ -4,6 +4,7 @@ public class OpzioneRispostaQuestionarioDTO {
 	private int id;
 	private String testo;
 	private RispostaSceltaQuestionarioDTO risposta;
+	private int posizione;
 	
 	public OpzioneRispostaQuestionarioDTO() {
 	}
@@ -30,6 +31,14 @@ public class OpzioneRispostaQuestionarioDTO {
 
 	public void setRisposta(RispostaSceltaQuestionarioDTO risposta) {
 		this.risposta = risposta;
+	}
+
+	public int getPosizione() {
+		return posizione;
+	}
+
+	public void setPosizione(int posizione) {
+		this.posizione = posizione;
 	}
 	
 }

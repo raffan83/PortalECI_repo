@@ -10,6 +10,10 @@
 		<property name="testo">
 			<column name="testo" length="1024"/>
 		</property>
+	 	<property name="posizione">
+			<column name="posizione"/>
+		</property> 
+		
 		<many-to-one name="risposta" class="it.portalECI.DTO.RispostaSceltaQuestionarioDTO">
             <column name="risposta_id" not-null="true" />
         </many-to-one>

@@ -84,3 +84,10 @@ function newOption(){
 						+'</div>';
 	return jQuery(elementString)
 }
+
+function showError(textError){
+	$('#myModalErrorContent').html(textError);
+  	$('#myModalError').removeClass();
+	$('#myModalError').addClass("modal modal-danger");
+	$('#myModalError').modal('show');
+}

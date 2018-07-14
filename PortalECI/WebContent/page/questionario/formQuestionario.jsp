@@ -89,6 +89,7 @@
 												<div id="listaDomandeVerbale" class="row">
 													<c:forEach items="${questionario.domandeVerbale}" var="domanda">
 														<c:set var="domanda" value="${domanda}" scope="request"></c:set>
+														<c:set var="gruppo" value="Verbale" scope="request"></c:set>
 														<jsp:include page="domanda/formDomanda.jsp"></jsp:include>
 													</c:forEach>
 												</div>
@@ -118,6 +119,7 @@
 												<div id="listaDomandeSchedaTecnica" class="row">
 													<c:forEach items="${questionario.domandeSchedaTecnica}" var="domanda">
 														<c:set var="domanda" value="${domanda}" scope="request"></c:set>
+														<c:set var="gruppo" value="SchedaTecnica" scope="request"></c:set>
 														<jsp:include page="domanda/formDomanda.jsp"></jsp:include>
 													</c:forEach>
 												</div>
@@ -149,8 +151,7 @@
  							<h4 class="modal-title" id="myModalLabel">Messaggio</h4>
 						</div>
 						<div class="modal-body">
-							<div id="modalErrorDiv"></div>	   
-							<div id="empty" class="testo12"></div>
+							<div id="myModalErrorContent"></div>	   
 						</div>
 						<div class="modal-footer">
 							<button type="button" class="btn btn-outline" data-dismiss="modal">Chiudi</button>
@@ -172,5 +173,10 @@
 	
 	<jsp:attribute name="extra_js_footer">
 		<script src="js/questionario.js" type="text/javascript"></script>
+		<c:if test="${error!=null }">
+			<script  type="text/javascript">
+			showError("${error}");
+			</script>
+		</c:if>
 	</jsp:attribute> 
 </t:layout>

@@ -26,13 +26,18 @@
    			<many-to-one name="questionario" class="it.portalECI.DTO.QuestionarioDTO">
 	            <column name="questionario_id" not-null="true" />
 	        </many-to-one>
-   			
+			<property name="posizione">
+				<column name="posizione"/>
+			</property> 
    		</joined-subclass>
    		<joined-subclass name="it.portalECI.DTO.DomandaSchedaTecnicaQuestionarioDTO" table="DOMANDA_SCHEDA_TECNICA_QUESTIONARIO">
  			<key column="DOMANDA_QUESTIONARIO_ID"/>
   			<many-to-one name="questionario" class="it.portalECI.DTO.QuestionarioDTO">
 	            <column name="questionario_id" not-null="true" />
 	        </many-to-one>
+ 			<property name="posizione">
+				<column name="posizione"/>
+			</property> 
    		</joined-subclass>
         
 	</class>

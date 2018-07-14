@@ -18,7 +18,6 @@ import it.portalECI.DAO.SessionFacotryDAO;
 import it.portalECI.DTO.CategoriaVerificaDTO;
 import it.portalECI.DTO.DomandaQuestionarioDTO;
 import it.portalECI.DTO.DomandaSchedaTecnicaQuestionarioDTO;
-import it.portalECI.DTO.DomandaVerbaleDTO;
 import it.portalECI.DTO.DomandaVerbaleQuestionarioDTO;
 import it.portalECI.DTO.OpzioneRispostaQuestionarioDTO;
 import it.portalECI.DTO.QuestionarioDTO;
@@ -26,9 +25,7 @@ import it.portalECI.DTO.RispostaFormulaQuestionarioDTO;
 import it.portalECI.DTO.RispostaQuestionario;
 import it.portalECI.DTO.RispostaSceltaQuestionarioDTO;
 import it.portalECI.DTO.RispostaTestoQuestionarioDTO;
-import it.portalECI.DTO.RispostaVerbaleDTO;
 import it.portalECI.DTO.TipoVerificaDTO;
-import it.portalECI.DTO.VerbaleDTO;
 import it.portalECI.Util.Utility;
 import it.portalECI.bo.GestioneInterventoBO;
 import it.portalECI.bo.GestioneQuestionarioBO;
@@ -71,7 +68,6 @@ public class GestioneQuestionario extends HttpServlet {
 
 
 		QuestionarioDTO questionario = GestioneQuestionarioBO.getQuestionarioById(id, session);
-
 		request.setAttribute("questionario", questionario);
 		
 		RequestDispatcher dispatcher;
@@ -86,16 +82,20 @@ public class GestioneQuestionario extends HttpServlet {
 	
 	public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
-		if(Utility.validateSession(request,response,getServletContext()))return;
-		
 		if(request.getParameter("_method")!= null && request.getParameter("_method").equalsIgnoreCase("PUT")) {
 			doPut(request,response);
 			return;
 		}
 		
+		if(Utility.validateSession(request,response,getServletContext()))return;
+		
 		Session session=SessionFacotryDAO.get().openSession();
+		request.setAttribute("hibernateSession", session);
+
 		Transaction transaction = session.beginTransaction();
 		QuestionarioDTO questionario = new QuestionarioDTO();
+		questionario.setDomandeSchedaTecnica(new ArrayList<DomandaSchedaTecnicaQuestionarioDTO>());
+		questionario.setDomandeVerbale(new ArrayList<DomandaVerbaleQuestionarioDTO>());
 		
 		questionario = setQuestionarioFromRequest(request, questionario, session);
 		
@@ -114,7 +114,14 @@ public class GestioneQuestionario extends HttpServlet {
 		if(Utility.validateSession(request,response,getServletContext()))return;
 		
 		Session session=SessionFacotryDAO.get().openSession();
-		
+		Transaction transaction = session.beginTransaction();
+	
+		ArrayList<TipoVerificaDTO> tipi_verifica = GestioneInterventoBO.getTipoVerifica(session);
+		ArrayList<CategoriaVerificaDTO> categorie_verifica = GestioneInterventoBO.getCategoriaVerifica(session);
+		request.setAttribute("hibernateSession", session);
+		request.setAttribute("tipi_verifica", tipi_verifica);
+		request.setAttribute("categorie_verifica", categorie_verifica);
+
 		String idQuestionario = request.getParameter("idQuestionario");
 		
 		Integer id = null;
@@ -135,14 +142,29 @@ public class GestioneQuestionario extends HttpServlet {
 		}
 		
 		questionario = setQuestionarioFromRequest(request, questionario, session);
-		
-		Transaction transaction = session.beginTransaction();
-		session.update(questionario);
-		transaction.commit();
 		request.setAttribute("questionario", questionario);
+		try {
+			session.update(questionario);
+			transaction.commit();
+		}
+		catch (Exception e) {
+			System.out.println("ROLLBACK");
+			e.printStackTrace();
+			transaction.rollback();
+			request.setAttribute("error", "Non è stato possibile salvare le modifiche");
+			RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/page/questionario/formQuestionario.jsp");
+			dispatcher.forward(request, response);
+			session.close();
+			return;
+		}
+		
+				
+		request.setAttribute("questionario", questionario);
+		
 		RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/page/questionario/dettaglioQuestionario.jsp");
 		dispatcher.forward(request, response);
 		session.close();
+		
 
 	}
 	
@@ -152,12 +174,10 @@ public class GestioneQuestionario extends HttpServlet {
 		String tipoQuestionarioValue = request.getParameter("tipo");
 		String[] tipoQuestionario = tipoQuestionarioValue.split("_");
 		questionario.setTipo(GestioneInterventoBO.getTipoVerifica(tipoQuestionario[0], hibernateSession));
-		
+				
 		if(questionario.getDomandeVerbale()!=null) questionario.getDomandeVerbale().clear();
 		if(questionario.getDomandeSchedaTecnica()!=null) questionario.getDomandeSchedaTecnica().clear();
-		
-		List<DomandaVerbaleQuestionarioDTO> domandeVerbale = new ArrayList<DomandaVerbaleQuestionarioDTO>();
-		List<DomandaSchedaTecnicaQuestionarioDTO> domandeSchedaTecnica = new ArrayList<DomandaSchedaTecnicaQuestionarioDTO>();
+
 		
 		String[] domandaGruppo = request.getParameterValues("domanda.gruppo");
 		String[] domandaTesto = request.getParameterValues("domanda.testo");
@@ -176,24 +196,31 @@ public class GestioneQuestionario extends HttpServlet {
 		
 		
 		int indexOption = 0;
+		int orderSchedaTecnica = 0;
+		int orderVerbale=0;
 		for(int i=0;i<domandaGruppo.length;i++) {
 			
 			DomandaQuestionarioDTO domanda;
 			if(domandaGruppo[i].equals("Verbale")) {
 				domanda = new DomandaVerbaleQuestionarioDTO();
+				domanda.setPosizione(orderVerbale);
+				orderVerbale++;
 			}else {
 				domanda = new DomandaSchedaTecnicaQuestionarioDTO();
+				domanda.setPosizione(orderSchedaTecnica);
+				orderSchedaTecnica++;
 			}
 
 			domanda.setTesto(domandaTesto[i]);
 			domanda.setObbligatoria(new Boolean(domandaObbligatoria[i]));
 			domanda.setPlaceholder(domandaPlaceholder[i]+"_QST");
 			domanda.setQuestionario(questionario);
-						
+			
 			if(rispostaTipo[i].equals(RispostaQuestionario.TIPO_TESTO)) {
 				
 				RispostaTestoQuestionarioDTO risposta = new RispostaTestoQuestionarioDTO();
 				risposta.setPlaceholder(rispostaPlaceholder[i]+"_RES");
+				risposta.setDomanda(domanda);
 				domanda.setRisposta(risposta);
 				
 			}else if(rispostaTipo[i].equals(RispostaQuestionario.TIPO_FORMULA)){
@@ -204,6 +231,7 @@ public class GestioneQuestionario extends HttpServlet {
 				risposta.setOperatore(formulaOperazione[i]);
 				risposta.setRisultato(formulaRisultato[i]);
 				risposta.setPlaceholder(rispostaPlaceholder[i]+"_RES");
+				risposta.setDomanda(domanda);
 				domanda.setRisposta(risposta);
 								
 			}else if(rispostaTipo[i].equals(RispostaQuestionario.TIPO_SCELTA)){
@@ -213,6 +241,7 @@ public class GestioneQuestionario extends HttpServlet {
 				
 				for(int idx=0;idx<numeroScelte; idx++) {
 					OpzioneRispostaQuestionarioDTO opzione = new OpzioneRispostaQuestionarioDTO();
+					opzione.setPosizione(idx);
 					opzione.setTesto(nomiOpzioni[indexOption]);
 					opzione.setRisposta(risposta);
 					listaOpzioni.add(opzione);
@@ -220,18 +249,17 @@ public class GestioneQuestionario extends HttpServlet {
 				}
 				risposta.setOpzioni(listaOpzioni);
 				risposta.setPlaceholder(rispostaPlaceholder[i]+"_RES");
+				risposta.setDomanda(domanda);
 				domanda.setRisposta(risposta);
 				
 			}
 			if(domandaGruppo[i].equals("Verbale")) {
-				domandeVerbale.add((DomandaVerbaleQuestionarioDTO)domanda);
+				questionario.getDomandeVerbale().add((DomandaVerbaleQuestionarioDTO)domanda);
 			}else {
-				domandeSchedaTecnica.add((DomandaSchedaTecnicaQuestionarioDTO)domanda);
+				questionario.getDomandeSchedaTecnica().add((DomandaSchedaTecnicaQuestionarioDTO)domanda);
 			}
 		}
 		
-		questionario.setDomandeVerbale(domandeVerbale);
-		questionario.setDomandeSchedaTecnica(domandeSchedaTecnica);
 		return questionario;
 	}
 }

@@ -69,53 +69,9 @@
 												</div>
 											</div>
 											<div class="box-body">
-												<c:forEach items="${questionario.domandeVerbale }" var="domanda" >
-        											<ul class="list-group list-group">
-	                									<li class="list-group-item">
-	                  										<b>Testo della domanda</b> 
-	                  										<a class="pull-right">${domanda.testo}</a>
-	                									</li>
-	                									<li class="list-group-item">
-	                  										<b>Placeholder della domanda</b> 
-	                  										<a class="pull-right">${domanda.placeholder}</a>
-	                									</li>
-	                									<li class="list-group-item">
-	                  										<b>Domanda obbligatoria</b> 
-	                  										<a class="pull-right">${domanda.obbligatoria?'SI':'NO'}</a>
-	                									</li>
-	                									<li class="list-group-item">
-	                  										<b>Tipo di risposta</b> 
-	                  										<a class="pull-right">${domanda.risposta.tipo}</a>
-	                									</li>
-	                									<c:if test="${domanda.risposta.tipo=='RES_CHOICE'}">
-		                									<li class="list-group-item">
-		                										<b>Opzioni</b>
-		                										<a class="pull-right">
-																	<c:forEach items="${domanda.risposta.opzioni }" var="opzione">
-					                  									${opzione.testo}<br/>
-																	</c:forEach>
-																</a>
-					                						</li>
-				                						</c:if>
-	                									<c:if test="${domanda.risposta.tipo=='RES_FORMULA'}">
-		                									<li class="list-group-item">
-		                  										<b>Operazione</b> 
-		                  										<a class="pull-right">${domanda.risposta.operatore}</a>
-		                									</li>
-		                									<li class="list-group-item">
-		                  										<b>Nome primo valore</b> 
-		                  										<a class="pull-right">${domanda.risposta.valore1}</a>
-		                									</li>
-		                									<li class="list-group-item">
-		                  										<b>Nome secondo valore</b> 
-		                  										<a class="pull-right">${domanda.risposta.valore2}</a>
-		                									</li>
-		                									<li class="list-group-item">
-		                  										<b>Nome risultato</b> 
-		                  										<a class="pull-right">${domanda.risposta.risultato}</a>
-		                									</li>
-				                						</c:if>
-				                					</ul>
+												<c:forEach items="${questionario.domandeVerbale}" var="domanda">
+													<c:set var="domanda" value="${domanda}" scope="request"></c:set>
+													<jsp:include page="domanda/dettaglioDomanda.jsp"></jsp:include>
 												</c:forEach>
 											</div>
 										</div>
@@ -133,24 +89,10 @@
 												</div>
 											</div>
 											<div class="box-body">
-              									<table id="tabellaDomande" class="table table-bordered table-hover dataTable table-striped" role="grid" width="100%">
- 													<thead>
- 														<tr class="active"> 
- 															<th>Domanda</th>
- 															<th>Tipo</th>
- 														</tr>
- 													</thead>
- 													<tbody>
- 														<c:forEach items="${questionario.domandeSchedaTecnica}" var="domanda"> 
- 															<tr role="row">
-																<td>
-  																	${domanda.testo}
-																</td>
-																<td>${domanda.risposta.tipo }</td>
-															</tr>	 
-														</c:forEach>
- 													</tbody>
- 												</table>  
+												<c:forEach items="${questionario.domandeSchedaTecnica}" var="domanda">
+													<c:set var="domanda" value="${domanda}" scope="request"></c:set>
+													<jsp:include page="domanda/dettaglioDomanda.jsp"></jsp:include>
+												</c:forEach>
 											</div>
 										</div>
             							<!-- /.box-body -->
