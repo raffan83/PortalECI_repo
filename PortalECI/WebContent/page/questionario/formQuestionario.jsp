@@ -25,7 +25,7 @@
     		
     		<!-- Main content -->
     		<section class="content">
-            <form class="form" action="gestioneQuestionario.do" method="POST">
+            <form class="form" id="questionario-form" action="gestioneQuestionario.do" method="POST">
 				<c:if test="${questionario.id!=null}">
 					<input type="hidden" name="idQuestionario" value="${questionario.id}" >
 					<input type="hidden" name="_method" value="put" />
@@ -54,7 +54,7 @@
 		                  							<label for="categoria-verifica-select" class="col-sm-2 control-label">Categoria Verifica</label>
 		                  							<div class="col-sm-10">
 		    	              							<select id="categoria-verifica-select" data-placeholder="Seleziona Categoria..."  class="form-control">
-		        	          								<option value="" disabled selected>Seleziona Categoria...</option>
+		        	          								<option value="">Seleziona Categoria...</option>
 		            	          							<c:forEach items="${categorie_verifica}" var="categoria">
 		                	           							<option value="${categoria.id}"<c:if test="${questionario.tipo.categoria.id == categoria.id}">selected</c:if>>${categoria.codice}</option> 	
 		                    	 							</c:forEach>
@@ -64,8 +64,8 @@
 		              							<div class="form-group">
 	                  								<label for="tipo-verifica-select" class="col-sm-2 control-label">Tipo Verifica</label>
 		                  							<div class="col-sm-10">
-		                  								<select name="tipo" id="tipo-verifica-select" data-placeholder="Seleziona Tipo"  class="form-control">
-		                									<option value="" disabled selected>Seleziona Tipo...</option>
+		                  								<select name="tipo" id="tipo-verifica-select" data-placeholder="Seleziona Tipo"  class="form-control" disabled="true">
+		                									<option value="">Seleziona Tipo...</option>
 		                									<c:forEach items="${tipi_verifica}" var="tipo">                		
 			                        							<option value="${tipo.id}_${tipo.categoria.id}" <c:if test="${questionario.tipo.id == tipo.id}">selected</c:if>>${tipo.codice}</option>
 		    	                 							</c:forEach>

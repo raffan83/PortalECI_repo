@@ -67,11 +67,11 @@
 				}
 				request.setAttribute("lista_opzioni",lista_opzioni);
 			%>
-	<div class="form-group risposta-div risposta-RES_CHOICE" style="display: ${domanda!=null && domanda.risposta.tipo.equals('RES_CHOICE')?'block':'none'}">
+	<div class="risposta-div risposta-RES_CHOICE" style="display: ${domanda!=null && domanda.risposta.tipo.equals('RES_CHOICE')?'block':'none'}">
 		<input type="hidden" name="numero-opzioni" class="numero-opzioni-input" value="${lista_opzioni.size()}"/>
-		<div class="lista-opzioni-div row">
+		<div class="lista-opzioni-div row ">
 			<c:forEach items="${lista_opzioni}" var="opzione" >
-				<div class="col-sm-4 opzione-div margin-bottom">
+				<div class="col-sm-4 opzione-div form-group">
 					<div class="input-group">
 						<input type="text" class="form-control" placeholder="Opzione" name="opzione" value="${opzione.testo}">
 						<div class="input-group-btn">

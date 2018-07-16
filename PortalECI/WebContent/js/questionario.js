@@ -1,7 +1,6 @@
 
 $("#categoria-verifica-select").change(function() {
-	$("#categoria-verifica-select option[value='']").remove();
-	$("#tipo-verifica-select option[value='']").remove();
+	//$("#tipo-verifica-select option[value='']").remove();
 	if ($(this).data('options') == undefined) {
 		/*Taking an array of all options-2 and kind of embedding it on the select1*/
 		$(this).data('options', $('#tipo-verifica-select option').clone());
@@ -14,7 +13,7 @@ $("#categoria-verifica-select").change(function() {
 	for (var i = 0; i < options.length; i++) {
 		var str = options[i].value;
 
-		if (str.substring(str.indexOf("_") + 1, str.length) == id) {
+		if (str.substring(str.indexOf("_") + 1, str.length) == id || str=="") {
 			opt.push(options[i]);
 		}
 	}
@@ -25,7 +24,7 @@ $("#categoria-verifica-select").change(function() {
 	$("#tipo-verifica-select").trigger("chosen:updated");
 	$("#tipo-verifica-select").change();
 });
-
+$("#categoria-verifica-select").trigger("change");
  
 //tipo:		RES_TEXT | RES_CHOICE | RES_FORMULA
 //gruppo:	scedaTecnica | verbale
@@ -74,7 +73,7 @@ $(document).on("click",".rimuovi-opzione-button",function() {
 
 
 function newOption(){
-	var elementString = '<div class="col-sm-4 opzione-div margin-bottom">'
+	var elementString = '<div class="col-sm-4 opzione-div form-group">'
 							+'<div class="input-group">'
 								+'<input type="text" class="form-control" placeholder="Opzione" name="opzione">'
 								+'<div class="input-group-btn">'
@@ -91,3 +90,25 @@ function showError(textError){
 	$('#myModalError').addClass("modal modal-danger");
 	$('#myModalError').modal('show');
 }
+
+$("#questionario-form").on("submit", function(event){
+	$("#questionario-form .form-group").removeClass("has-error");
+	$("#questionario-form .help-block").remove();
+	$("#questionario-form").find(":input").not(':button').not(":hidden").each(function(){
+		var form_group = $(this).parents(".form-group");
+		var target = $(this).parent(".input-group");
+		if(target.length==0) target = $(this);
+		if(this.value == ""){
+			form_group.addClass( "has-error" );
+			jQuery("<span/>", {"class":"help-block", "text":"Campo obbligatorio"}).insertAfter(target);
+			event.preventDefault();
+		}
+	});
+});
+
+$(document).on("change","#questionario-form :input",function(){
+	var form_group = $(this).parents(".form-group");
+	form_group.removeClass("has-error");
+	form_group.find(".help-block").remove();
+})
+

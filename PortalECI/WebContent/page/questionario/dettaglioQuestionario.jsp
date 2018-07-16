@@ -19,7 +19,7 @@
         			Dettaglio Questionario
         			<small></small>
       			</h1>
-      			<%--<button class="btn btn-default pull-right" onClick="nuovoInterventoFromModal()"><i class="glyphicon glyphicon-edit"></i> Nuovo Intervento</button> %-->
+      			<a class="btn btn-default pull-right" href="gestioneQuestionario.do?idQuestionario=${questionario.id}&action=modifica"><i class="glyphicon glyphicon-edit"></i> Modifica</a>
       			<%-- <c:if test="${userObj.checkPermesso('NUOVO_INTERVENTO_METROLOGIA')}">  <button class="btn btn-default pull-right" onClick="nuovoInterventoFromModal()"><i class="glyphicon glyphicon-edit"></i> Nuovo Intervento</button></c:if> --%>
     		</section>
 			<div style="clear: both;"></div>

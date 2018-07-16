@@ -219,6 +219,7 @@ public class GestioneQuestionario extends HttpServlet {
 			if(rispostaTipo[i].equals(RispostaQuestionario.TIPO_TESTO)) {
 				
 				RispostaTestoQuestionarioDTO risposta = new RispostaTestoQuestionarioDTO();
+				risposta.setTipo(RispostaQuestionario.TIPO_TESTO);
 				risposta.setPlaceholder(rispostaPlaceholder[i]+"_RES");
 				risposta.setDomanda(domanda);
 				domanda.setRisposta(risposta);
@@ -226,6 +227,7 @@ public class GestioneQuestionario extends HttpServlet {
 			}else if(rispostaTipo[i].equals(RispostaQuestionario.TIPO_FORMULA)){
 				
 				RispostaFormulaQuestionarioDTO risposta = new RispostaFormulaQuestionarioDTO();
+				risposta.setTipo(RispostaQuestionario.TIPO_FORMULA);
 				risposta.setValore1(rispostaValore1[i]);
 				risposta.setValore2(rispostaValore2[i]);
 				risposta.setOperatore(formulaOperazione[i]);
@@ -247,6 +249,7 @@ public class GestioneQuestionario extends HttpServlet {
 					listaOpzioni.add(opzione);
 					indexOption++;
 				}
+				risposta.setTipo(RispostaQuestionario.TIPO_SCELTA);
 				risposta.setOpzioni(listaOpzioni);
 				risposta.setPlaceholder(rispostaPlaceholder[i]+"_RES");
 				risposta.setDomanda(domanda);
