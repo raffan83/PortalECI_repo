@@ -19,12 +19,13 @@
 
 				<!-- Content Header (Page header) -->
     			<section class="content-header">
-      				<h1>
+      				<h1 class = "pull-left">
         				Lista Questionari
         				<small>Fai click per entrare nel dettaglio del questionario</small>
       				</h1>
+      				<a class="btn btn-default pull-right" href="gestioneQuestionario.do?"><i class="glyphicon glyphicon-plus"></i> Nuovo questionario</a>
     			</section>
-
+				<div style="clear: both;"></div>
 			    <!-- Main content -->
     			<section class="content">
 					<div class="row">

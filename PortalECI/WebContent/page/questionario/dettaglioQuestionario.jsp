@@ -51,9 +51,10 @@
                   										<a class="pull-right">${questionario.tipo.codice}</a>
                 									</li>
                 									<li class="list-group-item">
-                  										<b>Data Creazione</b> 
-                  										<a class="pull-right"><fmt:formatDate pattern="dd/MM/yyyy" value="${questionario.createDate}" /></a>
+                  										<b>Versione del </b> 
+                  										<a class="pull-right"><fmt:formatDate pattern="dd/MM/yyyy" value="${questionario.updateDate}" /></a>
                 									</li>
+                									
         										</ul>
 											</div>
 										</div>
