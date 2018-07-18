@@ -95,7 +95,7 @@
 												</div>
 												<div class="row margin-botton">
 													<div class="col-xs-12">
-														<a class="btn btn-default pull-right" onclick="aggiungiDomanda('','Verbale')">
+														<a class="btn btn-default pull-right" onclick="aggiungiDomanda('Verbale', this)">
 															<i class="fa fa-plus"></i> Aggiungi domanda
 														</a>
 													</div>
@@ -125,7 +125,7 @@
 												</div>
 												<div class="row margin-botton">
 													<div class="col-xs-12">
-														<a class="btn btn-default pull-right" onclick="aggiungiDomanda('','SchedaTecnica')">
+														<a class="btn btn-default pull-right" onclick="aggiungiDomanda('SchedaTecnica', this)">
 															<i class="fa fa-plus"></i> Aggiungi domanda
 														</a>
 													</div>
