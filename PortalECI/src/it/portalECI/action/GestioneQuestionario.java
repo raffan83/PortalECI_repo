@@ -200,29 +200,44 @@ public class GestioneQuestionario extends HttpServlet {
 		int orderVerbale=0;
 		for(int i=0;i<domandaGruppo.length;i++) {
 			
-			DomandaQuestionarioDTO domanda;
+			DomandaQuestionarioDTO domandaQuestionario = new  DomandaQuestionarioDTO();
+			
 			if(domandaGruppo[i].equals("Verbale")) {
-				domanda = new DomandaVerbaleQuestionarioDTO();
+				DomandaVerbaleQuestionarioDTO domanda = new DomandaVerbaleQuestionarioDTO();
+				domanda.setTesto(domandaTesto[i]);
+				domanda.setObbligatoria(new Boolean(domandaObbligatoria[i]));
+				domanda.setPlaceholder(domandaPlaceholder[i]+"_QST");
+				domanda.setQuestionario(questionario);
 				domanda.setPosizione(orderVerbale);
+				
+				questionario.getDomandeVerbale().add((DomandaVerbaleQuestionarioDTO)domanda);
+				domandaQuestionario = domanda;
+				
 				orderVerbale++;
-			}else {
-				domanda = new DomandaSchedaTecnicaQuestionarioDTO();
+			}else if(domandaGruppo[i].equals("SchedaTecnica")) {
+				DomandaSchedaTecnicaQuestionarioDTO domanda = new DomandaSchedaTecnicaQuestionarioDTO();
+				domanda.setTesto(domandaTesto[i]);
+				domanda.setObbligatoria(new Boolean(domandaObbligatoria[i]));
+				domanda.setPlaceholder(domandaPlaceholder[i]+"_QST");
+				domanda.setQuestionario(questionario);
 				domanda.setPosizione(orderSchedaTecnica);
+				
+				questionario.getDomandeSchedaTecnica().add((DomandaSchedaTecnicaQuestionarioDTO)domanda);
+				domandaQuestionario = domanda;
+				
 				orderSchedaTecnica++;
+			}else if(domandaGruppo[i].equals("Opzione")) {
+				
 			}
 
-			domanda.setTesto(domandaTesto[i]);
-			domanda.setObbligatoria(new Boolean(domandaObbligatoria[i]));
-			domanda.setPlaceholder(domandaPlaceholder[i]+"_QST");
-			domanda.setQuestionario(questionario);
 			
 			if(rispostaTipo[i].equals(RispostaQuestionario.TIPO_TESTO)) {
 				
 				RispostaTestoQuestionarioDTO risposta = new RispostaTestoQuestionarioDTO();
 				risposta.setTipo(RispostaQuestionario.TIPO_TESTO);
 				risposta.setPlaceholder(rispostaPlaceholder[i]+"_RES");
-				risposta.setDomanda(domanda);
-				domanda.setRisposta(risposta);
+				risposta.setDomanda(domandaQuestionario);
+				domandaQuestionario.setRisposta(risposta);
 				
 			}else if(rispostaTipo[i].equals(RispostaQuestionario.TIPO_FORMULA)){
 				
@@ -233,8 +248,8 @@ public class GestioneQuestionario extends HttpServlet {
 				risposta.setOperatore(formulaOperazione[i]);
 				risposta.setRisultato(formulaRisultato[i]);
 				risposta.setPlaceholder(rispostaPlaceholder[i]+"_RES");
-				risposta.setDomanda(domanda);
-				domanda.setRisposta(risposta);
+				risposta.setDomanda(domandaQuestionario);
+				domandaQuestionario.setRisposta(risposta);
 								
 			}else if(rispostaTipo[i].equals(RispostaQuestionario.TIPO_SCELTA)){
 				RispostaSceltaQuestionarioDTO risposta = new RispostaSceltaQuestionarioDTO();
@@ -252,14 +267,9 @@ public class GestioneQuestionario extends HttpServlet {
 				risposta.setTipo(RispostaQuestionario.TIPO_SCELTA);
 				risposta.setOpzioni(listaOpzioni);
 				risposta.setPlaceholder(rispostaPlaceholder[i]+"_RES");
-				risposta.setDomanda(domanda);
-				domanda.setRisposta(risposta);
+				risposta.setDomanda(domandaQuestionario);
+				domandaQuestionario.setRisposta(risposta);
 				
-			}
-			if(domandaGruppo[i].equals("Verbale")) {
-				questionario.getDomandeVerbale().add((DomandaVerbaleQuestionarioDTO)domanda);
-			}else {
-				questionario.getDomandeSchedaTecnica().add((DomandaSchedaTecnicaQuestionarioDTO)domanda);
 			}
 		}
 		
