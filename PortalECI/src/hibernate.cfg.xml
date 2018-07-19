@@ -25,7 +25,7 @@
   		<mapping class="RispostaQuestionario" package="it.portalECI.DTO" resource="it/portalECI/hbm/RispostaQuestionario.hbm.xml"/>
   		<mapping class="DomandaQuestionarioDTO" package="it.portalECI.DTO" resource="it/portalECI/hbm/DomandaQuestionarioDTO.hbm.xml"/>
   		<mapping class="QuestionarioDTO" package="it.portalECI.DTO" resource="it/portalECI/hbm/QuestionarioDTO.hbm.xml"/>
-  		
+  		<mapping class="TemplateQuestionarioDTO" package="it.portalECI.DTO" resource="it/portalECI/hbm/TemplateQuestionarioDTO.hbm.xml"/>
   		
   		<mapping class="OpzioneRispostaVerbaleDTO" package="it.portalECI.DTO" resource="it/portalECI/hbm/OpzioneRispostaVerbaleDTO.hbm.xml"/>
   		<mapping class="RispostaVerbaleDTO" package="it.portalECI.DTO" resource="it/portalECI/hbm/RispostaVerbaleDTO.hbm.xml"/>

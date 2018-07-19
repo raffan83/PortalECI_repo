@@ -211,7 +211,8 @@
     	      		columnDefs: [
 						{ responsivePriority: 1, targets: 0 },
     	                { responsivePriority: 3, targets: 2 },
-    	                { responsivePriority: 4, targets: 3 },
+    	                { responsivePriority: 4, targets: 4 ,type:"date-eu"},
+    	                { responsivePriority: 4, targets: 5 ,type:"date-eu"},
     	                { responsivePriority: 2, targets: 6 },
     	                { orderable: false, targets: 6 },
     	            ],             

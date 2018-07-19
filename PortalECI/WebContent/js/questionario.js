@@ -28,7 +28,7 @@ $("#categoria-verifica-select").trigger("change");
  
 //tipo:		RES_TEXT | RES_CHOICE | RES_FORMULA
 //gruppo:	scedaTecnica | verbale
-function aggiungiDomanda(tipo, gruppo){
+function aggiungiDomanda(gruppo, button){
 	$.ajax({
 		type: "GET",
 		url: "gestioneDomandeQuestionario.do",
@@ -68,7 +68,7 @@ $(document).on("click",".aggiungi-opzione-button",function() {
 $(document).on("click",".rimuovi-opzione-button",function() {
 	var counter = $(this).parents(".risposta-div").find(".numero-opzioni-input");
 	counter.val(parseInt(counter.val())-1);
-	$(this).parents(".opzione-div").remove();
+	$(this).parents(".opzione-div").first().remove();
 });
 
 
@@ -92,10 +92,14 @@ function showError(textError){
 }
 
 $("#questionario-form").on("submit", function(event){
+	if($("#questionario-form .domanda-div").length==0){
+		showError("Devi inserire almeno una domanda");
+		event.preventDefault();
+	}
 	$("#questionario-form .form-group").removeClass("has-error");
 	$("#questionario-form .help-block").remove();
 	$("#questionario-form").find(":input").not(':button').not(":hidden").each(function(){
-		var form_group = $(this).parents(".form-group");
+		var form_group = $(this).parents(".form-group").first();
 		var target = $(this).parent(".input-group");
 		if(target.length==0) target = $(this);
 		if(this.value == ""){
@@ -107,7 +111,7 @@ $("#questionario-form").on("submit", function(event){
 });
 
 $(document).on("change","#questionario-form :input",function(){
-	var form_group = $(this).parents(".form-group");
+	var form_group = $(this).parents(".form-group").first();
 	form_group.removeClass("has-error");
 	form_group.find(".help-block").remove();
 })
