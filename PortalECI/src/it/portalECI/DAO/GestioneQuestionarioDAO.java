@@ -2,6 +2,7 @@ package it.portalECI.DAO;
 
 import java.util.List;
 
+import org.apache.commons.collections.ListUtils;
 import org.hibernate.Query;
 import org.hibernate.Session;
 
@@ -27,6 +28,14 @@ public class GestioneQuestionarioDAO {
 		query.setMaxResults(1);
 		
 ;		return (QuestionarioDTO) query.uniqueResult();
+	}
+	
+	public static List getQuestionariPlaceholder(Session session) {		
+		
+		Query queryDom = session.createQuery("select DISTINCT(placeholder) from DomandaQuestionarioDTO" );
+		Query queryRis =session.createQuery("select DISTINCT(placeholder) from RispostaQuestionario");
+	
+		return ListUtils.union(queryDom.list(), queryRis.list()); 
 	}
 
 }
