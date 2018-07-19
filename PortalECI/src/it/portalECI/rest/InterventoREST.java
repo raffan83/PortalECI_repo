@@ -211,7 +211,6 @@ public class InterventoREST extends HttpServlet {
 //DELETE
 		// TODO Auto-generated method stub
 		//doPost(request,response);
-		
 		//if(Utility.validateSession(request,response,getServletContext()))return;
 		
 		response.setContentType("application/json");

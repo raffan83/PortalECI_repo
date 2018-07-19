@@ -90,6 +90,9 @@ public class GestioneVerbaleBO {
 	public static VerbaleDTO buildVerbaleByQuestionario(VerbaleDTO verbale, Session session) {
 		VerbaleDTO result = null;
 		if (verbale != null) {
+			if (verbale.getDomandeVerbale() != null) {
+				verbale.getDomandeVerbale().clear();
+			}
 			QuestionarioDTO questionario = GestioneQuestionarioDAO.getQuestionarioById(verbale.getQuestionarioID(),
 					session);
 			if (questionario != null) {
@@ -121,19 +124,19 @@ public class GestioneVerbaleBO {
 							case RispostaQuestionario.TIPO_SCELTA:
 								rispostaVerbaleDTO = new RispostaSceltaVerbaleDTO();
 								RispostaSceltaVerbaleDTO rispostaSceltaVerbaleDTO = (RispostaSceltaVerbaleDTO) rispostaVerbaleDTO;
-								rispostaSceltaVerbaleDTO.setRispostaQuestionario(GestioneRispostaQuestionarioDAO
+								RispostaSceltaQuestionarioDTO rispostaSceltaQuestionario = GestioneRispostaQuestionarioDAO
 										.getRispostaInstance(RispostaSceltaQuestionarioDTO.class,
-												domandaQuestionario.getRisposta().getId(), session));
-								if (((RispostaSceltaQuestionarioDTO) domandaQuestionario.getRisposta())
-										.getOpzioni() != null) {
-									for (OpzioneRispostaQuestionarioDTO opzioneRispostaQuestionarioDTO : ((RispostaSceltaQuestionarioDTO) domandaQuestionario
-											.getRisposta()).getOpzioni()) {
+												domandaQuestionario.getRisposta().getId(), session);
+								rispostaSceltaVerbaleDTO.setRispostaQuestionario(rispostaSceltaQuestionario);
+								if (rispostaSceltaQuestionario.getOpzioni() != null) {
+									for (OpzioneRispostaQuestionarioDTO opzioneRispostaQuestionarioDTO : rispostaSceltaQuestionario.getOpzioni()) {
 										OpzioneRispostaVerbaleDTO opzioneRispostaVerbaleDTO = new OpzioneRispostaVerbaleDTO();
 										opzioneRispostaVerbaleDTO
 												.setOpzioneQuestionario(opzioneRispostaQuestionarioDTO);
-										GestioneRispostaVerbaleDAO.saveOpzioneVerbale(opzioneRispostaVerbaleDTO,
-												session);
+										opzioneRispostaVerbaleDTO.setRisposta(rispostaSceltaVerbaleDTO);
 										rispostaSceltaVerbaleDTO.addToOpzioni(opzioneRispostaVerbaleDTO);
+										
+										
 									}
 								}
 								GestioneRispostaVerbaleDAO.save(rispostaSceltaVerbaleDTO, session);
@@ -146,18 +149,17 @@ public class GestioneVerbaleBO {
 							}
 
 							domandaVerbaleDTO.setVerbale(verbale);
+							GestioneDomandaVerbaleDAO.save(domandaVerbaleDTO, session);
 							verbale.addToDomande(domandaVerbaleDTO);
+
 						}
 					}
+
 					result = verbale;
 				}
 			}
 		}
-
 		return result;
 	}
-	
-	
-	
 
 }

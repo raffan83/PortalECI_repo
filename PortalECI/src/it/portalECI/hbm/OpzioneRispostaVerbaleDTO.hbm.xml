@@ -7,7 +7,8 @@
 		<id name="id">
 			<generator class="identity"></generator>
 		</id>
-		<one-to-one name="opzioneQuestionario" class="it.portalECI.DTO.OpzioneRispostaQuestionarioDTO" ></one-to-one>
+		
+		<many-to-one name="opzioneQuestionario" class="it.portalECI.DTO.OpzioneRispostaQuestionarioDTO" column="opzione_questionario_id"  cascade="none"  />
 		<many-to-one name="risposta" class="it.portalECI.DTO.RispostaSceltaVerbaleDTO">
             <column name="risposta_id" not-null="true" />
         </many-to-one>

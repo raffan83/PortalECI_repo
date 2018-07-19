@@ -25,13 +25,13 @@
 		
 		<many-to-one name="rispostaQuestionario" class="it.portalECI.DTO.RispostaSceltaQuestionarioDTO" column="risposta_questionario_id"  cascade="none"  />				
 					
-			<list name="opzioni" table="OPZIONE_VERBALE" inverse="false" lazy="true" fetch="select" cascade="all">
+			<set name="opzioni" table="OPZIONE_VERBALE" inverse="true" lazy="true" fetch="select" cascade="all, delete-orphan">
 				<key>
 					<column name="risposta_id"></column>
 				</key>
-				<list-index column="idx"></list-index>
+				
 				<one-to-many class="it.portalECI.DTO.OpzioneRispostaVerbaleDTO"/>
-			</list>
+			</set>
 			
 		</subclass>
 		

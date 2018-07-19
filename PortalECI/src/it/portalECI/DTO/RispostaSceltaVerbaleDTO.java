@@ -1,8 +1,11 @@
 package it.portalECI.DTO;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
+import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
@@ -10,7 +13,7 @@ public class RispostaSceltaVerbaleDTO extends RispostaVerbaleDTO {
 	
 	private RispostaSceltaQuestionarioDTO rispostaQuestionario;
 	
-	private List<OpzioneRispostaVerbaleDTO> opzioni;
+	private Set<OpzioneRispostaVerbaleDTO> opzioni;
 	
 	public RispostaSceltaVerbaleDTO() {
 		super();
@@ -25,17 +28,17 @@ public class RispostaSceltaVerbaleDTO extends RispostaVerbaleDTO {
 		this.rispostaQuestionario = rispostaQuestionario;
 	}
 
-	public List<OpzioneRispostaVerbaleDTO> getOpzioni() {
+	public Set<OpzioneRispostaVerbaleDTO> getOpzioni() {
 		return opzioni;
 	}
 
-	public void setOpzioni(List<OpzioneRispostaVerbaleDTO> opzioni) {
+	public void setOpzioni(Set<OpzioneRispostaVerbaleDTO> opzioni) {
 		this.opzioni = opzioni;
 	}
 
 	public void addToOpzioni(OpzioneRispostaVerbaleDTO opzione) {
 		if(this.opzioni==null)
-			this.opzioni=new ArrayList<>();
+			this.opzioni=new HashSet<>();
 		this.opzioni.add(opzione);
 	}
 	
@@ -47,17 +50,14 @@ public class RispostaSceltaVerbaleDTO extends RispostaVerbaleDTO {
 		jobj.addProperty("tipo", this.getTipo());
 		jobj.addProperty("multipla", this.getRispostaQuestionario().getMultipla());
 		
-		
-//		if(this.risposta!=null) {
-//			JsonArray domandeVerbaleobj = new JsonArray();
-//			
-//			for(RispostaVerbaleDTO domanda : this.risposta) {
-//				domandeVerbaleobj.add(domanda.getDomandaJsonObject());
-//			}
-//			jobj.add("domande", domandeVerbaleobj);
-//		}
-		
-		
+		if(this.opzioni!=null) {
+			JsonArray opzioniobj = new JsonArray();
+			
+			for(OpzioneRispostaVerbaleDTO opzione: this.opzioni) {
+				opzioniobj.add(opzione.getJsonObject());
+			}
+			jobj.add("opzioni", opzioniobj);
+		}		
 		
 		return jobj;
 	}

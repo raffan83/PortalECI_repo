@@ -18,4 +18,9 @@ public class GestioneDomandaVerbaleDAO {
 		session.saveOrUpdate(domanda);
 	}
 
+	public static void delete(DomandaVerbaleDTO domandaVerbaleDTO, Session session) {
+		session.delete(domandaVerbaleDTO);
+		
+	}
+
 }

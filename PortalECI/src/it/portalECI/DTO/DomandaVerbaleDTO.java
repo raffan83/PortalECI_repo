@@ -49,7 +49,7 @@ public class DomandaVerbaleDTO {
 	public JsonElement getDomandaJsonObject() {
 		JsonObject jobj = new JsonObject();
 		
-	
+		jobj.addProperty("id", this.getId());
 		jobj.addProperty("testo", this.getDomandaQuestionario().getTesto());
 		jobj.addProperty("obbligatoria", this.getDomandaQuestionario().getObbligatoria());
 		jobj.addProperty("posizione", this.getDomandaQuestionario().getPosizione());

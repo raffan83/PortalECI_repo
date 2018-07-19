@@ -32,13 +32,13 @@
         </many-to-one>
 		
 		
-		<list name="domandeVerbale" table="DOMANDA_VERBALE" inverse="false" lazy="true" fetch="select" cascade="all">
+		<set name="domandeVerbale" table="DOMANDA_VERBALE" inverse="true" lazy="true" fetch="select" cascade="all, delete-orphan">
 			<key>
 				<column name="verbale_id"></column>
 			</key>
-			<list-index column="idx_vr"></list-index>
+			
 			<one-to-many class="it.portalECI.DTO.DomandaVerbaleDTO"/>
-		</list>
+		</set>
 		
 		
 		<many-to-one name="intervento" class="it.portalECI.DTO.InterventoDTO"
