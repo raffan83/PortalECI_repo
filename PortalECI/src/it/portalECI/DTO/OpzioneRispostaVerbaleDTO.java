@@ -2,7 +2,7 @@ package it.portalECI.DTO;
 
 public class OpzioneRispostaVerbaleDTO {
 	private int id;
-	private String testo;
+	private OpzioneRispostaQuestionarioDTO opzioneQuestionario;
 	private RispostaSceltaVerbaleDTO risposta;
 	
 	public OpzioneRispostaVerbaleDTO() {
@@ -16,12 +16,12 @@ public class OpzioneRispostaVerbaleDTO {
 		this.id = id;
 	}
 
-	public String getTesto() {
-		return testo;
+	public OpzioneRispostaQuestionarioDTO getOpzioneQuestionario() {
+		return opzioneQuestionario;
 	}
 
-	public void setTesto(String testo) {
-		this.testo = testo;
+	public void setOpzioneQuestionario(OpzioneRispostaQuestionarioDTO opzioneQuestionario) {
+		this.opzioneQuestionario = opzioneQuestionario;
 	}
 
 	public RispostaSceltaVerbaleDTO getRisposta() {

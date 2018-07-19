@@ -42,10 +42,19 @@
 		<b>Domanda obbligatoria</b> 
 		<a class="pull-right">${domanda.obbligatoria?'SI':'NO'}</a>
 	</li>
+	<li class="list-group-item">
+		<b>Placeholder della risposta</b> 
+		<a class="pull-right">${domanda.risposta.placeholder}</a>
+	</li>
 	<c:if test="${domanda.risposta.tipo=='RES_CHOICE'}">
 		<li class="list-group-item">
 			<b>Tipo di risposta</b>
-			<a class="pull-right">Scelta multipla</a>
+			<a class="pull-right">
+				Scelta multipla
+				<c:if test="${!risposta.multipla}">
+					con mutua esclusione
+				</c:if>
+			</a>
 		</li>
 		<li class="list-group-item" style="display: block;">
 			<b>Opzioni</b> 

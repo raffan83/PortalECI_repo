@@ -5,6 +5,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 
+import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 
 // default package
@@ -275,6 +276,17 @@ public class UtenteDTO implements Serializable {
 			userjobj.add("company", this.company.getCompanyJsonObject());
 		}
 		userjobj.addProperty("tipoutente", this.tipoutente);
+		
+		if(!this.getListaRuoli().isEmpty()) {
+			
+				JsonArray ruoliObj = new JsonArray();
+				
+				for(RuoloDTO ruolo: this.getListaRuoli()) {
+					ruoliObj.add(ruolo.getJsonObject());
+				}
+				userjobj.add("ruoli", ruoliObj);
+				
+		}
 		
 		return userjobj;
 	}

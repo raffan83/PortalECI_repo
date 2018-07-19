@@ -8,17 +8,9 @@
 			<generator class="identity"></generator>
 		</id>
 		
-		<property name="testo">
-			<column name="testo" length="1024"/>
-		</property> 
-		<property name="obbligatoria" type="boolean" >
-			<column name="obbligatoria" />
-		</property>
-		<property name="placeholder">
-			<column name="placeholder" length="256"/>
-		</property> 
-		
-		<one-to-one name="risposta" class="it.portalECI.DTO.RispostaVerbaleDTO" cascade="all" constrained="true"></one-to-one>
+	
+		<many-to-one name="domandaQuestionario" class="it.portalECI.DTO.DomandaQuestionarioDTO" column="domanda_questionario_id" not-null="true" cascade="none" />
+		<many-to-one name="risposta" class="it.portalECI.DTO.RispostaVerbaleDTO" column="risposta_id" not-null="true" cascade="all" unique="true" />
 		<many-to-one name="verbale" class="it.portalECI.DTO.VerbaleDTO">
             <column name="verbale_id" not-null="true" />
         </many-to-one>

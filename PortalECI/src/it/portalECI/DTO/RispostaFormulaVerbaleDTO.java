@@ -1,45 +1,57 @@
 package it.portalECI.DTO;
 
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+
 public class RispostaFormulaVerbaleDTO extends RispostaVerbaleDTO {
 		
-	private String valore1;
-	private String valore2;
-	private String operatore;
-	private String risultato;
+	private RispostaFormulaQuestionarioDTO rispostaQuestionario;
+	
+	private String responseValue;
 	
 	public RispostaFormulaVerbaleDTO() {
+		this.setTipo(TIPO_FORMULA);
 	}
 
-	public String getValore1() {
-		return valore1;
+	
+
+	public RispostaFormulaQuestionarioDTO getRispostaQuestionario() {
+		return rispostaQuestionario;
 	}
 
-	public void setValore1(String valore1) {
-		this.valore1 = valore1;
+
+
+	public void setRispostaQuestionario(RispostaFormulaQuestionarioDTO rispostaQuestionario) {
+		this.rispostaQuestionario = rispostaQuestionario;
 	}
 
-	public String getValore2() {
-		return valore2;
+
+
+	public String getResponseValue() {
+		return responseValue;
 	}
 
-	public void setValore2(String valore2) {
-		this.valore2 = valore2;
+
+
+	public void setResponseValue(String responseValue) {
+		this.responseValue = responseValue;
 	}
 
-	public String getOperatore() {
-		return operatore;
-	}
 
-	public void setOperatore(String operatore) {
-		this.operatore = operatore;
-	}
 
-	public String getRisultato() {
-		return risultato;
-	}
-
-	public void setRisultato(String risultato) {
-		this.risultato = risultato;
+	@Override
+	public JsonElement getJsonObject() {
+		
+		JsonObject jobj = new JsonObject();
+		jobj.addProperty("id", this.getId());
+		jobj.addProperty("tipo", this.getTipo());
+		jobj.addProperty("label1", this.getRispostaQuestionario().getValore1());
+		jobj.addProperty("label2", this.getRispostaQuestionario().getValore2());
+		jobj.addProperty("operatore", this.getRispostaQuestionario().getOperatore());
+		jobj.addProperty("label_risultato", this.getRispostaQuestionario().getRisultato());
+		
+		
+		return jobj;
 	}
 	
 }
