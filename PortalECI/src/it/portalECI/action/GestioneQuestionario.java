@@ -192,8 +192,7 @@ public class GestioneQuestionario extends HttpServlet {
 		String[] formulaRisultato = request.getParameterValues("formula-risultato");
 		String[] rispostaMultipla = request.getParameterValues("risposta.multipla");
 		
-		//TODO: gestire il placeholder della risposta sulla view
-		String[] rispostaPlaceholder = request.getParameterValues("domanda.placeholder");
+		String[] rispostaPlaceholder = request.getParameterValues("risposta.placeholder");
 		
 		
 		int indexOption = 0;
