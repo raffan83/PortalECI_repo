@@ -82,15 +82,33 @@ public class GestioneQuestionario extends HttpServlet {
 	
 	public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
-		if(request.getParameter("_method")!= null && request.getParameter("_method").equalsIgnoreCase("PUT")) {
-			doPut(request,response);
-			return;
-		}
-		
-		if(Utility.validateSession(request,response,getServletContext()))return;
+		if(Utility.validateSession(request,response,getServletContext()))return;	
 		
 		Session session=SessionFacotryDAO.get().openSession();
 		request.setAttribute("hibernateSession", session);
+		
+		if(request.getParameter("_method")!= null && request.getParameter("_method").equalsIgnoreCase("PUT")) {
+					
+			String idQuestionario = request.getParameter("idQuestionario");
+			
+			Integer id = null;
+			try {
+				id = Integer.parseInt(idQuestionario);
+			}catch (NumberFormatException e) {
+				response.sendError(HttpServletResponse.SC_BAD_REQUEST);
+				session.close();
+				return;
+			}
+								
+			if(GestioneQuestionarioBO.controlloQuestionarioInUso(id, session)) {	
+				session.close();
+				doPut(request,response);
+				return;
+			}
+			
+			
+		}
+				
 
 		Transaction transaction = session.beginTransaction();
 		QuestionarioDTO questionario = new QuestionarioDTO();
@@ -101,7 +119,7 @@ public class GestioneQuestionario extends HttpServlet {
 		
 		session.save(questionario);
 		transaction.commit();
-		
+
 		request.setAttribute("questionario", questionario);
 		RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/page/questionario/dettaglioQuestionario.jsp");
 		dispatcher.forward(request,response);

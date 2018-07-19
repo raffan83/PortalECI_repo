@@ -21,6 +21,9 @@ public class GestioneQuestionarioBO {
 		return GestioneQuestionarioDAO.getQuestionariPlaceholder( session);
 	}
 	
+	public static Boolean controlloQuestionarioInUso(Integer idQuestionario,Session session) {
+		return GestioneQuestionarioDAO.controlloQuestionarioInUso(idQuestionario, session);
+	}
 	
 
 }
