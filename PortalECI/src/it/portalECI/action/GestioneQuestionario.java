@@ -190,6 +190,7 @@ public class GestioneQuestionario extends HttpServlet {
 		String[] rispostaValore2 = request.getParameterValues("formula-valore-2");
 		String[] formulaOperazione = request.getParameterValues("fromula-operazione");
 		String[] formulaRisultato = request.getParameterValues("formula-risultato");
+		String[] rispostaMultipla = request.getParameterValues("risposta.multipla");
 		
 		//TODO: gestire il placeholder della risposta sulla view
 		String[] rispostaPlaceholder = request.getParameterValues("domanda.placeholder");
@@ -253,6 +254,8 @@ public class GestioneQuestionario extends HttpServlet {
 				risposta.setOpzioni(listaOpzioni);
 				risposta.setPlaceholder(rispostaPlaceholder[i]+"_RES");
 				risposta.setDomanda(domanda);
+				risposta.setMultipla(Boolean.parseBoolean(rispostaMultipla[i]));
+				
 				domanda.setRisposta(risposta);
 				
 			}

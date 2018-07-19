@@ -45,7 +45,12 @@
 	<c:if test="${domanda.risposta.tipo=='RES_CHOICE'}">
 		<li class="list-group-item">
 			<b>Tipo di risposta</b>
-			<a class="pull-right">Scelta multipla</a>
+			<a class="pull-right">
+				Scelta multipla
+				<c:if test="${!risposta.multipla}">
+					con mutua esclusione
+				</c:if>
+			</a>
 		</li>
 		<li class="list-group-item" style="display: block;">
 			<b>Opzioni</b> 
