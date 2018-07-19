@@ -3,7 +3,7 @@
 "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
 
 <hibernate-mapping>
-	<class name="it.portalECI.DTO.RispostaQuestionario" table="RISPOSTA_QUESTIONARIO" discriminator-value="RES">
+	<class name="it.portalECI.DTO.RispostaQuestionario" table="RISPOSTA_QUESTIONARIO" discriminator-value="RES" abstract="true" >
 		<id name="id">
 			<generator class="identity"></generator>
 		</id>

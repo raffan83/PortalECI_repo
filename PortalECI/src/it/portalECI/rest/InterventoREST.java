@@ -76,14 +76,18 @@ public class InterventoREST extends HttpServlet {
 						return;
 					}
 					for(InterventoDTO intervento : listaInterventi) {
-						if(action.equals("download") ) {
-							if(GestioneInterventoBO.scaricaIntervento(intervento,session)) {
+						try {
+							if(action.equals("download") ) {
+								if(GestioneInterventoBO.scaricaIntervento(intervento,session)) {
+									responseJson.add( intervento.getInterventoJsonObject());
+								}
+							}else if(action.equals("list")){
+								listaInterventi = GestioneInterventoBO.getListaInterventiTecnico( session, utente.getId());
 								responseJson.add( intervento.getInterventoJsonObject());
 							}
-						}else if(action.equals("list")){
-							listaInterventi = GestioneInterventoBO.getListaInterventiTecnico( session, utente.getId());
-							responseJson.add( intervento.getInterventoJsonObject());
-						}
+						}catch(Exception ex){		
+							ex.printStackTrace();
+						}  
 			   		}
 					
 				}else {	
@@ -93,6 +97,7 @@ public class InterventoREST extends HttpServlet {
 							responseJson.add(intervento.getInterventoJsonObject());		
 			   		}
 				}
+				
 				session.getTransaction().commit();
 				session.close();	
 			   		
@@ -102,14 +107,13 @@ public class InterventoREST extends HttpServlet {
 				return;
 			}		
 			
-		}catch(Exception ex){		
+		}catch(Exception ex){
+			responseJson=new JsonArray();
 			response.setStatus(response.SC_INTERNAL_SERVER_ERROR);
 			responseJson.add(ECIException.callExceptionJsonObject(ex));
 			ex.printStackTrace();
-		}  
-				
+		}  	
 		out.println(responseJson);
-		
 		
 	}
 

@@ -7,8 +7,11 @@
 		<id name="id">
 			<generator class="identity"></generator>
 		</id>
-		<property name="createDate" update="false" insert="false" generated="insert"/>
-  		<property name="updateDate" update="false" insert="false" generated="always"/>
+		<timestamp name="updateDate" access="field" column="update_date"/>
+		
+		<property name="createDate" update="false" insert="false">
+			<column name="create_date" sql-type="TIMESTAMP" default="CURRENT_TIMESTAMP"/>
+		</property>
   		
 		<property name="questionarioID">
 			<column name="questionarioID" />

@@ -13,18 +13,17 @@
 		<property name="tipo" insert="false" update="false">
 			<column name="tipo"/>
 		</property> 
-		
-		<property name="placeholder">
-			<column name="PLACEHOLDER" length="256"/>
-		</property> 
 
-		<subclass name="it.portalECI.DTO.RispostaTestoVerbaleDTO"	discriminator-value="RES_TEXT"></subclass>
+		<subclass name="it.portalECI.DTO.RispostaTestoVerbaleDTO"	discriminator-value="RES_TEXT">
+		<many-to-one name="rispostaQuestionario" class="it.portalECI.DTO.RispostaTestoQuestionarioDTO" column="risposta_questionario_id"  cascade="none"  />
+		<property name="responseValue">
+				<column name="response_value" length="512"/>
+			</property> 
+		</subclass>
 		
 		<subclass name="it.portalECI.DTO.RispostaSceltaVerbaleDTO"	discriminator-value="RES_CHOICE">
-						
-			<property name="multipla" type="boolean">
-				<column name="multipla"/>
-			</property>
+		
+		<many-to-one name="rispostaQuestionario" class="it.portalECI.DTO.RispostaSceltaQuestionarioDTO" column="risposta_questionario_id"  cascade="none"  />				
 					
 			<list name="opzioni" table="OPZIONE_VERBALE" inverse="false" lazy="true" fetch="select" cascade="all">
 				<key>
@@ -37,18 +36,9 @@
 		</subclass>
 		
 		<subclass name="it.portalECI.DTO.RispostaFormulaVerbaleDTO" discriminator-value="RES_FORMULA">
-						
-			<property name="valore1">
-				<column name="valore1" length="256"/>
-			</property> 
-			<property name="valore2">
-				<column name="valore2" length="256"/>
-			</property> 
-			<property name="operatore">
-				<column name="operatore" length="256"/>
-			</property> 
-			<property name="risultato">
-				<column name="risultato" length="256"/>
+		<many-to-one name="rispostaQuestionario" class="it.portalECI.DTO.RispostaFormulaQuestionarioDTO" column="risposta_questionario_id"  cascade="none"  />
+			<property name="responseValue">
+				<column name="response_value" length="10"/>
 			</property> 
 		</subclass>
 		

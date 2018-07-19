@@ -16,7 +16,9 @@ import it.portalECI.DTO.UtenteDTO;
 public class JWTUtility {
 	
 	private static RsaJsonWebKey rsaJsonWebKey = null;
+	
 	static {
+		//TODO: Using FILE to save and retrieve pub/priv key
 		try {
 		rsaJsonWebKey = RsaJwkGenerator.generateJwk(2048);
 		rsaJsonWebKey.setKeyId("ECI-K");
