@@ -45,8 +45,10 @@
               										<table id="tabellaQuestionari" class="table table-bordered table-hover dataTable table-striped" role="grid" width="100%">
  														<thead>
  															<tr class="active"> 
+ 																<th>Id</th>
  																<th>Tipo</th>
  																<th>Titolo</th>
+ 																<th>Data ultima modifica</th>
  																<td></td>
  															</tr>
  														</thead>
@@ -54,8 +56,12 @@
  														<tbody> 
   															<c:forEach items="${listaQuestionari}" var="questionario">
  																<tr role="row" id="questionario_${questionario.id}">
+																	<td>${questionario.id }</td>
 																	<td>${questionario.tipo.codice }</td>
 																	<td>${questionario.titolo}</td>
+																	<td>
+																		<fmt:formatDate pattern="dd/MM/yyyy" value='${questionario.updateDate}' type='date' />																
+																	</td>
 																	<td>
 																		<a href="gestioneQuestionario.do?idQuestionario=${questionario.id}&action=modifica" class="btn customTooltip customlink" title="Click per modificare il questionario">
 																			<i class="fa fa-edit"></i>
@@ -138,7 +144,7 @@
 	</jsp:attribute>
 
 	<jsp:attribute name="extra_js_footer">
-
+		
   		<script type="text/javascript">
    
     		$(document).ready(function() {
@@ -174,11 +180,13 @@
     	      		targets: 0,
     	      		responsive: true,
     	      		scrollX: false,
+    	      		order: [[ 3, "desc" ]],
     	      		columnDefs: [
 						{ responsivePriority: 1, targets: 0 },
     	                { responsivePriority: 1, targets: 1 },
     	                { responsivePriority: 2, targets: 2 },
-    	                { orderable: false, targets: 2 },
+    	                { responsivePriority: 1, targets: 3 ,type:"date-eu"},
+    	                { orderable: false, targets: 4 },
     	            ],             
     	            buttons: [ {
     	            	extend: 'copy',

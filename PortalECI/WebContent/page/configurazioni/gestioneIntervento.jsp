@@ -379,7 +379,7 @@
     	      			order: [[ 0, "desc" ]],
     	      			columnDefs: [
 							{ responsivePriority: 1, targets: 0 },
-    	                   	{ responsivePriority: 3, targets: 2 },
+    	                   	{ responsivePriority: 3, targets: 2 ,type:"date-eu"},
     	                   	{ responsivePriority: 4, targets: 3 },
     	                   	{ responsivePriority: 2, targets: 5 },
     	                   	{ orderable: false, targets: 5 },
