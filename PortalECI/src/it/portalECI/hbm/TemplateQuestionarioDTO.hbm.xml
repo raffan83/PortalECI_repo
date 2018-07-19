@@ -1,0 +1,24 @@
+<?xml version='1.0' encoding='UTF-8'?>  
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+	<class name="it.portalECI.DTO.TemplateQuestionarioDTO" table="TEMPLATE_QUESTIONARIO">
+		<id name="id">
+			<generator class="identity"></generator>
+		</id>
+		<timestamp name="updateDate" access="field" column="update_date"/>
+		
+		<property name="createDate" update="false" insert="false">
+			<column name="create_date" sql-type="TIMESTAMP" default="CURRENT_TIMESTAMP"/>
+		</property>
+		
+		<property name="titolo">
+			<column name="titolo" length="256"/>
+		</property> 
+	
+		<property name="template">
+			<column name="template" sql-type="LONGTEXT" />
+		</property> 
+	</class>
+</hibernate-mapping> 

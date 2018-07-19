@@ -16,6 +16,9 @@ public class QuestionarioDTO implements Serializable {
 	private List<DomandaVerbaleQuestionarioDTO> domandeVerbale;
 	private List<DomandaSchedaTecnicaQuestionarioDTO> domandeSchedaTecnica;
 	
+	private TemplateQuestionarioDTO templateVerbale;
+	private TemplateQuestionarioDTO templateSchedaTecnica;
+	
 	//TODO: dovrò aggiungere i template per schedatecnica e verbale
 		
 	public int getId() {
@@ -72,6 +75,22 @@ public class QuestionarioDTO implements Serializable {
 
 	public void setDomandeSchedaTecnica(List<DomandaSchedaTecnicaQuestionarioDTO> domandeSchedaTecnica) {
 		this.domandeSchedaTecnica = domandeSchedaTecnica;
+	}
+	
+	public TemplateQuestionarioDTO getTemplateVerbale() {
+		return templateVerbale;
+	}
+
+	public void setTemplateVerbale(TemplateQuestionarioDTO templateVerbale) {
+		this.templateVerbale = templateVerbale;
+	}
+
+	public TemplateQuestionarioDTO getTemplateSchedaTecnica() {
+		return templateSchedaTecnica;
+	}
+
+	public void setTemplateSchedaTecnica(TemplateQuestionarioDTO templateSchedaTecnica) {
+		this.templateSchedaTecnica = templateSchedaTecnica;
 	}
 
 	public JsonObject getQuestionariJsonObject() {

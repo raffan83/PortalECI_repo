@@ -18,7 +18,11 @@
 		</property> 
 
 		<many-to-one name="tipo" class="it.portalECI.DTO.TipoVerificaDTO" column="tipo_id" not-null="true" cascade="none" />
+		
+		<many-to-one name="templateVerbale" class="it.portalECI.DTO.TemplateQuestionarioDTO" column="template_verbale_id" not-null="false" cascade="none"/>
 
+		<many-to-one name="templateSchedaTecnica" class="it.portalECI.DTO.TemplateQuestionarioDTO" column="template_scheda_tecnica_id" not-null="false" cascade="none"/>
+		
 		<list name="domandeVerbale" table="DOMANDA_VERBALE_QUESTIONARIO" inverse="true" lazy="true" fetch="select" cascade="all, delete-orphan">
 			<key>
 				<column name="questionario_id"></column>
