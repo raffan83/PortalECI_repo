@@ -16,5 +16,7 @@ public class Costanti {
 	
     public static final String USR_SQL_SVR = "fantini";
 	public static final String USR_PASS_SVR = "fantini";
+	
+	public static final String PATH_CERTIFICATI = "certificati";
 
 }

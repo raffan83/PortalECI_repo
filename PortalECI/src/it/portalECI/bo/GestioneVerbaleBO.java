@@ -1,9 +1,35 @@
 package it.portalECI.bo;
 
+import java.io.ByteArrayInputStream;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.net.URL;
+import java.nio.charset.Charset;
 import java.util.List;
 
 import org.hibernate.Session;
+import org.jsoup.Jsoup;
 
+import com.itextpdf.text.Document;
+import com.itextpdf.text.DocumentException;
+import com.itextpdf.text.pdf.PdfWriter;
+import com.itextpdf.tool.xml.XMLWorker;
+import com.itextpdf.tool.xml.XMLWorkerFontProvider;
+import com.itextpdf.tool.xml.XMLWorkerHelper;
+import com.itextpdf.tool.xml.html.CssAppliers;
+import com.itextpdf.tool.xml.html.CssAppliersImpl;
+import com.itextpdf.tool.xml.html.Tags;
+import com.itextpdf.tool.xml.parser.XMLParser;
+import com.itextpdf.tool.xml.pipeline.css.CSSResolver;
+import com.itextpdf.tool.xml.pipeline.css.CssResolverPipeline;
+import com.itextpdf.tool.xml.pipeline.end.PdfWriterPipeline;
+import com.itextpdf.tool.xml.pipeline.html.AbstractImageProvider;
+import com.itextpdf.tool.xml.pipeline.html.HtmlPipeline;
+import com.itextpdf.tool.xml.pipeline.html.HtmlPipelineContext;
+
+import ar.com.fdvs.dj.domain.Style;
 import it.portalECI.DAO.GestioneDomandaVerbaleDAO;
 import it.portalECI.DAO.GestioneQuestionarioDAO;
 import it.portalECI.DAO.GestioneRispostaQuestionarioDAO;
@@ -13,6 +39,7 @@ import it.portalECI.DAO.GestioneStatoVerbaleDAO;
 import it.portalECI.DAO.GestioneVerbaleDAO;
 import it.portalECI.DTO.DomandaQuestionarioDTO;
 import it.portalECI.DTO.DomandaVerbaleDTO;
+import it.portalECI.DTO.DomandaVerbaleQuestionarioDTO;
 import it.portalECI.DTO.InterventoDTO;
 import it.portalECI.DTO.OpzioneRispostaQuestionarioDTO;
 import it.portalECI.DTO.OpzioneRispostaVerbaleDTO;
@@ -27,7 +54,9 @@ import it.portalECI.DTO.RispostaTestoVerbaleDTO;
 import it.portalECI.DTO.RispostaVerbaleDTO;
 import it.portalECI.DTO.StatoInterventoDTO;
 import it.portalECI.DTO.StatoVerbaleDTO;
+import it.portalECI.DTO.TemplateQuestionarioDTO;
 import it.portalECI.DTO.VerbaleDTO;
+import it.portalECI.Util.Costanti;
 
 public class GestioneVerbaleBO {
 	
@@ -160,6 +189,110 @@ public class GestioneVerbaleBO {
 			}
 		}
 		return result;
+	}
+	
+	public static File getPDFVerbale(VerbaleDTO verbale, QuestionarioDTO questionario, Session session) throws Exception{
+		
+		new File(Costanti.PATH_CERTIFICATI).mkdirs();
+		
+		File file = new File(Costanti.PATH_CERTIFICATI, questionario.getTitolo()+"_"+questionario.getTipo().getCodice()+"_"+verbale.getIntervento().getId()+".pdf");
+
+		String html = questionario.getTemplateVerbale().getTemplate();
+		
+		for (DomandaVerbaleDTO domanda:verbale.getDomandeVerbale()) {
+			String placeholder = domanda.getDomandaQuestionario().getPlaceholder();
+			html = html.replaceAll("\\$\\{"+placeholder+"\\}", domanda.getDomandaQuestionario().getTesto());
+			
+			RispostaVerbaleDTO rispostaVerbale = domanda.getRisposta();
+			
+			String rispostaValore = null;
+			String rispostaPlaceholder = null;
+			
+			switch (rispostaVerbale.getTipo()) {
+			case RispostaVerbaleDTO.TIPO_TESTO:
+				RispostaTestoVerbaleDTO rispostaTesto = GestioneRispostaVerbaleDAO.getRispostaInstance(RispostaTestoVerbaleDTO.class, rispostaVerbale.getId(), session);
+				rispostaPlaceholder = rispostaTesto.getRispostaQuestionario().getPlaceholder();
+				rispostaValore = getTemplateRisposta(rispostaTesto);
+				break;
+			case RispostaVerbaleDTO.TIPO_SCELTA:
+				RispostaSceltaVerbaleDTO rispostaScelta = GestioneRispostaVerbaleDAO.getRispostaInstance(RispostaSceltaVerbaleDTO.class, rispostaVerbale.getId(), session);
+				rispostaPlaceholder = rispostaScelta.getRispostaQuestionario().getPlaceholder();
+				rispostaValore = getTemplateRisposta(rispostaScelta);
+				break;
+			case RispostaVerbaleDTO.TIPO_FORMULA:
+				RispostaFormulaVerbaleDTO rispostaFormula = GestioneRispostaVerbaleDAO.getRispostaInstance(RispostaFormulaVerbaleDTO.class, rispostaVerbale.getId(), session);
+				rispostaPlaceholder = rispostaFormula.getRispostaQuestionario().getPlaceholder();
+				rispostaValore = getTemplateRisposta(rispostaFormula);
+				break;
+			default:
+				break;
+			}
+			if(rispostaValore!=null && rispostaPlaceholder!=null )
+				html = html.replaceAll("\\$\\{"+rispostaPlaceholder+"\\}", rispostaValore);
+			
+		}
+		html = html.replaceAll("\\$\\{(.*?)\\}", "");
+    	final org.jsoup.nodes.Document documentJsoup = Jsoup.parse(html);
+    	documentJsoup.outputSettings().syntax(org.jsoup.nodes.Document.OutputSettings.Syntax.xml);
+    	String str = documentJsoup.html();
+    	System.out.println(str);
+    	try {
+    		
+    		//https://developers.itextpdf.com/examples/xml-worker-itext5/html-images
+	        Document document = new Document();
+	        PdfWriter writer = PdfWriter.getInstance(document, new FileOutputStream(file));
+	        document.open();
+	        // CSS
+	        CSSResolver cssResolver = XMLWorkerHelper.getInstance().getDefaultCssResolver(true);
+	 
+	        XMLWorkerFontProvider fontProvider = new XMLWorkerFontProvider(XMLWorkerFontProvider.DONTLOOKFORFONTS);
+	        fontProvider.register(Costanti.PATH_CERTIFICATI+File.separator+"arial.ttf");
+	        CssAppliers cssAppliers = new CssAppliersImpl(fontProvider);
+	        // HTML
+	        HtmlPipelineContext htmlContext = new HtmlPipelineContext(cssAppliers);
+	        htmlContext.setTagFactory(Tags.getHtmlTagProcessorFactory());
+
+	        // Pipelines
+	        
+	        PdfWriterPipeline pdf = new PdfWriterPipeline(document, writer);
+	        HtmlPipeline htmlPipeline = new HtmlPipeline(htmlContext, pdf);
+	        CssResolverPipeline css = new CssResolverPipeline(cssResolver, htmlPipeline);
+
+	        XMLWorker worker = new XMLWorker(css, true);
+	        XMLParser p = new XMLParser(worker);
+	        p.parse(new ByteArrayInputStream(str.getBytes()),
+	        		Charset.forName("US-ASCII"));
+
+	        document.close();
+    	}catch (IOException e) {
+    		throw new Exception(e);
+		} catch (DocumentException e) {
+			throw new Exception(e);
+		}
+    	
+		return file;
+
+	}
+	
+	private static String getTemplateRisposta(RispostaTestoVerbaleDTO risposta) {
+		return risposta.getResponseValue();
+	}
+	
+	private static String getTemplateRisposta(RispostaSceltaVerbaleDTO risposta) {
+
+		String template = "";
+		String inputType = risposta.getRispostaQuestionario().getMultipla()==false?"radio":"checkbox";
+		for (OpzioneRispostaVerbaleDTO opzione:risposta.getOpzioni()) {
+			String optionName = opzione.getOpzioneQuestionario().getTesto();
+			template += "<img scr='/home/rocco/certificati/unchecked-checkbox.png'>"+optionName+"<br/>";
+		}
+		template += "";
+
+		return template;
+	}
+	
+	private static String getTemplateRisposta(RispostaFormulaVerbaleDTO risposta) {
+		return "formula";
 	}
 
 }
