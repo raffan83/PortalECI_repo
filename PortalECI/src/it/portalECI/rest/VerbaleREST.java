@@ -9,6 +9,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.xml.bind.ValidationException;
 
 import org.apache.commons.io.IOUtils;
 
@@ -66,17 +67,29 @@ public class VerbaleREST extends HttpServlet {
 			UtenteDTO utente=(UtenteDTO) request.getAttribute("x-user");
 			
 			String jsonString =   IOUtils.toString(request.getInputStream());
-			JsonArray jsonRequest = new JsonParser().parse(jsonString).getAsJsonArray();
-			GestioneVerbaleBO.saveVerbaleResponses(jsonRequest);
+			JsonObject jsonRequest = new JsonParser().parse(jsonString).getAsJsonObject();
+			
+			GestioneVerbaleBO.saveVerbaleResponses(utente,jsonRequest);
 			JsonObject result = new JsonObject();
 			result.addProperty("result", "success");
 			responseJson.add(result);
 			
 		}catch (Exception e) {
 			responseJson=new JsonArray();
-			response.setStatus(response.SC_INTERNAL_SERVER_ERROR);
-			responseJson.add(ECIException.callExceptionJsonObject(e));
-			e.printStackTrace();
+			if(e instanceof ValidationException) {
+				response.setStatus(response.SC_BAD_REQUEST);
+				JsonObject result = new JsonObject();
+				result.addProperty("result", "false");
+				result.addProperty("error", e.getMessage());
+				responseJson.add(result);
+				
+			}else {
+				response.setStatus(response.SC_INTERNAL_SERVER_ERROR);
+				responseJson.add(ECIException.callExceptionJsonObject(e));
+				e.printStackTrace();	
+			}
+			
+			
 		}  	
 		out.println(responseJson);
 	

@@ -3,11 +3,14 @@ package it.portalECI.bo;
 import java.util.Iterator;
 import java.util.List;
 
+import javax.xml.bind.ValidationException;
+
 import org.hibernate.Session;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 
 import it.portalECI.DAO.GestioneDomandaVerbaleDAO;
 import it.portalECI.DAO.GestioneQuestionarioDAO;
@@ -33,7 +36,9 @@ import it.portalECI.DTO.RispostaTestoVerbaleDTO;
 import it.portalECI.DTO.RispostaVerbaleDTO;
 import it.portalECI.DTO.StatoInterventoDTO;
 import it.portalECI.DTO.StatoVerbaleDTO;
+import it.portalECI.DTO.UtenteDTO;
 import it.portalECI.DTO.VerbaleDTO;
+import it.portalECI.rest.VerbaleREST;
 
 public class GestioneVerbaleBO {
 	
@@ -160,7 +165,7 @@ public class GestioneVerbaleBO {
 
 						}
 					}
-
+					cambioStato(verbale, GestioneStatoVerbaleDAO.getStatoVerbaleById(StatoVerbaleDTO.IN_COMPILAZIONE, session), session);
 					result = verbale;
 				}
 			}
@@ -169,51 +174,77 @@ public class GestioneVerbaleBO {
 	}
 	
 	
-	public static void saveVerbaleResponses(JsonArray jsonRequest) {
-		
-		if(!jsonRequest.isJsonNull() ) {
-			Session session=SessionFacotryDAO.get().openSession();
-			session.beginTransaction();
-			Iterator<JsonElement> iterator=jsonRequest.iterator();
-			while(iterator.hasNext()) {
-				JsonObject responseVerbale = (JsonObject)iterator.next();
-				int responseID = responseVerbale.get("id").getAsInt();
-				switch (responseVerbale.get("type").getAsString()) {
-				case "RES_TEXT":
-					RispostaTestoVerbaleDTO rispostaTesto = GestioneRispostaVerbaleDAO.getRispostaInstance(RispostaTestoVerbaleDTO.class, responseID, session);
-					rispostaTesto.setResponseValue(responseVerbale.get("valore").getAsString());
-					GestioneRispostaVerbaleDAO.save(rispostaTesto, session);
-					break;
-				case "RES_CHOICE":
-					RispostaSceltaVerbaleDTO rispostaScelta = GestioneRispostaVerbaleDAO.getRispostaInstance(RispostaSceltaVerbaleDTO.class, responseID, session);
-					JsonArray scelte = responseVerbale.getAsJsonArray("scelte");
-					if(scelte!=null) {
-						Iterator<JsonElement> iteratorScelte=scelte.iterator();
-						while(iteratorScelte.hasNext()) {
-							JsonObject scelta = (JsonObject)iteratorScelte.next();
-							int sceltaID = scelta.get("id").getAsInt();
-							boolean sceltaChoice = scelta.get("choice").getAsBoolean();
-							OpzioneRispostaVerbaleDTO opzioneRispostaVerbaleDTO =GestioneRispostaVerbaleDAO.getOpzioneVerbale(sceltaID,session);
-							opzioneRispostaVerbaleDTO.setChecked(sceltaChoice);
-							GestioneRispostaVerbaleDAO.saveOpzioneVerbale(opzioneRispostaVerbaleDTO, session);
-						}
-					}
-					break;
-				case "RES_FORMULA":
-					RispostaFormulaVerbaleDTO rispostaFormula = GestioneRispostaVerbaleDAO.getRispostaInstance(RispostaFormulaVerbaleDTO.class, responseID, session);
-					rispostaFormula.setValue1(responseVerbale.get("valore_1").getAsString());
-					rispostaFormula.setValue2(responseVerbale.get("valore_2").getAsString());
-					rispostaFormula.setResponseValue(responseVerbale.get("risultato").getAsString());
-					GestioneRispostaVerbaleDAO.save(rispostaFormula, session);
-					break;
+	public static void saveVerbaleResponses(UtenteDTO user, JsonObject jsonRequest) throws ValidationException {
 
-				default:
-					break;
+		if (!jsonRequest.isJsonNull()) {
+			Session session = SessionFacotryDAO.get().openSession();
+			session.beginTransaction();
+
+			VerbaleDTO verbaleDTO = GestioneVerbaleDAO.getVerbale(jsonRequest.get("verbale_id").getAsString(), session);
+
+			if (verbaleDTO != null) {
+				if (verbaleDTO.getStato().getId()!=StatoVerbaleDTO.IN_COMPILAZIONE) {
+					throw new ValidationException("Verbale in stato diverso da IN_COMPILAZIONE");
 				}
 				
+				if (!verbaleDTO.getIntervento().getTecnico_verificatore().getUser().equals(user.getUser())) {
+					throw new ValidationException("Utente non abilitato all'invio del Verbale");
+				}
+				
+				
+				JsonArray responses = jsonRequest.getAsJsonArray("risposte");
+				Iterator<JsonElement> iterator = responses.iterator();
+				while (iterator.hasNext()) {
+					JsonObject responseVerbale = (JsonObject) iterator.next();
+					int responseID = responseVerbale.get("id").getAsInt();
+					switch (responseVerbale.get("type").getAsString()) {
+					case "RES_TEXT":
+						RispostaTestoVerbaleDTO rispostaTesto = GestioneRispostaVerbaleDAO
+								.getRispostaInstance(RispostaTestoVerbaleDTO.class, responseID, session);
+						rispostaTesto.setResponseValue(responseVerbale.get("valore").getAsString());
+						GestioneRispostaVerbaleDAO.save(rispostaTesto, session);
+						break;
+					case "RES_CHOICE":
+						RispostaSceltaVerbaleDTO rispostaScelta = GestioneRispostaVerbaleDAO
+								.getRispostaInstance(RispostaSceltaVerbaleDTO.class, responseID, session);
+						JsonArray scelte = responseVerbale.getAsJsonArray("scelte");
+						if (scelte != null) {
+							Iterator<JsonElement> iteratorScelte = scelte.iterator();
+							while (iteratorScelte.hasNext()) {
+								JsonObject scelta = (JsonObject) iteratorScelte.next();
+								int sceltaID = scelta.get("id").getAsInt();
+								boolean sceltaChoice = scelta.get("choice").getAsBoolean();
+								OpzioneRispostaVerbaleDTO opzioneRispostaVerbaleDTO = GestioneRispostaVerbaleDAO
+										.getOpzioneVerbale(sceltaID, session);
+								opzioneRispostaVerbaleDTO.setChecked(sceltaChoice);
+								GestioneRispostaVerbaleDAO.saveOpzioneVerbale(opzioneRispostaVerbaleDTO, session);
+							}
+						}
+						break;
+					case "RES_FORMULA":
+						RispostaFormulaVerbaleDTO rispostaFormula = GestioneRispostaVerbaleDAO
+								.getRispostaInstance(RispostaFormulaVerbaleDTO.class, responseID, session);
+						rispostaFormula.setValue1(responseVerbale.get("valore_1").getAsString());
+						rispostaFormula.setValue2(responseVerbale.get("valore_2").getAsString());
+						rispostaFormula.setResponseValue(responseVerbale.get("risultato").getAsString());
+						GestioneRispostaVerbaleDAO.save(rispostaFormula, session);
+						break;
+
+					default:
+						break;
+					}
+
+				}
+				cambioStato(verbaleDTO,GestioneStatoVerbaleDAO.getStatoVerbaleById(StatoVerbaleDTO.DA_VERIFICARE, session),session);
+				verbaleDTO.getIntervento().cambioStatoIntervento(GestioneStatoInterventoDAO.getStatoInterventoById(StatoInterventoDTO.DA_VERIFICARE, session));
+				
+				session.getTransaction().commit();
+				session.close();
+			} else {
+				throw new ValidationException("Verbale Non Trovato");
 			}
-			session.getTransaction().commit();
-			session.close();    	
+		}else {
+			throw new ValidationException("JSON Richiesta vuoto");
 		}
 	}
 
