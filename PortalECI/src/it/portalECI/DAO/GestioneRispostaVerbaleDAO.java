@@ -8,14 +8,21 @@ import it.portalECI.DTO.RispostaVerbaleDTO;
 
 public class GestioneRispostaVerbaleDAO {
 	
-
+	public static <T extends RispostaVerbaleDTO> T getRispostaInstance(Class<T> class1, int id,Session session) {
+		return (T) session.get(class1, id);
+	}
 
 	public static <T extends RispostaVerbaleDTO> void save(T risposta, Session session) {
-		session.save(risposta);
+		session.saveOrUpdate(risposta);
 	}
 
 	public static void saveOpzioneVerbale(OpzioneRispostaVerbaleDTO opzioneRispostaVerbaleDTO, Session session) {
-		session.save(opzioneRispostaVerbaleDTO);
+		session.saveOrUpdate(opzioneRispostaVerbaleDTO);
+		
+	}
+	
+	public static OpzioneRispostaVerbaleDTO getOpzioneVerbale(int id, Session session) {
+		return (OpzioneRispostaVerbaleDTO) session.get(OpzioneRispostaVerbaleDTO.class, id);
 		
 	}
 
