@@ -7,14 +7,20 @@
 		<id name="id">
 			<generator class="identity"></generator>
 		</id>
-
+		
 		<discriminator column="tipo" type="string"></discriminator>
+		<timestamp name="updateDate" access="field" column="update_date"/>
+		
+		<property name="createDate" update="false" insert="false">
+			<column name="create_date" sql-type="TIMESTAMP" default="CURRENT_TIMESTAMP"/>
+		</property>
 		
 		<property name="tipo" insert="false" update="false">
 			<column name="tipo"/>
 		</property> 
 
 		<subclass name="it.portalECI.DTO.RispostaTestoVerbaleDTO"	discriminator-value="RES_TEXT">
+		
 		<many-to-one name="rispostaQuestionario" class="it.portalECI.DTO.RispostaTestoQuestionarioDTO" column="risposta_questionario_id"  cascade="none"  />
 		<property name="responseValue">
 				<column name="response_value" length="512"/>
@@ -22,6 +28,8 @@
 		</subclass>
 		
 		<subclass name="it.portalECI.DTO.RispostaSceltaVerbaleDTO"	discriminator-value="RES_CHOICE">
+		
+		
 		
 		<many-to-one name="rispostaQuestionario" class="it.portalECI.DTO.RispostaSceltaQuestionarioDTO" column="risposta_questionario_id"  cascade="none"  />				
 					
@@ -37,9 +45,17 @@
 		
 		<subclass name="it.portalECI.DTO.RispostaFormulaVerbaleDTO" discriminator-value="RES_FORMULA">
 		<many-to-one name="rispostaQuestionario" class="it.portalECI.DTO.RispostaFormulaQuestionarioDTO" column="risposta_questionario_id"  cascade="none"  />
-			<property name="responseValue">
-				<column name="response_value" length="10"/>
+			<property name="value1">
+				<column name="value_1" length="10"/>
 			</property> 
+			<property name="value2">
+				<column name="value_2" length="10"/>
+			</property> 
+			<property name="responseValue">
+				<column name="response_value" length="512"/>
+			</property> 
+			
+	
 		</subclass>
 		
 	</class>

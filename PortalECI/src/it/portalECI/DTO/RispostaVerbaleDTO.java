@@ -1,5 +1,7 @@
 package it.portalECI.DTO;
 
+import java.util.Date;
+
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
@@ -13,6 +15,9 @@ public abstract class RispostaVerbaleDTO {
 	private int id;
 	
 	private String tipo;
+	
+	private Date createDate;
+	private Date updateDate;
 	
 	
 	public RispostaVerbaleDTO() {
@@ -32,6 +37,24 @@ public abstract class RispostaVerbaleDTO {
 
 	public void setId(int id) {
 		this.id = id;
+	}
+	
+	
+
+	public Date getCreateDate() {
+		return createDate;
+	}
+
+	public void setCreateDate(Date createDate) {
+		this.createDate = createDate;
+	}
+
+	public Date getUpdateDate() {
+		return updateDate;
+	}
+
+	public void setUpdateDate(Date updateDate) {
+		this.updateDate = updateDate;
 	}
 
 	public abstract JsonElement getJsonObject();
