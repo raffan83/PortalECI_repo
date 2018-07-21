@@ -1,8 +1,11 @@
 package it.portalECI.DTO;
 
-import com.google.gson.JsonArray;
+import org.hibernate.Session;
+
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+
+import it.portalECI.DAO.SessionFacotryDAO;
 
 public class DomandaVerbaleDTO {
 	
@@ -32,7 +35,7 @@ public class DomandaVerbaleDTO {
 
 	public RispostaVerbaleDTO getRisposta() {
 		return risposta;
-	}
+	}		
 
 	public void setRisposta(RispostaVerbaleDTO risposta) {
 		this.risposta = risposta;
@@ -73,6 +76,43 @@ public class DomandaVerbaleDTO {
 		
 		return jobj;
 	}
-
-
+	
+	
+	public RispostaTestoVerbaleDTO getRispostaTesto() {
+		Session session=SessionFacotryDAO.get().openSession();
+		session.beginTransaction();
+		
+		RispostaTestoVerbaleDTO risp =(RispostaTestoVerbaleDTO) session.get(RispostaTestoVerbaleDTO.class, risposta.getId());
+		
+		session.getTransaction().commit();
+		session.close();	
+		
+		return risp;
+	}
+	
+	public RispostaSceltaVerbaleDTO getRispostaScelta() {
+		Session session=SessionFacotryDAO.get().openSession();
+		session.beginTransaction();
+		
+		RispostaSceltaVerbaleDTO risp =(RispostaSceltaVerbaleDTO) session.get(RispostaSceltaVerbaleDTO.class, risposta.getId());
+		
+		session.getTransaction().commit();
+		session.close();	
+		
+		return risp;
+	}
+	
+	public RispostaFormulaVerbaleDTO getRispostaFormula() {
+		Session session=SessionFacotryDAO.get().openSession();
+		session.beginTransaction();
+		
+		RispostaFormulaVerbaleDTO risp =(RispostaFormulaVerbaleDTO) session.get(RispostaFormulaVerbaleDTO.class, risposta.getId());
+		
+		session.getTransaction().commit();
+		session.close();	
+		
+		return risp;
+	}
+	
+	
 }

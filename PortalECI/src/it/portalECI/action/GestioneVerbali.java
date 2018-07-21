@@ -79,6 +79,7 @@ public class GestioneVerbali extends HttpServlet {
 		}else {
 			//caso genericoc della ricerca del verbale per aprire gestioneVerbali
 			request.getSession().setAttribute("verbale", verbale);
+			request.setAttribute("hibernateSession", session);
 			
 			RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/page/configurazioni/gestioneVerbale.jsp");
 			dispatcher.forward(request,response);

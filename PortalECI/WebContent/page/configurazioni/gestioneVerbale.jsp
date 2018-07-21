@@ -2,6 +2,12 @@
 <%@taglib prefix="t" tagdir="/WEB-INF/tags"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 
+
+<%@ page import="it.portalECI.DTO.RispostaFormulaVerbaleDTO" %>
+<%@ page import="it.portalECI.DTO.RispostaSceltaVerbaleDTO" %>
+<%@ page import="it.portalECI.DTO.RispostaTestoVerbaleDTO" %>
+<%@ page import="it.portalECI.DTO.DomandaVerbaleDTO" %>
+
 <t:layout title="Dashboard" bodyClass="skin-red sidebar-mini wysihtml5-supported">
 
 	<jsp:attribute name="body_area">
@@ -18,7 +24,10 @@
           		<h1 class="pull-left">
         			Dettaglio Verbale
         			<small></small>
-      			</h1>      		
+      			</h1>  
+      			<c:if test="${verbale.getStato().getId()>=5 }">
+      				<button class="btn btn-default pull-right" onClick="generaCertificato()"><i class="glyphicon glyphicon-edit"></i> Genera Certificato</button>
+      			</c:if>    		
     		</section>
 			<div style="clear: both;"></div>
     		
@@ -94,7 +103,34 @@
 									</div>
 								</div>
              					
-        						               
+             					<c:if test="${verbale.getStato().getId()>=3 }">
+        							<div class="row">         
+        								<div class="col-xs-12">
+											<div class="box box-danger box-solid">
+												<div class="box-header with-border">
+	 												Controllo Verbale
+													<div class="box-tools pull-right">		
+														<button data-widget="collapse" class="btn btn-box-tool"><i class="fa fa-minus"></i></button>
+													</div>
+												</div>
+												<div class="box-body">	
+													<c:forEach items="${verbale.getDomandeVerbale()}" var="domVerbale" varStatus="loop">	
+        												<div class="col-xs-12" style="border-bottom: 1px solid #ddd;">
+        													<label for="titolo-input" class="control-label col-xs-12">${domVerbale.getDomandaQuestionario().getTesto()}</label><br/>
+        												
+        													<c:set var="domVerbale" value="${domVerbale}" scope="request"></c:set>
+															<jsp:include page="gestioneVerbaleDettaglio.jsp"></jsp:include>
+        													
+
+
+        												</div>
+													</c:forEach>
+												</div>
+											</div>
+										</div>
+									</div>
+								</c:if>
+								
  							</div>
 						</div>
 						  		
