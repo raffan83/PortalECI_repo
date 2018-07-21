@@ -7,6 +7,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.URL;
 import java.nio.charset.Charset;
+import java.util.Iterator;
 import java.util.List;
 
 import org.hibernate.Session;
@@ -30,6 +31,10 @@ import com.itextpdf.tool.xml.pipeline.html.HtmlPipeline;
 import com.itextpdf.tool.xml.pipeline.html.HtmlPipelineContext;
 
 import ar.com.fdvs.dj.domain.Style;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+
 import it.portalECI.DAO.GestioneDomandaVerbaleDAO;
 import it.portalECI.DAO.GestioneQuestionarioDAO;
 import it.portalECI.DAO.GestioneRispostaQuestionarioDAO;
@@ -37,6 +42,7 @@ import it.portalECI.DAO.GestioneRispostaVerbaleDAO;
 import it.portalECI.DAO.GestioneStatoInterventoDAO;
 import it.portalECI.DAO.GestioneStatoVerbaleDAO;
 import it.portalECI.DAO.GestioneVerbaleDAO;
+import it.portalECI.DAO.SessionFacotryDAO;
 import it.portalECI.DTO.DomandaQuestionarioDTO;
 import it.portalECI.DTO.DomandaVerbaleDTO;
 import it.portalECI.DTO.DomandaVerbaleQuestionarioDTO;
@@ -293,6 +299,54 @@ public class GestioneVerbaleBO {
 	
 	private static String getTemplateRisposta(RispostaFormulaVerbaleDTO risposta) {
 		return "formula";
+	}
+	
+	public static void saveVerbaleResponses(JsonArray jsonRequest) {
+		
+		if(!jsonRequest.isJsonNull() ) {
+			Session session=SessionFacotryDAO.get().openSession();
+			session.beginTransaction();
+			Iterator<JsonElement> iterator=jsonRequest.iterator();
+			while(iterator.hasNext()) {
+				JsonObject responseVerbale = (JsonObject)iterator.next();
+				int responseID = responseVerbale.get("id").getAsInt();
+				switch (responseVerbale.get("type").getAsString()) {
+				case "RES_TEXT":
+					RispostaTestoVerbaleDTO rispostaTesto = GestioneRispostaVerbaleDAO.getRispostaInstance(RispostaTestoVerbaleDTO.class, responseID, session);
+					rispostaTesto.setResponseValue(responseVerbale.get("valore").getAsString());
+					GestioneRispostaVerbaleDAO.save(rispostaTesto, session);
+					break;
+				case "RES_CHOICE":
+					RispostaSceltaVerbaleDTO rispostaScelta = GestioneRispostaVerbaleDAO.getRispostaInstance(RispostaSceltaVerbaleDTO.class, responseID, session);
+					JsonArray scelte = responseVerbale.getAsJsonArray("scelte");
+					if(scelte!=null) {
+						Iterator<JsonElement> iteratorScelte=scelte.iterator();
+						while(iteratorScelte.hasNext()) {
+							JsonObject scelta = (JsonObject)iteratorScelte.next();
+							int sceltaID = scelta.get("id").getAsInt();
+							boolean sceltaChoice = scelta.get("choice").getAsBoolean();
+							OpzioneRispostaVerbaleDTO opzioneRispostaVerbaleDTO =GestioneRispostaVerbaleDAO.getOpzioneVerbale(sceltaID,session);
+							opzioneRispostaVerbaleDTO.setChecked(sceltaChoice);
+							GestioneRispostaVerbaleDAO.saveOpzioneVerbale(opzioneRispostaVerbaleDTO, session);
+						}
+					}
+					break;
+				case "RES_FORMULA":
+					RispostaFormulaVerbaleDTO rispostaFormula = GestioneRispostaVerbaleDAO.getRispostaInstance(RispostaFormulaVerbaleDTO.class, responseID, session);
+					rispostaFormula.setValue1(responseVerbale.get("valore_1").getAsString());
+					rispostaFormula.setValue2(responseVerbale.get("valore_2").getAsString());
+					rispostaFormula.setResponseValue(responseVerbale.get("risultato").getAsString());
+					GestioneRispostaVerbaleDAO.save(rispostaFormula, session);
+					break;
+
+				default:
+					break;
+				}
+				
+			}
+			session.getTransaction().commit();
+			session.close();    	
+		}
 	}
 
 }

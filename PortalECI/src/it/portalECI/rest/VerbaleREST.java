@@ -2,6 +2,7 @@ package it.portalECI.rest;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.Iterator;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -9,10 +10,18 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.google.gson.JsonObject;
+import org.apache.commons.io.IOUtils;
 
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
+
+import it.portalECI.DAO.GestioneAccessoDAO;
 import it.portalECI.DTO.UtenteDTO;
+import it.portalECI.Exception.ECIException;
 import it.portalECI.Util.Utility;
+import it.portalECI.bo.GestioneVerbaleBO;
 
 @WebServlet(name="VerbaleREST" , urlPatterns = { "/rest/verbale" })
 
@@ -47,17 +56,29 @@ public class VerbaleREST extends HttpServlet {
 	 */
 	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-//CREATE		
-		//if(Utility.validateSession(request,response,getServletContext()))return;
-
-		//Session session =SessionFacotryDAO.get().openSession();
-		//session.beginTransaction();
 		
 		response.setContentType("application/json");
-		JsonObject myObj = new JsonObject();
+    	JsonArray responseJson = new JsonArray();
 		PrintWriter out = response.getWriter();
-		myObj.addProperty("result", "dentro VerbaleREST doPost");
-		out.println(myObj);
+		
+		try{	
+			//Enabeld After inserto into Token Auth
+			UtenteDTO utente=(UtenteDTO) request.getAttribute("x-user");
+			
+			String jsonString =   IOUtils.toString(request.getInputStream());
+			JsonArray jsonRequest = new JsonParser().parse(jsonString).getAsJsonArray();
+			GestioneVerbaleBO.saveVerbaleResponses(jsonRequest);
+			JsonObject result = new JsonObject();
+			result.addProperty("result", "success");
+			responseJson.add(result);
+			
+		}catch (Exception e) {
+			responseJson=new JsonArray();
+			response.setStatus(response.SC_INTERNAL_SERVER_ERROR);
+			responseJson.add(ECIException.callExceptionJsonObject(e));
+			e.printStackTrace();
+		}  	
+		out.println(responseJson);
 	
 	}
 	

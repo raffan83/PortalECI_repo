@@ -7,6 +7,8 @@ public class RispostaFormulaVerbaleDTO extends RispostaVerbaleDTO {
 		
 	private RispostaFormulaQuestionarioDTO rispostaQuestionario;
 	
+	private String value1;
+	private String value2;
 	private String responseValue;
 	
 	public RispostaFormulaVerbaleDTO() {
@@ -26,6 +28,29 @@ public class RispostaFormulaVerbaleDTO extends RispostaVerbaleDTO {
 	}
 
 
+	public String getValue1() {
+		return value1;
+	}
+
+
+
+	public void setValue1(String value1) {
+		this.value1 = value1;
+	}
+
+
+
+	public String getValue2() {
+		return value2;
+	}
+
+
+
+	public void setValue2(String value2) {
+		this.value2 = value2;
+	}
+
+
 
 	public String getResponseValue() {
 		return responseValue;
@@ -33,8 +58,8 @@ public class RispostaFormulaVerbaleDTO extends RispostaVerbaleDTO {
 
 
 
-	public void setResponseValue(String responseValue) {
-		this.responseValue = responseValue;
+	public void setResponseValue(String resultValue) {
+		this.responseValue = resultValue;
 	}
 
 
