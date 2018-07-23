@@ -297,11 +297,10 @@ public class GestioneVerbaleBO {
 		return "formula";
 	}
 	
-	public static void saveVerbaleResponses(UtenteDTO user, JsonObject jsonRequest) throws ValidationException {
+	public static void saveVerbaleResponses(UtenteDTO user, JsonObject jsonRequest,Session session) throws ValidationException {
 
 		if (!jsonRequest.isJsonNull()) {
-			Session session = SessionFacotryDAO.get().openSession();
-			session.beginTransaction();
+			
 
 			VerbaleDTO verbaleDTO = GestioneVerbaleDAO.getVerbale(jsonRequest.get("verbale_id").getAsString(), session);
 
@@ -359,10 +358,7 @@ public class GestioneVerbaleBO {
 
 				}
 				cambioStato(verbaleDTO,GestioneStatoVerbaleDAO.getStatoVerbaleById(StatoVerbaleDTO.DA_VERIFICARE, session),session);
-				verbaleDTO.getIntervento().cambioStatoIntervento(GestioneStatoInterventoDAO.getStatoInterventoById(StatoInterventoDTO.DA_VERIFICARE, session));
 				
-				session.getTransaction().commit();
-				session.close();
 			} else {
 				throw new ValidationException("Verbale Non Trovato");
 			}

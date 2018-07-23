@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.xml.bind.ValidationException;
 
 import org.apache.commons.io.IOUtils;
+import org.hibernate.Session;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
@@ -19,6 +20,7 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
 import it.portalECI.DAO.GestioneAccessoDAO;
+import it.portalECI.DAO.SessionFacotryDAO;
 import it.portalECI.DTO.UtenteDTO;
 import it.portalECI.Exception.ECIException;
 import it.portalECI.Util.Utility;
@@ -61,7 +63,8 @@ public class VerbaleREST extends HttpServlet {
 		response.setContentType("application/json");
     	JsonArray responseJson = new JsonArray();
 		PrintWriter out = response.getWriter();
-		
+		Session session = SessionFacotryDAO.get().openSession();
+		session.beginTransaction();
 		try{	
 			//Enabeld After inserto into Token Auth
 			UtenteDTO utente=(UtenteDTO) request.getAttribute("x-user");
@@ -69,12 +72,14 @@ public class VerbaleREST extends HttpServlet {
 			String jsonString =   IOUtils.toString(request.getInputStream());
 			JsonObject jsonRequest = new JsonParser().parse(jsonString).getAsJsonObject();
 			
-			GestioneVerbaleBO.saveVerbaleResponses(utente,jsonRequest);
+			GestioneVerbaleBO.saveVerbaleResponses(utente,jsonRequest,session);
 			JsonObject result = new JsonObject();
 			result.addProperty("result", "success");
 			responseJson.add(result);
+			session.getTransaction().commit();
 			
 		}catch (Exception e) {
+			session.getTransaction().rollback();
 			responseJson=new JsonArray();
 			if(e instanceof ValidationException) {
 				response.setStatus(response.SC_BAD_REQUEST);
@@ -90,7 +95,9 @@ public class VerbaleREST extends HttpServlet {
 			}
 			
 			
-		}  	
+		}finally {
+			session.close();
+		}
 		out.println(responseJson);
 	
 	}
