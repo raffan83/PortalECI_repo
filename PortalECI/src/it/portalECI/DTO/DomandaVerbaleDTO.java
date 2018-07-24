@@ -1,15 +1,16 @@
 package it.portalECI.DTO;
 
-import com.google.gson.JsonArray;
+import org.hibernate.Session;
+
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+
+import it.portalECI.DAO.SessionFacotryDAO;
 
 public class DomandaVerbaleDTO {
 	
 	private int id;
-	private String testo;
-	private Boolean obbligatoria;
-	private String placeholder;
+	private DomandaQuestionarioDTO domandaQuestionario;
 	private RispostaVerbaleDTO risposta;
 	private VerbaleDTO verbale;
 	
@@ -24,33 +25,17 @@ public class DomandaVerbaleDTO {
 		this.id = id;
 	}
 
-	public String getTesto() {
-		return testo;
+	public DomandaQuestionarioDTO getDomandaQuestionario() {
+		return domandaQuestionario;
 	}
 
-	public void setTesto(String testo) {
-		this.testo = testo;
-	}
-
-	public Boolean getObbligatoria() {
-		return obbligatoria;
-	}
-
-	public void setObbligatoria(Boolean obbligatoria) {
-		this.obbligatoria = obbligatoria;
-	}
-
-	public String getPlaceholder() {
-		return placeholder;
-	}
-
-	public void setPlaceholder(String placeholder) {
-		this.placeholder = placeholder;
+	public void setDomandaQuestionario(DomandaQuestionarioDTO domandaQuestionario) {
+		this.domandaQuestionario = domandaQuestionario;
 	}
 
 	public RispostaVerbaleDTO getRisposta() {
 		return risposta;
-	}
+	}		
 
 	public void setRisposta(RispostaVerbaleDTO risposta) {
 		this.risposta = risposta;
@@ -67,13 +52,15 @@ public class DomandaVerbaleDTO {
 	public JsonElement getDomandaJsonObject() {
 		JsonObject jobj = new JsonObject();
 		
-		jobj.addProperty("id", this.id);
-	
-		jobj.addProperty("testo", this.testo);
-		jobj.addProperty("obbligatoria", this.obbligatoria);
+		jobj.addProperty("id", this.getId());
+		jobj.addProperty("testo", this.getDomandaQuestionario().getTesto());
+		jobj.addProperty("obbligatoria", this.getDomandaQuestionario().getObbligatoria());
+		jobj.addProperty("posizione", this.getDomandaQuestionario().getPosizione());
+		
 		if(risposta!=null) {
-			JsonObject rispostaobj = new JsonObject();
+			
 			jobj.add("risposta", this.risposta.getJsonObject());
+			
 		}
 			
 //		if(this.risposta!=null) {
@@ -89,6 +76,43 @@ public class DomandaVerbaleDTO {
 		
 		return jobj;
 	}
-
-
+	
+	
+	public RispostaTestoVerbaleDTO getRispostaTesto() {
+		Session session=SessionFacotryDAO.get().openSession();
+		session.beginTransaction();
+		
+		RispostaTestoVerbaleDTO risp =(RispostaTestoVerbaleDTO) session.get(RispostaTestoVerbaleDTO.class, risposta.getId());
+		
+		session.getTransaction().commit();
+		session.close();	
+		
+		return risp;
+	}
+	
+	public RispostaSceltaVerbaleDTO getRispostaScelta() {
+		Session session=SessionFacotryDAO.get().openSession();
+		session.beginTransaction();
+		
+		RispostaSceltaVerbaleDTO risp =(RispostaSceltaVerbaleDTO) session.get(RispostaSceltaVerbaleDTO.class, risposta.getId());
+		
+		session.getTransaction().commit();
+		session.close();	
+		
+		return risp;
+	}
+	
+	public RispostaFormulaVerbaleDTO getRispostaFormula() {
+		Session session=SessionFacotryDAO.get().openSession();
+		session.beginTransaction();
+		
+		RispostaFormulaVerbaleDTO risp =(RispostaFormulaVerbaleDTO) session.get(RispostaFormulaVerbaleDTO.class, risposta.getId());
+		
+		session.getTransaction().commit();
+		session.close();	
+		
+		return risp;
+	}
+	
+	
 }

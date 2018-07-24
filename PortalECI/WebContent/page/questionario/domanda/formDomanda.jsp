@@ -51,7 +51,16 @@
 			    	<option value="RES_FORMULA" ${domanda.risposta.tipo!=null && domanda.risposta.tipo.equals('RES_FORMULA')?'selected':''}>Formula</option>
 				</select>
 			</div>
-		</div>
+		</div>	
+		<div class="form-group">
+			<label for="risposta.placeholder" class="col-sm-2 control-label">Placeholder della risposta</label>
+			<div class="col-sm-10">
+				<div class="input-group">
+	                <input type="text" name="risposta.placeholder" class="form-control" placeholder="Placeholder della risposta" value="${domanda.risposta.placeholder!=null?domanda.risposta.placeholder.substring(0, domanda.risposta.placeholder.length()-4):''}"/>
+	                <span class="input-group-addon">_RES</span>
+	              </div>
+			</div>
+		</div>	
 	</div>
 			<%DomandaQuestionarioDTO domanda = (DomandaQuestionarioDTO) request.getAttribute("domanda");%>
 			<%org.hibernate.Session hibernateSession = (org.hibernate.Session) request.getAttribute("hibernateSession");%>
@@ -68,6 +77,19 @@
 				request.setAttribute("lista_opzioni",lista_opzioni);
 			%>
 	<div class="risposta-div risposta-RES_CHOICE" style="display: ${domanda!=null && domanda.risposta.tipo.equals('RES_CHOICE')?'block':'none'}">
+		
+		<div class="form-horizontal">
+			<div class="form-group">
+				<label for="risposta.multipla" class="col-sm-2 control-label">Mutua esclusione</label>
+				<div class="col-sm-10">
+					<select name="risposta.multipla" class="form-control domanda-obbligatoria-select">
+			    		<option value="false">SI</option>
+			    		<option value="true" ${domanda.risposta!=null && risposta.tipo.equals('RES_CHOICE') && risposta.multipla?'selected':''}>NO</option>
+					</select>
+				</div>
+			</div>
+		</div>
+		
 		<input type="hidden" name="numero-opzioni" class="numero-opzioni-input" value="${lista_opzioni.size()}"/>
 		<div class="lista-opzioni-div row ">
 			<c:forEach items="${lista_opzioni}" var="opzione" >

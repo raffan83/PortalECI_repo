@@ -3,7 +3,9 @@ package it.portalECI.DTO;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
@@ -23,7 +25,7 @@ public class VerbaleDTO implements Serializable {
 	private String descrizioneVerifica;
 	private StatoVerbaleDTO stato;
 	private InterventoDTO intervento;
-	private List<DomandaVerbaleDTO> domandeVerbale;
+	private Set<DomandaVerbaleDTO> domandeVerbale;
 	//private List<DomandaQuestionarioDTO> domandeSchedaTecnica;
 	
 	//TODO: dovrò aggiungere la referenza a scheda tecnica e anche al template per il pdf
@@ -77,17 +79,17 @@ public class VerbaleDTO implements Serializable {
 		this.codiceCategoria = codiceCategoria;
 	}
 
-	public List<DomandaVerbaleDTO> getDomandeVerbale() {
+	public Set<DomandaVerbaleDTO> getDomandeVerbale() {
 		return domandeVerbale;
 	}
 
-	public void setDomandeVerbale(List<DomandaVerbaleDTO> domandeVerbale) {
+	public void setDomandeVerbale(Set<DomandaVerbaleDTO> domandeVerbale) {
 		this.domandeVerbale = domandeVerbale;
 	}
 	
 	public void addToDomande(DomandaVerbaleDTO domanda) {
 		if(this.domandeVerbale ==null)
-			this.domandeVerbale =new ArrayList<>();
+			this.domandeVerbale =new HashSet<>();
 		
 		this.domandeVerbale.add(domanda);
 	}

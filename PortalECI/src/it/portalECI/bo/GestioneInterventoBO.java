@@ -2,17 +2,27 @@ package it.portalECI.bo;
 
 import it.portalECI.DAO.GestioneInterventoDAO;
 import it.portalECI.DAO.GestioneStatoInterventoDAO;
+import it.portalECI.DAO.GestioneVerbaleDAO;
+import it.portalECI.DAO.SessionFacotryDAO;
 import it.portalECI.DTO.CategoriaVerificaDTO;
 import it.portalECI.DTO.InterventoDTO;
 import it.portalECI.DTO.StatoInterventoDTO;
+import it.portalECI.DTO.StatoVerbaleDTO;
 import it.portalECI.DTO.TipoVerificaDTO;
+import it.portalECI.DTO.UtenteDTO;
 import it.portalECI.DTO.VerbaleDTO;
 
 import java.util.ArrayList;
-
+import java.util.Iterator;
 import java.util.List;
 
+import javax.xml.bind.ValidationException;
+
 import org.hibernate.Session;
+
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 
 public class GestioneInterventoBO {
 
@@ -111,6 +121,40 @@ public class GestioneInterventoBO {
 		// TODO Auto-generated method stub
 		return GestioneInterventoDAO.getInterventoTecnico( session,  idTecnicoVerificatore,idIntervento);
 	}
+
+	public static void saveInterventoResponses(UtenteDTO utente, JsonObject jsonRequest,Session session) throws ValidationException {
+
+		if (!jsonRequest.isJsonNull()) {
+			
+			InterventoDTO interventoDTO= GestioneInterventoDAO.getIntervento(jsonRequest.get("intervento_id").getAsString(), session);
+
+			if (interventoDTO != null) {
+				if (interventoDTO.getStatoIntervento().getId() != StatoInterventoDTO.SCARICATO) {
+					throw new ValidationException("Intervento in stato diverso da SCARICATO");
+				}
+
+				if (!interventoDTO.getTecnico_verificatore().getUser().equals(utente.getUser())) {
+					throw new ValidationException("Utente non abilitato all'invio dell'Intervento");
+				}
+
+				JsonArray responses = jsonRequest.getAsJsonArray("verbali");
+				Iterator<JsonElement> iterator = responses.iterator();
+				while (iterator.hasNext()) {
+					JsonObject verbale = (JsonObject) iterator.next();
+					GestioneVerbaleBO.saveVerbaleResponses(utente, verbale, session);
+				}
+				//NON CAMBIO STATO PERCHPè loi fa la logica di cambio stato Verbale
+				//interventoDTO.cambioStatoIntervento(GestioneStatoInterventoDAO.getStatoInterventoById(StatoInterventoDTO.DA_VERIFICARE, session));
+			} else {
+				throw new ValidationException("Intervento Non Trovato");
+			}
+		} else {
+			throw new ValidationException("JSON Richiesta vuoto");
+		}
+
+	}
+		
+	
 	
 	/*public static List<Map> getTuttiInterventi(Session session) throws Exception{
 		// TODO Auto-generated method stub

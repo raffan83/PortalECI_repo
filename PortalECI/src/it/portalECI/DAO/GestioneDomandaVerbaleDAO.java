@@ -15,7 +15,12 @@ public class GestioneDomandaVerbaleDAO {
 
 
 	public static void save(DomandaVerbaleDTO domanda, Session session) {
-		session.save(domanda);
+		session.saveOrUpdate(domanda);
+	}
+
+	public static void delete(DomandaVerbaleDTO domandaVerbaleDTO, Session session) {
+		session.delete(domandaVerbaleDTO);
+		
 	}
 
 }

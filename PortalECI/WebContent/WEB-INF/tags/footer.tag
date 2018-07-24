@@ -29,6 +29,7 @@
 <script src='https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.min.js'></script>
 <script src='https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment-with-locales.min.js'></script>
 <script src='https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/locale/it.js'></script>
+<script src='plugins/datatables/date-eu.js'></script>
 <script src='plugins/fullcalendar/fullcalendar.min.js'></script>
 <script src="plugins/select2/select2.full.min.js"></script>
 <script src="plugins/bignumbers/bignumber.min.js"></script>

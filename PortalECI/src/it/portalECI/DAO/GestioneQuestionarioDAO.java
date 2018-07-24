@@ -1,11 +1,15 @@
 package it.portalECI.DAO;
 
+import java.util.Collections;
 import java.util.List;
 
+import org.apache.commons.collections.ListUtils;
 import org.hibernate.Query;
 import org.hibernate.Session;
 
+import it.portalECI.DTO.InterventoDTO;
 import it.portalECI.DTO.QuestionarioDTO;
+import it.portalECI.DTO.StatoVerbaleDTO;
 
 public class GestioneQuestionarioDAO {
 	
@@ -28,5 +32,29 @@ public class GestioneQuestionarioDAO {
 		
 ;		return (QuestionarioDTO) query.uniqueResult();
 	}
+	
+	public static List getQuestionariPlaceholder(Session session) {		
+		
+		Query queryDom = session.createQuery("select DISTINCT(placeholder) from DomandaQuestionarioDTO" );
+		Query queryRis =session.createQuery("select DISTINCT(placeholder) from RispostaQuestionario");
+	
+		return ListUtils.union(queryDom.list(), queryRis.list()); 
+	}
 
+	public static Boolean controlloQuestionarioInUso(Integer idQuestionario, Session session){
+		List<String> lista =null;
+		
+		Query query=session.createQuery("select stato.id from VerbaleDTO where questionarioID = :_idQuestionario");
+		query.setParameter("_idQuestionario", idQuestionario);
+		
+		lista=query.list();
+			
+		int occurrences = Collections.frequency(lista, String.valueOf(StatoVerbaleDTO.CREATO));
+		
+		if(lista.size()==0 || occurrences==lista.size()) {
+			return true;
+		}
+		
+		return false;
+	}
 }

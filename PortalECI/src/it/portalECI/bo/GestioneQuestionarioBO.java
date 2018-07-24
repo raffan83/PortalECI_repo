@@ -4,17 +4,8 @@ import java.util.List;
 
 import org.hibernate.Session;
 
-import it.portalECI.DAO.GestioneDomandaVerbaleDAO;
 import it.portalECI.DAO.GestioneQuestionarioDAO;
-import it.portalECI.DAO.GestioneRispostaVerbaleDAO;
-import it.portalECI.DAO.GestioneStatoVerbaleDAO;
-import it.portalECI.DAO.GestioneVerbaleDAO;
-import it.portalECI.DTO.DomandaQuestionarioDTO;
-import it.portalECI.DTO.DomandaVerbaleDTO;
 import it.portalECI.DTO.QuestionarioDTO;
-import it.portalECI.DTO.RispostaVerbaleDTO;
-import it.portalECI.DTO.StatoVerbaleDTO;
-import it.portalECI.DTO.VerbaleDTO;
 
 public class GestioneQuestionarioBO {
 	public static List<QuestionarioDTO> getListaQuestionari(Session session) {
@@ -26,8 +17,13 @@ public class GestioneQuestionarioBO {
 	}
 	
 	
+	public static List getQuestionariPlaceholder(Session session) {
+		return GestioneQuestionarioDAO.getQuestionariPlaceholder( session);
+	}
 	
-	
+	public static Boolean controlloQuestionarioInUso(Integer idQuestionario,Session session) {
+		return GestioneQuestionarioDAO.controlloQuestionarioInUso(idQuestionario, session);
+	}
 	
 
 }

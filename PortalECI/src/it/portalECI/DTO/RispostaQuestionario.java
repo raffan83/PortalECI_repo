@@ -1,6 +1,6 @@
 package it.portalECI.DTO;
 
-public class RispostaQuestionario {
+public abstract class RispostaQuestionario {
 	
 	public static final String TIPO_TESTO="RES_TEXT";
 	public static final String TIPO_SCELTA="RES_CHOICE";

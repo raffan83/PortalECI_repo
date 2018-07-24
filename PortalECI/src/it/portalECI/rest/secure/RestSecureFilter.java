@@ -20,7 +20,7 @@ import it.portalECI.DTO.UtenteDTO;
  */
 @WebFilter(
 		servletNames = { 
-				//"InterventoREST", 
+				"InterventoREST", 
 				"CommessaREST", 
 				"VerbaleREST"
 		})

@@ -5,6 +5,9 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+
 public class RuoloDTO implements Serializable {
 
 	/**
@@ -61,6 +64,14 @@ public class RuoloDTO implements Serializable {
 		   }
 		   
 		return false;
+	}
+	public JsonElement getJsonObject() {
+		JsonObject jobj = new JsonObject();
+		
+		jobj.addProperty("sigla", this.sigla);
+		jobj.addProperty("descrizione", this.descrizione);
+		
+		return jobj;
 	}
 	
 }

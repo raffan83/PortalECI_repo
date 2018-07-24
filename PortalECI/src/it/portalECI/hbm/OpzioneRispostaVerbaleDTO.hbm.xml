@@ -7,9 +7,16 @@
 		<id name="id">
 			<generator class="identity"></generator>
 		</id>
-		<property name="testo">
-			<column name="testo" length="1024"/>
+		<timestamp name="updateDate" access="field" column="update_date"/>
+		
+		<property name="createDate" update="false" insert="false">
+			<column name="create_date" sql-type="TIMESTAMP" default="CURRENT_TIMESTAMP"/>
 		</property>
+		<property name="checked" >
+			<column name="checked"/>
+		</property> 
+		
+		<many-to-one name="opzioneQuestionario" class="it.portalECI.DTO.OpzioneRispostaQuestionarioDTO" column="opzione_questionario_id"  cascade="none"  />
 		<many-to-one name="risposta" class="it.portalECI.DTO.RispostaSceltaVerbaleDTO">
             <column name="risposta_id" not-null="true" />
         </many-to-one>

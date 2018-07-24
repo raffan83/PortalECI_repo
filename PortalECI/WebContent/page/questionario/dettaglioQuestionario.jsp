@@ -54,7 +54,20 @@
                   										<b>Versione del </b> 
                   										<a class="pull-right"><fmt:formatDate pattern="dd/MM/yyyy" value="${questionario.updateDate}" /></a>
                 									</li>
-                									
+                									<c:if test="${questionario.domandeVerbale.size()>0 }">
+	                									<li class="list-group-item">
+	                  										<b>Template Verbale </b>&nbsp;
+	                  										<a href="gestioneTemplateQuestionario.do?idQuestionario=${questionario.id}&tipo=Verbale&idTemplate=${questionario.templateVerbale.id}" class="btn btn-default btn-xs pull-right">Imposta Template</a>
+	                  										<a class="pull-right">${questionario.templateVerbale.titolo}</a>
+	                									</li>
+                									</c:if>
+                									<c:if test="${questionario.domandeSchedaTecnica.size()>0 }">
+	                									<li class="list-group-item">
+	                  										<b>Template Scheda Tecnica </b>&nbsp;
+	                  										<a href="gestioneTemplateQuestionario.do?idQuestionario=${questionario.id}&tipo=SchedaTecnica&idTemplate=${questionario.templateSchedaTecnica.id}" class="btn btn-default btn-xs pull-right">Imposta Template</a> 
+	                  										<a class="pull-right">${questionario.templateSchedaTecnica.titolo}</a>
+	                									</li>
+                									</c:if>
         										</ul>
 											</div>
 										</div>

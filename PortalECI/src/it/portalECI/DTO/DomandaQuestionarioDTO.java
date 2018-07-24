@@ -7,10 +7,8 @@ public class DomandaQuestionarioDTO {
 	private Boolean obbligatoria;
 	private String placeholder;
 	private RispostaQuestionario risposta;
-	private QuestionarioDTO questionario;
 	private int posizione;
-
-	
+		
 	public DomandaQuestionarioDTO() {
 	}
 
@@ -52,14 +50,6 @@ public class DomandaQuestionarioDTO {
 
 	public void setRisposta(RispostaQuestionario risposta) {
 		this.risposta = risposta;
-	}
-
-	public QuestionarioDTO getQuestionario() {
-		return questionario;
-	}
-
-	public void setQuestionario(QuestionarioDTO questionario) {
-		this.questionario = questionario;
 	}
 
 	public int getPosizione() {

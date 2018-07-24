@@ -2,17 +2,29 @@ package it.portalECI.rest;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.Iterator;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.xml.bind.ValidationException;
 
+import org.apache.commons.io.IOUtils;
+import org.hibernate.Session;
+
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 
+import it.portalECI.DAO.GestioneAccessoDAO;
+import it.portalECI.DAO.SessionFacotryDAO;
 import it.portalECI.DTO.UtenteDTO;
+import it.portalECI.Exception.ECIException;
 import it.portalECI.Util.Utility;
+import it.portalECI.bo.GestioneVerbaleBO;
 
 @WebServlet(name="VerbaleREST" , urlPatterns = { "/rest/verbale" })
 
@@ -47,17 +59,46 @@ public class VerbaleREST extends HttpServlet {
 	 */
 	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-//CREATE		
-		//if(Utility.validateSession(request,response,getServletContext()))return;
-
-		//Session session =SessionFacotryDAO.get().openSession();
-		//session.beginTransaction();
 		
 		response.setContentType("application/json");
-		JsonObject myObj = new JsonObject();
+    	JsonArray responseJson = new JsonArray();
 		PrintWriter out = response.getWriter();
-		myObj.addProperty("result", "dentro VerbaleREST doPost");
-		out.println(myObj);
+		Session session = SessionFacotryDAO.get().openSession();
+		session.beginTransaction();
+		try{	
+			//Enabeld After inserto into Token Auth
+			UtenteDTO utente=(UtenteDTO) request.getAttribute("x-user");
+			
+			String jsonString =   IOUtils.toString(request.getInputStream());
+			JsonObject jsonRequest = new JsonParser().parse(jsonString).getAsJsonObject();
+			
+			GestioneVerbaleBO.saveVerbaleResponses(utente,jsonRequest,session);
+			JsonObject result = new JsonObject();
+			result.addProperty("result", "success");
+			responseJson.add(result);
+			session.getTransaction().commit();
+			
+		}catch (Exception e) {
+			session.getTransaction().rollback();
+			responseJson=new JsonArray();
+			if(e instanceof ValidationException) {
+				response.setStatus(response.SC_BAD_REQUEST);
+				JsonObject result = new JsonObject();
+				result.addProperty("result", "false");
+				result.addProperty("error", e.getMessage());
+				responseJson.add(result);
+				
+			}else {
+				response.setStatus(response.SC_INTERNAL_SERVER_ERROR);
+				responseJson.add(ECIException.callExceptionJsonObject(e));
+				e.printStackTrace();	
+			}
+			
+			
+		}finally {
+			session.close();
+		}
+		out.println(responseJson);
 	
 	}
 	

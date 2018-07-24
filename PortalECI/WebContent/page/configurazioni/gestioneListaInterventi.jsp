@@ -217,6 +217,7 @@
     	                { responsivePriority: 3, targets: 2 },
     	                { responsivePriority: 4, targets: 3 },
     	                { responsivePriority: 2, targets: 6 },
+    	                { responsivePriority: 4, targets: 8, type:"date-eu"},
     	                { orderable: false, targets: 6 },
     	            ],             
     	            buttons: [ {
