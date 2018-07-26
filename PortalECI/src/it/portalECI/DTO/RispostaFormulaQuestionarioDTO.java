@@ -29,7 +29,31 @@ public class RispostaFormulaQuestionarioDTO extends RispostaQuestionario {
 	public String getOperatore() {
 		return operatore;
 	}
-
+	
+	public String getSimboloOperatore() {
+		switch (operatore) {
+		 
+	    	case "Somma":
+	        	return "+";
+	        	
+	    	case "Sottrazione":
+	    		return "-";
+	        
+	    	case "Moltiplicazione":
+	        	return "x";
+	        
+	    	case "Divisione":
+	    		return ":";
+	        
+	    	case "Potenza":
+	    		return "^";
+	    	
+	    	default:
+	    		return "";
+		}
+		
+	}
+	
 	public void setOperatore(String operatore) {
 		this.operatore = operatore;
 	}
