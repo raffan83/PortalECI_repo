@@ -2,6 +2,13 @@ package it.portalECI.action;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Enumeration;
+import java.util.List;
+import java.util.Set;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -14,15 +21,18 @@ import org.hibernate.Session;
 
 import com.google.gson.JsonObject;
 
-import it.portalECI.DAO.GestioneStatoInterventoDAO;
+import it.portalECI.DAO.GestioneInterventoDAO;
+import it.portalECI.DAO.GestioneRispostaVerbaleDAO;
 import it.portalECI.DAO.GestioneStatoVerbaleDAO;
 import it.portalECI.DAO.SessionFacotryDAO;
+import it.portalECI.DTO.DomandaVerbaleDTO;
 import it.portalECI.DTO.InterventoDTO;
-import it.portalECI.DTO.StatoInterventoDTO;
-import it.portalECI.DTO.StatoVerbaleDTO;
+import it.portalECI.DTO.OpzioneRispostaVerbaleDTO;
+import it.portalECI.DTO.RispostaFormulaVerbaleDTO;
+import it.portalECI.DTO.RispostaTestoVerbaleDTO;
+import it.portalECI.DTO.RispostaVerbaleDTO;
 import it.portalECI.DTO.VerbaleDTO;
 import it.portalECI.Util.Utility;
-import it.portalECI.bo.GestioneInterventoBO;
 import it.portalECI.bo.GestioneVerbaleBO;
 
 /**
@@ -45,14 +55,129 @@ public class GestioneVerbali extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
+		JsonObject myObj = new JsonObject();
+		PrintWriter  out = response.getWriter();
 		
+		Session session = SessionFacotryDAO.get().openSession();
+		session.beginTransaction();
+		try {
+			VerbaleDTO verbale = GestioneVerbaleBO.getVerbale(request.getParameter("idVerbale"),session); 
+		
+			if(verbale.getStato().getId()!= 4) {
+				myObj.addProperty("success", false);
+				myObj.addProperty("messaggio", "Impossibile modificare un verbale nello stato Accettato o Rifiutato!");
+		
+				out.print(myObj);
+				return;
+			
+			}
+		
+			Enumeration<String> parameterNames = request.getParameterNames();
+		
+			ArrayList listaFormulaAggiornate=new ArrayList();
+		
+			while (parameterNames.hasMoreElements()) {
+				String paramName = parameterNames.nextElement();
+
+				String id="";
+				if(paramName.contains("value1") || paramName.contains("value2") || paramName.contains("responseValue")) {				
+					id=paramName.replaceAll("value1", "").replaceAll("value2", "").replaceAll("responseValue", "");
+				
+					if(!listaFormulaAggiornate.contains(id)) {
+						listaFormulaAggiornate.add(id);
+						String value1=request.getParameter("value1"+id);
+						String value2=request.getParameter("value2"+id);
+						String responseValue=request.getParameter("responseValue"+id);
+				
+						RispostaFormulaVerbaleDTO rispostaFormula = GestioneRispostaVerbaleDAO.getRispostaInstance(RispostaFormulaVerbaleDTO.class, Integer.parseInt(id), session);
+						rispostaFormula.setValue1(value1);
+						rispostaFormula.setValue2(value2);
+						rispostaFormula.setResponseValue(responseValue);
+						GestioneRispostaVerbaleDAO.save(rispostaFormula, session);
+					}
+				
+				}else if(paramName.contains("options")) {			
+					String idrispostaSceltaVerbale=paramName.replaceAll("options", "");
+			
+					Set<OpzioneRispostaVerbaleDTO> listaOpzioni= GestioneRispostaVerbaleDAO.getRispostaSceltaVerbaleDTO(Integer.parseInt(idrispostaSceltaVerbale), session).getOpzioni();
+								
+					String[] listaid = request.getParameterValues(paramName);
+				
+					for (OpzioneRispostaVerbaleDTO s : listaOpzioni) {
+						Boolean value=false;
+						if(Arrays.asList(listaid).contains(String.valueOf(s.getId()))) {
+							value=true;
+						}
+				    
+						OpzioneRispostaVerbaleDTO opzioneRispostaVerbaleDTO = GestioneRispostaVerbaleDAO.getOpzioneVerbale(s.getId(), session);
+						opzioneRispostaVerbaleDTO.setChecked(value);
+						GestioneRispostaVerbaleDAO.saveOpzioneVerbale(opzioneRispostaVerbaleDTO, session);
+					}				
+											
+				
+				}else if(!paramName.contains("idVerbale") && !paramName.contains("options") && !paramName.contains("responseValue") && !paramName.contains("value2") && !paramName.contains("value1")){			
+					String testo=request.getParameter(paramName);
+
+					RispostaTestoVerbaleDTO rispostaTesto = GestioneRispostaVerbaleDAO.getRispostaInstance(RispostaTestoVerbaleDTO.class, Integer.parseInt(paramName), session);
+					rispostaTesto.setResponseValue(testo);
+					GestioneRispostaVerbaleDAO.save(rispostaTesto, session);
+
+				}
+						
+			}	
+		
+			for (DomandaVerbaleDTO domanda:verbale.getDomandeVerbale()) {
+
+				if(domanda.getRisposta().getTipo().equals(RispostaVerbaleDTO.TIPO_SCELTA)) {
+			
+					int valueRicercato=domanda.getRisposta().getId();
+
+					if(!request.getParameterMap().containsKey("options"+String.valueOf(valueRicercato))){			
+
+						if(domanda.getDomandaQuestionario().getObbligatoria()) {
+							myObj.addProperty("success", false);
+							myObj.addProperty("messaggio", "La domanda '"+domanda.getDomandaQuestionario().getTesto()+"' è obbligatoria.");
+					
+							out.print(myObj);
+							return;
+						}
+					
+						Set<OpzioneRispostaVerbaleDTO> listaOpzioni= GestioneRispostaVerbaleDAO.getRispostaSceltaVerbaleDTO(valueRicercato, session).getOpzioni();
+					
+						for (OpzioneRispostaVerbaleDTO s : listaOpzioni) {
+							OpzioneRispostaVerbaleDTO opzioneRispostaVerbaleDTO = GestioneRispostaVerbaleDAO.getOpzioneVerbale(s.getId(), session);
+							opzioneRispostaVerbaleDTO.setChecked(false);
+							GestioneRispostaVerbaleDAO.saveOpzioneVerbale(opzioneRispostaVerbaleDTO, session);
+						}		
+					}
+				}
+			
+			}
+			
+			myObj.addProperty("success", true);
+			myObj.addProperty("messaggio", "Stato modificato con successo");
+			
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			myObj.addProperty("success", false);
+			myObj.addProperty("messaggio", "Errore imprevisto durante il salvataggio delle modifiche.");
+			
+		}finally {
+			session.getTransaction().commit();
+			session.close();
+		}
+		
+		
+		
+	
+		out.print(myObj);
 	}
 
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		
 		if(Utility.validateSession(request,response,getServletContext()))return;
 		
 		Session session=SessionFacotryDAO.get().openSession();
@@ -78,6 +203,23 @@ public class GestioneVerbali extends HttpServlet {
 			out.print(myObj);
 		}else {
 			//caso genericoc della ricerca del verbale per aprire gestioneVerbali
+							
+			List domandeVerbale=new ArrayList();
+			domandeVerbale.addAll(verbale.getDomandeVerbale());
+			
+			Collections.sort(domandeVerbale, new Comparator<DomandaVerbaleDTO>() {
+				@Override
+				public int compare(DomandaVerbaleDTO op2, DomandaVerbaleDTO op1){
+					int pos1=op1.getDomandaQuestionario().getPosizione();
+					int pos2=op2.getDomandaQuestionario().getPosizione();
+					return  pos2 - pos1;
+				}
+			});
+
+			request.setAttribute("domandeVerbale",domandeVerbale);
+																	
+			InterventoDTO intervento=GestioneInterventoDAO.getIntervento(String.valueOf(verbale.getIntervento().getId()),session);
+			request.getSession().setAttribute("intervento", intervento);
 			request.getSession().setAttribute("verbale", verbale);
 			request.setAttribute("hibernateSession", session);
 			
