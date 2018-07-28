@@ -4,6 +4,7 @@ import org.hibernate.Session;
 
 import it.portalECI.DTO.OpzioneRispostaVerbaleDTO;
 import it.portalECI.DTO.RispostaQuestionario;
+import it.portalECI.DTO.RispostaSceltaVerbaleDTO;
 import it.portalECI.DTO.RispostaVerbaleDTO;
 
 public class GestioneRispostaVerbaleDAO {
@@ -23,6 +24,11 @@ public class GestioneRispostaVerbaleDAO {
 	
 	public static OpzioneRispostaVerbaleDTO getOpzioneVerbale(int id, Session session) {
 		return (OpzioneRispostaVerbaleDTO) session.get(OpzioneRispostaVerbaleDTO.class, id);
+		
+	}
+	
+	public static RispostaSceltaVerbaleDTO getRispostaSceltaVerbaleDTO(int id, Session session) {
+		return (RispostaSceltaVerbaleDTO) session.get(RispostaSceltaVerbaleDTO.class, id);
 		
 	}
 
