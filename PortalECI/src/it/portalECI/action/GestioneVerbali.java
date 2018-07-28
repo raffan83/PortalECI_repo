@@ -215,7 +215,6 @@ public class GestioneVerbali extends HttpServlet {
 					myObj.addProperty("success", true);
 					myObj.addProperty("messaggio","Docuemnto creato con successo!");
 					myObj.addProperty("filePath", certificato.getAbsoluteFile().getParentFile().getAbsolutePath()+File.separator+certificato.getName());
-					System.out.println("2-" + certificato.getAbsoluteFile().getParentFile().getAbsolutePath()+File.separator+certificato.getName());
 				} else {
 					myObj.addProperty("success", false);
 					myObj.addProperty("messaggio", "Non &egrave; stato possibile generare il documento.");					
