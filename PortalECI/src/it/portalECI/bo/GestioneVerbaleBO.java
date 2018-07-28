@@ -202,9 +202,9 @@ public class GestioneVerbaleBO {
 	
 	public static File getPDFVerbale(VerbaleDTO verbale, QuestionarioDTO questionario, Session session) throws Exception{
 		
-		new File(Costanti.PATH_CERTIFICATI).mkdirs();
-		
-		File file = new File(Costanti.PATH_CERTIFICATI, questionario.getTitolo()+"_"+questionario.getTipo().getCodice()+"_"+verbale.getIntervento().getId()+".pdf");
+		String path = Costanti.PATH_CERTIFICATI+File.separator+"Intervento_"+verbale.getIntervento().getId()+File.separator+"Verbale_"+verbale.getCodiceCategoria()+"_"+verbale.getId();
+		new File(path).mkdirs();
+		File file = new File(path, questionario.getTitolo()+"_"+questionario.getTipo().getCodice()+"_"+verbale.getIntervento().getId()+".pdf");
 
 		String html = questionario.getTemplateVerbale().getTemplate();
 		System.out.println("INIZIOHTML\n" + html);

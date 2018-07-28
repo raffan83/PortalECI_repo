@@ -1,6 +1,7 @@
 package it.portalECI.DTO;
 
 import java.io.Serializable;
+import java.util.Date;
 
 public class DocumentoDTO implements Serializable {
 
@@ -11,7 +12,22 @@ public class DocumentoDTO implements Serializable {
 	private int id;
 	private String filePath;
 	private String type;
-	
+	private Date createDate;
+	private Date updateDate;
+	private VerbaleDTO verbale;
+
+	public Date getCreateDate() {
+		return createDate;
+	}
+	public void setCreateDate(Date createDate) {
+		this.createDate = createDate;
+	}
+	public Date getUpdateDate() {
+		return updateDate;
+	}
+	public void setUpdateDate(Date updateDate) {
+		this.updateDate = updateDate;
+	}
 	public int getId() {
 		return id;
 	}
@@ -29,6 +45,12 @@ public class DocumentoDTO implements Serializable {
 	}
 	public void setType(String type) {
 		this.type = type;
+	}
+	public VerbaleDTO getVerbale() {
+		return verbale;
+	}
+	public void setVerbale(VerbaleDTO verbale) {
+		this.verbale = verbale;
 	}
 	
 }

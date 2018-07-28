@@ -27,7 +27,7 @@ public class VerbaleDTO implements Serializable {
 	private InterventoDTO intervento;
 	private Set<DomandaVerbaleDTO> domandeVerbale;
 	//private List<DomandaQuestionarioDTO> domandeSchedaTecnica;
-	private List<DocumentoDTO> documentiVerbale;
+	private Set<DocumentoDTO> documentiVerbale;
 		
 	public int getId() {
 		return id;
@@ -125,11 +125,11 @@ public class VerbaleDTO implements Serializable {
 		this.descrizioneVerifica = descrizioneVerifica;
 	}
 
-	public List<DocumentoDTO> getDocumentiVerbale() {
+	public Set<DocumentoDTO> getDocumentiVerbale() {
 		return documentiVerbale;
 	}
 
-	public void setDocumentiVerbale(List<DocumentoDTO> documentiVerbale) {
+	public void setDocumentiVerbale(Set<DocumentoDTO> documentiVerbale) {
 		this.documentiVerbale = documentiVerbale;
 	}
 	
