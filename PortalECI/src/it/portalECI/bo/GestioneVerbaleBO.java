@@ -4,19 +4,10 @@ import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
-import java.net.URL;
-import java.net.URLDecoder;
 import java.nio.charset.Charset;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.Enumeration;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Properties;
 
-import javax.servlet.ServletContext;
-import javax.servlet.ServletContextEvent;
 import javax.xml.bind.ValidationException;
 import org.hibernate.Session;
 import org.jsoup.Jsoup;
@@ -42,6 +33,7 @@ import com.itextpdf.tool.xml.pipeline.html.HtmlPipeline;
 import com.itextpdf.tool.xml.pipeline.html.HtmlPipelineContext;
 import com.itextpdf.tool.xml.pipeline.html.LinkProvider;
 
+import it.portalECI.DAO.GestioneDocumentoDAO;
 import it.portalECI.DAO.GestioneDomandaVerbaleDAO;
 import it.portalECI.DAO.GestioneQuestionarioDAO;
 import it.portalECI.DAO.GestioneRispostaQuestionarioDAO;
@@ -49,6 +41,7 @@ import it.portalECI.DAO.GestioneRispostaVerbaleDAO;
 import it.portalECI.DAO.GestioneStatoInterventoDAO;
 import it.portalECI.DAO.GestioneStatoVerbaleDAO;
 import it.portalECI.DAO.GestioneVerbaleDAO;
+import it.portalECI.DTO.DocumentoDTO;
 import it.portalECI.DTO.DomandaQuestionarioDTO;
 import it.portalECI.DTO.DomandaVerbaleDTO;
 import it.portalECI.DTO.InterventoDTO;
@@ -202,9 +195,9 @@ public class GestioneVerbaleBO {
 	
 	public static File getPDFVerbale(VerbaleDTO verbale, QuestionarioDTO questionario, Session session) throws Exception{
 		
-		String path = Costanti.PATH_CERTIFICATI+File.separator+"Intervento_"+verbale.getIntervento().getId()+File.separator+"Verbale_"+verbale.getCodiceCategoria()+"_"+verbale.getId();
-		new File(path).mkdirs();
-		File file = new File(path, questionario.getTitolo()+"_"+questionario.getTipo().getCodice()+"_"+verbale.getIntervento().getId()+".pdf");
+		String path = "Intervento_"+verbale.getIntervento().getId()+File.separator+"Verbale_"+verbale.getCodiceCategoria()+"_"+verbale.getId();
+		new File(Costanti.PATH_CERTIFICATI+path).mkdirs();
+		File file = new File(Costanti.PATH_CERTIFICATI+path, questionario.getTitolo()+"_"+questionario.getTipo().getCodice()+"_"+verbale.getIntervento().getId()+".pdf");
 
 		String html = questionario.getTemplateVerbale().getTemplate();
 		System.out.println("INIZIOHTML\n" + html);
@@ -244,14 +237,17 @@ public class GestioneVerbaleBO {
     	String str = documentJsoup.html();
     	System.out.println(str);
     	try {
+    		 System.out.println("3mm");
 	        Document document = new Document();
 	        PdfWriter writer = PdfWriter.getInstance(document, new FileOutputStream(file));
 	        document.open();
 	        // CSS
+	        System.out.println("3pppppppppppppmm");
 	        CSSResolver cssResolver = XMLWorkerHelper.getInstance().getDefaultCssResolver(true);
 	        XMLWorkerFontProvider fontProvider = new XMLWorkerFontProvider(XMLWorkerFontProvider.DONTLOOKFORFONTS);
 	        fontProvider.register(Costanti.PATH_FONT_STYLE+"arial.ttf");
 	        CssAppliers cssAppliers = new CssAppliersImpl(fontProvider);
+	        System.out.println("3mmmmmmmmmmmmmmmmmmmmmmmm");
 	        // HTML
 	        HtmlPipelineContext htmlContext = new HtmlPipelineContext(cssAppliers);
 	        htmlContext.setTagFactory(Tags.getHtmlTagProcessorFactory());
@@ -265,6 +261,7 @@ public class GestioneVerbaleBO {
 	                return Costanti.PATH_WS;
 	            }
 	        });
+	        System.out.println("3mkmmkm");
 	        // Pipelines
 	        PdfWriterPipeline pdf = new PdfWriterPipeline(document, writer);
 	        HtmlPipeline htmlPipeline = new HtmlPipeline(htmlContext, pdf);
@@ -275,10 +272,33 @@ public class GestioneVerbaleBO {
 	        p.parse(new ByteArrayInputStream(str.getBytes()),
 	        		Charset.forName("US-ASCII"));
 
-	        document.close();	   
+	        document.close();
+	        System.out.println("3njjnnjmm");
+	        DocumentoDTO certificato = new DocumentoDTO();
+	        certificato.setFilePath(path+file.getName());
+	        System.out.println("3mm" + certificato.getFilePath());
+	        certificato.setType(DocumentoDTO.CERTIFIC);
+	        certificato.setVerbale(verbale);
+	        if(verbale.getDocumentiVerbale() != null) {
+		        for(DocumentoDTO doc:verbale.getDocumentiVerbale()) {
+		        	if (doc.getType().equalsIgnoreCase(DocumentoDTO.CERTIFIC)){
+		        		certificato.setId(doc.getId());
+		        		verbale.getDocumentiVerbale().remove(doc);
+		        	}
+		        }
+	        }
+	        System.out.println("3"+certificato);
+	        GestioneDocumentoDAO.save(certificato, session);
+	        System.out.println("4");
+	        verbale.getDocumentiVerbale().add(certificato);
+	        System.out.println("5");
+	        GestioneVerbaleDAO.save(verbale, session);
+	        System.out.println("6" + certificato);
     	}catch (IOException e) {
+    		System.out.println("3mm" + e.toString());
     		throw new Exception(e);
 		} catch (DocumentException e) {
+    		System.out.println("3mmdd" + e.toString());
 			throw new Exception(e);
 		}
     	
@@ -295,6 +315,7 @@ public class GestioneVerbaleBO {
 		String template = "";
 		String inputType = risposta.getRispostaQuestionario().getMultipla()==false?"radio":"checkbox";
 		if(inputType.equalsIgnoreCase("radio")) {
+			template += "<br/>";
 			for (OpzioneRispostaVerbaleDTO opzione:risposta.getOpzioni()) {
 				String optionName = opzione.getOpzioneQuestionario().getTesto();
 				boolean checked = opzione.getChecked();
@@ -305,6 +326,7 @@ public class GestioneVerbaleBO {
 				}
 			}
 		} else {
+			template += "<br/>";
 			for (OpzioneRispostaVerbaleDTO opzione:risposta.getOpzioni()) {
 				String optionName = opzione.getOpzioneQuestionario().getTesto();
 				boolean checked = opzione.getChecked();

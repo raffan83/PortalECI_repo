@@ -1,5 +1,6 @@
 package it.portalECI.action;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
@@ -25,14 +26,18 @@ import it.portalECI.DAO.GestioneInterventoDAO;
 import it.portalECI.DAO.GestioneRispostaVerbaleDAO;
 import it.portalECI.DAO.GestioneStatoVerbaleDAO;
 import it.portalECI.DAO.SessionFacotryDAO;
+import it.portalECI.DTO.DocumentoDTO;
 import it.portalECI.DTO.DomandaVerbaleDTO;
 import it.portalECI.DTO.InterventoDTO;
 import it.portalECI.DTO.OpzioneRispostaVerbaleDTO;
+import it.portalECI.DTO.QuestionarioDTO;
 import it.portalECI.DTO.RispostaFormulaVerbaleDTO;
 import it.portalECI.DTO.RispostaTestoVerbaleDTO;
 import it.portalECI.DTO.RispostaVerbaleDTO;
 import it.portalECI.DTO.VerbaleDTO;
+import it.portalECI.Util.Costanti;
 import it.portalECI.Util.Utility;
+import it.portalECI.bo.GestioneQuestionarioBO;
 import it.portalECI.bo.GestioneVerbaleBO;
 
 /**
@@ -202,7 +207,24 @@ public class GestioneVerbali extends HttpServlet {
 		
 			out.print(myObj);
 		} else if(action !=null && action.equals("generaCertificato")) {
-			
+			System.out.println(1);
+			QuestionarioDTO questionario = GestioneQuestionarioBO.getQuestionarioById(verbale.getQuestionarioID(),session);
+			try {
+				File certificato = GestioneVerbaleBO.getPDFVerbale(verbale, questionario, session);
+				if(certificato != null) {
+					myObj.addProperty("success", true);
+					myObj.addProperty("messaggio","Docuemnto creato con successo!");
+					myObj.addProperty("filePath", certificato.getAbsoluteFile().getParentFile().getAbsolutePath()+File.separator+certificato.getName());
+					System.out.println("2-" + certificato.getAbsoluteFile().getParentFile().getAbsolutePath()+File.separator+certificato.getName());
+				} else {
+					myObj.addProperty("success", false);
+					myObj.addProperty("messaggio", "Non &egrave; stato possibile generare il documento.");					
+				}
+			} catch (Exception e) {
+				myObj.addProperty("success", false);
+				myObj.addProperty("messaggio", "Non &egrave; stato possibile generare il documento. Problema di connessione.");
+			}
+			out.print(myObj);
 		} else {
 			//caso genericoc della ricerca del verbale per aprire gestioneVerbali
 							

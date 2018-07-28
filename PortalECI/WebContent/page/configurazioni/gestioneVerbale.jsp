@@ -288,8 +288,10 @@
 					data : "idVerbale=${verbale.getId()}",				
 					dataType: "json",
 					success: function( data, textStatus) {
-						if(data.success){ 		
-							location.reload();		          			  		          		
+						alert(data.filePath);
+						if(data.success){	
+							 window.open(data.filePath,'_blank');
+							 pleaseWaitDiv.modal('hide');
 						}else{
 							pleaseWaitDiv.modal('hide');	
 							$('#modalErrorDiv').html(data.messaggio);
