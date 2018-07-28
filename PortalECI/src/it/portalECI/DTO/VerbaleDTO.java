@@ -27,8 +27,7 @@ public class VerbaleDTO implements Serializable {
 	private InterventoDTO intervento;
 	private Set<DomandaVerbaleDTO> domandeVerbale;
 	//private List<DomandaQuestionarioDTO> domandeSchedaTecnica;
-	
-	//TODO: dovrò aggiungere la referenza a scheda tecnica e anche al template per il pdf
+	private List<DocumentoDTO> documentiVerbale;
 		
 	public int getId() {
 		return id;
@@ -126,6 +125,14 @@ public class VerbaleDTO implements Serializable {
 		this.descrizioneVerifica = descrizioneVerifica;
 	}
 
+	public List<DocumentoDTO> getDocumentiVerbale() {
+		return documentiVerbale;
+	}
+
+	public void setDocumentiVerbale(List<DocumentoDTO> documentiVerbale) {
+		this.documentiVerbale = documentiVerbale;
+	}
+	
 	public JsonObject getVerbaleJsonObject() {
 		JsonObject jobj = new JsonObject();
 		

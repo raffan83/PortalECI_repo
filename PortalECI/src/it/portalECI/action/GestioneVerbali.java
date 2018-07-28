@@ -76,7 +76,9 @@ public class GestioneVerbali extends HttpServlet {
 			myObj.addProperty("messaggio", "Stato modificato con successo");
 		
 			out.print(myObj);
-		}else {
+		} else if(action !=null && action.equals("generaCertificato")) {
+			
+		} else {
 			//caso genericoc della ricerca del verbale per aprire gestioneVerbali
 			request.getSession().setAttribute("verbale", verbale);
 			request.setAttribute("hibernateSession", session);

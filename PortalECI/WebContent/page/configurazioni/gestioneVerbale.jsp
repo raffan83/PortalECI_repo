@@ -228,27 +228,45 @@
 					data : "idVerbale=${verbale.getId()}&stato="+idstato,				
 					dataType: "json",
 					success: function( data, textStatus) {
-
-						if(data.success){ 
-								
-							location.reload();
-			          			  		          		
+						if(data.success){ 		
+							location.reload();		          			  		          		
 						}else{
-							pleaseWaitDiv.modal('hide');
-							
+							pleaseWaitDiv.modal('hide');	
 							$('#modalErrorDiv').html(data.messaggio);
 							$('#myModalError').removeClass();
 							$('#myModalError').addClass("modal modal-danger");
-							$('#myModalError').modal('show');
-															
-						}
-						
+							$('#myModalError').modal('show');															
+						}						
 					},
-
-					error: function(jqXHR, textStatus, errorThrown){
-			          
+					error: function(jqXHR, textStatus, errorThrown){		          
 						$('#errorMsg').html("<h3 class='label label-danger'>"+textStatus+"</h3>");
 						//callAction('logout.do');
+						pleaseWaitDiv.modal('hide');
+					}
+				});
+			}
+			
+			function generaCertificato(){
+				pleaseWaitDiv = $('#pleaseWaitDialog');
+				pleaseWaitDiv.modal();
+				$.ajax({
+					type: "POST",
+					url: "gestioneVerbale.do?action=generaCertificato",
+					data : "idVerbale=${verbale.getId()}",				
+					dataType: "json",
+					success: function( data, textStatus) {
+						if(data.success){ 		
+							location.reload();		          			  		          		
+						}else{
+							pleaseWaitDiv.modal('hide');	
+							$('#modalErrorDiv').html(data.messaggio);
+							$('#myModalError').removeClass();
+							$('#myModalError').addClass("modal modal-danger");
+							$('#myModalError').modal('show');									
+						}						
+					},
+					error: function(jqXHR, textStatus, errorThrown){		          
+						$('#errorMsg').html("<h3 class='label label-danger'>"+textStatus+"</h3>");
 						pleaseWaitDiv.modal('hide');
 					}
 				});
