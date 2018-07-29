@@ -203,7 +203,6 @@ public class GestioneVerbaleBO {
 		File file = new File(Costanti.PATH_CERTIFICATI+path, questionario.getTitolo()+"_"+questionario.getTipo().getCodice()+"_"+verbale.getIntervento().getId()+".pdf");
 
 		String html = questionario.getTemplateVerbale().getTemplate();
-		System.out.println("INIZIOHTML\n" + html);
 		
 		//
 		
@@ -260,17 +259,14 @@ public class GestioneVerbaleBO {
     	String str = documentJsoup.html();
     	System.out.println(str);
     	try {
-    		 System.out.println("3mm");
 	        Document document = new Document();
 	        PdfWriter writer = PdfWriter.getInstance(document, new FileOutputStream(file));
 	        document.open();
 	        // CSS
-	        System.out.println("3pppppppppppppmm");
 	        CSSResolver cssResolver = XMLWorkerHelper.getInstance().getDefaultCssResolver(true);
 	        XMLWorkerFontProvider fontProvider = new XMLWorkerFontProvider(XMLWorkerFontProvider.DONTLOOKFORFONTS);
 	        fontProvider.register(Costanti.PATH_FONT_STYLE+"arial.ttf");
 	        CssAppliers cssAppliers = new CssAppliersImpl(fontProvider);
-	        System.out.println("3mmmmmmmmmmmmmmmmmmmmmmmm");
 	        // HTML
 	        HtmlPipelineContext htmlContext = new HtmlPipelineContext(cssAppliers);
 	        htmlContext.setTagFactory(Tags.getHtmlTagProcessorFactory());
@@ -296,10 +292,8 @@ public class GestioneVerbaleBO {
 	        		Charset.forName("US-ASCII"));
 
 	        document.close();
-	        System.out.println("3njjnnjmm");
 	        DocumentoDTO certificato = new DocumentoDTO();
 	        certificato.setFilePath(path+file.getName());
-	        System.out.println("3mm" + certificato.getFilePath());
 	        certificato.setType(DocumentoDTO.CERTIFIC);
 	        certificato.setVerbale(verbale);
 	        if(verbale.getDocumentiVerbale() != null) {
@@ -310,18 +304,12 @@ public class GestioneVerbaleBO {
 		        	}
 		        }
 	        }
-	        System.out.println("3"+certificato);
 	        GestioneDocumentoDAO.save(certificato, session);
-	        System.out.println("4");
 	        verbale.getDocumentiVerbale().add(certificato);
-	        System.out.println("5");
 	        GestioneVerbaleDAO.save(verbale, session);
-	        System.out.println("6" + certificato);
     	}catch (IOException e) {
-    		System.out.println("3mm" + e.toString());
     		throw new Exception(e);
 		} catch (DocumentException e) {
-    		System.out.println("3mmdd" + e.toString());
 			throw new Exception(e);
 		}
     	

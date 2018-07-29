@@ -299,9 +299,10 @@
 					data : "idVerbale=${verbale.getId()}",				
 					dataType: "json",
 					success: function( data, textStatus) {
-						alert(data.filePath);
-						if(data.success){	
-							 window.open(data.filePath,'_blank');
+						if(data.success){
+							 window.location.href = data.filePath;
+							 //var a = document.createElement('a');
+							  //window.open(data.filePath,'_blank');
 							 pleaseWaitDiv.modal('hide');
 						}else{
 							pleaseWaitDiv.modal('hide');	
