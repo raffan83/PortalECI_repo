@@ -17,8 +17,8 @@ public class Costanti {
     public static final String USR_SQL_SVR = "fantini";
 	public static final String USR_PASS_SVR = "fantini";
 	
-	public static final String PATH_CERTIFICATI = "../../../Progetti/PortaleEci/PortalECI/documenti/interventi/";
-	public static final String PATH_WS = "../../../Progetti/PortaleEci/PortalECI/";
-	public static final String PATH_FONTS_IMAGE = "../../../Progetti/PortaleEci/PortalECI/verbaliImage/fonts/";
-	public static final String PATH_FONT_STYLE = "../../../Progetti/PortaleEci/PortalECI/stile/";
+	public static final String PATH_CERTIFICATI = "../../../../../Users/Valerio/Progetti/PortalECI_repo/PortalECI/documenti/interventi/";
+	public static final String PATH_WS = "../../../../../Users/Valerio/Progetti/PortalECI_repo/PortalECI/";
+	public static final String PATH_FONTS_IMAGE = "../../../../../Users/Valerio/Progetti/PortalECI_repo/PortalECI/verbaliImage/fonts/";
+	public static final String PATH_FONT_STYLE = "../../../../../Users/Valerio/Progetti/PortalECI_repo/PortalECI/stile/";
 }

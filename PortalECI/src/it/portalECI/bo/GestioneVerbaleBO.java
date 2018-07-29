@@ -203,6 +203,7 @@ public class GestioneVerbaleBO {
 		File file = new File(Costanti.PATH_CERTIFICATI+path, questionario.getTitolo()+"_"+questionario.getTipo().getCodice()+"_"+verbale.getIntervento().getId()+".pdf");
 
 		String html = questionario.getTemplateVerbale().getTemplate();
+
 		
 		//
 		
@@ -224,6 +225,7 @@ public class GestioneVerbaleBO {
 		for(int i=0 ; i< domandeVerbale.size(); i++) {
 			DomandaVerbaleDTO domanda = (DomandaVerbaleDTO) domandeVerbale.get(i);
 		//for (DomandaVerbaleDTO domanda:verbale.getDomandeVerbale()) {
+
 			String placeholder = domanda.getDomandaQuestionario().getPlaceholder();
 			html = html.replaceAll("\\$\\{"+placeholder+"\\}", domanda.getDomandaQuestionario().getTesto());
 			RispostaVerbaleDTO rispostaVerbale = domanda.getRisposta();
