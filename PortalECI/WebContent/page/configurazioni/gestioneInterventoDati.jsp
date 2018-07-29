@@ -128,6 +128,8 @@
  															<th>Data Creazione</th>
  															<th>Descrizione Verifica</th>
  															<th>Stato</th>
+ 															<th>Certificato</th>
+ 															<th>Sc. Tecnica</th>
  															<td></td>
 														</tr>
 													</thead>
@@ -148,6 +150,28 @@
 																</td>
 																<td>
 																	<span class="label" style="color:#000000 !important; background-color:${verbale.getStato().getColore(verbale.getStato().getId())} !important;">${verbale.getStato().getDescrizione()}</span>  																	
+																</td>
+																<td>
+  																	<c:if test="${verbale.getDocumentiVerbale().size()>0}">
+      																	<c:forEach items="${verbale.getDocumentiVerbale()}" var="docum">	
+      																		<c:if test="${docum.getType().equals('CERTIFICATO') }">
+    	  																		<a class="btn customTooltip" title="Click per aprire il certificato" onclick="scaricaFile();">
+	      																			<i class="glyphicon glyphicon-file"></i>
+            																	</a>
+	      																	</c:if>      																		
+      																	</c:forEach>
+      																</c:if>    
+																</td>
+																<td>
+  																	<c:if test="${verbale.getDocumentiVerbale().size()>0}">
+      																	<c:forEach items="${verbale.getDocumentiVerbale()}" var="docum">	      																		
+      																		<c:if test="${docum.getType().equals('SCHEDA_TECNICA') }">
+	      																		<a class="btn customTooltip" title="Click per aprire la scheda tecnica" onclick="scaricaFile();">
+	      																			<i class="glyphicon glyphicon-file"></i>
+            																	</a>
+    	  																	</c:if>
+      																	</c:forEach>
+      																</c:if> 
 																</td>
 																<td>
 																	<a class="btn customTooltip" title="Click per aprire il dettaglio del Verbale" onclick="callAction('gestioneVerbale.do?idVerbale=${verbale.id}');">

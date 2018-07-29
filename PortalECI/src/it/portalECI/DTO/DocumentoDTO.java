@@ -5,8 +5,8 @@ import java.util.Date;
 
 public class DocumentoDTO implements Serializable {
 
-	public final static String CERTIFIC="CERTIFICATO";
-	public final static String SK_TEC="SCHEDA_TECNICA";
+	public static String CERTIFIC="CERTIFICATO";
+	public static String SK_TEC="SCHEDA_TECNICA";
 	
 	private static final long serialVersionUID = 1L;
 	private int id;

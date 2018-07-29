@@ -98,16 +98,26 @@ $("#questionario-form").on("submit", function(event){
 	}
 	$("#questionario-form .form-group").removeClass("has-error");
 	$("#questionario-form .help-block").remove();
+	var i=0;
 	$("#questionario-form").find(":input").not(':button').not(":hidden").each(function(){
 		var form_group = $(this).parents(".form-group").first();
 		var target = $(this).parent(".input-group");
 		if(target.length==0) target = $(this);
+		
 		if(this.value == ""){
 			form_group.addClass( "has-error" );
 			jQuery("<span/>", {"class":"help-block", "text":"Campo obbligatorio"}).insertAfter(target);
 			event.preventDefault();
+			if(i==0){
+				i++;
+				$('#myModalErrorContent').html("Controlla le domande appena inserite. Correggi l'errore selezionato e riprova!");
+				$('#myModalError').removeClass();
+				$('#myModalError').addClass("modal modal-danger");
+				$('#myModalError').modal('show');	
+			}
 		}
 	});
+		
 });
 
 $(document).on("change","#questionario-form :input",function(){

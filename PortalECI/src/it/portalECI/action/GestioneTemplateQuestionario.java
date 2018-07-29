@@ -64,7 +64,6 @@ public class GestioneTemplateQuestionario extends HttpServlet {
 	
 	public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
 		
-		
 		if(request.getParameter("_method")!= null && request.getParameter("_method").equalsIgnoreCase("PUT")) {
 			doPut(request,response);
 			return;

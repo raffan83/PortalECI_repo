@@ -5,6 +5,9 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.charset.Charset;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
 
@@ -201,7 +204,27 @@ public class GestioneVerbaleBO {
 
 		String html = questionario.getTemplateVerbale().getTemplate();
 		System.out.println("INIZIOHTML\n" + html);
-		for (DomandaVerbaleDTO domanda:verbale.getDomandeVerbale()) {
+		
+		//
+		
+		List domandeVerbale=new ArrayList();
+		domandeVerbale.addAll(verbale.getDomandeVerbale());
+		
+		Collections.sort(domandeVerbale, new Comparator<DomandaVerbaleDTO>() {
+			@Override
+			public int compare(DomandaVerbaleDTO op2, DomandaVerbaleDTO op1){
+				int pos1=op1.getDomandaQuestionario().getPosizione();
+				int pos2=op2.getDomandaQuestionario().getPosizione();
+				return  pos2 - pos1;
+			}
+		});
+
+
+		
+		//
+		for(int i=0 ; i< domandeVerbale.size(); i++) {
+			DomandaVerbaleDTO domanda = (DomandaVerbaleDTO) domandeVerbale.get(i);
+		//for (DomandaVerbaleDTO domanda:verbale.getDomandeVerbale()) {
 			String placeholder = domanda.getDomandaQuestionario().getPlaceholder();
 			html = html.replaceAll("\\$\\{"+placeholder+"\\}", domanda.getDomandaQuestionario().getTesto());
 			RispostaVerbaleDTO rispostaVerbale = domanda.getRisposta();

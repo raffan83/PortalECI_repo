@@ -8,6 +8,7 @@
 <%@ page import="it.portalECI.DTO.RispostaTestoVerbaleDTO" %>
 <%@ page import="it.portalECI.DTO.DomandaVerbaleDTO" %>
 <%@ page import="it.portalECI.DTO.VerbaleDTO" %>
+<%@page import="it.portalECI.DTO.DocumentoDTO" %>
 
 <%@ page import="java.util.Collections" %>
 <%@ page import="java.util.Comparator" %>
@@ -32,8 +33,18 @@
         			<small></small>
       			</h1>  
       			<c:if test="${verbale.getStato().getId()>=5 }">
-      				<button class="btn btn-default pull-right" onClick="generaCertificato()"><i class="glyphicon glyphicon-edit"></i> Genera Certificato</button>
-      			</c:if>    		
+      				<button class="btn btn-default pull-right" onClick="generaCertificato()" style="margin-left:5px"><i class="glyphicon glyphicon-edit"></i> Genera Certificato</button>
+      			</c:if>     
+      			<c:if test="${verbale.getDocumentiVerbale().size()>0}">
+      				<c:forEach items="${verbale.getDocumentiVerbale()}" var="docum">	
+      					<c:if test="${docum.getType().equals('CERTIFICATO') }">
+    	  					<button class="btn btn-default pull-right" onClick="scaricaFile()" style="margin-left:5px"><i class="glyphicon glyphicon-file"></i> Download Certificato</button>
+	      				</c:if>
+      					<c:if test="${docum.getType().equals('SCHEDA_TECNICA') }">
+	      					<button class="btn btn-default pull-right" onClick="scaricaFile()" style="margin-left:5px"><i class="glyphicon glyphicon-file"></i> Download Scheda Tecnica</button>
+    	  				</c:if>
+      				</c:forEach>
+      			</c:if>    
     		</section>
 			<div style="clear: both;"></div>
     		
@@ -353,7 +364,7 @@
 				$(".changestate").css("display", "none");
 			});*/
 					
-
+			
   		</script>	  
 	</jsp:attribute> 
 </t:layout>
