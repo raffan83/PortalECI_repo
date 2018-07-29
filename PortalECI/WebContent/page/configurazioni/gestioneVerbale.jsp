@@ -300,9 +300,21 @@
 					dataType: "json",
 					success: function( data, textStatus) {
 						if(data.success){
-							 window.location.href = data.filePath;
-							 //var a = document.createElement('a');
-							  //window.open(data.filePath,'_blank');
+							var objbuilder = '';
+						    objbuilder += ('<object width="100%" height="100%"      data="data:application/pdf;base64,');
+						    objbuilder += (data.pdfString);
+						    objbuilder += ('" type="application/pdf" class="internal">');
+						    objbuilder += ('<embed src="data:application/pdf;base64,');
+						    objbuilder += (data.pdfString);
+						    objbuilder += ('" type="application/pdf" />');
+						    objbuilder += ('</object>');
+						    var win = window.open('_blank','titlebar=yes');
+					        win.document.title = 'Certificato';
+					        win.document.write('<html><body>');					       
+					        win.document.write(objbuilder);
+					        win.document.write('</body></html>');
+					        layer = jQuery(win.document);
+							// window.open(objbuilder,'_blank');
 							 pleaseWaitDiv.modal('hide');
 						}else{
 							pleaseWaitDiv.modal('hide');	

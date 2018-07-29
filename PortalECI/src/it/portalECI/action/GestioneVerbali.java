@@ -1,7 +1,9 @@
 package it.portalECI.action;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -18,10 +20,13 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.io.FileUtils;
+import org.apache.tomcat.util.codec.binary.Base64;
 import org.hibernate.Session;
 
 import com.google.gson.JsonObject;
 
+import it.portalECI.DAO.GestioneDocumentoDAO;
 import it.portalECI.DAO.GestioneInterventoDAO;
 import it.portalECI.DAO.GestioneRispostaVerbaleDAO;
 import it.portalECI.DAO.GestioneStatoVerbaleDAO;
@@ -189,8 +194,10 @@ public class GestioneVerbali extends HttpServlet {
 		session.beginTransaction();
 		
 		String idVerbale=request.getParameter("idVerbale");
-		
-		VerbaleDTO verbale= GestioneVerbaleBO.getVerbale(idVerbale, session);		
+		VerbaleDTO verbale = null;
+		if(request.getParameter("idVerbale") != null && (String)request.getParameter("idVerbale")!="" ) {
+			verbale = GestioneVerbaleBO.getVerbale(idVerbale, session);
+		}
 		
 		JsonObject myObj = new JsonObject();
 		PrintWriter  out = response.getWriter();
@@ -207,29 +214,60 @@ public class GestioneVerbali extends HttpServlet {
 		
 			out.print(myObj);
 		} else if(action !=null && action.equals("generaCertificato")) {
-			System.out.println(1);
 			QuestionarioDTO questionario = GestioneQuestionarioBO.getQuestionarioById(verbale.getQuestionarioID(),session);
 			try {
 				File certificato = GestioneVerbaleBO.getPDFVerbale(verbale, questionario, session);
 				if(certificato != null) {
-					myObj.addProperty("success", true);
-					myObj.addProperty("messaggio","Docuemnto creato con successo!");
-					myObj.addProperty("filePath", certificato.getAbsoluteFile().getParentFile().getAbsolutePath()+File.separator+certificato.getName());
+					byte[] pdfArray = loadFileForBase64(certificato);
+					if(pdfArray.length == 0) {
+						myObj.addProperty("success", false);
+						myObj.addProperty("messaggio","Documento troppo grande per essere generato!");						
+					} else {
+						byte[] encoded = Base64.encodeBase64(pdfArray);
+						String pdfBytes = new String(encoded);
+						myObj.addProperty("pdfString", pdfBytes);
+						myObj.addProperty("success", true);
+						myObj.addProperty("messaggio","Documento creato con successo!");
+					}
 				} else {
 					myObj.addProperty("success", false);
-					myObj.addProperty("messaggio", "Non &egrave; stato possibile generare il documento.");					
+					myObj.addProperty("messaggio", "Non &egrave; stato possibile generare il documento.  Problema di connessione.");						
 				}
 			} catch (Exception e) {
 				myObj.addProperty("success", false);
-				myObj.addProperty("messaggio", "Non &egrave; stato possibile generare il documento. Problema di connessione.");
+				myObj.addProperty("messaggio", "Non &egrave; stato possibile recuperare il documento. Problema di connessione.");
+			}
+			out.print(myObj);
+		} else if(action !=null && action.equals("visualizzaDocumento")) {
+			String idDoc=request.getParameter("idDoc");
+			if(idDoc != null && idDoc != "") {
+				DocumentoDTO doc = GestioneDocumentoDAO.getDocumento(idDoc, session);					
+				File docPdf =  new File(Costanti.PATH_CERTIFICATI+doc.getFilePath());
+				if(docPdf.length() > 0) {
+					byte[] pdfArray = loadFileForBase64(docPdf);
+					if(pdfArray.length == 0) {
+						myObj.addProperty("success", false);
+						myObj.addProperty("messaggio","Documento troppo grande per essere generato!");						
+					} else {
+						byte[] encoded = Base64.encodeBase64(pdfArray);
+						String pdfBytes = new String(encoded);
+						myObj.addProperty("pdfString", pdfBytes);
+						myObj.addProperty("success", true);
+						myObj.addProperty("messaggio","Documento scaricato con successo!");
+					}
+				} else {
+					myObj.addProperty("success", false);
+					myObj.addProperty("messaggio", "Non &egrave; stato possibile recuperare il documento.");					
+				}		
+			} else {
+				myObj.addProperty("success", false);
+				myObj.addProperty("messaggio", "Non &egrave; stato possibile trovare il documento. Generare di nuovo il Pdf.");						
 			}
 			out.print(myObj);
 		} else {
-			//caso genericoc della ricerca del verbale per aprire gestioneVerbali
-							
+			//caso genericoc della ricerca del verbale per aprire gestioneVerbali					
 			List domandeVerbale=new ArrayList();
 			domandeVerbale.addAll(verbale.getDomandeVerbale());
-			
 			Collections.sort(domandeVerbale, new Comparator<DomandaVerbaleDTO>() {
 				@Override
 				public int compare(DomandaVerbaleDTO op2, DomandaVerbaleDTO op1){
@@ -247,11 +285,31 @@ public class GestioneVerbali extends HttpServlet {
 			request.setAttribute("hibernateSession", session);
 			
 			RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/page/configurazioni/gestioneVerbale.jsp");
-			dispatcher.forward(request,response);
-				
+			dispatcher.forward(request,response);		
 		}	
-	
 		session.getTransaction().commit();
 		session.close();	
 	}
+	
+	private static byte[] loadFileForBase64(File file) throws IOException {
+	    InputStream is = new FileInputStream(file);
+	    long length = file.length();
+	    byte[] bytes = new byte[(int)length];
+	    if (length > Integer.MAX_VALUE) {
+		    bytes = new byte[0];       
+	    } else {    
+		    int offset = 0;
+		    int numRead = 0;
+		    while (offset < bytes.length
+		           && (numRead=is.read(bytes, offset, bytes.length-offset)) >= 0) {
+		        offset += numRead;
+		    }	
+		    if (offset < bytes.length) {
+		        throw new IOException("Could not completely read file "+file.getName());
+		    }
+	    }
+		is.close();
+		return bytes;
+	}
+	    
 }

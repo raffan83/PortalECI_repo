@@ -198,7 +198,7 @@ public class GestioneVerbaleBO {
 	
 	public static File getPDFVerbale(VerbaleDTO verbale, QuestionarioDTO questionario, Session session) throws Exception{
 		
-		String path = "Intervento_"+verbale.getIntervento().getId()+File.separator+"Verbale_"+verbale.getCodiceCategoria()+"_"+verbale.getId();
+		String path = "Intervento_"+verbale.getIntervento().getId()+File.separator+"Verbale_"+verbale.getCodiceCategoria()+"_"+verbale.getId()+File.separator;
 		new File(Costanti.PATH_CERTIFICATI+path).mkdirs();
 		File file = new File(Costanti.PATH_CERTIFICATI+path, questionario.getTitolo()+"_"+questionario.getTipo().getCodice()+"_"+verbale.getIntervento().getId()+".pdf");
 
@@ -262,7 +262,6 @@ public class GestioneVerbaleBO {
 	                return Costanti.PATH_WS;
 	            }
 	        });
-	        System.out.println("3mkmmkm");
 	        // Pipelines
 	        PdfWriterPipeline pdf = new PdfWriterPipeline(document, writer);
 	        HtmlPipeline htmlPipeline = new HtmlPipeline(htmlContext, pdf);
@@ -290,8 +289,10 @@ public class GestioneVerbaleBO {
 	        verbale.getDocumentiVerbale().add(certificato);
 	        GestioneVerbaleDAO.save(verbale, session);
     	}catch (IOException e) {
+    		System.out.println(e.toString());
     		throw new Exception(e);
 		} catch (DocumentException e) {
+			System.out.println(e.toString());
 			throw new Exception(e);
 		}
     	
