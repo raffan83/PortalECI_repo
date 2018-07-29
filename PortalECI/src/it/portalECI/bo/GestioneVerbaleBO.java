@@ -204,27 +204,7 @@ public class GestioneVerbaleBO {
 
 		String html = questionario.getTemplateVerbale().getTemplate();
 
-		
-		//
-		
-		List domandeVerbale=new ArrayList();
-		domandeVerbale.addAll(verbale.getDomandeVerbale());
-		
-		Collections.sort(domandeVerbale, new Comparator<DomandaVerbaleDTO>() {
-			@Override
-			public int compare(DomandaVerbaleDTO op2, DomandaVerbaleDTO op1){
-				int pos1=op1.getDomandaQuestionario().getPosizione();
-				int pos2=op2.getDomandaQuestionario().getPosizione();
-				return  pos2 - pos1;
-			}
-		});
-
-
-		
-		//
-		for(int i=0 ; i< domandeVerbale.size(); i++) {
-			DomandaVerbaleDTO domanda = (DomandaVerbaleDTO) domandeVerbale.get(i);
-		//for (DomandaVerbaleDTO domanda:verbale.getDomandeVerbale()) {
+		for (DomandaVerbaleDTO domanda:verbale.getDomandeVerbale()) {
 
 			String placeholder = domanda.getDomandaQuestionario().getPlaceholder();
 			html = html.replaceAll("\\$\\{"+placeholder+"\\}", domanda.getDomandaQuestionario().getTesto());
@@ -327,9 +307,29 @@ public class GestioneVerbaleBO {
 
 		String template = "";
 		String inputType = risposta.getRispostaQuestionario().getMultipla()==false?"radio":"checkbox";
+		
+		///
+			
+		List opzioni=new ArrayList();
+		opzioni.addAll(risposta.getOpzioni());
+		
+		Collections.sort(opzioni, new Comparator<OpzioneRispostaVerbaleDTO>() {
+	        @Override
+	        public int compare(OpzioneRispostaVerbaleDTO op2, OpzioneRispostaVerbaleDTO op1){
+				int pos1=op1.getOpzioneQuestionario().getPosizione();
+				int pos2=op2.getOpzioneQuestionario().getPosizione();
+	            return  pos2 - pos1;
+	        }
+	    });
+		
+		
+		///
+		
 		if(inputType.equalsIgnoreCase("radio")) {
 			template += "<br/>";
-			for (OpzioneRispostaVerbaleDTO opzione:risposta.getOpzioni()) {
+			//for (OpzioneRispostaVerbaleDTO opzione:risposta.getOpzioni()) {
+			for(int i=0; i<opzioni.size(); i++) {
+				OpzioneRispostaVerbaleDTO opzione= (OpzioneRispostaVerbaleDTO) opzioni.get(i);
 				String optionName = opzione.getOpzioneQuestionario().getTesto();
 				boolean checked = opzione.getChecked();
 				if(checked) {
@@ -340,7 +340,9 @@ public class GestioneVerbaleBO {
 			}
 		} else {
 			template += "<br/>";
-			for (OpzioneRispostaVerbaleDTO opzione:risposta.getOpzioni()) {
+			//for (OpzioneRispostaVerbaleDTO opzione:risposta.getOpzioni()) {
+			for(int i=0; i<opzioni.size(); i++) {
+				OpzioneRispostaVerbaleDTO opzione= (OpzioneRispostaVerbaleDTO) opzioni.get(i);
 				String optionName = opzione.getOpzioneQuestionario().getTesto();
 				boolean checked = opzione.getChecked();
 				if(checked) {
