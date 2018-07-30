@@ -5,6 +5,7 @@ import java.util.List;
 import org.hibernate.Query;
 import org.hibernate.Session;
 
+import it.portalECI.DTO.StatoVerbaleDTO;
 import it.portalECI.DTO.VerbaleDTO;
 
 public class GestioneVerbaleDAO {
@@ -39,6 +40,17 @@ public class GestioneVerbaleDAO {
 	    	e.printStackTrace();
 	    }
 		return verbale;		
+	}
+	
+	public static void updateVerbaliConQuestionarioAggiornato(int idQuestionarioOld, int idQuestionarioNew, Session session) {
+		
+		Query query=null;
+		
+		String s_query = "update VerbaleDTO set questionarioID = :_questionarioIDnew WHERE stato = :_stato and questionarioID = :_questionarioIDold";
+		query = session.createQuery(s_query);
+		query.setParameter("_questionarioIDnew",idQuestionarioNew);	
+		query.setParameter("_stato",StatoVerbaleDTO.CREATO);	
+		query.setParameter("_questionarioID",idQuestionarioOld);	
 	}
 	
 }

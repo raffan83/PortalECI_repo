@@ -25,6 +25,7 @@ import it.portalECI.DTO.RispostaFormulaQuestionarioDTO;
 import it.portalECI.DTO.RispostaQuestionario;
 import it.portalECI.DTO.RispostaSceltaQuestionarioDTO;
 import it.portalECI.DTO.RispostaTestoQuestionarioDTO;
+import it.portalECI.DTO.TemplateQuestionarioDTO;
 import it.portalECI.DTO.TipoVerificaDTO;
 import it.portalECI.Util.Utility;
 import it.portalECI.bo.GestioneInterventoBO;
@@ -106,8 +107,8 @@ public class GestioneQuestionario extends HttpServlet {
 				return;
 			}		
 			questionario = setQuestionarioFromRequest(request, questionario, session);
-			QuestionarioDTO lastQeustionarioEdit = GestioneQuestionarioBO.getLastQuestionarioByVerifica(questionario.getTipo(), session); 
-			if(lastQeustionarioEdit != null && !GestioneQuestionarioBO.controlloQuestionarioInUso(id, session)) {
+			QuestionarioDTO lastQuestionarioEdit = GestioneQuestionarioBO.getLastQuestionarioByVerifica(questionario.getTipo(), session); 
+			if(lastQuestionarioEdit != null && !GestioneQuestionarioBO.controlloQuestionarioInUso(id, session)) {
 				questionario = GestioneQuestionarioBO.getQuestionarioById(id, session);
 				if(questionario == null) {
 					response.sendError(HttpServletResponse.SC_NOT_FOUND);
@@ -117,10 +118,14 @@ public class GestioneQuestionario extends HttpServlet {
 				questionario = setQuestionarioFromRequest(request, questionario, session);
 				System.out.println("C");
 				session.update(questionario);
-			} else if(lastQeustionarioEdit == null ||  GestioneQuestionarioBO.controlloQuestionarioInUso(id, session)){
+			} else if(lastQuestionarioEdit == null ||  GestioneQuestionarioBO.controlloQuestionarioInUso(id, session)){
 				System.out.println("!");
+				if(lastQuestionarioEdit != null) {
+					questionario = addOldTemplate(questionario, lastQuestionarioEdit.getTemplateVerbale(), lastQuestionarioEdit.getTemplateSchedaTecnica(), session);
+					//Devo aggiornare l'id di tutti i vebali in stato creato con id del verbale aggiornato con il nuovo verbale
+					GestioneQuestionarioBO.updateVerbaliConQuestionarioAggiornato(lastQuestionarioEdit.getId(), questionario.getId(), session);
+				}
 				session.save(questionario);
-
 			}
 		} else {
 			System.out.println("B");
@@ -143,6 +148,11 @@ public class GestioneQuestionario extends HttpServlet {
 				session.update(questionario);
 			} else	if(lastQuestionario == null || (lastQuestionario != null && GestioneQuestionarioBO.controlloQuestionarioInUso(lastQuestionario.getId(), session))){
 				System.out.println("!!!");
+				if(lastQuestionario != null) {
+					questionario = addOldTemplate(questionario, lastQuestionario.getTemplateVerbale(), lastQuestionario.getTemplateSchedaTecnica(), session);
+					//Devo aggiornare l'id di tutti i vebali in stato creato con id del verbale aggiornato con il nuovo verbale
+					GestioneQuestionarioBO.updateVerbaliConQuestionarioAggiornato(lastQuestionarioEdit.getId(), questionario.getId(), session);
+				}
 				session.save(questionario);
 			}
 		}
@@ -278,5 +288,23 @@ public class GestioneQuestionario extends HttpServlet {
 		}
 		
 		return questionario;
+	}
+	
+	public static QuestionarioDTO addOldTemplate(QuestionarioDTO ques, TemplateQuestionarioDTO certificato, TemplateQuestionarioDTO skTec, Session session) {
+		if(certificato!=null) {
+			TemplateQuestionarioDTO newTemplateVerbale = new TemplateQuestionarioDTO();
+			newTemplateVerbale.setTitolo(certificato.getTitolo());
+			newTemplateVerbale.setTemplate(certificato.getTemplate());
+			session.save(newTemplateVerbale);
+			ques.setTemplateVerbale(newTemplateVerbale);
+		}
+		if(skTec != null) {
+			TemplateQuestionarioDTO newTemplateSkTec = new TemplateQuestionarioDTO();
+			newTemplateSkTec.setTitolo(skTec.getTitolo());
+			newTemplateSkTec.setTemplate(skTec.getTemplate());
+			session.save(newTemplateSkTec);
+			ques.setTemplateSchedaTecnica(newTemplateSkTec);
+		}
+		return ques;
 	}
 }

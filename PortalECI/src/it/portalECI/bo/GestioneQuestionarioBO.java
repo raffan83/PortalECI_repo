@@ -5,6 +5,7 @@ import java.util.List;
 import org.hibernate.Session;
 
 import it.portalECI.DAO.GestioneQuestionarioDAO;
+import it.portalECI.DAO.GestioneVerbaleDAO;
 import it.portalECI.DTO.QuestionarioDTO;
 import it.portalECI.DTO.TipoVerificaDTO;
 
@@ -27,6 +28,10 @@ public class GestioneQuestionarioBO {
 	
 	public static QuestionarioDTO getLastQuestionarioByVerifica(TipoVerificaDTO ver, Session session) {
 		return GestioneQuestionarioDAO.getQuestionarioForVerbaleInstance(ver.getCodice(), session);
+	}
+	
+	public static void updateVerbaliConQuestionarioAggiornato(int idQuestionarioOld, int idQuestionarioNew, Session session) {
+		GestioneVerbaleDAO.updateVerbaliConQuestionarioAggiornato(idQuestionarioOld, idQuestionarioNew, session);
 	}
 	
 }
