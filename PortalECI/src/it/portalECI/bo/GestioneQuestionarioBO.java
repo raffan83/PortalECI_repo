@@ -6,6 +6,7 @@ import org.hibernate.Session;
 
 import it.portalECI.DAO.GestioneQuestionarioDAO;
 import it.portalECI.DTO.QuestionarioDTO;
+import it.portalECI.DTO.TipoVerificaDTO;
 
 public class GestioneQuestionarioBO {
 	public static List<QuestionarioDTO> getListaQuestionari(Session session) {
@@ -16,7 +17,6 @@ public class GestioneQuestionarioBO {
 		return GestioneQuestionarioDAO.getQuestionarioById(idQuestionario, session);
 	}
 	
-	
 	public static List getQuestionariPlaceholder(Session session) {
 		return GestioneQuestionarioDAO.getQuestionariPlaceholder( session);
 	}
@@ -25,5 +25,8 @@ public class GestioneQuestionarioBO {
 		return GestioneQuestionarioDAO.controlloQuestionarioInUso(idQuestionario, session);
 	}
 	
-
+	public static QuestionarioDTO getLastQuestionarioByVerifica(TipoVerificaDTO ver, Session session) {
+		return GestioneQuestionarioDAO.getQuestionarioForVerbaleInstance(ver.getCodice(), session);
+	}
+	
 }

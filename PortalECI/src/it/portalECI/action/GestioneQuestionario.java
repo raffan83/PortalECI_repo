@@ -83,86 +83,71 @@ public class GestioneQuestionario extends HttpServlet {
 	public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
 		if(Utility.validateSession(request,response,getServletContext()))return;	
-		
+
 		Session session=SessionFacotryDAO.get().openSession();
 		request.setAttribute("hibernateSession", session);
 		
-		if(request.getParameter("_method")!= null && request.getParameter("_method").equalsIgnoreCase("PUT")) {
-					
-			String idQuestionario = request.getParameter("idQuestionario");
-			
-			Integer id = null;
+		ArrayList<TipoVerificaDTO> tipi_verifica = GestioneInterventoBO.getTipoVerifica(session);
+		ArrayList<CategoriaVerificaDTO> categorie_verifica = GestioneInterventoBO.getCategoriaVerifica(session);
+		request.setAttribute("hibernateSession", session);
+		request.setAttribute("tipi_verifica", tipi_verifica);
+		request.setAttribute("categorie_verifica", categorie_verifica);
+		QuestionarioDTO questionario = new QuestionarioDTO();
+		// se c'è l'id è una modifica se non c'è è l'inserimento di un nuovo questionario
+		String idQuestionario = request.getParameter("idQuestionario");
+		Integer id = null;
+		if(idQuestionario != null && idQuestionario != "") {
+			System.out.println("A");
 			try {
 				id = Integer.parseInt(idQuestionario);
 			}catch (NumberFormatException e) {
 				response.sendError(HttpServletResponse.SC_BAD_REQUEST);
 				session.close();
 				return;
+			}		
+			questionario = setQuestionarioFromRequest(request, questionario, session);
+			QuestionarioDTO lastQeustionarioEdit = GestioneQuestionarioBO.getLastQuestionarioByVerifica(questionario.getTipo(), session); 
+			if(lastQeustionarioEdit != null && !GestioneQuestionarioBO.controlloQuestionarioInUso(id, session)) {
+				questionario = GestioneQuestionarioBO.getQuestionarioById(id, session);
+				if(questionario == null) {
+					response.sendError(HttpServletResponse.SC_NOT_FOUND);
+					session.close();
+					return;
+				}
+				questionario = setQuestionarioFromRequest(request, questionario, session);
+				System.out.println("C");
+				session.update(questionario);
+			} else if(lastQeustionarioEdit == null ||  GestioneQuestionarioBO.controlloQuestionarioInUso(id, session)){
+				System.out.println("!");
+				session.save(questionario);
+
 			}
-								
-			if(GestioneQuestionarioBO.controlloQuestionarioInUso(id, session)) {	
-				session.close();
-				doPut(request,response);
-				return;
+		} else {
+			System.out.println("B");
+			//nuovo questionario
+			questionario.setDomandeSchedaTecnica(new ArrayList<DomandaSchedaTecnicaQuestionarioDTO>());
+			questionario.setDomandeVerbale(new ArrayList<DomandaVerbaleQuestionarioDTO>());	
+			questionario = setQuestionarioFromRequest(request, questionario, session);
+			//vedo se esiste un questionario per quella verifica
+			QuestionarioDTO lastQuestionario = GestioneQuestionarioBO.getLastQuestionarioByVerifica(questionario.getTipo(), session); 
+			if(lastQuestionario != null && !GestioneQuestionarioBO.controlloQuestionarioInUso(lastQuestionario.getId(), session)) {
+				System.out.println("D" + lastQuestionario.getId());
+				questionario = GestioneQuestionarioBO.getQuestionarioById(lastQuestionario.getId(), session);
+				if(questionario == null) {
+					response.sendError(HttpServletResponse.SC_NOT_FOUND);
+					session.close();
+					return;
+				}
+				//setto il vecchio id e gli passo le nuove info
+				questionario = setQuestionarioFromRequest(request, questionario, session);
+				session.update(questionario);
+			} else	if(lastQuestionario == null || (lastQuestionario != null && GestioneQuestionarioBO.controlloQuestionarioInUso(lastQuestionario.getId(), session))){
+				System.out.println("!!!");
+				session.save(questionario);
 			}
-			
-			
 		}
-				
-
 		Transaction transaction = session.beginTransaction();
-		QuestionarioDTO questionario = new QuestionarioDTO();
-		questionario.setDomandeSchedaTecnica(new ArrayList<DomandaSchedaTecnicaQuestionarioDTO>());
-		questionario.setDomandeVerbale(new ArrayList<DomandaVerbaleQuestionarioDTO>());
-		
-		questionario = setQuestionarioFromRequest(request, questionario, session);
-		
-		session.save(questionario);
-		transaction.commit();
-
-		request.setAttribute("questionario", questionario);
-		RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/page/questionario/dettaglioQuestionario.jsp");
-		dispatcher.forward(request,response);
-		session.close();
-	
-	}
-	
-	public void doPut(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		
-		if(Utility.validateSession(request,response,getServletContext()))return;
-		
-		Session session=SessionFacotryDAO.get().openSession();
-		Transaction transaction = session.beginTransaction();
-	
-		ArrayList<TipoVerificaDTO> tipi_verifica = GestioneInterventoBO.getTipoVerifica(session);
-		ArrayList<CategoriaVerificaDTO> categorie_verifica = GestioneInterventoBO.getCategoriaVerifica(session);
-		request.setAttribute("hibernateSession", session);
-		request.setAttribute("tipi_verifica", tipi_verifica);
-		request.setAttribute("categorie_verifica", categorie_verifica);
-
-		String idQuestionario = request.getParameter("idQuestionario");
-		
-		Integer id = null;
 		try {
-			id = Integer.parseInt(idQuestionario);
-		}catch (NumberFormatException e) {
-			response.sendError(HttpServletResponse.SC_BAD_REQUEST);
-			session.close();
-			return;
-		}
-		
-		QuestionarioDTO questionario = GestioneQuestionarioBO.getQuestionarioById(id, session);
-		
-		if(questionario == null) {
-			response.sendError(HttpServletResponse.SC_NOT_FOUND);
-			session.close();
-			return;
-		}
-		
-		questionario = setQuestionarioFromRequest(request, questionario, session);
-		request.setAttribute("questionario", questionario);
-		try {
-			session.update(questionario);
 			transaction.commit();
 		}
 		catch (Exception e) {
@@ -170,21 +155,14 @@ public class GestioneQuestionario extends HttpServlet {
 			e.printStackTrace();
 			transaction.rollback();
 			request.setAttribute("error", "Non Ã¨ stato possibile salvare le modifiche");
-			RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/page/questionario/formQuestionario.jsp");
-			dispatcher.forward(request, response);
-			session.close();
-			return;
 		}
-		
-				
 		request.setAttribute("questionario", questionario);
-		
 		RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/page/questionario/dettaglioQuestionario.jsp");
 		dispatcher.forward(request, response);
 		session.close();
-		
-
+		return;
 	}
+	
 	
 	private QuestionarioDTO setQuestionarioFromRequest(HttpServletRequest request, QuestionarioDTO questionario, Session hibernateSession) {
 		questionario.setTitolo(request.getParameter("titolo"));
@@ -193,8 +171,16 @@ public class GestioneQuestionario extends HttpServlet {
 		String[] tipoQuestionario = tipoQuestionarioValue.split("_");
 		questionario.setTipo(GestioneInterventoBO.getTipoVerifica(tipoQuestionario[0], hibernateSession));
 				
-		if(questionario.getDomandeVerbale()!=null) questionario.getDomandeVerbale().clear();
-		if(questionario.getDomandeSchedaTecnica()!=null) questionario.getDomandeSchedaTecnica().clear();
+		if(questionario.getDomandeVerbale()!=null) {
+			questionario.getDomandeVerbale().clear();
+		} else {
+			questionario.setDomandeVerbale(new ArrayList<DomandaVerbaleQuestionarioDTO>());
+		}
+		if(questionario.getDomandeSchedaTecnica()!=null) {
+			questionario.getDomandeSchedaTecnica().clear();
+		} else {
+			questionario.setDomandeSchedaTecnica(new ArrayList<DomandaSchedaTecnicaQuestionarioDTO>());
+		}
 
 		
 		String[] domandaGruppo = request.getParameterValues("domanda.gruppo");
