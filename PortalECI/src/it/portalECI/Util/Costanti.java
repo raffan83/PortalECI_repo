@@ -1,4 +1,7 @@
 package it.portalECI.Util;
+
+import java.util.Properties;
+
 public class Costanti {
 
 
@@ -17,8 +20,16 @@ public class Costanti {
     public static final String USR_SQL_SVR = "fantini";
 	public static final String USR_PASS_SVR = "fantini";
 	
-	public static final String PATH_CERTIFICATI = "../../../Progetti/PortaleEci/PortalECI/documenti/interventi/";
-	public static final String PATH_WS = "../../../Progetti/PortaleEci/PortalECI/";
-	public static final String PATH_FONTS_IMAGE = "../../../Progetti/PortaleEci/PortalECI/verbaliImage/fonts/";
-	public static final String PATH_FONT_STYLE = "../../../Progetti/PortaleEci/PortalECI/stile/";
+	public static String PATH_ROOT = "../../../Progetti/PortaleEci/PortalECI/";
+	public static String PATH_CERTIFICATI = "../../../Progetti/PortaleEci/PortalECI/documenti/interventi/";
+	public static String PATH_FONT_IMAGE = "../../../Progetti/PortaleEci/PortalECI/verbaliImage/fonts/";
+	public static String PATH_FONT_STYLE = "../../../Progetti/PortaleEci/PortalECI/stile/";
+	
+	static {
+		Properties properties = System.getProperties();
+		PATH_ROOT = properties.getProperty("PATH_ROOT", PATH_ROOT);
+		PATH_CERTIFICATI = properties.getProperty("PATH_CERTIFICATI", PATH_CERTIFICATI);
+		PATH_FONT_IMAGE = properties.getProperty("PATH_FONT_IMAGE", PATH_FONT_IMAGE);
+		PATH_FONT_STYLE = properties.getProperty("PATH_FONT_STYLE", PATH_FONT_STYLE);
+	}
 }

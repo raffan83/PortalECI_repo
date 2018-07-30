@@ -240,6 +240,8 @@ public class GestioneVerbaleBO {
     	documentJsoup.outputSettings().syntax(org.jsoup.nodes.Document.OutputSettings.Syntax.xml);
     	String str = documentJsoup.html();
     	System.out.println(str);
+        System.out.println(Costanti.PATH_FONT_STYLE+"arial.ttf");
+
     	try {
 	        Document document = new Document();
 	        PdfWriter writer = PdfWriter.getInstance(document, new FileOutputStream(file));
@@ -254,12 +256,12 @@ public class GestioneVerbaleBO {
 	        htmlContext.setTagFactory(Tags.getHtmlTagProcessorFactory());
 	        htmlContext.setImageProvider(new AbstractImageProvider() {
 	            public String getImageRootPath() {
-	                return Costanti.PATH_WS;
+	                return Costanti.PATH_ROOT;
 	            }
 	        });
 	        htmlContext.setLinkProvider(new LinkProvider() {
 	            public String getLinkRoot() {
-	                return Costanti.PATH_WS;
+	                return Costanti.PATH_ROOT;
 	            }
 	        });
 	        // Pipelines
@@ -334,9 +336,9 @@ public class GestioneVerbaleBO {
 				String optionName = opzione.getOpzioneQuestionario().getTesto();
 				boolean checked = opzione.getChecked();
 				if(checked) {
-					template += "<img src=\"" + Costanti.PATH_FONTS_IMAGE + "checked-radio.png" + "\" height=\"14\" />&nbsp;&nbsp;" + optionName+"<br/>";					
+					template += "<img src=\"" + Costanti.PATH_FONT_IMAGE + "checked-radio.png" + "\" height=\"14\" />&nbsp;&nbsp;" + optionName+"<br/>";					
 				} else {
-					template += "<img src=\"" + Costanti.PATH_FONTS_IMAGE + "unchecked-radio.png" + "\" height=\"14\" />&nbsp;&nbsp;" + optionName+"<br/>";
+					template += "<img src=\"" + Costanti.PATH_FONT_IMAGE + "unchecked-radio.png" + "\" height=\"14\" />&nbsp;&nbsp;" + optionName+"<br/>";
 				}
 			}
 		} else {
@@ -347,9 +349,9 @@ public class GestioneVerbaleBO {
 				String optionName = opzione.getOpzioneQuestionario().getTesto();
 				boolean checked = opzione.getChecked();
 				if(checked) {
-					template += "<img src=\"" + Costanti.PATH_FONTS_IMAGE + "checked-checkbox.png" + "\" height=\"14\" />&nbsp;&nbsp;" + optionName+"<br/>";
+					template += "<img src=\"" + Costanti.PATH_FONT_IMAGE + "checked-checkbox.png" + "\" height=\"14\" />&nbsp;&nbsp;" + optionName+"<br/>";
 				} else {
-					template += "<img src=\"" + Costanti.PATH_FONTS_IMAGE + "unchecked-checkbox.png" + "\" height=\"14\" />&nbsp;&nbsp;" + optionName+"<br/>";
+					template += "<img src=\"" + Costanti.PATH_FONT_IMAGE + "unchecked-checkbox.png" + "\" height=\"14\" />&nbsp;&nbsp;" + optionName+"<br/>";
 				}
 			}
 		}
