@@ -27,7 +27,7 @@ public class GestioneQuestionarioDAO {
 	}
 
 	public static QuestionarioDTO getQuestionarioForVerbaleInstance(String codiceVerifica, Session session) {
-		Query query  = session.createQuery( "from QuestionarioDTO where tipo.codice = :_codice_verifica order by updateDate desc");
+		Query query  = session.createQuery( "from QuestionarioDTO where tipo.codice = :_codice_verifica order by createDate desc");
 		query.setParameter("_codice_verifica", codiceVerifica);	
 		query.setMaxResults(1);
 		return (QuestionarioDTO) query.uniqueResult();

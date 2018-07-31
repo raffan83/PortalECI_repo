@@ -127,6 +127,8 @@ public class GestioneTemplateQuestionario extends HttpServlet {
 
 		TemplateQuestionarioDTO template = GestioneTemplateQuestionarioBO.getQuestionarioById(idTemplateInt, session);		
 		template.setTitolo(request.getParameter("titolo"));
+		
+		//summernote aggiunge questa stringa a volte che rappresenta un ? e non potendo risolvere il problema del plugin abbiamo deciso di toglere questo carattere
 		template.setTemplate(request.getParameter("template").replaceAll("&#65279;", ""));
 		
 		session.update(template);
