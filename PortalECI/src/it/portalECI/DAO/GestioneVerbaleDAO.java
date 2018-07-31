@@ -42,15 +42,13 @@ public class GestioneVerbaleDAO {
 		return verbale;		
 	}
 	
-	public static void updateVerbaliConQuestionarioAggiornato(int idQuestionarioOld, int idQuestionarioNew, Session session) {
+	public static List<VerbaleDTO> getVerbaliConQuestionarioAggiornato(int idQuestionarioOld, Session session) {
 		
-		Query query=null;
-		
-		String s_query = "update VerbaleDTO set questionarioID = :_questionarioIDnew WHERE stato = :_stato and questionarioID = :_questionarioIDold";
-		query = session.createQuery(s_query);
-		query.setParameter("_questionarioIDnew",idQuestionarioNew);	
-		query.setParameter("_stato",StatoVerbaleDTO.CREATO);	
-		query.setParameter("_questionarioID",idQuestionarioOld);	
+		Query query=session.createQuery("from VerbaleDTO WHERE stato.id = :_stato and questionarioID = :_questionarioOld");	
+			query.setParameter("_stato",StatoVerbaleDTO.CREATO);	
+			query.setParameter("_questionarioOld",idQuestionarioOld);
+			List<VerbaleDTO> result = query.list();
+			return result;
 	}
 	
 }
