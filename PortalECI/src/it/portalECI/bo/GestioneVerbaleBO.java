@@ -5,11 +5,13 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.charset.Charset;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
 
 import javax.xml.bind.ValidationException;
-
 import org.hibernate.Session;
 import org.jsoup.Jsoup;
 
@@ -29,9 +31,12 @@ import com.itextpdf.tool.xml.parser.XMLParser;
 import com.itextpdf.tool.xml.pipeline.css.CSSResolver;
 import com.itextpdf.tool.xml.pipeline.css.CssResolverPipeline;
 import com.itextpdf.tool.xml.pipeline.end.PdfWriterPipeline;
+import com.itextpdf.tool.xml.pipeline.html.AbstractImageProvider;
 import com.itextpdf.tool.xml.pipeline.html.HtmlPipeline;
 import com.itextpdf.tool.xml.pipeline.html.HtmlPipelineContext;
+import com.itextpdf.tool.xml.pipeline.html.LinkProvider;
 
+import it.portalECI.DAO.GestioneDocumentoDAO;
 import it.portalECI.DAO.GestioneDomandaVerbaleDAO;
 import it.portalECI.DAO.GestioneQuestionarioDAO;
 import it.portalECI.DAO.GestioneRispostaQuestionarioDAO;
@@ -39,7 +44,7 @@ import it.portalECI.DAO.GestioneRispostaVerbaleDAO;
 import it.portalECI.DAO.GestioneStatoInterventoDAO;
 import it.portalECI.DAO.GestioneStatoVerbaleDAO;
 import it.portalECI.DAO.GestioneVerbaleDAO;
-import it.portalECI.DAO.SessionFacotryDAO;
+import it.portalECI.DTO.DocumentoDTO;
 import it.portalECI.DTO.DomandaQuestionarioDTO;
 import it.portalECI.DTO.DomandaVerbaleDTO;
 import it.portalECI.DTO.InterventoDTO;
@@ -60,6 +65,7 @@ import it.portalECI.DTO.UtenteDTO;
 import it.portalECI.DTO.VerbaleDTO;
 import it.portalECI.Util.Costanti;
 
+
 public class GestioneVerbaleBO {
 	
 	public static List<VerbaleDTO> getListaVerbali(Session session) throws Exception {
@@ -76,12 +82,9 @@ public class GestioneVerbaleBO {
 	
 	public static void cambioStato(VerbaleDTO verbale,StatoVerbaleDTO stato, Session session) {		
 		
-		verbale.setStato(stato );
-				
+		verbale.setStato(stato );			
 		session.update(verbale);
-		
-		InterventoDTO intervento= verbale.getIntervento();
-		
+		InterventoDTO intervento= verbale.getIntervento();	
 		Boolean verificato=true;
 		
 		for(VerbaleDTO verbaleInt : intervento.getVerbali()) {
@@ -112,8 +115,7 @@ public class GestioneVerbaleBO {
 			verbale.setStato(GestioneStatoVerbaleDAO.getStatoVerbaleById(StatoVerbaleDTO.CREATO, session));
 			GestioneVerbaleDAO.save(verbale, session);
 			result=verbale;
-		}
-			
+		}		
 		return result;
 	}
 	
@@ -193,23 +195,23 @@ public class GestioneVerbaleBO {
 		return result;
 	}
 	
+	
 	public static File getPDFVerbale(VerbaleDTO verbale, QuestionarioDTO questionario, Session session) throws Exception{
 		
-		new File(Costanti.PATH_CERTIFICATI).mkdirs();
-		
-		File file = new File(Costanti.PATH_CERTIFICATI, questionario.getTitolo()+"_"+questionario.getTipo().getCodice()+"_"+verbale.getIntervento().getId()+".pdf");
+		String path = "Intervento_"+verbale.getIntervento().getId()+File.separator+"Verbale_"+verbale.getCodiceCategoria()+"_"+verbale.getId()+File.separator;
+		new File(Costanti.PATH_CERTIFICATI+path).mkdirs();
+		File file = new File(Costanti.PATH_CERTIFICATI+path, questionario.getTitolo()+"_"+questionario.getTipo().getCodice()+"_"+verbale.getIntervento().getId()+".pdf");
 
 		String html = questionario.getTemplateVerbale().getTemplate();
-		
+
 		for (DomandaVerbaleDTO domanda:verbale.getDomandeVerbale()) {
+
 			String placeholder = domanda.getDomandaQuestionario().getPlaceholder();
 			html = html.replaceAll("\\$\\{"+placeholder+"\\}", domanda.getDomandaQuestionario().getTesto());
-			
 			RispostaVerbaleDTO rispostaVerbale = domanda.getRisposta();
-			
+
 			String rispostaValore = null;
 			String rispostaPlaceholder = null;
-			
 			switch (rispostaVerbale.getTipo()) {
 			case RispostaVerbaleDTO.TIPO_TESTO:
 				RispostaTestoVerbaleDTO rispostaTesto = GestioneRispostaVerbaleDAO.getRispostaInstance(RispostaTestoVerbaleDTO.class, rispostaVerbale.getId(), session);
@@ -229,33 +231,40 @@ public class GestioneVerbaleBO {
 			default:
 				break;
 			}
-			if(rispostaValore!=null && rispostaPlaceholder!=null )
+			if(rispostaValore!=null && rispostaPlaceholder!=null ) {
 				html = html.replaceAll("\\$\\{"+rispostaPlaceholder+"\\}", rispostaValore);
-			
+			}
 		}
 		html = html.replaceAll("\\$\\{(.*?)\\}", "");
     	final org.jsoup.nodes.Document documentJsoup = Jsoup.parse(html);
     	documentJsoup.outputSettings().syntax(org.jsoup.nodes.Document.OutputSettings.Syntax.xml);
     	String str = documentJsoup.html();
     	System.out.println(str);
+        System.out.println(Costanti.PATH_FONT_STYLE+"arial.ttf");
+
     	try {
-    		
-    		//https://developers.itextpdf.com/examples/xml-worker-itext5/html-images
 	        Document document = new Document();
 	        PdfWriter writer = PdfWriter.getInstance(document, new FileOutputStream(file));
 	        document.open();
 	        // CSS
 	        CSSResolver cssResolver = XMLWorkerHelper.getInstance().getDefaultCssResolver(true);
-	 
 	        XMLWorkerFontProvider fontProvider = new XMLWorkerFontProvider(XMLWorkerFontProvider.DONTLOOKFORFONTS);
-	        fontProvider.register(Costanti.PATH_CERTIFICATI+File.separator+"arial.ttf");
+	        fontProvider.register(Costanti.PATH_FONT_STYLE+"arial.ttf");
 	        CssAppliers cssAppliers = new CssAppliersImpl(fontProvider);
 	        // HTML
 	        HtmlPipelineContext htmlContext = new HtmlPipelineContext(cssAppliers);
 	        htmlContext.setTagFactory(Tags.getHtmlTagProcessorFactory());
-
+	        htmlContext.setImageProvider(new AbstractImageProvider() {
+	            public String getImageRootPath() {
+	                return Costanti.PATH_ROOT;
+	            }
+	        });
+	        htmlContext.setLinkProvider(new LinkProvider() {
+	            public String getLinkRoot() {
+	                return Costanti.PATH_ROOT;
+	            }
+	        });
 	        // Pipelines
-	        
 	        PdfWriterPipeline pdf = new PdfWriterPipeline(document, writer);
 	        HtmlPipeline htmlPipeline = new HtmlPipeline(htmlContext, pdf);
 	        CssResolverPipeline css = new CssResolverPipeline(cssResolver, htmlPipeline);
@@ -266,9 +275,26 @@ public class GestioneVerbaleBO {
 	        		Charset.forName("US-ASCII"));
 
 	        document.close();
+	        DocumentoDTO certificato = new DocumentoDTO();
+	        certificato.setFilePath(path+file.getName());
+	        certificato.setType(DocumentoDTO.CERTIFIC);
+	        certificato.setVerbale(verbale);
+	        if(verbale.getDocumentiVerbale() != null) {
+		        for(DocumentoDTO doc:verbale.getDocumentiVerbale()) {
+		        	if (doc.getType().equalsIgnoreCase(DocumentoDTO.CERTIFIC)){
+		        		certificato.setId(doc.getId());
+		        		verbale.getDocumentiVerbale().remove(doc);
+		        	}
+		        }
+	        }
+	        GestioneDocumentoDAO.save(certificato, session);
+	        verbale.getDocumentiVerbale().add(certificato);
+	        GestioneVerbaleDAO.save(verbale, session);
     	}catch (IOException e) {
+    		System.out.println(e.toString());
     		throw new Exception(e);
 		} catch (DocumentException e) {
+			System.out.println(e.toString());
 			throw new Exception(e);
 		}
     	
@@ -284,9 +310,50 @@ public class GestioneVerbaleBO {
 
 		String template = "";
 		String inputType = risposta.getRispostaQuestionario().getMultipla()==false?"radio":"checkbox";
-		for (OpzioneRispostaVerbaleDTO opzione:risposta.getOpzioni()) {
-			String optionName = opzione.getOpzioneQuestionario().getTesto();
-			template += "<img scr='/home/rocco/certificati/unchecked-checkbox.png'>"+optionName+"<br/>";
+		
+		///
+			
+		List opzioni=new ArrayList();
+		opzioni.addAll(risposta.getOpzioni());
+		
+		Collections.sort(opzioni, new Comparator<OpzioneRispostaVerbaleDTO>() {
+	        @Override
+	        public int compare(OpzioneRispostaVerbaleDTO op2, OpzioneRispostaVerbaleDTO op1){
+				int pos1=op1.getOpzioneQuestionario().getPosizione();
+				int pos2=op2.getOpzioneQuestionario().getPosizione();
+	            return  pos2 - pos1;
+	        }
+	    });
+		
+		
+		///
+		
+		if(inputType.equalsIgnoreCase("radio")) {
+			template += "<br/>";
+			//for (OpzioneRispostaVerbaleDTO opzione:risposta.getOpzioni()) {
+			for(int i=0; i<opzioni.size(); i++) {
+				OpzioneRispostaVerbaleDTO opzione= (OpzioneRispostaVerbaleDTO) opzioni.get(i);
+				String optionName = opzione.getOpzioneQuestionario().getTesto();
+				boolean checked = opzione.getChecked();
+				if(checked) {
+					template += "<img src=\"" + Costanti.PATH_FONT_IMAGE + "checked-radio.png" + "\" height=\"14\" />&nbsp;&nbsp;" + optionName+"<br/>";					
+				} else {
+					template += "<img src=\"" + Costanti.PATH_FONT_IMAGE + "unchecked-radio.png" + "\" height=\"14\" />&nbsp;&nbsp;" + optionName+"<br/>";
+				}
+			}
+		} else {
+			template += "<br/>";
+			//for (OpzioneRispostaVerbaleDTO opzione:risposta.getOpzioni()) {
+			for(int i=0; i<opzioni.size(); i++) {
+				OpzioneRispostaVerbaleDTO opzione= (OpzioneRispostaVerbaleDTO) opzioni.get(i);
+				String optionName = opzione.getOpzioneQuestionario().getTesto();
+				boolean checked = opzione.getChecked();
+				if(checked) {
+					template += "<img src=\"" + Costanti.PATH_FONT_IMAGE + "checked-checkbox.png" + "\" height=\"14\" />&nbsp;&nbsp;" + optionName+"<br/>";
+				} else {
+					template += "<img src=\"" + Costanti.PATH_FONT_IMAGE + "unchecked-checkbox.png" + "\" height=\"14\" />&nbsp;&nbsp;" + optionName+"<br/>";
+				}
+			}
 		}
 		template += "";
 
@@ -294,7 +361,14 @@ public class GestioneVerbaleBO {
 	}
 	
 	private static String getTemplateRisposta(RispostaFormulaVerbaleDTO risposta) {
-		return "formula";
+		String template = "";
+		template += "<p><b>" + risposta.getValue1() + "</b> (" + risposta.getRispostaQuestionario().getValore1() + ") ";
+		template += "<b>&nbsp;" + risposta.getRispostaQuestionario().getSimboloOperatore() + "&nbsp;</b>";
+		template += "<b>" + risposta.getValue2() + "</b> (" + risposta.getRispostaQuestionario().getValore2() + ") = ";
+		template += "<b>" + risposta.getResponseValue() + "</b> (" + risposta.getRispostaQuestionario().getRisultato() + ") </p>";
+		
+		return template;
+		
 	}
 	
 	public static void saveVerbaleResponses(UtenteDTO user, JsonObject jsonRequest,Session session) throws ValidationException {
@@ -366,5 +440,6 @@ public class GestioneVerbaleBO {
 			throw new ValidationException("JSON Richiesta vuoto");
 		}
 	}
+	
 
 }

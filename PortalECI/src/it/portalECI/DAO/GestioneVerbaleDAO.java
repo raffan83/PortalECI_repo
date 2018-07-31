@@ -5,6 +5,7 @@ import java.util.List;
 import org.hibernate.Query;
 import org.hibernate.Session;
 
+import it.portalECI.DTO.StatoVerbaleDTO;
 import it.portalECI.DTO.VerbaleDTO;
 
 public class GestioneVerbaleDAO {
@@ -39,6 +40,15 @@ public class GestioneVerbaleDAO {
 	    	e.printStackTrace();
 	    }
 		return verbale;		
+	}
+	
+	public static List<VerbaleDTO> getVerbaliConQuestionarioAggiornato(int idQuestionarioOld, Session session) {
+		
+		Query query=session.createQuery("from VerbaleDTO WHERE stato.id = :_stato and questionarioID = :_questionarioOld");	
+			query.setParameter("_stato",StatoVerbaleDTO.CREATO);	
+			query.setParameter("_questionarioOld",idQuestionarioOld);
+			List<VerbaleDTO> result = query.list();
+			return result;
 	}
 	
 }

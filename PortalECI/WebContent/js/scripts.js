@@ -2509,3 +2509,7 @@ function openDettaglioPunto(indexArrayPunti, indexPunto){
 
 	$("#myModalDettaglioPunto").modal();
 }
+
+function scaricaFile(){
+	alert('download file');
+}

@@ -7,6 +7,13 @@
 <%@ page import="it.portalECI.DTO.RispostaSceltaVerbaleDTO" %>
 <%@ page import="it.portalECI.DTO.RispostaTestoVerbaleDTO" %>
 <%@ page import="it.portalECI.DTO.DomandaVerbaleDTO" %>
+<%@ page import="it.portalECI.DTO.VerbaleDTO" %>
+<%@page import="it.portalECI.DTO.DocumentoDTO" %>
+
+<%@ page import="java.util.Collections" %>
+<%@ page import="java.util.Comparator" %>
+<%@page import="java.util.ArrayList"%>
+<%@page import="java.util.List"%>
 
 <t:layout title="Dashboard" bodyClass="skin-red sidebar-mini wysihtml5-supported">
 
@@ -26,8 +33,18 @@
         			<small></small>
       			</h1>  
       			<c:if test="${verbale.getStato().getId()>=5 }">
-      				<button class="btn btn-default pull-right" onClick="generaCertificato()"><i class="glyphicon glyphicon-edit"></i> Genera Certificato</button>
-      			</c:if>    		
+      				<button class="btn btn-default pull-right" onClick="generaCertificato()" style="margin-left:5px"><i class="glyphicon glyphicon-edit"></i> Genera Certificato</button>
+      			</c:if>     
+      			<c:if test="${verbale.getDocumentiVerbale().size()>0}">
+      				<c:forEach items="${verbale.getDocumentiVerbale()}" var="docum">	
+      					<c:if test="${docum.getType().equals('CERTIFICATO') }">
+    	  					<a class="btn btn-default pull-right" href="gestioneDocumento.do?idDocumento=${docum.id}" style="margin-left:5px"><i class="glyphicon glyphicon-file"></i> Download Certificato</a>
+	      				</c:if>
+      					<c:if test="${docum.getType().equals('SCHEDA_TECNICA') }">
+	      					<a class="btn btn-default pull-right" href="gestioneDocumento.do?idDocumento=${docum.id}" style="margin-left:5px"><i class="glyphicon glyphicon-file"></i> Download Scheda Tecnica</a>
+    	  				</c:if>
+      				</c:forEach>
+      			</c:if>    
     		</section>
 			<div style="clear: both;"></div>
     		
@@ -64,7 +81,11 @@
                 									<li class="list-group-item">
                   										<b>Data Creazione Verbale</b> 
                   										<a class="pull-right"><fmt:formatDate pattern="dd/MM/yyyy" value="${verbale.getCreateDate()}" /></a>
-                									</li>                									
+                									</li>        
+                									<li class="list-group-item">
+                  										<b>Tecnico Verificatore</b>                   										
+														<a class="pull-right">${intervento.getTecnico_verificatore().getNominativo()}</a>
+                									</li>        									
                 									<li class="list-group-item">
                   										<b>Codice Categoria</b> 
                   										<a class="pull-right">${verbale.getCodiceCategoria()}</a>
@@ -114,18 +135,42 @@
 													</div>
 												</div>
 												<div class="box-body">	
-													<c:forEach items="${verbale.getDomandeVerbale()}" var="domVerbale" varStatus="loop">	
-        												<div class="col-xs-12" style="border-bottom: 1px solid #ddd;">
-        													<label for="titolo-input" class="control-label col-xs-12">${domVerbale.getDomandaQuestionario().getTesto()}</label><br/>
+													<form id="formVerbale" >
+														<c:forEach items="${domandeVerbale}" var="domVerbale" varStatus="loop">	
+        													<div class="col-xs-12" style="border-bottom: 1px solid #ddd;">
+        														<label for="titolo-input" class="control-label col-xs-12">${domVerbale.getDomandaQuestionario().getTesto()}</label><br/>
         												
-        													<c:set var="domVerbale" value="${domVerbale}" scope="request"></c:set>
-															<jsp:include page="gestioneVerbaleDettaglio.jsp"></jsp:include>
-        													
+    	    													<c:set var="domVerbale" value="${domVerbale}" scope="request"></c:set>
+																<jsp:include page="gestioneVerbaleDettaglio.jsp"></jsp:include>        													
 
-
-        												</div>
-													</c:forEach>
+        													</div>
+														</c:forEach>
+													</form>
 												</div>
+												<c:if test='${verbale.getStato().getId()== 4}'>
+													<div class="box-footer">
+												
+														<button type="button" class="btn btn-default ml-1 savebutt" onclick="modificaRisposte()" style="margin-left: 1em; float: right;">	
+															<span >SALVA MODIFICHE</span>
+														</button>	
+													
+														<button type="button" class="btn btn-default ml-1 savebutt" onclick="annullaModifiche()" style="margin-left: 1em; float: right;">	
+															<span >ANNULLA MODIFICHE</span>
+														</button>	
+																	
+            	      									<button type="button" class="btn btn-default  ml-1 changestate" onclick="salvaCambioStato('6')" style="margin-left: 1em; color:#000000 !important; background-color:${verbale.getStato().getColore(6)} !important; float: right;">
+                	  										<i class="glyphicon glyphicon-remove"></i>
+                  											<span >RIFIUTATO</span>
+                  										</button>
+										
+														<button type="button" class="btn btn-default ml-1 changestate" onclick="salvaCambioStato('5')" style="margin-left: 1em; color:#000000 !important; background-color:${verbale.getStato().getColore(5)} !important; float: right;">
+															<i class="glyphicon glyphicon glyphicon-ok"></i>
+															<span >ACCETTATO</span>
+														</button>
+															      										
+													</div>
+												</c:if>		
+												
 											</div>
 										</div>
 									</div>
@@ -213,9 +258,8 @@
 	<jsp:attribute name="extra_js_footer">
  		<script type="text/javascript">
 		   
-			$(document).ready(function() {
+			$(document).ready(function() {			
 				
-												
     		});	
 			
 			function salvaCambioStato(idstato){
@@ -226,6 +270,52 @@
 					type: "POST",
 					url: "gestioneVerbale.do?action=cambioStato",
 					data : "idVerbale=${verbale.getId()}&stato="+idstato,				
+					dataType: "json",
+					success: function( data, textStatus) {
+						if(data.success){ 		
+							location.reload();		          			  		          		
+						}else{
+							pleaseWaitDiv.modal('hide');	
+							$('#modalErrorDiv').html(data.messaggio);
+							$('#myModalError').removeClass();
+							$('#myModalError').addClass("modal modal-danger");
+							$('#myModalError').modal('show');															
+						}						
+					},
+					error: function(jqXHR, textStatus, errorThrown){		          
+						$('#errorMsg').html("<h3 class='label label-danger'>"+textStatus+"</h3>");
+						//callAction('logout.do');
+						pleaseWaitDiv.modal('hide');
+					}
+				});
+			}
+			
+			function generaCertificato(){
+				pleaseWaitDiv = $('#pleaseWaitDialog');
+				pleaseWaitDiv.modal();
+				$.ajax({
+					type: "POST",
+					url: "gestioneVerbale.do?action=generaCertificato",
+					data : "idVerbale=${verbale.getId()}",				
+					dataType: "json",
+					success: function( data, textStatus) {
+						location.reload();
+					},
+					error: function(jqXHR, textStatus, errorThrown){		          
+						$('#errorMsg').html("<h3 class='label label-danger'>"+textStatus+"</h3>");
+						pleaseWaitDiv.modal('hide');
+					}
+				});
+			}
+
+			function modificaRisposte(){		
+				pleaseWaitDiv = $('#pleaseWaitDialog');
+				pleaseWaitDiv.modal();
+				
+				$.ajax({
+					type: "GET",
+					url: "gestioneVerbale.do?idVerbale=${verbale.getId()}",
+					data : $("#formVerbale").serializeArray(),				
 					dataType: "json",
 					success: function( data, textStatus) {
 
@@ -252,7 +342,15 @@
 						pleaseWaitDiv.modal('hide');
 					}
 				});
+								
 			}
+			
+			function annullaModifiche(){
+				location.reload();
+			}
+			
+					
+			
   		</script>	  
 	</jsp:attribute> 
 </t:layout>

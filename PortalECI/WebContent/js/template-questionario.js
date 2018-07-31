@@ -22,6 +22,13 @@ $(document).ready(function() {
 		  }
 	});
 	
+	$('.note-codable').on('blur', function() {
+		  var codeviewHtml        = $(this).val();
+		  var $summernoteTextarea = $(this).closest('.note-editor').siblings('textarea');
+
+		  $summernoteTextarea.val(codeviewHtml);
+	});
+	
 	$.ajax({
 		type : "GET",
 		url : "gestionePlaceholder.do",
