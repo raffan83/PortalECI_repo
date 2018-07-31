@@ -20,10 +20,10 @@ public class Costanti {
     public static final String USR_SQL_SVR = "fantini";
 	public static final String USR_PASS_SVR = "fantini";
 	
-	public static String PATH_ROOT = "../../../Progetti/PortaleEci/PortalECI/";
-	public static String PATH_CERTIFICATI = "../../../Progetti/PortaleEci/PortalECI/documenti/interventi/";
-	public static String PATH_FONT_IMAGE = "../../../Progetti/PortaleEci/PortalECI/verbaliImage/fonts/";
-	public static String PATH_FONT_STYLE = "../../../Progetti/PortaleEci/PortalECI/stile/";
+	public static String PATH_ROOT = "/";
+	public static String PATH_CERTIFICATI = "/documenti/interventi/";
+	public static String PATH_FONT_IMAGE = "/verbaliImage/fonts/";
+	public static String PATH_FONT_STYLE = "/stile/";
 	
 	static {
 		Properties properties = System.getProperties();

@@ -127,7 +127,8 @@ public class GestioneTemplateQuestionario extends HttpServlet {
 
 		TemplateQuestionarioDTO template = GestioneTemplateQuestionarioBO.getQuestionarioById(idTemplateInt, session);		
 		template.setTitolo(request.getParameter("titolo"));
-		template.setTemplate(request.getParameter("template"));
+		template.setTemplate(request.getParameter("template").replaceAll("&#65279;", ""));
+		
 		session.update(template);
 		transaction.commit();
 		session.close();
