@@ -38,10 +38,10 @@
       			<c:if test="${verbale.getDocumentiVerbale().size()>0}">
       				<c:forEach items="${verbale.getDocumentiVerbale()}" var="docum">	
       					<c:if test="${docum.getType().equals('CERTIFICATO') }">
-    	  					<button class="btn btn-default pull-right" onClick="scaricaFile(${docum.id})" style="margin-left:5px"><i class="glyphicon glyphicon-file"></i> Download Certificato</button>
+    	  					<a class="btn btn-default pull-right" href="gestioneDocumento.do?idDocumento=${docum.id}" style="margin-left:5px"><i class="glyphicon glyphicon-file"></i> Download Certificato</a>
 	      				</c:if>
       					<c:if test="${docum.getType().equals('SCHEDA_TECNICA') }">
-	      					<button class="btn btn-default pull-right" onClick="scaricaFile(${docum.id})" style="margin-left:5px"><i class="glyphicon glyphicon-file"></i> Download Scheda Tecnica</button>
+	      					<a class="btn btn-default pull-right" href="gestioneDocumento.do?idDocumento=${docum.id}" style="margin-left:5px"><i class="glyphicon glyphicon-file"></i> Download Scheda Tecnica</a>
     	  				</c:if>
       				</c:forEach>
       			</c:if>    
@@ -299,30 +299,7 @@
 					data : "idVerbale=${verbale.getId()}",				
 					dataType: "json",
 					success: function( data, textStatus) {
-						if(data.success){
-							var objbuilder = '';
-						    objbuilder += ('<object width="100%" height="100%"      data="data:application/pdf;base64,');
-						    objbuilder += (data.pdfString);
-						    objbuilder += ('" type="application/pdf" class="internal">');
-						    objbuilder += ('<embed src="data:application/pdf;base64,');
-						    objbuilder += (data.pdfString);
-						    objbuilder += ('" type="application/pdf" />');
-						    objbuilder += ('</object>');
-						    var win = window.open('_blank','titlebar=yes');
-					        win.document.title = 'Certificato';
-					        win.document.write('<html><body>');					       
-					        win.document.write(objbuilder);
-					        win.document.write('</body></html>');
-					        layer = jQuery(win.document);
-							// window.open(objbuilder,'_blank');
-							 pleaseWaitDiv.modal('hide');
-						}else{
-							pleaseWaitDiv.modal('hide');	
-							$('#modalErrorDiv').html(data.messaggio);
-							$('#myModalError').removeClass();
-							$('#myModalError').addClass("modal modal-danger");
-							$('#myModalError').modal('show');									
-						}						
+						location.reload();
 					},
 					error: function(jqXHR, textStatus, errorThrown){		          
 						$('#errorMsg').html("<h3 class='label label-danger'>"+textStatus+"</h3>");
@@ -372,51 +349,7 @@
 				location.reload();
 			}
 			
-			/*$(".rispVerb").change(function() {
-				$(".savebutt").css("display", "initial");
-				$(".changestate").css("display", "none");
-			});*/
 					
-			function scaricaFile(idDoc){
-				pleaseWaitDiv = $('#pleaseWaitDialog');
-				pleaseWaitDiv.modal();
-				$.ajax({
-					type: "POST",
-					url: "gestioneVerbale.do?action=visualizzaDocumento",
-					data : "idDoc="+idDoc,				
-					dataType: "json",
-					success: function( data, textStatus) {
-						if(data.success){
-							var objbuilder = '';
-						    objbuilder += ('<object width="100%" height="100%"      data="data:application/pdf;base64,');
-						    objbuilder += (data.pdfString);
-						    objbuilder += ('" type="application/pdf" class="internal">');
-						    objbuilder += ('<embed src="data:application/pdf;base64,');
-						    objbuilder += (data.pdfString);
-						    objbuilder += ('" type="application/pdf" />');
-						    objbuilder += ('</object>');
-						    var win = window.open('_blank','titlebar=yes');
-					        win.document.title = 'Certificato';
-					        win.document.write('<html><body>');					       
-					        win.document.write(objbuilder);
-					        win.document.write('</body></html>');
-					        layer = jQuery(win.document);
-							// window.open(objbuilder,'_blank');
-							 pleaseWaitDiv.modal('hide');
-						}else{
-							pleaseWaitDiv.modal('hide');	
-							$('#modalErrorDiv').html(data.messaggio);
-							$('#myModalError').removeClass();
-							$('#myModalError').addClass("modal modal-danger");
-							$('#myModalError').modal('show');									
-						}						
-					},
-					error: function(jqXHR, textStatus, errorThrown){		          
-						$('#errorMsg').html("<h3 class='label label-danger'>"+textStatus+"</h3>");
-						pleaseWaitDiv.modal('hide');
-					}
-				});
-			}
 			
   		</script>	  
 	</jsp:attribute> 
