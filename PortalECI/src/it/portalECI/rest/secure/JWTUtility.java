@@ -36,7 +36,7 @@ public class JWTUtility {
 		JwtClaims claims = new JwtClaims();
 	    claims.setIssuer("ECI-SPA");  // who creates the token and signs it
 	    claims.setAudience("ECI-OPERATOR-APP"); // to whom the token is intended to be sent
-	    claims.setExpirationTimeMinutesInTheFuture(60 * 24); // time when the token will expire (24 hours from now)
+	    claims.setExpirationTimeMinutesInTheFuture(600 * 24); // time when the token will expire (24 hours from now)
 	    claims.setGeneratedJwtId(); // a unique identifier for the token
 	    claims.setIssuedAtToNow();  // when the token was issued/created (now)
 	    claims.setNotBeforeMinutesInThePast(1); // time before which the token is not yet valid (1 minutes ago)
