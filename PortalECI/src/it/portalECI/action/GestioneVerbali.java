@@ -277,8 +277,26 @@ public class GestioneVerbali extends HttpServlet {
 				}
 			});
 
+			if(verbale.getSchedaTecnica()!=null) {
+				//caso scheda tecnica interna
+				List domandeVerbaleSchedaTecnica=new ArrayList();
+				domandeVerbaleSchedaTecnica.addAll(verbale.getSchedaTecnica().getDomandeVerbale());
+
+				Collections.sort(domandeVerbaleSchedaTecnica, new Comparator<DomandaVerbaleDTO>() {
+					@Override
+					public int compare(DomandaVerbaleDTO op2, DomandaVerbaleDTO op1){
+						int pos1=op1.getDomandaQuestionario().getPosizione();
+						int pos2=op2.getDomandaQuestionario().getPosizione();
+						return  pos2 - pos1;
+					}
+				});
+				
+				request.setAttribute("domandeVerbaleSchedaTecnica",domandeVerbaleSchedaTecnica);
+			}
+			
 			request.setAttribute("domandeVerbale",domandeVerbale);
-																	
+			
+			
 			InterventoDTO intervento=GestioneInterventoDAO.getIntervento(String.valueOf(verbale.getIntervento().getId()),session);
 			request.getSession().setAttribute("intervento", intervento);
 			request.getSession().setAttribute("verbale", verbale);

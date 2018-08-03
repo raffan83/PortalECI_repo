@@ -305,7 +305,7 @@
     			var categorie_verifica=$('#selectCatVer').val();
 				var tipi_verifica=$('#selectTipoVer').val();
 				
-    			table.column(6).search($('#selectCatVer').find('[value='+categorie_verifica+']').text()).column(7).search($('#selectTipoVer').find('[value='+categorie_verifica+']').text()).draw();
+    			table.column(6).search($('#selectCatVer').find('[value='+categorie_verifica+']').text()).column(7).search($('#selectTipoVer').find('[value='+tipi_verifica+']').text()).draw();
     		}
     		
 			function annulla(){

@@ -11,7 +11,9 @@ import it.portalECI.DTO.VerbaleDTO;
 public class GestioneVerbaleDAO {
 	
 	public static List<VerbaleDTO> getListaVerbali(Session session){
-		Query query  = session.createQuery( "from VerbaleDTO");
+		Query query  = session.createQuery( "from VerbaleDTO WHERE type = :_type");
+		query.setParameter("_type",VerbaleDTO.VERBALE);
+		
 		List<VerbaleDTO> result = query.list();
 		return result;
 	}
@@ -44,9 +46,10 @@ public class GestioneVerbaleDAO {
 	
 	public static List<VerbaleDTO> getVerbaliConQuestionarioAggiornato(int idQuestionarioOld, Session session) {
 		
-		Query query=session.createQuery("from VerbaleDTO WHERE stato.id = :_stato and questionarioID = :_questionarioOld");	
+		Query query=session.createQuery("from VerbaleDTO WHERE stato.id = :_stato and questionarioID = :_questionarioOld and type = :_type");	
 			query.setParameter("_stato",StatoVerbaleDTO.CREATO);	
 			query.setParameter("_questionarioOld",idQuestionarioOld);
+			query.setParameter("_type",VerbaleDTO.VERBALE);
 			List<VerbaleDTO> result = query.list();
 			return result;
 	}

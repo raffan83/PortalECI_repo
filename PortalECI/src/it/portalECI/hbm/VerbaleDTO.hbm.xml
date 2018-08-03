@@ -40,6 +40,11 @@
 			<one-to-many class="it.portalECI.DTO.DomandaVerbaleDTO"/>
 		</set>
 		
+		<property name="type">
+			<column name="type" length="20"/>
+		</property> 		
+		
+		<many-to-one name="schedaTecnica" class="it.portalECI.DTO.VerbaleDTO" column="scheda_tecnica_id" not-null="false" cascade="all" unique="true" />
 		
 		<many-to-one name="intervento" class="it.portalECI.DTO.InterventoDTO"
             column="intervento_id" not-null="false"/>

@@ -49,6 +49,7 @@
  																<th>Sede Cliente</th>
  																<th>Codice Categoria</th>
  																<th>Codice Verifica</th>
+ 																<th>Tecnico Verificatore</th>
  																<th>Descrizione Verifica</th>
  																<th>Stato</th>
  																<th>Data Creazione</th>
@@ -77,6 +78,9 @@
 																	</td>
 																	<td>
 																		<c:out value='${verbale.getCodiceVerifica()}'/>
+																	</td>
+																	<td>
+																		<c:out value='${verbale.getIntervento().getTecnico_verificatore().getNominativo()}'/>
 																	</td>
 																	<td>
 																		<c:out value='${verbale.getDescrizioneVerifica()}'/>
@@ -168,9 +172,9 @@
     	                { responsivePriority: 3, targets: 2 },
     	                { responsivePriority: 4, targets: 3 },
     	                { responsivePriority: 2, targets: 6 },
-    	                { responsivePriority: 2, targets: 7, type:"date-eu" },
+    	                { responsivePriority: 2, targets: 8, type:"date-eu" },
     	                { orderable: false, targets: 6 },
-    	            ],             
+    	            ],
     	            buttons: [ {
     	            	extend: 'copy',
     	                text: 'Copia',

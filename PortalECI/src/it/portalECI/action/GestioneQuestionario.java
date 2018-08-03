@@ -131,7 +131,7 @@ public class GestioneQuestionario extends HttpServlet {
 				}
 			}
 		} else {
-			System.out.println("B");
+System.out.println("B");
 			//nuovo questionario
 			questionario.setDomandeSchedaTecnica(new ArrayList<DomandaSchedaTecnicaQuestionarioDTO>());
 			questionario.setDomandeVerbale(new ArrayList<DomandaVerbaleQuestionarioDTO>());	
@@ -139,7 +139,7 @@ public class GestioneQuestionario extends HttpServlet {
 			//vedo se esiste un questionario per quella verifica
 			QuestionarioDTO lastQuestionario = GestioneQuestionarioBO.getLastQuestionarioByVerifica(questionario.getTipo(), session); 
 			if(lastQuestionario != null && !GestioneQuestionarioBO.controlloQuestionarioInUso(lastQuestionario.getId(), session)) {
-				System.out.println("D" + lastQuestionario.getId());
+System.out.println("D" + lastQuestionario.getId());
 				questionario = GestioneQuestionarioBO.getQuestionarioById(lastQuestionario.getId(), session);
 				if(questionario == null) {
 					response.sendError(HttpServletResponse.SC_NOT_FOUND);
@@ -150,7 +150,7 @@ public class GestioneQuestionario extends HttpServlet {
 				questionario = setQuestionarioFromRequest(request, questionario, session);
 				session.update(questionario);
 			} else	if(lastQuestionario == null || (lastQuestionario != null && GestioneQuestionarioBO.controlloQuestionarioInUso(lastQuestionario.getId(), session))){
-				System.out.println("!!!");
+System.out.println("!!!");
 				if(lastQuestionario != null) {
 					questionario = addOldTemplate(questionario, lastQuestionario.getTemplateVerbale(), lastQuestionario.getTemplateSchedaTecnica(), session);
 					session.save(questionario);
