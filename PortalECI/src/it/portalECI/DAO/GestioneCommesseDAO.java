@@ -9,6 +9,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 public class GestioneCommesseDAO {
 
@@ -18,7 +20,9 @@ public class GestioneCommesseDAO {
 			"LEFT JOIN BWT_ANAGEN AS b ON  a.ID_ANAGEN=b.ID_ANAGEN " +
 			"LEFT JOIN BWT_ANAGEN_INDIR AS c on a.K2_ANAGEN_INDIR=c.K2_ANAGEN_INDIR AND a.ID_ANAGEN=c.ID_ANAGEN " +
 			"WHERE ID_ANAGEN_COMM=1703";
-
+	
+	private static final String queryClienti = "SELECT ID_ANAGEN, NOME FROM BWT_ANAGEN";
+	
 	private static final String queryArticoli = "SELECT * FROM BWT_ANAART WHERE ID_ANAART=?";
 
 	private static String querySqlServerCommon="SELECT ID_COMMESSA,DT_COMMESSA,FIR_CHIUSURA_DT, B.ID_ANAGEN,b.NOME," +
@@ -221,4 +225,32 @@ public class GestioneCommesseDAO {
 		}
 		return listaAttivita;
 	}
+	
+	public static Map<String,String> getMappaClienti() throws Exception {
+		Connection con=null;
+		PreparedStatement pst=null;
+		PreparedStatement pstA=null;
+		ResultSet rs=null;
+		ResultSet rsA=null;
+		
+		Map<String,String> mappaClienti =  new HashMap<String,String>();
+		
+		try{
+			con =ManagerSQLServer.getConnectionSQL();
+		
+			pst=con.prepareStatement(queryClienti);
+						
+			rs=pst.executeQuery();
+					
+			while(rs.next()){
+				mappaClienti.put(rs.getString(1), rs.getString(2));			
+			}
+		
+		}catch (Exception e) {
+			throw e;
+		}
+		
+		return mappaClienti;
+	}
+	
 }

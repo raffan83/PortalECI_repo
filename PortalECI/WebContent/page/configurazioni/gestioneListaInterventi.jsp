@@ -78,7 +78,7 @@
         												                                     
   													</div>			
 													<!--  -->
-													
+
               										<table id="tabPM" class="table table-bordered table-hover dataTable table-striped" role="grid" width="100%">
  														<thead>
  															<tr class="active"> 
@@ -109,7 +109,7 @@
 																		</a>
 																	</td>
 																	<td>
-																		<c:out value='${intervento.getId_cliente()}'/>
+																		<c:out value='${clienti.get(intervento.getId_cliente().toString())}'/>
 																	</td>
 																	<td>
 																		<c:out value='${intervento.getNome_sede()}'/>

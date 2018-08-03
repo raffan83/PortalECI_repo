@@ -6,6 +6,7 @@ import it.portalECI.DTO.CompanyDTO;
 import it.portalECI.DTO.UtenteDTO;
 
 import java.util.ArrayList;
+import java.util.Map;
 
 public class GestioneCommesseBO {
 
@@ -18,5 +19,8 @@ public class GestioneCommesseBO {
 				
 		return GestioneCommesseDAO.getCommessaById(idCommessa);
 	}
-
+	
+	public static Map<String,String> getMappaClienti() throws Exception {
+		return GestioneCommesseDAO.getMappaClienti();
+	}
 }
