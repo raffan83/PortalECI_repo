@@ -42,7 +42,9 @@ public class GestionePlaceholder extends HttpServlet {
 		//doPost(request, response);
 		
 		//if(Utility.validateSession(request,response,getServletContext()))return;
-			
+		String idQuestionario = request.getParameter("idQuestionario");
+		String type = request.getParameter("type");
+		
 		Session session=SessionFacotryDAO.get().openSession();
 		Transaction transaction = session.beginTransaction();
 		
@@ -50,7 +52,7 @@ public class GestionePlaceholder extends HttpServlet {
 		JsonArray responseJson = new JsonArray();
 		PrintWriter out = response.getWriter();
 		
-		List<String> retrievePlaceholder= GestioneQuestionarioBO.getQuestionariPlaceholder(session);
+		List<String> retrievePlaceholder= GestioneQuestionarioBO.getQuestionariPlaceholder(type, idQuestionario,session);
 		for (String placeholder : retrievePlaceholder) {
 			JsonPrimitive element = new JsonPrimitive(placeholder);
 			responseJson.add(element);

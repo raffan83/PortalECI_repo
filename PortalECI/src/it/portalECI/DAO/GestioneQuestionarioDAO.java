@@ -33,9 +33,24 @@ public class GestioneQuestionarioDAO {
 		return (QuestionarioDTO) query.uniqueResult();
 	}
 	
-	public static List getQuestionariPlaceholder(Session session) {			
-		Query queryDom = session.createQuery("select DISTINCT(placeholder) from DomandaQuestionarioDTO" );
-		Query queryRis =session.createQuery("select DISTINCT(placeholder) from RispostaQuestionario");
+	public static List getQuestionariPlaceholder(String type, String idQuestionario,Session session) {			
+		Query queryDom;
+		Query queryRis;
+		
+		if(type.equals("SchedaTecnica")) {
+			queryDom =session.createQuery("select DISTINCT(placeholder) from DomandaSchedaTecnicaQuestionarioDTO where questionario.id= :_id_questionario" );
+			queryDom.setParameter("_id_questionario", Integer.parseInt(idQuestionario));
+			
+			queryRis =session.createQuery("select DISTINCT(risposta.placeholder) from DomandaSchedaTecnicaQuestionarioDTO where questionario.id= :_id_questionario" );
+			queryRis.setParameter("_id_questionario", Integer.parseInt(idQuestionario));
+		}else {
+			queryDom = session.createQuery("select DISTINCT(placeholder) from DomandaVerbaleQuestionarioDTO where questionario.id= :_id_questionario" );
+			queryDom.setParameter("_id_questionario", Integer.parseInt(idQuestionario));
+
+			queryRis =session.createQuery("select DISTINCT(risposta.placeholder) from DomandaVerbaleQuestionarioDTO where questionario.id= :_id_questionario" );
+			queryRis.setParameter("_id_questionario", Integer.parseInt(idQuestionario));
+		}
+		
 		return ListUtils.union(queryDom.list(), queryRis.list()); 
 	}
 
