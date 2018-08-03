@@ -14,6 +14,9 @@ public class CategoriaVerificaDTO implements Serializable{
 	
 	//private Set<InterventoDTO> intervento= new HashSet<InterventoDTO>();
 	
+	public CategoriaVerificaDTO() {
+	}
+	
 	public int getId() {
 		return id;
 	}

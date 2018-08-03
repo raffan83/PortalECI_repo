@@ -2,9 +2,11 @@ package it.portalECI.DAO;
 
 
 
+import it.portalECI.DTO.CategoriaVerificaDTO;
 import it.portalECI.DTO.CompanyDTO;
 import it.portalECI.DTO.PermessoDTO;
 import it.portalECI.DTO.RuoloDTO;
+import it.portalECI.DTO.TipoVerificaDTO;
 import it.portalECI.DTO.UtenteDTO;
 
 import java.util.List;
@@ -157,6 +159,36 @@ public class GestioneAccessoDAO {
 	    
 		List<PermessoDTO> result =query.list();
 
+		session.getTransaction().commit();
+		session.close();
+		
+		return result;	
+	}
+	
+	public static List<CategoriaVerificaDTO> getListCategorieVerifica() throws HibernateException, Exception{
+		
+		Session session=SessionFacotryDAO.get().openSession();
+		
+		session.beginTransaction();
+		Query query  = session.createQuery( "from CategoriaVerificaDTO" );
+	    
+		List<CategoriaVerificaDTO> result =query.list();
+			
+		session.getTransaction().commit();
+		session.close();
+		
+		return result;	
+	}
+	
+	public static List<TipoVerificaDTO> getListTipiVerifica() throws HibernateException, Exception{
+	
+		Session session=SessionFacotryDAO.get().openSession();
+		
+		session.beginTransaction();
+		Query query  = session.createQuery( "from TipoVerificaDTO" );
+	    
+		List<TipoVerificaDTO> result =query.list();
+			
 		session.getTransaction().commit();
 		session.close();
 		
