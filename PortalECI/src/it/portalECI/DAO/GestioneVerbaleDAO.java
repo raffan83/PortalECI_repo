@@ -44,6 +44,28 @@ public class GestioneVerbaleDAO {
 		return verbale;		
 	}
 	
+	public static VerbaleDTO getVerbaleFromSkTec(String idSchedaTecnica, Session session) {
+		
+		Query query=null;
+		VerbaleDTO verbale=null;
+		try {
+		
+			String s_query = "from VerbaleDTO WHERE schedaTecnica.id = :_id";
+			query = session.createQuery(s_query);
+			query.setParameter("_id",Integer.parseInt(idSchedaTecnica));			
+			
+			if(query.list().size()>0){	
+				return (VerbaleDTO) query.list().get(0);
+			}
+			return null;
+						
+
+	    } catch(Exception e){
+	    	e.printStackTrace();
+	    }
+		return verbale;		
+	}
+	
 	public static List<VerbaleDTO> getVerbaliConQuestionarioAggiornato(int idQuestionarioOld, Session session) {
 		
 		Query query=session.createQuery("from VerbaleDTO WHERE stato.id = :_stato and questionarioID = :_questionarioOld and type = :_type");	

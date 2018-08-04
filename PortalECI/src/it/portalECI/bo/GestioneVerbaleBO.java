@@ -468,8 +468,16 @@ public class GestioneVerbaleBO {
 					throw new ValidationException("Verbale in stato diverso da IN_COMPILAZIONE");
 				}
 				
-				if (!verbaleDTO.getIntervento().getTecnico_verificatore().getUser().equals(user.getUser())) {
-					throw new ValidationException("Utente non abilitato all'invio del Verbale");
+				if(verbaleDTO.getType().equals(VerbaleDTO.VERBALE)) {
+					if (!verbaleDTO.getIntervento().getTecnico_verificatore().getUser().equals(user.getUser())) {
+						throw new ValidationException("Utente non abilitato all'invio del Verbale");
+					}
+				}else {
+					VerbaleDTO verbale = GestioneVerbaleDAO.getVerbaleFromSkTec(jsonRequest.get("verbale_id").getAsString(), session);
+					
+					if (!verbale.getIntervento().getTecnico_verificatore().getUser().equals(user.getUser())) {
+						throw new ValidationException("Utente non abilitato all'invio della Scheda Tecnica");
+					}
 				}
 				
 				
@@ -482,7 +490,8 @@ public class GestioneVerbaleBO {
 					case "RES_TEXT":
 						RispostaTestoVerbaleDTO rispostaTesto = GestioneRispostaVerbaleDAO
 								.getRispostaInstance(RispostaTestoVerbaleDTO.class, responseID, session);
-						rispostaTesto.setResponseValue(responseVerbale.get("valore").getAsString());
+						if(responseVerbale.get("valore")!=null)
+							rispostaTesto.setResponseValue(responseVerbale.get("valore").getAsString());
 						GestioneRispostaVerbaleDAO.save(rispostaTesto, session);
 						break;
 					case "RES_CHOICE":
@@ -505,9 +514,12 @@ public class GestioneVerbaleBO {
 					case "RES_FORMULA":
 						RispostaFormulaVerbaleDTO rispostaFormula = GestioneRispostaVerbaleDAO
 								.getRispostaInstance(RispostaFormulaVerbaleDTO.class, responseID, session);
-						rispostaFormula.setValue1(responseVerbale.get("valore_1").getAsString());
-						rispostaFormula.setValue2(responseVerbale.get("valore_2").getAsString());
-						rispostaFormula.setResponseValue(responseVerbale.get("risultato").getAsString());
+						if(responseVerbale.get("valore_1")!=null)
+							rispostaFormula.setValue1(responseVerbale.get("valore_1").getAsString());
+						if(responseVerbale.get("valore_2")!=null)
+							rispostaFormula.setValue2(responseVerbale.get("valore_2").getAsString());
+						if(responseVerbale.get("risultato")!=null)
+							rispostaFormula.setResponseValue(responseVerbale.get("risultato").getAsString());
 						GestioneRispostaVerbaleDAO.save(rispostaFormula, session);
 						break;
 
