@@ -69,7 +69,7 @@ public class VerbaleREST extends HttpServlet {
 			//Enabeld After inserto into Token Auth
 			UtenteDTO utente=(UtenteDTO) request.getAttribute("x-user");
 			
-			String jsonString =   IOUtils.toString(request.getInputStream());
+			String jsonString =   IOUtils.toString(request.getInputStream(), "UTF-8");
 			JsonObject jsonRequest = new JsonParser().parse(jsonString).getAsJsonObject();
 			
 			GestioneVerbaleBO.saveVerbaleResponses(utente,jsonRequest,session);

@@ -136,8 +136,9 @@ public class InterventoREST extends HttpServlet {
 			//Enabeld After inserto into Token Auth
 			UtenteDTO utente=(UtenteDTO) request.getAttribute("x-user");
 			
-			String jsonString =   IOUtils.toString(request.getInputStream());
+			String jsonString =   IOUtils.toString(request.getInputStream(), "UTF-8");
 			JsonArray jsonRequest = new JsonParser().parse(jsonString).getAsJsonArray();
+
 			//lista di INterventi
 			Iterator<JsonElement> iterator = jsonRequest.iterator();
 			while (iterator.hasNext()) {
