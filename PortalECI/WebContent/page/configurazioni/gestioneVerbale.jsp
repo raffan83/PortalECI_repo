@@ -33,8 +33,11 @@
         			<small></small>
       			</h1>  
       			<c:if test="${verbale.getStato().getId()>=5 }">
-      				<button class="btn btn-default pull-right" onClick="generaCertificato()" style="margin-left:5px"><i class="glyphicon glyphicon-edit"></i> Genera Certificato</button>
-      			</c:if>     
+      				<button class="btn btn-default pull-right" onClick="generaCertificato(${verbale.getId()})" style="margin-left:5px"><i class="glyphicon glyphicon-edit"></i> Genera Certificato</button>
+      			</c:if>
+      			<c:if test="${verbale.getSchedaTecnica()!=null && verbale.getSchedaTecnica().getStato().getId()>=5 }">
+      				<button class="btn btn-default pull-right" onClick="generaCertificato(${verbale.getSchedaTecnica().getId()})" style="margin-left:5px"><i class="glyphicon glyphicon-edit"></i> Genera Scheda Tecnica</button>
+      			</c:if>   
       			<c:if test="${verbale.getDocumentiVerbale().size()>0}">
       				<c:forEach items="${verbale.getDocumentiVerbale()}" var="docum">	
       					<c:if test="${docum.getType().equals('CERTIFICATO') }">
@@ -343,13 +346,13 @@
 				});
 			}
 			
-			function generaCertificato(){
+			function generaCertificato(id){
 				pleaseWaitDiv = $('#pleaseWaitDialog');
 				pleaseWaitDiv.modal();
 				$.ajax({
 					type: "POST",
 					url: "gestioneVerbale.do?action=generaCertificato",
-					data : "idVerbale=${verbale.getId()}",				
+					data : "idVerbale="+id,				
 					dataType: "json",
 					success: function( data, textStatus) {
 						location.reload();
@@ -360,7 +363,7 @@
 					}
 				});
 			}
-
+			
 			function modificaRisposte(){		
 				pleaseWaitDiv = $('#pleaseWaitDialog');
 				pleaseWaitDiv.modal();

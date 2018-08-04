@@ -286,12 +286,20 @@ public class GestioneVerbaleBO {
 	
 	
 	public static File getPDFVerbale(VerbaleDTO verbale, QuestionarioDTO questionario, Session session) throws Exception{
-		
-		String path = "Intervento_"+verbale.getIntervento().getId()+File.separator+"Verbale_"+verbale.getCodiceCategoria()+"_"+verbale.getId()+File.separator;
+		String path="";
+		String html ="";
+		if(verbale.getType().equals(VerbaleDTO.VERBALE)) {
+			path = "Intervento_"+verbale.getIntervento().getId()+File.separator+"Verbale_"+verbale.getCodiceCategoria()+"_"+verbale.getId()+File.separator;
+			
+			html = questionario.getTemplateVerbale().getTemplate();
+		}else {
+			VerbaleDTO verb=GestioneVerbaleDAO.getVerbaleFromSkTec(String.valueOf(verbale.getId()), session);
+			path = "Intervento_"+verb.getIntervento().getId()+File.separator+"SchedaTecnica_"+verbale.getCodiceCategoria()+"_"+verbale.getId()+File.separator;
+			
+			html = questionario.getTemplateSchedaTecnica().getTemplate();
+		}
 		new File(Costanti.PATH_CERTIFICATI+path).mkdirs();
-		File file = new File(Costanti.PATH_CERTIFICATI+path, questionario.getTitolo()+"_"+questionario.getTipo().getCodice()+"_"+verbale.getIntervento().getId()+".pdf");
-
-		String html = questionario.getTemplateVerbale().getTemplate();
+		File file = new File(Costanti.PATH_CERTIFICATI+path, questionario.getTitolo()+"_"+questionario.getTipo().getCodice()+"_"+verbale.getIntervento().getId()+".pdf");		
 
 		for (DomandaVerbaleDTO domanda:verbale.getDomandeVerbale()) {
 
