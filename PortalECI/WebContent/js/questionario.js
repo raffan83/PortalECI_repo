@@ -105,19 +105,38 @@ $("#questionario-form").on("submit", function(event){
 		if(target.length==0) target = $(this);
 		
 		if(this.value == ""){
-			form_group.addClass( "has-error" );
-			jQuery("<span/>", {"class":"help-block", "text":"Campo obbligatorio"}).insertAfter(target);
-			event.preventDefault();
-			if(i==0){
-				i++;
-				$('#myModalErrorContent').html("Controlla le domande appena inserite. Correggi l'errore selezionato e riprova!");
-				$('#myModalError').removeClass();
-				$('#myModalError').addClass("modal modal-danger");
-				$('#myModalError').modal('show');	
-			}
+			issueError(form_group,target, event,"Campo obbligatorio");
 		}
-	});
 		
+		if($(this).hasClass("placeholder-domanda-input")){
+			var checkel = this;
+			$("#questionario-form").find(".placeholder-domanda-input").not(this).each(function(idx, el){
+				if(el.value == checkel.value && !form_group.hasClass( "has-error" )){
+					issueError(form_group,target, event,"Valore duplicato");
+				}
+			});
+		}
+		if($(this).hasClass("placeholder-risposta-input")){
+			var checkel = this;
+			$("#questionario-form").find(".placeholder-risposta-input").not(this).each(function(idx, el){
+				if(el.value == checkel.value && !form_group.hasClass( "has-error" )){
+					issueError(form_group,target, event,"Valore duplicato");
+				}
+			});
+		}
+
+	});
+	function issueError(form_group,target, event,message){
+		form_group.addClass( "has-error" );
+		jQuery("<span/>", {"class":"help-block", "text":message}).insertAfter(target);
+		event.preventDefault();
+		if(!($("#myModalError").data('bs.modal') || {isShown: false}).isShown){
+			$('#myModalErrorContent').html("Controlla le domande appena inserite. Correggi l'errore selezionato e riprova!");
+			$('#myModalError').removeClass();
+			$('#myModalError').addClass("modal modal-danger");
+			$('#myModalError').modal('show');	
+		}
+	}
 });
 
 $(document).on("change","#questionario-form :input",function(){

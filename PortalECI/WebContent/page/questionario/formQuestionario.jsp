@@ -136,7 +136,7 @@
           							</div>
           							<!-- /.box -->
         						</div>
-        						<button class="btn btn-default pull-right" onclick="ceckvalidation()" type="submit"><i class="fa fa-save"></i> Salva Questionario</button>
+        						<button class="btn btn-default pull-right" type="submit"><i class="fa fa-save"></i> Salva Questionario</button>
         					</div>
    						</div>
         			</div>
