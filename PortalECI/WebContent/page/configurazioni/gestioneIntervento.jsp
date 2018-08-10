@@ -588,7 +588,7 @@
 					var tipi_verifica=$('#select2').val();									
 					
 					if(categorie_verifica!=null && tipi_verifica!=null){
-						if($("#" +tipi_verifica).length == 0) {						 										
+						//if($("#" +tipi_verifica).length == 0) {						 										
 						
 							$("#bodytabVerifica").append('<tr class="categoriaTipiRow" id="'+tipi_verifica+'" role="row" >'+
 								'<td >'+$('#select1').find('[value='+categorie_verifica+']').text()+'</td>'+
@@ -597,9 +597,9 @@
 					
 							/*$('#select1').find('[value='+categorie_verifica+']').remove();
 							$('#select2').find('[value='+tipi_verifica+']').remove();*/
-						}else{							
+						/*}else{							
 							$('#empty').html("La coppia Categoria Verifica/Tipo Verifica selezionata è già stata inserita!");
-						}
+						}*/
 					}else{						
 						$('#empty').html("Scegli la categoria di verifica e il tipo verifica per procedere!");
 					}
