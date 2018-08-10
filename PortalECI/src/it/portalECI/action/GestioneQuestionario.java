@@ -16,6 +16,7 @@ import org.hibernate.Transaction;
 
 import it.portalECI.DAO.SessionFacotryDAO;
 import it.portalECI.DTO.CategoriaVerificaDTO;
+import it.portalECI.DTO.DomandaOpzioneQuestionarioDTO;
 import it.portalECI.DTO.DomandaQuestionarioDTO;
 import it.portalECI.DTO.DomandaSchedaTecnicaQuestionarioDTO;
 import it.portalECI.DTO.DomandaVerbaleQuestionarioDTO;
@@ -95,11 +96,10 @@ public class GestioneQuestionario extends HttpServlet {
 		request.setAttribute("tipi_verifica", tipi_verifica);
 		request.setAttribute("categorie_verifica", categorie_verifica);
 		QuestionarioDTO questionario = new QuestionarioDTO();
-		// se c'è l'id è una modifica se non c'è è l'inserimento di un nuovo questionario
+		// se c'ï¿½ l'id ï¿½ una modifica se non c'ï¿½ ï¿½ l'inserimento di un nuovo questionario
 		String idQuestionario = request.getParameter("idQuestionario");
 		Integer id = null;
 		if(idQuestionario != null && idQuestionario != "") {
-			System.out.println("A");
 			try {
 				id = Integer.parseInt(idQuestionario);
 			}catch (NumberFormatException e) {
@@ -117,7 +117,6 @@ public class GestioneQuestionario extends HttpServlet {
 				questionario = setQuestionarioFromRequest(request, questionario, session);
 				session.update(questionario);
 			} else if(GestioneQuestionarioBO.controlloQuestionarioInUso(id, session)){
-				System.out.println("!" );
 				questionario = setQuestionarioFromRequest(request, questionario, session);
 				QuestionarioDTO oldQuest = GestioneQuestionarioBO.getQuestionarioById(id, session);
 				if(oldQuest!=null) {
@@ -131,7 +130,6 @@ public class GestioneQuestionario extends HttpServlet {
 				}
 			}
 		} else {
-System.out.println("B");
 			//nuovo questionario
 			questionario.setDomandeSchedaTecnica(new ArrayList<DomandaSchedaTecnicaQuestionarioDTO>());
 			questionario.setDomandeVerbale(new ArrayList<DomandaVerbaleQuestionarioDTO>());	
@@ -139,7 +137,6 @@ System.out.println("B");
 			//vedo se esiste un questionario per quella verifica
 			QuestionarioDTO lastQuestionario = GestioneQuestionarioBO.getLastQuestionarioByVerifica(questionario.getTipo(), session); 
 			if(lastQuestionario != null && !GestioneQuestionarioBO.controlloQuestionarioInUso(lastQuestionario.getId(), session)) {
-System.out.println("D" + lastQuestionario.getId());
 				questionario = GestioneQuestionarioBO.getQuestionarioById(lastQuestionario.getId(), session);
 				if(questionario == null) {
 					response.sendError(HttpServletResponse.SC_NOT_FOUND);
@@ -150,7 +147,6 @@ System.out.println("D" + lastQuestionario.getId());
 				questionario = setQuestionarioFromRequest(request, questionario, session);
 				session.update(questionario);
 			} else	if(lastQuestionario == null || (lastQuestionario != null && GestioneQuestionarioBO.controlloQuestionarioInUso(lastQuestionario.getId(), session))){
-System.out.println("!!!");
 				if(lastQuestionario != null) {
 					questionario = addOldTemplate(questionario, lastQuestionario.getTemplateVerbale(), lastQuestionario.getTemplateSchedaTecnica(), session);
 					session.save(questionario);
@@ -200,103 +196,102 @@ System.out.println("!!!");
 		} else {
 			questionario.setDomandeSchedaTecnica(new ArrayList<DomandaSchedaTecnicaQuestionarioDTO>());
 		}
-
 		
-		String[] domandaGruppo = request.getParameterValues("domanda.gruppo");
-		String[] domandaTesto = request.getParameterValues("domanda.testo");
-		String[] domandaObbligatoria = request.getParameterValues("domanda.obbligatoria");
-		String[] domandaPlaceholder = request.getParameterValues("domanda.placeholder");
-		String[] rispostaTipo = request.getParameterValues("risposta.tipo");
-		String[] numeroOpzioni = request.getParameterValues("numero-opzioni");
-		String[] nomiOpzioni = request.getParameterValues("opzione");
-		String[] rispostaValore1 = request.getParameterValues("formula-valore-1");
-		String[] rispostaValore2 = request.getParameterValues("formula-valore-2");
-		String[] formulaOperazione = request.getParameterValues("fromula-operazione");
-		String[] formulaRisultato = request.getParameterValues("formula-risultato");
-		String[] rispostaMultipla = request.getParameterValues("risposta.multipla");
+		String[] domandaIndice = request.getParameterValues("domanda.indice");
 		
-		String[] rispostaPlaceholder = request.getParameterValues("risposta.placeholder");
-		
-		
-		int indexOption = 0;
-		int orderSchedaTecnica = 0;
-		int orderVerbale=0;
-		for(int i=0;i<domandaGruppo.length;i++) {
-			
-			DomandaQuestionarioDTO domandaQuestionario = new  DomandaQuestionarioDTO();
-			
-			if(domandaGruppo[i].equals("Verbale")) {
-				DomandaVerbaleQuestionarioDTO domanda = new DomandaVerbaleQuestionarioDTO();
-				domanda.setTesto(domandaTesto[i]);
-				domanda.setObbligatoria(new Boolean(domandaObbligatoria[i]));
-				domanda.setPlaceholder(domandaPlaceholder[i]+"_QST");
-				domanda.setQuestionario(questionario);
-				domanda.setPosizione(orderVerbale);
-				
-				questionario.getDomandeVerbale().add((DomandaVerbaleQuestionarioDTO)domanda);
-				domandaQuestionario = domanda;
-				
-				orderVerbale++;
-			}else if(domandaGruppo[i].equals("SchedaTecnica")) {
-				DomandaSchedaTecnicaQuestionarioDTO domanda = new DomandaSchedaTecnicaQuestionarioDTO();
-				domanda.setTesto(domandaTesto[i]);
-				domanda.setObbligatoria(new Boolean(domandaObbligatoria[i]));
-				domanda.setPlaceholder(domandaPlaceholder[i]+"_QST");
-				domanda.setQuestionario(questionario);
-				domanda.setPosizione(orderSchedaTecnica);
-				
-				questionario.getDomandeSchedaTecnica().add((DomandaSchedaTecnicaQuestionarioDTO)domanda);
-				domandaQuestionario = domanda;
-				
-				orderSchedaTecnica++;
-			}else if(domandaGruppo[i].equals("Opzione")) {
-				
-			}
-
-			
-			if(rispostaTipo[i].equals(RispostaQuestionario.TIPO_TESTO)) {
-				
-				RispostaTestoQuestionarioDTO risposta = new RispostaTestoQuestionarioDTO();
-				risposta.setTipo(RispostaQuestionario.TIPO_TESTO);
-				risposta.setPlaceholder(rispostaPlaceholder[i]+"_RES");
-				risposta.setDomanda(domandaQuestionario);
-				domandaQuestionario.setRisposta(risposta);
-				
-			}else if(rispostaTipo[i].equals(RispostaQuestionario.TIPO_FORMULA)){
-				
-				RispostaFormulaQuestionarioDTO risposta = new RispostaFormulaQuestionarioDTO();
-				risposta.setTipo(RispostaQuestionario.TIPO_FORMULA);
-				risposta.setValore1(rispostaValore1[i]);
-				risposta.setValore2(rispostaValore2[i]);
-				risposta.setOperatore(formulaOperazione[i]);
-				risposta.setRisultato(formulaRisultato[i]);
-				risposta.setPlaceholder(rispostaPlaceholder[i]+"_RES");
-				risposta.setDomanda(domandaQuestionario);
-				domandaQuestionario.setRisposta(risposta);
-								
-			}else if(rispostaTipo[i].equals(RispostaQuestionario.TIPO_SCELTA)){
-				RispostaSceltaQuestionarioDTO risposta = new RispostaSceltaQuestionarioDTO();
-				int numeroScelte = Integer.parseInt(numeroOpzioni[i]);
-				List<OpzioneRispostaQuestionarioDTO> listaOpzioni = new ArrayList<OpzioneRispostaQuestionarioDTO>();
-				
-				for(int idx=0;idx<numeroScelte; idx++) {
-					OpzioneRispostaQuestionarioDTO opzione = new OpzioneRispostaQuestionarioDTO();
-					opzione.setPosizione(idx);
-					opzione.setTesto(nomiOpzioni[indexOption]);
-					opzione.setRisposta(risposta);
-					listaOpzioni.add(opzione);
-					indexOption++;
-				}
-				risposta.setTipo(RispostaQuestionario.TIPO_SCELTA);
-				risposta.setOpzioni(listaOpzioni);
-				risposta.setPlaceholder(rispostaPlaceholder[i]+"_RES");
-				risposta.setDomanda(domandaQuestionario);
-				risposta.setMultipla(Boolean.parseBoolean(rispostaMultipla[i]));
-				domandaQuestionario.setRisposta(risposta);
-			}
+		for(int i=0; i<domandaIndice.length;i++) {
+			getDomandaFromRequest(request,questionario,hibernateSession,domandaIndice, i);
 		}
 		
 		return questionario;
+	}
+	
+	private DomandaQuestionarioDTO getDomandaFromRequest(HttpServletRequest request, QuestionarioDTO questionario, Session hibernateSession, String[] domandaIndice, int i) {
+		String indice = domandaIndice[i];
+		DomandaQuestionarioDTO domandaQuestionario = new  DomandaQuestionarioDTO();
+		String domandaGruppo = request.getParameter("domanda.gruppo"+indice);
+		if(domandaGruppo.equals("Verbale")) {
+			DomandaVerbaleQuestionarioDTO domanda = new DomandaVerbaleQuestionarioDTO();
+			domanda.setTesto(request.getParameter("domanda.testo"+indice));
+			domanda.setObbligatoria(new Boolean(request.getParameter("domanda.obbligatoria"+indice)));
+			domanda.setPlaceholder(request.getParameter("domanda.placeholder"+indice)+"_QST");
+			domanda.setQuestionario(questionario);
+			domanda.setPosizione(questionario.getDomandeVerbale().size());
+			
+			questionario.getDomandeVerbale().add((DomandaVerbaleQuestionarioDTO)domanda);
+			domandaQuestionario = domanda;
+			
+		}else if(domandaGruppo.equals("SchedaTecnica")) {
+			DomandaSchedaTecnicaQuestionarioDTO domanda = new DomandaSchedaTecnicaQuestionarioDTO();
+			domanda.setTesto(request.getParameter("domanda.testo"+indice));
+			domanda.setObbligatoria(new Boolean(request.getParameter("domanda.obbligatoria"+indice)));
+			domanda.setPlaceholder(request.getParameter("domanda.placeholder"+indice)+"_QST");
+			domanda.setQuestionario(questionario);
+			domanda.setPosizione(questionario.getDomandeSchedaTecnica().size());
+			
+			questionario.getDomandeSchedaTecnica().add((DomandaSchedaTecnicaQuestionarioDTO)domanda);
+			domandaQuestionario = domanda;
+		}else if(domandaGruppo.equals("Opzione")) {
+			DomandaOpzioneQuestionarioDTO domanda = new DomandaOpzioneQuestionarioDTO();
+			domanda.setTesto(request.getParameter("domanda.testo"+indice));
+			domanda.setObbligatoria(new Boolean(request.getParameter("domanda.obbligatoria"+indice)));
+			domanda.setPlaceholder(request.getParameter("domanda.placeholder"+indice)+"_QST");
+			//domanda.setPosizione(questionario.getDomandeSchedaTecnica().size());
+			domandaQuestionario = domanda;
+		}
+		
+		String rispostaTipo = request.getParameter("risposta.tipo"+indice);
+		
+		if(rispostaTipo.equals(RispostaQuestionario.TIPO_TESTO)) {
+			
+			RispostaTestoQuestionarioDTO risposta = new RispostaTestoQuestionarioDTO();
+			risposta.setTipo(RispostaQuestionario.TIPO_TESTO);
+			risposta.setPlaceholder(request.getParameter("risposta.placeholder"+indice)+"_RES");
+			risposta.setDomanda(domandaQuestionario);
+			domandaQuestionario.setRisposta(risposta);
+			
+		}else if(rispostaTipo.equals(RispostaQuestionario.TIPO_FORMULA)){
+			
+			RispostaFormulaQuestionarioDTO risposta = new RispostaFormulaQuestionarioDTO();
+			risposta.setTipo(RispostaQuestionario.TIPO_FORMULA);
+			risposta.setValore1(request.getParameter("formula-valore-1"+indice));
+			risposta.setValore2(request.getParameter("formula-valore-2"+indice));
+			risposta.setOperatore(request.getParameter("fromula-operazione"+indice));
+			risposta.setRisultato(request.getParameter("formula-risultato"+indice));
+			risposta.setPlaceholder(request.getParameter("risposta.placeholder"+indice)+"_RES");
+			risposta.setDomanda(domandaQuestionario);
+			domandaQuestionario.setRisposta(risposta);
+							
+		}else if(rispostaTipo.equals(RispostaQuestionario.TIPO_SCELTA)){
+			RispostaSceltaQuestionarioDTO risposta = new RispostaSceltaQuestionarioDTO();
+			risposta.setTipo(RispostaQuestionario.TIPO_SCELTA);
+			risposta.setPlaceholder(request.getParameter("risposta.placeholder"+indice)+"_RES");
+			risposta.setDomanda(domandaQuestionario);
+			risposta.setMultipla(new Boolean(request.getParameter("risposta.multipla"+indice)));
+			List<OpzioneRispostaQuestionarioDTO> listaOpzioni = new ArrayList<OpzioneRispostaQuestionarioDTO>();
+			String[] nomiOpzione = request.getParameterValues("opzione"+indice);
+			String[] numeroDomandeOpzioneParams = request.getParameterValues("numero-domande-opzione"+indice);
+			for(int idx=0;idx<nomiOpzione.length; idx++) {
+				OpzioneRispostaQuestionarioDTO opzione = new OpzioneRispostaQuestionarioDTO();
+				opzione.setPosizione(idx);
+				opzione.setTesto(nomiOpzione[idx]);
+				opzione.setRisposta(risposta);
+				int numeroDomandeOpzione = Integer.parseInt(numeroDomandeOpzioneParams[idx]);
+				List<DomandaOpzioneQuestionarioDTO> listadomandeOpzione  = new ArrayList<DomandaOpzioneQuestionarioDTO>();
+				for(int k=0; k<numeroDomandeOpzione;k++ ) {
+					i++;
+					DomandaOpzioneQuestionarioDTO domandaOpzione = (DomandaOpzioneQuestionarioDTO)getDomandaFromRequest(request, questionario, hibernateSession, domandaIndice, i);
+					domandaOpzione.setPosizione(k);
+					domandaOpzione.setOpzione(opzione);
+					listadomandeOpzione.add(domandaOpzione);
+				}
+				opzione.setDomande(listadomandeOpzione);
+				listaOpzioni.add(opzione);
+			}
+			risposta.setOpzioni(listaOpzioni);
+			domandaQuestionario.setRisposta(risposta);
+		}
+		return domandaQuestionario;
 	}
 	
 	public static QuestionarioDTO addOldTemplate(QuestionarioDTO ques, TemplateQuestionarioDTO certificato, TemplateQuestionarioDTO skTec, Session session) {

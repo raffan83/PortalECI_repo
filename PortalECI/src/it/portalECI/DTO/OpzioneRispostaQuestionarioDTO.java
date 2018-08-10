@@ -1,10 +1,14 @@
 package it.portalECI.DTO;
 
+import java.util.List;
+
 public class OpzioneRispostaQuestionarioDTO {
 	private int id;
 	private String testo;
 	private RispostaSceltaQuestionarioDTO risposta;
 	private int posizione;
+	
+	private List<DomandaOpzioneQuestionarioDTO> domande;
 	
 	public OpzioneRispostaQuestionarioDTO() {
 	}
@@ -39,6 +43,14 @@ public class OpzioneRispostaQuestionarioDTO {
 
 	public void setPosizione(int posizione) {
 		this.posizione = posizione;
+	}
+
+	public List<DomandaOpzioneQuestionarioDTO> getDomande() {
+		return domande;
+	}
+
+	public void setDomande(List<DomandaOpzioneQuestionarioDTO> domande) {
+		this.domande = domande;
 	}
 	
 }

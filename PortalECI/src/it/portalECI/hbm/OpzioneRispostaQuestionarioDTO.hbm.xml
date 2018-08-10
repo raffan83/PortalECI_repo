@@ -17,5 +17,13 @@
 		<many-to-one name="risposta" class="it.portalECI.DTO.RispostaSceltaQuestionarioDTO">
             <column name="risposta_id" not-null="true" />
         </many-to-one>
+        
+		<list name="domande" table="DOMANDA_OPZIONE_QUESTIONARIO" inverse="true" lazy="true" fetch="select" cascade="all, delete-orphan">
+			<key>
+				<column name="opzione_id"></column>
+			</key>
+			<list-index column="posizione"></list-index>
+			<one-to-many class="it.portalECI.DTO.DomandaOpzioneQuestionarioDTO"/>
+		</list>
 	</class>
 </hibernate-mapping>
