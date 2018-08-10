@@ -15,6 +15,10 @@ public class TipoVerificaDTO implements Serializable{
 	
 	private Set<InterventoDTO> intervento= new HashSet<InterventoDTO>();
 	
+	public TipoVerificaDTO() {
+		
+	}
+	
 	public int getId() {
 		return id;
 	}

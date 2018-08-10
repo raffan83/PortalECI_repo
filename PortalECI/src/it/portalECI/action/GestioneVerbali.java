@@ -238,6 +238,31 @@ public class GestioneVerbali extends HttpServlet {
 				myObj.addProperty("messaggio", "Non &egrave; stato possibile recuperare il documento. Problema di connessione.");
 			}
 			out.print(myObj);
+		} else if(action !=null && action.equals("generaSchedaTecnica")) {
+			QuestionarioDTO questionario = GestioneQuestionarioBO.getQuestionarioById(verbale.getQuestionarioID(),session);
+			try {
+				File certificato = GestioneVerbaleBO.getPDFVerbale(verbale, questionario, session);
+				if(certificato != null) {
+					byte[] pdfArray = loadFileForBase64(certificato);
+					if(pdfArray.length == 0) {
+						myObj.addProperty("success", false);
+						myObj.addProperty("messaggio","Documento troppo grande per essere generato!");						
+					} else {
+						byte[] encoded = Base64.encodeBase64(pdfArray);
+						String pdfBytes = new String(encoded);
+						myObj.addProperty("pdfString", pdfBytes);
+						myObj.addProperty("success", true);
+						myObj.addProperty("messaggio","Documento creato con successo!");
+					}
+				} else {
+					myObj.addProperty("success", false);
+					myObj.addProperty("messaggio", "Non &egrave; stato possibile generare il documento.  Problema di connessione.");						
+				}
+			} catch (Exception e) {
+				myObj.addProperty("success", false);
+				myObj.addProperty("messaggio", "Non &egrave; stato possibile recuperare il documento. Problema di connessione.");
+			}
+			out.print(myObj);
 		} else if(action !=null && action.equals("visualizzaDocumento")) {
 			String idDoc=request.getParameter("idDoc");
 			if(idDoc != null && idDoc != "") {
@@ -277,8 +302,26 @@ public class GestioneVerbali extends HttpServlet {
 				}
 			});
 
+			if(verbale.getSchedaTecnica()!=null) {
+				//caso scheda tecnica interna
+				List domandeVerbaleSchedaTecnica=new ArrayList();
+				domandeVerbaleSchedaTecnica.addAll(verbale.getSchedaTecnica().getDomandeVerbale());
+
+				Collections.sort(domandeVerbaleSchedaTecnica, new Comparator<DomandaVerbaleDTO>() {
+					@Override
+					public int compare(DomandaVerbaleDTO op2, DomandaVerbaleDTO op1){
+						int pos1=op1.getDomandaQuestionario().getPosizione();
+						int pos2=op2.getDomandaQuestionario().getPosizione();
+						return  pos2 - pos1;
+					}
+				});
+				
+				request.setAttribute("domandeVerbaleSchedaTecnica",domandeVerbaleSchedaTecnica);
+			}
+			
 			request.setAttribute("domandeVerbale",domandeVerbale);
-																	
+			
+			
 			InterventoDTO intervento=GestioneInterventoDAO.getIntervento(String.valueOf(verbale.getIntervento().getId()),session);
 			request.getSession().setAttribute("intervento", intervento);
 			request.getSession().setAttribute("verbale", verbale);

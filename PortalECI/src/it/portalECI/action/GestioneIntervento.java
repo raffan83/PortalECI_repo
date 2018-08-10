@@ -147,8 +147,8 @@ public class GestioneIntervento extends HttpServlet {
 				if(!tipoverificalist.isEmpty()) {
 					intervento.setTipo_verifica(tipoverificalist);				
 				}
-				if(!verbali.isEmpty()) {	
-					intervento.setVerbali(verbali);				
+				if(!verbali.isEmpty()) {				
+					intervento.setVerbali(verbali);						
 				}
 				
 				String nomeCliente="";
@@ -179,7 +179,7 @@ public class GestioneIntervento extends HttpServlet {
 				//Genero Instanza Verbali per questo intervento
 				
 				
-				GestioneInterventoBO.save(intervento,session);				
+				GestioneInterventoBO.save(intervento,session);
 					
 				myObj.addProperty("success", true);
 				myObj.add("intervento", intervento.getInterventoJsonObject());

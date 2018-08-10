@@ -2513,3 +2513,324 @@ function openDettaglioPunto(indexArrayPunti, indexPunto){
 function scaricaFile(){
 	alert('download file');
 }
+
+//Gestione Categorie Verifica  
+function nuovaCategoriaVerifica(){
+	  
+	if($("#formNuovaCategoriaVerifica").valid()){
+		pleaseWaitDiv = $('#pleaseWaitDialog');
+		pleaseWaitDiv.modal();
+
+		var descrizione=$('#descrizione').val();
+		var codice=$('#codice').val();
+		var dataObj = {};
+		
+		dataObj.descrizione = descrizione;
+		dataObj.codice = codice;
+
+		$.ajax({
+			type: "POST",
+			url: "gestioneCategorieVerifica.do?action=nuovo",
+			data: dataObj,
+			dataType: "json",
+			success: function( data, textStatus) {
+        		  
+				pleaseWaitDiv.modal('hide');
+        		  
+				if(data.success){         		
+					$("#modalNuovaCategoriaVerifica").modal("hide");
+					$('#myModalErrorContent').html(data.messaggio);
+					$('#myModalError').removeClass();
+					$('#myModalError').addClass("modal modal-success");
+					$('#myModalError').modal('show');        				        		
+				}else{
+					$('#myModalErrorContent').html(data.messaggio);
+					$('#myModalError').removeClass();
+					$('#myModalError').addClass("modal modal-danger");
+					$('#myModalError').modal('show');        			 
+				}
+			},
+			error: function(jqXHR, textStatus, errorThrown){
+				pleaseWaitDiv.modal('hide');
+
+				$('#myModalErrorContent').html(textStatus);
+  			  	$('#myModalError').removeClass();
+  				$('#myModalError').addClass("modal modal-danger");
+  				$('#myModalError').modal('show');
+        
+			}
+		});
+	}
+}
+  
+function modificaCategoriaVerifica(){
+	  
+	pleaseWaitDiv = $('#pleaseWaitDialog');
+	pleaseWaitDiv.modal();
+	
+	var id=$('#modid').val();
+	var descrizione=$('#moddescrizione').val();
+	var codice=$('#modcodice').val();
+	    
+	var dataObj = {};
+	dataObj.id = id;
+	dataObj.descrizione = descrizione;
+	dataObj.codice = codice;
+
+	$.ajax({
+		type: "POST",
+		url: "gestioneCategorieVerifica.do?action=modifica",
+		data: dataObj,
+		dataType: "json",
+		success: function( data, textStatus) {
+      		  
+			pleaseWaitDiv.modal('hide');
+      		  
+			if(data.success){       			
+				$("#modalModificaCategoriaVerifica").modal("hide");
+				$('#myModalErrorContent').html(data.messaggio);
+				$('#myModalError').removeClass();
+				$('#myModalError').addClass("modal modal-success");
+				$('#myModalError').modal('show');      				      		
+			}else{
+				$('#myModalErrorContent').html(data.messaggio);
+				$('#myModalError').removeClass();
+				$('#myModalError').addClass("modal modal-danger");
+				$('#myModalError').modal('show');      			
+			}
+		},
+		error: function(jqXHR, textStatus, errorThrown){
+			pleaseWaitDiv.modal('hide');
+
+			$('#myModalErrorContent').html(textStatus);
+			$('#myModalError').removeClass();
+			$('#myModalError').addClass("modal modal-danger");
+			$('#myModalError').modal('show');			
+		}
+	});	  
+}
+
+function eliminaCategoriaVerifica(){
+	 
+	$("#modalEliminaCategoriaVerifica").modal("hide");
+
+	pleaseWaitDiv = $('#pleaseWaitDialog');
+	pleaseWaitDiv.modal();
+
+	var id=$('#idElimina').val();
+	var dataObj = {};
+	dataObj.id = id;
+
+	$.ajax({
+		type: "POST",
+		url: "gestioneCategorieVerifica.do?action=elimina",
+		data: dataObj,
+		dataType: "json",
+		success: function( data, textStatus) {
+		  
+			pleaseWaitDiv.modal('hide');
+		  
+			if(data.success){ 						 
+				$('#myModalErrorContent').html(data.messaggio);
+			  	$('#myModalError').removeClass();
+				$('#myModalError').addClass("modal modal-success");
+				$('#myModalError').modal('show');				
+			}else{
+				$('#myModalErrorContent').html(data.messaggio);
+				$('#myModalError').removeClass();
+				$('#myModalError').addClass("modal modal-danger");
+				$('#myModalError').modal('show');				 
+			}
+		},
+		error: function(jqXHR, textStatus, errorThrown){
+			pleaseWaitDiv.modal('hide');
+
+			$('#myModalErrorContent').html(textStatus);
+		  	$('#myModalError').removeClass();
+			$('#myModalError').addClass("modal modal-danger");
+			$('#myModalError').modal('show');
+		}
+	});
+}
+
+function modalModificaCategoriaVerifica(id,descrizione,codice){
+	  
+	$('#modid').val(id);
+	$('#moddescrizione').val(descrizione);
+	$('#modcodice').val(codice);
+	    
+	$('#modalModificaCategoriaVerifica').modal();
+	  
+}
+
+function modalEliminaCategoriaVerifica(id,descrizione){
+	  
+	$('#idElimina').val(id);
+	$('#descrizioneElimina').html(descrizione);
+	    
+	$('#modalEliminaCategoriaVerifica').modal();
+	  
+}
+
+//Gestione Tipi Verifica  
+function nuovoTipoVerifica(){
+	  
+	if($("#formNuovoTipoVerifica").valid()){
+		pleaseWaitDiv = $('#pleaseWaitDialog');
+		pleaseWaitDiv.modal();
+
+		var categoria=$('#categoria').val();
+		var descrizione=$('#descrizione').val();
+		var codice=$('#codice').val();
+		var dataObj = {};
+		
+		dataObj.categoria = categoria;
+		dataObj.descrizione = descrizione;
+		dataObj.codice = codice;
+
+		$.ajax({
+			type: "POST",
+			url: "gestioneTipiVerifica.do?action=nuovo",
+			data: dataObj,
+			dataType: "json",
+			success: function( data, textStatus) {
+        		  
+				pleaseWaitDiv.modal('hide');
+        		  
+				if(data.success){         		
+					$("#modalNuovoTipoVerifica").modal("hide");
+					$('#myModalErrorContent').html(data.messaggio);
+					$('#myModalError').removeClass();
+					$('#myModalError').addClass("modal modal-success");
+					$('#myModalError').modal('show');        				        		
+				}else{
+					$('#myModalErrorContent').html(data.messaggio);
+					$('#myModalError').removeClass();
+					$('#myModalError').addClass("modal modal-danger");
+					$('#myModalError').modal('show');        			 
+				}
+			},
+			error: function(jqXHR, textStatus, errorThrown){
+				pleaseWaitDiv.modal('hide');
+
+				$('#myModalErrorContent').html(textStatus);
+  			  	$('#myModalError').removeClass();
+  				$('#myModalError').addClass("modal modal-danger");
+  				$('#myModalError').modal('show');
+        
+			}
+		});
+	}
+}
+  
+function modificaTipoVerifica(){
+	  
+	pleaseWaitDiv = $('#pleaseWaitDialog');
+	pleaseWaitDiv.modal();
+	
+	var id=$('#modid').val();
+	var categoria=$('#modcategoria').val();
+	var descrizione=$('#moddescrizione').val();
+	var codice=$('#modcodice').val();
+	    
+	var dataObj = {};
+	dataObj.id = id;
+	dataObj.categoria = categoria;
+	dataObj.descrizione = descrizione;
+	dataObj.codice = codice;
+
+	$.ajax({
+		type: "POST",
+		url: "gestioneTipiVerifica.do?action=modifica",
+		data: dataObj,
+		dataType: "json",
+		success: function( data, textStatus) {
+      		  
+			pleaseWaitDiv.modal('hide');
+      		  
+			if(data.success){       			
+				$("#modalModificaTipoVerifica").modal("hide");
+				$('#myModalErrorContent').html(data.messaggio);
+				$('#myModalError').removeClass();
+				$('#myModalError').addClass("modal modal-success");
+				$('#myModalError').modal('show');      				      		
+			}else{
+				$('#myModalErrorContent').html(data.messaggio);
+				$('#myModalError').removeClass();
+				$('#myModalError').addClass("modal modal-danger");
+				$('#myModalError').modal('show');      			
+			}
+		},
+		error: function(jqXHR, textStatus, errorThrown){
+			pleaseWaitDiv.modal('hide');
+
+			$('#myModalErrorContent').html(textStatus);
+			$('#myModalError').removeClass();
+			$('#myModalError').addClass("modal modal-danger");
+			$('#myModalError').modal('show');			
+		}
+	});	  
+}
+
+function eliminaTipoVerifica(){
+	 
+	$("#modalEliminaTipoVerifica").modal("hide");
+
+	pleaseWaitDiv = $('#pleaseWaitDialog');
+	pleaseWaitDiv.modal();
+
+	var id=$('#idElimina').val();
+	var dataObj = {};
+	dataObj.id = id;
+
+	$.ajax({
+		type: "POST",
+		url: "gestioneTipiVerifica.do?action=elimina",
+		data: dataObj,
+		dataType: "json",
+		success: function( data, textStatus) {
+		  
+			pleaseWaitDiv.modal('hide');
+		  
+			if(data.success){ 						 
+				$('#myModalErrorContent').html(data.messaggio);
+			  	$('#myModalError').removeClass();
+				$('#myModalError').addClass("modal modal-success");
+				$('#myModalError').modal('show');				
+			}else{
+				$('#myModalErrorContent').html(data.messaggio);
+				$('#myModalError').removeClass();
+				$('#myModalError').addClass("modal modal-danger");
+				$('#myModalError').modal('show');				 
+			}
+		},
+		error: function(jqXHR, textStatus, errorThrown){
+			pleaseWaitDiv.modal('hide');
+
+			$('#myModalErrorContent').html(textStatus);
+		  	$('#myModalError').removeClass();
+			$('#myModalError').addClass("modal modal-danger");
+			$('#myModalError').modal('show');
+		}
+	});
+}
+
+function modalModificaTipoVerifica(id,categoria,descrizione,codice){
+	  
+	$('#modid').val(id);
+	$('#modcategoria').val(categoria);
+	$('#moddescrizione').val(descrizione);
+	$('#modcodice').val(codice);
+	    
+	$('#modalModificaTipoVerifica').modal();
+	  
+}
+
+function modalEliminaTipoVerifica(id,descrizione){
+	  
+	$('#idElimina').val(id);
+	$('#descrizioneElimina').html(descrizione);
+	    
+	$('#modalEliminaTipoVerifica').modal();
+	  
+}

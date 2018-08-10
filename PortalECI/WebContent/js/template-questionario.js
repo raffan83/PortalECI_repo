@@ -32,7 +32,7 @@ $(document).ready(function() {
 	$.ajax({
 		type : "GET",
 		url : "gestionePlaceholder.do",
-		data : "",
+		data : "idQuestionario="+$("#idQuestionario").val()+"&type="+$("#tipo").val(),
 		dataType : "json",
 		success : function(data, textStatus) {
 			PLACEHOLDERS=data;

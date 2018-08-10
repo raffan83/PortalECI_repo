@@ -30,8 +30,8 @@
 					<input type="hidden" name="idTemplate" value="${template.id}" >
 					<input type="hidden" name="_method" value="put" />
 				</c:if>
-				<input type="hidden" name="idQuestionario" value="${questionario.id}" >
-				<input type="hidden" name="tipo" value="${tipo}" >
+				<input type="hidden" id="idQuestionario" name="idQuestionario" value="${questionario.id}" >
+				<input type="hidden" id="tipo" name="tipo" value="${tipo}" >
 				<div class="row">
         			<div class="col-xs-12">
           				<div class="box">

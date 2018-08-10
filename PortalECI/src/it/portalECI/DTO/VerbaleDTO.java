@@ -11,7 +11,9 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 
 public class VerbaleDTO implements Serializable {
-
+	
+	public static String VERBALE="VERBALE";
+	public static String SK_TEC="SCHEDA_TECNICA";
 	/**
 	 * 
 	 */
@@ -26,7 +28,8 @@ public class VerbaleDTO implements Serializable {
 	private StatoVerbaleDTO stato;
 	private InterventoDTO intervento;
 	private Set<DomandaVerbaleDTO> domandeVerbale;
-	//private List<DomandaQuestionarioDTO> domandeSchedaTecnica;
+	private VerbaleDTO schedaTecnica;
+	private String type;
 	private Set<DocumentoDTO> documentiVerbale;
 		
 	public int getId() {
@@ -76,6 +79,22 @@ public class VerbaleDTO implements Serializable {
 
 	public void setCodiceCategoria(String codiceCategoria) {
 		this.codiceCategoria = codiceCategoria;
+	}
+	
+	public String getType() {
+		return type;
+	}
+
+	public void setType(String type) {
+		this.type = type;
+	}
+	
+	public VerbaleDTO getSchedaTecnica() {
+		return schedaTecnica;
+	}
+
+	public void setSchedaTecnica(VerbaleDTO schedaTecnica) {
+		this.schedaTecnica = schedaTecnica;
 	}
 
 	public Set<DomandaVerbaleDTO> getDomandeVerbale() {
@@ -148,7 +167,11 @@ public class VerbaleDTO implements Serializable {
 				domandeVerbaleobj.add(domanda.getDomandaJsonObject());
 			}
 			jobj.add("domande", domandeVerbaleobj);
-		}		
+		}	
+		
+		if(this.type.equals(VerbaleDTO.VERBALE) && this.schedaTecnica!=null) {
+			jobj.add("schedaTecnica", this.schedaTecnica.getVerbaleJsonObject());
+		}
 		
 		
 		return jobj;

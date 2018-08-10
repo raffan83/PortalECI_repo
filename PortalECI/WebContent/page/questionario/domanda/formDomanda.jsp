@@ -27,7 +27,7 @@
 			<label for="domanda.placeholder" class="col-sm-2 control-label">Placeholder della domanda</label>
 			<div class="col-sm-10">
 				<div class="input-group">
-	                <input type="text" name="domanda.placeholder" class="form-control" placeholder="Placeholder della domanda" value="${domanda.placeholder!=null?domanda.placeholder.substring(0, domanda.placeholder.length()-4):''}"/>
+	                <input type="text" name="domanda.placeholder" class="form-control placeholder-domanda-input" placeholder="Placeholder della domanda" value="${domanda.placeholder!=null?domanda.placeholder.substring(0, domanda.placeholder.length()-4):''}"/>
 	                <span class="input-group-addon">_QST</span>
 	              </div>
 			</div>
@@ -53,10 +53,10 @@
 			</div>
 		</div>	
 		<div class="form-group">
-			<label for="risposta.placeholder" class="col-sm-2 control-label">Placeholder della risposta</label>
+			<label for="risposta.placeholder" class="col-sm-2 control-label ">Placeholder della risposta</label>
 			<div class="col-sm-10">
 				<div class="input-group">
-	                <input type="text" name="risposta.placeholder" class="form-control" placeholder="Placeholder della risposta" value="${domanda.risposta.placeholder!=null?domanda.risposta.placeholder.substring(0, domanda.risposta.placeholder.length()-4):''}"/>
+	                <input type="text" name="risposta.placeholder" class="form-control placeholder-risposta-input" placeholder="Placeholder della risposta" value="${domanda.risposta.placeholder!=null?domanda.risposta.placeholder.substring(0, domanda.risposta.placeholder.length()-4):''}"/>
 	                <span class="input-group-addon">_RES</span>
 	              </div>
 			</div>

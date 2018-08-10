@@ -110,6 +110,12 @@
 						<li>
 							<a href="gestioneAssociazioni.do"><i class="fa fa-hand-peace-o"></i>Gestione Associazioni</a>
 						</li>
+						<li>
+							<a href="listaCategorieVerifica.do"><i class="fa fa-archive"></i>Gestione Categorie Verifica</a>
+						</li>
+						<li>
+							<a href="listaTipiVerifica.do"><i class="fa fa-sitemap"></i>Gestione Tipi Verifica</a>
+						</li>
           			</ul>
           		<% }%>
         	</li>

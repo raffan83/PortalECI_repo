@@ -2,6 +2,7 @@ package it.portalECI.action;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -67,13 +68,16 @@ public class GestioneListaInterventi extends HttpServlet {
 					
 			List<InterventoDTO> listaInterventi =GestioneInterventoBO.getListaInterventi(null,session) ;
 			
-
 			ArrayList<TipoVerificaDTO> tipi_verifica = GestioneInterventoBO.getTipoVerifica(session);
 			ArrayList<CategoriaVerificaDTO> categorie_verifica = GestioneInterventoBO.getCategoriaVerifica(session);
 			
+			Map<String,String> clienti = new HashMap<String,String>();
+			clienti=GestioneCommesseBO.getMappaClienti();
+
 			request.getSession().setAttribute("listaInterventi", listaInterventi);
 			request.getSession().setAttribute("tipi_verifica", tipi_verifica);
 			request.getSession().setAttribute("categorie_verifica", categorie_verifica);
+			request.getSession().setAttribute("clienti", clienti);
 			
 			RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/page/configurazioni/gestioneListaInterventi.jsp");
 	     	dispatcher.forward(request,response);

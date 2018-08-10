@@ -85,6 +85,10 @@ public class GestioneVerbaleBO {
 		verbale.setStato(stato );			
 		session.update(verbale);
 		InterventoDTO intervento= verbale.getIntervento();	
+		if(intervento==null) {
+			//la scheda tecnica non ha un intervento associato per il momento
+			return;
+		}
 		Boolean verificato=true;
 		
 		for(VerbaleDTO verbaleInt : intervento.getVerbali()) {
@@ -113,6 +117,20 @@ public class GestioneVerbaleBO {
 			verbale.setCodiceCategoria(questionario.getTipo().getCategoria().getCodice());
 			verbale.setDescrizioneVerifica(questionario.getTipo().getCategoria().getDescrizione()+" - "+questionario.getTipo().getDescrizione());
 			verbale.setStato(GestioneStatoVerbaleDAO.getStatoVerbaleById(StatoVerbaleDTO.CREATO, session));
+			verbale.setType(VerbaleDTO.VERBALE);
+	
+			if(questionario.getDomandeSchedaTecnica().size()>0) {
+				VerbaleDTO schedaTecnica = new VerbaleDTO();
+				schedaTecnica.setQuestionarioID(questionario.getId());
+				schedaTecnica.setCodiceVerifica(questionario.getTipo().getCodice());
+				schedaTecnica.setCodiceCategoria(questionario.getTipo().getCategoria().getCodice());
+				schedaTecnica.setDescrizioneVerifica(questionario.getTipo().getCategoria().getDescrizione()+" - "+questionario.getTipo().getDescrizione());
+				schedaTecnica.setStato(GestioneStatoVerbaleDAO.getStatoVerbaleById(StatoVerbaleDTO.CREATO, session));
+				schedaTecnica.setType(VerbaleDTO.SK_TEC);
+				
+				GestioneVerbaleDAO.save(schedaTecnica, session);
+				verbale.setSchedaTecnica(schedaTecnica);
+			}
 			GestioneVerbaleDAO.save(verbale, session);
 			result=verbale;
 		}		
@@ -129,7 +147,7 @@ public class GestioneVerbaleBO {
 			QuestionarioDTO questionario = GestioneQuestionarioDAO.getQuestionarioById(verbale.getQuestionarioID(),
 					session);
 			if (questionario != null) {
-				if (questionario.getDomandeVerbale() != null) {
+				if (questionario.getDomandeVerbale() != null && verbale.getType().equals(VerbaleDTO.VERBALE)) {
 					for (DomandaQuestionarioDTO domandaQuestionario : questionario.getDomandeVerbale()) {
 						DomandaVerbaleDTO domandaVerbaleDTO = new DomandaVerbaleDTO();
 						domandaVerbaleDTO.setDomandaQuestionario(domandaQuestionario);
@@ -191,18 +209,97 @@ public class GestioneVerbaleBO {
 					result = verbale;
 				}
 			}
+			
+			if(verbale.getSchedaTecnica()!=null) {
+				VerbaleDTO schedaTecnica=verbale.getSchedaTecnica();
+			
+				if (schedaTecnica.getDomandeVerbale() != null) {
+					schedaTecnica.getDomandeVerbale().clear();
+				}
+			
+				if (questionario != null  && schedaTecnica.getType().equals(VerbaleDTO.SK_TEC)) {
+					if (questionario.getDomandeSchedaTecnica() != null) {
+						for (DomandaQuestionarioDTO domandaSchedaTecnica : questionario.getDomandeSchedaTecnica()) {
+							DomandaVerbaleDTO domandaSchedaTecnicaDTO = new DomandaVerbaleDTO();
+							domandaSchedaTecnicaDTO.setDomandaQuestionario(domandaSchedaTecnica);
+							if (domandaSchedaTecnica.getRisposta() != null) {
+								RispostaVerbaleDTO rispostaSchedaTecnicaDTO = null;
+								switch (domandaSchedaTecnica.getRisposta().getTipo()) {
+									case RispostaQuestionario.TIPO_TESTO:
+										rispostaSchedaTecnicaDTO = new RispostaTestoVerbaleDTO();
+										RispostaTestoVerbaleDTO rispostaTestoVerbaleDTO = (RispostaTestoVerbaleDTO) rispostaSchedaTecnicaDTO;
+										rispostaTestoVerbaleDTO.setRispostaQuestionario(GestioneRispostaQuestionarioDAO
+												.getRispostaInstance(RispostaTestoQuestionarioDTO.class,
+												domandaSchedaTecnica.getRisposta().getId(), session));
+										GestioneRispostaVerbaleDAO.save(rispostaTestoVerbaleDTO, session);
+										domandaSchedaTecnicaDTO.setRisposta(rispostaTestoVerbaleDTO);
+										break;
+									case RispostaQuestionario.TIPO_FORMULA:
+										rispostaSchedaTecnicaDTO = new RispostaFormulaVerbaleDTO();
+										RispostaFormulaVerbaleDTO rispostaFormulaVerbaleDTO = (RispostaFormulaVerbaleDTO) rispostaSchedaTecnicaDTO;
+										rispostaFormulaVerbaleDTO.setRispostaQuestionario(GestioneRispostaQuestionarioDAO
+												.getRispostaInstance(RispostaFormulaQuestionarioDTO.class,
+												domandaSchedaTecnica.getRisposta().getId(), session));
+										GestioneRispostaVerbaleDAO.save(rispostaFormulaVerbaleDTO, session);
+										domandaSchedaTecnicaDTO.setRisposta(rispostaFormulaVerbaleDTO);
+										break;
+									case RispostaQuestionario.TIPO_SCELTA:
+										rispostaSchedaTecnicaDTO = new RispostaSceltaVerbaleDTO();
+										RispostaSceltaVerbaleDTO rispostaSceltaVerbaleDTO = (RispostaSceltaVerbaleDTO) rispostaSchedaTecnicaDTO;
+										RispostaSceltaQuestionarioDTO rispostaSceltaQuestionario = GestioneRispostaQuestionarioDAO
+												.getRispostaInstance(RispostaSceltaQuestionarioDTO.class,
+												domandaSchedaTecnica.getRisposta().getId(), session);
+										rispostaSceltaVerbaleDTO.setRispostaQuestionario(rispostaSceltaQuestionario);
+										if (rispostaSceltaQuestionario.getOpzioni() != null) {
+											for (OpzioneRispostaQuestionarioDTO opzioneRispostaQuestionarioDTO : rispostaSceltaQuestionario.getOpzioni()) {
+												OpzioneRispostaVerbaleDTO opzioneRispostaVerbaleDTO = new OpzioneRispostaVerbaleDTO();
+												opzioneRispostaVerbaleDTO.setOpzioneQuestionario(opzioneRispostaQuestionarioDTO);
+												opzioneRispostaVerbaleDTO.setRisposta(rispostaSceltaVerbaleDTO);
+												rispostaSceltaVerbaleDTO.addToOpzioni(opzioneRispostaVerbaleDTO);
+										
+										
+											}
+										}
+										GestioneRispostaVerbaleDAO.save(rispostaSceltaVerbaleDTO, session);
+										domandaSchedaTecnicaDTO.setRisposta(rispostaSceltaVerbaleDTO);
+										break;
+										
+									default:
+										break;
+
+								}
+
+								domandaSchedaTecnicaDTO.setVerbale(schedaTecnica);
+								GestioneDomandaVerbaleDAO.save(domandaSchedaTecnicaDTO, session);
+								schedaTecnica.addToDomande(domandaSchedaTecnicaDTO);
+
+							}
+						}
+						cambioStato(schedaTecnica, GestioneStatoVerbaleDAO.getStatoVerbaleById(StatoVerbaleDTO.IN_COMPILAZIONE, session), session);
+						result = verbale;
+					}
+				}
+			}
 		}
 		return result;
 	}
 	
 	
 	public static File getPDFVerbale(VerbaleDTO verbale, QuestionarioDTO questionario, Session session) throws Exception{
-		
-		String path = "Intervento_"+verbale.getIntervento().getId()+File.separator+"Verbale_"+verbale.getCodiceCategoria()+"_"+verbale.getId()+File.separator;
+		String path="";
+		String html ="";
+		if(verbale.getType().equals(VerbaleDTO.VERBALE)) {
+			path = "Intervento_"+verbale.getIntervento().getId()+File.separator+"Verbale_"+verbale.getCodiceCategoria()+"_"+verbale.getId()+File.separator;
+			
+			html = questionario.getTemplateVerbale().getTemplate();
+		}else {
+			VerbaleDTO verb=GestioneVerbaleDAO.getVerbaleFromSkTec(String.valueOf(verbale.getId()), session);
+			path = "Intervento_"+verb.getIntervento().getId()+File.separator+"SchedaTecnica_"+verbale.getCodiceCategoria()+"_"+verbale.getId()+File.separator;
+			
+			html = questionario.getTemplateSchedaTecnica().getTemplate();
+		}
 		new File(Costanti.PATH_CERTIFICATI+path).mkdirs();
-		File file = new File(Costanti.PATH_CERTIFICATI+path, questionario.getTitolo()+"_"+questionario.getTipo().getCodice()+"_"+verbale.getIntervento().getId()+".pdf");
-
-		String html = questionario.getTemplateVerbale().getTemplate();
+		File file = new File(Costanti.PATH_CERTIFICATI+path, questionario.getTitolo()+"_"+questionario.getTipo().getCodice()+"_"+verbale.getIntervento().getId()+".pdf");		
 
 		for (DomandaVerbaleDTO domanda:verbale.getDomandeVerbale()) {
 
@@ -309,9 +406,7 @@ public class GestioneVerbaleBO {
 	private static String getTemplateRisposta(RispostaSceltaVerbaleDTO risposta) {
 
 		String template = "";
-		String inputType = risposta.getRispostaQuestionario().getMultipla()==false?"radio":"checkbox";
-		
-		///
+		String inputType = risposta.getRispostaQuestionario().getMultipla()==false?"radio":"checkbox";		
 			
 		List opzioni=new ArrayList();
 		opzioni.addAll(risposta.getOpzioni());
@@ -324,9 +419,7 @@ public class GestioneVerbaleBO {
 	            return  pos2 - pos1;
 	        }
 	    });
-		
-		
-		///
+			
 		
 		if(inputType.equalsIgnoreCase("radio")) {
 			template += "<br/>";
@@ -383,8 +476,16 @@ public class GestioneVerbaleBO {
 					throw new ValidationException("Verbale in stato diverso da IN_COMPILAZIONE");
 				}
 				
-				if (!verbaleDTO.getIntervento().getTecnico_verificatore().getUser().equals(user.getUser())) {
-					throw new ValidationException("Utente non abilitato all'invio del Verbale");
+				if(verbaleDTO.getType().equals(VerbaleDTO.VERBALE)) {
+					if (!verbaleDTO.getIntervento().getTecnico_verificatore().getUser().equals(user.getUser())) {
+						throw new ValidationException("Utente non abilitato all'invio del Verbale");
+					}
+				}else {
+					VerbaleDTO verbale = GestioneVerbaleDAO.getVerbaleFromSkTec(jsonRequest.get("verbale_id").getAsString(), session);
+					
+					if (!verbale.getIntervento().getTecnico_verificatore().getUser().equals(user.getUser())) {
+						throw new ValidationException("Utente non abilitato all'invio della Scheda Tecnica");
+					}
 				}
 				
 				
@@ -397,7 +498,8 @@ public class GestioneVerbaleBO {
 					case "RES_TEXT":
 						RispostaTestoVerbaleDTO rispostaTesto = GestioneRispostaVerbaleDAO
 								.getRispostaInstance(RispostaTestoVerbaleDTO.class, responseID, session);
-						rispostaTesto.setResponseValue(responseVerbale.get("valore").getAsString());
+						if(responseVerbale.get("valore")!=null)
+							rispostaTesto.setResponseValue(responseVerbale.get("valore").getAsString());
 						GestioneRispostaVerbaleDAO.save(rispostaTesto, session);
 						break;
 					case "RES_CHOICE":
@@ -420,9 +522,12 @@ public class GestioneVerbaleBO {
 					case "RES_FORMULA":
 						RispostaFormulaVerbaleDTO rispostaFormula = GestioneRispostaVerbaleDAO
 								.getRispostaInstance(RispostaFormulaVerbaleDTO.class, responseID, session);
-						rispostaFormula.setValue1(responseVerbale.get("valore_1").getAsString());
-						rispostaFormula.setValue2(responseVerbale.get("valore_2").getAsString());
-						rispostaFormula.setResponseValue(responseVerbale.get("risultato").getAsString());
+						if(responseVerbale.get("valore_1")!=null)
+							rispostaFormula.setValue1(responseVerbale.get("valore_1").getAsString());
+						if(responseVerbale.get("valore_2")!=null)
+							rispostaFormula.setValue2(responseVerbale.get("valore_2").getAsString());
+						if(responseVerbale.get("risultato")!=null)
+							rispostaFormula.setResponseValue(responseVerbale.get("risultato").getAsString());
 						GestioneRispostaVerbaleDAO.save(rispostaFormula, session);
 						break;
 

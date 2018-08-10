@@ -33,8 +33,11 @@
         			<small></small>
       			</h1>  
       			<c:if test="${verbale.getStato().getId()>=5 }">
-      				<button class="btn btn-default pull-right" onClick="generaCertificato()" style="margin-left:5px"><i class="glyphicon glyphicon-edit"></i> Genera Certificato</button>
-      			</c:if>     
+      				<button class="btn btn-default pull-right" onClick="generaCertificato(${verbale.getId()})" style="margin-left:5px"><i class="glyphicon glyphicon-edit"></i> Genera Certificato</button>
+      			</c:if>
+      			<c:if test="${verbale.getSchedaTecnica()!=null && verbale.getSchedaTecnica().getStato().getId()>=5 }">
+      				<button class="btn btn-default pull-right" onClick="generaCertificato(${verbale.getSchedaTecnica().getId()})" style="margin-left:5px"><i class="glyphicon glyphicon-edit"></i> Genera Scheda Tecnica</button>
+      			</c:if>   
       			<c:if test="${verbale.getDocumentiVerbale().size()>0}">
       				<c:forEach items="${verbale.getDocumentiVerbale()}" var="docum">	
       					<c:if test="${docum.getType().equals('CERTIFICATO') }">
@@ -176,6 +179,59 @@
 									</div>
 								</c:if>
 								
+								<c:if test="${verbale.getSchedaTecnica()!=null && verbale.getSchedaTecnica().getStato().getId()>=3 }">
+        							<div class="row">         
+        								<div class="col-xs-12">
+											<div class="box box-danger box-solid">
+												<div class="box-header with-border">
+	 												Controllo Scheda Tecnica
+													<div class="box-tools pull-right">		
+														<button data-widget="collapse" class="btn btn-box-tool"><i class="fa fa-minus"></i></button>
+													</div>
+												</div>
+												<div class="box-body">	
+													<form id="formVerbale" >
+														<c:forEach items="${domandeVerbaleSchedaTecnica}" var="domVerbale" varStatus="loop">	
+        													<div class="col-xs-12" style="border-bottom: 1px solid #ddd;">
+        														<label for="titolo-input" class="control-label col-xs-12">${domVerbale.getDomandaQuestionario().getTesto()}</label><br/>
+        												
+    	    													<c:set var="domVerbale" value="${domVerbale}" scope="request"></c:set>
+																<jsp:include page="gestioneVerbaleDettaglio.jsp"></jsp:include>        													
+
+        													</div>
+														</c:forEach>
+													</form>
+												</div>
+												<c:if test='${verbale.getStato().getId()== 4}'>
+													<div class="box-footer">
+												
+														<button type="button" class="btn btn-default ml-1 savebutt" onclick="modificaRisposte()" style="margin-left: 1em; float: right;">	
+															<span >SALVA MODIFICHE</span>
+														</button>	
+													
+														<button type="button" class="btn btn-default ml-1 savebutt" onclick="annullaModifiche()" style="margin-left: 1em; float: right;">	
+															<span >ANNULLA MODIFICHE</span>
+														</button>	
+																	
+            	      									<button type="button" class="btn btn-default  ml-1 changestate" onclick="salvaCambioStato('6')" style="margin-left: 1em; color:#000000 !important; background-color:${verbale.getStato().getColore(6)} !important; float: right;">
+                	  										<i class="glyphicon glyphicon-remove"></i>
+                  											<span >RIFIUTATO</span>
+                  										</button>
+										
+														<button type="button" class="btn btn-default ml-1 changestate" onclick="salvaCambioStato('5')" style="margin-left: 1em; color:#000000 !important; background-color:${verbale.getStato().getColore(5)} !important; float: right;">
+															<i class="glyphicon glyphicon glyphicon-ok"></i>
+															<span >ACCETTATO</span>
+														</button>
+															      										
+													</div>
+												</c:if>		
+												
+											</div>
+										</div>
+									</div>
+								</c:if>
+								<!-- fine scheda tecnica -->
+						
  							</div>
 						</div>
 						  		
@@ -290,13 +346,13 @@
 				});
 			}
 			
-			function generaCertificato(){
+			function generaCertificato(id){
 				pleaseWaitDiv = $('#pleaseWaitDialog');
 				pleaseWaitDiv.modal();
 				$.ajax({
 					type: "POST",
 					url: "gestioneVerbale.do?action=generaCertificato",
-					data : "idVerbale=${verbale.getId()}",				
+					data : "idVerbale="+id,				
 					dataType: "json",
 					success: function( data, textStatus) {
 						location.reload();
@@ -307,7 +363,7 @@
 					}
 				});
 			}
-
+			
 			function modificaRisposte(){		
 				pleaseWaitDiv = $('#pleaseWaitDialog');
 				pleaseWaitDiv.modal();

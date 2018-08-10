@@ -19,8 +19,8 @@ public class GestioneQuestionarioBO {
 		return GestioneQuestionarioDAO.getQuestionarioById(idQuestionario, session);
 	}
 	
-	public static List getQuestionariPlaceholder(Session session) {
-		return GestioneQuestionarioDAO.getQuestionariPlaceholder( session);
+	public static List getQuestionariPlaceholder(String type,String idQuestionario, Session session) {
+		return GestioneQuestionarioDAO.getQuestionariPlaceholder(type, idQuestionario, session);
 	}
 	
 	public static Boolean controlloQuestionarioInUso(Integer idQuestionario,Session session) {
