@@ -2,6 +2,7 @@ package it.portalECI.action;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.List;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -60,49 +61,64 @@ public class GestionePermessi extends HttpServlet {
         try{
        	 	 String action =  request.getParameter("action");
 	       	 if(action !=null ){
-					
+	       		
 	    	 	if(action.equals("nuovo")){
 	    	 		String descrizione = request.getParameter("descrizione");
 	    	 		String chiave_permesso = request.getParameter("chiave_permesso");
-	  	     				    	 	    	 			
-	     			PermessoDTO permesso = new PermessoDTO();
-	   	 			permesso.setDescrizione(descrizione);
-	   	 			permesso.setChiave_permesso(chiave_permesso);
+	    	 		
+	    	 		if(GestionePermessiBO.checkChiavePermesso(chiave_permesso, 0, session)) {
+	    	 			PermessoDTO permesso = new PermessoDTO();
+	    	 			permesso.setDescrizione(descrizione);
+	    	 			permesso.setChiave_permesso(chiave_permesso);
 	    	    	 			
-	    	 		/*
-	    	 		 * TO DO Salvataggio Nuovo Company
-	    	 		 */
-
-	    			myObj.addProperty("success", true);
-		 			myObj.addProperty("messaggio", "Permesso salvato con successo");  
-		 			 	
+	    	 			Boolean success = GestionePermessiBO.savePermesso(permesso, action, session);
+	   	 			
+	    	 			if(success) {
+	    	 				myObj.addProperty("success", true);
+	    	 				myObj.addProperty("messaggio", "Permesso salvato con successo");
+	    	 			}else {
+	    	 				myObj.addProperty("success", false);
+	    	 				myObj.addProperty("messaggio","Errore Salvataggio");
+				
+	    	 				session.getTransaction().rollback();
+	    	 				session.close();
+	    	 			}
+	    	 		}else {
+	    	 			myObj.addProperty("success", false);
+    	 				myObj.addProperty("messaggio","Esiste gi\u00E0 un permesso con questa chiave!");
+	    	 		}
 	    	 	}else if(action.equals("modifica")){
 	    	 			
 	    	 		String id = request.getParameter("id");
 
 	    	 		String descrizione = request.getParameter("descrizione");
 	    	 		String chiave_permesso = request.getParameter("chiave_permesso");
-	    	 	    	 			
+	    	 		
+	    	 		if(GestionePermessiBO.checkChiavePermesso(chiave_permesso, Integer.parseInt(id), session)) {
+	    	 			PermessoDTO permesso = GestionePermessiBO.getPermessoById(id, session);
 	    	 			
-	    	 		PermessoDTO permesso = GestionePermessiBO.getPermessoById(id, session);
+	    	 			if(descrizione != null && !descrizione.equals("")){
+	    	 				permesso.setDescrizione(descrizione);
+	    	 			}
+	    	 			if(chiave_permesso != null && !chiave_permesso.equals("")){
+	    	 				permesso.setChiave_permesso(chiave_permesso);
+	    	 			}
 	    	 			
-	    	 		if(descrizione != null && !descrizione.equals("")){
-	    	 			permesso.setDescrizione(descrizione);
+	    	 			Boolean success = GestionePermessiBO.savePermesso(permesso, action, session);
+	    	 			if(success) {	
+	    	 				myObj.addProperty("success", true);
+	    	 				myObj.addProperty("messaggio", "Permesso modificato con successo");
+	    	 			}else {
+	    	 				myObj.addProperty("success", false);
+	    	 				myObj.addProperty("messaggio","Errore Salvataggio");
+					
+	    	 				session.getTransaction().rollback();
+	    	 				session.close();
+	    	 			}
+	    	 		}else {
+	    	 			myObj.addProperty("success", false);
+    	 				myObj.addProperty("messaggio","Esiste gi\u00E0 un permesso con questa chiave!");
 	    	 		}
-	    	 		if(chiave_permesso != null && !chiave_permesso.equals("")){
-	    	 			permesso.setChiave_permesso(chiave_permesso);
-	    	 		}
-	    	 			
-	    	 			
-
-	    	 		/*
-	    	 		 * TO DO Update Company
-	    	 		 */
-	    	 			
-	    	 			
-	    	 			
-	    	 		myObj.addProperty("success", true);
-		 		 	myObj.addProperty("messaggio", "Permesso modificato con successo");  
 	    	 	}else if(action.equals("elimina")){
 	    	 			
 	    	 		String id = request.getParameter("id");
@@ -124,8 +140,12 @@ public class GestionePermessi extends HttpServlet {
 	    		myObj.addProperty("success", false);
 	    	 	myObj.addProperty("messaggio", "Nessuna action riconosciuta");  
 	    	 }	
+	       	 
+	       	 session.getTransaction().commit();
+	       	 session.close();	
+			
 	       	 out.println(myObj.toString());
-
+	       	 
         }catch(Exception ex){
         	
         	ex.printStackTrace();

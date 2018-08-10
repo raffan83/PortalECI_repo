@@ -1,7 +1,5 @@
 package it.portalECI.DAO;
 
-
-
 import it.portalECI.DTO.PermessoDTO;
 
 import java.util.List;
@@ -23,6 +21,26 @@ public class GestionePermessiDAO {
 			return result.get(0);
 		}
 		return null;	
+	}
+	
+	public static Boolean checkChiavePermesso(String chiave_permesso, int idPermesso, Session session){		
+		session.beginTransaction();
+		Query query= session.createQuery( "from PermessoDTO WHERE chiave_permesso= :_chiave_permesso");		
+		query.setParameter("_chiave_permesso", chiave_permesso);
+			
+		List<PermessoDTO> lista= query.list();
+		
+		if(lista.size()>0 && idPermesso==0) {
+   			return false;				
+   		}else if(idPermesso!=0) {
+   			for(PermessoDTO perm : lista) {
+   				if(perm.getIdPermesso()!=idPermesso) {
+   					return false;
+   				}
+   			}
+   		}
+		
+		return true;
 	}
 
 }

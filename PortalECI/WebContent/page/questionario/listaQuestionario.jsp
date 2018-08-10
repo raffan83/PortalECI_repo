@@ -4,6 +4,12 @@
 <%@page import="it.portalECI.DTO.QuestionarioDTO"%>
 <%@page import="java.util.ArrayList"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
+<%@page import="it.portalECI.DTO.UtenteDTO"%>
+
+<%
+	UtenteDTO user = (UtenteDTO)request.getSession().getAttribute("userObj");
+	request.setAttribute("user",user);
+%>
 
 <t:layout title="Dashboard" bodyClass="skin-red sidebar-mini wysihtml5-supported">
 
@@ -22,8 +28,10 @@
       				<h1 class = "pull-left">
         				Lista Questionari
         				<small>Fai click per entrare nel dettaglio del questionario</small>
-      				</h1>
-      				<a class="btn btn-default pull-right" href="gestioneQuestionario.do?"><i class="glyphicon glyphicon-plus"></i> Nuovo questionario</a>
+      				</h1>      			
+      				<c:if test="${user.checkPermesso('CREA_QUESTIONARIO')}">
+      					<a class="btn btn-default pull-right" href="gestioneQuestionario.do?"><i class="glyphicon glyphicon-plus"></i> Nuovo questionario</a>
+      				</c:if>
     			</section>
 				<div style="clear: both;"></div>
 			    <!-- Main content -->
@@ -63,9 +71,11 @@
 																		<fmt:formatDate pattern="dd/MM/yyyy" value='${questionario.updateDate}' type='date' />																
 																	</td>
 																	<td>
-																		<a href="gestioneQuestionario.do?idQuestionario=${questionario.id}&action=modifica" class="btn customTooltip customlink" title="Click per modificare il questionario">
-																			<i class="fa fa-edit"></i>
-																		</a>
+																		<c:if test="${user.checkPermesso('UPD_QUESTIONARIO')}">
+																			<a href="gestioneQuestionario.do?idQuestionario=${questionario.id}&action=modifica" class="btn customTooltip customlink" title="Click per modificare il questionario">
+																				<i class="fa fa-edit"></i>
+																			</a>
+																		</c:if>																		
 																		<a href="gestioneQuestionario.do?idQuestionario=${questionario.id}" class="btn customTooltip customlink" title="Click per aprire il dettaglio del questionario">
 																			<i class="fa fa-arrow-right"></i>
 																		</a>

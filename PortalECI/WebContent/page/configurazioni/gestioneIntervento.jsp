@@ -2,6 +2,13 @@
 <%@taglib prefix="t" tagdir="/WEB-INF/tags"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 
+<%@page import="it.portalECI.DTO.UtenteDTO"%>
+
+<%
+	UtenteDTO user = (UtenteDTO)request.getSession().getAttribute("userObj");
+	request.setAttribute("user",user);
+%>
+
 <t:layout title="Dashboard" bodyClass="skin-red sidebar-mini wysihtml5-supported">
 
 	<jsp:attribute name="body_area">
@@ -19,7 +26,9 @@
         			Dettaglio Commessa
         			<small></small>
       			</h1>
-      			<button class="btn btn-default pull-right" onClick="nuovoInterventoFromModal()"><i class="glyphicon glyphicon-edit"></i> Nuovo Intervento</button>
+      			<c:if test="${user.checkPermesso('NEW_INTERVENTO')}">
+      				<button class="btn btn-default pull-right" onClick="nuovoInterventoFromModal()"><i class="glyphicon glyphicon-edit"></i> Nuovo Intervento</button>
+      			</c:if>
       			<%-- <c:if test="${userObj.checkPermesso('NUOVO_INTERVENTO_METROLOGIA')}">  <button class="btn btn-default pull-right" onClick="nuovoInterventoFromModal()"><i class="glyphicon glyphicon-edit"></i> Nuovo Intervento</button></c:if> --%>
     		</section>
 			<div style="clear: both;"></div>
@@ -177,7 +186,7 @@
 																	</c:if>
 																</td>
 																<td class="centered">	
-	 																<c:if test="${userObj.checkPermesso('CAMBIO_STATO_INTERVENTO_METROLOGIA')}">ff
+	 																<c:if test="${userObj.checkPermesso('CAMBIO_STATO_INTERVENTO_METROLOGIA')}">
 																		<c:if test="${intervento.statoIntervento.id == 0}">
 																			<a href="#" class="customTooltip" title="Click per chiudere l'Intervento" onClick="chiudiIntervento(${intervento.id},1,'${loop.index}')" id="statoa_${intervento.id}">
 																				 <span class="label label-info">${intervento.statoIntervento.descrizione}</span>
@@ -213,9 +222,11 @@
 		 															</c:forEach>
 		 														</td>		 		
 																<td>
-																	<a class="btn customTooltip" title="Click per aprire il dettaglio dell'Intervento" onclick="callAction('gestioneInterventoDati.do?idIntervento=${intervento.id}');">
-                														<i class="fa fa-arrow-right"></i>
-            														</a>
+																	<c:if test="${user.checkPermesso('GESTIONE_INTERVENTO')}">
+																		<a class="btn customTooltip" title="Click per aprire il dettaglio dell'Intervento" onclick="callAction('gestioneInterventoDati.do?idIntervento=${intervento.id}');">
+                															<i class="fa fa-arrow-right"></i>
+            															</a>
+            														</c:if>
         														</td>
 															</tr> 
 														</c:forEach>

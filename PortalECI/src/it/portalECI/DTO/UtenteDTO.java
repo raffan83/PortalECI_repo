@@ -189,10 +189,12 @@ public class UtenteDTO implements Serializable {
 
 	
 	public boolean checkPermesso(String chiavePermesso){
-		Iterator<RuoloDTO> iterator = listaRuoli.iterator(); 
-	      
-		while (iterator.hasNext()){
-			RuoloDTO ruolo= (RuoloDTO) iterator.next(); 
+		//Iterator<RuoloDTO> iterator = listaRuoli.iterator(); 
+		Set<RuoloDTO> listaR=this.getListaRuoli();
+		
+		for(RuoloDTO ruolo : listaR) {
+		//while (iterator.hasNext()){
+			//RuoloDTO ruolo= (RuoloDTO) iterator.next(); 
 			  			
 			Iterator<PermessoDTO> iteratorPermessi=(Iterator<PermessoDTO>) ruolo.getListaPermessi().iterator();
 			
