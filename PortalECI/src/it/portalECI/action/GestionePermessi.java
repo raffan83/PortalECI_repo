@@ -65,11 +65,13 @@ public class GestionePermessi extends HttpServlet {
 	    	 	if(action.equals("nuovo")){
 	    	 		String descrizione = request.getParameter("descrizione");
 	    	 		String chiave_permesso = request.getParameter("chiave_permesso");
+	    	 		String statoPermesso = request.getParameter("statoPermesso");
 	    	 		
 	    	 		if(GestionePermessiBO.checkChiavePermesso(chiave_permesso, 0, session)) {
 	    	 			PermessoDTO permesso = new PermessoDTO();
 	    	 			permesso.setDescrizione(descrizione);
 	    	 			permesso.setChiave_permesso(chiave_permesso);
+	    	 			permesso.setStatoPermesso(Boolean.valueOf(statoPermesso));
 	    	    	 			
 	    	 			Boolean success = GestionePermessiBO.savePermesso(permesso, action, session);
 	   	 			
@@ -93,6 +95,7 @@ public class GestionePermessi extends HttpServlet {
 
 	    	 		String descrizione = request.getParameter("descrizione");
 	    	 		String chiave_permesso = request.getParameter("chiave_permesso");
+	    	 		String statoPermesso = request.getParameter("statoPermesso");
 	    	 		
 	    	 		if(GestionePermessiBO.checkChiavePermesso(chiave_permesso, Integer.parseInt(id), session)) {
 	    	 			PermessoDTO permesso = GestionePermessiBO.getPermessoById(id, session);
@@ -103,6 +106,8 @@ public class GestionePermessi extends HttpServlet {
 	    	 			if(chiave_permesso != null && !chiave_permesso.equals("")){
 	    	 				permesso.setChiave_permesso(chiave_permesso);
 	    	 			}
+
+	    	 			permesso.setStatoPermesso(Boolean.valueOf(statoPermesso));
 	    	 			
 	    	 			Boolean success = GestionePermessiBO.savePermesso(permesso, action, session);
 	    	 			if(success) {	

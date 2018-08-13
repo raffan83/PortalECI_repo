@@ -7,7 +7,7 @@ public class PermessoDTO implements Serializable {
 	int idPermesso;
 	String descrizione;
 	String chiave_permesso;
-	int statoPermesso;
+	Boolean statoPermesso;
 	
 	
 	public int getIdPermesso() {
@@ -28,10 +28,10 @@ public class PermessoDTO implements Serializable {
 	public void setChiave_permesso(String chiave_permesso) {
 		this.chiave_permesso = chiave_permesso;
 	}
-	public int getStatoPermesso() {
+	public Boolean getStatoPermesso() {
 		return statoPermesso;
 	}
-	public void setStatoPermesso(int statoPermesso) {
+	public void setStatoPermesso(Boolean statoPermesso) {
 		this.statoPermesso = statoPermesso;
 	}
 	

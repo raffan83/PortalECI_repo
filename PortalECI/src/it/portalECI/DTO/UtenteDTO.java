@@ -201,7 +201,7 @@ public class UtenteDTO implements Serializable {
 			while(iteratorPermessi.hasNext()){
 				PermessoDTO permesso=iteratorPermessi.next();
 				
-				if(permesso.getChiave_permesso().equals(chiavePermesso)){
+				if(permesso.getChiave_permesso().equals(chiavePermesso) && permesso.getStatoPermesso()){
 					return true;
 				}
 			}		   

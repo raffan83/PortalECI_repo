@@ -68,6 +68,7 @@
  																		<td>ID</td>
  																		<th>descrizione</th>
  																		<th>Chiave Permesso</th>
+ 																		<th>Stato Permesso</th>
   																		<th>Action</th>
  																	</tr>
  																</thead> 
@@ -77,9 +78,17 @@
 																			<td>${permesso.idPermesso}</td>
 																			<td>${permesso.descrizione}</td>
 																			<td>${permesso.chiave_permesso}</td>
+																			<td>																				
+																				<c:if test="${permesso.statoPermesso}">
+																					<i class="fa fa-check"></i>
+																				</c:if>
+																				<c:if test="${!permesso.statoPermesso}">
+																					<i class="fa fa-close"></i>
+																				</c:if>
+																			</td>
 																			<td>	
 																				<c:if test="${user.checkPermesso('UPD_PERMESSI')}">
-																					<a href="#" onClick="modalModificaPermesso('${permesso.idPermesso}','${permesso.descrizione}','${permesso.chiave_permesso}')" class="btn btn-warning ">
+																					<a href="#" onClick="modalModificaPermesso('${permesso.idPermesso}','${permesso.descrizione}','${permesso.chiave_permesso}',${permesso.statoPermesso})" class="btn btn-warning ">
 																						<i class="fa fa-edit"></i>
 																					</a>
 																				</c:if>
@@ -127,6 +136,12 @@
         	 													<div class="col-sm-10">
          															<input class="form-control" id="descrizione" type="text" name="descrizione" value="" required />
      															</div>     
+   															</div>   
+   															<div class="form-group">
+    	      													<label for="statoPermesso" class="col-sm-2 control-label">Stato:</label>
+        	 													<div class="col-sm-10">
+         															<input class="form-control" id="statoPermesso" type="checkbox" name="statoPermesso" />
+     															</div>     
    															</div>     
 	 													</div>
               											<!-- /.tab-pane -->
@@ -173,7 +188,13 @@
 											         			<div class="col-sm-10">
         	 														<input class="form-control" id="moddescrizione" type="text" name="moddescrizione" value=""  required/>
      															</div>     	 
-   															</div>                
+   															</div>    
+   															<div class="form-group">
+    	      													<label for="modstatoPermesso" class="col-sm-2 control-label">Stato:</label>
+        	 													<div class="col-sm-10">         															
+         															<input type="checkbox" id="modstatoPermesso" name="modstatoPermesso" value="" />
+     															</div>     
+   															</div>                 
 	 													</div>
               											<!-- /.tab-pane -->
             										</div>
