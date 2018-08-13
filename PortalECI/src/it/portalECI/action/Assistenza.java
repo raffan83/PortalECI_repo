@@ -20,7 +20,6 @@ import com.google.gson.JsonObject;
 
 import com.google.gson.JsonParser;
 
-import com.lowagie.text.pdf.codec.Base64.InputStream;
 
 
 import it.portalECI.DAO.SessionFacotryDAO;

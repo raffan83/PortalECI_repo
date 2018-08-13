@@ -20,5 +20,13 @@
 		<property name="template">
 			<column name="template" sql-type="LONGTEXT" />
 		</property> 
+		
+		<property name="header">
+			<column name="header" length="256"/>
+		</property> 
+		
+		<property name="footer">
+			<column name="footer" length="256"/>
+		</property> 
 	</class>
 </hibernate-mapping> 

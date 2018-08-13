@@ -96,7 +96,10 @@
 											<div class="box-body">
 												<c:forEach items="${questionario.domandeVerbale}" var="domanda">
 													<c:set var="domanda" value="${domanda}" scope="request"></c:set>
-													<jsp:include page="domanda/dettaglioDomanda.jsp"></jsp:include>
+													<c:set var="domanda_header" value="Domanda ${domanda.posizione+1}" scope="request"></c:set>
+													<div class="col-md-12">
+														<jsp:include page="domanda/dettaglioDomanda.jsp"></jsp:include>
+													</div>
 												</c:forEach>
 											</div>
 										</div>
@@ -116,7 +119,10 @@
 											<div class="box-body">
 												<c:forEach items="${questionario.domandeSchedaTecnica}" var="domanda">
 													<c:set var="domanda" value="${domanda}" scope="request"></c:set>
-													<jsp:include page="domanda/dettaglioDomanda.jsp"></jsp:include>
+													<c:set var="domanda_header" value="Domanda ${domanda.posizione+1}" scope="request"></c:set>
+													<div class="col-md-12">
+														<jsp:include page="domanda/dettaglioDomanda.jsp"></jsp:include>
+													</div>
 												</c:forEach>
 											</div>
 										</div>
@@ -162,7 +168,20 @@
 
 
 		<jsp:attribute name="extra_css">
-
+		<style>
+			.box.box-domanda{
+				box-shadow: 0 0 0 0;
+			}
+			.box.box-domanda .box-body{
+				border-left:0;
+				border-bottom: 0;
+				border-right: 0;
+			}
+			
+			.lista-domande-annidate-col{
+				padding: 0 0 0 30px;
+			}
+		</style>
 
 		</jsp:attribute>
 
