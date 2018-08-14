@@ -9,7 +9,8 @@
 <%@taglib prefix="t" tagdir="/WEB-INF/tags"%>
 
 <%
-	UtenteDTO utente = (UtenteDTO)request.getSession().getAttribute("userObj");	
+	UtenteDTO user = (UtenteDTO)request.getSession().getAttribute("userObj");	
+	request.setAttribute("user",user);
 %>
 	
 <t:layout title="Dashboard" bodyClass="skin-red sidebar-mini wysihtml5-supported">
@@ -44,13 +45,15 @@
 														<button data-widget="collapse" class="btn btn-box-tool"><i class="fa fa-minus"></i></button>
 													</div>
 												</div>
-												<div class="box-body">
+												<div class="box-body">													
 													<div class="row">
-														<div class="col-lg-12">
-															<button class="btn btn-primary" onClick="nuovoInterventoFromModal('#modalNuovaCategoriaVerifica')">Nuova Categoria Verifica</button>
+														<div class="col-lg-12">															
+															<c:if test="${user.checkPermesso('NEW_CATEGORIA_VERIFICA')}">
+																<button class="btn btn-primary" onClick="nuovoInterventoFromModal('#modalNuovaCategoriaVerifica')">Nuova Categoria Verifica</button>
+															</c:if>
 															<div id="errorMsg" >
 															</div>
-														</div>
+														</div>														
 													</div>
  													<div class="clearfix"></div>
 													<div class="row" style="margin-top:20px;">
@@ -70,9 +73,13 @@
 																			<td>${categoria.id}</td>
 																			<td>${categoria.descrizione}</td>
 																			<td>${categoria.codice}</td>
-																			<td>	
-																				<a href="#" onClick="modalModificaCategoriaVerifica('${categoria.id}','${categoria.descrizione}','${categoria.codice}')" class="btn btn-warning "><i class="fa fa-edit"></i></a> 
-																				<a href="#" onClick="modalEliminaCategoriaVerifica('${categoria.id}','${categoria.descrizione}')" class="btn btn-danger "><i class="fa fa-remove"></i></a>	
+																			<td>																					
+																				<c:if test="${user.checkPermesso('UPD_CATEGORIA_VERIFICA')}">
+																					<a href="#" onClick="modalModificaCategoriaVerifica('${categoria.id}','${categoria.descrizione}','${categoria.codice}')" class="btn btn-warning "><i class="fa fa-edit"></i></a>
+																				</c:if> 																				
+																				<c:if test="${user.checkPermesso('DEL_CATEGORIA_VERIFICA')}"> 
+																					<a href="#" onClick="modalEliminaCategoriaVerifica('${categoria.id}','${categoria.descrizione}')" class="btn btn-danger "><i class="fa fa-remove"></i></a>
+																				</c:if>
 																			</td>
 																		</tr>
 		 															</c:forEach>		

@@ -9,6 +9,8 @@ public class TemplateQuestionarioDTO {
 	private Date updateDate;
 	private String titolo;
 	private String template;
+	private String header;
+	private String footer;
 	
 	public TemplateQuestionarioDTO() {
 		// TODO Auto-generated constructor stub
@@ -52,6 +54,22 @@ public class TemplateQuestionarioDTO {
 
 	public void setTemplate(String template) {
 		this.template = template;
+	}
+
+	public String getHeader() {
+		return header;
+	}
+
+	public void setHeader(String header) {
+		this.header = header;
+	}
+
+	public String getFooter() {
+		return footer;
+	}
+
+	public void setFooter(String footer) {
+		this.footer = footer;
 	}
 	
 	

@@ -9,11 +9,17 @@
 <%@ page import="it.portalECI.DTO.DomandaVerbaleDTO" %>
 <%@ page import="it.portalECI.DTO.VerbaleDTO" %>
 <%@page import="it.portalECI.DTO.DocumentoDTO" %>
+<%@page import="it.portalECI.DTO.UtenteDTO"%>
 
 <%@ page import="java.util.Collections" %>
 <%@ page import="java.util.Comparator" %>
 <%@page import="java.util.ArrayList"%>
 <%@page import="java.util.List"%>
+
+<%
+	UtenteDTO user = (UtenteDTO)request.getSession().getAttribute("userObj");
+	request.setAttribute("user",user);
+%>
 
 <t:layout title="Dashboard" bodyClass="skin-red sidebar-mini wysihtml5-supported">
 
@@ -32,18 +38,18 @@
         			Dettaglio Verbale
         			<small></small>
       			</h1>  
-      			<c:if test="${verbale.getStato().getId()>=5 }">
+      			<c:if test="${verbale.getStato().getId()>=5 && user.checkPermesso('GENERA_CERTIFICATO')}">
       				<button class="btn btn-default pull-right" onClick="generaCertificato(${verbale.getId()})" style="margin-left:5px"><i class="glyphicon glyphicon-edit"></i> Genera Certificato</button>
       			</c:if>
-      			<c:if test="${verbale.getSchedaTecnica()!=null && verbale.getSchedaTecnica().getStato().getId()>=5 }">
+      			<c:if test="${verbale.getSchedaTecnica()!=null && verbale.getSchedaTecnica().getStato().getId()>=5 && user.checkPermesso('GENERA_SKTECNICA')}">
       				<button class="btn btn-default pull-right" onClick="generaCertificato(${verbale.getSchedaTecnica().getId()})" style="margin-left:5px"><i class="glyphicon glyphicon-edit"></i> Genera Scheda Tecnica</button>
       			</c:if>   
       			<c:if test="${verbale.getDocumentiVerbale().size()>0}">
       				<c:forEach items="${verbale.getDocumentiVerbale()}" var="docum">	
-      					<c:if test="${docum.getType().equals('CERTIFICATO') }">
+      					<c:if test="${docum.getType().equals('CERTIFICATO') && user.checkPermesso('DOWNLOAD_CERTIFICATO')}">
     	  					<a class="btn btn-default pull-right" href="gestioneDocumento.do?idDocumento=${docum.id}" style="margin-left:5px"><i class="glyphicon glyphicon-file"></i> Download Certificato</a>
 	      				</c:if>
-      					<c:if test="${docum.getType().equals('SCHEDA_TECNICA') }">
+      					<c:if test="${docum.getType().equals('SCHEDA_TECNICA') && user.checkPermesso('DOWNLOAD_SKTECNICA')}">
 	      					<a class="btn btn-default pull-right" href="gestioneDocumento.do?idDocumento=${docum.id}" style="margin-left:5px"><i class="glyphicon glyphicon-file"></i> Download Scheda Tecnica</a>
     	  				</c:if>
       				</c:forEach>
@@ -114,7 +120,7 @@
         										</ul>     
         										<div class="row">    
         										
-        											<c:if test='${verbale.getStato().getId()== 4}'>
+        											<c:if test='${verbale.getStato().getId()== 4 && user.checkPermesso("CH_STA_VERBALE")}'>
         												<button class="btn btn-default pull-right" onClick="$('#modalCambioStatoVerbale').modal('show');" style="margin-right:10px">
         													<i class="glyphicon glyphicon-transfer"></i>
         												 	Cambio Stato
@@ -152,24 +158,27 @@
 												</div>
 												<c:if test='${verbale.getStato().getId()== 4}'>
 													<div class="box-footer">
-												
-														<button type="button" class="btn btn-default ml-1 savebutt" onclick="modificaRisposte()" style="margin-left: 1em; float: right;">	
-															<span >SALVA MODIFICHE</span>
-														</button>	
+														<c:if test="${user.checkPermesso('UPD_VERBALE')}">
+															<button type="button" class="btn btn-default ml-1 savebutt" onclick="modificaRisposte()" style="margin-left: 1em; float: right;">	
+																<span >SALVA MODIFICHE</span>
+															</button>	
 													
-														<button type="button" class="btn btn-default ml-1 savebutt" onclick="annullaModifiche()" style="margin-left: 1em; float: right;">	
-															<span >ANNULLA MODIFICHE</span>
-														</button>	
-																	
-            	      									<button type="button" class="btn btn-default  ml-1 changestate" onclick="salvaCambioStato('6')" style="margin-left: 1em; color:#000000 !important; background-color:${verbale.getStato().getColore(6)} !important; float: right;">
-                	  										<i class="glyphicon glyphicon-remove"></i>
-                  											<span >RIFIUTATO</span>
-                  										</button>
+															<button type="button" class="btn btn-default ml-1 savebutt" onclick="annullaModifiche()" style="margin-left: 1em; float: right;">	
+																<span >ANNULLA MODIFICHE</span>
+															</button>
+														</c:if>
+															
+														<c:if test="${user.checkPermesso('CH_STA_VERBALE')}">
+            	      										<button type="button" class="btn btn-default  ml-1 changestate" onclick="salvaCambioStato('6')" style="margin-left: 1em; color:#000000 !important; background-color:${verbale.getStato().getColore(6)} !important; float: right;">
+                	  											<i class="glyphicon glyphicon-remove"></i>
+                  												<span >RIFIUTATO</span>
+                  											</button>
 										
-														<button type="button" class="btn btn-default ml-1 changestate" onclick="salvaCambioStato('5')" style="margin-left: 1em; color:#000000 !important; background-color:${verbale.getStato().getColore(5)} !important; float: right;">
-															<i class="glyphicon glyphicon glyphicon-ok"></i>
-															<span >ACCETTATO</span>
-														</button>
+															<button type="button" class="btn btn-default ml-1 changestate" onclick="salvaCambioStato('5')" style="margin-left: 1em; color:#000000 !important; background-color:${verbale.getStato().getColore(5)} !important; float: right;">
+																<i class="glyphicon glyphicon glyphicon-ok"></i>
+																<span >ACCETTATO</span>
+															</button>
+														</c:if>
 															      										
 													</div>
 												</c:if>		
@@ -204,25 +213,27 @@
 												</div>
 												<c:if test='${verbale.getStato().getId()== 4}'>
 													<div class="box-footer">
-												
-														<button type="button" class="btn btn-default ml-1 savebutt" onclick="modificaRisposte()" style="margin-left: 1em; float: right;">	
-															<span >SALVA MODIFICHE</span>
-														</button>	
+														<c:if test="${user.checkPermesso('UPD_VERBALE')}">
+															<button type="button" class="btn btn-default ml-1 savebutt" onclick="modificaRisposte()" style="margin-left: 1em; float: right;">	
+																<span >SALVA MODIFICHE</span>
+															</button>	
 													
-														<button type="button" class="btn btn-default ml-1 savebutt" onclick="annullaModifiche()" style="margin-left: 1em; float: right;">	
-															<span >ANNULLA MODIFICHE</span>
-														</button>	
-																	
-            	      									<button type="button" class="btn btn-default  ml-1 changestate" onclick="salvaCambioStato('6')" style="margin-left: 1em; color:#000000 !important; background-color:${verbale.getStato().getColore(6)} !important; float: right;">
-                	  										<i class="glyphicon glyphicon-remove"></i>
-                  											<span >RIFIUTATO</span>
-                  										</button>
+															<button type="button" class="btn btn-default ml-1 savebutt" onclick="annullaModifiche()" style="margin-left: 1em; float: right;">	
+																<span >ANNULLA MODIFICHE</span>
+															</button>	
+														</c:if>
+								
+														<c:if test="${user.checkPermesso('CH_STA_VERBALE')}">
+            	      										<button type="button" class="btn btn-default  ml-1 changestate" onclick="salvaCambioStato('6')" style="margin-left: 1em; color:#000000 !important; background-color:${verbale.getStato().getColore(6)} !important; float: right;">
+                		  										<i class="glyphicon glyphicon-remove"></i>
+                	  											<span >RIFIUTATO</span>
+            	      										</button>
 										
-														<button type="button" class="btn btn-default ml-1 changestate" onclick="salvaCambioStato('5')" style="margin-left: 1em; color:#000000 !important; background-color:${verbale.getStato().getColore(5)} !important; float: right;">
-															<i class="glyphicon glyphicon glyphicon-ok"></i>
-															<span >ACCETTATO</span>
-														</button>
-															      										
+															<button type="button" class="btn btn-default ml-1 changestate" onclick="salvaCambioStato('5')" style="margin-left: 1em; color:#000000 !important; background-color:${verbale.getStato().getColore(5)} !important; float: right;">
+																<i class="glyphicon glyphicon glyphicon-ok"></i>
+																<span >ACCETTATO</span>
+															</button>
+														</c:if>   										
 													</div>
 												</c:if>		
 												
@@ -251,16 +262,17 @@
 											<label class="col-sm-12" style="text-align:center;">Attenzione, sicuro di voler modificare lo stato di questo verbale? </label>
                   							
                   							<div class="col-sm-12" style="margin:5px ; text-align:center;">
-                  								<button type="button  pull-left" class="btn-sm " onclick="salvaCambioStato('6')" style="color:#000000 !important; background-color:${verbale.getStato().getColore(6)} !important;">
-                  									<i class="glyphicon glyphicon-remove"></i>
-                  									<span >RIFIUTATO</span>
-                  								</button>
+                  								<c:if test="${user.checkPermesso('CH_STA_VERBALE')}">
+                  									<button type="button  pull-left" class="btn-sm " onclick="salvaCambioStato('6')" style="color:#000000 !important; background-color:${verbale.getStato().getColore(6)} !important;">
+                  										<i class="glyphicon glyphicon-remove"></i>
+                  										<span >RIFIUTATO</span>
+                  									</button>
 										
-												<button type="button  pull-right" class="btn-sm" onclick="salvaCambioStato('5')" style="color:#000000 !important; background-color:${verbale.getStato().getColore(5)} !important;">
-													<i class="glyphicon glyphicon glyphicon-ok"></i>
-													<span >ACCETTATO</span>
-												</button>
-																								      										
+													<button type="button  pull-right" class="btn-sm" onclick="salvaCambioStato('5')" style="color:#000000 !important; background-color:${verbale.getStato().getColore(5)} !important;">
+														<i class="glyphicon glyphicon glyphicon-ok"></i>
+														<span >ACCETTATO</span>
+													</button>
+												</c:if>											      										
 											</div>											
 										</div>
     								</div>

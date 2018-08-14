@@ -1,7 +1,12 @@
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@taglib prefix="t" tagdir="/WEB-INF/tags"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
+<%@page import="it.portalECI.DTO.UtenteDTO"%>
 
+<%
+	UtenteDTO user = (UtenteDTO)request.getSession().getAttribute("userObj");
+	request.setAttribute("user",user);
+%>
 <t:layout title="Dashboard" bodyClass="skin-red sidebar-mini wysihtml5-supported">
 
 	<jsp:attribute name="body_area">
@@ -19,7 +24,9 @@
         			Dettaglio Questionario
         			<small></small>
       			</h1>
-      			<a class="btn btn-default pull-right" href="gestioneQuestionario.do?idQuestionario=${questionario.id}&action=modifica"><i class="glyphicon glyphicon-edit"></i> Modifica</a>
+      			<c:if test="${user.checkPermesso('UPD_QUESTIONARIO')}">
+      				<a class="btn btn-default pull-right" href="gestioneQuestionario.do?idQuestionario=${questionario.id}&action=modifica"><i class="glyphicon glyphicon-edit"></i> Modifica</a>
+      			</c:if>
       			<%-- <c:if test="${userObj.checkPermesso('NUOVO_INTERVENTO_METROLOGIA')}">  <button class="btn btn-default pull-right" onClick="nuovoInterventoFromModal()"><i class="glyphicon glyphicon-edit"></i> Nuovo Intervento</button></c:if> --%>
     		</section>
 			<div style="clear: both;"></div>
@@ -57,14 +64,18 @@
                 									<c:if test="${questionario.domandeVerbale.size()>0 }">
 	                									<li class="list-group-item">
 	                  										<b>Template Verbale </b>&nbsp;
-	                  										<a href="gestioneTemplateQuestionario.do?idQuestionario=${questionario.id}&tipo=Verbale&idTemplate=${questionario.templateVerbale.id}" class="btn btn-default btn-xs pull-right">Imposta Template</a>
+	                  										<c:if test="${user.checkPermesso('NEW_TEMPLATE_VERBALE')}">
+	                  											<a href="gestioneTemplateQuestionario.do?idQuestionario=${questionario.id}&tipo=Verbale&idTemplate=${questionario.templateVerbale.id}" class="btn btn-default btn-xs pull-right">Imposta Template</a>
+	                  										</c:if>
 	                  										<a class="pull-right">${questionario.templateVerbale.titolo}</a>
 	                									</li>
                 									</c:if>
                 									<c:if test="${questionario.domandeSchedaTecnica.size()>0 }">
 	                									<li class="list-group-item">
 	                  										<b>Template Scheda Tecnica </b>&nbsp;
-	                  										<a href="gestioneTemplateQuestionario.do?idQuestionario=${questionario.id}&tipo=SchedaTecnica&idTemplate=${questionario.templateSchedaTecnica.id}" class="btn btn-default btn-xs pull-right">Imposta Template</a> 
+	                  										<c:if test="${user.checkPermesso('NEW_TEMPLATE_SKTECNICA')}">
+	                  											<a href="gestioneTemplateQuestionario.do?idQuestionario=${questionario.id}&tipo=SchedaTecnica&idTemplate=${questionario.templateSchedaTecnica.id}" class="btn btn-default btn-xs pull-right">Imposta Template</a>
+	                  										</c:if> 
 	                  										<a class="pull-right">${questionario.templateSchedaTecnica.titolo}</a>
 	                									</li>
                 									</c:if>

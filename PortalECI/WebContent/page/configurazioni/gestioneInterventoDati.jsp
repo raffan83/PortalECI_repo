@@ -2,6 +2,12 @@
 <%@taglib prefix="t" tagdir="/WEB-INF/tags"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 
+<%@page import="it.portalECI.DTO.UtenteDTO"%>
+
+<%
+	UtenteDTO user = (UtenteDTO)request.getSession().getAttribute("userObj");
+	request.setAttribute("user",user);
+%>
 <t:layout title="Dashboard" bodyClass="skin-red sidebar-mini wysihtml5-supported">
 
 	<jsp:attribute name="body_area">
@@ -94,16 +100,18 @@
                 									
         										</ul>
         										<div class="row">    
-        											<c:if test='${intervento.getStatoIntervento().getDescrizione().equals("CREATO")}'>    											
+        											<c:if test='${intervento.getStatoIntervento().getDescrizione().equals("CREATO") && user.checkPermesso("UPD_INTERVENTO")}'>    											
         												<button class="btn btn-default pull-right" onClick="$('#modalModificaIntervento').modal('show');" style="margin-right:10px">
         													<i class="glyphicon glyphicon-edit"></i>
         												 	Modifica
         												</button>  
         											</c:if>
-        											<button class="btn btn-default pull-right" onClick="$('#modalCambioStato').modal('show');" style="margin-right:10px">
-        												<i class="glyphicon glyphicon-transfer"></i>
-        												 Cambio Stato
-        											</button>        											      											
+        											<c:if test="${user.checkPermesso('CH_STA_INTERVENTO')}">
+        												<button class="btn btn-default pull-right" onClick="$('#modalCambioStato').modal('show');" style="margin-right:10px">
+        													<i class="glyphicon glyphicon-transfer"></i>
+        												 	Cambio Stato
+        												</button>
+        											</c:if>        											      											
         										</div>
 
 											</div>
@@ -152,9 +160,9 @@
 																	<span class="label" style="color:#000000 !important; background-color:${verbale.getStato().getColore(verbale.getStato().getId())} !important;">${verbale.getStato().getDescrizione()}</span>  																	
 																</td>
 																<td>
-  																	<c:if test="${verbale.getDocumentiVerbale().size()>0}">
+  																	<c:if test="${verbale.getDocumentiVerbale().size()>0 && user.checkPermesso('DOWNLOAD_CERTIFICATO')}">
       																	<c:forEach items="${verbale.getDocumentiVerbale()}" var="docum">	
-      																		<c:if test="${docum.getType().equals('CERTIFICATO') }">
+      																		<c:if test="${docum.getType().equals('CERTIFICATO')}">
     	  																		<a class="btn customTooltip" title="Click per aprire il certificato" onclick="scaricaFile(${docum.id});">
 	      																			<i class="glyphicon glyphicon-file"></i>
             																	</a>
@@ -163,9 +171,9 @@
       																</c:if>    
 																</td>
 																<td>
-  																	<c:if test="${verbale.getDocumentiVerbale().size()>0}">
+  																	<c:if test="${verbale.getDocumentiVerbale().size()>0 && user.checkPermesso('DOWNLOAD_SKTECNICA')}">
       																	<c:forEach items="${verbale.getDocumentiVerbale()}" var="docum">	      																		
-      																		<c:if test="${docum.getType().equals('SCHEDA_TECNICA') }">
+      																		<c:if test="${docum.getType().equals('SCHEDA_TECNICA')}">
 	      																		<a class="btn customTooltip" title="Click per aprire la scheda tecnica" onclick="scaricaFile(${docum.id});">
 	      																			<i class="glyphicon glyphicon-file"></i>
             																	</a>
@@ -174,9 +182,11 @@
       																</c:if> 
 																</td>
 																<td>
-																	<a class="btn customTooltip" title="Click per aprire il dettaglio del Verbale" onclick="callAction('gestioneVerbale.do?idVerbale=${verbale.id}');">
-                														<i class="fa fa-arrow-right"></i>
-            														</a>
+																	<c:if test="${user.checkPermesso('GESTIONE_VERBALI')}">
+																		<a class="btn customTooltip" title="Click per aprire il dettaglio del Verbale" onclick="callAction('gestioneVerbale.do?idVerbale=${verbale.id}');">
+                															<i class="fa fa-arrow-right"></i>
+            															</a>
+            														</c:if>
         														</td>															
 															</tr>	 
 														</c:forEach>
@@ -276,7 +286,9 @@
   		 									
       										<div class="modal-footer">
 												<span id="ulError" class="pull-left"></span>
-												<button type="submit" class="btn btn-danger" >Salva</button>
+												<c:if test="${user.checkPermesso('UPD_INTERVENTO')}">
+													<button type="submit" class="btn btn-danger" >Salva</button>
+												</c:if>
       										</div>
         								</form>
     								</div>
