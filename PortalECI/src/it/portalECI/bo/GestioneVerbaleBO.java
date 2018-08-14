@@ -45,6 +45,7 @@ import it.portalECI.DAO.GestioneStatoInterventoDAO;
 import it.portalECI.DAO.GestioneStatoVerbaleDAO;
 import it.portalECI.DAO.GestioneVerbaleDAO;
 import it.portalECI.DTO.DocumentoDTO;
+import it.portalECI.DTO.DomandaOpzioneQuestionarioDTO;
 import it.portalECI.DTO.DomandaQuestionarioDTO;
 import it.portalECI.DTO.DomandaVerbaleDTO;
 import it.portalECI.DTO.InterventoDTO;
@@ -149,61 +150,10 @@ public class GestioneVerbaleBO {
 			if (questionario != null) {
 				if (questionario.getDomandeVerbale() != null && verbale.getType().equals(VerbaleDTO.VERBALE)) {
 					for (DomandaQuestionarioDTO domandaQuestionario : questionario.getDomandeVerbale()) {
-						DomandaVerbaleDTO domandaVerbaleDTO = new DomandaVerbaleDTO();
-						domandaVerbaleDTO.setDomandaQuestionario(domandaQuestionario);
-						if (domandaQuestionario.getRisposta() != null) {
-							RispostaVerbaleDTO rispostaVerbaleDTO = null;
-							switch (domandaQuestionario.getRisposta().getTipo()) {
-							case RispostaQuestionario.TIPO_TESTO:
-								rispostaVerbaleDTO = new RispostaTestoVerbaleDTO();
-								RispostaTestoVerbaleDTO rispostaTestoVerbaleDTO = (RispostaTestoVerbaleDTO) rispostaVerbaleDTO;
-								rispostaTestoVerbaleDTO.setRispostaQuestionario(GestioneRispostaQuestionarioDAO
-										.getRispostaInstance(RispostaTestoQuestionarioDTO.class,
-												domandaQuestionario.getRisposta().getId(), session));
-								GestioneRispostaVerbaleDAO.save(rispostaTestoVerbaleDTO, session);
-								domandaVerbaleDTO.setRisposta(rispostaTestoVerbaleDTO);
-								break;
-							case RispostaQuestionario.TIPO_FORMULA:
-								rispostaVerbaleDTO = new RispostaFormulaVerbaleDTO();
-								RispostaFormulaVerbaleDTO rispostaFormulaVerbaleDTO = (RispostaFormulaVerbaleDTO) rispostaVerbaleDTO;
-								rispostaFormulaVerbaleDTO.setRispostaQuestionario(GestioneRispostaQuestionarioDAO
-										.getRispostaInstance(RispostaFormulaQuestionarioDTO.class,
-												domandaQuestionario.getRisposta().getId(), session));
-								GestioneRispostaVerbaleDAO.save(rispostaFormulaVerbaleDTO, session);
-								domandaVerbaleDTO.setRisposta(rispostaFormulaVerbaleDTO);
-								break;
-							case RispostaQuestionario.TIPO_SCELTA:
-								rispostaVerbaleDTO = new RispostaSceltaVerbaleDTO();
-								RispostaSceltaVerbaleDTO rispostaSceltaVerbaleDTO = (RispostaSceltaVerbaleDTO) rispostaVerbaleDTO;
-								RispostaSceltaQuestionarioDTO rispostaSceltaQuestionario = GestioneRispostaQuestionarioDAO
-										.getRispostaInstance(RispostaSceltaQuestionarioDTO.class,
-												domandaQuestionario.getRisposta().getId(), session);
-								rispostaSceltaVerbaleDTO.setRispostaQuestionario(rispostaSceltaQuestionario);
-								if (rispostaSceltaQuestionario.getOpzioni() != null) {
-									for (OpzioneRispostaQuestionarioDTO opzioneRispostaQuestionarioDTO : rispostaSceltaQuestionario.getOpzioni()) {
-										OpzioneRispostaVerbaleDTO opzioneRispostaVerbaleDTO = new OpzioneRispostaVerbaleDTO();
-										opzioneRispostaVerbaleDTO
-												.setOpzioneQuestionario(opzioneRispostaQuestionarioDTO);
-										opzioneRispostaVerbaleDTO.setRisposta(rispostaSceltaVerbaleDTO);
-										rispostaSceltaVerbaleDTO.addToOpzioni(opzioneRispostaVerbaleDTO);
-										
-										
-									}
-								}
-								GestioneRispostaVerbaleDAO.save(rispostaSceltaVerbaleDTO, session);
-								domandaVerbaleDTO.setRisposta(rispostaSceltaVerbaleDTO);
-								break;
-
-							default:
-								break;
-
-							}
-
-							domandaVerbaleDTO.setVerbale(verbale);
-							GestioneDomandaVerbaleDAO.save(domandaVerbaleDTO, session);
-							verbale.addToDomande(domandaVerbaleDTO);
-
-						}
+						DomandaVerbaleDTO domandaVerbale = buildDomandaVerbalebyDomadaQuestionario(domandaQuestionario, session);
+						domandaVerbale.setVerbale(verbale);
+						GestioneDomandaVerbaleDAO.save(domandaVerbale, session);
+						verbale.addToDomande(domandaVerbale);
 					}
 					cambioStato(verbale, GestioneStatoVerbaleDAO.getStatoVerbaleById(StatoVerbaleDTO.IN_COMPILAZIONE, session), session);
 					result = verbale;
@@ -219,61 +169,11 @@ public class GestioneVerbaleBO {
 			
 				if (questionario != null  && schedaTecnica.getType().equals(VerbaleDTO.SK_TEC)) {
 					if (questionario.getDomandeSchedaTecnica() != null) {
-						for (DomandaQuestionarioDTO domandaSchedaTecnica : questionario.getDomandeSchedaTecnica()) {
-							DomandaVerbaleDTO domandaSchedaTecnicaDTO = new DomandaVerbaleDTO();
-							domandaSchedaTecnicaDTO.setDomandaQuestionario(domandaSchedaTecnica);
-							if (domandaSchedaTecnica.getRisposta() != null) {
-								RispostaVerbaleDTO rispostaSchedaTecnicaDTO = null;
-								switch (domandaSchedaTecnica.getRisposta().getTipo()) {
-									case RispostaQuestionario.TIPO_TESTO:
-										rispostaSchedaTecnicaDTO = new RispostaTestoVerbaleDTO();
-										RispostaTestoVerbaleDTO rispostaTestoVerbaleDTO = (RispostaTestoVerbaleDTO) rispostaSchedaTecnicaDTO;
-										rispostaTestoVerbaleDTO.setRispostaQuestionario(GestioneRispostaQuestionarioDAO
-												.getRispostaInstance(RispostaTestoQuestionarioDTO.class,
-												domandaSchedaTecnica.getRisposta().getId(), session));
-										GestioneRispostaVerbaleDAO.save(rispostaTestoVerbaleDTO, session);
-										domandaSchedaTecnicaDTO.setRisposta(rispostaTestoVerbaleDTO);
-										break;
-									case RispostaQuestionario.TIPO_FORMULA:
-										rispostaSchedaTecnicaDTO = new RispostaFormulaVerbaleDTO();
-										RispostaFormulaVerbaleDTO rispostaFormulaVerbaleDTO = (RispostaFormulaVerbaleDTO) rispostaSchedaTecnicaDTO;
-										rispostaFormulaVerbaleDTO.setRispostaQuestionario(GestioneRispostaQuestionarioDAO
-												.getRispostaInstance(RispostaFormulaQuestionarioDTO.class,
-												domandaSchedaTecnica.getRisposta().getId(), session));
-										GestioneRispostaVerbaleDAO.save(rispostaFormulaVerbaleDTO, session);
-										domandaSchedaTecnicaDTO.setRisposta(rispostaFormulaVerbaleDTO);
-										break;
-									case RispostaQuestionario.TIPO_SCELTA:
-										rispostaSchedaTecnicaDTO = new RispostaSceltaVerbaleDTO();
-										RispostaSceltaVerbaleDTO rispostaSceltaVerbaleDTO = (RispostaSceltaVerbaleDTO) rispostaSchedaTecnicaDTO;
-										RispostaSceltaQuestionarioDTO rispostaSceltaQuestionario = GestioneRispostaQuestionarioDAO
-												.getRispostaInstance(RispostaSceltaQuestionarioDTO.class,
-												domandaSchedaTecnica.getRisposta().getId(), session);
-										rispostaSceltaVerbaleDTO.setRispostaQuestionario(rispostaSceltaQuestionario);
-										if (rispostaSceltaQuestionario.getOpzioni() != null) {
-											for (OpzioneRispostaQuestionarioDTO opzioneRispostaQuestionarioDTO : rispostaSceltaQuestionario.getOpzioni()) {
-												OpzioneRispostaVerbaleDTO opzioneRispostaVerbaleDTO = new OpzioneRispostaVerbaleDTO();
-												opzioneRispostaVerbaleDTO.setOpzioneQuestionario(opzioneRispostaQuestionarioDTO);
-												opzioneRispostaVerbaleDTO.setRisposta(rispostaSceltaVerbaleDTO);
-												rispostaSceltaVerbaleDTO.addToOpzioni(opzioneRispostaVerbaleDTO);
-										
-										
-											}
-										}
-										GestioneRispostaVerbaleDAO.save(rispostaSceltaVerbaleDTO, session);
-										domandaSchedaTecnicaDTO.setRisposta(rispostaSceltaVerbaleDTO);
-										break;
-										
-									default:
-										break;
-
-								}
-
-								domandaSchedaTecnicaDTO.setVerbale(schedaTecnica);
-								GestioneDomandaVerbaleDAO.save(domandaSchedaTecnicaDTO, session);
-								schedaTecnica.addToDomande(domandaSchedaTecnicaDTO);
-
-							}
+						for (DomandaQuestionarioDTO domandaSchedaTecnicaQuestionario : questionario.getDomandeSchedaTecnica()) {
+							DomandaVerbaleDTO domandaSchedaTecnicaVerbale = buildDomandaVerbalebyDomadaQuestionario(domandaSchedaTecnicaQuestionario, session);
+							domandaSchedaTecnicaVerbale.setVerbale(schedaTecnica);
+							GestioneDomandaVerbaleDAO.save(domandaSchedaTecnicaVerbale, session);
+							schedaTecnica.addToDomande(domandaSchedaTecnicaVerbale);
 						}
 						cambioStato(schedaTecnica, GestioneStatoVerbaleDAO.getStatoVerbaleById(StatoVerbaleDTO.IN_COMPILAZIONE, session), session);
 						result = verbale;
@@ -282,6 +182,64 @@ public class GestioneVerbaleBO {
 			}
 		}
 		return result;
+	}
+	
+	public static DomandaVerbaleDTO buildDomandaVerbalebyDomadaQuestionario(DomandaQuestionarioDTO domandaQuestionario, Session session) {
+		DomandaVerbaleDTO domandaVerbaleDTO = new DomandaVerbaleDTO();
+		domandaVerbaleDTO.setDomandaQuestionario(domandaQuestionario);
+		if (domandaQuestionario.getRisposta() != null) {
+			RispostaVerbaleDTO rispostaVerbaleDTO = null;
+			switch (domandaQuestionario.getRisposta().getTipo()) {
+			case RispostaQuestionario.TIPO_TESTO:
+				rispostaVerbaleDTO = new RispostaTestoVerbaleDTO();
+				RispostaTestoVerbaleDTO rispostaTestoVerbaleDTO = (RispostaTestoVerbaleDTO) rispostaVerbaleDTO;
+				rispostaTestoVerbaleDTO.setRispostaQuestionario(GestioneRispostaQuestionarioDAO
+						.getRispostaInstance(RispostaTestoQuestionarioDTO.class,
+								domandaQuestionario.getRisposta().getId(), session));
+				GestioneRispostaVerbaleDAO.save(rispostaTestoVerbaleDTO, session);
+				domandaVerbaleDTO.setRisposta(rispostaTestoVerbaleDTO);
+				break;
+			case RispostaQuestionario.TIPO_FORMULA:
+				rispostaVerbaleDTO = new RispostaFormulaVerbaleDTO();
+				RispostaFormulaVerbaleDTO rispostaFormulaVerbaleDTO = (RispostaFormulaVerbaleDTO) rispostaVerbaleDTO;
+				rispostaFormulaVerbaleDTO.setRispostaQuestionario(GestioneRispostaQuestionarioDAO
+						.getRispostaInstance(RispostaFormulaQuestionarioDTO.class,
+								domandaQuestionario.getRisposta().getId(), session));
+				GestioneRispostaVerbaleDAO.save(rispostaFormulaVerbaleDTO, session);
+				domandaVerbaleDTO.setRisposta(rispostaFormulaVerbaleDTO);
+				break;
+			case RispostaQuestionario.TIPO_SCELTA:
+				rispostaVerbaleDTO = new RispostaSceltaVerbaleDTO();
+				RispostaSceltaVerbaleDTO rispostaSceltaVerbaleDTO = (RispostaSceltaVerbaleDTO) rispostaVerbaleDTO;
+				RispostaSceltaQuestionarioDTO rispostaSceltaQuestionario = GestioneRispostaQuestionarioDAO
+						.getRispostaInstance(RispostaSceltaQuestionarioDTO.class,
+								domandaQuestionario.getRisposta().getId(), session);
+				rispostaSceltaVerbaleDTO.setRispostaQuestionario(rispostaSceltaQuestionario);
+				if (rispostaSceltaQuestionario.getOpzioni() != null) {
+					for (OpzioneRispostaQuestionarioDTO opzioneRispostaQuestionarioDTO : rispostaSceltaQuestionario.getOpzioni()) {
+						OpzioneRispostaVerbaleDTO opzioneRispostaVerbaleDTO = new OpzioneRispostaVerbaleDTO();
+						opzioneRispostaVerbaleDTO.setOpzioneQuestionario(opzioneRispostaQuestionarioDTO);
+						opzioneRispostaVerbaleDTO.setRisposta(rispostaSceltaVerbaleDTO);
+						for(DomandaOpzioneQuestionarioDTO domandaOpzioneQuestionario:opzioneRispostaQuestionarioDTO.getDomande()) {
+							DomandaVerbaleDTO domandaOpzioneVerbale = buildDomandaVerbalebyDomadaQuestionario(domandaOpzioneQuestionario, session);
+							domandaOpzioneVerbale.setOpzione(opzioneRispostaVerbaleDTO);
+							GestioneDomandaVerbaleDAO.save(domandaOpzioneVerbale, session);
+							opzioneRispostaVerbaleDTO.addToDomande(domandaOpzioneVerbale);
+						}
+						rispostaSceltaVerbaleDTO.addToOpzioni(opzioneRispostaVerbaleDTO);
+					}
+				}
+				GestioneRispostaVerbaleDAO.save(rispostaSceltaVerbaleDTO, session);
+				domandaVerbaleDTO.setRisposta(rispostaSceltaVerbaleDTO);
+				break;
+
+			default:
+				break;
+
+			}
+		}
+		return domandaVerbaleDTO;
+		
 	}
 	
 	

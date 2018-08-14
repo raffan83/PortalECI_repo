@@ -1,6 +1,8 @@
 package it.portalECI.DTO;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
@@ -12,6 +14,8 @@ public class OpzioneRispostaVerbaleDTO {
 	private RispostaSceltaVerbaleDTO risposta;
 	private Date createDate;
 	private Date updateDate;
+	
+	private List<DomandaVerbaleDTO> domande;
 	
 	private boolean checked;
 	
@@ -44,6 +48,14 @@ public class OpzioneRispostaVerbaleDTO {
 	
 	
 
+	public List<DomandaVerbaleDTO> getDomande() {
+		return domande;
+	}
+
+	public void setDomande(List<DomandaVerbaleDTO> domande) {
+		this.domande = domande;
+	}
+
 	public boolean getChecked() {
 		return checked;
 	}
@@ -71,13 +83,25 @@ public class OpzioneRispostaVerbaleDTO {
 	}
 
 	public JsonElement getJsonObject() {
-JsonObject jobj = new JsonObject();
+		JsonObject jobj = new JsonObject();
 		
 		jobj.addProperty("id", this.getId());
 		jobj.addProperty("testo", this.getOpzioneQuestionario().getTesto());
 		jobj.addProperty("posizione", this.getOpzioneQuestionario().getPosizione());
 		
+		if(this.domande !=null) {
+			JsonArray domandeObj = new JsonArray();
+			for(DomandaVerbaleDTO domandaOpzione: this.domande) {
+				domandeObj.add(domandaOpzione.getDomandaJsonObject());
+			}
+			jobj.add("domande", domandeObj);
+		}
 		return jobj;
+	}
+
+	public void addToDomande(DomandaVerbaleDTO domandaOpzioneVerbale) {
+		if (this.domande == null) this.domande=new ArrayList<DomandaVerbaleDTO>();
+		this.domande.add(domandaOpzioneVerbale);
 	}
 	
 }

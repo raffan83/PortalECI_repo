@@ -13,6 +13,7 @@ public class DomandaVerbaleDTO {
 	private DomandaQuestionarioDTO domandaQuestionario;
 	private RispostaVerbaleDTO risposta;
 	private VerbaleDTO verbale;
+	private OpzioneRispostaVerbaleDTO opzione;
 	
 	public DomandaVerbaleDTO() {
 	}
@@ -47,6 +48,14 @@ public class DomandaVerbaleDTO {
 
 	public void setVerbale(VerbaleDTO verbale) {
 		this.verbale= verbale;
+	}
+
+	public OpzioneRispostaVerbaleDTO getOpzione() {
+		return opzione;
+	}
+
+	public void setOpzione(OpzioneRispostaVerbaleDTO opzione) {
+		this.opzione = opzione;
 	}
 
 	public JsonElement getDomandaJsonObject() {
