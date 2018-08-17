@@ -1,5 +1,6 @@
 package it.portalECI.Util;
 
+import java.io.File;
 import java.util.Properties;
 
 public class Costanti {
@@ -34,6 +35,10 @@ public class Costanti {
 		PATH_FONT_IMAGE = properties.getProperty("PATH_FONT_IMAGE", PATH_FONT_IMAGE);
 		PATH_FONT_STYLE = properties.getProperty("PATH_FONT_STYLE", PATH_FONT_STYLE);
 		PATH_HEADER_IMAGE = properties.getProperty("PATH_HEADER_IMAGE", PATH_HEADER_IMAGE);
+		File headerFolder = new File(PATH_HEADER_IMAGE);
+		if(!headerFolder.exists()) headerFolder.mkdirs();
 		PATH_FOOTER_IMAGE = properties.getProperty("PATH_FOOTER_IMAGE", PATH_FOOTER_IMAGE);
+		File footerFolder = new File(PATH_FOOTER_IMAGE);
+		if (!footerFolder.exists()) footerFolder.mkdirs();
 	}
 }

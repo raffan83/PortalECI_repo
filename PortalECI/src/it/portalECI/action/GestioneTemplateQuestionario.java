@@ -54,7 +54,7 @@ public class GestioneTemplateQuestionario extends HttpServlet {
 		try {
 			idQuestionarioInt = Integer.parseInt(idQuestionario);
 		}catch (NumberFormatException e) {
-			
+			System.out.println("formato errato per il parametro id questionario");
 		}
 		
 		if(idQuestionarioInt > 0) {
@@ -67,6 +67,7 @@ public class GestioneTemplateQuestionario extends HttpServlet {
 		try {
 			idTemplateInt = Integer.parseInt(idTemplate);
 		}catch (NumberFormatException e) {
+			System.out.println("formato errato per il parametro id questionario");
 		}
 		
 		if(idTemplateInt > 0) {
@@ -81,7 +82,6 @@ public class GestioneTemplateQuestionario extends HttpServlet {
 		File footer = new File(Costanti.PATH_FOOTER_IMAGE);
 		ArrayList<String> listaFooter = new ArrayList<String>(Arrays.asList(footer.list()));
 		request.setAttribute("listaFooter",listaFooter);
-		
 
 		RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/page/questionario/template/formTemplate.jsp");
 		dispatcher.forward(request,response);
@@ -110,28 +110,11 @@ public class GestioneTemplateQuestionario extends HttpServlet {
 		TemplateQuestionarioDTO template = new  TemplateQuestionarioDTO();
 		template.setTitolo(request.getParameter("titolo"));
 		template.setTemplate(request.getParameter("template"));
-			
-		if (request.getParameter("header").equals("seleziona")) {
-			template.setHeader(request.getParameter("selheader"));
-		} else {
-			/*
-			upload file
-			*/
-			template.setHeader(request.getParameter("caricaheader"));	
-		}
+		template.setHeader(request.getParameter("headerFileName"));
+		template.setFooter(request.getParameter("footerFileName"));
 		
-		if (request.getParameter("footer").equals("seleziona")) {
-			template.setFooter(request.getParameter("selfooter"));
-		} else {
-			template.setFooter(request.getParameter("caricafooter"));
-		}
-		
-		session.save(template);
-		
-		request.setAttribute("template", template);
-		
+		session.save(template);		
 		QuestionarioDTO questionario = GestioneQuestionarioBO.getQuestionarioById(idQuestionarioInt, session);
-		request.setAttribute("questionario", questionario);
 		if(request.getParameter("tipo").equals("Verbale")) {
 			questionario.setTemplateVerbale(template);
 		}else if(request.getParameter("tipo").equals("SchedaTecnica")) {
@@ -141,9 +124,7 @@ public class GestioneTemplateQuestionario extends HttpServlet {
 		
 		transaction.commit();
 				
-		request.setAttribute("tipo", request.getParameter("tipo"));
-		RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/page/questionario/template/formTemplate.jsp");
-		dispatcher.forward(request,response);
+		doGet(request, response);
 
 		
 
@@ -171,35 +152,13 @@ public class GestioneTemplateQuestionario extends HttpServlet {
 		
 		//summernote aggiunge questa stringa a volte che rappresenta un ? e non potendo risolvere il problema del plugin abbiamo deciso di toglere questo carattere
 		template.setTemplate(request.getParameter("template").replaceAll("&#65279;", ""));
-		
-		if (request.getParameter("header").equals("seleziona")) {
-			template.setHeader(request.getParameter("selheader"));
-		} else {
-			/*
-			upload file
-			*/
-			template.setHeader(request.getParameter("caricaheader"));	
-		}
-		
-		if (request.getParameter("footer").equals("seleziona")) {
-			template.setFooter(request.getParameter("selfooter"));
-		} else {
-			template.setFooter(request.getParameter("caricafooter"));
-		}
+		template.setHeader(request.getParameter("headerFileName"));
+		template.setFooter(request.getParameter("footerFileName"));
 		
 		session.update(template);
 		transaction.commit();
 		session.close();
-		request.setAttribute("template", template);
-
-		String idQuestionario = request.getParameter("idQuestionario");
-		QuestionarioDTO questionarioDTO = new QuestionarioDTO();
-		questionarioDTO.setId(Integer.parseInt(idQuestionario));
-		request.setAttribute("questionario", questionarioDTO);
-		request.setAttribute("tipo", request.getParameter("tipo"));
-
-		RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/page/questionario/template/formTemplate.jsp");
-		dispatcher.forward(request,response);
+		doGet(request, response);
 
 	}
 }
