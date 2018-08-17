@@ -221,22 +221,22 @@ public class GestioneVerbali extends HttpServlet {
 					byte[] pdfArray = loadFileForBase64(certificato);
 					if(pdfArray.length == 0) {
 						myObj.addProperty("success", false);
-						myObj.addProperty("messaggio","Documento troppo grande per essere generato!");						
+						myObj.addProperty("messaggio","Certificato troppo grande per essere generato!");						
 					} else {
 						byte[] encoded = Base64.encodeBase64(pdfArray);
 						String pdfBytes = new String(encoded);
 						myObj.addProperty("pdfString", pdfBytes);
 						myObj.addProperty("success", true);
-						myObj.addProperty("messaggio","Documento creato con successo!");
+						myObj.addProperty("messaggio","Certificato creato con successo!");
 					}
 				} else {
 					myObj.addProperty("success", false);
-					myObj.addProperty("messaggio", "Non &egrave; stato possibile generare il documento.  Problema di connessione.");						
+					myObj.addProperty("messaggio", "Non &egrave; stato possibile generare il Certificato. Problema di connessione.");						
 				}
 			} catch (Exception e) {
 				e.printStackTrace();
 				myObj.addProperty("success", false);
-				myObj.addProperty("messaggio", "Non &egrave; stato possibile recuperare il documento. Problema di connessione.");
+				myObj.addProperty("messaggio", "Non &egrave; stato possibile recuperare il Certificato. Problema di connessione.");
 			}
 			out.print(myObj);
 		} else if(action !=null && action.equals("generaSchedaTecnica")) {
@@ -247,21 +247,21 @@ public class GestioneVerbali extends HttpServlet {
 					byte[] pdfArray = loadFileForBase64(certificato);
 					if(pdfArray.length == 0) {
 						myObj.addProperty("success", false);
-						myObj.addProperty("messaggio","Documento troppo grande per essere generato!");						
+						myObj.addProperty("messaggio","Scheda Tecnica troppo grande per essere generato!");						
 					} else {
 						byte[] encoded = Base64.encodeBase64(pdfArray);
 						String pdfBytes = new String(encoded);
 						myObj.addProperty("pdfString", pdfBytes);
 						myObj.addProperty("success", true);
-						myObj.addProperty("messaggio","Documento creato con successo!");
+						myObj.addProperty("messaggio","Scheda Tecnica creato con successo!");
 					}
 				} else {
 					myObj.addProperty("success", false);
-					myObj.addProperty("messaggio", "Non &egrave; stato possibile generare il documento.  Problema di connessione.");						
+					myObj.addProperty("messaggio", "Non &egrave; stato possibile generare la Scheda Tecnica.  Problema di connessione.");						
 				}
 			} catch (Exception e) {
 				myObj.addProperty("success", false);
-				myObj.addProperty("messaggio", "Non &egrave; stato possibile recuperare il documento. Problema di connessione.");
+				myObj.addProperty("messaggio", "Non &egrave; stato possibile recuperare la Scheda Tecnica. Problema di connessione.");
 			}
 			out.print(myObj);
 		} else if(action !=null && action.equals("visualizzaDocumento")) {
