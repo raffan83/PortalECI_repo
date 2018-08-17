@@ -49,8 +49,12 @@
       					<c:if test="${docum.getType().equals('CERTIFICATO') && user.checkPermesso('DOWNLOAD_CERTIFICATO')}">
     	  					<a class="btn btn-default pull-right" href="gestioneDocumento.do?idDocumento=${docum.id}" style="margin-left:5px"><i class="glyphicon glyphicon-file"></i> Download Certificato</a>
 	      				</c:if>
-      					<c:if test="${docum.getType().equals('SCHEDA_TECNICA') && user.checkPermesso('DOWNLOAD_SKTECNICA')}">
-	      					<a class="btn btn-default pull-right" href="gestioneDocumento.do?idDocumento=${docum.id}" style="margin-left:5px"><i class="glyphicon glyphicon-file"></i> Download Scheda Tecnica</a>
+	      			</c:forEach>
+      			</c:if>
+      			<c:if test="${verbale.getSchedaTecnica()!=null && verbale.getSchedaTecnica().getStato().getId()>=5 && verbale.getSchedaTecnica().getDocumentiVerbale().size()>0}">
+      				<c:forEach items="${verbale.getSchedaTecnica().getDocumentiVerbale()}" var="documST">
+      					<c:if test="${ documST.getType().equals('SCHEDA_TECNICA') && user.checkPermesso('DOWNLOAD_SKTECNICA')}">
+	      					<a class="btn btn-default pull-right" href="gestioneDocumento.do?idDocumento=${documST.id}" style="margin-left:5px"><i class="glyphicon glyphicon-file"></i> Download Scheda Tecnica</a>
     	  				</c:if>
       				</c:forEach>
       			</c:if>    

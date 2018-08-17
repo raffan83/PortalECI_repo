@@ -246,21 +246,20 @@ public class GestioneVerbaleBO {
 	public static File getPDFVerbale(VerbaleDTO verbale, QuestionarioDTO questionario, Session session) throws Exception{
 		String path="";
 		String html ="";
+		int idIntervento = 0;
 		if(verbale.getType().equals(VerbaleDTO.VERBALE)) {
 			path = "Intervento_"+verbale.getIntervento().getId()+File.separator+"Verbale_"+verbale.getCodiceCategoria()+"_"+verbale.getId()+File.separator;
-			
+			idIntervento = verbale.getIntervento().getId();
 			html = questionario.getTemplateVerbale().getTemplate();
 		}else {
 			VerbaleDTO verb=GestioneVerbaleDAO.getVerbaleFromSkTec(String.valueOf(verbale.getId()), session);
-			path = "Intervento_"+verb.getIntervento().getId()+File.separator+"SchedaTecnica_"+verbale.getCodiceCategoria()+"_"+verbale.getId()+File.separator;
-			
+			idIntervento = verb.getIntervento().getId();
+			path = "Intervento_"+idIntervento+File.separator+"SchedaTecnica_"+verbale.getCodiceCategoria()+"_"+verbale.getId()+File.separator;	
 			html = questionario.getTemplateSchedaTecnica().getTemplate();
 		}
 		new File(Costanti.PATH_CERTIFICATI+path).mkdirs();
-		File file = new File(Costanti.PATH_CERTIFICATI+path, questionario.getTitolo()+"_"+questionario.getTipo().getCodice()+"_"+verbale.getIntervento().getId()+".pdf");		
-
+		File file = new File(Costanti.PATH_CERTIFICATI+path, questionario.getTitolo()+"_"+questionario.getTipo().getCodice()+"_"+idIntervento+".pdf");		
 		for (DomandaVerbaleDTO domanda:verbale.getDomandeVerbale()) {
-
 			String placeholder = domanda.getDomandaQuestionario().getPlaceholder();
 			html = html.replaceAll("\\$\\{"+placeholder+"\\}", domanda.getDomandaQuestionario().getTesto());
 			RispostaVerbaleDTO rispostaVerbale = domanda.getRisposta();
@@ -295,7 +294,6 @@ public class GestioneVerbaleBO {
     	documentJsoup.outputSettings().syntax(org.jsoup.nodes.Document.OutputSettings.Syntax.xml);
     	String str = documentJsoup.html();
     	System.out.println(str);
-        System.out.println(Costanti.PATH_FONT_STYLE+"arial.ttf");
 
     	try {
 	        Document document = new Document();
@@ -332,13 +330,22 @@ public class GestioneVerbaleBO {
 	        document.close();
 	        DocumentoDTO certificato = new DocumentoDTO();
 	        certificato.setFilePath(path+file.getName());
-	        certificato.setType(DocumentoDTO.CERTIFIC);
+	        //cambio il type del DocumentoDTO in base a certificato o scheda_tecnica
+	        if(verbale.getType().equals(VerbaleDTO.VERBALE)) {
+	        	certificato.setType(DocumentoDTO.CERTIFIC);
+	        } else {
+	        	certificato.setType(DocumentoDTO.SK_TEC);
+	        }
 	        certificato.setVerbale(verbale);
 	        if(verbale.getDocumentiVerbale() != null) {
 		        for(DocumentoDTO doc:verbale.getDocumentiVerbale()) {
-		        	if (doc.getType().equalsIgnoreCase(DocumentoDTO.CERTIFIC)){
+	        		//gestiosco anche qui certificato o scheda tecnica
+		        	if(verbale.getType().equals(VerbaleDTO.VERBALE) && doc.getType().equalsIgnoreCase(DocumentoDTO.CERTIFIC)){
+			        	certificato.setId(doc.getId());
+			        	verbale.getDocumentiVerbale().remove(doc);
+		        	} else if (verbale.getType().equals(VerbaleDTO.SK_TEC) && doc.getType().equalsIgnoreCase(DocumentoDTO.SK_TEC)){
 		        		certificato.setId(doc.getId());
-		        		verbale.getDocumentiVerbale().remove(doc);
+			        	verbale.getDocumentiVerbale().remove(doc);
 		        	}
 		        }
 	        }

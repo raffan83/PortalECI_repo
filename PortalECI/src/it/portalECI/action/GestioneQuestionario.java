@@ -169,7 +169,7 @@ public class GestioneQuestionario extends HttpServlet {
 			System.out.println("ROLLBACK");
 			e.printStackTrace();
 			transaction.rollback();
-			request.setAttribute("error", "Non è stato possibile salvare le modifiche");
+			request.setAttribute("error", "Non &egrave; stato possibile salvare le modifiche");
 		}
 		request.setAttribute("questionario", questionario);
 		RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/page/questionario/dettaglioQuestionario.jsp");
