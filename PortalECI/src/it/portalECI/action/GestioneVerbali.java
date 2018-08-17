@@ -146,7 +146,7 @@ public class GestioneVerbali extends HttpServlet {
 
 						if(domanda.getDomandaQuestionario().getObbligatoria()) {
 							myObj.addProperty("success", false);
-							myObj.addProperty("messaggio", "La domanda '"+domanda.getDomandaQuestionario().getTesto()+"' è obbligatoria.");
+							myObj.addProperty("messaggio", "La domanda '"+domanda.getDomandaQuestionario().getTesto()+"' ï¿½ obbligatoria.");
 					
 							out.print(myObj);
 							return;
@@ -234,6 +234,7 @@ public class GestioneVerbali extends HttpServlet {
 					myObj.addProperty("messaggio", "Non &egrave; stato possibile generare il documento.  Problema di connessione.");						
 				}
 			} catch (Exception e) {
+				e.printStackTrace();
 				myObj.addProperty("success", false);
 				myObj.addProperty("messaggio", "Non &egrave; stato possibile recuperare il documento. Problema di connessione.");
 			}

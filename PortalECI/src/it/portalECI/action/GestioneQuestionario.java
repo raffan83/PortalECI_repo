@@ -299,6 +299,8 @@ public class GestioneQuestionario extends HttpServlet {
 			TemplateQuestionarioDTO newTemplateVerbale = new TemplateQuestionarioDTO();
 			newTemplateVerbale.setTitolo(certificato.getTitolo());
 			newTemplateVerbale.setTemplate(certificato.getTemplate());
+			newTemplateVerbale.setHeader(certificato.getHeader());
+			newTemplateVerbale.setFooter(certificato.getFooter());
 			session.save(newTemplateVerbale);
 			ques.setTemplateVerbale(newTemplateVerbale);
 		}
@@ -306,6 +308,8 @@ public class GestioneQuestionario extends HttpServlet {
 			TemplateQuestionarioDTO newTemplateSkTec = new TemplateQuestionarioDTO();
 			newTemplateSkTec.setTitolo(skTec.getTitolo());
 			newTemplateSkTec.setTemplate(skTec.getTemplate());
+			newTemplateSkTec.setHeader(skTec.getHeader());
+			newTemplateSkTec.setFooter(skTec.getFooter());
 			session.save(newTemplateSkTec);
 			ques.setTemplateSchedaTecnica(newTemplateSkTec);
 		}

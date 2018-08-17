@@ -20,6 +20,9 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.itextpdf.text.Document;
 import com.itextpdf.text.DocumentException;
+import com.itextpdf.text.Image;
+import com.itextpdf.text.PageSize;
+import com.itextpdf.text.pdf.PdfPageEvent;
 import com.itextpdf.text.pdf.PdfWriter;
 import com.itextpdf.tool.xml.XMLWorker;
 import com.itextpdf.tool.xml.XMLWorkerFontProvider;
@@ -242,8 +245,10 @@ public class GestioneVerbaleBO {
 		
 	}
 	
-	
 	public static File getPDFVerbale(VerbaleDTO verbale, QuestionarioDTO questionario, Session session) throws Exception{
+		if(questionario == null || questionario.getTemplateVerbale() == null) {
+			throw new IllegalArgumentException();
+		}
 		String path="";
 		String html ="";
 		if(verbale.getType().equals(VerbaleDTO.VERBALE)) {
@@ -294,12 +299,24 @@ public class GestioneVerbaleBO {
     	final org.jsoup.nodes.Document documentJsoup = Jsoup.parse(html);
     	documentJsoup.outputSettings().syntax(org.jsoup.nodes.Document.OutputSettings.Syntax.xml);
     	String str = documentJsoup.html();
-    	System.out.println(str);
-        System.out.println(Costanti.PATH_FONT_STYLE+"arial.ttf");
-
     	try {
-	        Document document = new Document();
+            Image imgHeader = null;
+            Image imgFooter = null;
+            
+            if(questionario.getTemplateVerbale().getHeader() != null) {
+            	imgHeader = Image.getInstance(Costanti.PATH_HEADER_IMAGE+questionario.getTemplateVerbale().getHeader());
+                imgHeader.scaleToFit(PageSize.A4);
+            }
+            
+            if(questionario.getTemplateVerbale().getHeader() != null) {
+            	imgFooter = Image.getInstance(Costanti.PATH_FOOTER_IMAGE+questionario.getTemplateVerbale().getFooter());
+                imgFooter.scaleToFit(PageSize.A4);
+            }
+	        
+            Document document = new Document(PageSize.A4);
+	        document.setMargins(20,20,imgHeader.getScaledHeight(),imgFooter.getScaledHeight());
 	        PdfWriter writer = PdfWriter.getInstance(document, new FileOutputStream(file));
+	        writer.setPageEvent((PdfPageEvent) new it.portalECI.Util.HeaderFooter(imgHeader,imgFooter));
 	        document.open();
 	        // CSS
 	        CSSResolver cssResolver = XMLWorkerHelper.getInstance().getDefaultCssResolver(true);
@@ -346,11 +363,14 @@ public class GestioneVerbaleBO {
 	        verbale.getDocumentiVerbale().add(certificato);
 	        GestioneVerbaleDAO.save(verbale, session);
     	}catch (IOException e) {
+    		e.printStackTrace();
     		System.out.println(e.toString());
-    		throw new Exception(e);
 		} catch (DocumentException e) {
+			e.printStackTrace();
 			System.out.println(e.toString());
-			throw new Exception(e);
+		}catch (Exception e) {
+			e.printStackTrace();
+			// TODO: handle exception
 		}
     	
 		return file;
