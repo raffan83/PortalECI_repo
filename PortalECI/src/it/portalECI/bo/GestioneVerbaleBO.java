@@ -86,7 +86,7 @@ public class GestioneVerbaleBO {
 	
 	public static void cambioStato(VerbaleDTO verbale,StatoVerbaleDTO stato, Session session) {		
 		
-		verbale.setStato(stato );			
+		verbale.setStato(stato);			
 		session.update(verbale);
 		InterventoDTO intervento= verbale.getIntervento();	
 		if(intervento==null) {
@@ -96,7 +96,8 @@ public class GestioneVerbaleBO {
 		Boolean verificato=true;
 		
 		for(VerbaleDTO verbaleInt : intervento.getVerbali()) {
-			if(verbaleInt.getStato().getId()!=StatoVerbaleDTO.RIFIUTATO && verbaleInt.getStato().getId()!= StatoVerbaleDTO.ACCETTATO) {
+			if(verbaleInt.getStato().getId()!=StatoVerbaleDTO.RIFIUTATO && verbaleInt.getStato().getId()!= StatoVerbaleDTO.ACCETTATO &&
+					verbaleInt.getSchedaTecnica().getStato().getId()!=StatoVerbaleDTO.RIFIUTATO && verbaleInt.getSchedaTecnica().getStato().getId()!= StatoVerbaleDTO.ACCETTATO) {
 				verificato=false;
 				break;
 			}

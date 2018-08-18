@@ -33,7 +33,7 @@
   		<!-- Content Wrapper. Contains page content -->
  		<div id="corpoframe" class="content-wrapper">
    			<!-- Content Header (Page header) -->
-    		<section class="content-header">
+    		<section id="topbar" class="content-header">
           		<h1 class="pull-left">
         			Dettaglio Verbale
         			<small></small>
@@ -111,6 +111,18 @@
 														</a>
                 									</li>
                 									<li class="list-group-item">
+                  										<b>Stato Sk.Tecnica</b> 
+                  										<!-- <a class="pull-right">${intervento.getStatoIntervento().getDescrizione()}</a>-->
+                  										<a class="pull-right">				 											
+    														<c:if test="${verbale.getSchedaTecnica()!=null }">
+																<span class="label" style="color:#000000 !important; background-color:${verbale.getStato().getColore(verbale.getSchedaTecnica().getStato().getId())} !important;">${verbale.getSchedaTecnica().getStato().getDescrizione()}</span>
+															</c:if>  											
+															<c:if test="${verbale.getSchedaTecnica()==null }">
+																<span class="label" style="color:#000000 !important; background-color:grey !important;">ASSENTE</span>
+															</c:if>
+														</a>
+                									</li>
+                									<li class="list-group-item">
                   										<b>Codice Verifica</b> 
                   										<a class="pull-right">${verbale.getCodiceVerifica()}</a>
                 									</li>
@@ -122,7 +134,7 @@
                 									</li>
                 								
         										</ul>     
-        										<div class="row">    
+        										<div class="row" id="cambiostato">    
         										
         											<c:if test='${verbale.getStato().getId()== 4 && user.checkPermesso("CH_STA_VERBALE")}'>
         												<button class="btn btn-default pull-right" onClick="$('#modalCambioStatoVerbale').modal('show');" style="margin-right:10px">
@@ -153,7 +165,8 @@
         													<div class="col-xs-12" style="border-bottom: 1px solid #ddd;">
         														<label for="titolo-input" class="control-label col-xs-12">${domVerbale.getDomandaQuestionario().getTesto()}</label><br/>
         												
-    	    													<c:set var="domVerbale" value="${domVerbale}" scope="request"></c:set>
+    	    													<c:set var="domVerbale" value="${domVerbale}" scope="request"></c:set>    	    													
+    	    													<c:set var="readonly" value="${verbale.getStato().getId()>=5}" scope="request"></c:set>
 																<jsp:include page="gestioneVerbaleDettaglio.jsp"></jsp:include>        													
 
         													</div>
@@ -161,24 +174,24 @@
 													</form>
 												</div>
 												<c:if test='${verbale.getStato().getId()== 4}'>
-													<div class="box-footer">
+													<div class="box-footer" id="formVerbalebox">
 														<c:if test="${user.checkPermesso('UPD_VERBALE')}">
-															<button type="button" class="btn btn-default ml-1 savebutt" onclick="modificaRisposte()" style="margin-left: 1em; float: right;">	
+															<button type="button" class="btn btn-default ml-1 savebutt" onclick="modificaRisposte(${verbale.getId()},'formVerbale')" style="margin-left: 1em; float: right;">	
 																<span >SALVA MODIFICHE</span>
 															</button>	
 													
-															<button type="button" class="btn btn-default ml-1 savebutt" onclick="annullaModifiche()" style="margin-left: 1em; float: right;">	
+															<button type="button" class="btn btn-default ml-1 savebutt" onclick="annullaModifiche('formVerbale')" style="margin-left: 1em; float: right;">	
 																<span >ANNULLA MODIFICHE</span>
 															</button>
 														</c:if>
 															
 														<c:if test="${user.checkPermesso('CH_STA_VERBALE')}">
-            	      										<button type="button" class="btn btn-default  ml-1 changestate" onclick="salvaCambioStato('6')" style="margin-left: 1em; color:#000000 !important; background-color:${verbale.getStato().getColore(6)} !important; float: right;">
+            	      										<button type="button" class="btn btn-default  ml-1 changestate" onclick="salvaCambioStato(${verbale.getId()},'formVerbale','6')" style="margin-left: 1em; color:#000000 !important; background-color:${verbale.getStato().getColore(6)} !important; float: right;">
                 	  											<i class="glyphicon glyphicon-remove"></i>
                   												<span >RIFIUTATO</span>
                   											</button>
 										
-															<button type="button" class="btn btn-default ml-1 changestate" onclick="salvaCambioStato('5')" style="margin-left: 1em; color:#000000 !important; background-color:${verbale.getStato().getColore(5)} !important; float: right;">
+															<button type="button" class="btn btn-default ml-1 changestate" onclick="salvaCambioStato(${verbale.getId()},'formVerbale','5')" style="margin-left: 1em; color:#000000 !important; background-color:${verbale.getStato().getColore(5)} !important; float: right;">
 																<i class="glyphicon glyphicon glyphicon-ok"></i>
 																<span >ACCETTATO</span>
 															</button>
@@ -203,37 +216,38 @@
 													</div>
 												</div>
 												<div class="box-body">	
-													<form id="formVerbale" >
+													<form id="formScTecnica" >
 														<c:forEach items="${domandeVerbaleSchedaTecnica}" var="domVerbale" varStatus="loop">	
         													<div class="col-xs-12" style="border-bottom: 1px solid #ddd;">
         														<label for="titolo-input" class="control-label col-xs-12">${domVerbale.getDomandaQuestionario().getTesto()}</label><br/>
         												
     	    													<c:set var="domVerbale" value="${domVerbale}" scope="request"></c:set>
+    	    													<c:set var="readonly" value="${verbale.getSchedaTecnica().getStato().getId()>=5}" scope="request"></c:set>
 																<jsp:include page="gestioneVerbaleDettaglio.jsp"></jsp:include>        													
 
         													</div>
 														</c:forEach>
 													</form>
 												</div>
-												<c:if test='${verbale.getStato().getId()== 4}'>
-													<div class="box-footer">
+												<c:if test='${verbale.getSchedaTecnica().getStato().getId()== 4}'>
+													<div class="box-footer" id="formScTecnicabox">
 														<c:if test="${user.checkPermesso('UPD_VERBALE')}">
-															<button type="button" class="btn btn-default ml-1 savebutt" onclick="modificaRisposte()" style="margin-left: 1em; float: right;">	
+															<button type="button" class="btn btn-default ml-1 savebutt" onclick="modificaRisposte(${verbale.getSchedaTecnica().getId()},'formScTecnica')" style="margin-left: 1em; float: right;">	
 																<span >SALVA MODIFICHE</span>
 															</button>	
 													
-															<button type="button" class="btn btn-default ml-1 savebutt" onclick="annullaModifiche()" style="margin-left: 1em; float: right;">	
+															<button type="button" class="btn btn-default ml-1 savebutt" onclick="annullaModifiche('formScTecnica')" style="margin-left: 1em; float: right;">	
 																<span >ANNULLA MODIFICHE</span>
 															</button>	
 														</c:if>
 								
 														<c:if test="${user.checkPermesso('CH_STA_VERBALE')}">
-            	      										<button type="button" class="btn btn-default  ml-1 changestate" onclick="salvaCambioStato('6')" style="margin-left: 1em; color:#000000 !important; background-color:${verbale.getStato().getColore(6)} !important; float: right;">
+            	      										<button type="button" class="btn btn-default  ml-1 changestate" onclick="salvaCambioStato(${verbale.getSchedaTecnica().getId()},'formScTecnica','6')" style="margin-left: 1em; color:#000000 !important; background-color:${verbale.getStato().getColore(6)} !important; float: right;">
                 		  										<i class="glyphicon glyphicon-remove"></i>
                 	  											<span >RIFIUTATO</span>
             	      										</button>
 										
-															<button type="button" class="btn btn-default ml-1 changestate" onclick="salvaCambioStato('5')" style="margin-left: 1em; color:#000000 !important; background-color:${verbale.getStato().getColore(5)} !important; float: right;">
+															<button type="button" class="btn btn-default ml-1 changestate" onclick="salvaCambioStato(${verbale.getSchedaTecnica().getId()},'formScTecnica','5')" style="margin-left: 1em; color:#000000 !important; background-color:${verbale.getStato().getColore(5)} !important; float: right;">
 																<i class="glyphicon glyphicon glyphicon-ok"></i>
 																<span >ACCETTATO</span>
 															</button>
@@ -267,12 +281,12 @@
                   							
                   							<div class="col-sm-12" style="margin:5px ; text-align:center;">
                   								<c:if test="${user.checkPermesso('CH_STA_VERBALE')}">
-                  									<button type="button  pull-left" class="btn-sm " onclick="salvaCambioStato('6')" style="color:#000000 !important; background-color:${verbale.getStato().getColore(6)} !important;">
+                  									<button type="button  pull-left" class="btn-sm " onclick="salvaCambioStato(null,null,'6')" style="color:#000000 !important; background-color:${verbale.getStato().getColore(6)} !important;">
                   										<i class="glyphicon glyphicon-remove"></i>
                   										<span >RIFIUTATO</span>
                   									</button>
 										
-													<button type="button  pull-right" class="btn-sm" onclick="salvaCambioStato('5')" style="color:#000000 !important; background-color:${verbale.getStato().getColore(5)} !important;">
+													<button type="button  pull-right" class="btn-sm" onclick="salvaCambioStato(null,null,'5')" style="color:#000000 !important; background-color:${verbale.getStato().getColore(5)} !important;">
 														<i class="glyphicon glyphicon glyphicon-ok"></i>
 														<span >ACCETTATO</span>
 													</button>
@@ -334,25 +348,43 @@
 				
     		});	
 			
-			function salvaCambioStato(idstato){
+			function salvaCambioStato(idverbale, idform, idstato){
 				pleaseWaitDiv = $('#pleaseWaitDialog');
 				pleaseWaitDiv.modal();
-				
+				if(idverbale==null){
+					idverbale=${verbale.getId()}+"&all="+true
+				}
 				$.ajax({
 					type: "POST",
 					url: "gestioneVerbale.do?action=cambioStato",
-					data : "idVerbale=${verbale.getId()}&stato="+idstato,				
+					data : "idVerbale="+idverbale+"&stato="+idstato,				
 					dataType: "json",
 					success: function( data, textStatus) {
-						if(data.success){ 		
-							location.reload();		          			  		          		
-						}else{
-							pleaseWaitDiv.modal('hide');	
+						if(data.success){	
+							if(idform==null){
+								location.reload();
+							}else{
+								$("#"+idform+"box").hide();
+								$("#"+idform+" input").attr('readonly', 'readonly');
+								$("#"+idform+" textarea").attr('readonly', 'readonly');
+								$("#"+idform+" :checkbox").attr('disabled', 'disabled');
+								$("#"+idform+" :radio").attr('disabled', 'disabled');
+								$("#"+idform+" input").iCheck('update');
+								
+								if(idform=="formVerbale" && ${user.checkPermesso('GENERA_CERTIFICATO')}){									
+									$("#topbar").append('<button class="btn btn-default pull-right" onClick="generaCertificato(${verbale.getId()})" style="margin-left:5px"><i class="glyphicon glyphicon-edit"></i> Genera Certificato</button>');
+								}else if(idform=="formScTecnica" && ${user.checkPermesso('GENERA_SKTECNICA')}){
+									$("#topbar").append('<button class="btn btn-default pull-right" onClick="generaCertificato(${verbale.getSchedaTecnica().getId()})" style="margin-left:5px"><i class="glyphicon glyphicon-edit"></i> Genera Scheda Tecnica</button>');
+								}
+							}
+						}else{							
 							$('#modalErrorDiv').html(data.messaggio);
 							$('#myModalError').removeClass();
 							$('#myModalError').addClass("modal modal-danger");
 							$('#myModalError').modal('show');															
-						}						
+						}		
+						pleaseWaitDiv.modal('hide');	
+						$('#modalCambioStatoVerbale').modal('hide');
 					},
 					error: function(jqXHR, textStatus, errorThrown){		          
 						$('#errorMsg').html("<h3 class='label label-danger'>"+textStatus+"</h3>");
@@ -380,35 +412,28 @@
 				});
 			}
 			
-			function modificaRisposte(){		
+			function modificaRisposte(idVerb,idform){		
 				pleaseWaitDiv = $('#pleaseWaitDialog');
 				pleaseWaitDiv.modal();
 				
 				$.ajax({
 					type: "GET",
-					url: "gestioneVerbale.do?idVerbale=${verbale.getId()}",
-					data : $("#formVerbale").serializeArray(),				
+					url: "gestioneVerbale.do?idVerbale="+idVerb,
+					data : $("#"+idform).serializeArray(),				
 					dataType: "json",
 					success: function( data, textStatus) {
 
-						if(data.success){ 
-								
-							location.reload();
-			          			  		          		
-						}else{
-							pleaseWaitDiv.modal('hide');
-							
+						if(!data.success){	
 							$('#modalErrorDiv').html(data.messaggio);
 							$('#myModalError').removeClass();
 							$('#myModalError').addClass("modal modal-danger");
 							$('#myModalError').modal('show');
-															
 						}
 						
+						pleaseWaitDiv.modal('hide');
 					},
 
 					error: function(jqXHR, textStatus, errorThrown){
-			          
 						$('#errorMsg').html("<h3 class='label label-danger'>"+textStatus+"</h3>");
 						//callAction('logout.do');
 						pleaseWaitDiv.modal('hide');
@@ -417,8 +442,9 @@
 								
 			}
 			
-			function annullaModifiche(){
-				location.reload();
+			function annullaModifiche(idform){
+				document.getElementById(idform).reset();
+				$('input').iCheck('update'); 
 			}
 			
 					

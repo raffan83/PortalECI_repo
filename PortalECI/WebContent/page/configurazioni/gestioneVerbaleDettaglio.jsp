@@ -54,7 +54,7 @@
     			<c:forEach items="${opzioni}" var="opzione">	
 					<label class="${domVerbale.getRisposta().getTipo().equals('RES_CHOICE') && risposta.getRispostaQuestionario().getMultipla()?'checkbox':'radio'}-inline">
 						<input type="${domVerbale.getRisposta().getTipo().equals('RES_CHOICE') && risposta.getRispostaQuestionario().getMultipla()?'checkbox':'radio'}"
-  							${opzione.getChecked()?'checked="checked"':''} name="options${risposta.getId()}" value="${opzione.getId()}" class="rispVerb" ${domVerbale.getDomandaQuestionario().getObbligatoria()?'required':''}> 
+  							${opzione.getChecked()?'checked="checked"':''} name="options${risposta.getId()}" value="${opzione.getId()}" class="rispVerb" ${domVerbale.getDomandaQuestionario().getObbligatoria()?'required':''} <c:if test="${readonly}">disabled</c:if>> 
   							${opzione.getOpzioneQuestionario().getTesto()}
 					</label><br/>
 				</c:forEach>
@@ -66,7 +66,7 @@
   		<div class="col-sm-3">
 			<div class="form-group">
 				<label for="titolo-input" class="control-label">${risposta.getRispostaQuestionario().getValore1()}</label>
-				<input type="text" name="value1${risposta.getId()}" class="form-control rispVerb" value="${risposta.getValue1()}" ${domVerbale.getDomandaQuestionario().getObbligatoria()?'required':''}/>
+				<input type="text" name="value1${risposta.getId()}" class="form-control rispVerb" value="${risposta.getValue1()}" ${domVerbale.getDomandaQuestionario().getObbligatoria()?'required':''} <c:if test="${readonly}">readonly</c:if>/>
 			</div>
 		</div>
 		<div class="col-sm-1">
@@ -77,13 +77,13 @@
 		<div class="col-sm-3">
 			<div class="form-group">
 				<label for="titolo-input" class="control-label">${risposta.getRispostaQuestionario().getValore2()}</label>
-	 			<input type="text" name="value2${risposta.getId()}" class="form-control rispVerb" value="${risposta.getValue2()}" ${domVerbale.getDomandaQuestionario().getObbligatoria()?'required':''}/>
+	 			<input type="text" name="value2${risposta.getId()}" class="form-control rispVerb" value="${risposta.getValue2()}" ${domVerbale.getDomandaQuestionario().getObbligatoria()?'required':''} <c:if test="${readonly}">readonly</c:if>/>
 			</div>
 		</div>
 		<div class="col-sm-3">
 			<div class="form-group">
 				<label for="titolo-input" class="control-label">${risposta.getRispostaQuestionario().getRisultato()}</label>
-				<input type="text" class="form-control rispVerb"  name="responseValue${risposta.getId()}" value="${risposta.getResponseValue()}" ${domVerbale.getDomandaQuestionario().getObbligatoria()?'required':''}/>
+				<input type="text" class="form-control rispVerb"  name="responseValue${risposta.getId()}" value="${risposta.getResponseValue()}" ${domVerbale.getDomandaQuestionario().getObbligatoria()?'required':''} <c:if test="${readonly}">readonly</c:if>/>
 			</div>
 		</div>
   																
@@ -91,7 +91,7 @@
   	<c:when test="${domVerbale.getRisposta().getTipo().equals('RES_TEXT')}">
   		<div class="col-sm-12">
   			<div class="form-group">		
-  				<textarea class="form-control rispVerb" rows="5" id="comment" name="${risposta.getId()}" ${domVerbale.getDomandaQuestionario().getObbligatoria()?'required':''}>${risposta.getResponseValue()}</textarea>
+  				<textarea class="form-control rispVerb" rows="5" id="comment" name="${risposta.getId()}" ${domVerbale.getDomandaQuestionario().getObbligatoria()?'required':''} <c:if test="${readonly}">readonly</c:if>>${risposta.getResponseValue()}</textarea>
   			</div>
   		</div>
 	</c:when>

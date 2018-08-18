@@ -206,12 +206,15 @@ public class GestioneVerbali extends HttpServlet {
 		if(action !=null && action.equals("cambioStato")){			 					
 			
 			String stato = request.getParameter("stato" );										
-				
+			if(Boolean.parseBoolean(request.getParameter("all"))) {
+				if(verbale.getSchedaTecnica()!=null)
+					GestioneVerbaleBO.cambioStato( verbale.getSchedaTecnica(), GestioneStatoVerbaleDAO.getStatoVerbaleById( Integer.parseInt(stato), session) , session);
+			}
 			GestioneVerbaleBO.cambioStato( verbale, GestioneStatoVerbaleDAO.getStatoVerbaleById( Integer.parseInt(stato), session) , session);	
-				
+			
 			myObj.addProperty("success", true);
 			myObj.addProperty("messaggio", "Stato modificato con successo");
-		
+			
 			out.print(myObj);
 		} else if(action !=null && action.equals("generaCertificato")) {
 			QuestionarioDTO questionario = GestioneQuestionarioBO.getQuestionarioById(verbale.getQuestionarioID(),session);

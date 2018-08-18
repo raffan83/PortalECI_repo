@@ -51,7 +51,7 @@
  																<th>Codice Verifica</th>
  																<th>Tecnico Verificatore</th>
  																<th>Descrizione Verifica</th>
- 																<th>Stato</th>
+ 																<th>Stato-Stato S.T.</th>
  																<th>Data Creazione</th>
  																<td></td>
  															</tr>
@@ -86,7 +86,14 @@
 																		<c:out value='${verbale.getDescrizioneVerifica()}'/>
 																	</td>
 																	<td>
-																		<span class="label" style="color:#000000 !important; background-color:${verbale.getStato().getColore(verbale.getStato().getId())} !important;">${verbale.getStato().getDescrizione()}</span>  																	
+																		<span class="label" style="color:#000000 !important; background-color:${verbale.getStato().getColore(verbale.getStato().getId())} !important;">${verbale.getStato().getDescrizione()}</span>
+																		-
+																		<c:if test="${verbale.getSchedaTecnica()!=null }">
+																			<span class="label" style="color:#000000 !important; background-color:${verbale.getStato().getColore(verbale.getSchedaTecnica().getStato().getId())} !important;">${verbale.getSchedaTecnica().getStato().getDescrizione()}</span>
+																		</c:if>  											
+																		<c:if test="${verbale.getSchedaTecnica()==null }">
+																			<span class="label" style="color:#000000 !important; background-color:grey !important;">ASSENTE</span>
+																		</c:if>	  																	
 																	</td>
         															<td>
 																		<fmt:formatDate pattern="dd/MM/yyyy" value='${verbale.getCreateDate()}' type='date' />
