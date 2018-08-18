@@ -171,8 +171,8 @@
       																</c:if>    
 																</td>
 																<td>
-  																	<c:if test="${verbale.getDocumentiVerbale().size()>0 && user.checkPermesso('DOWNLOAD_SKTECNICA')}">
-      																	<c:forEach items="${verbale.getDocumentiVerbale()}" var="docum">	      																		
+  																	<c:if test="${verbale.getSchedaTecnica().getDocumentiVerbale().size()>0 && user.checkPermesso('DOWNLOAD_SKTECNICA')}">
+      																	<c:forEach items="${verbale.getSchedaTecnica().getDocumentiVerbale()}" var="docum">	      																		
       																		<c:if test="${docum.getType().equals('SCHEDA_TECNICA')}">
 	      																		<a class="btn customTooltip" title="Click per aprire la scheda tecnica" onclick="scaricaFile(${docum.id});">
 	      																			<i class="glyphicon glyphicon-file"></i>
