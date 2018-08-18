@@ -4,10 +4,8 @@ import org.hibernate.Session;
 
 import it.portalECI.DAO.GestioneCategorieVerificaDAO;
 import it.portalECI.DTO.CategoriaVerificaDTO;
-import it.portalECI.DTO.DomandaVerbaleDTO;
 
-
-
+import org.hibernate.Query;
 
 public class GestioneCategorieVerificaBO {
 	
@@ -39,13 +37,19 @@ public class GestioneCategorieVerificaBO {
 	}
 	
 	public static int deleteCategoriaVerifica(CategoriaVerificaDTO categoria, Session session) {
+		Query query = session.createQuery("from TipoVerificaDTO  WHERE categoria.id = :_categoria");
+		query.setParameter("_categoria",categoria.getId());			
+
+		if(query.list().size()>0){	
+			return 2;
+		}
+		
 		int toRet=0;
 		try {
 			session.delete(categoria);
 			toRet=0;
 		}catch (Exception ex){
-			toRet=1;
-			throw ex;	 			 		
+			toRet=1;	 			 		
 		}
 		return toRet;	
 	}
