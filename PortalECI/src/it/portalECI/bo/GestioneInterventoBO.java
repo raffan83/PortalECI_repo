@@ -48,7 +48,6 @@ public class GestioneInterventoBO {
 			for(VerbaleDTO verbale:intervento.getVerbali()) {
 				//retrieve questionario for tipoVerificaCodice
 				verbale= GestioneVerbaleBO.buildVerbaleByQuestionario(verbale, session);
-				System.out.println("verbale TROVATO : "+(verbale!=null?verbale.getId():-1));
 				if(verbale==null) {
 					result=false;
 				}

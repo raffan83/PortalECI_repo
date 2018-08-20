@@ -5,9 +5,11 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.charset.Charset;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
@@ -65,9 +67,11 @@ import it.portalECI.DTO.RispostaTestoVerbaleDTO;
 import it.portalECI.DTO.RispostaVerbaleDTO;
 import it.portalECI.DTO.StatoInterventoDTO;
 import it.portalECI.DTO.StatoVerbaleDTO;
+import it.portalECI.DTO.TemplateQuestionarioDTO;
 import it.portalECI.DTO.UtenteDTO;
 import it.portalECI.DTO.VerbaleDTO;
 import it.portalECI.Util.Costanti;
+import it.portalECI.Util.HeaderFooter;
 
 
 public class GestioneVerbaleBO {
@@ -247,140 +251,102 @@ public class GestioneVerbaleBO {
 	}
 	
 	public static File getPDFVerbale(VerbaleDTO verbale, QuestionarioDTO questionario, Session session) throws Exception{
-		if(questionario == null || questionario.getTemplateVerbale() == null) {
+		
+		if(questionario == null || (questionario.getTemplateVerbale() == null && questionario.getTemplateSchedaTecnica() == null)) {
 			throw new IllegalArgumentException();
 		}
-		String path="";
-		String html ="";
+		
+		TemplateQuestionarioDTO template = null;
 		int idIntervento = 0;
 		if(verbale.getType().equals(VerbaleDTO.VERBALE)) {
-			path = "Intervento_"+verbale.getIntervento().getId()+File.separator+"Verbale_"+verbale.getCodiceCategoria()+"_"+verbale.getId()+File.separator;
 			idIntervento = verbale.getIntervento().getId();
-			html = questionario.getTemplateVerbale().getTemplate();
+			template = questionario.getTemplateVerbale();
 		}else {
 			VerbaleDTO verb=GestioneVerbaleDAO.getVerbaleFromSkTec(String.valueOf(verbale.getId()), session);
 			idIntervento = verb.getIntervento().getId();
-			path = "Intervento_"+idIntervento+File.separator+"SchedaTecnica_"+verbale.getCodiceCategoria()+"_"+verbale.getId()+File.separator;	
-			html = questionario.getTemplateSchedaTecnica().getTemplate();
+			template = questionario.getTemplateSchedaTecnica();
 		}
+		
+		String path = "Intervento_"+idIntervento+File.separator+verbale.getType()+"_"+verbale.getCodiceCategoria()+"_"+verbale.getId()+File.separator;
 		new File(Costanti.PATH_CERTIFICATI+path).mkdirs();
-		File file = new File(Costanti.PATH_CERTIFICATI+path, questionario.getTitolo()+"_"+questionario.getTipo().getCodice()+"_"+idIntervento+".pdf");		
-		for (DomandaVerbaleDTO domanda:verbale.getDomandeVerbale()) {
-			String placeholder = domanda.getDomandaQuestionario().getPlaceholder();
-			html = html.replaceAll("\\$\\{"+placeholder+"\\}", domanda.getDomandaQuestionario().getTesto());
-			RispostaVerbaleDTO rispostaVerbale = domanda.getRisposta();
-
-			String rispostaValore = null;
-			String rispostaPlaceholder = null;
-			switch (rispostaVerbale.getTipo()) {
-			case RispostaVerbaleDTO.TIPO_TESTO:
-				RispostaTestoVerbaleDTO rispostaTesto = GestioneRispostaVerbaleDAO.getRispostaInstance(RispostaTestoVerbaleDTO.class, rispostaVerbale.getId(), session);
-				rispostaPlaceholder = rispostaTesto.getRispostaQuestionario().getPlaceholder();
-				rispostaValore = getTemplateRisposta(rispostaTesto);
-				break;
-			case RispostaVerbaleDTO.TIPO_SCELTA:
-				RispostaSceltaVerbaleDTO rispostaScelta = GestioneRispostaVerbaleDAO.getRispostaInstance(RispostaSceltaVerbaleDTO.class, rispostaVerbale.getId(), session);
-				rispostaPlaceholder = rispostaScelta.getRispostaQuestionario().getPlaceholder();
-				rispostaValore = getTemplateRisposta(rispostaScelta);
-				break;
-			case RispostaVerbaleDTO.TIPO_FORMULA:
-				RispostaFormulaVerbaleDTO rispostaFormula = GestioneRispostaVerbaleDAO.getRispostaInstance(RispostaFormulaVerbaleDTO.class, rispostaVerbale.getId(), session);
-				rispostaPlaceholder = rispostaFormula.getRispostaQuestionario().getPlaceholder();
-				rispostaValore = getTemplateRisposta(rispostaFormula);
-				break;
-			default:
-				break;
-			}
-			if(rispostaValore!=null && rispostaPlaceholder!=null ) {
-				html = html.replaceAll("\\$\\{"+rispostaPlaceholder+"\\}", rispostaValore);
-			}
-		}
-		html = html.replaceAll("\\$\\{(.*?)\\}", "");
+		File file = new File(Costanti.PATH_CERTIFICATI+path, questionario.getTitolo()+"_"+questionario.getTipo().getCodice()+"_"+idIntervento+".pdf");
+		
+		String html = template.getTemplate();
+		replacePlaceholders(html, verbale, session);
+		
     	final org.jsoup.nodes.Document documentJsoup = Jsoup.parse(html);
     	documentJsoup.outputSettings().syntax(org.jsoup.nodes.Document.OutputSettings.Syntax.xml);
-    	String str = documentJsoup.html();
-    	try {
-            Image imgHeader = null;
-            Image imgFooter = null;
+    	String validXHTML = documentJsoup.html();
+    	
+        Document document = new Document(PageSize.A4);
+        FileOutputStream fileOutput = new FileOutputStream(file);
+	    PdfWriter writer = PdfWriter.getInstance(document, fileOutput);
             
-            if(questionario.getTemplateVerbale().getHeader() != null) {
-            	imgHeader = Image.getInstance(Costanti.PATH_HEADER_IMAGE+questionario.getTemplateVerbale().getHeader());
-                imgHeader.scaleToFit(PageSize.A4);
+	    SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+	    
+	    HeaderFooter pageEventHandler = new HeaderFooter(
+	    		template.getHeader(),
+	    		template.getFooter(),
+	    		verbale.getCodiceVerifica(),
+	    		"Revisione del "+dateFormat.format(template.getUpdateDate())
+	    );
+	    writer.setPageEvent(pageEventHandler);
+	    pageEventHandler.formatDocument(document);
+	    document.open();
+	    
+        // CSS
+        CSSResolver cssResolver = XMLWorkerHelper.getInstance().getDefaultCssResolver(true);
+        XMLWorkerFontProvider fontProvider = new XMLWorkerFontProvider(XMLWorkerFontProvider.DONTLOOKFORFONTS);
+        fontProvider.register(Costanti.PATH_FONT_STYLE+"arial.ttf");
+        CssAppliers cssAppliers = new CssAppliersImpl(fontProvider);
+        // HTML
+        HtmlPipelineContext htmlContext = new HtmlPipelineContext(cssAppliers);
+        htmlContext.setTagFactory(Tags.getHtmlTagProcessorFactory());
+        htmlContext.setImageProvider(new AbstractImageProvider() {
+            public String getImageRootPath() {
+                return Costanti.PATH_ROOT;
             }
-            
-            if(questionario.getTemplateVerbale().getHeader() != null) {
-            	imgFooter = Image.getInstance(Costanti.PATH_FOOTER_IMAGE+questionario.getTemplateVerbale().getFooter());
-                imgFooter.scaleToFit(PageSize.A4);
+        });
+        htmlContext.setLinkProvider(new LinkProvider() {
+            public String getLinkRoot() {
+                return Costanti.PATH_ROOT;
             }
-	        
-            Document document = new Document(PageSize.A4);
-	        document.setMargins(20,20,imgHeader.getScaledHeight(),imgFooter.getScaledHeight());
-	        PdfWriter writer = PdfWriter.getInstance(document, new FileOutputStream(file));
-	        writer.setPageEvent((PdfPageEvent) new it.portalECI.Util.HeaderFooter(imgHeader,imgFooter));
-	        document.open();
-	        // CSS
-	        CSSResolver cssResolver = XMLWorkerHelper.getInstance().getDefaultCssResolver(true);
-	        XMLWorkerFontProvider fontProvider = new XMLWorkerFontProvider(XMLWorkerFontProvider.DONTLOOKFORFONTS);
-	        fontProvider.register(Costanti.PATH_FONT_STYLE+"arial.ttf");
-	        CssAppliers cssAppliers = new CssAppliersImpl(fontProvider);
-	        // HTML
-	        HtmlPipelineContext htmlContext = new HtmlPipelineContext(cssAppliers);
-	        htmlContext.setTagFactory(Tags.getHtmlTagProcessorFactory());
-	        htmlContext.setImageProvider(new AbstractImageProvider() {
-	            public String getImageRootPath() {
-	                return Costanti.PATH_ROOT;
-	            }
-	        });
-	        htmlContext.setLinkProvider(new LinkProvider() {
-	            public String getLinkRoot() {
-	                return Costanti.PATH_ROOT;
-	            }
-	        });
-	        // Pipelines
-	        PdfWriterPipeline pdf = new PdfWriterPipeline(document, writer);
-	        HtmlPipeline htmlPipeline = new HtmlPipeline(htmlContext, pdf);
-	        CssResolverPipeline css = new CssResolverPipeline(cssResolver, htmlPipeline);
+        });
+        // Pipelines
+        PdfWriterPipeline pdf = new PdfWriterPipeline(document, writer);
+        HtmlPipeline htmlPipeline = new HtmlPipeline(htmlContext, pdf);
+        CssResolverPipeline css = new CssResolverPipeline(cssResolver, htmlPipeline);
 
-	        XMLWorker worker = new XMLWorker(css, true);
-	        XMLParser p = new XMLParser(worker);
-	        p.parse(new ByteArrayInputStream(str.getBytes()),
-	        		Charset.forName("US-ASCII"));
+        XMLWorker worker = new XMLWorker(css, true);
+        XMLParser p = new XMLParser(worker);
+        p.parse(new ByteArrayInputStream(validXHTML.getBytes()),
+        		Charset.forName("US-ASCII"));
 
-	        document.close();
-	        DocumentoDTO certificato = new DocumentoDTO();
-	        certificato.setFilePath(path+file.getName());
-	        //cambio il type del DocumentoDTO in base a certificato o scheda_tecnica
-	        if(verbale.getType().equals(VerbaleDTO.VERBALE)) {
-	        	certificato.setType(DocumentoDTO.CERTIFIC);
-	        } else {
-	        	certificato.setType(DocumentoDTO.SK_TEC);
+        document.close();
+        DocumentoDTO certificato = new DocumentoDTO();
+        certificato.setFilePath(path+file.getName());
+        //cambio il type del DocumentoDTO in base a certificato o scheda_tecnica
+        if(verbale.getType().equals(VerbaleDTO.VERBALE)) {
+        	certificato.setType(DocumentoDTO.CERTIFIC);
+        } else {
+        	certificato.setType(DocumentoDTO.SK_TEC);
+        }
+        certificato.setVerbale(verbale);
+        if(verbale.getDocumentiVerbale() != null) {
+	        for(DocumentoDTO doc:verbale.getDocumentiVerbale()) {
+        		//gestiosco anche qui certificato o scheda tecnica
+	        	if(verbale.getType().equals(VerbaleDTO.VERBALE) && doc.getType().equalsIgnoreCase(DocumentoDTO.CERTIFIC)){
+		        	certificato.setId(doc.getId());
+		        	verbale.getDocumentiVerbale().remove(doc);
+	        	} else if (verbale.getType().equals(VerbaleDTO.SK_TEC) && doc.getType().equalsIgnoreCase(DocumentoDTO.SK_TEC)){
+	        		certificato.setId(doc.getId());
+		        	verbale.getDocumentiVerbale().remove(doc);
+	        	}
 	        }
-	        certificato.setVerbale(verbale);
-	        if(verbale.getDocumentiVerbale() != null) {
-		        for(DocumentoDTO doc:verbale.getDocumentiVerbale()) {
-	        		//gestiosco anche qui certificato o scheda tecnica
-		        	if(verbale.getType().equals(VerbaleDTO.VERBALE) && doc.getType().equalsIgnoreCase(DocumentoDTO.CERTIFIC)){
-			        	certificato.setId(doc.getId());
-			        	verbale.getDocumentiVerbale().remove(doc);
-		        	} else if (verbale.getType().equals(VerbaleDTO.SK_TEC) && doc.getType().equalsIgnoreCase(DocumentoDTO.SK_TEC)){
-		        		certificato.setId(doc.getId());
-			        	verbale.getDocumentiVerbale().remove(doc);
-		        	}
-		        }
-	        }
-	        GestioneDocumentoDAO.save(certificato, session);
-	        verbale.getDocumentiVerbale().add(certificato);
-	        GestioneVerbaleDAO.save(verbale, session);
-    	}catch (IOException e) {
-    		e.printStackTrace();
-    		System.out.println(e.toString());
-		} catch (DocumentException e) {
-			e.printStackTrace();
-			System.out.println(e.toString());
-		}catch (Exception e) {
-			e.printStackTrace();
-			// TODO: handle exception
-		}
+        }
+        GestioneDocumentoDAO.save(certificato, session);
+        verbale.getDocumentiVerbale().add(certificato);
+        GestioneVerbaleDAO.save(verbale, session);
     	
 		return file;
 
@@ -533,5 +499,38 @@ public class GestioneVerbaleBO {
 		}
 	}
 	
+	private static void replacePlaceholders(String html, VerbaleDTO verbale, Session session) {
+		for (DomandaVerbaleDTO domanda:verbale.getDomandeVerbale()) {
+			String placeholder = domanda.getDomandaQuestionario().getPlaceholder();
+			html = html.replaceAll("\\$\\{"+placeholder+"\\}", domanda.getDomandaQuestionario().getTesto());
+			RispostaVerbaleDTO rispostaVerbale = domanda.getRisposta();
+
+			String rispostaValore = null;
+			String rispostaPlaceholder = null;
+			switch (rispostaVerbale.getTipo()) {
+			case RispostaVerbaleDTO.TIPO_TESTO:
+				RispostaTestoVerbaleDTO rispostaTesto = GestioneRispostaVerbaleDAO.getRispostaInstance(RispostaTestoVerbaleDTO.class, rispostaVerbale.getId(), session);
+				rispostaPlaceholder = rispostaTesto.getRispostaQuestionario().getPlaceholder();
+				rispostaValore = getTemplateRisposta(rispostaTesto);
+				break;
+			case RispostaVerbaleDTO.TIPO_SCELTA:
+				RispostaSceltaVerbaleDTO rispostaScelta = GestioneRispostaVerbaleDAO.getRispostaInstance(RispostaSceltaVerbaleDTO.class, rispostaVerbale.getId(), session);
+				rispostaPlaceholder = rispostaScelta.getRispostaQuestionario().getPlaceholder();
+				rispostaValore = getTemplateRisposta(rispostaScelta);
+				break;
+			case RispostaVerbaleDTO.TIPO_FORMULA:
+				RispostaFormulaVerbaleDTO rispostaFormula = GestioneRispostaVerbaleDAO.getRispostaInstance(RispostaFormulaVerbaleDTO.class, rispostaVerbale.getId(), session);
+				rispostaPlaceholder = rispostaFormula.getRispostaQuestionario().getPlaceholder();
+				rispostaValore = getTemplateRisposta(rispostaFormula);
+				break;
+			default:
+				break;
+			}
+			if(rispostaValore!=null && rispostaPlaceholder!=null ) {
+				html = html.replaceAll("\\$\\{"+rispostaPlaceholder+"\\}", rispostaValore);
+			}
+		}
+		html = html.replaceAll("\\$\\{(.*?)\\}", "");
+	}
 
 }

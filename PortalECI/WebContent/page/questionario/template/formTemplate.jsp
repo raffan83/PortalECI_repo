@@ -88,7 +88,7 @@
 															<div class="form-group">
 																<label for="titolo-input" class="control-label">O sceglilo dal menu a tendina</label>
    																<select name="headerFileName" id="select-file-header" data-placeholder="Seleziona Header..." class="form-control">
-        	          												<option value="" disabled selected>Seleziona Header...</option>
+        	          												<option value="">Nessun header...</option>
             	          											<c:forEach items="${listaHeader}" var="head">
                 	           											<option value="${head}" ${template.header==head?"selected":"" }>${head}</option>
                     	 											</c:forEach>
@@ -124,7 +124,7 @@
 															<div class="form-group">
 																<label for="titolo-input" class="control-label">O sceglilo dal menu a tendina</label>
    																<select name="footerFileName" id="select-file-footer" class="form-control">
-        	          												<option value="" disabled selected>Seleziona Footer...</option>
+        	          												<option value="">Nessun footer...</option>
             	          											<c:forEach items="${listaFooter}" var="footer">
                 	           											<option value="${footer}" ${template.footer==footer?"selected":"" }>${footer}</option>
                     	 											</c:forEach>

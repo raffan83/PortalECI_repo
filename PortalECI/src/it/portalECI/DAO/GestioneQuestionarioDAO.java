@@ -61,7 +61,6 @@ public class GestioneQuestionarioDAO {
 		//settare i verbali col nuovo id
 		lista=query.list();			
 		int occurrences = Collections.frequency(lista, StatoVerbaleDTO.CREATO);		
-		System.out.println("occurrences:" + occurrences + " - lista.size():" + lista.size());
 		if(lista.size()==0 || occurrences==lista.size()) {
 			return false;
 		}

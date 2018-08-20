@@ -2,25 +2,117 @@ package it.portalECI.Util;
 
 import java.io.IOException;
 
+import com.itextpdf.text.BadElementException;
 import com.itextpdf.text.Document;
 import com.itextpdf.text.DocumentException;
+import com.itextpdf.text.Element;
 import com.itextpdf.text.ExceptionConverter;
+import com.itextpdf.text.Font;
 import com.itextpdf.text.Image;
+import com.itextpdf.text.Phrase;
+import com.itextpdf.text.Rectangle;
+import com.itextpdf.text.pdf.BaseFont;
+import com.itextpdf.text.pdf.ColumnText;
 import com.itextpdf.text.pdf.PdfContentByte;
+import com.itextpdf.text.pdf.PdfPCell;
+import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfPageEventHelper;
+import com.itextpdf.text.pdf.PdfTemplate;
 import com.itextpdf.text.pdf.PdfWriter;
 
 public class HeaderFooter extends PdfPageEventHelper {
+	
+	private static float LEFT_MARGIN = 72;
+	private static float RIGHT_MARGIN = 72;
+	private static float MIN_TOP_MARGIN = 72;
+	private static float MIN_BOTTOM_MARGIN = 72;
+	private static float TABLE_FOOTER_HEIGHT = 24;
+	private static float FIXED_FOOTER_FONT_SIZE = 10;
+	
     protected Image imgHeader;
     protected Image imgFooter;
-    public HeaderFooter(Image imgHeader, Image imgFooter) throws IOException {
-    	this.imgHeader = imgHeader;
-    	this.imgFooter = imgFooter;
+    
+    protected PdfTemplate totalPage;
+    protected String footerLeft;
+    protected String footerRight;
+    protected Font font;
+    
+    
+    public HeaderFooter(String imgHeaderPath, String imgFooterPath, String footerLeft, String footerRight) throws IOException, BadElementException {
+    	this.footerLeft = footerLeft;
+    	this.footerRight = footerRight;
+
+    	if(imgHeaderPath != null && !imgHeaderPath.isEmpty()) {
+    		imgHeader = Image.getInstance(Costanti.PATH_HEADER_IMAGE+imgHeaderPath);
+        }
+            
+    	if(imgFooterPath != null && !imgFooterPath.isEmpty()) {
+			imgFooter = Image.getInstance(Costanti.PATH_HEADER_IMAGE+imgFooterPath);
+        }
     }
-     
+
+    @Override
+    public void onOpenDocument(PdfWriter writer, Document document) {
+		try {
+			this.font = new Font(BaseFont.createFont(BaseFont.HELVETICA, BaseFont.CP1252, BaseFont.EMBEDDED), FIXED_FOOTER_FONT_SIZE);
+		} catch (DocumentException | IOException e) {
+			this.font = null;
+			e.printStackTrace();
+		}
+		
+    	totalPage = writer.getDirectContent().createTemplate(50,TABLE_FOOTER_HEIGHT/2);
+    }
+
     @Override
 	public void onEndPage(PdfWriter writer, Document document) {
         PdfContentByte cb = writer.getDirectContent();
+		
+        float docWidth = document.getPageSize().getWidth();
+        float tableWith= docWidth-LEFT_MARGIN-RIGHT_MARGIN;
+        float standardCellWidth = tableWith/3;
+        
+        PdfPTable table = new PdfPTable(4);
+        try {
+        	table.setWidths(new float[]{standardCellWidth, standardCellWidth/2, standardCellWidth/2, standardCellWidth});
+            table.setTotalWidth(tableWith);
+            
+            table.setLockedWidth(true);
+            table.getDefaultCell().setFixedHeight(TABLE_FOOTER_HEIGHT);
+            
+            PdfPCell leftCell = new PdfPCell(new Phrase(footerLeft, font));
+            leftCell.setBorder(Rectangle.NO_BORDER);
+            leftCell.setHorizontalAlignment(Element.ALIGN_LEFT);
+            leftCell.setVerticalAlignment(Element.ALIGN_BASELINE);
+            leftCell.setFixedHeight(TABLE_FOOTER_HEIGHT);
+            table.addCell(leftCell);
+            
+            PdfPCell numberPageCell = new PdfPCell(new Phrase(String.format("%d /", writer.getPageNumber()), font));
+            numberPageCell.setBorder(Rectangle.NO_BORDER);
+            numberPageCell.setHorizontalAlignment(Element.ALIGN_RIGHT);
+            numberPageCell.setVerticalAlignment(Element.ALIGN_BASELINE);
+            numberPageCell.setFixedHeight(TABLE_FOOTER_HEIGHT);
+            table.addCell(numberPageCell);
+            
+            PdfPCell totalNumberPageCell = new PdfPCell(Image.getInstance(totalPage));
+            totalNumberPageCell.setBorder(Rectangle.NO_BORDER);
+            totalNumberPageCell.setVerticalAlignment(Element.ALIGN_BASELINE);
+            totalNumberPageCell.setFixedHeight(TABLE_FOOTER_HEIGHT);
+            table.addCell(totalNumberPageCell);
+            
+            PdfPCell rightCell = new PdfPCell(new Phrase(footerRight, font));
+            rightCell.setBorder(Rectangle.NO_BORDER);
+            rightCell.setHorizontalAlignment(Element.ALIGN_RIGHT);
+            rightCell.setVerticalAlignment(Element.ALIGN_BASELINE);
+            rightCell.setFixedHeight(TABLE_FOOTER_HEIGHT);
+            table.addCell(rightCell);
+            
+            
+            table.writeSelectedRows(0, -1,LEFT_MARGIN, TABLE_FOOTER_HEIGHT, cb);
+
+		} catch (DocumentException e) {
+			e.printStackTrace();
+		}
+        
         if(imgHeader !=null) {
         	try {
 	            float docHeight = document.getPageSize().getHeight();
@@ -34,20 +126,38 @@ public class HeaderFooter extends PdfPageEventHelper {
         }
 
         if(imgFooter !=null) {
-        try {
-            	imgFooter.setAbsolutePosition(0, 0);
+	        try {
+            	imgFooter.setAbsolutePosition(0, TABLE_FOOTER_HEIGHT);
 	            cb.addImage(imgFooter);
 	        } catch (DocumentException de) {
 	        	de.printStackTrace();
 	            throw new ExceptionConverter(de);
 	        }
-        }
+	    }
 
     }
 
     @Override
     public void onCloseDocument(PdfWriter writer, Document document) {
-    	
+        ColumnText.showTextAligned(totalPage, Element.ALIGN_LEFT,new Phrase(String.valueOf(writer.getPageNumber()), font),0, 0, 0);
+    }
+    
+    public void formatDocument(Document document) {
+		float marginTop = MIN_TOP_MARGIN;
+		float marginBottom = MIN_BOTTOM_MARGIN;
+		
+		if(imgHeader != null) {
+			imgHeader.scaleToFit(document.getPageSize());
+			marginTop = Math.max(MIN_TOP_MARGIN, imgHeader.getScaledHeight());
+		}
+		
+		if(imgFooter != null) {
+			imgFooter.scaleToFit(document.getPageSize());
+			marginBottom = Math.max(MIN_BOTTOM_MARGIN, imgFooter.getScaledHeight()+TABLE_FOOTER_HEIGHT);
+		}
+		System.out.println(document.getPageSize().getWidth());
+		document.setMargins(LEFT_MARGIN,RIGHT_MARGIN,marginTop,marginBottom);
+
     }
 
 }

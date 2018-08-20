@@ -31,17 +31,13 @@ public class GestioneDocumento extends HttpServlet {
 		Session session=SessionFacotryDAO.get().openSession();
 		
 		String idDocumento=request.getParameter("idDocumento");
-System.out.println(idDocumento);
 		DocumentoDTO documento = GestioneDocumentoDAO.getDocumento(idDocumento, session);
 		File fileDocument = null;
 		
 		if(documento != null) {
-System.out.println("Il documento non è nullo");
 
 			fileDocument =  new File(Costanti.PATH_CERTIFICATI+documento.getFilePath());
-System.out.println(Costanti.PATH_CERTIFICATI+documento.getFilePath());		
 		}
-System.out.println("fileDocument esiste: "+ fileDocument.exists());
 
 
 		if(fileDocument == null || !fileDocument.exists()) {
