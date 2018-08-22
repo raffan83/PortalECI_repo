@@ -2,8 +2,10 @@ package it.portalECI.bo;
 
 import java.io.ByteArrayInputStream;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.nio.charset.Charset;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -29,6 +31,9 @@ import com.itextpdf.text.pdf.PdfWriter;
 import com.itextpdf.tool.xml.XMLWorker;
 import com.itextpdf.tool.xml.XMLWorkerFontProvider;
 import com.itextpdf.tool.xml.XMLWorkerHelper;
+import com.itextpdf.tool.xml.css.CSS;
+import com.itextpdf.tool.xml.css.CssFile;
+import com.itextpdf.tool.xml.css.StyleAttrCSSResolver;
 import com.itextpdf.tool.xml.html.CssAppliers;
 import com.itextpdf.tool.xml.html.CssAppliersImpl;
 import com.itextpdf.tool.xml.html.Tags;
@@ -294,10 +299,15 @@ public class GestioneVerbaleBO {
 	    pageEventHandler.formatDocument(document);
 	    document.open();
 	    
+	    
         // CSS
-        CSSResolver cssResolver = XMLWorkerHelper.getInstance().getDefaultCssResolver(true);
-        XMLWorkerFontProvider fontProvider = new XMLWorkerFontProvider(XMLWorkerFontProvider.DONTLOOKFORFONTS);
-        fontProvider.register(Costanti.PATH_FONT_STYLE+"arial.ttf");
+        CSSResolver cssResolver = XMLWorkerHelper.getInstance().getDefaultCssResolver(false);
+        InputStream iscss = new FileInputStream(Costanti.PATH_FONT_STYLE+"bootstrap.css");
+        CssFile cssFile = XMLWorkerHelper.getCSS(iscss);
+        cssResolver.addCss(cssFile);
+        
+        XMLWorkerFontProvider fontProvider = new XMLWorkerFontProvider(Costanti.PATH_FONT_STYLE);
+        fontProvider.register(Costanti.PATH_FONT_STYLE+"arial.ttf");        
         CssAppliers cssAppliers = new CssAppliersImpl(fontProvider);
         // HTML
         HtmlPipelineContext htmlContext = new HtmlPipelineContext(cssAppliers);
@@ -320,7 +330,7 @@ public class GestioneVerbaleBO {
         XMLWorker worker = new XMLWorker(css, true);
         XMLParser p = new XMLParser(worker);
         p.parse(new ByteArrayInputStream(validXHTML.getBytes()),
-        		Charset.forName("US-ASCII"));
+        		Charset.forName("UTF-8"));
 
         document.close();
         DocumentoDTO certificato = new DocumentoDTO();
@@ -361,7 +371,7 @@ public class GestioneVerbaleBO {
 		String template = "";
 		String inputType = risposta.getRispostaQuestionario().getMultipla()==false?"radio":"checkbox";		
 			
-		List opzioni=new ArrayList();
+		List<OpzioneRispostaVerbaleDTO> opzioni=new ArrayList<OpzioneRispostaVerbaleDTO>();
 		opzioni.addAll(risposta.getOpzioni());
 		
 		Collections.sort(opzioni, new Comparator<OpzioneRispostaVerbaleDTO>() {
