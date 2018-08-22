@@ -183,16 +183,12 @@
 	</jsp:attribute>
 
 	<jsp:attribute name="extra_css">
-		<link rel="stylesheet" href="css/plugins/summernote/summernote.css" />
 	</jsp:attribute>
 
 	<jsp:attribute name="extra_js_footer">
-	
+		<script src="plugins/ckeditor/ckeditor.js"></script>
 		<script src="js/template-questionario.js" type="text/javascript"></script>
 	
-		<script src="plugins/summernote/summernote.js" type="text/javascript"></script>
-		<script src="plugins/summernote/summernote-it-IT.js"
-			type="text/javascript"></script>
 		<script>
 			$(document).ready(function() {
 				<c:if test="${error!=null }">
