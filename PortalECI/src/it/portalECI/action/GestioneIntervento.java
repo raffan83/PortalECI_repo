@@ -114,7 +114,7 @@ public class GestioneIntervento extends HttpServlet {
 			}else if(action !=null && action.equals("new")){
 		 												
 				String id_tecnico = request.getParameter("tecnico");				
-				Set<TipoVerificaDTO> tipoverificalist = new HashSet<TipoVerificaDTO>();
+				List<TipoVerificaDTO> tipoverificalist = new ArrayList<TipoVerificaDTO>();
 				List<VerbaleDTO> verbali = new ArrayList<>();
 
 				String[] categoriaTipo=request.getParameterValues("categoriaTipo");
@@ -240,7 +240,7 @@ public class GestioneIntervento extends HttpServlet {
 				out.print(myObj);
 			}else if(action !=null && action.equals("update")){			 					
 				
-				Set<TipoVerificaDTO> tipoverificalist = new HashSet<TipoVerificaDTO>();
+				List<TipoVerificaDTO> tipoverificalist = new ArrayList<TipoVerificaDTO>();
 				List<VerbaleDTO> verbali = new ArrayList(); 
 				
 				String id_tecnico = request.getParameter("tecnico");	
