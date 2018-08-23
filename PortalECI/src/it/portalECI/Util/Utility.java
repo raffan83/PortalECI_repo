@@ -3,6 +3,7 @@ package it.portalECI.Util;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -11,6 +12,7 @@ import java.util.Date;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
+import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -69,10 +71,17 @@ public class Utility extends HttpServlet {
 	public static boolean validateSession(HttpServletRequest request,HttpServletResponse response, ServletContext servletContext) throws ServletException, IOException {
 		
 		if (request.getSession().getAttribute("userObj")==null ) {
+			response.setStatus(HttpServletResponse.SC_FORBIDDEN);
 			
-			RequestDispatcher dispatcher = servletContext.getRequestDispatcher("/page/sessionDown.jsp");
-			dispatcher.forward(request,response);
-     	
+			String heardeName = request.getHeader("x-requested-with");
+			if(null == heardeName){
+				RequestDispatcher dispatcher = servletContext.getRequestDispatcher("/page/sessionDown.jsp");
+				dispatcher.forward(request,response);
+			}else {
+				ServletOutputStream out = response.getOutputStream();
+				out.print("NON AUTORIZZATO");
+				out.flush();
+			}
 			return true;
 		}
 		return false;

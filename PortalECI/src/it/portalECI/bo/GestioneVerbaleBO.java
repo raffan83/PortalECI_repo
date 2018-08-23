@@ -276,8 +276,8 @@ public class GestioneVerbaleBO {
 		new File(Costanti.PATH_CERTIFICATI+path).mkdirs();
 		File file = new File(Costanti.PATH_CERTIFICATI+path, questionario.getTitolo()+"_"+questionario.getTipo().getCodice()+"_"+idIntervento+".pdf");
 		
-		String html = template.getTemplate();
-		replacePlaceholders(html, verbale, session);
+		String html = new String(template.getTemplate());
+		html = replacePlaceholders(html, verbale, session);
 		
     	final org.jsoup.nodes.Document documentJsoup = Jsoup.parse(html);
     	documentJsoup.outputSettings().syntax(org.jsoup.nodes.Document.OutputSettings.Syntax.xml);
@@ -301,10 +301,11 @@ public class GestioneVerbaleBO {
 	    
 	    
         // CSS
-        CSSResolver cssResolver = XMLWorkerHelper.getInstance().getDefaultCssResolver(false);
+        CSSResolver cssResolver = XMLWorkerHelper.getInstance().getDefaultCssResolver(true);
         InputStream iscss = new FileInputStream(Costanti.PATH_FONT_STYLE+"bootstrap.css");
         CssFile cssFile = XMLWorkerHelper.getCSS(iscss);
         cssResolver.addCss(cssFile);
+        cssResolver.addCss(XMLWorkerHelper.getInstance().getDefaultCSS());
         
         XMLWorkerFontProvider fontProvider = new XMLWorkerFontProvider(Costanti.PATH_FONT_STYLE);
         fontProvider.register(Costanti.PATH_FONT_STYLE+"arial.ttf");        
@@ -386,7 +387,6 @@ public class GestioneVerbaleBO {
 		
 		if(inputType.equalsIgnoreCase("radio")) {
 			template += "<br/>";
-			//for (OpzioneRispostaVerbaleDTO opzione:risposta.getOpzioni()) {
 			for(int i=0; i<opzioni.size(); i++) {
 				OpzioneRispostaVerbaleDTO opzione= (OpzioneRispostaVerbaleDTO) opzioni.get(i);
 				String optionName = opzione.getOpzioneQuestionario().getTesto();
@@ -399,7 +399,6 @@ public class GestioneVerbaleBO {
 			}
 		} else {
 			template += "<br/>";
-			//for (OpzioneRispostaVerbaleDTO opzione:risposta.getOpzioni()) {
 			for(int i=0; i<opzioni.size(); i++) {
 				OpzioneRispostaVerbaleDTO opzione= (OpzioneRispostaVerbaleDTO) opzioni.get(i);
 				String optionName = opzione.getOpzioneQuestionario().getTesto();
@@ -466,8 +465,6 @@ public class GestioneVerbaleBO {
 						GestioneRispostaVerbaleDAO.save(rispostaTesto, session);
 						break;
 					case "RES_CHOICE":
-						RispostaSceltaVerbaleDTO rispostaScelta = GestioneRispostaVerbaleDAO
-								.getRispostaInstance(RispostaSceltaVerbaleDTO.class, responseID, session);
 						JsonArray scelte = responseVerbale.getAsJsonArray("scelte");
 						if (scelte != null) {
 							Iterator<JsonElement> iteratorScelte = scelte.iterator();
@@ -509,38 +506,51 @@ public class GestioneVerbaleBO {
 		}
 	}
 	
-	private static void replacePlaceholders(String html, VerbaleDTO verbale, Session session) {
+	private static String replacePlaceholders(String html, VerbaleDTO verbale, Session session) {
 		for (DomandaVerbaleDTO domanda:verbale.getDomandeVerbale()) {
-			String placeholder = domanda.getDomandaQuestionario().getPlaceholder();
-			html = html.replaceAll("\\$\\{"+placeholder+"\\}", domanda.getDomandaQuestionario().getTesto());
-			RispostaVerbaleDTO rispostaVerbale = domanda.getRisposta();
-
-			String rispostaValore = null;
-			String rispostaPlaceholder = null;
-			switch (rispostaVerbale.getTipo()) {
-			case RispostaVerbaleDTO.TIPO_TESTO:
-				RispostaTestoVerbaleDTO rispostaTesto = GestioneRispostaVerbaleDAO.getRispostaInstance(RispostaTestoVerbaleDTO.class, rispostaVerbale.getId(), session);
-				rispostaPlaceholder = rispostaTesto.getRispostaQuestionario().getPlaceholder();
-				rispostaValore = getTemplateRisposta(rispostaTesto);
-				break;
-			case RispostaVerbaleDTO.TIPO_SCELTA:
-				RispostaSceltaVerbaleDTO rispostaScelta = GestioneRispostaVerbaleDAO.getRispostaInstance(RispostaSceltaVerbaleDTO.class, rispostaVerbale.getId(), session);
-				rispostaPlaceholder = rispostaScelta.getRispostaQuestionario().getPlaceholder();
-				rispostaValore = getTemplateRisposta(rispostaScelta);
-				break;
-			case RispostaVerbaleDTO.TIPO_FORMULA:
-				RispostaFormulaVerbaleDTO rispostaFormula = GestioneRispostaVerbaleDAO.getRispostaInstance(RispostaFormulaVerbaleDTO.class, rispostaVerbale.getId(), session);
-				rispostaPlaceholder = rispostaFormula.getRispostaQuestionario().getPlaceholder();
-				rispostaValore = getTemplateRisposta(rispostaFormula);
-				break;
-			default:
-				break;
-			}
-			if(rispostaValore!=null && rispostaPlaceholder!=null ) {
-				html = html.replaceAll("\\$\\{"+rispostaPlaceholder+"\\}", rispostaValore);
-			}
+			html = replacePlaceholderDomanda(html,domanda, session);
 		}
 		html = html.replaceAll("\\$\\{(.*?)\\}", "");
+		return html;
+	}
+	
+	private static String replacePlaceholderDomanda(String html,DomandaVerbaleDTO domanda, Session session) {
+		String placeholder = domanda.getDomandaQuestionario().getPlaceholder();
+		html = html.replaceAll("\\$\\{"+placeholder+"\\}", domanda.getDomandaQuestionario().getTesto());
+		RispostaVerbaleDTO rispostaVerbale = domanda.getRisposta();
+
+		String rispostaValore = null;
+		String rispostaPlaceholder = null;
+		switch (rispostaVerbale.getTipo()) {
+		case RispostaVerbaleDTO.TIPO_TESTO:
+			RispostaTestoVerbaleDTO rispostaTesto = GestioneRispostaVerbaleDAO.getRispostaInstance(RispostaTestoVerbaleDTO.class, rispostaVerbale.getId(), session);
+			rispostaPlaceholder = rispostaTesto.getRispostaQuestionario().getPlaceholder();
+			rispostaValore = getTemplateRisposta(rispostaTesto);
+			break;
+		case RispostaVerbaleDTO.TIPO_SCELTA:
+			RispostaSceltaVerbaleDTO rispostaScelta = GestioneRispostaVerbaleDAO.getRispostaInstance(RispostaSceltaVerbaleDTO.class, rispostaVerbale.getId(), session);
+			rispostaPlaceholder = rispostaScelta.getRispostaQuestionario().getPlaceholder();
+			rispostaValore = getTemplateRisposta(rispostaScelta);
+			for(OpzioneRispostaVerbaleDTO opzione: rispostaScelta.getOpzioni()) {
+				if(opzione.getDomande() != null) {
+					for (DomandaVerbaleDTO domandaOpzione:opzione.getDomande()) {
+						replacePlaceholderDomanda(html,domandaOpzione, session);
+					}
+				}
+			}
+			break;
+		case RispostaVerbaleDTO.TIPO_FORMULA:
+			RispostaFormulaVerbaleDTO rispostaFormula = GestioneRispostaVerbaleDAO.getRispostaInstance(RispostaFormulaVerbaleDTO.class, rispostaVerbale.getId(), session);
+			rispostaPlaceholder = rispostaFormula.getRispostaQuestionario().getPlaceholder();
+			rispostaValore = getTemplateRisposta(rispostaFormula);
+			break;
+		default:
+			break;
+		}
+		if(rispostaValore!=null && rispostaPlaceholder!=null ) {
+			html = html.replaceAll("\\$\\{"+rispostaPlaceholder+"\\}", rispostaValore);
+		}
+		return html;
 	}
 
 }
