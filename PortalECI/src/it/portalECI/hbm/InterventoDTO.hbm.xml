@@ -37,15 +37,14 @@
             <column name="id_company" />
         </many-to-one>         
         
-        <set name="tipo_verifica" table="intervento__categoriaverifica_tipoverifica" 
-        	inverse="false" lazy="true" fetch="select" cascade="all" >
+        <bag  name="tipo_verifica" table="intervento__categoriaverifica_tipoverifica" inverse="false" lazy="true" fetch="select" cascade="all" >
             <key>
                 <column name="intervento_id" not-null="true" />
             </key>
             <many-to-many entity-name="it.portalECI.DTO.TipoVerificaDTO">
                 <column name="tipo_verifica_id" not-null="true" />
             </many-to-many>
-        </set>     
+        </bag>     
         
        <list name="verbali" table="intervento_verbali" inverse="false" lazy="true" fetch="select" cascade="all">
 			<key>

@@ -1,6 +1,7 @@
 package it.portalECI.DTO;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
@@ -31,7 +32,7 @@ public class InterventoDTO implements Serializable{
 	
 	private UtenteDTO tecnico_verificatore;
 	
-	private Set<TipoVerificaDTO> tipo_verifica= new HashSet<TipoVerificaDTO>();
+	private Collection<TipoVerificaDTO> tipo_verifica;
 	
 	private List<VerbaleDTO> verbali;
 	
@@ -115,11 +116,11 @@ public class InterventoDTO implements Serializable{
 	}
 	
 	
-	public Set<TipoVerificaDTO> getTipo_verifica() {
+	public Collection<TipoVerificaDTO> getTipo_verifica() {
 		return tipo_verifica;
 	}
-	public void setTipo_verifica(Set<TipoVerificaDTO> tipo_verifica) {
-		this.tipo_verifica = tipo_verifica;
+	public void setTipo_verifica(Collection<TipoVerificaDTO> tipoverificalist) {
+		this.tipo_verifica = tipoverificalist;
 	}
 	
 	

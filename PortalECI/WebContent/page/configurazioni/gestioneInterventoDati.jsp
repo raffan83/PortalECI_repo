@@ -388,15 +388,15 @@
 				var tipi_verifica=$('#selectTipo').val();									
 				
 				if(categorie_verifica!=null && tipi_verifica!=null){
-					if($("#" +tipi_verifica).length == 0) {						 										
+					//if($("#" +tipi_verifica).length == 0) {						 										
 					
 						$("#bodytabVerifica").append('<tr class="categoriaTipiRow" id="'+tipi_verifica+'" role="row" >'+
 							'<td >'+$('#selectCat').find('[value='+categorie_verifica+']').text()+'</td>'+
 							'<td >'+$('#selectTipo').find('[value='+tipi_verifica+']').text()+'</td>'+																														 		
 							'<td><a class="btn customTooltip" title="Click per eliminare la riga" onclick="removeRow(\''+tipi_verifica+'\')"><i class="fa fa-minus"></i></a></td></tr>');							
-					}else{							
+					/*}else{							
 						$('#empty').html("La coppia Categoria Verifica/Tipo Verifica selezionata è già stata inserita!");
-					}
+					}*/
 				}else{						
 					$('#empty').html("Scegli la categoria di verifica e il tipo verifica per procedere!");
 				}
