@@ -1,12 +1,22 @@
 package it.portalECI.bo;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.collections.ListUtils;
 import org.hibernate.Session;
 
 import it.portalECI.DAO.GestioneQuestionarioDAO;
+import it.portalECI.DAO.GestioneRispostaQuestionarioDAO;
 import it.portalECI.DAO.GestioneVerbaleDAO;
+import it.portalECI.DTO.DomandaOpzioneQuestionarioDTO;
+import it.portalECI.DTO.DomandaQuestionarioDTO;
+import it.portalECI.DTO.DomandaSchedaTecnicaQuestionarioDTO;
+import it.portalECI.DTO.DomandaVerbaleQuestionarioDTO;
+import it.portalECI.DTO.OpzioneRispostaQuestionarioDTO;
 import it.portalECI.DTO.QuestionarioDTO;
+import it.portalECI.DTO.RispostaQuestionario;
+import it.portalECI.DTO.RispostaSceltaQuestionarioDTO;
 import it.portalECI.DTO.TipoVerificaDTO;
 import it.portalECI.DTO.VerbaleDTO;
 
@@ -15,13 +25,49 @@ public class GestioneQuestionarioBO {
 		return GestioneQuestionarioDAO.getListaQuestionari(session); 
 	}
 
+	public static QuestionarioDTO getQuestionarioById(String idQuestionario, Session session) {
+		Integer idQuestionarioInt = 0;
+		try {
+			idQuestionarioInt = Integer.parseInt(idQuestionario);
+		}catch (NumberFormatException e) {
+			return null;
+		}
+		return getQuestionarioById(idQuestionarioInt, session);
+	}
+	
 	public static QuestionarioDTO getQuestionarioById(Integer idQuestionario, Session session) {
 		return GestioneQuestionarioDAO.getQuestionarioById(idQuestionario, session);
 	}
 	
-	public static List getQuestionariPlaceholder(String type,String idQuestionario, Session session) {
-		return GestioneQuestionarioDAO.getQuestionariPlaceholder(type, idQuestionario, session);
+	public static List<String> getQuestionariPlaceholder(String type,String idQuestionario, Session session) {
+		QuestionarioDTO questionario  = GestioneQuestionarioDAO.getQuestionarioById(Integer.parseInt(idQuestionario), session);
+		List<String> placeholders = new ArrayList<String>();
+		if(type.equals("SchedaTecnica")) {
+			for(DomandaSchedaTecnicaQuestionarioDTO domandaSchedaTecnica:questionario.getDomandeSchedaTecnica()) {
+				getDomandaPlaceholder(domandaSchedaTecnica, session, placeholders);
+			}
+		}else {
+			for(DomandaVerbaleQuestionarioDTO domandaVerbale:questionario.getDomandeVerbale()) {
+				getDomandaPlaceholder(domandaVerbale, session, placeholders);
+			}
+		}
+		return placeholders;
 	}
+
+	public static void getDomandaPlaceholder(DomandaQuestionarioDTO domanda, Session session,  List<String> placeholders){
+		placeholders.add(domanda.getPlaceholder());
+		placeholders.add(domanda.getRisposta().getPlaceholder());
+		if (domanda.getRisposta().getTipo().equals(RispostaQuestionario.TIPO_SCELTA)) {
+			RispostaSceltaQuestionarioDTO rispostaScelta= GestioneRispostaQuestionarioDAO.getRispostaInstance(RispostaSceltaQuestionarioDTO.class, domanda.getRisposta().getId(), session);
+			for(OpzioneRispostaQuestionarioDTO opzione:rispostaScelta.getOpzioni()) {
+				for(DomandaOpzioneQuestionarioDTO domandaOpzione:opzione.getDomande()) {
+					getDomandaPlaceholder(domandaOpzione, session, placeholders);
+				}
+				
+			}
+		}
+	}
+	
 	
 	public static Boolean controlloQuestionarioInUso(Integer idQuestionario,Session session) {
 		return GestioneQuestionarioDAO.controlloQuestionarioInUso(idQuestionario, session);

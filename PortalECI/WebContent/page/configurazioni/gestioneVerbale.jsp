@@ -405,9 +405,12 @@
 					success: function( data, textStatus) {
 						location.reload();
 					},
-					error: function(jqXHR, textStatus, errorThrown){		          
-						$('#errorMsg').html("<h3 class='label label-danger'>"+textStatus+"</h3>");
+					error: function(jqXHR, textStatus, errorThrown){
 						pleaseWaitDiv.modal('hide');
+						$('#modalErrorDiv').html(jqXHR.responseText);
+						$('#myModalError').removeClass();
+						$('#myModalError').addClass("modal modal-danger");
+						$('#myModalError').modal('show');															
 					}
 				});
 			}

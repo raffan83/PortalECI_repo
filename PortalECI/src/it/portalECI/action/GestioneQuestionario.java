@@ -60,17 +60,7 @@ public class GestioneQuestionario extends HttpServlet {
 			return;
 		}
 
-		Integer id = null;
-		try {
-			id = Integer.parseInt(idQuestionario);
-		}catch (NumberFormatException e) {
-			response.sendError(HttpServletResponse.SC_BAD_REQUEST);
-			session.close();
-			return;
-		}
-
-
-		QuestionarioDTO questionario = GestioneQuestionarioBO.getQuestionarioById(id, session);
+		QuestionarioDTO questionario = GestioneQuestionarioBO.getQuestionarioById(idQuestionario, session);
 		request.setAttribute("questionario", questionario);
 		
 		RequestDispatcher dispatcher;
