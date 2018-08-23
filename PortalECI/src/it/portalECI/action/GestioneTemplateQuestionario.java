@@ -48,19 +48,8 @@ public class GestioneTemplateQuestionario extends HttpServlet {
 		if(Utility.validateSession(request,response,getServletContext()))return;
 		
 		Session session=SessionFacotryDAO.get().openSession();
-		request.setAttribute("tipo", request.getParameter("tipo"));
 		String idQuestionario = request.getParameter("idQuestionario");
-		Integer idQuestionarioInt = 0;
-		try {
-			idQuestionarioInt = Integer.parseInt(idQuestionario);
-		}catch (NumberFormatException e) {
-			System.out.println("formato errato per il parametro id questionario");
-		}
-		
-		if(idQuestionarioInt > 0) {
-			QuestionarioDTO questionario = GestioneQuestionarioBO.getQuestionarioById(idQuestionarioInt, session);
-			request.setAttribute("questionario", questionario);
-		}
+		QuestionarioDTO questionario = GestioneQuestionarioBO.getQuestionarioById(idQuestionario, session);
 		
 		String idTemplate = request.getParameter("idTemplate");
 		Integer idTemplateInt = 0;
@@ -70,21 +59,12 @@ public class GestioneTemplateQuestionario extends HttpServlet {
 			System.out.println("formato errato per il parametro id questionario");
 		}
 		
+		TemplateQuestionarioDTO template = null;
 		if(idTemplateInt > 0) {
-			TemplateQuestionarioDTO template = GestioneTemplateQuestionarioBO.getQuestionarioById(idTemplateInt, session);
-			request.setAttribute("template", template);
+			template = GestioneTemplateQuestionarioBO.getQuestionarioById(idTemplateInt, session);
 		}
 				
-		File header = new File(Costanti.PATH_HEADER_IMAGE);
-		ArrayList<String> listaHeader = new ArrayList<String>(Arrays.asList(header.list()));
-		request.setAttribute("listaHeader",listaHeader);
-		
-		File footer = new File(Costanti.PATH_FOOTER_IMAGE);
-		ArrayList<String> listaFooter = new ArrayList<String>(Arrays.asList(footer.list()));
-		request.setAttribute("listaFooter",listaFooter);
-
-		RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/page/questionario/template/formTemplate.jsp");
-		dispatcher.forward(request,response);
+		forwardResponse(request, response, questionario, template);
 	}
 	
 	public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
@@ -94,18 +74,12 @@ public class GestioneTemplateQuestionario extends HttpServlet {
 			return;
 		}
 		
-		String idQuestionario = request.getParameter("idQuestionario");
-		Integer idQuestionarioInt = 0;
-		try {
-			idQuestionarioInt = Integer.parseInt(idQuestionario);
-		}catch (NumberFormatException e) {
-			response.sendError(HttpServletResponse.SC_BAD_REQUEST);
-		}
-		
+
 		Session session=SessionFacotryDAO.get().openSession();
 		Transaction transaction = session.beginTransaction();
-		
-		request.setAttribute("tipo", request.getParameter("tipo"));
+	
+		String idQuestionario = request.getParameter("idQuestionario");
+		QuestionarioDTO questionario = GestioneQuestionarioBO.getQuestionarioById(idQuestionario, session);
 		
 		TemplateQuestionarioDTO template = new  TemplateQuestionarioDTO();
 		template.setTitolo(request.getParameter("titolo"));
@@ -114,7 +88,6 @@ public class GestioneTemplateQuestionario extends HttpServlet {
 		template.setFooter(request.getParameter("footerFileName"));
 		
 		session.save(template);		
-		QuestionarioDTO questionario = GestioneQuestionarioBO.getQuestionarioById(idQuestionarioInt, session);
 		if(request.getParameter("tipo").equals("Verbale")) {
 			questionario.setTemplateVerbale(template);
 		}else if(request.getParameter("tipo").equals("SchedaTecnica")) {
@@ -123,11 +96,7 @@ public class GestioneTemplateQuestionario extends HttpServlet {
 		session.update(questionario);
 		
 		transaction.commit();
-				
-		doGet(request, response);
-
-		
-
+		forwardResponse(request, response, questionario, template);
 	}
 	
 	public void doPut(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -146,7 +115,10 @@ public class GestioneTemplateQuestionario extends HttpServlet {
 		
 		Session session=SessionFacotryDAO.get().openSession();
 		Transaction transaction = session.beginTransaction();
-
+	
+		String idQuestionario = request.getParameter("idQuestionario");
+		QuestionarioDTO questionario = GestioneQuestionarioBO.getQuestionarioById(idQuestionario, session);
+ 
 		TemplateQuestionarioDTO template = GestioneTemplateQuestionarioBO.getQuestionarioById(idTemplateInt, session);		
 		template.setTitolo(request.getParameter("titolo"));
 		
@@ -158,7 +130,23 @@ public class GestioneTemplateQuestionario extends HttpServlet {
 		session.update(template);
 		transaction.commit();
 		session.close();
-		doGet(request, response);
+		forwardResponse(request, response, questionario, template);
 
+	}
+	
+	private void forwardResponse(HttpServletRequest request, HttpServletResponse response,  QuestionarioDTO questionario, TemplateQuestionarioDTO template) throws ServletException, IOException {
+		request.setAttribute("tipo", request.getParameter("tipo"));
+		request.setAttribute("questionario", questionario);
+		request.setAttribute("template", template);
+		File header = new File(Costanti.PATH_HEADER_IMAGE);
+		ArrayList<String> listaHeader = new ArrayList<String>(Arrays.asList(header.list()));
+		request.setAttribute("listaHeader",listaHeader);
+		
+		File footer = new File(Costanti.PATH_FOOTER_IMAGE);
+		ArrayList<String> listaFooter = new ArrayList<String>(Arrays.asList(footer.list()));
+		request.setAttribute("listaFooter",listaFooter);
+
+		RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/page/questionario/template/formTemplate.jsp");
+		dispatcher.forward(request,response);
 	}
 }

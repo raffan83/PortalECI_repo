@@ -106,7 +106,10 @@ $(document).ready(function() {
 			console.log(textStatus);
 		}
 	});
-
+	
+	$("#template-form").submit(function() {
+		$('#templateHiddenField').val(CKEDITOR.instances['summernote'].getData());
+	});
 });
 
 function uploadAj(inputFileElement, type) {

@@ -28,7 +28,7 @@
 			<div style="clear: both;"></div>
     		<section class="content">
 				<div class="row">    		            																
-					<form class="form" id="questionario-form" action="gestioneTemplateQuestionario.do" method="POST" >
+					<form class="form" id="template-form" action="gestioneTemplateQuestionario.do" method="POST" >
 	        			<div class="col-xs-12">
 	          				<div class="box">
 	            				<div class="box-body">      
@@ -58,7 +58,7 @@
 															</div>
 														</div>
 													</div>
-													<textarea id="summernote" name="template">${template.template}</textarea>
+													<textarea id="summernote">${template.template}</textarea>
 				        					</div>
 				   						</div>
 				   					</div>
@@ -137,6 +137,7 @@
 										</div>
 				   					</div>
 						        </div>
+						        <input name="template" id="templateHiddenField" type="hidden" />
 						        	<div class="col-xs-12 margin-bottom">
 										<button class="btn btn-default pull-right" type="submit">
 											<i class="fa fa-save"></i> Salva Template
