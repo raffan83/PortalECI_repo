@@ -154,7 +154,7 @@ public class GestioneTipiVerifica extends HttpServlet {
     					session.close();	    				
     				}else if(success==2) {
     	 				myObj.addProperty("success", false);
-    					myObj.addProperty("messaggio","Impossibile eliminare una Tipologia di Verifica associata a Verbali esistenti!");
+    					myObj.addProperty("messaggio","Impossibile eliminare una Tipologia di Verifica associata a Verbali o Questionari esistenti!");
     	 			}else{
 	    					
     					myObj.addProperty("success", false);
