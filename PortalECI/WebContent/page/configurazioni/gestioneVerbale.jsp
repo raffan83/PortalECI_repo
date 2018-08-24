@@ -345,7 +345,12 @@
  		<script type="text/javascript">
 		   
 			$(document).ready(function() {			
-				
+				$('.rispVerb').on('ifChanged', function(event) {
+					$('.'+$(this).attr('id')).find('input').val('');
+					$('.'+$(this).attr('id')).find('textarea').val('');
+					$('.'+$(this).attr('id')).find(':checkbox').removeAttr('checked').iCheck('update');
+					$('.'+$(this).attr('id')).find(':radio').removeAttr('checked').iCheck('update');
+				});
     		});	
 			
 			function salvaCambioStato(idverbale, idform, idstato){

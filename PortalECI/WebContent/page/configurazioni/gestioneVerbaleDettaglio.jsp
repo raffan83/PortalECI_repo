@@ -43,21 +43,35 @@
 		RispostaTestoVerbaleDTO risp =(RispostaTestoVerbaleDTO) hibernateSession.get(RispostaTestoVerbaleDTO.class, domVerbale.getRisposta().getId());	
 		request.setAttribute("risposta",risp);
 	} %>
-
+	
 <c:choose>
 	<c:when test="${domVerbale.getRisposta().getTipo().equals('RES_CHOICE')}">
   																
   		<div class="col-sm-12">	
   			<div class="form-group">	
-  			
-												
+  				<c:set var="domVerbalePage" value="${domVerbale}" scope="page"></c:set>
+  				<c:set var="rispostaPage" value="${risposta}" scope="page"></c:set>
+    			
     			<c:forEach items="${opzioni}" var="opzione">	
-					<label class="${domVerbale.getRisposta().getTipo().equals('RES_CHOICE') && risposta.getRispostaQuestionario().getMultipla()?'checkbox':'radio'}-inline">
-						<input type="${domVerbale.getRisposta().getTipo().equals('RES_CHOICE') && risposta.getRispostaQuestionario().getMultipla()?'checkbox':'radio'}"
-  							${opzione.getChecked()?'checked="checked"':''} name="options${risposta.getId()}" value="${opzione.getId()}" class="rispVerb" ${domVerbale.getDomandaQuestionario().getObbligatoria()?'required':''} <c:if test="${readonly}">disabled</c:if>> 
+					<label class="${domVerbalePage.getRisposta().getTipo().equals('RES_CHOICE') && rispostaPage.getRispostaQuestionario().getMultipla()?'checkbox':'radio'}-inline">
+						<input type="${domVerbalePage.getRisposta().getTipo().equals('RES_CHOICE') && rispostaPage.getRispostaQuestionario().getMultipla()?'checkbox':'radio'}"
+  							${opzione.getChecked()?'checked="checked"':''} name="options${rispostaPage.getId()}" value="${opzione.getId()}" id="options${domVerbalePage.getId()}" class="rispVerb" ${domVerbalePage.getDomandaQuestionario().getObbligatoria()?'required':''} <c:if test="${readonly}">disabled</c:if>> 
   							${opzione.getOpzioneQuestionario().getTesto()}
 					</label><br/>
-				</c:forEach>
+					<c:if test="${opzione.getDomande().size()>0}">
+						<c:forEach items="${opzione.getDomande()}" var="domVerbalenew" varStatus="loop">	
+							<div class="options${domVerbalePage.getId()}" style="margin-left:20px;">   	 
+								<label>Se opzione ${opzione.getOpzioneQuestionario().getTesto()} è selezionata</label>
+							   			
+								<c:set var="domVerbale" value="${domVerbalenew}" scope="request"></c:set>
+								<div class="box box-danger box-domanda ">
+									<label for="titolo-input" class="control-label col-xs-12">${domVerbalenew.getDomandaQuestionario().getTesto()}</label><br/>
+									<jsp:include page="gestioneVerbaleDettaglio.jsp"></jsp:include>
+								</div>
+							</div>
+						</c:forEach>  						
+					</c:if>
+				</c:forEach>				
 			</div>
 		</div>
   	</c:when>
