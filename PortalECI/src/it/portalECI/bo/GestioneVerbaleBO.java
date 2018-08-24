@@ -455,50 +455,12 @@ public class GestioneVerbaleBO {
 				}
 				
 				
-				JsonArray responses = jsonRequest.getAsJsonArray("risposte");
+				//JsonArray riposteOpzione = scelta.get("risposte").getAsJsonArray();
+				JsonArray responses = jsonRequest.get("risposte").getAsJsonArray();
 				Iterator<JsonElement> iterator = responses.iterator();
 				while (iterator.hasNext()) {
-					JsonObject responseVerbale = (JsonObject) iterator.next();
-					int responseID = responseVerbale.get("id").getAsInt();
-					switch (responseVerbale.get("type").getAsString()) {
-					case "RES_TEXT":
-						RispostaTestoVerbaleDTO rispostaTesto = GestioneRispostaVerbaleDAO
-								.getRispostaInstance(RispostaTestoVerbaleDTO.class, responseID, session);
-						if(responseVerbale.get("valore")!=null)
-							rispostaTesto.setResponseValue(responseVerbale.get("valore").getAsString());
-						GestioneRispostaVerbaleDAO.save(rispostaTesto, session);
-						break;
-					case "RES_CHOICE":
-						JsonArray scelte = responseVerbale.getAsJsonArray("scelte");
-						if (scelte != null) {
-							Iterator<JsonElement> iteratorScelte = scelte.iterator();
-							while (iteratorScelte.hasNext()) {
-								JsonObject scelta = (JsonObject) iteratorScelte.next();
-								int sceltaID = scelta.get("id").getAsInt();
-								boolean sceltaChoice = scelta.get("choice").getAsBoolean();
-								OpzioneRispostaVerbaleDTO opzioneRispostaVerbaleDTO = GestioneRispostaVerbaleDAO
-										.getOpzioneVerbale(sceltaID, session);
-								opzioneRispostaVerbaleDTO.setChecked(sceltaChoice);
-								GestioneRispostaVerbaleDAO.saveOpzioneVerbale(opzioneRispostaVerbaleDTO, session);
-							}
-						}
-						break;
-					case "RES_FORMULA":
-						RispostaFormulaVerbaleDTO rispostaFormula = GestioneRispostaVerbaleDAO
-								.getRispostaInstance(RispostaFormulaVerbaleDTO.class, responseID, session);
-						if(responseVerbale.get("valore_1")!=null)
-							rispostaFormula.setValue1(responseVerbale.get("valore_1").getAsString());
-						if(responseVerbale.get("valore_2")!=null)
-							rispostaFormula.setValue2(responseVerbale.get("valore_2").getAsString());
-						if(responseVerbale.get("risultato")!=null)
-							rispostaFormula.setResponseValue(responseVerbale.get("risultato").getAsString());
-						GestioneRispostaVerbaleDAO.save(rispostaFormula, session);
-						break;
-
-					default:
-						break;
-					}
-
+					JsonObject response = (JsonObject)iterator.next();
+					parseRispostaJson(response, session);
 				}
 				cambioStato(verbaleDTO,GestioneStatoVerbaleDAO.getStatoVerbaleById(StatoVerbaleDTO.DA_VERIFICARE, session),session);
 				
@@ -555,6 +517,59 @@ public class GestioneVerbaleBO {
 			html = html.replaceAll("\\$\\{"+rispostaPlaceholder+"\\}", rispostaValore);
 		}
 		return html;
+	}
+	
+	private static void parseRispostaJson(JsonObject responseVerbale, Session session) {
+
+		int responseID = responseVerbale.get("id").getAsInt();
+		switch (responseVerbale.get("type").getAsString()) {
+		case "RES_TEXT":
+			RispostaTestoVerbaleDTO rispostaTesto = GestioneRispostaVerbaleDAO
+					.getRispostaInstance(RispostaTestoVerbaleDTO.class, responseID, session);
+			if(responseVerbale.get("valore")!=null)
+				rispostaTesto.setResponseValue(responseVerbale.get("valore").getAsString());
+			GestioneRispostaVerbaleDAO.save(rispostaTesto, session);
+			break;
+		case "RES_CHOICE":
+			JsonArray scelte = responseVerbale.getAsJsonArray("scelte");
+			if (scelte != null) {
+				Iterator<JsonElement> iteratorScelte = scelte.iterator();
+				while (iteratorScelte.hasNext()) {
+					JsonObject scelta = (JsonObject) iteratorScelte.next();
+					int sceltaID = scelta.get("id").getAsInt();
+					boolean sceltaChoice = scelta.get("choice").getAsBoolean();
+					OpzioneRispostaVerbaleDTO opzioneRispostaVerbaleDTO = GestioneRispostaVerbaleDAO
+							.getOpzioneVerbale(sceltaID, session);
+					opzioneRispostaVerbaleDTO.setChecked(sceltaChoice);
+					GestioneRispostaVerbaleDAO.saveOpzioneVerbale(opzioneRispostaVerbaleDTO, session);
+					JsonElement riposteOpzione = scelta.get("risposte");
+					if(riposteOpzione!=null) {
+						Iterator<JsonElement> iteratoRisp = riposteOpzione.getAsJsonArray().iterator();
+						while(iteratoRisp.hasNext()) {
+							JsonObject rispostaOpzione = (JsonObject) iteratoRisp.next();
+							parseRispostaJson(rispostaOpzione, session);
+						}
+					}
+					//TODO:ffff
+				}
+			}
+			break;
+		case "RES_FORMULA":
+			RispostaFormulaVerbaleDTO rispostaFormula = GestioneRispostaVerbaleDAO
+					.getRispostaInstance(RispostaFormulaVerbaleDTO.class, responseID, session);
+			if(responseVerbale.get("valore_1")!=null)
+				rispostaFormula.setValue1(responseVerbale.get("valore_1").getAsString());
+			if(responseVerbale.get("valore_2")!=null)
+				rispostaFormula.setValue2(responseVerbale.get("valore_2").getAsString());
+			if(responseVerbale.get("risultato")!=null)
+				rispostaFormula.setResponseValue(responseVerbale.get("risultato").getAsString());
+			GestioneRispostaVerbaleDAO.save(rispostaFormula, session);
+			break;
+
+		default:
+			break;
+		}
+
 	}
 
 }
