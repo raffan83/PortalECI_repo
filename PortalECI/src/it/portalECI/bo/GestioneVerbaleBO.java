@@ -500,7 +500,7 @@ public class GestioneVerbaleBO {
 			for(OpzioneRispostaVerbaleDTO opzione: rispostaScelta.getOpzioni()) {
 				if(opzione.getDomande() != null) {
 					for (DomandaVerbaleDTO domandaOpzione:opzione.getDomande()) {
-						replacePlaceholderDomanda(html,domandaOpzione, session);
+						html = replacePlaceholderDomanda(html,domandaOpzione, session);
 					}
 				}
 			}
