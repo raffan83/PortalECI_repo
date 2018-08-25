@@ -60,6 +60,10 @@ $(function () {
 			{ name: 'Tabella con bordi', element: 'table', attributes: { 'class': 'table table-bordered table-sm' } },
 		],
 		
+		font_names: 'Arial/Arial, Helvetica, sans-serif;' +
+	    			'Times New Roman/Times New Roman, Times, serif;' +
+	    			'Courier New/Courier New,Courier,monospace'
+		
 	} );
 
 
