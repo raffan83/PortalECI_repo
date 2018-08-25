@@ -50,12 +50,13 @@
 													</div>
 												</div>
 												<div class="box-body">
-              										<table id="tabellaQuestionari" class="table table-bordered table-hover dataTable table-striped" role="grid" width="100%">
+              										<table id="tabellaQuestionari" class="table table-bordered table-sm dataTable" role="grid" width="100%">
  														<thead>
  															<tr class="active"> 
  																<th>Id</th>
  																<th>Tipo</th>
  																<th>Titolo</th>
+ 																<th>Data creazione</th>
  																<th>Data ultima modifica</th>
  																<td></td>
  															</tr>
@@ -63,14 +64,17 @@
  
  														<tbody> 
   															<c:forEach items="${listaQuestionari}" var="questionario">
- 																<tr role="row" id="questionario_${questionario.id}">
+ 																<tr role="row" id="questionario_${questionario.id}" class="${questionario.isObsoleto?'bg-gray disabled text-muted':''}">
 																	<td>${questionario.id }</td>
 																	<td>${questionario.tipo.codice }</td>
 																	<td>${questionario.titolo}</td>
 																	<td>
-																		<fmt:formatDate pattern="dd/MM/yyyy" value='${questionario.updateDate}' type='date' />																
+																		<fmt:formatDate pattern="dd/MM/yyyy" value='${questionario.createDate}' type='date' />																
 																	</td>
 																	<td>
+																		<fmt:formatDate pattern="dd/MM/yyyy" value='${questionario.updateDate}' type='date' />																
+																	</td>
+																	<td><nobr>
 																		<c:if test="${user.checkPermesso('UPD_QUESTIONARIO')}">
 																			<a href="gestioneQuestionario.do?idQuestionario=${questionario.id}&action=modifica" class="btn customTooltip customlink" title="Click per modificare il questionario">
 																				<i class="fa fa-edit"></i>
@@ -78,7 +82,7 @@
 																		</c:if>																		
 																		<a href="gestioneQuestionario.do?idQuestionario=${questionario.id}" class="btn customTooltip customlink" title="Click per aprire il dettaglio del questionario">
 																			<i class="fa fa-arrow-right"></i>
-																		</a>
+																		</a></nobr>
 																	</td>
 																</tr>
 															</c:forEach>
@@ -190,7 +194,7 @@
     	      		targets: 0,
     	      		responsive: true,
     	      		scrollX: false,
-    	      		order: [[ 3, "desc" ]],
+    	      		order: [[ 0, "desc" ]],
     	      		columnDefs: [
 						{ responsivePriority: 1, targets: 0 },
     	                { responsivePriority: 1, targets: 1 },

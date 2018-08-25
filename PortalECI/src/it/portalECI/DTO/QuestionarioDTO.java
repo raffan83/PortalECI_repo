@@ -19,6 +19,8 @@ public class QuestionarioDTO implements Serializable {
 	private TemplateQuestionarioDTO templateVerbale;
 	private TemplateQuestionarioDTO templateSchedaTecnica;
 	
+	private Boolean isObsoleto;
+	
 	//TODO: dovrò aggiungere i template per schedatecnica e verbale
 		
 	public int getId() {
@@ -91,6 +93,14 @@ public class QuestionarioDTO implements Serializable {
 
 	public void setTemplateSchedaTecnica(TemplateQuestionarioDTO templateSchedaTecnica) {
 		this.templateSchedaTecnica = templateSchedaTecnica;
+	}
+
+	public Boolean getIsObsoleto() {
+		return isObsoleto;
+	}
+
+	public void setIsObsoleto(Boolean isObsoleto) {
+		this.isObsoleto = isObsoleto;
 	}
 
 	public JsonObject getQuestionariJsonObject() {

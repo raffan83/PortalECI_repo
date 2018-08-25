@@ -38,5 +38,9 @@
 			<list-index column="posizione"></list-index>
 			<one-to-many class="it.portalECI.DTO.DomandaSchedaTecnicaQuestionarioDTO"/>
 		</list>
+		
+		<property 	name="isObsoleto"
+        			formula="(select IF((select MAX(q.id) from QUESTIONARIO q where q.tipo_id = tipo_id) = id,0,1))"
+        			type="boolean" />
 	</class>
 </hibernate-mapping> 
