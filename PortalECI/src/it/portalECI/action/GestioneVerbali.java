@@ -295,7 +295,7 @@ public class GestioneVerbali extends HttpServlet {
 			out.print(myObj);
 		} else {
 			//caso genericoc della ricerca del verbale per aprire gestioneVerbali					
-			List domandeVerbale=new ArrayList();
+			List<DomandaVerbaleDTO> domandeVerbale=new ArrayList<DomandaVerbaleDTO>();
 			domandeVerbale.addAll(verbale.getDomandeVerbale());
 			Collections.sort(domandeVerbale, new Comparator<DomandaVerbaleDTO>() {
 				@Override
@@ -308,7 +308,7 @@ public class GestioneVerbali extends HttpServlet {
 
 			if(verbale.getSchedaTecnica()!=null) {
 				//caso scheda tecnica interna
-				List domandeVerbaleSchedaTecnica=new ArrayList();
+				List<DomandaVerbaleDTO> domandeVerbaleSchedaTecnica=new ArrayList<DomandaVerbaleDTO>();
 				domandeVerbaleSchedaTecnica.addAll(verbale.getSchedaTecnica().getDomandeVerbale());
 
 				Collections.sort(domandeVerbaleSchedaTecnica, new Comparator<DomandaVerbaleDTO>() {
@@ -325,7 +325,9 @@ public class GestioneVerbali extends HttpServlet {
 			
 			request.setAttribute("domandeVerbale",domandeVerbale);
 			
-			
+			QuestionarioDTO questionario = GestioneQuestionarioBO.getQuestionarioById(verbale.getQuestionarioID(), session);
+			request.setAttribute("questionario", questionario);
+						
 			InterventoDTO intervento=GestioneInterventoDAO.getIntervento(String.valueOf(verbale.getIntervento().getId()),session);
 			request.getSession().setAttribute("intervento", intervento);
 			request.getSession().setAttribute("verbale", verbale);

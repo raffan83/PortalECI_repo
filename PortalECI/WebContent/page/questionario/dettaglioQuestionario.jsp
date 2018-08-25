@@ -22,11 +22,8 @@
     		<section class="content-header">
           		<h1 class="pull-left">
         			Dettaglio Questionario
-        			<small></small>
       			</h1>
-      			<c:if test="${user.checkPermesso('UPD_QUESTIONARIO')}">
       				<a class="btn btn-default pull-right" href="gestioneQuestionario.do?idQuestionario=${questionario.id}&action=modifica"><i class="glyphicon glyphicon-edit"></i> Modifica</a>
-      			</c:if>
       			<%-- <c:if test="${userObj.checkPermesso('NUOVO_INTERVENTO_METROLOGIA')}">  <button class="btn btn-default pull-right" onClick="nuovoInterventoFromModal()"><i class="glyphicon glyphicon-edit"></i> Nuovo Intervento</button></c:if> --%>
     		</section>
 			<div style="clear: both;"></div>
@@ -36,6 +33,12 @@
 
 				<div class="row">
         			<div class="col-xs-12">
+		      			<c:if test="${questionario.isObsoleto}">
+		        			<div class="callout callout-danger">
+								<h4>Questionario Obsoleto</h4>
+								<p>Questo questionario è stato sostituito da una versione pi&ugrave; recente.</p>
+							</div>
+	       				</c:if>
           				<div class="box">
             				<div class="box-body">            
             					<div class="row">
@@ -132,42 +135,44 @@
         						</div>
         					</div>
    						</div>
+   					</div>
+   				</div>
 
-  						<div id="myModalError" class="modal fade" role="dialog" aria-labelledby="myLargeModalLabel">
-    						<div class="modal-dialog" role="document">
-    							<div class="modal-content">
-     								<div class="modal-header">
-        								<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        								<h4 class="modal-title" id="myModalLabel">Messaggio</h4>
-      								</div>
-       								<div class="modal-body">
-										<div id="modalErrorDiv">				
-										</div>	   
-  										<div id="empty" class="testo12"></div>
-  		 							</div>
-      								<div class="modal-footer">
-        								<button type="button" class="btn btn-outline" data-dismiss="modal">Chiudi</button>
-      								</div>
-    							</div>
-  							</div>
-						</div> 
-     					
-     					<div id="errorMsg"><!-- Place at bottom of page --></div> 
-					</section>
-  				</div>
-  				<!-- /.content-wrapper -->	
+				<div id="myModalError" class="modal fade" role="dialog" aria-labelledby="myLargeModalLabel">
+  					<div class="modal-dialog" role="document">
+  						<div class="modal-content">
+  							<div class="modal-header">
+   								<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+   								<h4 class="modal-title" id="myModalLabel">Messaggio</h4>
+							</div>
+							<div class="modal-body">
+								<div id="modalErrorDiv">				
+								</div>	   
+								<div id="empty" class="testo12"></div>
+ 							</div>
+							<div class="modal-footer">
+      								<button type="button" class="btn btn-outline" data-dismiss="modal">Chiudi</button>
+							</div>
+						</div>
+					</div>
+				</div> 
+   					
+				<div id="errorMsg"><!-- Place at bottom of page --></div> 
+			</section>
+		</div>
+		<!-- /.content-wrapper -->	
+
+		<t:dash-footer />
+
+		<t:control-sidebar />
  
- 	 			<t:dash-footer />
- 
-  				<t:control-sidebar />
-   
-			</div>
-			<!-- ./wrapper -->
+	</div>
+	<!-- ./wrapper -->
 
-		</jsp:attribute>
+	</jsp:attribute>
 
 
-		<jsp:attribute name="extra_css">
+	<jsp:attribute name="extra_css">
 		<style>
 			.box.box-domanda{
 				box-shadow: 0 0 0 0;
@@ -183,8 +188,8 @@
 			}
 		</style>
 
-		</jsp:attribute>
+	</jsp:attribute>
 
-		<jsp:attribute name="extra_js_footer">
+	<jsp:attribute name="extra_js_footer">
 	</jsp:attribute> 
 </t:layout>

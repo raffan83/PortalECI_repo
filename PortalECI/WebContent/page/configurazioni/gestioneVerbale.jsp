@@ -129,13 +129,17 @@
                 									<li class="list-group-item">
                   										<b>Descrizione Verifica</b>
                   										<a class="pull-right">
-		 														${verbale.getDescrizioneVerifica()}
+		 													${verbale.getDescrizioneVerifica()}
                   										</a>
                 									</li>
-                								
+                									<li class="list-group-item">
+                  										<b>Questionario</b>
+                  										<a class="pull-right"  href="gestioneQuestionario.do?idQuestionario=${questionario.id}" target="_blank">
+		 													<c:if test="${questionario.isObsoleto}"> <span class="label bg-red">OBSOLETO</span> </c:if> ${questionario.titolo} del <fmt:formatDate pattern="dd/MM/yyyy" value='${questionario.createDate}' type='date' /> <i class="fa fa-arrow-right"></i>
+                  										</a>
+                									</li>
         										</ul>     
         										<div class="row" id="cambiostato">    
-        										
         											<c:if test='${verbale.getStato().getId()== 4 && user.checkPermesso("CH_STA_VERBALE")}'>
         												<button class="btn btn-default pull-right" onClick="$('#modalCambioStatoVerbale').modal('show');" style="margin-right:10px">
         													<i class="glyphicon glyphicon-transfer"></i>
@@ -168,7 +172,6 @@
     	    													<c:set var="domVerbale" value="${domVerbale}" scope="request"></c:set>    	    													
     	    													<c:set var="readonly" value="${verbale.getStato().getId()>=5}" scope="request"></c:set>
 																<jsp:include page="gestioneVerbaleDettaglio.jsp"></jsp:include>        													
-
         													</div>
 														</c:forEach>
 													</form>
