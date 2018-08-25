@@ -314,7 +314,8 @@ public class GestioneVerbaleBO {
         XMLWorkerFontProvider fontProvider = new XMLWorkerFontProvider(Costanti.PATH_FONT_STYLE);
         fontProvider.register(Costanti.PATH_FONT_STYLE+"Arial.ttf");        
         fontProvider.register(Costanti.PATH_FONT_STYLE+"Times.ttf");        
-        fontProvider.register(Costanti.PATH_FONT_STYLE+"Courier.ttf");        
+        fontProvider.register(Costanti.PATH_FONT_STYLE+"Courier.ttf");
+        fontProvider.setUseUnicode(true);
         CssAppliers cssAppliers = new CssAppliersImpl(fontProvider);
         // HTML
         HtmlPipelineContext htmlContext = new HtmlPipelineContext(cssAppliers);
