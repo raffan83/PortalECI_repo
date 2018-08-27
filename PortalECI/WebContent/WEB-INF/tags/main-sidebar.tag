@@ -24,11 +24,13 @@
               			<i class="fa fa-angle-left pull-right"></i>
             		</span>
           		</a>
-          		<ul class="treeview-menu">
-            		<li>
-            			<a href="gestioneCommessa.do">Gestione Commessa</a>
-            		</li>
-          		</ul>
+          		<% if(user.checkPermesso("GESTIONE_COMMESSA")){%> 
+          			<ul class="treeview-menu">
+            			<li>
+            				<a href="gestioneCommessa.do">Gestione Commessa</a>
+            			</li>
+          			</ul>
+          		<% }%>
         	</li>
         	<li class="treeview">
         	 	<a href="#">
@@ -38,11 +40,13 @@
               			<i class="fa fa-angle-left pull-right"></i>
             		</span>
           		</a>
-          		<ul class="treeview-menu">
-            		<li>
-            			<a href="gestioneListaInterventi.do">Gestione Intervento</a>
-            		</li>
-          		</ul>
+          		<% if(user.checkPermesso("GESTIONE_INTERVENTO")){%> 
+          			<ul class="treeview-menu">
+            			<li>
+            				<a href="gestioneListaInterventi.do">Gestione Intervento</a>
+            			</li>
+          			</ul>
+          		<% }%>
         	</li>
         	<li class="treeview">
         	 	<a href="#">
@@ -52,11 +56,13 @@
               			<i class="fa fa-angle-left pull-right"></i>
             		</span>
           		</a>
-          		<ul class="treeview-menu">
-            		<li>
-            			<a href="gestioneListaVerbali.do">Gestione Verbali</a>
-            		</li>
-          		</ul>
+          		<% if(user.checkPermesso("GESTIONE_VERBALI")){%> 
+          			<ul class="treeview-menu">
+            			<li>
+	            			<a href="gestioneListaVerbali.do">Gestione Verbali</a>
+    	        		</li>
+        	  		</ul>
+        	  	<% }%>
         	</li>
         	<li class="treeview">
         	 	<a href="#">
@@ -66,14 +72,18 @@
               			<i class="fa fa-angle-left pull-right"></i>
             		</span>
           		</a>
-          		<ul class="treeview-menu">
-            		<li>
-            			<a href="gestioneListaQuestionari.do">Gestione Questionario</a>
-            		</li>
-             		<li>
-            			<a href="gestioneQuestionario.do">Crea Questionario</a>
-            		</li>
-          		</ul>
+          		<% if(user.checkPermesso("GESTIONE_QUESTIONARI")){%>
+          			<ul class="treeview-menu">
+            			<li>
+            				<a href="gestioneListaQuestionari.do">Gestione Questionario</a>
+            			</li>
+            			<% if(user.checkPermesso("NEW_QUESTIONARIO")){%>
+             				<li>
+            					<a href="gestioneQuestionario.do">Crea Questionario</a>
+            				</li>
+            			<% }%>		
+          			</ul>          		
+          		<% }%>
         	</li>
        		<!-- <li class="treeview">
           		<a href="#"><i class="fa fa-link"></i> <span>Downloads Utility</span>
@@ -93,30 +103,44 @@
               			<i class="fa fa-angle-left pull-right"></i>
             		</span>
           		</a>
-          		<% if(user.checkRuolo("AM")){%>
+          		<% if(user.checkRuolo("AM") || user.checkPermesso("ACCESS_CONFIG")){%>		
           			<ul class="treeview-menu">
-						<li>
-							<a href="listaUtenti.do"><i class="fa fa-group"></i>Gestione Utenti</a>
-						</li>
-						<li>
-							<a href="listaCompany.do"><i class="fa fa-industry"></i>Gestione Company</a>
-						</li>
-						<li>
-							<a href="listaRuoli.do"><i class="fa fa-hand-stop-o"></i>Gestione Ruoli</a>
-						</li>
-						<li>
-							<a href="listaPermessi.do"><i class="fa fa-hand-pointer-o"></i>Gestione Permessi</a>
-						</li>
-						<li>
-							<a href="gestioneAssociazioni.do"><i class="fa fa-hand-peace-o"></i>Gestione Associazioni</a>
-						</li>
-						<li>
-							<a href="listaCategorieVerifica.do"><i class="fa fa-archive"></i>Gestione Categorie Verifica</a>
-						</li>
-						<li>
-							<a href="listaTipiVerifica.do"><i class="fa fa-sitemap"></i>Gestione Tipi Verifica</a>
-						</li>
-          			</ul>
+          				<% if(user.checkPermesso("GESTIONE_UTENTI")){%>          					
+							<li>
+								<a href="listaUtenti.do"><i class="fa fa-group"></i>Gestione Utenti</a>
+							</li>
+						<% }%>
+						<% if(user.checkPermesso("GESTIONE_COMPANY")){%>
+							<li>
+								<a href="listaCompany.do"><i class="fa fa-industry"></i>Gestione Company</a>
+							</li>
+						<% }%>
+						<% if(user.checkPermesso("GESTIONE_RUOLI")){%>							
+							<li>
+								<a href="listaRuoli.do"><i class="fa fa-hand-stop-o"></i>Gestione Ruoli</a>
+							</li>
+						<% }%>
+						<% if(user.checkPermesso("GESTIONE_PERMESSI")){%>
+							<li>
+								<a href="listaPermessi.do"><i class="fa fa-hand-pointer-o"></i>Gestione Permessi</a>
+							</li>
+						<% }%>
+						<% if(user.checkPermesso("GESTIONE_ASSOCIAZIONI")){%>
+							<li>
+								<a href="gestioneAssociazioni.do"><i class="fa fa-hand-peace-o"></i>Gestione Associazioni</a>
+							</li>
+						<% }%>
+						<% if(user.checkPermesso("GESTIONE_CATEGORIE_VERIFICA")){%>
+							<li>
+								<a href="listaCategorieVerifica.do"><i class="fa fa-archive"></i>Gestione Categorie Verifica</a>
+							</li>
+						<% }%>
+						<% if(user.checkPermesso("GESTIONE_TIPI_VERIFICA")){%>
+							<li>
+								<a href="listaTipiVerifica.do"><i class="fa fa-sitemap"></i>Gestione Tipi Verifica</a>
+							</li>
+						<% }%>
+          			</ul>          			
           		<% }%>
         	</li>
       	</ul>

@@ -1,9 +1,12 @@
 package it.portalECI.bo;
 
+import org.hibernate.Query;
 import org.hibernate.Session;
 
+import it.portalECI.DAO.GestioneQuestionarioDAO;
 import it.portalECI.DAO.GestioneTipiVerificaDAO;
 import it.portalECI.DTO.CategoriaVerificaDTO;
+import it.portalECI.DTO.QuestionarioDTO;
 import it.portalECI.DTO.TipoVerificaDTO;
 
 
@@ -39,13 +42,24 @@ public class GestioneTipiVerificaBO {
 	}
 	
 	public static int deleteTipoVerifica(TipoVerificaDTO tipo, Session session) {
+		Query query = session.createQuery("from VerbaleDTO WHERE codiceVerifica = :_codiceVerifica");
+		query.setParameter("_codiceVerifica",tipo.getCodice());
+		
+		if(query.list().size()>0){	
+			return 2;
+		}
+		
+		QuestionarioDTO quest=GestioneQuestionarioDAO.getQuestionarioForVerbaleInstance(tipo.getCodice(), session);
+		if(quest!=null) {
+			return 2;
+		}
+		
 		int toRet=0;
 		try {
 			session.delete(tipo);
 			toRet=0;
 		}catch (Exception ex){
 			toRet=1;
-			throw ex;	 			 		
 		}
 		return toRet;	
 	}

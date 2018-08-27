@@ -4,6 +4,12 @@
 <%@page import="it.portalECI.DTO.QuestionarioDTO"%>
 <%@page import="java.util.ArrayList"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
+<%@page import="it.portalECI.DTO.UtenteDTO"%>
+
+<%
+	UtenteDTO user = (UtenteDTO)request.getSession().getAttribute("userObj");
+	request.setAttribute("user",user);
+%>
 
 <t:layout title="Dashboard" bodyClass="skin-red sidebar-mini wysihtml5-supported">
 
@@ -22,8 +28,10 @@
       				<h1 class = "pull-left">
         				Lista Questionari
         				<small>Fai click per entrare nel dettaglio del questionario</small>
-      				</h1>
-      				<a class="btn btn-default pull-right" href="gestioneQuestionario.do?"><i class="glyphicon glyphicon-plus"></i> Nuovo questionario</a>
+      				</h1>      			
+      				<c:if test="${user.checkPermesso('CREA_QUESTIONARIO')}">
+      					<a class="btn btn-default pull-right" href="gestioneQuestionario.do?"><i class="glyphicon glyphicon-plus"></i> Nuovo questionario</a>
+      				</c:if>
     			</section>
 				<div style="clear: both;"></div>
 			    <!-- Main content -->
@@ -42,12 +50,13 @@
 													</div>
 												</div>
 												<div class="box-body">
-              										<table id="tabellaQuestionari" class="table table-bordered table-hover dataTable table-striped" role="grid" width="100%">
+              										<table id="tabellaQuestionari" class="table table-bordered table-sm dataTable" role="grid" width="100%">
  														<thead>
  															<tr class="active"> 
  																<th>Id</th>
  																<th>Tipo</th>
  																<th>Titolo</th>
+ 																<th>Data creazione</th>
  																<th>Data ultima modifica</th>
  																<td></td>
  															</tr>
@@ -55,20 +64,25 @@
  
  														<tbody> 
   															<c:forEach items="${listaQuestionari}" var="questionario">
- 																<tr role="row" id="questionario_${questionario.id}">
+ 																<tr role="row" id="questionario_${questionario.id}" class="${questionario.isObsoleto?'bg-gray disabled text-muted':''}">
 																	<td>${questionario.id }</td>
 																	<td>${questionario.tipo.codice }</td>
 																	<td>${questionario.titolo}</td>
 																	<td>
-																		<fmt:formatDate pattern="dd/MM/yyyy" value='${questionario.updateDate}' type='date' />																
+																		<fmt:formatDate pattern="dd/MM/yyyy" value='${questionario.createDate}' type='date' />																
 																	</td>
 																	<td>
-																		<a href="gestioneQuestionario.do?idQuestionario=${questionario.id}&action=modifica" class="btn customTooltip customlink" title="Click per modificare il questionario">
-																			<i class="fa fa-edit"></i>
-																		</a>
+																		<fmt:formatDate pattern="dd/MM/yyyy" value='${questionario.updateDate}' type='date' />																
+																	</td>
+																	<td><nobr>
+																		<c:if test="${user.checkPermesso('UPD_QUESTIONARIO')}">
+																			<a href="gestioneQuestionario.do?idQuestionario=${questionario.id}&action=modifica" class="btn customTooltip customlink" title="Click per modificare il questionario">
+																				<i class="fa fa-edit"></i>
+																			</a>
+																		</c:if>																		
 																		<a href="gestioneQuestionario.do?idQuestionario=${questionario.id}" class="btn customTooltip customlink" title="Click per aprire il dettaglio del questionario">
 																			<i class="fa fa-arrow-right"></i>
-																		</a>
+																		</a></nobr>
 																	</td>
 																</tr>
 															</c:forEach>
@@ -180,7 +194,7 @@
     	      		targets: 0,
     	      		responsive: true,
     	      		scrollX: false,
-    	      		order: [[ 3, "desc" ]],
+    	      		order: [[ 0, "desc" ]],
     	      		columnDefs: [
 						{ responsivePriority: 1, targets: 0 },
     	                { responsivePriority: 1, targets: 1 },

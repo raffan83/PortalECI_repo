@@ -146,7 +146,7 @@ public class GestioneVerbali extends HttpServlet {
 
 						if(domanda.getDomandaQuestionario().getObbligatoria()) {
 							myObj.addProperty("success", false);
-							myObj.addProperty("messaggio", "La domanda '"+domanda.getDomandaQuestionario().getTesto()+"' è obbligatoria.");
+							myObj.addProperty("messaggio", "La domanda '"+domanda.getDomandaQuestionario().getTesto()+"' ï¿½ obbligatoria.");
 					
 							out.print(myObj);
 							return;
@@ -206,12 +206,15 @@ public class GestioneVerbali extends HttpServlet {
 		if(action !=null && action.equals("cambioStato")){			 					
 			
 			String stato = request.getParameter("stato" );										
-				
+			if(Boolean.parseBoolean(request.getParameter("all"))) {
+				if(verbale.getSchedaTecnica()!=null)
+					GestioneVerbaleBO.cambioStato( verbale.getSchedaTecnica(), GestioneStatoVerbaleDAO.getStatoVerbaleById( Integer.parseInt(stato), session) , session);
+			}
 			GestioneVerbaleBO.cambioStato( verbale, GestioneStatoVerbaleDAO.getStatoVerbaleById( Integer.parseInt(stato), session) , session);	
-				
+			
 			myObj.addProperty("success", true);
 			myObj.addProperty("messaggio", "Stato modificato con successo");
-		
+			
 			out.print(myObj);
 		} else if(action !=null && action.equals("generaCertificato")) {
 			QuestionarioDTO questionario = GestioneQuestionarioBO.getQuestionarioById(verbale.getQuestionarioID(),session);
@@ -221,21 +224,22 @@ public class GestioneVerbali extends HttpServlet {
 					byte[] pdfArray = loadFileForBase64(certificato);
 					if(pdfArray.length == 0) {
 						myObj.addProperty("success", false);
-						myObj.addProperty("messaggio","Documento troppo grande per essere generato!");						
+						myObj.addProperty("messaggio","Certificato troppo grande per essere generato!");						
 					} else {
 						byte[] encoded = Base64.encodeBase64(pdfArray);
 						String pdfBytes = new String(encoded);
 						myObj.addProperty("pdfString", pdfBytes);
 						myObj.addProperty("success", true);
-						myObj.addProperty("messaggio","Documento creato con successo!");
+						myObj.addProperty("messaggio","Certificato creato con successo!");
 					}
 				} else {
 					myObj.addProperty("success", false);
-					myObj.addProperty("messaggio", "Non &egrave; stato possibile generare il documento.  Problema di connessione.");						
+					myObj.addProperty("messaggio", "Non &egrave; stato possibile generare il Certificato. Problema di connessione.");						
 				}
 			} catch (Exception e) {
+				e.printStackTrace();
 				myObj.addProperty("success", false);
-				myObj.addProperty("messaggio", "Non &egrave; stato possibile recuperare il documento. Problema di connessione.");
+				myObj.addProperty("messaggio", "Non &egrave; stato possibile recuperare il Certificato. Problema di connessione.");
 			}
 			out.print(myObj);
 		} else if(action !=null && action.equals("generaSchedaTecnica")) {
@@ -246,21 +250,21 @@ public class GestioneVerbali extends HttpServlet {
 					byte[] pdfArray = loadFileForBase64(certificato);
 					if(pdfArray.length == 0) {
 						myObj.addProperty("success", false);
-						myObj.addProperty("messaggio","Documento troppo grande per essere generato!");						
+						myObj.addProperty("messaggio","Scheda Tecnica troppo grande per essere generato!");						
 					} else {
 						byte[] encoded = Base64.encodeBase64(pdfArray);
 						String pdfBytes = new String(encoded);
 						myObj.addProperty("pdfString", pdfBytes);
 						myObj.addProperty("success", true);
-						myObj.addProperty("messaggio","Documento creato con successo!");
+						myObj.addProperty("messaggio","Scheda Tecnica creato con successo!");
 					}
 				} else {
 					myObj.addProperty("success", false);
-					myObj.addProperty("messaggio", "Non &egrave; stato possibile generare il documento.  Problema di connessione.");						
+					myObj.addProperty("messaggio", "Non &egrave; stato possibile generare la Scheda Tecnica.  Problema di connessione.");						
 				}
 			} catch (Exception e) {
 				myObj.addProperty("success", false);
-				myObj.addProperty("messaggio", "Non &egrave; stato possibile recuperare il documento. Problema di connessione.");
+				myObj.addProperty("messaggio", "Non &egrave; stato possibile recuperare la Scheda Tecnica. Problema di connessione.");
 			}
 			out.print(myObj);
 		} else if(action !=null && action.equals("visualizzaDocumento")) {
@@ -291,7 +295,7 @@ public class GestioneVerbali extends HttpServlet {
 			out.print(myObj);
 		} else {
 			//caso genericoc della ricerca del verbale per aprire gestioneVerbali					
-			List domandeVerbale=new ArrayList();
+			List<DomandaVerbaleDTO> domandeVerbale=new ArrayList<DomandaVerbaleDTO>();
 			domandeVerbale.addAll(verbale.getDomandeVerbale());
 			Collections.sort(domandeVerbale, new Comparator<DomandaVerbaleDTO>() {
 				@Override
@@ -304,7 +308,7 @@ public class GestioneVerbali extends HttpServlet {
 
 			if(verbale.getSchedaTecnica()!=null) {
 				//caso scheda tecnica interna
-				List domandeVerbaleSchedaTecnica=new ArrayList();
+				List<DomandaVerbaleDTO> domandeVerbaleSchedaTecnica=new ArrayList<DomandaVerbaleDTO>();
 				domandeVerbaleSchedaTecnica.addAll(verbale.getSchedaTecnica().getDomandeVerbale());
 
 				Collections.sort(domandeVerbaleSchedaTecnica, new Comparator<DomandaVerbaleDTO>() {
@@ -321,7 +325,9 @@ public class GestioneVerbali extends HttpServlet {
 			
 			request.setAttribute("domandeVerbale",domandeVerbale);
 			
-			
+			QuestionarioDTO questionario = GestioneQuestionarioBO.getQuestionarioById(verbale.getQuestionarioID(), session);
+			request.setAttribute("questionario", questionario);
+						
 			InterventoDTO intervento=GestioneInterventoDAO.getIntervento(String.valueOf(verbale.getIntervento().getId()),session);
 			request.getSession().setAttribute("intervento", intervento);
 			request.getSession().setAttribute("verbale", verbale);

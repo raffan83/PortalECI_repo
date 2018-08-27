@@ -130,15 +130,15 @@ public class GestioneCategorieVerifica extends HttpServlet {
     	 			CategoriaVerificaDTO categoria = GestioneCategorieVerificaBO.getCategoriaVerificaById(id, session);	
     	 			
     	 			int success = GestioneCategorieVerificaBO.deleteCategoriaVerifica(categoria, session);
-
     	 			if(success==0){
     					myObj.addProperty("success", true);
     					myObj.addProperty("messaggio","Categoria verifica eliminata con successo");
     					session.getTransaction().commit();
     					session.close();	    				
-    				}
-	   			
-    				if(success==1){
+    				}else if(success==2) {
+    	 				myObj.addProperty("success", false);
+    					myObj.addProperty("messaggio","Prima di procedere elimina tutti i Tipi Verifica associcati a questa Categoria!");
+    	 			}else {
 	    					
     					myObj.addProperty("success", false);
     					myObj.addProperty("messaggio","Errore Eliminazione");

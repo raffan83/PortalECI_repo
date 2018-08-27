@@ -16,8 +16,7 @@
 	JsonArray listaUtentiJson = gson.toJsonTree(listaUtentiarr).getAsJsonArray();
 	request.setAttribute("listaUtentiJson", listaUtentiJson);
 	request.setAttribute("utente", utente);
-
-	//System.out.println("***"+listaUtentiJson);	
+	
 %>
 	
 <t:layout title="Dashboard" bodyClass="skin-red sidebar-mini wysihtml5-supported">

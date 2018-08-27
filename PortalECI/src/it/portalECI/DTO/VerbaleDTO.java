@@ -106,10 +106,10 @@ public class VerbaleDTO implements Serializable {
 	}
 	
 	public void addToDomande(DomandaVerbaleDTO domanda) {
-		if(this.domandeVerbale ==null)
-			this.domandeVerbale =new HashSet<>();
-		
-		this.domandeVerbale.add(domanda);
+		if (domanda != null) {
+			if(this.domandeVerbale ==null) this.domandeVerbale = new HashSet<DomandaVerbaleDTO>();
+			this.domandeVerbale.add(domanda);
+		}
 	}
 //
 //	public List<DomandaQuestionarioDTO> getDomandeSchedaTecnica() {

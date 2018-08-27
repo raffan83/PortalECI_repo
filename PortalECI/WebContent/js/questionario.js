@@ -26,44 +26,72 @@ $("#categoria-verifica-select").change(function() {
 });
 $("#categoria-verifica-select").trigger("change");
  
-//tipo:		RES_TEXT | RES_CHOICE | RES_FORMULA
-//gruppo:	scedaTecnica | verbale
+//gruppo:	scedaTecnica | verbale | opzione
+var indice = 0;
 function aggiungiDomanda(gruppo, button){
 	$.ajax({
 		type: "GET",
 		url: "gestioneDomandeQuestionario.do",
-		data: {gruppo:gruppo},
+		data: {gruppo:gruppo, indice:indice},
 		//if received a response from the server
-		success: function( data, textStatus) {            	
-            $('#listaDomande'+gruppo).append(data);
+		success: function( data, textStatus) {
+			var container = $('#listaDomande'+gruppo);
+			if(gruppo=="Opzione"){
+				container = $(button).parents(".opzione-div").first().find(".lista-domande-opzioni-div").first();
+				var counter = container.find(".numero-domande-opzione-input");
+				counter.val(parseInt(counter.val())+1);
+
+			}
+			var new_domanda_element = jQuery(data)
+			container.append(new_domanda_element);
+			indice++;
+            $('html, body').animate({
+                scrollTop: $(new_domanda_element).offset().top
+            }, 800);
+
 		},
 		error: function( data, textStatus) {
 			alert("ERRORE "+data.status)
 		}
 	});
 	
-}
+};
+$(document).ready(function(){
+	if($(".domanda-indice-input").length)
+		indice = Math.max.apply(Math, $(".domanda-indice-input").map(function() { return parseFloat(this.value) }));
+	indice++;
+})
+$(document).on("click",".elimina-domanda-button",function() {
+	var domanda_div = $(this).parents('.domanda-div').first();
+	var gruppo = domanda_div.find(".domanda-gruppo-input").val();
+	if(gruppo=="Opzione"){
+		container = $(this).parents(".opzione-div").first().find(".lista-domande-opzioni-div")
+		var counter = container.find(".numero-domande-opzione-input");
+		counter.val(parseInt(counter.val())-1);
+	}
+	domanda_div.remove();
+});
+
+
 
 $(document).on("change",".tipo-risposta-select",function() {
-	$(this).parents(".domanda-div").find(".risposta-div").hide();
-	$(this).parents(".domanda-div").find(".risposta-"+this.value).show();
+	$(this).parents(".domanda-div").first().find(".risposta-div").hide();
+	$(this).parents(".domanda-div").first().find(".risposta-"+this.value).show();
 	
-	var optionElementList = $(this).parents(".domanda-div").find(".opzione-div input");
+	var optionElementList = $(this).parents(".domanda-div").first().find(".opzione-div input");
 	if(this.value != "RES_CHOICE"){
-		$(this).parents(".domanda-div").find(".numero-opzioni-input").val(0);
+		$(this).parents(".domanda-div").first().find(".numero-opzioni-input").val(0);
 		optionElementList.prop( "disabled", true );
 	}else{
-		$(this).parents(".domanda-div").find(".numero-opzioni-input").val(optionElementList.length);
+		$(this).parents(".domanda-div").first().find(".numero-opzioni-input").val(optionElementList.length);
 		optionElementList.prop( "disabled", false );
 	}
 });
 
-$(document).on("click",".aggiungi-opzione-button",function() {
-	var counter = $(this).parents(".risposta-div").find(".numero-opzioni-input");
-	counter.val(parseInt(counter.val())+1);
-	newOption().insertBefore($(this).parents(".aggiungi-opzione-button-wp"));
+function aggiungiOpzione(indice, button) {
+	newOption(indice).insertBefore($(button).parents(".aggiungi-opzione-button-wp").first());
 	
-});
+};
 
 $(document).on("click",".rimuovi-opzione-button",function() {
 	var counter = $(this).parents(".risposta-div").find(".numero-opzioni-input");
@@ -72,13 +100,24 @@ $(document).on("click",".rimuovi-opzione-button",function() {
 });
 
 
-function newOption(){
-	var elementString = '<div class="col-sm-4 opzione-div form-group">'
-							+'<div class="input-group">'
-								+'<input type="text" class="form-control" placeholder="Opzione" name="opzione">'
-								+'<div class="input-group-btn">'
-									+'<button type="button" class="btn btn-danger rimuovi-opzione-button">X</button>'
+function newOption(indice){
+	var elementString = '<div class="opzione-div row">'
+							+'<div class="col-sm-6">'
+								+'<div class="form-group">'
+									+'<input type="text" class="form-control" placeholder="Opzione" name="opzione'+indice+'">'
 								+'</div>'
+							+'</div>'
+							+'<div class="col-sm-3 ">'
+								+'<button type="button" class="btn btn-danger btn-block rimuovi-opzione-button">elimina</button>'
+							+'</div>'
+							+'<div class="col-sm-3">'
+								+'<a class="btn btn-danger btn-block" onclick="aggiungiDomanda(\'Opzione\', this)">'
+									+'<i class="fa fa-plus"></i> Aggiungi domanda'
+								+'</a>'
+							+'</div>'
+							+'<div class="clearfix"></div>'
+							+'<div class="lista-domande-opzioni-div">'
+								+'<input type="hidden" name="numero-domande-opzione'+indice+'" class="numero-domande-opzione-input" value="0"/>'
 							+'</div>'
 						+'</div>';
 	return jQuery(elementString)

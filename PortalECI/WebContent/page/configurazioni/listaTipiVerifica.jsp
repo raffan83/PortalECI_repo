@@ -9,7 +9,8 @@
 <%@taglib prefix="t" tagdir="/WEB-INF/tags"%>
 
 <%
-	UtenteDTO utente = (UtenteDTO)request.getSession().getAttribute("userObj");	
+	UtenteDTO user = (UtenteDTO)request.getSession().getAttribute("userObj");
+	request.setAttribute("user",user);
 %>
 	
 <t:layout title="Dashboard" bodyClass="skin-red sidebar-mini wysihtml5-supported">
@@ -45,12 +46,14 @@
 													</div>
 												</div>
 												<div class="box-body">
-													<div class="row">
-														<div class="col-lg-12">
-															<button class="btn btn-primary" onClick="nuovoInterventoFromModal('#modalNuovoTipoVerifica')">Nuovo Tipo Verifica</button>
+													<div class="row">														
+														<div class="col-lg-12">															
+															<c:if test="${user.checkPermesso('NEW_TIPO_VERIFICA')}">
+																<button class="btn btn-primary" onClick="nuovoInterventoFromModal('#modalNuovoTipoVerifica')">Nuovo Tipo Verifica</button>
+															</c:if>
 															<div id="errorMsg" >
 															</div>
-														</div>
+														</div>          												
 													</div>
  													<div class="clearfix"></div>
 													<div class="row" style="margin-top:20px;">
@@ -72,9 +75,13 @@
 																			<td>${tipo.categoria.codice}</td>
 																			<td>${tipo.descrizione}</td>
 																			<td>${tipo.codice}</td>
-																			<td>	
-																				<a href="#" onClick="modalModificaTipoVerifica('${tipo.id}','${tipo.categoria.id}','${tipo.descrizione}','${tipo.codice}')" class="btn btn-warning "><i class="fa fa-edit"></i></a> 
-																				<a href="#" onClick="modalEliminaTipoVerifica('${tipo.id}','${tipo.descrizione}')" class="btn btn-danger "><i class="fa fa-remove"></i></a>	
+																			<td>																					
+																				<c:if test="${user.checkPermesso('UPD_TIPO_VERIFICA')}">
+																					<a href="#" onClick="modalModificaTipoVerifica('${tipo.id}','${tipo.categoria.id}','${tipo.descrizione}','${tipo.codice}')" class="btn btn-warning "><i class="fa fa-edit"></i></a>
+																				</c:if>																			
+																				<c:if test="${user.checkPermesso('DEL_TIPO_VERIFICA')}">
+																					<a href="#" onClick="modalEliminaTipoVerifica('${tipo.id}','${tipo.descrizione}')" class="btn btn-danger "><i class="fa fa-remove"></i></a>
+																				</c:if>	
 																			</td>
 																		</tr>
 		 															</c:forEach>		

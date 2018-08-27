@@ -1,7 +1,12 @@
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@taglib prefix="t" tagdir="/WEB-INF/tags"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
+<%@page import="it.portalECI.DTO.UtenteDTO"%>
 
+<%
+	UtenteDTO user = (UtenteDTO)request.getSession().getAttribute("userObj");
+	request.setAttribute("user",user);
+%>
 <t:layout title="Dashboard" bodyClass="skin-red sidebar-mini wysihtml5-supported">
 
 	<jsp:attribute name="body_area">
@@ -17,9 +22,8 @@
     		<section class="content-header">
           		<h1 class="pull-left">
         			Dettaglio Questionario
-        			<small></small>
       			</h1>
-      			<a class="btn btn-default pull-right" href="gestioneQuestionario.do?idQuestionario=${questionario.id}&action=modifica"><i class="glyphicon glyphicon-edit"></i> Modifica</a>
+      				<a class="btn btn-default pull-right" href="gestioneQuestionario.do?idQuestionario=${questionario.id}&action=modifica"><i class="glyphicon glyphicon-edit"></i> Modifica</a>
       			<%-- <c:if test="${userObj.checkPermesso('NUOVO_INTERVENTO_METROLOGIA')}">  <button class="btn btn-default pull-right" onClick="nuovoInterventoFromModal()"><i class="glyphicon glyphicon-edit"></i> Nuovo Intervento</button></c:if> --%>
     		</section>
 			<div style="clear: both;"></div>
@@ -29,6 +33,12 @@
 
 				<div class="row">
         			<div class="col-xs-12">
+		      			<c:if test="${questionario.isObsoleto}">
+		        			<div class="callout callout-danger">
+								<h4>Questionario Obsoleto</h4>
+								<p>Questo questionario è stato sostituito da una versione pi&ugrave; recente.</p>
+							</div>
+	       				</c:if>
           				<div class="box">
             				<div class="box-body">            
             					<div class="row">
@@ -57,14 +67,18 @@
                 									<c:if test="${questionario.domandeVerbale.size()>0 }">
 	                									<li class="list-group-item">
 	                  										<b>Template Verbale </b>&nbsp;
-	                  										<a href="gestioneTemplateQuestionario.do?idQuestionario=${questionario.id}&tipo=Verbale&idTemplate=${questionario.templateVerbale.id}" class="btn btn-default btn-xs pull-right">Imposta Template</a>
+	                  										<c:if test="${user.checkPermesso('NEW_TEMPLATE_VERBALE')}">
+	                  											<a href="gestioneTemplateQuestionario.do?idQuestionario=${questionario.id}&tipo=Verbale&idTemplate=${questionario.templateVerbale.id}" class="btn btn-default btn-xs pull-right">Imposta Template</a>
+	                  										</c:if>
 	                  										<a class="pull-right">${questionario.templateVerbale.titolo}</a>
 	                									</li>
                 									</c:if>
                 									<c:if test="${questionario.domandeSchedaTecnica.size()>0 }">
 	                									<li class="list-group-item">
 	                  										<b>Template Scheda Tecnica </b>&nbsp;
-	                  										<a href="gestioneTemplateQuestionario.do?idQuestionario=${questionario.id}&tipo=SchedaTecnica&idTemplate=${questionario.templateSchedaTecnica.id}" class="btn btn-default btn-xs pull-right">Imposta Template</a> 
+	                  										<c:if test="${user.checkPermesso('NEW_TEMPLATE_SKTECNICA')}">
+	                  											<a href="gestioneTemplateQuestionario.do?idQuestionario=${questionario.id}&tipo=SchedaTecnica&idTemplate=${questionario.templateSchedaTecnica.id}" class="btn btn-default btn-xs pull-right">Imposta Template</a>
+	                  										</c:if> 
 	                  										<a class="pull-right">${questionario.templateSchedaTecnica.titolo}</a>
 	                									</li>
                 									</c:if>
@@ -85,7 +99,10 @@
 											<div class="box-body">
 												<c:forEach items="${questionario.domandeVerbale}" var="domanda">
 													<c:set var="domanda" value="${domanda}" scope="request"></c:set>
-													<jsp:include page="domanda/dettaglioDomanda.jsp"></jsp:include>
+													<c:set var="domanda_header" value="Domanda ${domanda.posizione+1}" scope="request"></c:set>
+													<div class="col-md-12">
+														<jsp:include page="domanda/dettaglioDomanda.jsp"></jsp:include>
+													</div>
 												</c:forEach>
 											</div>
 										</div>
@@ -105,7 +122,10 @@
 											<div class="box-body">
 												<c:forEach items="${questionario.domandeSchedaTecnica}" var="domanda">
 													<c:set var="domanda" value="${domanda}" scope="request"></c:set>
-													<jsp:include page="domanda/dettaglioDomanda.jsp"></jsp:include>
+													<c:set var="domanda_header" value="Domanda ${domanda.posizione+1}" scope="request"></c:set>
+													<div class="col-md-12">
+														<jsp:include page="domanda/dettaglioDomanda.jsp"></jsp:include>
+													</div>
 												</c:forEach>
 											</div>
 										</div>
@@ -115,46 +135,61 @@
         						</div>
         					</div>
    						</div>
+   					</div>
+   				</div>
 
-  						<div id="myModalError" class="modal fade" role="dialog" aria-labelledby="myLargeModalLabel">
-    						<div class="modal-dialog" role="document">
-    							<div class="modal-content">
-     								<div class="modal-header">
-        								<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        								<h4 class="modal-title" id="myModalLabel">Messaggio</h4>
-      								</div>
-       								<div class="modal-body">
-										<div id="modalErrorDiv">				
-										</div>	   
-  										<div id="empty" class="testo12"></div>
-  		 							</div>
-      								<div class="modal-footer">
-        								<button type="button" class="btn btn-outline" data-dismiss="modal">Chiudi</button>
-      								</div>
-    							</div>
-  							</div>
-						</div> 
-     					
-     					<div id="errorMsg"><!-- Place at bottom of page --></div> 
-					</section>
-  				</div>
-  				<!-- /.content-wrapper -->	
+				<div id="myModalError" class="modal fade" role="dialog" aria-labelledby="myLargeModalLabel">
+  					<div class="modal-dialog" role="document">
+  						<div class="modal-content">
+  							<div class="modal-header">
+   								<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+   								<h4 class="modal-title" id="myModalLabel">Messaggio</h4>
+							</div>
+							<div class="modal-body">
+								<div id="modalErrorDiv">				
+								</div>	   
+								<div id="empty" class="testo12"></div>
+ 							</div>
+							<div class="modal-footer">
+      								<button type="button" class="btn btn-outline" data-dismiss="modal">Chiudi</button>
+							</div>
+						</div>
+					</div>
+				</div> 
+   					
+				<div id="errorMsg"><!-- Place at bottom of page --></div> 
+			</section>
+		</div>
+		<!-- /.content-wrapper -->	
+
+		<t:dash-footer />
+
+		<t:control-sidebar />
  
- 	 			<t:dash-footer />
- 
-  				<t:control-sidebar />
-   
-			</div>
-			<!-- ./wrapper -->
+	</div>
+	<!-- ./wrapper -->
 
-		</jsp:attribute>
+	</jsp:attribute>
 
 
-		<jsp:attribute name="extra_css">
+	<jsp:attribute name="extra_css">
+		<style>
+			.box.box-domanda{
+				box-shadow: 0 0 0 0;
+			}
+			.box.box-domanda .box-body{
+				border-left:0;
+				border-bottom: 0;
+				border-right: 0;
+			}
+			
+			.lista-domande-annidate-col{
+				padding: 0 0 0 30px;
+			}
+		</style>
 
+	</jsp:attribute>
 
-		</jsp:attribute>
-
-		<jsp:attribute name="extra_js_footer">
+	<jsp:attribute name="extra_js_footer">
 	</jsp:attribute> 
 </t:layout>

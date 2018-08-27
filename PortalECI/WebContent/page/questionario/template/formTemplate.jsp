@@ -8,7 +8,7 @@
 
 		<div class="wrapper">
 	
-		<t:main-header  />
+		<t:main-header />
   		<t:main-sidebar />
  
   		<!-- Content Wrapper. Contains page content -->
@@ -19,96 +19,183 @@
         			${template.id==null?"Crea nuovo":"Modifica"} questionario
         			<small></small>
       			</h1>
-      			<c:if test="${questionario.id!=null}">  <a class="btn btn-default pull-right" href="gestioneQuestionario.do?idQuestionario=${questionario.id}"><i class="glyphicon glyphicon-left"></i> Torna al questionario</a></c:if> 
+      			<c:if test="${questionario.id!=null}"> 
+      				<a class="btn btn-default pull-right" href="gestioneQuestionario.do?idQuestionario=${questionario.id}">
+      					<i class="glyphicon glyphicon-left"></i> Torna al questionario
+      				</a>
+				</c:if> 
     		</section>
 			<div style="clear: both;"></div>
-    		
-    		<!-- Main content -->
     		<section class="content">
-            <form class="form" id="questionario-form" action="gestioneTemplateQuestionario.do" method="POST">
-				<c:if test="${template.id!=null}">
-					<input type="hidden" name="idTemplate" value="${template.id}" >
-					<input type="hidden" name="_method" value="put" />
-				</c:if>
-				<input type="hidden" id="idQuestionario" name="idQuestionario" value="${questionario.id}" >
-				<input type="hidden" id="tipo" name="tipo" value="${tipo}" >
-				<div class="row">
-        			<div class="col-xs-12">
-          				<div class="box">
-            				<div class="box-body">            
-            					<div class="row">
-									<div class="col-xs-12">
-										<div class="box box-danger box-solid">
-											<div class="box-header with-border">
-	 											Template
-												<div class="box-tools pull-right">		
-													<button data-widget="collapse" class="btn btn-box-tool"><i class="fa fa-minus"></i></button>
+				<div class="row">    		            																
+					<form class="form" id="template-form" action="gestioneTemplateQuestionario.do" method="POST" >
+	        			<div class="col-xs-12">
+	          				<div class="box">
+	            				<div class="box-body">      
+									<c:if test="${template.id!=null}">
+										<input type="hidden" name="idTemplate" value="${template.id}">
+										<input type="hidden" name="_method" value="put" />
+									</c:if>
+									<input type="hidden" id="idQuestionario" name="idQuestionario" value="${questionario.id}">
+									<input type="hidden" id="tipo" name="tipo" value="${tipo}">
+	            					<div class="row">
+										<div class="col-xs-12">
+											<div class="box box-danger box-solid">
+												<div class="box-header with-border">
+		 											Template
+													<div class="box-tools pull-right">		
+														<button data-widget="collapse" class="btn btn-box-tool">
+															<i class="fa fa-minus"></i>
+														</button>
+													</div>
 												</div>
-											</div>
-											<div class="box-body">
-												<div class="row">
-													<div class="col-sm-12">
-														<div class="form-group">
-															<label for="titolo-input" class="control-label">Titolo</label>
-															<input type="text" name="titolo" class="form-control" id="titolo-input" placeholder="Titolo" value="${template.titolo}">
+												<div class="box-body">
+													<div class="row">
+														<div class="col-sm-12">
+															<div class="form-group">
+																<label for="titolo-input" class="control-label">Titolo</label>
+																<input type="text" name="titolo" class="form-control" id="titolo-input" placeholder="Titolo" value="${template.titolo}">
+															</div>
+														</div>
+													</div>
+													<textarea id="summernote">${template.template}</textarea>
+				        					</div>
+				   						</div>
+				   					</div>
+				   					
+										<div class="col-xs-12">
+											<div class="box box-danger box-solid">
+												<div class="box-header with-border">
+		 											Header
+													<div class="box-tools pull-right">		
+														<button data-widget="collapse" class="btn btn-box-tool">
+															<i class="fa fa-minus"></i>
+														</button>
+													</div>
+												</div>
+												<div class="box-body">
+													<div class="row">
+														<div class="col-sm-12">
+															<div class="form-group">
+																<label for="titolo-input" class="control-label">Carica un file da usare come header</label>
+																<div class="input-group">
+																	<input type="file" name="file" class="form-control"	id="file-input-header" placeholder="File">
+																	<div class="input-group-btn">
+																		<a class="btn btn-danger" onclick="uploadAj(document.getElementById('file-input-header'),'header');return false;">Carica il file</a>
+																	</div>
+																</div>
+															</div>
+															<div class="form-group">
+																<label for="titolo-input" class="control-label">O sceglilo dal menu a tendina</label>
+   																<select name="headerFileName" id="select-file-header" data-placeholder="Seleziona Header..." class="form-control">
+        	          												<option value="">Nessun header...</option>
+            	          											<c:forEach items="${listaHeader}" var="head">
+                	           											<option value="${head}" ${template.header==head?"selected":"" }>${head}</option>
+                    	 											</c:forEach>
+                  												</select>
+															</div>
 														</div>
 													</div>
 												</div>
-												<textarea id="summernote" name="template">${template.template}</textarea>
 											</div>
 										</div>
-            							<!-- /.box-body -->
-          							</div>
-          							<!-- /.box -->
-        						</div>                                          
-        						<button class="btn btn-default pull-right" type="submit"><i class="fa fa-save"></i> Salva Template</button>
-        					</div>
-   						</div>
-        			</div>
-        		</div>
-        	</form>                                    
-
-			<div id="myModalError" class="modal fade" role="dialog" aria-labelledby="myLargeModalLabel">
+										<div class="col-xs-12">
+											<div class="box box-danger box-solid">
+												<div class="box-header with-border">
+		 											Footer
+													<div class="box-tools pull-right">		
+														<button data-widget="collapse" class="btn btn-box-tool">
+															<i class="fa fa-minus"></i>
+														</button>
+													</div>
+												</div>
+												<div class="box-body">
+													<div class="row ">
+														<div class="col-sm-12">
+															<div class="form-group">
+																<label for="titolo-input" class="control-label">Carica un file da usare come footer</label>
+																<div class="input-group">
+																	<input type="file" class="form-control"	id="file-input-footer" placeholder="File">
+																	<div class="input-group-btn">
+																		<a class="btn btn-danger" onclick="uploadAj(document.getElementById('file-input-footer'),'footer');return false;">Carica il file</a>
+																	</div>
+																</div>
+															</div>
+															<div class="form-group">
+																<label for="titolo-input" class="control-label">O sceglilo dal menu a tendina</label>
+   																<select name="footerFileName" id="select-file-footer" class="form-control">
+        	          												<option value="">Nessun footer...</option>
+            	          											<c:forEach items="${listaFooter}" var="footer">
+                	           											<option value="${footer}" ${template.footer==footer?"selected":"" }>${footer}</option>
+                    	 											</c:forEach>
+                  												</select>
+															</div>
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+				   					</div>
+						        </div>
+						        <input name="template" id="templateHiddenField" type="hidden" />
+						        	<div class="col-xs-12 margin-bottom">
+										<button class="btn btn-default pull-right" type="submit">
+											<i class="fa fa-save"></i> Salva Template
+										</button>
+						        	</div>
+							</div>
+						</div>
+					</form>           
+				</div>                         
+			<div id="myModalError" class="modal fade" role="dialog"
+						aria-labelledby="myLargeModalLabel">
 				<div class="modal-dialog" role="document">
 					<div class="modal-content">
 						<div class="modal-header">
- 							<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+ 							<button type="button" class="close" data-dismiss="modal"
+										aria-label="Close">
+										<span aria-hidden="true">&times;</span>
+									</button>
  							<h4 class="modal-title" id="myModalLabel">Messaggio</h4>
 						</div>
 						<div class="modal-body">
 							<div id="myModalErrorContent"></div>	   
 						</div>
 						<div class="modal-footer">
-							<button type="button" class="btn btn-outline" data-dismiss="modal">Chiudi</button>
+							<button type="button" class="btn btn-outline"
+										data-dismiss="modal">Chiudi</button>
 						</div>
 					</div>
 				</div>
 			</div> 
      					
-     		<div id="errorMsg"><!-- Place at bottom of page --></div> 
+     		<div id="errorMsg">
+						<!-- Place at bottom of page -->
+					</div> 
+					
 			</section>
-  		</div><!-- /.content-wrapper -->	
+  		</div>
+			<!-- /.content-wrapper -->	
  
  		<t:dash-footer />
   		<t:control-sidebar />
-		</div><!-- ./wrapper -->
+		</div>
+		<!-- ./wrapper -->
 	</jsp:attribute>
-	
+
 	<jsp:attribute name="extra_css">
-		<link rel="stylesheet"  href="css/plugins/summernote/summernote.css"/>
 	</jsp:attribute>
-	
+
 	<jsp:attribute name="extra_js_footer">
-	
+		<script src="plugins/ckeditor/ckeditor.js"></script>
 		<script src="js/template-questionario.js" type="text/javascript"></script>
 	
-		<script src="plugins/summernote/summernote.js" type="text/javascript"></script>
-		<script src="plugins/summernote/summernote-it-IT.js" type="text/javascript"></script>
-		
-		<c:if test="${error!=null }">
-			<script  type="text/javascript">
-			showError("${error}");
-			</script>
-		</c:if>
-	</jsp:attribute> 
+		<script>
+			$(document).ready(function() {
+				<c:if test="${error!=null }">
+					showError("${error}");
+				</c:if>
+			})
+		</script>
+	</jsp:attribute>
 </t:layout>

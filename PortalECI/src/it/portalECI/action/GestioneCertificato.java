@@ -41,9 +41,6 @@ public class GestioneCertificato extends HttpServlet {
 		File fileCertificato = null;
 		try {
 			fileCertificato = GestioneVerbaleBO.getPDFVerbale(verbale, questionario, session);
-		} catch (DocumentException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

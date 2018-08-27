@@ -1,7 +1,10 @@
 package it.portalECI.DTO;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import com.google.gson.JsonObject;
@@ -13,7 +16,7 @@ public class TipoVerificaDTO implements Serializable{
 	private String descrizione;
 	private String codice;
 	
-	private Set<InterventoDTO> intervento= new HashSet<InterventoDTO>();
+	private Collection<InterventoDTO> intervento;
 	
 	public TipoVerificaDTO() {
 		
@@ -44,10 +47,10 @@ public class TipoVerificaDTO implements Serializable{
 		this.codice = codice;
 	}
 	
-	public Set<InterventoDTO> getIntervento() {
+	public Collection<InterventoDTO> getIntervento() {
 		return intervento;
 	}
-	public void setIntervento(Set<InterventoDTO> intervento) {
+	public void setIntervento(Collection<InterventoDTO> intervento) {
 		this.intervento = intervento;
 	}
 	

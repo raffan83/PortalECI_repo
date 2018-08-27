@@ -1684,10 +1684,12 @@ function nuovoPermesso(){
   	  
 		var descrizione=$('#descrizione').val();
   	  	var chiave_permesso=$('#chiave_permesso').val();
+  	  	var statoPermesso=$('#statoPermesso').is(':checked');
   	  	var dataObj = {};
   		
   	  	dataObj.chiave_permesso = chiave_permesso;
   	  	dataObj.descrizione = descrizione;
+  	  	dataObj.statoPermesso= statoPermesso;
   	  	
   	  	$.ajax({
   	  		type: "POST",
@@ -1730,11 +1732,13 @@ function modificaPermesso(){
 	var id=$('#modid').val();
 	var descrizione=$('#moddescrizione').val();
 	var chiave_permesso=$('#modchiavepermesso').val();  	  
-  	  
+	var statoPermesso=$('#modstatoPermesso').is(':checked');
+	
 	var dataObj = {};
 	dataObj.id = id;
 	dataObj.descrizione = descrizione;
 	dataObj.chiave_permesso = chiave_permesso;
+	dataObj.statoPermesso = statoPermesso;
 
 	$.ajax({
 		type: "POST",
@@ -1815,12 +1819,18 @@ function eliminaPermesso(){
 	});
 }
 
-function modalModificaPermesso(id,descrizione,chiave_permesso){	
+function modalModificaPermesso(id,descrizione,chiave_permesso,statoPermesso){	
 	$('#modid').val(id);
 	$('#moddescrizione').val(descrizione);
-	$('#modchiavepermesso').val(chiave_permesso);  
-  	  
-	$('#modalModificaPermesso').modal();  	  
+	$('#modchiavepermesso').val(chiave_permesso);
+	if(statoPermesso){
+		$('#modstatoPermesso').iCheck('check');
+	}else{
+		$('#modstatoPermesso').iCheck('uncheck');
+	}
+	
+  	
+	$('#modalModificaPermesso').modal();
 }
     
 function modalEliminaPermessoy(id,descrizione){  	  

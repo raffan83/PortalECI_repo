@@ -12,7 +12,10 @@
 		<many-to-one name="domandaQuestionario" class="it.portalECI.DTO.DomandaQuestionarioDTO" column="domanda_questionario_id" not-null="true" cascade="none" />
 		<many-to-one name="risposta" class="it.portalECI.DTO.RispostaVerbaleDTO" column="risposta_id" not-null="true" cascade="all" unique="true" />
 		<many-to-one name="verbale" class="it.portalECI.DTO.VerbaleDTO">
-            <column name="verbale_id" not-null="true" />
+            <column name="verbale_id" not-null="false" />
+        </many-to-one>
+		<many-to-one name="opzione" class="it.portalECI.DTO.OpzioneRispostaVerbaleDTO">
+            <column name="opzione_id" not-null="false" />
         </many-to-one>
 	</class>
 </hibernate-mapping> 

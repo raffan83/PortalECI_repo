@@ -10,6 +10,7 @@
 <%
 
 	UtenteDTO utente = (UtenteDTO)request.getSession().getAttribute("userObj");
+	request.setAttribute("user",utente);
 	ArrayList<UtenteDTO> listaUtentiarr =(ArrayList<UtenteDTO>)request.getSession().getAttribute("listaUtenti");
 
 	Gson gson = new Gson();
@@ -62,7 +63,9 @@
 												<div class="box-body">
 													<div class="row">
 														<div class="col-lg-12">
-															<button class="btn btn-primary" onClick="nuovoInterventoFromModal('#modalNuovoUtente')">Nuovo Utente</button>
+															<c:if test="${user.checkPermesso('NEW_UTENTE')}">
+																<button class="btn btn-primary" onClick="nuovoInterventoFromModal('#modalNuovoUtente')">Nuovo Utente</button>
+															</c:if>
 															<div id="errorMsg" >
 															</div>
 														</div>
@@ -105,7 +108,9 @@
 																			<td>${utente.telefono}</td>
 																			<td>${utente.company.denominazione}</td>
 																			<td>
-																				<a href="#" onClick="modalModificaUtente('${utente.id}','${utente.user}','${utente.nome}','${utente.cognome}','${utente.indirizzo}','${utente.comune}','${utente.cap}','${utente.EMail}','${utente.telefono}','${utente.company.id}')" class="btn btn-warning "><i class="fa fa-edit"></i></a> 
+																				<c:if test="${user.checkPermesso('UPD_UTENTE')}">
+																					<a href="#" onClick="modalModificaUtente('${utente.id}','${utente.user}','${utente.nome}','${utente.cognome}','${utente.indirizzo}','${utente.comune}','${utente.cap}','${utente.EMail}','${utente.telefono}','${utente.company.id}')" class="btn btn-warning "><i class="fa fa-edit"></i></a>
+																				</c:if> 
 																				<%-- <a href="#" onClick="modalEliminaUtente('${utente.id}','${utente.nominativo}')" class="btn btn-danger "><i class="fa fa-remove"></i></a>	 --%>
 																			</td>
 																		</tr>	

@@ -2,13 +2,14 @@
 <%@page import="com.google.gson.JsonArray"%>
 <%@page import="com.google.gson.Gson"%>
 
-<%@page import="it.portalECI.DTO.RuoloDTO"%>
+<%@page import="it.portalECI.DTO.UtenteDTO"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 
 <%@taglib prefix="t" tagdir="/WEB-INF/tags"%>
 <%
-
+	UtenteDTO user = (UtenteDTO)request.getSession().getAttribute("userObj");
+	request.setAttribute("user",user);
 %>
 	
 <t:layout title="Dashboard" bodyClass="skin-red sidebar-mini wysihtml5-supported">
@@ -53,9 +54,11 @@
 												<div class="box-body">
 													<div class="row">
 														<div class="col-lg-12">
-															<button class="btn btn-primary" onClick="nuovoInterventoFromModal('#modalNuovoRuolo')">
-																Nuovo Ruolo
-															</button>
+															<c:if test="${user.checkPermesso('NEW_RUOLO	')}">															
+																<button class="btn btn-primary" onClick="nuovoInterventoFromModal('#modalNuovoRuolo')">
+																	Nuovo Ruolo
+																</button>
+															</c:if>
 															<div id="errorMsg" ></div>
 														</div>
 													</div>
@@ -80,7 +83,9 @@
 																			<td>${ruolo.sigla}</td>
 																			<td>${ruolo.descrizione}</td>
 																			<td>	
-																				<a href="#" onClick="modalModificaRuolo('${ruolo.id}','${ruolo.sigla}','${ruolo.descrizione}')" class="btn btn-warning "><i class="fa fa-edit"></i></a> 
+																				<c:if test="${user.checkPermesso('UPD_RUOLO')}">
+																					<a href="#" onClick="modalModificaRuolo('${ruolo.id}','${ruolo.sigla}','${ruolo.descrizione}')" class="btn btn-warning "><i class="fa fa-edit"></i></a>
+																				</c:if> 
 																				<%-- <a href="#" onClick="modalEliminaRuolo('${ruolo.id}','${ruolo.descrizione}')" class="btn btn-danger "><i class="fa fa-remove"></i></a>	 --%>
 																			</td>
 																		</tr>		 

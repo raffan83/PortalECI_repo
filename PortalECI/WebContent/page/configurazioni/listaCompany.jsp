@@ -10,6 +10,7 @@
 
 <%
 	UtenteDTO utente = (UtenteDTO)request.getSession().getAttribute("userObj");
+	request.setAttribute("user",utente);
 	//System.out.println("***"+listaUtentiJson);	
 %>
 	
@@ -48,7 +49,9 @@
 												<div class="box-body">
 													<div class="row">
 														<div class="col-lg-12">
-															<button class="btn btn-primary" onClick="nuovoInterventoFromModal('#modalNuovaCompany')">Nuova Company</button>
+															<c:if test="${user.checkPermesso('NEW_COMPANY')}">
+																<button class="btn btn-primary" onClick="nuovoInterventoFromModal('#modalNuovaCompany')">Nuova Company</button>
+															</c:if>
 															<div id="errorMsg" >
 															</div>
 														</div>
@@ -84,7 +87,9 @@
 																			<td>${company.telefono}</td>
 																			<td>${company.codAffiliato}</td>
 																			<td>	
-																				<a href="#" onClick="modalModificaCompany('${company.id}','${company.denominazione}','${company.pIva}','${company.indirizzo}','${company.comune}','${company.cap}','${company.mail}','${company.telefono}','${company.codAffiliato}')" class="btn btn-warning "><i class="fa fa-edit"></i></a> 
+																				<c:if test="${user.checkPermesso('UPD_COMPANY')}">
+																					<a href="#" onClick="modalModificaCompany('${company.id}','${company.denominazione}','${company.pIva}','${company.indirizzo}','${company.comune}','${company.cap}','${company.mail}','${company.telefono}','${company.codAffiliato}')" class="btn btn-warning "><i class="fa fa-edit"></i></a>
+																				</c:if> 
 																				<%-- <a href="#" onClick="modalEliminaCompany('${company.id}','${company.denominazione}')" class="btn btn-danger "><i class="fa fa-remove"></i></a>	 --%>	
 																			</td>
 																		</tr>

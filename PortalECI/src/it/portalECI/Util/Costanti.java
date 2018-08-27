@@ -1,5 +1,6 @@
 package it.portalECI.Util;
 
+import java.io.File;
 import java.util.Properties;
 
 public class Costanti {
@@ -24,6 +25,8 @@ public class Costanti {
 	public static String PATH_CERTIFICATI = "/documenti/interventi/";
 	public static String PATH_FONT_IMAGE = "/verbaliImage/fonts/";
 	public static String PATH_FONT_STYLE = "/stile/";
+	public static String PATH_HEADER_IMAGE = "/verbaliImage/header/";
+	public static String PATH_FOOTER_IMAGE = "/verbaliImage/footer/";
 	
 	static {
 		Properties properties = System.getProperties();
@@ -31,5 +34,11 @@ public class Costanti {
 		PATH_CERTIFICATI = properties.getProperty("PATH_CERTIFICATI", PATH_CERTIFICATI);
 		PATH_FONT_IMAGE = properties.getProperty("PATH_FONT_IMAGE", PATH_FONT_IMAGE);
 		PATH_FONT_STYLE = properties.getProperty("PATH_FONT_STYLE", PATH_FONT_STYLE);
+		PATH_HEADER_IMAGE = properties.getProperty("PATH_HEADER_IMAGE", PATH_HEADER_IMAGE);
+		File headerFolder = new File(PATH_HEADER_IMAGE);
+		if(!headerFolder.exists()) headerFolder.mkdirs();
+		PATH_FOOTER_IMAGE = properties.getProperty("PATH_FOOTER_IMAGE", PATH_FOOTER_IMAGE);
+		File footerFolder = new File(PATH_FOOTER_IMAGE);
+		if (!footerFolder.exists()) footerFolder.mkdirs();
 	}
 }

@@ -19,6 +19,7 @@ public class GestioneDomandeQuestionario extends HttpServlet {
 	
 	public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {		
 		request.setAttribute("gruppo", request.getParameter("gruppo"));
+		request.setAttribute("indice", request.getParameter("indice"));
 		RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/page/questionario/domanda/formDomanda.jsp");
 		dispatcher.forward(request,response);
 	}

@@ -14,7 +14,7 @@
         <property name="chiave_permesso" type="java.lang.String">
             <column name="CHIAVE_PERMESSO" />
         </property>
-        <property name="statoPermesso" type="int">
+        <property name="statoPermesso" type="java.lang.Boolean">
             <column name="chiave_stato" />
         </property>
     </class>

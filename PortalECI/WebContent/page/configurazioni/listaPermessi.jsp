@@ -9,8 +9,8 @@
 <%@taglib prefix="t" tagdir="/WEB-INF/tags"%>
 
 <%
-
-
+	UtenteDTO user = (UtenteDTO)request.getSession().getAttribute("userObj");
+	request.setAttribute("user",user);
 %>
 	
 <t:layout title="Dashboard" bodyClass="skin-red sidebar-mini wysihtml5-supported">
@@ -49,12 +49,16 @@
 													</div>
 												</div>
 												<div class="box-body">
+													
 													<div class="row">
-														<div class="col-lg-12">
-															<button class="btn btn-primary" onClick="nuovoInterventoFromModal('#modalNuovoPermesso')">Nuovo Permesso</button>
+														<div class="col-lg-12">															
+															<c:if test="${user.checkPermesso('NEW_PERMESSI')}">
+																<button class="btn btn-primary" onClick="nuovoInterventoFromModal('#modalNuovoPermesso')">Nuovo Permesso</button>
+															</c:if>
 															<div id="errorMsg" ></div>
 														</div>
 													</div>
+													
  													<div class="clearfix"></div>
 													<div class="row" style="margin-top:20px;">
 														<div class="col-lg-12">
@@ -64,6 +68,7 @@
  																		<td>ID</td>
  																		<th>descrizione</th>
  																		<th>Chiave Permesso</th>
+ 																		<th>Stato Permesso</th>
   																		<th>Action</th>
  																	</tr>
  																</thead> 
@@ -73,10 +78,20 @@
 																			<td>${permesso.idPermesso}</td>
 																			<td>${permesso.descrizione}</td>
 																			<td>${permesso.chiave_permesso}</td>
+																			<td>																				
+																				<c:if test="${permesso.statoPermesso}">
+																					<i class="fa fa-check"></i>
+																				</c:if>
+																				<c:if test="${!permesso.statoPermesso}">
+																					<i class="fa fa-close"></i>
+																				</c:if>
+																			</td>
 																			<td>	
-																				<a href="#" onClick="modalModificaPermesso('${permesso.idPermesso}','${permesso.descrizione}','${permesso.chiave_permesso}')" class="btn btn-warning ">
-																					<i class="fa fa-edit"></i>
-																				</a> 
+																				<c:if test="${user.checkPermesso('UPD_PERMESSI')}">
+																					<a href="#" onClick="modalModificaPermesso('${permesso.idPermesso}','${permesso.descrizione}','${permesso.chiave_permesso}',${permesso.statoPermesso})" class="btn btn-warning ">
+																						<i class="fa fa-edit"></i>
+																					</a>
+																				</c:if>
 																				<%-- <a href="#" onClick="modalEliminaPermesso('${permesso.idPermesso}','${permesso.descrizione}')" class="btn btn-danger "><i class="fa fa-remove"></i></a>	 --%>
 																			</td>
 																		</tr>			 
@@ -121,6 +136,12 @@
         	 													<div class="col-sm-10">
          															<input class="form-control" id="descrizione" type="text" name="descrizione" value="" required />
      															</div>     
+   															</div>   
+   															<div class="form-group">
+    	      													<label for="statoPermesso" class="col-sm-2 control-label">Stato:</label>
+        	 													<div class="col-sm-10">
+         															<input class="form-control" id="statoPermesso" type="checkbox" name="statoPermesso" />
+     															</div>     
    															</div>     
 	 													</div>
               											<!-- /.tab-pane -->
@@ -157,7 +178,7 @@
 															<div class="form-group">
           														<label for="modchiavepermesso" class="col-sm-2 control-label">Chiave Permesso:</label>
          														<div class="col-sm-10">
-         															<input class="form-control" id="modchiavepermesso" type="text" name="modchiavepermesso" value=""/>
+         															<input class="form-control" id="modchiavepermesso" type="text" name="modchiavepermesso" value="" required/>
      															</div>     	 
    															</div>
            	
@@ -165,9 +186,15 @@
           														<label for="moddescrizione" class="col-sm-2 control-label">Descrizione:</label>
 	
 											         			<div class="col-sm-10">
-        	 														<input class="form-control" id="moddescrizione" type="text" name="moddescrizione" value=""  />
+        	 														<input class="form-control" id="moddescrizione" type="text" name="moddescrizione" value=""  required/>
      															</div>     	 
-   															</div>                
+   															</div>    
+   															<div class="form-group">
+    	      													<label for="modstatoPermesso" class="col-sm-2 control-label">Stato:</label>
+        	 													<div class="col-sm-10">         															
+         															<input type="checkbox" id="modstatoPermesso" name="modstatoPermesso" value="" />
+     															</div>     
+   															</div>                 
 	 													</div>
               											<!-- /.tab-pane -->
             										</div>

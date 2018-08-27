@@ -33,27 +33,6 @@ public class GestioneQuestionarioDAO {
 		return (QuestionarioDTO) query.uniqueResult();
 	}
 	
-	public static List getQuestionariPlaceholder(String type, String idQuestionario,Session session) {			
-		Query queryDom;
-		Query queryRis;
-		
-		if(type.equals("SchedaTecnica")) {
-			queryDom =session.createQuery("select DISTINCT(placeholder) from DomandaSchedaTecnicaQuestionarioDTO where questionario.id= :_id_questionario" );
-			queryDom.setParameter("_id_questionario", Integer.parseInt(idQuestionario));
-			
-			queryRis =session.createQuery("select DISTINCT(risposta.placeholder) from DomandaSchedaTecnicaQuestionarioDTO where questionario.id= :_id_questionario" );
-			queryRis.setParameter("_id_questionario", Integer.parseInt(idQuestionario));
-		}else {
-			queryDom = session.createQuery("select DISTINCT(placeholder) from DomandaVerbaleQuestionarioDTO where questionario.id= :_id_questionario" );
-			queryDom.setParameter("_id_questionario", Integer.parseInt(idQuestionario));
-
-			queryRis =session.createQuery("select DISTINCT(risposta.placeholder) from DomandaVerbaleQuestionarioDTO where questionario.id= :_id_questionario" );
-			queryRis.setParameter("_id_questionario", Integer.parseInt(idQuestionario));
-		}
-		
-		return ListUtils.union(queryDom.list(), queryRis.list()); 
-	}
-
 	public static Boolean controlloQuestionarioInUso(Integer idQuestionario, Session session){
 		List<String> lista =null;	
 		Query query=session.createQuery("select stato.id from VerbaleDTO where questionarioID = :_idQuestionario");
@@ -61,7 +40,6 @@ public class GestioneQuestionarioDAO {
 		//settare i verbali col nuovo id
 		lista=query.list();			
 		int occurrences = Collections.frequency(lista, StatoVerbaleDTO.CREATO);		
-		System.out.println("occurrences:" + occurrences + " - lista.size():" + lista.size());
 		if(lista.size()==0 || occurrences==lista.size()) {
 			return false;
 		}
