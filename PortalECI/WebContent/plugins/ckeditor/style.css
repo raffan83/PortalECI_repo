@@ -44,3 +44,10 @@ body.document-editor table thead th {
 body.document-editor table thead th:first-of-type {
     border-left: 1px solid #d0d0d0;
 }
+
+
+table{
+	border-collapse: collapse;
+}
+
+

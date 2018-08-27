@@ -306,7 +306,7 @@ public class GestioneVerbaleBO {
 	    
         // CSS
         CSSResolver cssResolver = XMLWorkerHelper.getInstance().getDefaultCssResolver(true);
-        InputStream iscss = new FileInputStream(Costanti.PATH_FONT_STYLE+"bootstrap.css");
+        InputStream iscss = new FileInputStream(Costanti.PATH_FONT_STYLE+"style.css");
         CssFile cssFile = XMLWorkerHelper.getCSS(iscss);
         cssResolver.addCss(cssFile);
         cssResolver.addCss(XMLWorkerHelper.getInstance().getDefaultCSS());
