@@ -59,7 +59,7 @@ CKEDITOR.plugins.add( 'autotag', {
 				// Filter the entire items array so only the items that start
 				// with the query remain.
 				var suggestions = PLACEHOLDERS.filter( function( item ) {
-					return item.indexOf( query ) > -1;
+					return item.toUpperCase().indexOf( query.toUpperCase() ) > -1;
 				} );
 
 				// Note: The callback function can also be executed asynchronously

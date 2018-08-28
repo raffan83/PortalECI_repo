@@ -1,9 +1,9 @@
 package it.portalECI.bo;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
-import org.apache.commons.collections.ListUtils;
 import org.hibernate.Session;
 
 import it.portalECI.DAO.GestioneQuestionarioDAO;
@@ -21,6 +21,9 @@ import it.portalECI.DTO.TipoVerificaDTO;
 import it.portalECI.DTO.VerbaleDTO;
 
 public class GestioneQuestionarioBO {
+	
+	public static final String[] GLOBAL_PLACEHOLDERS = new String[]{"TECNICO_VERIFICATORE","SEDE_CLIENTE"}; 
+
 	public static List<QuestionarioDTO> getListaQuestionari(Session session) {
 		return GestioneQuestionarioDAO.getListaQuestionari(session); 
 	}
@@ -51,6 +54,7 @@ public class GestioneQuestionarioBO {
 				getDomandaPlaceholder(domandaVerbale, session, placeholders);
 			}
 		}
+		placeholders.addAll(Arrays.asList(GLOBAL_PLACEHOLDERS));
 		return placeholders;
 	}
 

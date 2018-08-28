@@ -4,14 +4,12 @@ import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
-import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.Charset;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
@@ -23,17 +21,12 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.itextpdf.text.Document;
-import com.itextpdf.text.DocumentException;
-import com.itextpdf.text.Image;
 import com.itextpdf.text.PageSize;
-import com.itextpdf.text.pdf.PdfPageEvent;
 import com.itextpdf.text.pdf.PdfWriter;
 import com.itextpdf.tool.xml.XMLWorker;
 import com.itextpdf.tool.xml.XMLWorkerFontProvider;
 import com.itextpdf.tool.xml.XMLWorkerHelper;
-import com.itextpdf.tool.xml.css.CSS;
 import com.itextpdf.tool.xml.css.CssFile;
-import com.itextpdf.tool.xml.css.StyleAttrCSSResolver;
 import com.itextpdf.tool.xml.html.CssAppliers;
 import com.itextpdf.tool.xml.html.CssAppliersImpl;
 import com.itextpdf.tool.xml.html.Tags;
@@ -280,8 +273,10 @@ public class GestioneVerbaleBO {
 		new File(Costanti.PATH_CERTIFICATI+path).mkdirs();
 		File file = new File(Costanti.PATH_CERTIFICATI+path, questionario.getTitolo()+"_"+questionario.getTipo().getCodice()+"_"+idIntervento+".pdf");
 		
+		InterventoDTO intervento =GestioneInterventoBO.getIntervento(String.valueOf(idIntervento), session);
+		
 		String html = new String(template.getTemplate());
-		html = replacePlaceholders(html, verbale, session);
+		html = replacePlaceholders(html, verbale,intervento, session);
 		
     	final org.jsoup.nodes.Document documentJsoup = Jsoup.parse(html);
     	documentJsoup.outputSettings().syntax(org.jsoup.nodes.Document.OutputSettings.Syntax.xml);
@@ -306,7 +301,7 @@ public class GestioneVerbaleBO {
 	    
         // CSS
         CSSResolver cssResolver = XMLWorkerHelper.getInstance().getDefaultCssResolver(true);
-        InputStream iscss = new FileInputStream(Costanti.PATH_FONT_STYLE+"bootstrap.css");
+        InputStream iscss = new FileInputStream(Costanti.PATH_FONT_STYLE+"style.css");
         CssFile cssFile = XMLWorkerHelper.getCSS(iscss);
         cssResolver.addCss(cssFile);
         cssResolver.addCss(XMLWorkerHelper.getInstance().getDefaultCSS());
@@ -475,10 +470,21 @@ public class GestioneVerbaleBO {
 		}
 	}
 	
-	private static String replacePlaceholders(String html, VerbaleDTO verbale, Session session) {
+	private static String replacePlaceholders(String html, VerbaleDTO verbale, InterventoDTO intervento, Session session) {
 		for (DomandaVerbaleDTO domanda:verbale.getDomandeVerbale()) {
 			html = replacePlaceholderDomanda(html,domanda, session);
 		}
+		
+		//Inserisco il nome del tecnico
+		UtenteDTO verificatore = intervento.getTecnico_verificatore();
+		String nomeVerificatore = verificatore.getNome()+" "+verificatore.getCognome();
+		html = html.replaceAll("\\$\\{TECNICO_VERIFICATORE\\}", nomeVerificatore);
+		
+		//Inserisco la sede del cliente
+		String sedeIntevento = intervento.getNome_sede();
+		html = html.replaceAll("\\$\\{SEDE_CLIENTE\\}", sedeIntevento);
+
+		// Elimino i placeholder non utilizzati
 		html = html.replaceAll("\\$\\{(.*?)\\}", "");
 		return html;
 	}

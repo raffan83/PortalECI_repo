@@ -1,6 +1,17 @@
 var PLACEHOLDERS = [];
 
-$(function () { 
+$(function () {
+	CKEDITOR.on( 'dialogDefinition', function( ev ) {
+	    var dialogName = ev.data.name;
+	    var dialogDefinition = ev.data.definition;
+
+	    if ( dialogName == 'table' ) {
+	        var info = dialogDefinition.getContents( 'info' );
+	        info.get( 'txtWidth' )[ 'default' ] = '100%';       // Set default width to 100%
+	        info.get( 'txtBorder' )[ 'default' ] = '1';         // Set default border to 1
+	    }
+	});
+
 
 	CKEDITOR.replace( 'summernote', {
 		// Define the toolbar: http://docs.ckeditor.com/ckeditor4/docs/#!/guide/dev_toolbar
@@ -49,17 +60,7 @@ $(function () {
 		// Simplify the Image and Link dialog windows. The "Advanced" tab is not needed in most cases.
 		removeDialogTabs: 'image:advanced;link:advanced',
 
-		// Define the list of styles which should be available in the Styles dropdown list.
-		// If the "class" attribute is used to style an element, make sure to define the style for the class in "mystyles.css"
-		// (and on your website so that it rendered in the same way).
-		// Note: by default CKEditor looks for styles.js file. Defining stylesSet inline (as below) stops CKEditor from loading
-		// that file, which means one HTTP request less (and a faster startup).
-		// For more information see http://docs.ckeditor.com/ckeditor4/docs/#!/guide/dev_styles
-		stylesSet: [
-			// Inline Styles 
-			{ name: 'Tabella con bordi', element: 'table', attributes: { 'class': 'table table-bordered table-sm' } },
-		],
-		
+		//Define font "FONT_NAME/LIST OF FONT TO ASSIGN TO HTMLELEMENT
 		font_names: 'Arial/Arial, Helvetica, sans-serif;' +
 	    			'Times New Roman/Times New Roman, Times, serif;' +
 	    			'Courier New/Courier New,Courier,monospace'
@@ -70,33 +71,6 @@ $(function () {
 })
 
 $(document).ready(function() {
-	/*$('#summernote').summernote({
-		height : 200,
-		tabsize : 2,
-		lang : 'it-IT',
-		hint: {
-			match: /\B\$\{(\w*)$/,
-			search: function (keyword, callback) {
-				callback($.grep(PLACEHOLDERS, function (item) {
-					return item.toUpperCase().indexOf(keyword.toUpperCase())  == 0;
-				}));
-			},
-			template: function (item) {
-				return '${'+item+'}';
-			},
-			content: function (item) {
-				return '${'+item+'}';
-			}
-
-		  }
-	});*/
-	
-	$('.note-codable').on('blur', function() {
-		  var codeviewHtml        = $(this).val();
-		  var $summernoteTextarea = $(this).closest('.note-editor').siblings('textarea');
-
-		  $summernoteTextarea.val(codeviewHtml);
-	});
 	
 	$.ajax({
 		type : "GET",
