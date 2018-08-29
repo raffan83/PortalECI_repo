@@ -47,7 +47,7 @@ public class HeaderFooter extends PdfPageEventHelper {
         }
             
     	if(imgFooterPath != null && !imgFooterPath.isEmpty()) {
-			imgFooter = Image.getInstance(Costanti.PATH_HEADER_IMAGE+imgFooterPath);
+			imgFooter = Image.getInstance(Costanti.PATH_FOOTER_IMAGE+imgFooterPath);
         }
     }
 
