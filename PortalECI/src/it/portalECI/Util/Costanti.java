@@ -7,7 +7,7 @@ public class Costanti {
 
 
 
-	public static final String CON_STR_MYSQL = "jdbc:mysql://158.58.172.111:3306/gtv_db?user=root&password=root";
+	public static final String CON_STR_MYSQL = "jdbc:mysql://158.58.172.111:3306/gtv_db?user=root&password=5243FWF5344R";
 	//public static final String CON_STR_MYSQL = "jdbc:mysql://158.58.172.111:3306/gtv_db?user=root&password=root";
 	//IP MACROSOLUTION
 //	public static final String CON_STR_MYSQL = "jdbc:mysql://212.237.23.231:3306/gtv_db?user=root&password=root";
