@@ -267,7 +267,7 @@ public class GestioneQuestionario extends HttpServlet {
 				opzione.setPosizione(idx);
 				opzione.setTesto(nomiOpzione[idx]);
 				opzione.setRisposta(risposta);
-				opzione.setPlaceholder(placeholderRisposta+"_OPT"+String.valueOf(idx));
+				opzione.setPlaceholder(placeholderRisposta+"_OPT"+String.valueOf(idx+1));
 				int numeroDomandeOpzione = Integer.parseInt(numeroDomandeOpzioneParams[idx]);
 				List<DomandaOpzioneQuestionarioDTO> listadomandeOpzione  = new ArrayList<DomandaOpzioneQuestionarioDTO>();
 				for(int k=0; k<numeroDomandeOpzione;k++ ) {
