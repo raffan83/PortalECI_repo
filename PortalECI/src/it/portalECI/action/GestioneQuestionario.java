@@ -255,7 +255,8 @@ public class GestioneQuestionario extends HttpServlet {
 		}else if(rispostaTipo.equals(RispostaQuestionario.TIPO_SCELTA)){
 			RispostaSceltaQuestionarioDTO risposta = new RispostaSceltaQuestionarioDTO();
 			risposta.setTipo(RispostaQuestionario.TIPO_SCELTA);
-			risposta.setPlaceholder(request.getParameter("risposta.placeholder"+indice)+"_RES");
+			String placeholderRisposta = request.getParameter("risposta.placeholder"+indice);
+			risposta.setPlaceholder(placeholderRisposta+"_RES");
 			risposta.setDomanda(domandaQuestionario);
 			risposta.setMultipla(new Boolean(request.getParameter("risposta.multipla"+indice)));
 			List<OpzioneRispostaQuestionarioDTO> listaOpzioni = new ArrayList<OpzioneRispostaQuestionarioDTO>();
@@ -266,6 +267,7 @@ public class GestioneQuestionario extends HttpServlet {
 				opzione.setPosizione(idx);
 				opzione.setTesto(nomiOpzione[idx]);
 				opzione.setRisposta(risposta);
+				opzione.setPlaceholder(placeholderRisposta+"_OPT"+String.valueOf(idx));
 				int numeroDomandeOpzione = Integer.parseInt(numeroDomandeOpzioneParams[idx]);
 				List<DomandaOpzioneQuestionarioDTO> listadomandeOpzione  = new ArrayList<DomandaOpzioneQuestionarioDTO>();
 				for(int k=0; k<numeroDomandeOpzione;k++ ) {

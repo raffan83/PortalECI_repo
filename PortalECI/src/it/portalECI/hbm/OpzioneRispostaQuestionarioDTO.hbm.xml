@@ -25,5 +25,9 @@
 			<list-index column="posizione"></list-index>
 			<one-to-many class="it.portalECI.DTO.DomandaOpzioneQuestionarioDTO"/>
 		</list>
+		<property name="placeholder">
+			<column name="placeholder" length="1024"/>
+		</property>
+		
 	</class>
 </hibernate-mapping>
