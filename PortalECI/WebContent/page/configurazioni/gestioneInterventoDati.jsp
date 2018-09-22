@@ -248,7 +248,7 @@
         		         								</select>                  
         											</div>    
         											<div class="form-group col-sm-1 text-center" style="position: absolute;	bottom: 0; right: 0;">        									
-                  									<button type="button" class="btn-sm" onclick="addRow()"><i class="fa fa-plus"></i></button>              
+                  									<button type="button" id="addrow" class="btn-sm" onclick="addRow()"><i class="fa fa-plus"></i></button>              
         											</div>                                     
   												</div>		                                     
   											</div>		
@@ -406,7 +406,8 @@
 							url: "gestioneTipiVerifica.do?action=checkSchedaTecnica&idVerifica="+id_tipo,
 							dataType: "json",
 							beforeSend: function(xhr){
-								
+								$("#addrow").html('<i class="fa fa-spinner fa-spin" style="font-size:24px"></i>');
+								$("#addrow").prop('disabled', true);
 							},
 							success: function(  dataResp, textStatus) {
 								var objectdata='<tr class="categoriaTipiRow" id="'+tipi_verifica+'" role="row" >'+
@@ -431,7 +432,11 @@
 						    	});
 							},
 							error: function( data, textStatus) {
-
+	
+							},
+							complete: function(data, textStatus){
+								$("#addrow").html('<i class="fa fa-plus"></i>');
+								$("#addrow").prop('disabled', false);
 							}
 						});
 					/*}else{							
