@@ -64,6 +64,7 @@ public class GestioneQuestionarioBO {
 		if (domanda.getRisposta().getTipo().equals(RispostaQuestionario.TIPO_SCELTA)) {
 			RispostaSceltaQuestionarioDTO rispostaScelta= GestioneRispostaQuestionarioDAO.getRispostaInstance(RispostaSceltaQuestionarioDTO.class, domanda.getRisposta().getId(), session);
 			for(OpzioneRispostaQuestionarioDTO opzione:rispostaScelta.getOpzioni()) {
+				placeholders.add(opzione.getPlaceholder());
 				for(DomandaOpzioneQuestionarioDTO domandaOpzione:opzione.getDomande()) {
 					getDomandaPlaceholder(domandaOpzione, session, placeholders);
 				}

@@ -370,9 +370,8 @@ public class GestioneVerbaleBO {
 	}
 	
 	private static String getTemplateRisposta(RispostaSceltaVerbaleDTO risposta) {
-
 		String template = "";
-		String inputType = risposta.getRispostaQuestionario().getMultipla()==false?"radio":"checkbox";		
+		Boolean multipla = risposta.getRispostaQuestionario().getMultipla();	
 			
 		List<OpzioneRispostaVerbaleDTO> opzioni=new ArrayList<OpzioneRispostaVerbaleDTO>();
 		opzioni.addAll(risposta.getOpzioni());
@@ -385,35 +384,9 @@ public class GestioneVerbaleBO {
 	            return  pos2 - pos1;
 	        }
 	    });
-			
-		
-		if(inputType.equalsIgnoreCase("radio")) {
-			template += "<br/>";
-			for(int i=0; i<opzioni.size(); i++) {
-				OpzioneRispostaVerbaleDTO opzione= (OpzioneRispostaVerbaleDTO) opzioni.get(i);
-				String optionName = opzione.getOpzioneQuestionario().getTesto();
-				boolean checked = opzione.getChecked();
-				if(checked) {
-					template += "<img src=\"" + Costanti.PATH_FONT_IMAGE + "checked-radio.png" + "\" height=\"14\" />&nbsp;&nbsp;" + optionName+"<br/>";					
-				} else {
-					template += "<img src=\"" + Costanti.PATH_FONT_IMAGE + "unchecked-radio.png" + "\" height=\"14\" />&nbsp;&nbsp;" + optionName+"<br/>";
-				}
-			}
-		} else {
-			template += "<br/>";
-			for(int i=0; i<opzioni.size(); i++) {
-				OpzioneRispostaVerbaleDTO opzione= (OpzioneRispostaVerbaleDTO) opzioni.get(i);
-				String optionName = opzione.getOpzioneQuestionario().getTesto();
-				boolean checked = opzione.getChecked();
-				if(checked) {
-					template += "<img src=\"" + Costanti.PATH_FONT_IMAGE + "checked-checkbox.png" + "\" height=\"14\" />&nbsp;&nbsp;" + optionName+"<br/>";
-				} else {
-					template += "<img src=\"" + Costanti.PATH_FONT_IMAGE + "unchecked-checkbox.png" + "\" height=\"14\" />&nbsp;&nbsp;" + optionName+"<br/>";
-				}
-			}
+		for (OpzioneRispostaVerbaleDTO opzione: opzioni) {
+			template +=  getTemplateOpzione(opzione, multipla)+"<br/>";
 		}
-		template += "";
-
 		return template;
 	}
 	
@@ -507,6 +480,10 @@ public class GestioneVerbaleBO {
 			rispostaPlaceholder = rispostaScelta.getRispostaQuestionario().getPlaceholder();
 			rispostaValore = getTemplateRisposta(rispostaScelta);
 			for(OpzioneRispostaVerbaleDTO opzione: rispostaScelta.getOpzioni()) {
+				String opzionePlaceholder = opzione.getOpzioneQuestionario().getPlaceholder();
+				Boolean multipla = opzione.getOpzioneQuestionario().getRisposta().getMultipla();
+				String opzioneValore = getTemplateOpzione(opzione, multipla);
+				html = html.replaceAll("\\$\\{"+opzionePlaceholder+"\\}", opzioneValore);
 				if(opzione.getDomande() != null) {
 					for (DomandaVerbaleDTO domandaOpzione:opzione.getDomande()) {
 						html = replacePlaceholderDomanda(html,domandaOpzione, session);
@@ -528,6 +505,14 @@ public class GestioneVerbaleBO {
 		return html;
 	}
 	
+	private static String getTemplateOpzione(OpzioneRispostaVerbaleDTO opzione, Boolean multipla) {
+		String typeInput = multipla?"checkbox":"radio";
+		String checked = opzione.getChecked()?"checked":"unchecked";
+		String optionName = opzione.getOpzioneQuestionario().getTesto();
+		String template = "<img src=\"" + Costanti.PATH_FONT_IMAGE + checked+"-"+typeInput+".png" + "\" style=\"height:12px;\" />&nbsp;" + optionName;
+		return template;
+	}
+
 	private static void parseRispostaJson(JsonObject responseVerbale, Session session) {
 
 		int responseID = responseVerbale.get("id").getAsInt();
@@ -559,7 +544,6 @@ public class GestioneVerbaleBO {
 							parseRispostaJson(rispostaOpzione, session);
 						}
 					}
-					//TODO:ffff
 				}
 			}
 			break;

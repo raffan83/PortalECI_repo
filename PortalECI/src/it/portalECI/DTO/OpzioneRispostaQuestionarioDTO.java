@@ -7,6 +7,7 @@ public class OpzioneRispostaQuestionarioDTO {
 	private String testo;
 	private RispostaSceltaQuestionarioDTO risposta;
 	private int posizione;
+	private String placeholder;
 	
 	private List<DomandaOpzioneQuestionarioDTO> domande;
 	
@@ -51,6 +52,14 @@ public class OpzioneRispostaQuestionarioDTO {
 
 	public void setDomande(List<DomandaOpzioneQuestionarioDTO> domande) {
 		this.domande = domande;
+	}
+
+	public String getPlaceholder() {
+		return placeholder;
+	}
+
+	public void setPlaceholder(String placeholder) {
+		this.placeholder = placeholder;
 	}
 	
 }

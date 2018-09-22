@@ -84,8 +84,13 @@
 		<c:if test="${domanda.risposta.tipo=='RES_CHOICE'}">
 			<c:forEach items="${risposta.opzioni }" var="opzione" varStatus="status">
 				<div class="col-sm-3">
-					<b>Opzione  ${status.index+1}</b> 
-					<p class="well well-sm">${opzione.testo}</p>
+					 
+					<p class="well well-sm">
+					<b>Testo opzione  ${status.index+1}</b><br/>
+					${opzione.testo}<br/>
+					<b>Placeholder opzione  ${status.index+1}</b><br/>
+					${opzione.placeholder}<br/>
+					</p>
 				</div>
 			</c:forEach>
 		</c:if>
