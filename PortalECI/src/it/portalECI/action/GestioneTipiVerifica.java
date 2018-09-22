@@ -15,10 +15,12 @@ import com.google.gson.JsonObject;
 
 import it.portalECI.DAO.SessionFacotryDAO;
 import it.portalECI.DTO.CategoriaVerificaDTO;
+import it.portalECI.DTO.QuestionarioDTO;
 import it.portalECI.DTO.TipoVerificaDTO;
 import it.portalECI.Exception.ECIException;
 import it.portalECI.Util.Utility;
 import it.portalECI.bo.GestioneCategorieVerificaBO;
+import it.portalECI.bo.GestioneQuestionarioBO;
 import it.portalECI.bo.GestioneTipiVerificaBO;
 
 /**
@@ -41,7 +43,39 @@ public class GestioneTipiVerifica extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		doPost(request, response);
+		String action =  request.getParameter("action");
+		if(action.equals("checkSchedaTecnica")) {
+			String idVerifica =  request.getParameter("idVerifica");
+			Session session = SessionFacotryDAO.get().openSession();
+			session.beginTransaction();
+			
+			JsonObject myObj = new JsonObject();
+			PrintWriter  out = response.getWriter();
+			
+			TipoVerificaDTO tipo;
+			try {
+				tipo = GestioneTipiVerificaBO.getTipoVerificaById(idVerifica, session);
+				QuestionarioDTO quest= GestioneQuestionarioBO.getLastQuestionarioByVerifica(tipo, session);
+				
+				if(quest!= null && quest.getTemplateSchedaTecnica()!=null) {
+					myObj.addProperty("schedaTecnicaPresente", true);
+				}else {
+					myObj.addProperty("schedaTecnicaPresente", false);
+				}
+				
+				myObj.addProperty("success", true);
+				out.print(myObj);
+				
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+			
+			session.close();
+		}else {
+			doPost(request, response);
+		}
 	}
 
 	/**

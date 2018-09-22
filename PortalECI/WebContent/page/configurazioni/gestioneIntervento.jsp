@@ -292,7 +292,8 @@
  													<thead>
  														<tr class="active">
  															<th>Categoria Verifica</th>
- 															<th>Tipo Verifica</th> 														
+ 															<th>Tipo Verifica</th>
+ 															<th>Scheda Tecnica da compilare</th> 		 														
  															<td></td>
 														</tr>
 													</thead>
@@ -589,12 +590,40 @@
 					
 					if(categorie_verifica!=null && tipi_verifica!=null){
 						//if($("#" +tipi_verifica).length == 0) {						 										
-						
-							$("#bodytabVerifica").append('<tr class="categoriaTipiRow" id="'+tipi_verifica+'" role="row" >'+
-								'<td >'+$('#select1').find('[value='+categorie_verifica+']').text()+'</td>'+
-								'<td >'+$('#select2').find('[value='+tipi_verifica+']').text()+'</td>'+																														 		
-								'<td><a class="btn customTooltip" title="Click per eliminare la riga" onclick="removeRow(\''+tipi_verifica+'\')"><i class="fa fa-minus"></i></a></td></tr>');
-					
+							
+							var id_tipo=tipi_verifica.substring(0, tipi_verifica.indexOf("_"));
+							
+							$.ajax({
+								type: "GET",
+								url: "gestioneTipiVerifica.do?action=checkSchedaTecnica&idVerifica="+id_tipo,
+								dataType: "json",
+								success: function(  dataResp, textStatus) {
+									var objectdata='<tr class="categoriaTipiRow" id="'+tipi_verifica+'" role="row" >'+
+									'<td >'+$('#select1').find('[value='+categorie_verifica+']').text()+'</td>'+
+									'<td >'+$('#select2').find('[value='+tipi_verifica+']').text()+'</td>'+	
+									'<td >';
+									if(!dataResp.schedaTecnicaPresente){							
+										objectdata+='<i class="fa fa-ban" title="Template Scheda Tecnica non esiste per questo Tipo Verifica"></i>';
+									}else{
+										objectdata+='<input type="checkbox" class="skTecObb" />';
+									}
+									
+									objectdata+='</td>'+
+										'<td><a class="btn customTooltip" title="Click per eliminare la riga" onclick="removeRow(\''+tipi_verifica+'\')"><i class="fa fa-minus"></i></a></td></tr>';
+									
+									$("#bodytabVerifica").append(objectdata);
+									
+									$('.skTecObb').iCheck({
+							      		checkboxClass: 'icheckbox_square-blue',
+							      		radioClass: 'iradio_square-blue',
+							      		increaseArea: '20%' // optional
+							    	});
+								},
+								error: function( data, textStatus) {
+
+								
+								}
+							});
 							/*$('#select1').find('[value='+categorie_verifica+']').remove();
 							$('#select2').find('[value='+tipi_verifica+']').remove();*/
 						/*}else{							

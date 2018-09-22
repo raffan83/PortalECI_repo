@@ -259,18 +259,27 @@
  														<thead>
  															<tr class="active">
  																<th>Categoria Verifica</th>
- 																<th>Tipo Verifica</th> 														
+ 																<th>Tipo Verifica</th> 		
+ 																<th>Scheda Tecnica da compilare</th>												
  																<td></td>
 															</tr>
 														</thead>
  														<tbody id="bodytabVerifica">
  																		
- 															<c:forEach items="${intervento.getTipo_verifica()}" var="tipo_verifica" varStatus="loop">
- 																<tr class="categoriaTipiRow" id="${tipo_verifica.getId()}_${tipo_verifica.getCategoria().getId()}" role="row" >
-																	<td >${tipo_verifica.getCategoria().getCodice()}</td>
-																	<td >${tipo_verifica.getCodice()}</td>																														 		
+ 															<c:forEach items="${listIdCodiciCategoria}" var="codCateg" varStatus="loop">
+ 																<tr class="categoriaTipiRow" id="${listIdCodiciTipo[loop.index]}_${codCateg}" role="row" >
+																	<td >${listCodiciCategoria[loop.index]}</td>
+																	<td >${listCodiciTipo[loop.index]}</td>
+																	<td >
+																		<c:if test="${listEsisteTemplateScTec[loop.index]}">
+																			<input type="checkbox" class="skTecObb" ${listEsisteScTec[loop.index]?'checked':''}/>
+																		</c:if>
+																		<c:if test="${!listEsisteTemplateScTec[loop.index]}">
+																			<i class="fa fa-ban" title="Template Scheda Tecnica non esiste per questo Tipo Verifica"></i>
+																		</c:if>
+																	</td>
 																	<td>
-																		<a class="btn customTooltip" title="Click per eliminare la riga" onclick="removeRow('${tipo_verifica.getId()}_${tipo_verifica.getCategoria().getId()}')">
+																		<a class="btn customTooltip" title="Click per eliminare la riga" onclick="removeRow('${listIdCodiciTipo[loop.index]}_${codCateg}')">
 																			<i class="fa fa-minus"></i>
 																		</a>
 																	</td>
@@ -390,10 +399,41 @@
 				if(categorie_verifica!=null && tipi_verifica!=null){
 					//if($("#" +tipi_verifica).length == 0) {						 										
 					
-						$("#bodytabVerifica").append('<tr class="categoriaTipiRow" id="'+tipi_verifica+'" role="row" >'+
-							'<td >'+$('#selectCat').find('[value='+categorie_verifica+']').text()+'</td>'+
-							'<td >'+$('#selectTipo').find('[value='+tipi_verifica+']').text()+'</td>'+																														 		
-							'<td><a class="btn customTooltip" title="Click per eliminare la riga" onclick="removeRow(\''+tipi_verifica+'\')"><i class="fa fa-minus"></i></a></td></tr>');							
+						var id_tipo=tipi_verifica.substring(0, tipi_verifica.indexOf("_"));
+							
+						$.ajax({
+							type: "GET",
+							url: "gestioneTipiVerifica.do?action=checkSchedaTecnica&idVerifica="+id_tipo,
+							dataType: "json",
+							beforeSend: function(xhr){
+								
+							},
+							success: function(  dataResp, textStatus) {
+								var objectdata='<tr class="categoriaTipiRow" id="'+tipi_verifica+'" role="row" >'+
+									'<td >'+$('#selectCat').find('[value='+categorie_verifica+']').text()+'</td>'+
+									'<td >'+$('#selectTipo').find('[value='+tipi_verifica+']').text()+'</td>'+	
+									'<td >';
+								if(!dataResp.schedaTecnicaPresente){
+									objectdata+='<i class="fa fa-ban" title="Template Scheda Tecnica non esiste per questo Tipo Verifica"></i>';
+								}else{
+									objectdata+='<input type="checkbox" class="skTecObb" />';
+								}
+									
+								objectdata+='</td>'+
+									'<td><a class="btn customTooltip" title="Click per eliminare la riga" onclick="removeRow(\''+tipi_verifica+'\')"><i class="fa fa-minus"></i></a></td></tr>';
+									
+								$("#bodytabVerifica").append(objectdata);
+								
+								$('.skTecObb').iCheck({
+						      		checkboxClass: 'icheckbox_square-blue',
+						      		radioClass: 'iradio_square-blue',
+						      		increaseArea: '20%' // optional
+						    	});
+							},
+							error: function( data, textStatus) {
+
+							}
+						});
 					/*}else{							
 						$('#empty').html("La coppia Categoria Verifica/Tipo Verifica selezionata è già stata inserita!");
 					}*/
@@ -448,6 +488,12 @@
 					listCatVer+="&categoriaTipo="+item.id;
 				});
 				
+				var skTecObb='';
+				$('.skTecObb').each(function(index, item){
+					if($(this)[0].checked)
+						skTecObb+="&schedaTecnica="+$(this).closest('tr').prop('id');
+				});
+				
 				   
 				if(listCatVer==""){
 					$('#empty').html("Devi inserire almeno un 'Tipo Verifica'!"); 
@@ -459,7 +505,7 @@
 					$.ajax({
 						type: "POST",
 						url: "gestioneIntervento.do?action=update",
-						data : "idIntervento=${intervento.getId()}&tecnico="+str1 +listCatVer,				
+						data : "idIntervento=${intervento.getId()}&tecnico="+str1 +listCatVer+skTecObb,				
 						dataType: "json",
 						success: function( data, textStatus) {
 							

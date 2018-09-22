@@ -350,6 +350,11 @@ function saveInterventoFromModal(){
 	$('.categoriaTipiRow').each(function(index, item){
 		listCatVer+="&categoriaTipo="+item.id;
 	});
+	var skTecObb='';
+	$('.skTecObb').each(function(index, item){
+		if($(this)[0].checked)
+			skTecObb+="&schedaTecnica="+$(this).closest('tr').prop('id');
+	});
 	
 	if(listCatVer==""){
 		$('#empty').html("Devi inserire almeno un 'Tipo Verifica' per poter creare l'intervento!"); 
@@ -364,7 +369,7 @@ function saveInterventoFromModal(){
 			url: "gestioneIntervento.do?action=new",
 			//data: "dataIn="+JSON.stringify(dataArr),
 			//data: "dataIn="+str1,
-			data : "tecnico="+str1 +listCatVer,
+			data : "tecnico="+str1 +listCatVer+skTecObb,
 			//	'id='+ encodeURIComponent(id) + '&name='+ encodeURIComponent(name)
 			dataType: "json",
 			success: function( data, textStatus) {
