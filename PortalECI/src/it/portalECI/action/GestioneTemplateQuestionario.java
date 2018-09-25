@@ -1,9 +1,7 @@
 package it.portalECI.action;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.OutputStream;
 import java.nio.file.Files;
 import java.util.ArrayList;
@@ -20,6 +18,8 @@ import javax.servlet.http.HttpServletResponse;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
+import com.itextpdf.text.DocumentException;
+
 import it.portalECI.DAO.SessionFacotryDAO;
 import it.portalECI.DTO.QuestionarioDTO;
 import it.portalECI.DTO.TemplateQuestionarioDTO;
@@ -31,6 +31,8 @@ import it.portalECI.bo.GestioneTemplateQuestionarioBO;
 
 @WebServlet(name = "gestioneTemplateQuestionario", urlPatterns = { "/gestioneTemplateQuestionario.do" })
 public class GestioneTemplateQuestionario extends HttpServlet {
+
+	private static final long serialVersionUID = 1L;
 
 	public GestioneTemplateQuestionario() {
 		super();
@@ -80,23 +82,54 @@ public class GestioneTemplateQuestionario extends HttpServlet {
 		template.setHeader(request.getParameter("headerFileName"));
 		template.setFooter(request.getParameter("footerFileName"));
 		
-		session.save(template);		
-		if(request.getParameter("tipo").equals("Verbale")) {
-			questionario.setTemplateVerbale(template);
-		}else if(request.getParameter("tipo").equals("SchedaTecnica")) {
-			questionario.setTemplateSchedaTecnica(template);
-		}
-		session.update(questionario);
+		String action=request.getParameter("action");
+		if(action !=null && action.equals("generaDocumentoProva")) {
+			
+			File fileDocument;
+			try {
+				fileDocument = GestioneTemplateQuestionarioBO.getAnteprimaQuestionario(template, questionario, session);
+			} catch (DocumentException e) {
+				ServletContext sc = getServletContext();
+				request.setAttribute("issue", "Si &egrave; generato un errore durante la generazione del documento!");
+				sc.getRequestDispatcher("/page/downloadError.jsp").forward(request, response);
+				e.printStackTrace();
+				return;	
+			}
 		
-		transaction.commit();
-		forwardResponse(request, response, questionario, template);
+			response.setContentType("application/pdf");
+		    response.setHeader("Content-disposition", "attachment; filename=\""+fileDocument.getName()+"\"");
+
+		    OutputStream output = response.getOutputStream();
+		    output.write(Files.readAllBytes(fileDocument.toPath()));
+		    output.close();
+		}else {
+			session.save(template);		
+			if(request.getParameter("tipo").equals("Verbale")) {
+				questionario.setTemplateVerbale(template);
+			}else if(request.getParameter("tipo").equals("SchedaTecnica")) {
+				questionario.setTemplateSchedaTecnica(template);
+			}
+			session.update(questionario);
+			
+			transaction.commit();
+			forwardResponse(request, response, questionario, template);
+		}
+		session.close();
+		
 	}
 	
 	public void doPut(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
 		if(Utility.validateSession(request,response,getServletContext()))return;
 		
+		Session session=SessionFacotryDAO.get().openSession();
+		Transaction transaction = session.beginTransaction();
+
+		String idQuestionario = request.getParameter("idQuestionario");
+		QuestionarioDTO questionario = GestioneQuestionarioBO.getQuestionarioById(idQuestionario, session);
+
 		String action=request.getParameter("action");
+		
 		if(action !=null && action.equals("generaDocumentoProva")) {
 			
 			try {
@@ -106,34 +139,28 @@ public class GestioneTemplateQuestionario extends HttpServlet {
 				template.setHeader(request.getParameter("headerFileName"));
 				template.setFooter(request.getParameter("footerFileName"));
 				
-				File fileDocument = GestioneTemplateQuestionarioBO.QuestionarioTest(template);
-				if(fileDocument != null) {
-					byte[] pdfArray = loadFileForBase64(fileDocument);
-					if(pdfArray.length == 0) {
-												
-						ServletContext sc = getServletContext();
-						request.getSession().setAttribute("issue", "Certificato troppo grande per essere generato!");
-						sc.getRequestDispatcher("/page/downloadError.jsp").forward(request, response);
-						return;	
-					}
-					
-					response.setContentType("application/pdf");
-				    response.setHeader("Content-disposition", "attachment; filename=\""+fileDocument.getName()+"\"");
-
-				    OutputStream output = response.getOutputStream();
-				    output.write(Files.readAllBytes(fileDocument.toPath()));
-				    output.close();
-					
-				} else {
+				File fileDocument;
+				try {
+					fileDocument = GestioneTemplateQuestionarioBO.getAnteprimaQuestionario(template, questionario, session);
+				} catch (DocumentException e) {
 					ServletContext sc = getServletContext();
-					request.getSession().setAttribute("issue", "Errore nel recupero del file header o footer da inserire nel documento!");
+					request.setAttribute("issue", "Si &egrave; generato un errore durante la generazione del documento!");
 					sc.getRequestDispatcher("/page/downloadError.jsp").forward(request, response);
+					e.printStackTrace();
 					return;	
 				}
+				
+				response.setContentType("application/pdf");
+			    response.setHeader("Content-disposition", "attachment; filename=\""+fileDocument.getName()+"\"");
+
+			    OutputStream output = response.getOutputStream();
+			    output.write(Files.readAllBytes(fileDocument.toPath()));
+			    output.close();
+
 			} catch (Exception e) {
 				e.printStackTrace();
 				ServletContext sc = getServletContext();
-				request.getSession().setAttribute("issue", "Non &egrave; stato possibile recuperare il Certificato. Problema di connessione.");
+				request.setAttribute("issue", "Non &egrave; stato possibile recuperare il Certificato. Problema di connessione.");
 				sc.getRequestDispatcher("/page/downloadError.jsp").forward(request, response);
 				return;				
 			}
@@ -147,27 +174,18 @@ public class GestioneTemplateQuestionario extends HttpServlet {
 				response.sendError(HttpServletResponse.SC_BAD_REQUEST);
 				return;
 			}
-		
-			Session session=SessionFacotryDAO.get().openSession();
-			Transaction transaction = session.beginTransaction();
-	
-			String idQuestionario = request.getParameter("idQuestionario");
-			QuestionarioDTO questionario = GestioneQuestionarioBO.getQuestionarioById(idQuestionario, session);
- 
+
 			TemplateQuestionarioDTO template = GestioneTemplateQuestionarioBO.getQuestionarioById(idTemplateInt, session);		
 			template.setTitolo(request.getParameter("titolo"));
-		
-			//summernote aggiunge questa stringa a volte che rappresenta un ? e non potendo risolvere il problema del plugin abbiamo deciso di toglere questo carattere
-			template.setTemplate(request.getParameter("template").replaceAll("&#65279;", ""));
+			template.setTemplate(request.getParameter("template"));
 			template.setHeader(request.getParameter("headerFileName"));
 			template.setFooter(request.getParameter("footerFileName"));
 		
 			session.update(template);
 			transaction.commit();
-			session.close();
 			forwardResponse(request, response, questionario, template);
 		}
-
+		session.close();
 	}
 	
 	private void forwardResponse(HttpServletRequest request, HttpServletResponse response,  QuestionarioDTO questionario, TemplateQuestionarioDTO template) throws ServletException, IOException {
@@ -186,24 +204,4 @@ public class GestioneTemplateQuestionario extends HttpServlet {
 		dispatcher.forward(request,response);
 	}
 	
-	private static byte[] loadFileForBase64(File file) throws IOException {
-	    InputStream is = new FileInputStream(file);
-	    long length = file.length();
-	    byte[] bytes = new byte[(int)length];
-	    if (length > Integer.MAX_VALUE) {
-		    bytes = new byte[0];       
-	    } else {    
-		    int offset = 0;
-		    int numRead = 0;
-		    while (offset < bytes.length
-		           && (numRead=is.read(bytes, offset, bytes.length-offset)) >= 0) {
-		        offset += numRead;
-		    }	
-		    if (offset < bytes.length) {
-		        throw new IOException("Could not completely read file "+file.getName());
-		    }
-	    }
-		is.close();
-		return bytes;
-	}
 }

@@ -6,9 +6,14 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.nio.charset.Charset;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
+import java.util.List;
 
 import org.hibernate.Session;
 import org.jsoup.Jsoup;
@@ -33,7 +38,16 @@ import com.itextpdf.tool.xml.pipeline.html.HtmlPipeline;
 import com.itextpdf.tool.xml.pipeline.html.HtmlPipelineContext;
 import com.itextpdf.tool.xml.pipeline.html.LinkProvider;
 
+import it.portalECI.DAO.GestioneRispostaQuestionarioDAO;
 import it.portalECI.DAO.GestioneTemplateQuestionarioDAO;
+import it.portalECI.DTO.DomandaQuestionarioDTO;
+import it.portalECI.DTO.OpzioneRispostaQuestionarioDTO;
+import it.portalECI.DTO.QuestionarioDTO;
+import it.portalECI.DTO.RispostaFormulaQuestionarioDTO;
+import it.portalECI.DTO.RispostaQuestionario;
+import it.portalECI.DTO.RispostaSceltaQuestionarioDTO;
+import it.portalECI.DTO.RispostaTestoQuestionarioDTO;
+import it.portalECI.DTO.RispostaVerbaleDTO;
 import it.portalECI.DTO.TemplateQuestionarioDTO;
 import it.portalECI.Util.Costanti;
 import it.portalECI.Util.HeaderFooter;
@@ -44,34 +58,42 @@ public class GestioneTemplateQuestionarioBO {
 		return GestioneTemplateQuestionarioDAO.getTemplateById(idTemplate, session);
 	}
 	
-	public static File QuestionarioTest(TemplateQuestionarioDTO template) throws IOException, DocumentException {
+	public static File getAnteprimaQuestionario(TemplateQuestionarioDTO template, QuestionarioDTO questionario, Session session) throws IOException, DocumentException {
 		
 		String path = "QuestionarioTest"+File.separator;
 		new File(Costanti.PATH_CERTIFICATI+path).mkdirs();
 		File file = new File(Costanti.PATH_CERTIFICATI+path, "ProvaDownloadQuestionario.pdf");
-	
+		FileOutputStream fileOutput = new FileOutputStream(file);
 		String html = new String(template.getTemplate());
-		html = html.replaceAll("\\$\\{(.*?)\\}", "");
+		html = replacePlaceholders(html, questionario, session);
 	
+		writePDF(fileOutput,html, template.getHeader(), template.getFooter());
+		
+		return file;
+	}
+	
+	
+	
+	
+	static public void writePDF(OutputStream fileOutput,String html, String headerPath, String footerPath) throws DocumentException, IOException {
 		final org.jsoup.nodes.Document documentJsoup = Jsoup.parse(html);
 		documentJsoup.outputSettings().syntax(org.jsoup.nodes.Document.OutputSettings.Syntax.xml);
 		String validXHTML = documentJsoup.html();
 	
 		Document document = new Document(PageSize.A4);
-		FileOutputStream fileOutput = new FileOutputStream(file);
 		PdfWriter writer = PdfWriter.getInstance(document, fileOutput);
         
 		SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
 		HeaderFooter pageEventHandler;
 		try {
 			pageEventHandler = new HeaderFooter(
-				template.getHeader(),
-				template.getFooter(),
-				"",
-				"Revisione del "+dateFormat.format(new Date())
+					headerPath,
+					footerPath,
+					"",
+					"Revisione del "+dateFormat.format(new Date())
 			);
 		}catch (Exception e) {
-			return null;
+			return;
 		}
 		
 		writer.setPageEvent(pageEventHandler);
@@ -116,9 +138,103 @@ public class GestioneTemplateQuestionarioBO {
     		Charset.forName("UTF-8"));
 
 		document.close();
-	
-		return file;
 	}
 	
+	private static String replacePlaceholders(String html, QuestionarioDTO questionario, Session session) {
+		for (DomandaQuestionarioDTO domanda:questionario.getDomandeVerbale()) {
+			html = replacePlaceholderDomanda(html,domanda, session);
+		}
+		
+		//Inserisco il nome del tecnico
+		String nomeVerificatore = "TECNICO_VERIFICATORE";
+		html = html.replaceAll("\\$\\{TECNICO_VERIFICATORE\\}", nomeVerificatore);
+		
+		//Inserisco la sede del cliente
+		String sedeIntevento = "SEDE_CLIENTE";
+		html = html.replaceAll("\\$\\{SEDE_CLIENTE\\}", sedeIntevento);
+
+		// Elimino i placeholder non utilizzati
+		html = html.replaceAll("\\$\\{(.*?)\\}", "");
+		return html;
+	}	
+	
+	private static String replacePlaceholderDomanda(String html,DomandaQuestionarioDTO domanda, Session session) {
+		String placeholder = domanda.getPlaceholder();
+		html = html.replaceAll("\\$\\{"+placeholder+"\\}", domanda.getTesto());
+		RispostaQuestionario risposta = domanda.getRisposta();
+
+		String rispostaValore = null;
+		String rispostaPlaceholder = null;
+		switch (risposta.getTipo()) {
+		case RispostaQuestionario.TIPO_TESTO:
+			RispostaTestoQuestionarioDTO rispostaTesto = GestioneRispostaQuestionarioDAO.getRispostaInstance(RispostaTestoQuestionarioDTO.class, risposta.getId(), session);
+			rispostaPlaceholder = rispostaTesto.getPlaceholder();
+			rispostaValore = "RISPOSTA OPERATORE";
+			break;
+		case RispostaVerbaleDTO.TIPO_SCELTA:
+			RispostaSceltaQuestionarioDTO rispostaScelta = GestioneRispostaQuestionarioDAO.getRispostaInstance(RispostaSceltaQuestionarioDTO.class, risposta.getId(), session);
+			rispostaPlaceholder = rispostaScelta.getPlaceholder();
+			rispostaValore = getTemplateRisposta(rispostaScelta);
+			for(OpzioneRispostaQuestionarioDTO opzione: rispostaScelta.getOpzioni()) {
+				String opzionePlaceholder = opzione.getPlaceholder();
+				String opzioneValore = getTemplateOpzione(opzione);
+				html = html.replaceAll("\\$\\{"+opzionePlaceholder+"\\}", opzioneValore);
+				if(opzione.getDomande() != null) {
+					for (DomandaQuestionarioDTO domandaOpzione:opzione.getDomande()) {
+						html = replacePlaceholderDomanda(html,domandaOpzione, session);
+					}
+				}
+			}
+			break;
+		case RispostaVerbaleDTO.TIPO_FORMULA:
+			RispostaFormulaQuestionarioDTO rispostaFormula = GestioneRispostaQuestionarioDAO.getRispostaInstance(RispostaFormulaQuestionarioDTO.class, risposta.getId(), session);
+			rispostaPlaceholder = rispostaFormula.getPlaceholder();
+			rispostaValore = getTemplateRisposta(rispostaFormula);
+			break;
+		default:
+			break;
+		}
+		if(rispostaValore!=null && rispostaPlaceholder!=null ) {
+			html = html.replaceAll("\\$\\{"+rispostaPlaceholder+"\\}", rispostaValore);
+		}
+		return html;
+	}
+	
+	private static String getTemplateRisposta(RispostaSceltaQuestionarioDTO risposta) {
+		String template = "";			
+		List<OpzioneRispostaQuestionarioDTO> opzioni=new ArrayList<OpzioneRispostaQuestionarioDTO>();
+		opzioni.addAll(risposta.getOpzioni());
+		
+		Collections.sort(opzioni, new Comparator<OpzioneRispostaQuestionarioDTO>() {
+	        @Override
+	        public int compare(OpzioneRispostaQuestionarioDTO op2, OpzioneRispostaQuestionarioDTO op1){
+				int pos1=op1.getPosizione();
+				int pos2=op2.getPosizione();
+	            return  pos2 - pos1;
+	        }
+	    });
+		for (OpzioneRispostaQuestionarioDTO opzione: opzioni) {
+			template +=  getTemplateOpzione(opzione)+"<br/>";
+		}
+		return template;
+	}
+	
+	private static String getTemplateRisposta(RispostaFormulaQuestionarioDTO risposta) {
+		String template = "";
+		template += "<b>0</b> (" + risposta.getValore1() + ")&nbsp;&nbsp;";
+		template += "<b>" + risposta.getSimboloOperatore() + "&nbsp;</b>";
+		template += "<b>0</b> (" + risposta.getValore2() + ")&nbsp;=&nbsp;";
+		template += "<b>0</b> (" + risposta.getRisultato() + ")";
+		return template;
+		
+	}
+	
+	private static String getTemplateOpzione(OpzioneRispostaQuestionarioDTO opzione) {
+		String typeInput = opzione.getRisposta().getMultipla()?"checkbox":"radio";
+		String checked = "unchecked";
+		String optionName = opzione.getTesto();
+		String template = "<img src=\"" + Costanti.PATH_FONT_IMAGE + checked+"-"+typeInput+".png" + "\" style=\"height:12px;\" />&nbsp;" + optionName;
+		return template;
+	}
 
 }

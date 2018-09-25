@@ -272,71 +272,16 @@ public class GestioneVerbaleBO {
 		String path = "Intervento_"+idIntervento+File.separator+verbale.getType()+"_"+verbale.getCodiceCategoria()+"_"+verbale.getId()+File.separator;
 		new File(Costanti.PATH_CERTIFICATI+path).mkdirs();
 		File file = new File(Costanti.PATH_CERTIFICATI+path, questionario.getTitolo()+"_"+questionario.getTipo().getCodice()+"_"+idIntervento+".pdf");
-		
+        FileOutputStream fileOutput = new FileOutputStream(file);
+
 		InterventoDTO intervento =GestioneInterventoBO.getIntervento(String.valueOf(idIntervento), session);
 		
 		String html = new String(template.getTemplate());
 		html = replacePlaceholders(html, verbale,intervento, session);
 		
-    	final org.jsoup.nodes.Document documentJsoup = Jsoup.parse(html);
-    	documentJsoup.outputSettings().syntax(org.jsoup.nodes.Document.OutputSettings.Syntax.xml);
-    	String validXHTML = documentJsoup.html();
-    	
-        Document document = new Document(PageSize.A4);
-        FileOutputStream fileOutput = new FileOutputStream(file);
-	    PdfWriter writer = PdfWriter.getInstance(document, fileOutput);
-            
-	    SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
-	    
-	    HeaderFooter pageEventHandler = new HeaderFooter(
-	    		template.getHeader(),
-	    		template.getFooter(),
-	    		verbale.getCodiceVerifica(),
-	    		"Revisione del "+dateFormat.format(template.getUpdateDate())
-	    );
-	    writer.setPageEvent(pageEventHandler);
-	    pageEventHandler.formatDocument(document);
-	    document.open();
-	    
-	    
-        // CSS
-        CSSResolver cssResolver = XMLWorkerHelper.getInstance().getDefaultCssResolver(true);
-        InputStream iscss = new FileInputStream(Costanti.PATH_FONT_STYLE+"style.css");
-        CssFile cssFile = XMLWorkerHelper.getCSS(iscss);
-        cssResolver.addCss(cssFile);
-        cssResolver.addCss(XMLWorkerHelper.getInstance().getDefaultCSS());
-        
-        XMLWorkerFontProvider fontProvider = new XMLWorkerFontProvider(Costanti.PATH_FONT_STYLE);
-        fontProvider.register(Costanti.PATH_FONT_STYLE+"Arial.ttf");        
-        fontProvider.register(Costanti.PATH_FONT_STYLE+"Times.ttf");        
-        fontProvider.register(Costanti.PATH_FONT_STYLE+"Courier.ttf");
-        fontProvider.setUseUnicode(true);
-        CssAppliers cssAppliers = new CssAppliersImpl(fontProvider);
-        // HTML
-        HtmlPipelineContext htmlContext = new HtmlPipelineContext(cssAppliers);
-        htmlContext.setTagFactory(Tags.getHtmlTagProcessorFactory());
-        htmlContext.setImageProvider(new AbstractImageProvider() {
-            public String getImageRootPath() {
-                return Costanti.PATH_ROOT;
-            }
-        });
-        htmlContext.setLinkProvider(new LinkProvider() {
-            public String getLinkRoot() {
-                return Costanti.PATH_ROOT;
-            }
-        });
-        // Pipelines
-        PdfWriterPipeline pdf = new PdfWriterPipeline(document, writer);
-        HtmlPipeline htmlPipeline = new HtmlPipeline(htmlContext, pdf);
-        CssResolverPipeline css = new CssResolverPipeline(cssResolver, htmlPipeline);
+		GestioneTemplateQuestionarioBO.writePDF(fileOutput, html, template.getHeader(), template.getFooter());
 
-        XMLWorker worker = new XMLWorker(css, true);
-        XMLParser p = new XMLParser(worker);
-        p.parse(new ByteArrayInputStream(validXHTML.getBytes()),
-        		Charset.forName("UTF-8"));
-
-        document.close();
-        DocumentoDTO certificato = new DocumentoDTO();
+		DocumentoDTO certificato = new DocumentoDTO();
         certificato.setFilePath(path+file.getName());
         //cambio il type del DocumentoDTO in base a certificato o scheda_tecnica
         if(verbale.getType().equals(VerbaleDTO.VERBALE)) {
