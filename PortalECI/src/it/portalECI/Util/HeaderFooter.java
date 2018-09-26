@@ -155,7 +155,6 @@ public class HeaderFooter extends PdfPageEventHelper {
 			imgFooter.scaleToFit(document.getPageSize());
 			marginBottom = Math.max(MIN_BOTTOM_MARGIN, imgFooter.getScaledHeight()+TABLE_FOOTER_HEIGHT);
 		}
-		System.out.println(document.getPageSize().getWidth());
 		document.setMargins(LEFT_MARGIN,RIGHT_MARGIN,marginTop,marginBottom);
 
     }

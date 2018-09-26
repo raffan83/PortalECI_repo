@@ -415,6 +415,10 @@ public class GestioneVerbaleBO {
 		String sedeIntevento = intervento.getNome_sede();
 		html = html.replaceAll("\\$\\{SEDE_CLIENTE\\}", sedeIntevento);
 
+		//Inserisco numero verbale
+		String numeroVerbale = verbale.getNumeroVerbale();
+		html = html.replaceAll("\\$\\{NUMERO_VERBALE\\}", numeroVerbale);
+		
 		// Elimino i placeholder non utilizzati
 		html = html.replaceAll("\\$\\{(.*?)\\}", "");
 		return html;

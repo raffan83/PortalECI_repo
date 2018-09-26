@@ -153,6 +153,10 @@ public class GestioneTemplateQuestionarioBO {
 		String sedeIntevento = "SEDE_CLIENTE";
 		html = html.replaceAll("\\$\\{SEDE_CLIENTE\\}", sedeIntevento);
 
+		//Inserisco numero verbale
+		String numeroVerbale = "NUMERO_VERBALE";
+		html = html.replaceAll("\\$\\{NUMERO_VERBALE\\}", numeroVerbale);
+
 		// Elimino i placeholder non utilizzati
 		html = html.replaceAll("\\$\\{(.*?)\\}", "");
 		return html;
