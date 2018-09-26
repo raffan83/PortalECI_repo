@@ -1106,6 +1106,7 @@ function nuovoUtente(){
 		pleaseWaitDiv = $('#pleaseWaitDialog');
 		pleaseWaitDiv.modal();
 
+		var codice = $('#codice').val();
 		var user=$('#user').val();
 		var passw=$('#passw').val();
 		var nome=$('#nome').val();
@@ -1118,6 +1119,7 @@ function nuovoUtente(){
 		var company=$('#company').val();
 		var dataObj = {};
 		
+		dataObj.codice = codice;
 		dataObj.user = user;
 		dataObj.passw = passw;
 		dataObj.nome = nome;
@@ -1183,6 +1185,7 @@ function modificaUtente(){
 	pleaseWaitDiv.modal();
 	
 	var id=$('#modid').val();
+	var codice = $('#modcodice').val();
 	var user=$('#moduser').val();
 	var passw=$('#modpassw').val();
 	var nome=$('#modnome').val();
@@ -1195,6 +1198,7 @@ function modificaUtente(){
 	var company=$('#modcompany').val();
 	var dataObj = {};
 	dataObj.id = id;
+	dataObj.codice = codice;
 	dataObj.user = user;
 	dataObj.passw = passw;
 	dataObj.nome = nome;
@@ -1288,9 +1292,10 @@ function eliminaUtente(){
 	});
 }
 
-function modalModificaUtente(id,user,nome,cognome,indirizzo,comune,cap,email,telefono,company){
+function modalModificaUtente(id,codice,user,nome,cognome,indirizzo,comune,cap,email,telefono,company){
 	  
 	$('#modid').val(id);
+	$('#modcodice').val(codice)
 	$('#moduser').val(user);
 	$('#modnome').val(nome);
 	$('#modcognome').val(cognome);

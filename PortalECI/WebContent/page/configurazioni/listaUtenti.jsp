@@ -77,6 +77,7 @@
  																<thead>
  																	<tr class="active">
  																		<td>ID</td>
+ 																		<td>Codice</td>
  																		<th>Username</th>
  																		<th>Nominativo</th>
  																		<th>Nome</th>
@@ -97,6 +98,7 @@
 											 							<tr role="row" id="${utente.id}-${loop.index}">
 
 																			<td>${utente.id}</td>
+																			<td>${utente.codice}</td>
 																			<td>${utente.user}</td>
 																			<td>${utente.nominativo}</td>
 																			<td>${utente.nome}</td>
@@ -109,7 +111,7 @@
 																			<td>${utente.company.denominazione}</td>
 																			<td>
 																				<c:if test="${user.checkPermesso('UPD_UTENTE')}">
-																					<a href="#" onClick="modalModificaUtente('${utente.id}','${utente.user}','${utente.nome}','${utente.cognome}','${utente.indirizzo}','${utente.comune}','${utente.cap}','${utente.EMail}','${utente.telefono}','${utente.company.id}')" class="btn btn-warning "><i class="fa fa-edit"></i></a>
+																					<a href="#" onClick="modalModificaUtente('${utente.id}','${utente.codice}','${utente.user}','${utente.nome}','${utente.cognome}','${utente.indirizzo}','${utente.comune}','${utente.cap}','${utente.EMail}','${utente.telefono}','${utente.company.id}')" class="btn btn-warning "><i class="fa fa-edit"></i></a>
 																				</c:if> 
 																				<%-- <a href="#" onClick="modalEliminaUtente('${utente.id}','${utente.nominativo}')" class="btn btn-danger "><i class="fa fa-remove"></i></a>	 --%>
 																			</td>
@@ -156,6 +158,12 @@
 	
          														<div class="col-sm-4">
          															<input class="form-control" id="passw" type="text" name="passw" value="" required />
+     															</div>
+   															</div>
+	        												<div class="form-group">
+          														<label for="codice" class="col-sm-2 control-label">Codice:</label>
+         														<div class="col-sm-10">
+         															<input class="form-control" id="codice" type="text" name="codice" value="" required />	         		
      															</div>
    															</div>
 	    
@@ -265,7 +273,14 @@
          															<input class="form-control" id="modpassw" type="text" name="modpassw" value=""  />
      															</div>
    															</div>    	
-    													
+    														<div class="form-group">
+          														<label for="modcodice" class="col-sm-2 control-label">Codice:</label>
+
+         														<div class="col-sm-10">
+         															<input class="form-control" id="modcodice" type="text" name="modcodice" value="" required/>	         			
+     															</div>
+   															</div>
+   															
     														<div class="form-group">
           														<label for="modnome" class="col-sm-2 control-label">Nome:</label>
 

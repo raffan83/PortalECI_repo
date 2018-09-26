@@ -70,6 +70,7 @@ public class GestioneUtenti extends HttpServlet {
 	  
 	    	if(action.equals("nuovo")){
 	    		String nome = request.getParameter("nome");
+	    		String codice = request.getParameter("codice");
 	    	 	String cognome = request.getParameter("cognome");
 	    	 	String user = request.getParameter("user");
 	    	 	String passw = request.getParameter("passw");
@@ -83,6 +84,7 @@ public class GestioneUtenti extends HttpServlet {
 	    	 	CompanyDTO company = GestioneCompanyBO.getCompanyById(companyId, session);
 	    	 			    	 			
 	    	 	UtenteDTO utente = new UtenteDTO();
+	    	 	utente.setCodice(codice);
 	    	 	utente.setNome(nome);
 	    	 	utente.setCognome(cognome);
 	    	 	utente.setUser(user);
@@ -122,6 +124,7 @@ public class GestioneUtenti extends HttpServlet {
 	    		String id = request.getParameter("id");
 
 	    		String nome = request.getParameter("nome");
+	    		String codice = request.getParameter("codice");
 	    		String cognome = request.getParameter("cognome");
 	    		String user = request.getParameter("user");
 	    		String passw = request.getParameter("passw");
@@ -142,6 +145,10 @@ public class GestioneUtenti extends HttpServlet {
 	    		if(cognome != null && !cognome.equals("")){
 	    			utente.setCognome(cognome);
 	    		}
+	    		if(codice != null && !codice.equals("")){
+	    			utente.setCodice(codice);
+	    		}
+
 	    		if(user != null && !user.equals("")){
 	    			utente.setUser(user);
 	    		}
