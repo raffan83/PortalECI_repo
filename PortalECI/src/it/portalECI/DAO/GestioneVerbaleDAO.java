@@ -5,7 +5,10 @@ import java.util.List;
 import org.hibernate.Query;
 import org.hibernate.Session;
 
+import it.portalECI.DTO.CategoriaVerificaDTO;
+import it.portalECI.DTO.ProgressivoVerbaleDTO;
 import it.portalECI.DTO.StatoVerbaleDTO;
+import it.portalECI.DTO.UtenteDTO;
 import it.portalECI.DTO.VerbaleDTO;
 
 public class GestioneVerbaleDAO {
@@ -74,6 +77,17 @@ public class GestioneVerbaleDAO {
 			query.setParameter("_type",VerbaleDTO.VERBALE);
 			List<VerbaleDTO> result = query.list();
 			return result;
+	}
+
+	public static ProgressivoVerbaleDTO getProgressivoVerbale(UtenteDTO utente, CategoriaVerificaDTO categoria, Session session) {
+		Query query = session.createQuery("from ProgressivoVerbaleDTO where idUtente= :_idUtente and idCategoria= :_idCategoria");
+		query.setInteger("_idCategoria", categoria.getId());
+		query.setInteger("_idUtente", utente.getId());
+		ProgressivoVerbaleDTO progressivo = (ProgressivoVerbaleDTO) query.uniqueResult();
+		if(progressivo == null) progressivo= new ProgressivoVerbaleDTO(utente.getId(), categoria.getId());
+		progressivo.incrementaProgressivo();
+		session.saveOrUpdate(progressivo);
+		return progressivo;
 	}
 	
 }

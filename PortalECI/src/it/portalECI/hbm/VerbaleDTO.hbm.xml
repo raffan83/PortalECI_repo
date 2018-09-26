@@ -17,6 +17,9 @@
 			<column name="questionarioID" />
 		</property> 
 		
+		<property name="numeroVerbale">
+			<column name="numeroVerbale" length="256"/>
+		</property> 
 		<property name="codiceVerifica">
 			<column name="codiceVerifica" length="256"/>
 		</property> 

@@ -25,6 +25,7 @@ public class InterventoDTO implements Serializable{
 	private int idSede;
 	private int id_cliente;
 	private String nome_sede="";
+	private String codiceProvincia;	
 	private UtenteDTO user;
 	private String idCommessa="";
 	StatoInterventoDTO statoIntervento;
@@ -52,6 +53,12 @@ public class InterventoDTO implements Serializable{
 	}
 	
 	
+	public String getCodiceProvincia() {
+		return codiceProvincia;
+	}
+	public void setCodiceProvincia(String codiceProvincia) {
+		this.codiceProvincia = codiceProvincia;
+	}	
 	public int getId() {
 		return id;
 	}

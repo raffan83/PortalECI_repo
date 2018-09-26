@@ -29,6 +29,7 @@ public class CommessaDTO implements Serializable{
 	private String INDIRIZZO_PRINCIPALE="";
 	private String NOTE_GEN="";
 	private String N_ORDINE="";
+	private String COD_PROV="";
 	
 	private ArrayList<AttivitaMilestoneDTO> listaAttivita= new ArrayList<AttivitaMilestoneDTO>();
 	
@@ -124,7 +125,12 @@ public class CommessaDTO implements Serializable{
 		N_ORDINE = n_ORDINE;
 	}
 	
-	
+	public String getCOD_PROV() {
+		return COD_PROV;
+	}
+	public void setCOD_PROV(String cOD_PROV) {
+		COD_PROV = cOD_PROV;
+	}
 	public JsonObject getCommessaJsonObject() {
 		JsonObject jobj = new JsonObject();
 		

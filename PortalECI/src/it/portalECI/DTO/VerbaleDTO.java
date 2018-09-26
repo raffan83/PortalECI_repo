@@ -32,6 +32,7 @@ public class VerbaleDTO implements Serializable {
 	private String type;
 	private Set<DocumentoDTO> documentiVerbale;
 		
+	private String numeroVerbale;	
 	public int getId() {
 		return id;
 	}
@@ -152,6 +153,14 @@ public class VerbaleDTO implements Serializable {
 		this.documentiVerbale = documentiVerbale;
 	}
 	
+	public String getNumeroVerbale() {
+		return numeroVerbale;
+	}
+
+	public void setNumeroVerbale(String numeroVerbale) {
+		this.numeroVerbale = numeroVerbale;
+	}
+
 	public JsonObject getVerbaleJsonObject() {
 		JsonObject jobj = new JsonObject();
 		

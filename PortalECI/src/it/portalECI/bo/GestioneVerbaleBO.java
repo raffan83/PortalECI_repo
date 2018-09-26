@@ -47,6 +47,7 @@ import it.portalECI.DAO.GestioneRispostaVerbaleDAO;
 import it.portalECI.DAO.GestioneStatoInterventoDAO;
 import it.portalECI.DAO.GestioneStatoVerbaleDAO;
 import it.portalECI.DAO.GestioneVerbaleDAO;
+import it.portalECI.DTO.CategoriaVerificaDTO;
 import it.portalECI.DTO.DocumentoDTO;
 import it.portalECI.DTO.DomandaOpzioneQuestionarioDTO;
 import it.portalECI.DTO.DomandaQuestionarioDTO;
@@ -54,6 +55,7 @@ import it.portalECI.DTO.DomandaVerbaleDTO;
 import it.portalECI.DTO.InterventoDTO;
 import it.portalECI.DTO.OpzioneRispostaQuestionarioDTO;
 import it.portalECI.DTO.OpzioneRispostaVerbaleDTO;
+import it.portalECI.DTO.ProgressivoVerbaleDTO;
 import it.portalECI.DTO.QuestionarioDTO;
 import it.portalECI.DTO.RispostaFormulaQuestionarioDTO;
 import it.portalECI.DTO.RispostaFormulaVerbaleDTO;
@@ -258,23 +260,26 @@ public class GestioneVerbaleBO {
 			throw new IllegalArgumentException();
 		}
 		
+		InterventoDTO intervento = null;
 		TemplateQuestionarioDTO template = null;
-		int idIntervento = 0;
+		String nomefile = null;
+		
 		if(verbale.getType().equals(VerbaleDTO.VERBALE)) {
-			idIntervento = verbale.getIntervento().getId();
+			intervento = verbale.getIntervento();
 			template = questionario.getTemplateVerbale();
+			nomefile = generaNumeroVerbale(questionario.getTipo().getCategoria(), intervento, session);
+			verbale.setNumeroVerbale(nomefile);
 		}else {
 			VerbaleDTO verb=GestioneVerbaleDAO.getVerbaleFromSkTec(String.valueOf(verbale.getId()), session);
-			idIntervento = verb.getIntervento().getId();
+			intervento = verb.getIntervento();
 			template = questionario.getTemplateSchedaTecnica();
+			nomefile = questionario.getTitolo()+"_"+questionario.getTipo().getCodice()+"_"+intervento.getId()+".pdf";
 		}
 		
-		String path = "Intervento_"+idIntervento+File.separator+verbale.getType()+"_"+verbale.getCodiceCategoria()+"_"+verbale.getId()+File.separator;
+		String path = "Intervento_"+intervento.getId()+File.separator+verbale.getType()+"_"+verbale.getCodiceCategoria()+"_"+verbale.getId()+File.separator;
 		new File(Costanti.PATH_CERTIFICATI+path).mkdirs();
-		File file = new File(Costanti.PATH_CERTIFICATI+path, questionario.getTitolo()+"_"+questionario.getTipo().getCodice()+"_"+idIntervento+".pdf");
+		File file = new File(Costanti.PATH_CERTIFICATI+path,nomefile);
         FileOutputStream fileOutput = new FileOutputStream(file);
-
-		InterventoDTO intervento =GestioneInterventoBO.getIntervento(String.valueOf(idIntervento), session);
 		
 		String html = new String(template.getTemplate());
 		html = replacePlaceholders(html, verbale,intervento, session);
@@ -386,6 +391,14 @@ public class GestioneVerbaleBO {
 		}else {
 			throw new ValidationException("JSON Richiesta vuoto");
 		}
+	}
+	
+	public static String generaNumeroVerbale(CategoriaVerificaDTO categoria, InterventoDTO intervento, Session session) {
+		String numeroVerbale = new String();
+		UtenteDTO utente = intervento.getTecnico_verificatore();
+		ProgressivoVerbaleDTO progressivo = GestioneVerbaleDAO.getProgressivoVerbale(utente, categoria, session);
+		numeroVerbale = String.format("%s-%s-%03d-%s", utente.getCodice(), categoria.getSigla(), progressivo.getProgressivo(), intervento.getCodiceProvincia());
+		return numeroVerbale;
 	}
 	
 	private static String replacePlaceholders(String html, VerbaleDTO verbale, InterventoDTO intervento, Session session) {

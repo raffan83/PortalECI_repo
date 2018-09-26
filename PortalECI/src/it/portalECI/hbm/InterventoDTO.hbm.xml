@@ -20,6 +20,9 @@
         <property name="nome_sede" type="java.lang.String">
             <column name="NOME_SEDE" />
         </property>
+        <property name="codiceProvincia" type="java.lang.String">
+            <column name="CODICE_PROVINCIA" />
+        </property>
         <many-to-one name="user" class="it.portalECI.DTO.UtenteDTO" access="field" fetch="join" lazy="false">
             <column name="id__user_creation" />
         </many-to-one>

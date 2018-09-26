@@ -173,7 +173,7 @@ public class GestioneIntervento extends HttpServlet {
 				}else{
 					nomeCliente=comm.getID_ANAGEN_NOME()+ " - "+ comm.getINDIRIZZO_PRINCIPALE(); 
 				}
-			
+				intervento.setCodiceProvincia(comm.getCOD_PROV());
 				intervento.setNome_sede(nomeCliente);
 				intervento.setIdCommessa(""+comm.getID_COMMESSA());				
 				
