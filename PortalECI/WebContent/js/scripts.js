@@ -2542,10 +2542,12 @@ function nuovaCategoriaVerifica(){
 		pleaseWaitDiv.modal();
 
 		var descrizione=$('#descrizione').val();
+		var sigla=$('#sigla').val();
 		var codice=$('#codice').val();
 		var dataObj = {};
 		
 		dataObj.descrizione = descrizione;
+		dataObj.sigla = sigla;
 		dataObj.codice = codice;
 
 		$.ajax({
@@ -2589,6 +2591,7 @@ function modificaCategoriaVerifica(){
 	pleaseWaitDiv.modal();
 	
 	var id=$('#modid').val();
+	var sigla=$('#modsigla').val();
 	var descrizione=$('#moddescrizione').val();
 	var codice=$('#modcodice').val();
 	    
@@ -2596,7 +2599,7 @@ function modificaCategoriaVerifica(){
 	dataObj.id = id;
 	dataObj.descrizione = descrizione;
 	dataObj.codice = codice;
-
+	dataObj.sigla = sigla;
 	$.ajax({
 		type: "POST",
 		url: "gestioneCategorieVerifica.do?action=modifica",
@@ -2673,9 +2676,10 @@ function eliminaCategoriaVerifica(){
 	});
 }
 
-function modalModificaCategoriaVerifica(id,descrizione,codice){
+function modalModificaCategoriaVerifica(id,sigla,descrizione,codice){
 	  
 	$('#modid').val(id);
+	$('#modsigla').val(sigla);
 	$('#moddescrizione').val(descrizione);
 	$('#modcodice').val(codice);
 	    

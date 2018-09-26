@@ -1,16 +1,19 @@
 package it.portalECI.DTO;
 
 import java.io.Serializable;
-import java.util.HashSet;
-import java.util.Set;
+//import java.util.HashSet;
+//import java.util.Set;
 
 import com.google.gson.JsonObject;
 
 public class CategoriaVerificaDTO implements Serializable{
 	
+	private static final long serialVersionUID = 1L;
+	
 	private int id;
 	private String descrizione;
 	private String codice;
+	private String sigla;
 	
 	//private Set<InterventoDTO> intervento= new HashSet<InterventoDTO>();
 	
@@ -43,6 +46,14 @@ public class CategoriaVerificaDTO implements Serializable{
 		this.intervento = intervento;
 	}*/
 	
+	public String getSigla() {
+		return sigla;
+	}
+
+	public void setSigla(String sigla) {
+		this.sigla = sigla;
+	}
+
 	public JsonObject getCategoriaVerificaJsonObject() {
 		JsonObject jobj = new JsonObject();
 		jobj.addProperty("id", this.id);

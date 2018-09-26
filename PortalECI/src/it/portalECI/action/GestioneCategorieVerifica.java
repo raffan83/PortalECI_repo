@@ -65,10 +65,12 @@ public class GestioneCategorieVerifica extends HttpServlet {
 					
 	       		 if(action.equals("nuovo")){
 	    	 		String descrizione = request.getParameter("descrizione");
+	    	 		String sigla = request.getParameter("sigla");
 	    	 		String codice = request.getParameter("codice");    	 			    	 
 	    	 			
     	 			CategoriaVerificaDTO categoria = new CategoriaVerificaDTO();
     	 			categoria.setDescrizione(descrizione);
+    	 			categoria.setSigla(sigla);
     	 			categoria.setCodice(codice);	 			
 
     	 			int success = GestioneCategorieVerificaBO.saveCategoriaVerifica(categoria,action,session);
@@ -95,8 +97,9 @@ public class GestioneCategorieVerifica extends HttpServlet {
 
     	 			String descrizione = request.getParameter("descrizione");
     	 			String codice = request.getParameter("codice");    	 				    	 
-	    	 			
-    	 			CategoriaVerificaDTO categoria = GestioneCategorieVerificaBO.getCategoriaVerificaById(id, session);
+	    	 		String sigla = request.getParameter("sigla");
+    	 			
+	    	 		CategoriaVerificaDTO categoria = GestioneCategorieVerificaBO.getCategoriaVerificaById(id, session);
 	    	 			
     	 			if(descrizione != null && !descrizione.equals("")){
 	    	 			categoria.setDescrizione(descrizione);
@@ -104,7 +107,9 @@ public class GestioneCategorieVerifica extends HttpServlet {
     	 			if(codice != null && !codice.equals("")){
 	    	 			categoria.setCodice(codice);
     	 			}	    	 			
-
+    	 			if(sigla != null && !sigla.equals("")){
+	    	 			categoria.setSigla(sigla);
+    	 			}	    	 			
     	 			int success = GestioneCategorieVerificaBO.saveCategoriaVerifica(categoria,action,session);
 
     	 			if(success==0){

@@ -62,6 +62,7 @@
  																<thead>
  																	<tr class="active">
  																		<td>ID</td>
+ 																		<td>Sigla</td>
  																		<th>Descrizione</th>
  																		<th>Codice</th>
  																		<th>Action</th>						
@@ -71,11 +72,12 @@
  																	<c:forEach items="${listaCategorieVerifica}" var="categoria" varStatus="loop">	
 	 																	<tr role="row" id="${categoria.id}-${loop.index}">	
 																			<td>${categoria.id}</td>
+																			<td>${categoria.sigla}</td>
 																			<td>${categoria.descrizione}</td>
 																			<td>${categoria.codice}</td>
 																			<td>																					
 																				<c:if test="${user.checkPermesso('UPD_CATEGORIA_VERIFICA')}">
-																					<a href="#" onClick="modalModificaCategoriaVerifica('${categoria.id}','${categoria.descrizione}','${categoria.codice}')" class="btn btn-warning "><i class="fa fa-edit"></i></a>
+																					<a href="#" onClick="modalModificaCategoriaVerifica('${categoria.id}','${categoria.sigla}','${categoria.descrizione}','${categoria.codice}')" class="btn btn-warning "><i class="fa fa-edit"></i></a>
 																				</c:if> 																				
 																				<c:if test="${user.checkPermesso('DEL_CATEGORIA_VERIFICA')}"> 
 																					<a href="#" onClick="modalEliminaCategoriaVerifica('${categoria.id}','${categoria.descrizione}')" class="btn btn-danger "><i class="fa fa-remove"></i></a>
@@ -124,7 +126,12 @@
          															<input class="form-control" id="codice" type="text" name="codice" value="" required />	
      															</div>
    															</div>
-	    
+    														<div class="form-group">
+          														<label for="sigla" class="col-sm-2 control-label">Sigla:</label>
+         														<div class="col-sm-10">
+         															<input class="form-control" id="sigla" type="text" name="sigla" value="" required />	
+     															</div>
+   															</div>
 								    						
 	 													</div>	
               											<!-- /.tab-pane -->
@@ -170,7 +177,12 @@
          															<input class="form-control" id="modcodice" type="text" name="modcodice" value=""  />	         			
      															</div>
    															</div>           
-
+                											<div class="form-group">
+         														<label for="modsigla" class="col-sm-2 control-label">Sigla:</label>
+         														<div class="col-sm-10">
+         															<input class="form-control" id="modsigla" type="text" name="modsigla" value=""  />
+     															</div>	     	 
+   															</div>    
 	 													</div>
               											<!-- /.tab-pane -->
             											

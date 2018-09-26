@@ -14,6 +14,9 @@
         <property name="codice" type="java.lang.String">
             <column name="codice" />
         </property>
+        <property name="sigla" type="java.lang.String">
+            <column name="sigla" />
+        </property>
         
         <!-- <set name="intervento" table="intervento__categoriaverifica_tipoverifica" inverse="true" lazy="true" fetch="select">
             <key>
