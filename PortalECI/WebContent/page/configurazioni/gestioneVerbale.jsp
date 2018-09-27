@@ -147,7 +147,7 @@
         												</button>
         											</c:if>        											      											
         										</div>   									
-
+												<input id="changedForm" style="display:none;" disabled="disabled">
 											</div>
 										</div>
 									</div>
@@ -169,40 +169,38 @@
         													<div class="col-xs-12" style="border-bottom: 1px solid #ddd;">
         														<label for="titolo-input" class="control-label col-xs-12">${domVerbale.getDomandaQuestionario().getTesto()}</label><br/>
         												
-    	    													<c:set var="domVerbale" value="${domVerbale}" scope="request"></c:set>    	    													
-    	    													<c:set var="readonly" value="${verbale.getStato().getId()>=5}" scope="request"></c:set>
+    	    													<c:set var="domVerbale" value="${domVerbale}" scope="request"></c:set>    	    													    	    													
 																<jsp:include page="gestioneVerbaleDettaglio.jsp"></jsp:include>        													
         													</div>
 														</c:forEach>
 													</form>
 												</div>
-												<c:if test='${verbale.getStato().getId()== 4}'>
-													<div class="box-footer" id="formVerbalebox">
-														<c:if test="${user.checkPermesso('UPD_VERBALE')}">
-															<button type="button" class="btn btn-default ml-1 savebutt" onclick="modificaRisposte(${verbale.getId()},'formVerbale')" style="margin-left: 1em; float: right;">	
-																<span >SALVA MODIFICHE</span>
-															</button>	
+												
+												<div class="box-footer" id="formVerbalebox">
+													<c:if test="${user.checkPermesso('UPD_VERBALE')}">
+														<button type="button" class="btn btn-default ml-1 savebutt" onclick="modificaRisposte(${verbale.getId()},'formVerbale')" style="margin-left: 1em; float: right;">	
+															<span >SALVA MODIFICHE</span>
+														</button>	
 													
-															<button type="button" class="btn btn-default ml-1 savebutt" onclick="annullaModifiche('formVerbale')" style="margin-left: 1em; float: right;">	
-																<span >ANNULLA MODIFICHE</span>
-															</button>
-														</c:if>
-															
+														<button type="button" class="btn btn-default ml-1 savebutt" onclick="annullaModifiche('formVerbale')" style="margin-left: 1em; float: right;">	
+															<span >ANNULLA MODIFICHE</span>
+														</button>
+													</c:if>
+													<c:if test='${verbale.getStato().getId()== 4}'>					
 														<c:if test="${user.checkPermesso('CH_STA_VERBALE')}">
-            	      										<button type="button" class="btn btn-default  ml-1 changestate" onclick="salvaCambioStato(${verbale.getId()},'formVerbale','6')" style="margin-left: 1em; color:#000000 !important; background-color:${verbale.getStato().getColore(6)} !important; float: right;">
+            	      										<button type="button" class="btn btn-default  ml-1 changestate formVerbalebox" onclick="preCambioStato(${verbale.getId()},'formVerbale','6')" style="margin-left: 1em; color:#000000 !important; background-color:${verbale.getStato().getColore(6)} !important; float: right;">
                 	  											<i class="glyphicon glyphicon-remove"></i>
                   												<span >RIFIUTATO</span>
                   											</button>
 										
-															<button type="button" class="btn btn-default ml-1 changestate" onclick="salvaCambioStato(${verbale.getId()},'formVerbale','5')" style="margin-left: 1em; color:#000000 !important; background-color:${verbale.getStato().getColore(5)} !important; float: right;">
+															<button type="button" class="btn btn-default ml-1 changestate formVerbalebox" onclick="preCambioStato(${verbale.getId()},'formVerbale','5')" style="margin-left: 1em; color:#000000 !important; background-color:${verbale.getStato().getColore(5)} !important; float: right;">
 																<i class="glyphicon glyphicon glyphicon-ok"></i>
 																<span >ACCETTATO</span>
 															</button>
 														</c:if>
-															      										
-													</div>
-												</c:if>		
-												
+															      																							
+													</c:if>		
+												</div>
 											</div>
 										</div>
 									</div>
@@ -224,40 +222,37 @@
         													<div class="col-xs-12" style="border-bottom: 1px solid #ddd;">
         														<label for="titolo-input" class="control-label col-xs-12">${domVerbale.getDomandaQuestionario().getTesto()}</label><br/>
         												
-    	    													<c:set var="domVerbale" value="${domVerbale}" scope="request"></c:set>
-    	    													<c:set var="readonly" value="${verbale.getSchedaTecnica().getStato().getId()>=5}" scope="request"></c:set>
+    	    													<c:set var="domVerbale" value="${domVerbale}" scope="request"></c:set>    	    													
 																<jsp:include page="gestioneVerbaleDettaglio.jsp"></jsp:include>        													
 
         													</div>
 														</c:forEach>
 													</form>
 												</div>
-												<c:if test='${verbale.getSchedaTecnica().getStato().getId()== 4}'>
-													<div class="box-footer" id="formScTecnicabox">
-														<c:if test="${user.checkPermesso('UPD_VERBALE')}">
-															<button type="button" class="btn btn-default ml-1 savebutt" onclick="modificaRisposte(${verbale.getSchedaTecnica().getId()},'formScTecnica')" style="margin-left: 1em; float: right;">	
-																<span >SALVA MODIFICHE</span>
-															</button>	
-													
-															<button type="button" class="btn btn-default ml-1 savebutt" onclick="annullaModifiche('formScTecnica')" style="margin-left: 1em; float: right;">	
-																<span >ANNULLA MODIFICHE</span>
-															</button>	
-														</c:if>
-								
+												<div class="box-footer">																										
+													<c:if test="${user.checkPermesso('UPD_VERBALE')}">
+														<button type="button" class="btn btn-default ml-1 savebutt" onclick="modificaRisposte(${verbale.getSchedaTecnica().getId()},'formScTecnica')" style="margin-left: 1em; float: right;">	
+															<span >SALVA MODIFICHE</span>
+														</button>	
+												
+														<button type="button" class="btn btn-default ml-1 savebutt" onclick="annullaModifiche('formScTecnica')" style="margin-left: 1em; float: right;">	
+															<span >ANNULLA MODIFICHE</span>
+														</button>	
+													</c:if>
+													<c:if test='${verbale.getSchedaTecnica().getStato().getId()== 4}'>			
 														<c:if test="${user.checkPermesso('CH_STA_VERBALE')}">
-            	      										<button type="button" class="btn btn-default  ml-1 changestate" onclick="salvaCambioStato(${verbale.getSchedaTecnica().getId()},'formScTecnica','6')" style="margin-left: 1em; color:#000000 !important; background-color:${verbale.getStato().getColore(6)} !important; float: right;">
+            	      										<button type="button" class="btn btn-default  ml-1 changestate formScTecnicabox" onclick="preCambioStato(${verbale.getSchedaTecnica().getId()},'formScTecnica','6')" style="margin-left: 1em; color:#000000 !important; background-color:${verbale.getStato().getColore(6)} !important; float: right;">
                 		  										<i class="glyphicon glyphicon-remove"></i>
                 	  											<span >RIFIUTATO</span>
             	      										</button>
 										
-															<button type="button" class="btn btn-default ml-1 changestate" onclick="salvaCambioStato(${verbale.getSchedaTecnica().getId()},'formScTecnica','5')" style="margin-left: 1em; color:#000000 !important; background-color:${verbale.getStato().getColore(5)} !important; float: right;">
+															<button type="button" class="btn btn-default ml-1 changestate formScTecnicabox" onclick="preCambioStato(${verbale.getSchedaTecnica().getId()},'formScTecnica','5')" style="margin-left: 1em; color:#000000 !important; background-color:${verbale.getStato().getColore(5)} !important; float: right;">
 																<i class="glyphicon glyphicon glyphicon-ok"></i>
 																<span >ACCETTATO</span>
 															</button>
-														</c:if>   										
-													</div>
-												</c:if>		
-												
+														</c:if>
+													</c:if>		
+												</div>
 											</div>
 										</div>
 									</div>
@@ -304,6 +299,28 @@
 							</div>
 						</div>
 						
+						<div id="confirmModal" class="modal fade" role="dialog" aria-labelledby="myLargeModalLabel">
+    						<div class="modal-dialog" role="document">
+    							<div class="modal-content">
+     								<div class="modal-header">
+        								<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        								<h4 class="modal-title text-center" id="myModalLabel">Attenzione!</h4>
+      								</div>
+       								<div class="modal-body">
+										<h3>Sono state apportate delle modifiche, desideri di volerle salvare prima di procedere?</h3>
+										<input id="idverbCambioStato" disabled="disabled" style="display:none" readonly="readonly">
+										<input id="idformCambioStato" disabled="disabled" style="display:none" readonly="readonly">
+										<input id="idstatoCambioStato" disabled="disabled" style="display:none" readonly="readonly">
+										
+  		 							</div>
+      								<div class="modal-footer">
+      									<button type="button" class="btn btn-default" onclick="cambiaStato(true)" >Salva e cambia stato</button>
+      									<button type="button" class="btn btn-default" onclick="cambiaStato(false)" >Annulla modifiche e cambia stato</button>      									
+        								<button type="button" class="btn btn-default" data-dismiss="modal">Chiudi</button>
+      								</div>
+    							</div>
+  							</div>
+						</div> 
 														
      					<div id="myModalError" class="modal fade" role="dialog" aria-labelledby="myLargeModalLabel">
     						<div class="modal-dialog" role="document">
@@ -354,6 +371,13 @@
 					$('.'+$(this).attr('id')).find(':checkbox').removeAttr('checked').iCheck('update');
 					$('.'+$(this).attr('id')).find(':radio').removeAttr('checked').iCheck('update');
 				});
+				
+				$("#changedForm").val(false);
+				$(":input",this).change(function() {
+					$("#changedForm").val(true);
+				});
+				
+				$('input').on('ifChanged', function (event) { $(event.target).trigger('change'); });
     		});	
 			
 			function salvaCambioStato(idverbale, idform, idstato){
@@ -372,12 +396,7 @@
 							if(idform==null){
 								location.reload();
 							}else{
-								$("#"+idform+"box").hide();
-								$("#"+idform+" input").attr('readonly', 'readonly');
-								$("#"+idform+" textarea").attr('readonly', 'readonly');
-								$("#"+idform+" :checkbox").attr('disabled', 'disabled');
-								$("#"+idform+" :radio").attr('disabled', 'disabled');
-								$("#"+idform+" input").iCheck('update');
+								$("."+idform+"box").css("display", "none");
 								
 								if(idform=="formVerbale" && ${user.checkPermesso('GENERA_CERTIFICATO')}){									
 									$("#topbar").append('<button class="btn btn-default pull-right" onClick="generaCertificato(${verbale.getId()})" style="margin-left:5px"><i class="glyphicon glyphicon-edit"></i> Genera Certificato</button>');
@@ -392,6 +411,7 @@
 							$('#myModalError').modal('show');															
 						}		
 						pleaseWaitDiv.modal('hide');	
+						$("#changedForm").val(false);
 						$('#modalCambioStatoVerbale').modal('hide');
 					},
 					error: function(jqXHR, textStatus, errorThrown){		          
@@ -423,7 +443,37 @@
 				});
 			}
 			
-			function modificaRisposte(idVerb,idform){		
+			function preCambioStato(idverbale, idform, idstato){
+				
+				if($("#changedForm").val()=='true'){
+					$("#idverbCambioStato").val(idverbale);
+					$("#idformCambioStato").val(idform);
+					$("#idstatoCambioStato").val(idstato);
+				
+					$("#confirmModal").modal('show');
+				}else{
+					salvaCambioStato(idverbale, idform, idstato);
+				}
+			}
+			
+			function cambiaStato(value){
+				$("#confirmModal").modal('hide');
+			
+				var idverbale=$("#idverbCambioStato").val();
+				var idform=$("#idformCambioStato").val();
+				var idstato=$("#idstatoCambioStato").val();
+				
+				if(value){
+					modificaRisposte(idverbale,idform);
+				}else{
+					annullaModifiche(idform);
+				}
+				
+				salvaCambioStato(idverbale, idform, idstato);
+			}
+			
+			function modificaRisposte(idVerb,idform){
+				
 				pleaseWaitDiv = $('#pleaseWaitDialog');
 				pleaseWaitDiv.modal();
 				
@@ -455,6 +505,7 @@
 			
 			function annullaModifiche(idform){
 				document.getElementById(idform).reset();
+				$("#changedForm").val(false);
 				$('input').iCheck('update'); 
 			}
 			

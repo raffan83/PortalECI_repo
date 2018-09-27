@@ -73,15 +73,6 @@ public class GestioneVerbali extends HttpServlet {
 		try {
 			VerbaleDTO verbale = GestioneVerbaleBO.getVerbale(request.getParameter("idVerbale"),session); 
 		
-			if(verbale.getStato().getId()!= 4) {
-				myObj.addProperty("success", false);
-				myObj.addProperty("messaggio", "Impossibile modificare un verbale nello stato Accettato o Rifiutato!");
-		
-				out.print(myObj);
-				return;
-			
-			}
-		
 			Enumeration<String> parameterNames = request.getParameterNames();
 		
 			ArrayList listaFormulaAggiornate=new ArrayList();
