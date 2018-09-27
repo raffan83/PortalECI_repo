@@ -86,6 +86,7 @@ public class GestioneQuestionario extends HttpServlet {
 		request.setAttribute("tipi_verifica", tipi_verifica);
 		request.setAttribute("categorie_verifica", categorie_verifica);
 		QuestionarioDTO questionario = new QuestionarioDTO();
+		questionario.setVersion(1);
 		// se c'� l'id � una modifica se non c'� � l'inserimento di un nuovo questionario
 		String idQuestionario = request.getParameter("idQuestionario");
 		Integer id = null;
@@ -111,6 +112,7 @@ public class GestioneQuestionario extends HttpServlet {
 				QuestionarioDTO oldQuest = GestioneQuestionarioBO.getQuestionarioById(id, session);
 				if(oldQuest!=null) {
 					questionario = addOldTemplate(questionario, oldQuest.getTemplateVerbale(), oldQuest.getTemplateSchedaTecnica(), session);
+					questionario.setVersion(maxVersionOldQuest(oldQuest.getTipo(), session)+1);
 				}
 				session.save(questionario);
 				//Devo aggiornare l'id di tutti i vebali in stato creato con id del verbale aggiornato con il nuovo verbale
@@ -139,6 +141,7 @@ public class GestioneQuestionario extends HttpServlet {
 			} else	if(lastQuestionario == null || (lastQuestionario != null && GestioneQuestionarioBO.controlloQuestionarioInUso(lastQuestionario.getId(), session))){
 				if(lastQuestionario != null) {
 					questionario = addOldTemplate(questionario, lastQuestionario.getTemplateVerbale(), lastQuestionario.getTemplateSchedaTecnica(), session);
+					questionario.setVersion(maxVersionOldQuest(lastQuestionario.getTipo(), session)+1);
 					session.save(questionario);
 					//Devo aggiornare l'id di tutti i vebali in stato creato con id del verbale aggiornato con il nuovo verbale
 					for(VerbaleDTO ver :GestioneQuestionarioBO.getVerbaliConQuestionarioAggiornato(lastQuestionario.getId(), session)) {
@@ -284,6 +287,12 @@ public class GestioneQuestionario extends HttpServlet {
 			domandaQuestionario.setRisposta(risposta);
 		}
 		return domandaQuestionario;
+	}
+	
+	public static int maxVersionOldQuest(TipoVerificaDTO tipoVerifica, Session session) {
+		QuestionarioDTO lastQuestionario = GestioneQuestionarioBO.getLastQuestionarioByVerifica(tipoVerifica, session); 
+		
+		return lastQuestionario.getVersion();
 	}
 	
 	public static QuestionarioDTO addOldTemplate(QuestionarioDTO ques, TemplateQuestionarioDTO certificato, TemplateQuestionarioDTO skTec, Session session) {
