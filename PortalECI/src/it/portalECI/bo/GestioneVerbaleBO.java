@@ -253,16 +253,16 @@ public class GestioneVerbaleBO {
 			VerbaleDTO verb=GestioneVerbaleDAO.getVerbaleFromSkTec(String.valueOf(verbale.getId()), session);
 			intervento = verb.getIntervento();
 			template = questionario.getTemplateSchedaTecnica();
-			nomefile = questionario.getTitolo()+"_"+questionario.getTipo().getCodice()+"_"+intervento.getId()+".pdf";
+			nomefile = questionario.getTitolo()+"_"+questionario.getTipo().getCodice()+"_"+intervento.getId();
 		}
 		
 		String path = "Intervento_"+intervento.getId()+File.separator+verbale.getType()+"_"+verbale.getCodiceCategoria()+"_"+verbale.getId()+File.separator;
 		new File(Costanti.PATH_CERTIFICATI+path).mkdirs();
-		File file = new File(Costanti.PATH_CERTIFICATI+path,nomefile);
+		File file = new File(Costanti.PATH_CERTIFICATI+path,nomefile+".pdf");
 		int counter = 0;
 		while(file.exists()) {
 			counter++;
-			file = new File(Costanti.PATH_CERTIFICATI+path,counter+nomefile);
+			file = new File(Costanti.PATH_CERTIFICATI+path,nomefile+"_"+counter+".pdf");
 		}
         FileOutputStream fileOutput = new FileOutputStream(file);
 		
