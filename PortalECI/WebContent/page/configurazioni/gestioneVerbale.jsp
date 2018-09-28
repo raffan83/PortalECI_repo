@@ -152,6 +152,38 @@
 										</div>
 									</div>
 								</div>
+								
+       							<div class="row">         
+       								<div class="col-xs-12">
+										<div class="box box-danger box-solid">
+											<div class="box-header with-border">
+ 												Allegati Verbale
+												<div class="box-tools pull-right">		
+													<button data-widget="collapse" class="btn btn-box-tool"><i class="fa fa-minus"></i></button>
+												</div>
+											</div>
+											<div class="box-body">	
+        										<ul class="list-group list-group-unbordered" id="allegatiList">
+        											<c:forEach items="${listaAllegati}" var="allegato"> 
+        											<li class="list-group-item">
+                  										<b>${allegato.getFileName(allegato.getFilePath())}</b>                										
+                  										<a class="btn btn-default btn-xs pull-right" href="gestioneDocumento.do?idDocumento=${allegato.getId()}" style="margin-left:5px"><i class="glyphicon glyphicon-file"></i> Download Allegato</a>														
+                									</li>
+                									</c:forEach>
+                								</ul>
+            									<div class="form-group">
+													<label for="titolo-input" class="control-label">Carica un file da allegare al verbale</label>
+													<div class="input-group">
+														<input type="file" name="file" class="form-control"	id="file-input-allegato" placeholder="File">
+														<div class="input-group-btn">
+															<a class="btn btn-danger" onclick="uploadAllegato(document.getElementById('file-input-allegato'), ${verbale.getId()});return false;">Carica il file</a>
+														</div>
+													</div>
+												</div>          			
+											</div>
+										</div>
+									</div>
+								</div>
              					
              					<c:if test="${verbale.getStato().getId()>=3 }">
         							<div class="row">         
@@ -509,6 +541,45 @@
 				$('input').iCheck('update'); 
 			}
 			
+			function uploadAllegato(inputFileElement, verbaleID) {
+				
+				$('#modalErrorDiv').html("Caricamento in corso");
+				$('#myModalError').removeClass();
+				$('#myModalError').addClass("modal modal-default");
+				$('#myModalError').modal('show');
+				
+				if(inputFileElement.value==""){
+					$('#modalErrorDiv').html("Non hai selezionato nessun file");
+					$('#myModalError').removeClass();
+					$('#myModalError').addClass("modal modal-danger");
+					return false;
+				}
+				var data = new FormData();
+				data.append("file", inputFileElement.files[0]);
+				data.append("verbaleID", verbaleID);
+
+				$.ajax({
+					url : "allegatoUpload.do",
+					type : 'POST',
+					data : data,
+					cache : false,
+					processData : false, // Don't process the files
+					contentType : false, // Set content type to false as jQuery will tell the server its a query string request
+					dataType: 'json',
+					success : function(data, textStatus, jqXHR) {
+						$('#modalErrorDiv').html("File caricato con successo");
+						$('#myModalError').removeClass();
+						$('#myModalError').addClass("modal modal-success");
+
+						$("#allegatiList").append('<li class="list-group-item"><b>'+data.fileName+'</b><a class="btn btn-default btn-xs pull-right" href="gestioneDocumento.do?idDocumento='+data.idDocumento+'" style="margin-left:5px"><i class="glyphicon glyphicon-file"></i> Download Allegato</a></li>');		
+					},
+					error : function(jqXHR, textStatus, errorThrown) {
+						$('#modalErrorDiv').html("Si è verificato un errore durante l'upload del file. Riprova più tardi");	
+						$('#myModalError').removeClass();
+						$('#myModalError').addClass("modal modal-danger");
+					},
+				});
+			}
 					
 			
   		</script>	  
