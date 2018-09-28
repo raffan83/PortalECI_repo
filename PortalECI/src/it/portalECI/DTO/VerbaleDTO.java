@@ -112,6 +112,12 @@ public class VerbaleDTO implements Serializable {
 			this.domandeVerbale.add(domanda);
 		}
 	}
+	public void addToDocumentiVerbale(DocumentoDTO documento) {
+		if (documento != null) {
+			if(this.documentiVerbale ==null) this.documentiVerbale = new HashSet<DocumentoDTO>();
+			this.documentiVerbale.add(documento);
+		}
+	}
 //
 //	public List<DomandaQuestionarioDTO> getDomandeSchedaTecnica() {
 //		return domandeSchedaTecnica;

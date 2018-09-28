@@ -295,18 +295,19 @@ public class GestioneVerbaleBO {
         	certificato.setType(DocumentoDTO.SK_TEC);
         }
         certificato.setVerbale(verbale);
-        if(verbale.getDocumentiVerbale() != null) {
-	        for(DocumentoDTO doc:verbale.getDocumentiVerbale()) {
-        		//gestiosco anche qui certificato o scheda tecnica
-	        	if(verbale.getType().equals(VerbaleDTO.VERBALE) && doc.getType().equalsIgnoreCase(DocumentoDTO.CERTIFIC)){
-		        	certificato.setId(doc.getId());
-		        	verbale.getDocumentiVerbale().remove(doc);
-	        	} else if (verbale.getType().equals(VerbaleDTO.SK_TEC) && doc.getType().equalsIgnoreCase(DocumentoDTO.SK_TEC)){
-	        		certificato.setId(doc.getId());
-		        	verbale.getDocumentiVerbale().remove(doc);
-	        	}
-	        }
-        }
+//        if(verbale.getDocumentiVerbale() != null) {
+//	        for(DocumentoDTO doc:verbale.getDocumentiVerbale()) {
+//        		//gestiosco anche qui certificato o scheda tecnica
+//	        	if(verbale.getType().equals(VerbaleDTO.VERBALE) && doc.getType().equalsIgnoreCase(DocumentoDTO.CERTIFIC)){
+//		        	certificato.setId(doc.getId());
+//		        	verbale.getDocumentiVerbale().remove(doc);
+//	        	} else if (verbale.getType().equals(VerbaleDTO.SK_TEC) && doc.getType().equalsIgnoreCase(DocumentoDTO.SK_TEC)){
+//	        		certificato.setId(doc.getId());
+//		        	verbale.getDocumentiVerbale().remove(doc);
+//	        	}
+//	        }
+//        }
+        verbale.addToDocumentiVerbale(certificato);
         GestioneDocumentoDAO.save(certificato, session);
         verbale.getDocumentiVerbale().add(certificato);
         GestioneVerbaleDAO.save(verbale, session);
