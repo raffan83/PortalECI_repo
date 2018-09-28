@@ -324,8 +324,15 @@ public class GestioneVerbali extends HttpServlet {
 			request.getSession().setAttribute("verbale", verbale);
 			request.setAttribute("hibernateSession", session);
 			
+			List<DocumentoDTO> listaAllegati = new ArrayList<DocumentoDTO>();
+			for(DocumentoDTO doc: verbale.getDocumentiVerbale()) {
+	        	if(doc.getType().equalsIgnoreCase(DocumentoDTO.ATTACHMENT)) {
+	        		listaAllegati.add(doc);
+	        	}
+			}
+			request.getSession().setAttribute("listaAllegati", listaAllegati);
 			RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/page/configurazioni/gestioneVerbale.jsp");
-			dispatcher.forward(request,response);		
+			dispatcher.forward(request,response);
 		}	
 		session.getTransaction().commit();
 		session.close();	

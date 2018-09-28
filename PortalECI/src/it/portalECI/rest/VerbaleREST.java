@@ -73,6 +73,7 @@ public class VerbaleREST extends HttpServlet {
 			JsonObject jsonRequest = new JsonParser().parse(jsonString).getAsJsonObject();
 			
 			GestioneVerbaleBO.saveVerbaleResponses(utente,jsonRequest,session);
+			
 			JsonObject result = new JsonObject();
 			result.addProperty("result", "success");
 			responseJson.add(result);

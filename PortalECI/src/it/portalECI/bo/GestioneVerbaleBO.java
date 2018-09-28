@@ -4,6 +4,7 @@ import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.Charset;
 import java.text.SimpleDateFormat;
@@ -14,6 +15,8 @@ import java.util.Iterator;
 import java.util.List;
 
 import javax.xml.bind.ValidationException;
+
+import org.apache.commons.io.FileUtils;
 import org.hibernate.Session;
 import org.jsoup.Jsoup;
 
@@ -72,6 +75,8 @@ import it.portalECI.DTO.UtenteDTO;
 import it.portalECI.DTO.VerbaleDTO;
 import it.portalECI.Util.Costanti;
 import it.portalECI.Util.HeaderFooter;
+
+import java.util.Base64;
 
 
 public class GestioneVerbaleBO {
@@ -353,7 +358,7 @@ public class GestioneVerbaleBO {
 	}
 	
 	public static void saveVerbaleResponses(UtenteDTO user, JsonObject jsonRequest,Session session) throws ValidationException {
-
+		
 		if (!jsonRequest.isJsonNull()) {
 			
 
@@ -384,11 +389,21 @@ public class GestioneVerbaleBO {
 					JsonObject response = (JsonObject)iterator.next();
 					parseRispostaJson(response, session);
 				}
+				
+				// save documenti
+				JsonArray documenti = jsonRequest.get("documenti").getAsJsonArray();
+				Iterator<JsonElement> iteratorDoc = documenti.iterator();
+				while (iteratorDoc.hasNext()) {
+					JsonObject documento = (JsonObject)iteratorDoc.next();
+					parseDocumentiJson(documento, verbaleDTO, session);
+				}
+					
 				cambioStato(verbaleDTO,GestioneStatoVerbaleDAO.getStatoVerbaleById(StatoVerbaleDTO.DA_VERIFICARE, session),session);
 				
 			} else {
 				throw new ValidationException("Verbale Non Trovato");
 			}
+			
 		}else {
 			throw new ValidationException("JSON Richiesta vuoto");
 		}
@@ -524,6 +539,35 @@ public class GestioneVerbaleBO {
 
 		default:
 			break;
+		}
+
+	}
+	
+	private static void parseDocumentiJson(JsonObject documento, VerbaleDTO verbale, Session session) {
+		String fileName = documento.get("fileName").getAsString();
+		String encodedFile = documento.get("encodedFile").getAsString();
+		
+		int idIntervento = verbale.getIntervento().getId();
+		
+		String path = "Intervento_"+idIntervento+File.separator+verbale.getType()+"_"+verbale.getCodiceCategoria()+"_"+verbale.getId()+File.separator+"Allegati"+File.separator;
+		new File(Costanti.PATH_CERTIFICATI+path).mkdirs();
+		File file = new File(Costanti.PATH_CERTIFICATI+path, fileName);
+		
+		byte[] decoded = Base64.getDecoder().decode(encodedFile);
+		
+		try {
+			FileUtils.writeByteArrayToFile(file, decoded);
+		} catch (IOException e) {
+			e.printStackTrace();
+		} finally {
+			DocumentoDTO allegato = new DocumentoDTO();
+			allegato.setFilePath(path+fileName);
+			allegato.setType(DocumentoDTO.ATTACHMENT);
+			allegato.setVerbale(verbale);
+
+	        GestioneDocumentoDAO.save(allegato, session);
+	        verbale.getDocumentiVerbale().add(allegato);
+	        GestioneVerbaleDAO.save(verbale, session);
 		}
 
 	}

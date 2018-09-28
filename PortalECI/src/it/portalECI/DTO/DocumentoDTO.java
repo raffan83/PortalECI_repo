@@ -1,5 +1,6 @@
 package it.portalECI.DTO;
 
+import java.io.File;
 import java.io.Serializable;
 import java.util.Date;
 
@@ -7,6 +8,7 @@ public class DocumentoDTO implements Serializable {
 
 	public static String CERTIFIC="CERTIFICATO";
 	public static String SK_TEC="SCHEDA_TECNICA";
+	public static String ATTACHMENT = "ALLEGATO";
 	
 	private static final long serialVersionUID = 1L;
 	private int id;
@@ -51,6 +53,11 @@ public class DocumentoDTO implements Serializable {
 	}
 	public void setVerbale(VerbaleDTO verbale) {
 		this.verbale = verbale;
+	}
+	
+	public String getFileName(String filePath) {
+		File file = new File(filePath);
+		return file.getName();
 	}
 	
 }
