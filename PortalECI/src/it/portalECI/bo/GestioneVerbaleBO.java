@@ -1,13 +1,8 @@
 package it.portalECI.bo;
 
-import java.io.ByteArrayInputStream;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.nio.charset.Charset;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -18,29 +13,10 @@ import javax.xml.bind.ValidationException;
 
 import org.apache.commons.io.FileUtils;
 import org.hibernate.Session;
-import org.jsoup.Jsoup;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import com.itextpdf.text.Document;
-import com.itextpdf.text.PageSize;
-import com.itextpdf.text.pdf.PdfWriter;
-import com.itextpdf.tool.xml.XMLWorker;
-import com.itextpdf.tool.xml.XMLWorkerFontProvider;
-import com.itextpdf.tool.xml.XMLWorkerHelper;
-import com.itextpdf.tool.xml.css.CssFile;
-import com.itextpdf.tool.xml.html.CssAppliers;
-import com.itextpdf.tool.xml.html.CssAppliersImpl;
-import com.itextpdf.tool.xml.html.Tags;
-import com.itextpdf.tool.xml.parser.XMLParser;
-import com.itextpdf.tool.xml.pipeline.css.CSSResolver;
-import com.itextpdf.tool.xml.pipeline.css.CssResolverPipeline;
-import com.itextpdf.tool.xml.pipeline.end.PdfWriterPipeline;
-import com.itextpdf.tool.xml.pipeline.html.AbstractImageProvider;
-import com.itextpdf.tool.xml.pipeline.html.HtmlPipeline;
-import com.itextpdf.tool.xml.pipeline.html.HtmlPipelineContext;
-import com.itextpdf.tool.xml.pipeline.html.LinkProvider;
 
 import it.portalECI.DAO.GestioneDocumentoDAO;
 import it.portalECI.DAO.GestioneDomandaVerbaleDAO;
@@ -74,9 +50,8 @@ import it.portalECI.DTO.TemplateQuestionarioDTO;
 import it.portalECI.DTO.UtenteDTO;
 import it.portalECI.DTO.VerbaleDTO;
 import it.portalECI.Util.Costanti;
-import it.portalECI.Util.HeaderFooter;
 
-import java.util.Base64;
+import org.apache.commons.codec.binary.Base64;
 
 
 public class GestioneVerbaleBO {
@@ -284,6 +259,11 @@ public class GestioneVerbaleBO {
 		String path = "Intervento_"+intervento.getId()+File.separator+verbale.getType()+"_"+verbale.getCodiceCategoria()+"_"+verbale.getId()+File.separator;
 		new File(Costanti.PATH_CERTIFICATI+path).mkdirs();
 		File file = new File(Costanti.PATH_CERTIFICATI+path,nomefile);
+		int counter = 0;
+		while(file.exists()) {
+			counter++;
+			file = new File(Costanti.PATH_CERTIFICATI+path,counter+nomefile);
+		}
         FileOutputStream fileOutput = new FileOutputStream(file);
 		
 		String html = new String(template.getTemplate());
@@ -553,7 +533,7 @@ public class GestioneVerbaleBO {
 		new File(Costanti.PATH_CERTIFICATI+path).mkdirs();
 		File file = new File(Costanti.PATH_CERTIFICATI+path, fileName);
 		
-		byte[] decoded = Base64.getDecoder().decode(encodedFile);
+		byte[] decoded = Base64.decodeBase64(encodedFile);
 		
 		try {
 			FileUtils.writeByteArrayToFile(file, decoded);
