@@ -201,7 +201,10 @@
         													<div class="col-xs-12" style="border-bottom: 1px solid #ddd;">
         														<label for="titolo-input" class="control-label col-xs-12">${domVerbale.getDomandaQuestionario().getTesto()}</label><br/>
         												
-    	    													<c:set var="domVerbale" value="${domVerbale}" scope="request"></c:set>    	    													    	    													
+    	    													<c:set var="domVerbale" value="${domVerbale}" scope="request"></c:set>
+    	    													<c:set var="storicoModificheVerb" value="${storicoModificheVerb}" scope="request"></c:set>        	
+    	    													<c:set var="storicoModificheSkTec" value="${storicoModificheSkTec}" scope="request"></c:set>    
+    	    													<c:set var="type" value="Verbale" scope="request"></c:set>    													    	    													
 																<jsp:include page="gestioneVerbaleDettaglio.jsp"></jsp:include>        													
         													</div>
 														</c:forEach>
@@ -254,7 +257,8 @@
         													<div class="col-xs-12" style="border-bottom: 1px solid #ddd;">
         														<label for="titolo-input" class="control-label col-xs-12">${domVerbale.getDomandaQuestionario().getTesto()}</label><br/>
         												
-    	    													<c:set var="domVerbale" value="${domVerbale}" scope="request"></c:set>    	    													
+    	    													<c:set var="domVerbale" value="${domVerbale}" scope="request"></c:set>
+    	    													<c:set var="type" value="SchedaTecnica" scope="request"></c:set>    	      	    													
 																<jsp:include page="gestioneVerbaleDettaglio.jsp"></jsp:include>        													
 
         													</div>
@@ -349,6 +353,25 @@
       									<button type="button" class="btn btn-default" onclick="cambiaStato(true)" >Salva e cambia stato</button>
       									<button type="button" class="btn btn-default" onclick="cambiaStato(false)" >Annulla modifiche e cambia stato</button>      									
         								<button type="button" class="btn btn-default" data-dismiss="modal">Chiudi</button>
+      								</div>
+    							</div>
+  							</div>
+						</div> 
+						
+						<div id="listChange" class="modal fade" role="dialog" aria-labelledby="myLargeModalLabel">
+    						<div class="modal-dialog" role="document">
+    							<div class="modal-content">
+     								<div class="modal-header">
+        								<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        								<h4 class="modal-title" id="myModalLabel">Lista Modifiche</h4>
+      								</div>
+       								<div class="modal-body">
+										<div id="listChangeDiv">				
+										
+										</div>	   
+  		 							</div>
+      								<div class="modal-footer">
+        								<button type="button" class="btn btn-outline" data-dismiss="modal">Chiudi</button>
       								</div>
     							</div>
   							</div>
@@ -581,6 +604,29 @@
 				});
 			}
 					
+			function detailStorico(idrisp){
+				$.ajax({
+					type: "GET",
+					url: "gestioneStoricoModifiche.do?idRisposta="+idrisp,	
+					dataType: "json",
+					success: function( data, textStatus) {
+
+						
+						$('#listChangeDiv').html(data.dataobject);
+
+						$('#listChange').modal('show');
+						
+						
+						pleaseWaitDiv.modal('hide');
+					},
+
+					error: function(jqXHR, textStatus, errorThrown){
+						$('#errorMsg').html("<h3 class='label label-danger'>"+textStatus+"</h3>");
+						//callAction('logout.do');
+						pleaseWaitDiv.modal('hide');
+					}
+				});
+			}
 			
   		</script>	  
 	</jsp:attribute> 

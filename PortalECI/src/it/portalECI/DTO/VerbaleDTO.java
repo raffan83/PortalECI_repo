@@ -31,6 +31,8 @@ public class VerbaleDTO implements Serializable {
 	private VerbaleDTO schedaTecnica;
 	private String type;
 	private Set<DocumentoDTO> documentiVerbale;
+	private Date dataScaricamento;
+	private Date dataTrasferimento;
 		
 	private String numeroVerbale;	
 	public int getId() {
@@ -159,6 +161,23 @@ public class VerbaleDTO implements Serializable {
 
 	public void setNumeroVerbale(String numeroVerbale) {
 		this.numeroVerbale = numeroVerbale;
+	}
+	
+	public Date getDataScaricamento() {
+		return dataScaricamento;
+	}
+
+	public void setDataScaricamento(Date dataScaricamento) {
+		this.dataScaricamento = dataScaricamento;
+	}
+	
+	
+	public Date getDataTrasferimento() {
+		return dataTrasferimento;
+	}
+
+	public void setDataTrasferimento(Date dataTrasferimento) {
+		this.dataTrasferimento = dataTrasferimento;
 	}
 
 	public JsonObject getVerbaleJsonObject() {

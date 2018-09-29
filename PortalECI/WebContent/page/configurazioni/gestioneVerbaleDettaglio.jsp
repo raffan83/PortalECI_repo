@@ -42,13 +42,26 @@
 	}else if(domVerbale!=null && domVerbale.getRisposta().getTipo().equals("RES_TEXT")){
 		RispostaTestoVerbaleDTO risp =(RispostaTestoVerbaleDTO) hibernateSession.get(RispostaTestoVerbaleDTO.class, domVerbale.getRisposta().getId());	
 		request.setAttribute("risposta",risp);
-	} %>
+	}
+	
+	if(request.getAttribute("type").equals("Verbale")){
+		request.setAttribute("storico", request.getAttribute("storicoModificheVerb"));		
+	}else{
+		request.setAttribute("storico",request.getAttribute("storicoModificheSkTec"));
+	}
+%>
 	
 <c:choose>
 	<c:when test="${domVerbale.getRisposta().getTipo().equals('RES_CHOICE')}">
   																
   		<div class="col-sm-12">	
   			<div class="form-group">	
+  				<c:if test="${storico.contains(risposta.getId()) }">	
+  					<div class="row" style="text-align: right;">    
+  						<i class="fa fa-pencil" aria-hidden="true" onclick="detailStorico('${risposta.getId()}')"></i>
+  					</div>
+  				</c:if>
+  				
   				<c:set var="domVerbalePage" value="${domVerbale}" scope="page"></c:set>
   				<c:set var="rispostaPage" value="${risposta}" scope="page"></c:set>
     			
@@ -76,7 +89,12 @@
 		</div>
   	</c:when>
   	<c:when test="${domVerbale.getRisposta().getTipo().equals('RES_FORMULA')}">
-
+		<c:if test="${storico.contains(risposta.getId()) }">	
+			<div class="row" style="text-align: right;">    
+  				<i class="fa fa-pencil" aria-hidden="true" onclick="detailStorico('${risposta.getId()}')"></i>
+  			</div>
+  		</c:if>
+  		
   		<div class="col-sm-3">
 			<div class="form-group">
 				<label for="titolo-input" class="control-label">${risposta.getRispostaQuestionario().getValore1()}</label>
@@ -104,7 +122,13 @@
   	</c:when>
   	<c:when test="${domVerbale.getRisposta().getTipo().equals('RES_TEXT')}">
   		<div class="col-sm-12">
-  			<div class="form-group">		
+  			<div class="form-group">
+  				<c:if test="${storico.contains(risposta.getId()) }">
+  					<div class="row" style="text-align: right;">    	
+  						<i class="fa fa-pencil" aria-hidden="true" onclick="detailStorico('${risposta.getId()}')"></i>
+  					</div>
+  				</c:if>
+  				
   				<textarea class="form-control rispVerb" rows="5" id="comment" name="${risposta.getId()}" ${domVerbale.getDomandaQuestionario().getObbligatoria()?'required':''} >${risposta.getResponseValue()}</textarea>
   			</div>
   		</div>
