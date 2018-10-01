@@ -248,7 +248,6 @@ public class GestioneVerbaleBO {
 			intervento = verbale.getIntervento();
 			template = questionario.getTemplateVerbale();
 			nomefile = generaNumeroVerbale(questionario.getTipo().getCategoria(), intervento, session);
-			verbale.setNumeroVerbale(nomefile);
 		}else {
 			VerbaleDTO verb=GestioneVerbaleDAO.getVerbaleFromSkTec(String.valueOf(verbale.getId()), session);
 			intervento = verb.getIntervento();
@@ -266,7 +265,13 @@ public class GestioneVerbaleBO {
 		}
         FileOutputStream fileOutput = new FileOutputStream(file);
 		
-		String html = new String(template.getTemplate());
+		String html = new String();
+        
+		//TODO: cerca certificato/scheda tecnica valido
+        //TODO: se lo trovo lo invalido: invalido sul DB e aggiungo dicitura du PDF
+        //TODO: se lo trovo aggiungo dicitura sul nuovo 
+		
+		html = html + template.getTemplate();
 		html = replacePlaceholders(html, verbale,intervento, session);
 		
 		GestioneTemplateQuestionarioBO.writePDF(fileOutput, html, template.getHeader(), template.getFooter());
@@ -279,22 +284,11 @@ public class GestioneVerbaleBO {
         } else {
         	certificato.setType(DocumentoDTO.SK_TEC);
         }
-        certificato.setVerbale(verbale);
-//        if(verbale.getDocumentiVerbale() != null) {
-//	        for(DocumentoDTO doc:verbale.getDocumentiVerbale()) {
-//        		//gestiosco anche qui certificato o scheda tecnica
-//	        	if(verbale.getType().equals(VerbaleDTO.VERBALE) && doc.getType().equalsIgnoreCase(DocumentoDTO.CERTIFIC)){
-//		        	certificato.setId(doc.getId());
-//		        	verbale.getDocumentiVerbale().remove(doc);
-//	        	} else if (verbale.getType().equals(VerbaleDTO.SK_TEC) && doc.getType().equalsIgnoreCase(DocumentoDTO.SK_TEC)){
-//	        		certificato.setId(doc.getId());
-//		        	verbale.getDocumentiVerbale().remove(doc);
-//	        	}
-//	        }
-//        }
+        certificato.setVerbale(verbale);        
         verbale.addToDocumentiVerbale(certificato);
         GestioneDocumentoDAO.save(certificato, session);
         verbale.getDocumentiVerbale().add(certificato);
+        verbale.setNumeroVerbale(nomefile);
         GestioneVerbaleDAO.save(verbale, session);
     	
 		return file;

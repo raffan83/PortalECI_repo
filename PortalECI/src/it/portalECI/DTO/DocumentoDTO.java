@@ -17,6 +17,7 @@ public class DocumentoDTO implements Serializable {
 	private Date createDate;
 	private Date updateDate;
 	private VerbaleDTO verbale;
+	//TODO: flag valido: true di default
 
 	public Date getCreateDate() {
 		return createDate;
