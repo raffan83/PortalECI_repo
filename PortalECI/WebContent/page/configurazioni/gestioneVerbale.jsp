@@ -37,27 +37,7 @@
           		<h1 class="pull-left">
         			Dettaglio Verbale
         			<small></small>
-      			</h1>  
-      			<c:if test="${verbale.getStato().getId()>=5 && user.checkPermesso('GENERA_CERTIFICATO')}">
-      				<button class="btn btn-default pull-right" onClick="generaCertificato(${verbale.getId()})" style="margin-left:5px"><i class="glyphicon glyphicon-edit"></i> Genera Certificato</button>
-      			</c:if>
-      			<c:if test="${verbale.getSchedaTecnica()!=null && verbale.getSchedaTecnica().getStato().getId()>=5 && user.checkPermesso('GENERA_SKTECNICA')}">
-      				<button class="btn btn-default pull-right" onClick="generaCertificato(${verbale.getSchedaTecnica().getId()})" style="margin-left:5px"><i class="glyphicon glyphicon-edit"></i> Genera Scheda Tecnica</button>
-      			</c:if>   
-      			<c:if test="${verbale.getDocumentiVerbale().size()>0}">
-      				<c:forEach items="${verbale.getDocumentiVerbale()}" var="docum">	
-      					<c:if test="${docum.getType().equals('CERTIFICATO') && user.checkPermesso('DOWNLOAD_CERTIFICATO')}">
-    	  					<a class="btn btn-default pull-right" href="gestioneDocumento.do?idDocumento=${docum.id}" style="margin-left:5px"><i class="glyphicon glyphicon-file"></i> Download Certificato</a>
-	      				</c:if>
-	      			</c:forEach>
-      			</c:if>
-      			<c:if test="${verbale.getSchedaTecnica()!=null && verbale.getSchedaTecnica().getStato().getId()>=5 && verbale.getSchedaTecnica().getDocumentiVerbale().size()>0}">
-      				<c:forEach items="${verbale.getSchedaTecnica().getDocumentiVerbale()}" var="documST">
-      					<c:if test="${ documST.getType().equals('SCHEDA_TECNICA') && user.checkPermesso('DOWNLOAD_SKTECNICA')}">
-	      					<a class="btn btn-default pull-right" href="gestioneDocumento.do?idDocumento=${documST.id}" style="margin-left:5px"><i class="glyphicon glyphicon-file"></i> Download Scheda Tecnica</a>
-    	  				</c:if>
-      				</c:forEach>
-      			</c:if>    
+      			</h1>
     		</section>
 			<div style="clear: both;"></div>
     		
@@ -152,6 +132,68 @@
 										</div>
 									</div>
 								</div>
+								      			
+      				
+      			
+								<div class="row">
+									<c:if test ="${verbale.getStato().getId()>=5}">								  
+       								<div class="col-md-6 col-xs-12" id="certificatoBox">
+       									<div class="box box-danger box-solid">
+											<div class="box-header with-border">
+ 												Certificato
+												<div class="box-tools pull-right">	
+													<button data-widget="collapse" class="btn btn-box-tool"><i class="fa fa-minus"></i></button>
+												</div>
+											</div>
+											<div class="box-body">
+												<ul class="list-group list-group-unbordered" id="">
+        											<c:forEach items="${listaCertificati}" var="certificato"> 
+	        											<li class="list-group-item">
+	                  										<b>${certificato.getFileName(certificato.getFilePath())}</b>
+	                  										<c:if test="${user.checkPermesso('DOWNLOAD_CERTIFICATO')}">             										
+	                  											<a class="btn btn-default btn-xs pull-right" href="gestioneDocumento.do?idDocumento=${certificato.getId()}" style="margin-left:5px"><i class="glyphicon glyphicon-file"></i> Download Certificato</a>														
+	                										</c:if>
+	                									</li>
+                									</c:forEach>
+                								</ul>
+                								<c:if test="${user.checkPermesso('GENERA_CERTIFICATO')}">    
+                									<button class="btn btn-default pull-right" onClick="generaCertificato(${verbale.getId()})" style="margin-left:5px"><i class="glyphicon glyphicon-edit"></i> Genera Certificato</button>
+												</c:if>
+											</div>
+										</div>
+									</div>
+								</c:if>
+								
+								<c:if test="${verbale.getSchedaTecnica()!=null && verbale.getSchedaTecnica().getStato().getId()>=5 && user.checkPermesso('GENERA_SKTECNICA')}">
+									<div class="col-md-6 col-xs-12" id="schedaTecnicaBox">
+	     									<div class="box box-danger box-solid">
+											<div class="box-header with-border">
+													Scheda tecnica
+												<div class="box-tools pull-right">		
+													<button data-widget="collapse" class="btn btn-box-tool"><i class="fa fa-minus"></i></button>
+												</div>
+											</div>
+											<div class="box-body">
+												<ul class="list-group list-group-unbordered" id="">
+	       											<c:forEach items="${listaSchedeTecniche}" var="schedaTec"> 
+	        											<li class="list-group-item">
+	                  										<b>${schedaTec.getFileName(schedaTec.getFilePath())}</b>
+	                  										<c:if test="${user.checkPermesso('DOWNLOAD_SKTECNICA')}">             										
+	                  											<a class="btn btn-default btn-xs pull-right" href="gestioneDocumento.do?idDocumento=${schedaTec.getId()}" style="margin-left:5px"><i class="glyphicon glyphicon-file"></i> Download SchedaTecnica</a>														
+	                										</c:if>
+	                									</li>
+	               									</c:forEach>
+	               								</ul>
+	               								<c:if test="${user.checkPermesso('GENERA_SKTECNICA')}">
+	               									<button class="btn btn-default pull-right" onClick="generaCertificato(${verbale.getSchedaTecnica().getId()})" style="margin-left:5px"><i class="glyphicon glyphicon-edit"></i> Genera Scheda Tecnica</button>
+												</c:if>
+											</div>
+										</div>
+									</div>								
+								</c:if>
+
+								</div>
+								
 								
        							<div class="row">         
        								<div class="col-xs-12">
@@ -166,8 +208,10 @@
         										<ul class="list-group list-group-unbordered" id="allegatiList">
         											<c:forEach items="${listaAllegati}" var="allegato"> 
         											<li class="list-group-item">
-                  										<b>${allegato.getFileName(allegato.getFilePath())}</b>                										
-                  										<a class="btn btn-default btn-xs pull-right" href="gestioneDocumento.do?idDocumento=${allegato.getId()}" style="margin-left:5px"><i class="glyphicon glyphicon-file"></i> Download Allegato</a>														
+                  										<b>${allegato.getFileName(allegato.getFilePath())}</b>    
+                  										<c:if test="${user.checkPermesso('DOWNLOAD_ALLEGATO')}">              										
+                  											<a class="btn btn-default btn-xs pull-right" href="gestioneDocumento.do?idDocumento=${allegato.getId()}" style="margin-left:5px"><i class="glyphicon glyphicon-file"></i> Download Allegato</a>														
+                										</c:if>
                 									</li>
                 									</c:forEach>
                 								</ul>
@@ -410,6 +454,13 @@
 				});
 				
 				$('input').on('ifChanged', function (event) { $(event.target).trigger('change'); });
+				
+				if (!${verbale.getStato().getId()>=5}) {
+					$("#schedaTecnicaBox").removeClass("col-md-6");
+				} else if (!(${verbale.getSchedaTecnica()!=null && verbale.getSchedaTecnica().getStato().getId()>=5 && user.checkPermesso('GENERA_SKTECNICA')})){
+					$("#certificatoBox").removeClass("col-md-6");
+				}			
+				
     		});	
 			
 			function salvaCambioStato(idverbale, idform, idstato){
