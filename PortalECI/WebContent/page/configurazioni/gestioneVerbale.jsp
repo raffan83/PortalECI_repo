@@ -455,9 +455,9 @@
 				
 				$('input').on('ifChanged', function (event) { $(event.target).trigger('change'); });
 				
-				if (!${verbale.getStato().getId()>=5}) {
+				if (!$("#certificatoBox").length) {
 					$("#schedaTecnicaBox").removeClass("col-md-6");
-				} else if (!(${verbale.getSchedaTecnica()!=null && verbale.getSchedaTecnica().getStato().getId()>=5 && user.checkPermesso('GENERA_SKTECNICA')})){
+				} else if (!$("#schedaTecnicaBox").length){
 					$("#certificatoBox").removeClass("col-md-6");
 				}			
 				
