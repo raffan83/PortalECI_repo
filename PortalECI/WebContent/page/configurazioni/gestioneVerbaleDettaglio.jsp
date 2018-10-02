@@ -58,7 +58,7 @@
   			<div class="form-group">	
   				<c:if test="${storico.contains(risposta.getId()) }">	
   					<div class="row" style="text-align: right;">    
-  						<i class="fa fa-pencil" aria-hidden="true" onclick="detailStorico('${risposta.getId()}')"></i>
+  						<i class="fa fa-pencil" aria-hidden="true" onclick="detailStorico('${risposta.getId()}')" title="Click per vedere le modifiche sulla risposta" style="cursor: pointer;"></i>
   					</div>
   				</c:if>
   				
@@ -91,7 +91,7 @@
   	<c:when test="${domVerbale.getRisposta().getTipo().equals('RES_FORMULA')}">
 		<c:if test="${storico.contains(risposta.getId()) }">	
 			<div class="row" style="text-align: right;">    
-  				<i class="fa fa-pencil" aria-hidden="true" onclick="detailStorico('${risposta.getId()}')"></i>
+  				<i class="fa fa-pencil" aria-hidden="true" onclick="detailStorico('${risposta.getId()}')" title="Click per vedere le modifiche sulla risposta" style="cursor: pointer;"></i>
   			</div>
   		</c:if>
   		
@@ -125,7 +125,7 @@
   			<div class="form-group">
   				<c:if test="${storico.contains(risposta.getId()) }">
   					<div class="row" style="text-align: right;">    	
-  						<i class="fa fa-pencil" aria-hidden="true" onclick="detailStorico('${risposta.getId()}')"></i>
+  						<i class="fa fa-pencil" aria-hidden="true" onclick="detailStorico('${risposta.getId()}')" title="Click per vedere le modifiche sulla risposta" style="cursor: pointer;"></i>
   					</div>
   				</c:if>
   				

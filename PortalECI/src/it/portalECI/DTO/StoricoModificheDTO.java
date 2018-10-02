@@ -1,6 +1,7 @@
 package it.portalECI.DTO;
 
 import java.io.Serializable;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 
@@ -85,6 +86,13 @@ public class StoricoModificheDTO implements Serializable {
 	}	
 	public void setCreateDate(Date createDate) {
 		this.createDate = createDate;
+	}
+	public String getCreateDateFormat() {
+		SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyyy HH:mm");
+		if (createDate != null)
+			return format.format(createDate);
+		else return null;
+		
 	}
 	
 	

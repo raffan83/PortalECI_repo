@@ -81,17 +81,17 @@ public class GestioneStoricoModifiche extends HttpServlet {
 		if( risp.getTipo().equals(RispostaVerbaleDTO.TIPO_TESTO)) {
 			dataobject="<table style='width:100%'>" + 
 				"<tr>" + 
-				"<th style='text-align:center; border:1px solid;'>Vecchio Valore</th>" + 
-				"<th style='text-align:center; border:1px solid;'>Utente</th>" + 
 				"<th style='text-align:center; border:1px solid;'>Data</th>" + 
+				"<th style='text-align:center; border:1px solid;'>Utente</th>" + 
+				"<th style='text-align:center; border:1px solid;'>Vecchio Valore</th>" + 
 				"</tr>";
 				 
 		
 			for (int i = 0; i < list.size(); i++) {
 				dataobject+="<tr style='text-align:center; border:1px solid;'>" + 
-					"<td style='text-align:center; border:1px solid;'>"+list.get(i).getVecchioValore()+"</td>" + 
+					"<td style='text-align:center; border:1px solid;'>"+list.get(i).getCreateDateFormat()+"</td>" + 
 					"<td style='text-align:center; border:1px solid;'>"+list.get(i).getUsername()+"</td>" + 
-					"<td style='text-align:center; border:1px solid;'>"+list.get(i).getCreateDate()+"</td>" + 
+					"<td style='text-align:center; border:1px solid;'>"+list.get(i).getVecchioValore()+"</td>" + 
 					"</tr>";
 			}
 		
@@ -99,36 +99,61 @@ public class GestioneStoricoModifiche extends HttpServlet {
 		}else if( risp.getTipo().equals(RispostaVerbaleDTO.TIPO_FORMULA)) {
 			dataobject="<table style='width:100%'>" + 
 				"<tr>" + 
+				"<th style='text-align:center; border:1px solid;'>Utente</th>" + 
+				"<th style='text-align:center; border:1px solid;'>Data</th>" + 
 				"<th style='text-align:center; border:1px solid;'>Vecchio Valore1</th>" +
 				"<th style='text-align:center; border:1px solid;'>Vecchio Valore2</th>" + 
 				"<th style='text-align:center; border:1px solid;'>Vecchio Risultato</th>" + 
-				"<th style='text-align:center; border:1px solid;'>Utente</th>" + 
-				"<th style='text-align:center; border:1px solid;'>Data</th>" + 
 				"</tr>";
 					 
 			
 			for (int i = 0; i < list.size(); i++) {
-				String[] result =new String[3];
-				result=list.get(i).getVecchioValore().split("|");
-				String valueresult="";
-				try {
-					valueresult=result[2];
-				} catch (Exception e) {
-					valueresult="";
+				String[] result = list.get(i).getVecchioValore().split("\\|");		
+				String val1="";String val2="";String resVal="";
+				if (result.length==3) {
+					if(!result[0].equals("null")) val1=result[0];
+					if(!result[1].equals("null")) val2=result[1];
+					if(!result[2].equals("null")) resVal=result[2];
 				}
 				
 				dataobject+="<tr style='text-align:center; border:1px solid;'>" + 
-					"<td style='text-align:center; border:1px solid;'>"+result[0]+"</td>" +
-					"<td style='text-align:center; border:1px solid;'>"+result[1]+"</td>" +
-					"<td style='text-align:center; border:1px solid;'>"+valueresult+"</td>" +
 					"<td style='text-align:center; border:1px solid;'>"+list.get(i).getUsername()+"</td>" + 
-					"<td style='text-align:center; border:1px solid;'>"+list.get(i).getCreateDate()+"</td>" + 
+					"<td style='text-align:center; border:1px solid;'>"+list.get(i).getCreateDateFormat()+"</td>" + 
+					"<td style='text-align:center; border:1px solid;'>"+val1+"</td>" +
+					"<td style='text-align:center; border:1px solid;'>"+val2+"</td>" +
+					"<td style='text-align:center; border:1px solid;'>"+resVal+"</td>" +
 					"</tr>";
 			}
 			
 			dataobject+="</table>";
 			
 		}else if( risp.getTipo().equals(RispostaVerbaleDTO.TIPO_SCELTA)) {
+			dataobject="<table style='width:100%'>" + 
+					"<tr>" + 
+					"<th style='text-align:center; border:1px solid;'>Data</th>" + 
+					"<th style='text-align:center; border:1px solid;'>Utente</th>" + 
+					"<th style='text-align:center; border:1px solid;'>Vecchie Options Checked</th>" + 
+					"</tr>";
+					 
+			
+				for (int i = 0; i < list.size(); i++) {
+					String vecchioValore = "";
+					if(!list.get(i).getVecchioValore().isEmpty()) {
+						String[] result = list.get(i).getVecchioValore().split("\\|");			
+						for (int j = 0; j < result.length; j++) {
+							int idOpzione = Integer.parseInt(result[j]);
+							OpzioneRispostaVerbaleDTO opzione = GestioneRispostaVerbaleDAO.getOpzioneVerbale(idOpzione, session);
+							String testo = opzione.getOpzioneQuestionario().getTesto();
+							vecchioValore+= testo+"<br/>";
+						}
+					}
+									
+					dataobject+="<tr style='text-align:center; border:1px solid;'>" + 
+						"<td style='text-align:center; border:1px solid;'>"+list.get(i).getCreateDateFormat()+"</td>" + 
+						"<td style='text-align:center; border:1px solid;'>"+list.get(i).getUsername()+"</td>" + 
+						"<td style='text-align:center; border:1px solid;'>"+vecchioValore+"</td>" + 
+						"</tr>";
+				}
 			
 			
 		}

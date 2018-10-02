@@ -1,5 +1,6 @@
 package it.portalECI.DAO;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -15,8 +16,13 @@ public class GestioneStoricoModificheDAO {
 		
 		query.setParameter("_idVerbale", idVerbale);
 		List<StoricoModificheDTO> result = query.list();
-		List<Integer> ids = result.stream()
-                .map(StoricoModificheDTO::getIdRisposta).collect(Collectors.toList());
+		List<Integer> ids = new ArrayList<Integer>();
+		for (StoricoModificheDTO storicoModifiche: result) {
+			int id = storicoModifiche.getIdRisposta();
+			ids.add(id);
+		}
+		//List<Integer> ids = result.stream()
+        //        .map(StoricoModificheDTO::getIdRisposta).collect(Collectors.toList());
 		return ids;
 	}
 	

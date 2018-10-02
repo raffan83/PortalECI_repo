@@ -77,7 +77,7 @@ public class GestioneVerbali extends HttpServlet {
 		try {
 			VerbaleDTO verbale = GestioneVerbaleBO.getVerbale(request.getParameter("idVerbale"),session); 
 			
-			Enumeration<String> parameterNames = request.getParameterNames();
+			Enumeration<String> parameterNames = request.getParameterNames(); //lista id elementi modificati
 
 			ArrayList listaFormulaAggiornate=new ArrayList();
 		
@@ -85,9 +85,11 @@ public class GestioneVerbali extends HttpServlet {
 				String paramName = parameterNames.nextElement();
 
 				String id="";
+				
+				// RISPOSTA FORMULA
 				if(paramName.contains("value1") || paramName.contains("value2") || paramName.contains("responseValue")) {				
 					id=paramName.replaceAll("value1", "").replaceAll("value2", "").replaceAll("responseValue", "");
-				
+									
 					if(!listaFormulaAggiornate.contains(id)) {
 						listaFormulaAggiornate.add(id);
 						String value1=request.getParameter("value1"+id);
@@ -96,9 +98,25 @@ public class GestioneVerbali extends HttpServlet {
 				
 						RispostaFormulaVerbaleDTO rispostaFormula = GestioneRispostaVerbaleDAO.getRispostaInstance(RispostaFormulaVerbaleDTO.class, Integer.parseInt(id), session);
 						
-						if(!rispostaFormula.getValue1().equals(value1) || !rispostaFormula.getValue2().equals(value2) || !rispostaFormula.getResponseValue().equals(responseValue)  ) {
+						String val1 = rispostaFormula.getValue1(); 
+						String val2 = rispostaFormula.getValue2(); 
+						String respVal = rispostaFormula.getResponseValue();
+						
+						if(val1 == null) val1 = new String();
+						if(val2 == null) val2 = new String();
+						if(respVal == null) respVal = new String();
+						
+						if(!val1.equals(value1) || !val2.equals(value2) || !respVal.equals(responseValue)  ) {
+							
+							if (val1.isEmpty()) val1 = "null";
+							if (val2.isEmpty()) val2 = "null";						
+							if (respVal.isEmpty()) respVal = "null";
+							//if (rispostaFormula.getValue1().isEmpty()) val1 = "null";
+							//if (rispostaFormula.getValue2().isEmpty()) val2 = "null";						
+							//if (rispostaFormula.getResponseValue().isEmpty()) respVal = "null";
+							
 							addStorico(verbale, 
-									rispostaFormula.getValue1()+"|"+ rispostaFormula.getValue2()+"|"+rispostaFormula.getResponseValue() , 
+									val1+"|"+ val2+"|"+respVal , 
 									null, 
 									rispostaFormula.getId(), 
 									StoricoModificheDTO.UPDATE, 
@@ -112,9 +130,10 @@ public class GestioneVerbali extends HttpServlet {
 						GestioneRispostaVerbaleDAO.save(rispostaFormula, session);
 					}
 				
-				}else if(paramName.contains("options")) {			
+				// RISPOSTA MULTIPLA
+				}else if(paramName.contains("options")) {		
 					Boolean change=false;					
-					String idChanged="";
+					String oldCheck="";
 					String idrispostaSceltaVerbale=paramName.replaceAll("options", "");
 			
 					Set<OpzioneRispostaVerbaleDTO> listaOpzioni= GestioneRispostaVerbaleDAO.getRispostaSceltaVerbaleDTO(Integer.parseInt(idrispostaSceltaVerbale), session).getOpzioni();
@@ -122,40 +141,47 @@ public class GestioneVerbali extends HttpServlet {
 					String[] listaid = request.getParameterValues(paramName);
 				
 					for (OpzioneRispostaVerbaleDTO s : listaOpzioni) {
-System.out.println(s.getId());						
+																
 						Boolean value=false;
 						if(Arrays.asList(listaid).contains(String.valueOf(s.getId()))) {
 							value=true;
-							idChanged+= s.getId()+"|";
 						}
 						
 						if(s.getChecked()!=value) {
 							change=true;
 						}
 						
+						if (s.getChecked() == true) {
+							oldCheck += s.getId()+"|";
+						}
+						
 						OpzioneRispostaVerbaleDTO opzioneRispostaVerbaleDTO = GestioneRispostaVerbaleDAO.getOpzioneVerbale(s.getId(), session);
 						opzioneRispostaVerbaleDTO.setChecked(value);
 						GestioneRispostaVerbaleDAO.saveOpzioneVerbale(opzioneRispostaVerbaleDTO, session);
 					}
-					
+
 					if(change) {
-						addStorico(verbale, idChanged, null, Integer.parseInt(idrispostaSceltaVerbale), StoricoModificheDTO.UPDATE, request, session);
-					}
-											
+						addStorico(verbale, oldCheck, null, Integer.parseInt(idrispostaSceltaVerbale), StoricoModificheDTO.UPDATE, request, session);
+					}						
 				
 				}else if(!paramName.contains("idVerbale") && !paramName.contains("options") && !paramName.contains("responseValue") && !paramName.contains("value2") && !paramName.contains("value1")){			
 					String testo=request.getParameter(paramName);
 
 					RispostaTestoVerbaleDTO rispostaTesto = GestioneRispostaVerbaleDAO.getRispostaInstance(RispostaTestoVerbaleDTO.class, Integer.parseInt(paramName), session);
-					if(!rispostaTesto.getResponseValue().equals(testo)) {
-						addStorico(verbale, 
-								rispostaTesto.getResponseValue(), 
-								null, 
-								rispostaTesto.getId(), 
-								StoricoModificheDTO.UPDATE, 
-								request, 
-								session);
-					}
+					String rispostaTestoVal = rispostaTesto.getResponseValue();
+
+					if (rispostaTestoVal == null) rispostaTestoVal = new String();
+					
+						if(!rispostaTestoVal.equals(testo)) {
+							addStorico(verbale, 
+									rispostaTestoVal, 
+									null, 
+									rispostaTesto.getId(), 
+									StoricoModificheDTO.UPDATE, 
+									request, 
+									session);
+						}
+					
 					rispostaTesto.setResponseValue(testo);
 					GestioneRispostaVerbaleDAO.save(rispostaTesto, session);
 
@@ -350,7 +376,7 @@ System.out.println(s.getId());
 				
 				request.setAttribute("domandeVerbaleSchedaTecnica",domandeVerbaleSchedaTecnica);
 				request.getSession().setAttribute("storicoModificheSkTec", GestioneStoricoModificheDAO.getListaStoricoModificheVerbale(verbale.getSchedaTecnica().getId(), session));
-System.out.println(GestioneStoricoModificheDAO.getListaStoricoModificheVerbale(verbale.getSchedaTecnica().getId(), session));				
+				
 			}
 			
 			request.setAttribute("domandeVerbale",domandeVerbale);
@@ -362,7 +388,7 @@ System.out.println(GestioneStoricoModificheDAO.getListaStoricoModificheVerbale(v
 			request.getSession().setAttribute("intervento", intervento);
 			request.getSession().setAttribute("verbale", verbale);
 			request.getSession().setAttribute("storicoModificheVerb", GestioneStoricoModificheDAO.getListaStoricoModificheVerbale(verbale.getId(), session));
-System.out.println(GestioneStoricoModificheDAO.getListaStoricoModificheVerbale(verbale.getId(), session));							
+						
 			request.setAttribute("hibernateSession", session);
 			
 			List<DocumentoDTO> listaAllegati = new ArrayList<DocumentoDTO>();
