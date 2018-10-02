@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 15-feb-2017 11.20.27 by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+    <class name="it.portalECI.DTO.StoricoModificheDTO" table="STORICO_MODIFICHE">
+        <id name="id" type="java.lang.Integer">
+            <column name="Id" />
+            <generator class="increment" />
+        </id>
+        
+        <property name="nominativo" type="java.lang.String">
+            <column name="nominativo" />
+        </property>
+        
+        <property name="username" type="java.lang.String">
+            <column name="username" />
+        </property>
+        
+        <property name="nomeCampo" type="java.lang.String">
+            <column name="nome_campo" />
+        </property>
+        
+        <property name="vecchioValore" type="java.lang.String">
+            <column name="vecchio_valore" />
+        </property>
+        
+        <many-to-one name="verbale" class="it.portalECI.DTO.VerbaleDTO" fetch="join" lazy="false">
+            <column name="id_verbale" />
+        </many-to-one>
+        
+        <property name="idRisposta" type="int">
+            <column name="id_risposta" />
+        </property>
+        
+        <property name="azione" type="java.lang.String">
+            <column name="azione" />
+        </property>
+                 
+        <property name="createDate" update="false" insert="true">
+			<column name="create_date" sql-type="TIMESTAMP" default="CURRENT_TIMESTAMP"/>
+		</property>
+        
+        
+       	
+    </class>
+</hibernate-mapping>
+

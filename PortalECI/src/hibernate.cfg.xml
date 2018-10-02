@@ -34,6 +34,7 @@
   		<mapping class="StatoVerbaleDTO" package="it.portalECI.DTO" resource="it/portalECI/hbm/StatoVerbaleDTO.hbm.xml"/>
   		<mapping class="DocumentoDTO" package="it.portalECI.DTO" resource="it/portalECI/hbm/DocumentoDTO.hbm.xml"/>
   		<mapping class="ProgressivoVerbaleDTO" package="it.portalECI.DTO" resource="it/portalECI/hbm/ProgressivoVerbaleDTO.hbm.xml"/>
+  		<mapping class="StoricoModificheDTO" package="it.portalECI.DTO" resource="it/portalECI/hbm/StoricoModificheDTO.hbm.xml"/>
   	
  	</session-factory>
 </hibernate-configuration>

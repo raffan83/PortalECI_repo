@@ -12,6 +12,14 @@
 		<property name="createDate" update="false" insert="false">
 			<column name="create_date" sql-type="TIMESTAMP" default="CURRENT_TIMESTAMP"/>
 		</property>
+		
+		<property name="dataTrasferimento" >
+			<column name="data_trasferimento"/>
+		</property>
+		
+		<property name="dataScaricamento" >
+			<column name="data_scaricamento" default="NULL"/>
+		</property>
   		
 		<property name="questionarioID">
 			<column name="questionarioID" />

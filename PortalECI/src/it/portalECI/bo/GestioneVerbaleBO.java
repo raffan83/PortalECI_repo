@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
@@ -69,7 +70,13 @@ public class GestioneVerbaleBO {
 	}
 	
 	public static void cambioStato(VerbaleDTO verbale,StatoVerbaleDTO stato, Session session) {		
-		
+				
+		if(verbale.getStato()==GestioneStatoVerbaleDAO.getStatoVerbaleById(StatoVerbaleDTO.CREATO, session) && stato.getId()==StatoVerbaleDTO.IN_COMPILAZIONE) {
+			verbale.setDataScaricamento(new Date());
+		}else if(verbale.getStato()==GestioneStatoVerbaleDAO.getStatoVerbaleById(StatoVerbaleDTO.IN_COMPILAZIONE, session) && stato.getId()==StatoVerbaleDTO.DA_VERIFICARE) {
+			verbale.setDataTrasferimento(new Date());
+		}
+				
 		verbale.setStato(stato);			
 		session.update(verbale);
 		InterventoDTO intervento= verbale.getIntervento();	
