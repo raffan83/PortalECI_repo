@@ -79,31 +79,31 @@ public class GestioneStoricoModifiche extends HttpServlet {
 		RispostaVerbaleDTO risp = GestioneRispostaVerbaleDAO.getRispostaInstance(RispostaVerbaleDTO.class,list.get(0).getIdRisposta(),session);
 		String dataobject="";
 		if( risp.getTipo().equals(RispostaVerbaleDTO.TIPO_TESTO)) {
-			dataobject="<table style='width:100%'>" + 
+			dataobject="<table class='table table-bordered table-collapsed'>" + 
 				"<tr>" + 
-				"<th style='text-align:center; border:1px solid;'>Data</th>" + 
-				"<th style='text-align:center; border:1px solid;'>Utente</th>" + 
-				"<th style='text-align:center; border:1px solid;'>Vecchio Valore</th>" + 
+				"<th >Data</th>" + 
+				"<th >Utente</th>" + 
+				"<th >Vecchio Valore</th>" + 
 				"</tr>";
 				 
 		
 			for (int i = 0; i < list.size(); i++) {
-				dataobject+="<tr style='text-align:center; border:1px solid;'>" + 
-					"<td style='text-align:center; border:1px solid;'>"+list.get(i).getCreateDateFormat()+"</td>" + 
-					"<td style='text-align:center; border:1px solid;'>"+list.get(i).getUsername()+"</td>" + 
-					"<td style='text-align:center; border:1px solid;'>"+list.get(i).getVecchioValore()+"</td>" + 
+				dataobject+="<tr >" + 
+					"<td >"+list.get(i).getCreateDateFormat()+"</td>" + 
+					"<td >"+list.get(i).getUsername()+"</td>" + 
+					"<td >"+list.get(i).getVecchioValore()+"</td>" + 
 					"</tr>";
 			}
 		
 			dataobject+="</table>";
 		}else if( risp.getTipo().equals(RispostaVerbaleDTO.TIPO_FORMULA)) {
-			dataobject="<table style='width:100%'>" + 
+			dataobject="<table class='table table-bordered table-collapsed'>" + 
 				"<tr>" + 
-				"<th style='text-align:center; border:1px solid;'>Utente</th>" + 
-				"<th style='text-align:center; border:1px solid;'>Data</th>" + 
-				"<th style='text-align:center; border:1px solid;'>Vecchio Valore1</th>" +
-				"<th style='text-align:center; border:1px solid;'>Vecchio Valore2</th>" + 
-				"<th style='text-align:center; border:1px solid;'>Vecchio Risultato</th>" + 
+				"<th >Utente</th>" + 
+				"<th >Data</th>" + 
+				"<th >Vecchio Valore1</th>" +
+				"<th >Vecchio Valore2</th>" + 
+				"<th >Vecchio Risultato</th>" + 
 				"</tr>";
 					 
 			
@@ -116,23 +116,23 @@ public class GestioneStoricoModifiche extends HttpServlet {
 					if(!result[2].equals("null")) resVal=result[2];
 				}
 				
-				dataobject+="<tr style='text-align:center; border:1px solid;'>" + 
-					"<td style='text-align:center; border:1px solid;'>"+list.get(i).getUsername()+"</td>" + 
-					"<td style='text-align:center; border:1px solid;'>"+list.get(i).getCreateDateFormat()+"</td>" + 
-					"<td style='text-align:center; border:1px solid;'>"+val1+"</td>" +
-					"<td style='text-align:center; border:1px solid;'>"+val2+"</td>" +
-					"<td style='text-align:center; border:1px solid;'>"+resVal+"</td>" +
+				dataobject+="<tr >" + 
+					"<td >"+list.get(i).getUsername()+"</td>" + 
+					"<td >"+list.get(i).getCreateDateFormat()+"</td>" + 
+					"<td >"+val1+"</td>" +
+					"<td >"+val2+"</td>" +
+					"<td >"+resVal+"</td>" +
 					"</tr>";
 			}
 			
 			dataobject+="</table>";
 			
 		}else if( risp.getTipo().equals(RispostaVerbaleDTO.TIPO_SCELTA)) {
-			dataobject="<table style='width:100%'>" + 
+			dataobject="<table class='table table-bordered table-collapsed'>" + 
 					"<tr>" + 
-					"<th style='text-align:center; border:1px solid;'>Data</th>" + 
-					"<th style='text-align:center; border:1px solid;'>Utente</th>" + 
-					"<th style='text-align:center; border:1px solid;'>Vecchie Options Checked</th>" + 
+					"<th>Data</th>" + 
+					"<th>Utente</th>" + 
+					"<th>Opzioni selezionate in precedenza</th>" + 
 					"</tr>";
 					 
 			
@@ -148,10 +148,10 @@ public class GestioneStoricoModifiche extends HttpServlet {
 						}
 					}
 									
-					dataobject+="<tr style='text-align:center; border:1px solid;'>" + 
-						"<td style='text-align:center; border:1px solid;'>"+list.get(i).getCreateDateFormat()+"</td>" + 
-						"<td style='text-align:center; border:1px solid;'>"+list.get(i).getUsername()+"</td>" + 
-						"<td style='text-align:center; border:1px solid;'>"+vecchioValore+"</td>" + 
+					dataobject+="<tr style='border:1px solid;'>" + 
+						"<td>"+list.get(i).getCreateDateFormat()+"</td>" + 
+						"<td>"+list.get(i).getUsername()+"</td>" + 
+						"<td>"+vecchioValore+"</td>" + 
 						"</tr>";
 				}
 			

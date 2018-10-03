@@ -24,7 +24,7 @@
 	
 	}else if(domVerbale!=null && domVerbale.getRisposta().getTipo().equals("RES_CHOICE")){
 		RispostaSceltaVerbaleDTO risp =(RispostaSceltaVerbaleDTO) hibernateSession.get(RispostaSceltaVerbaleDTO.class, domVerbale.getRisposta().getId());	
-		List opzioni=new ArrayList();
+		List<OpzioneRispostaVerbaleDTO> opzioni=new ArrayList<OpzioneRispostaVerbaleDTO>();
 		opzioni.addAll(risp.getOpzioni());
 		
 		Collections.sort(opzioni, new Comparator<OpzioneRispostaVerbaleDTO>() {
@@ -57,9 +57,7 @@
   		<div class="col-sm-12">	
   			<div class="form-group">	
   				<c:if test="${storico.contains(risposta.getId()) }">	
-  					<div class="row" style="text-align: right;">    
-  						<i class="fa fa-pencil" aria-hidden="true" onclick="detailStorico('${risposta.getId()}')" title="Click per vedere le modifiche sulla risposta" style="cursor: pointer;"></i>
-  					</div>
+  					<p><a class="label label-warning" onclick="detailStorico('${risposta.getId()}')" title="Clicca per vedere lo storico delle modifiche"> Elemento modificato <i class="fa fa-pencil" aria-hidden="true"></i></a></p>
   				</c:if>
   				
   				<c:set var="domVerbalePage" value="${domVerbale}" scope="page"></c:set>
@@ -74,7 +72,7 @@
 					<c:if test="${opzione.getDomande().size()>0}">
 						<c:forEach items="${opzione.getDomande()}" var="domVerbalenew" varStatus="loop">	
 							<div class="options${domVerbalePage.getId()}" style="margin-left:20px;">   	 
-								<label>Se opzione ${opzione.getOpzioneQuestionario().getTesto()} è selezionata</label>
+								<label>Se opzione ${opzione.getOpzioneQuestionario().getTesto()} ï¿½ selezionata</label>
 							   			
 								<c:set var="domVerbale" value="${domVerbalenew}" scope="request"></c:set>
 								<div class="box box-danger box-domanda ">
@@ -90,9 +88,7 @@
   	</c:when>
   	<c:when test="${domVerbale.getRisposta().getTipo().equals('RES_FORMULA')}">
 		<c:if test="${storico.contains(risposta.getId()) }">	
-			<div class="row" style="text-align: right;">    
-  				<i class="fa fa-pencil" aria-hidden="true" onclick="detailStorico('${risposta.getId()}')" title="Click per vedere le modifiche sulla risposta" style="cursor: pointer;"></i>
-  			</div>
+  			<p><a class="label label-warning" onclick="detailStorico('${risposta.getId()}')" title="Clicca per vedere lo storico delle modifiche"> Elemento modificato <i class="fa fa-pencil" aria-hidden="true"></i></a></p>
   		</c:if>
   		
   		<div class="col-sm-3">
@@ -124,9 +120,7 @@
   		<div class="col-sm-12">
   			<div class="form-group">
   				<c:if test="${storico.contains(risposta.getId()) }">
-  					<div class="row" style="text-align: right;">    	
-  						<i class="fa fa-pencil" aria-hidden="true" onclick="detailStorico('${risposta.getId()}')" title="Click per vedere le modifiche sulla risposta" style="cursor: pointer;"></i>
-  					</div>
+  					<p><a class="label label-warning" onclick="detailStorico('${risposta.getId()}')" title="Clicca per vedere lo storico delle modifiche"> Elemento modificato <i class="fa fa-pencil" aria-hidden="true"></i></a></p>
   				</c:if>
   				
   				<textarea class="form-control rispVerb" rows="5" id="comment" name="${risposta.getId()}" ${domVerbale.getDomandaQuestionario().getObbligatoria()?'required':''} >${risposta.getResponseValue()}</textarea>
