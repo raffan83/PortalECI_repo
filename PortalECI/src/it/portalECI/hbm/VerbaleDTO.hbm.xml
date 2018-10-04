@@ -60,16 +60,7 @@
 		<many-to-one name="intervento" class="it.portalECI.DTO.InterventoDTO"
             column="intervento_id" not-null="false"/>
 		
-<!-- 		
-		<list name="domandeSchedaTecnica" table="DOMANDA_QUESTIONARIO" inverse="false" lazy="true" fetch="select" cascade="all">
-			<key>
-				<column name="questionario_id"></column>
-			</key>
-			<list-index column="idx_st"></list-index>
-			<one-to-many class="it.portalECI.DTO.DomandaQuestionarioDTO"/>
-		</list>
-		 -->
-		<set name="documentiVerbale" table="DOCUMENTO" inverse="true" lazy="true" fetch="select" cascade="all, delete-orphan">
+		<set name="documentiVerbale" table="DOCUMENTO" inverse="true" lazy="true" fetch="select" cascade="all, delete-orphan" order-by="create_date">
 			<key>
 				<column name="verbale_id"></column>
 			</key>
