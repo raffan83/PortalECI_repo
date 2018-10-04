@@ -21,7 +21,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.commons.io.FileUtils;
 import org.apache.tomcat.util.codec.binary.Base64;
 import org.hibernate.Session;
 
@@ -61,14 +60,12 @@ public class GestioneVerbali extends HttpServlet {
      */
     public GestioneVerbali() {
         super();
-        // TODO Auto-generated constructor stub
     }
 
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
 		JsonObject myObj = new JsonObject();
 		PrintWriter  out = response.getWriter();
 		
@@ -79,7 +76,7 @@ public class GestioneVerbali extends HttpServlet {
 			
 			Enumeration<String> parameterNames = request.getParameterNames(); //lista id elementi modificati
 
-			ArrayList listaFormulaAggiornate=new ArrayList();
+			ArrayList<String> listaFormulaAggiornate=new ArrayList<String>();
 		
 			while (parameterNames.hasMoreElements()) {
 				String paramName = parameterNames.nextElement();
@@ -221,7 +218,6 @@ public class GestioneVerbali extends HttpServlet {
 			myObj.addProperty("messaggio", "Stato modificato con successo");
 			
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 			myObj.addProperty("success", false);
 			myObj.addProperty("messaggio", "Errore imprevisto durante il salvataggio delle modifiche.");
@@ -433,6 +429,7 @@ public class GestioneVerbali extends HttpServlet {
 		        offset += numRead;
 		    }	
 		    if (offset < bytes.length) {
+		    	is.close();
 		        throw new IOException("Could not completely read file "+file.getName());
 		    }
 	    }

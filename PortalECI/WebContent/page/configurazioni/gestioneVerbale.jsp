@@ -149,7 +149,7 @@
 												<ul class="list-group list-group-unbordered" id="">
         											<c:forEach items="${listaCertificati}" var="certificato"> 
 	        											<li class="list-group-item">
-	                  										<b>${certificato.getFileName(certificato.getFilePath())}</b>
+	                  										<b>${certificato.getFileName()}</b>
 	                  										<c:if test="${user.checkPermesso('DOWNLOAD_CERTIFICATO')}">             										
 	                  											<a class="btn btn-default btn-xs pull-right" href="gestioneDocumento.do?idDocumento=${certificato.getId()}" style="margin-left:5px"><i class="glyphicon glyphicon-file"></i> Download Certificato</a>														
 	                										</c:if>
@@ -177,7 +177,7 @@
 												<ul class="list-group list-group-unbordered" id="">
 	       											<c:forEach items="${listaSchedeTecniche}" var="schedaTec"> 
 	        											<li class="list-group-item">
-	                  										<b>${schedaTec.getFileName(schedaTec.getFilePath())}</b>
+	                  										<b>${schedaTec.getFileName()}</b>
 	                  										<c:if test="${user.checkPermesso('DOWNLOAD_SKTECNICA')}">             										
 	                  											<a class="btn btn-default btn-xs pull-right" href="gestioneDocumento.do?idDocumento=${schedaTec.getId()}" style="margin-left:5px"><i class="glyphicon glyphicon-file"></i> Download SchedaTecnica</a>														
 	                										</c:if>
@@ -208,7 +208,7 @@
         										<ul class="list-group list-group-unbordered" id="allegatiList">
         											<c:forEach items="${listaAllegati}" var="allegato"> 
         											<li class="list-group-item">
-                  										<b>${allegato.getFileName(allegato.getFilePath())}</b>    
+                  										<b>${allegato.getFileName()}</b>    
                   										<c:if test="${user.checkPermesso('DOWNLOAD_ALLEGATO')}">              										
                   											<a class="btn btn-default btn-xs pull-right" href="gestioneDocumento.do?idDocumento=${allegato.getId()}" style="margin-left:5px"><i class="glyphicon glyphicon-file"></i> Download Allegato</a>														
                 										</c:if>

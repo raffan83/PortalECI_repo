@@ -55,8 +55,7 @@ public class DocumentoDTO implements Serializable {
 	public void setVerbale(VerbaleDTO verbale) {
 		this.verbale = verbale;
 	}
-	
-	public String getFileName(String filePath) {
+	public String getFileName() {
 		File file = new File(filePath);
 		return file.getName();
 	}
