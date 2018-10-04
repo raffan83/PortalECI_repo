@@ -18,6 +18,17 @@ import org.hibernate.Session;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import com.itextpdf.text.BaseColor;
+import com.itextpdf.text.DocumentException;
+import com.itextpdf.text.Element;
+import com.itextpdf.text.Font;
+import com.itextpdf.text.Font.FontFamily;
+import com.itextpdf.text.Phrase;
+import com.itextpdf.text.pdf.ColumnText;
+import com.itextpdf.text.pdf.PdfContentByte;
+import com.itextpdf.text.pdf.PdfGState;
+import com.itextpdf.text.pdf.PdfReader;
+import com.itextpdf.text.pdf.PdfStamper;
 
 import it.portalECI.DAO.GestioneDocumentoDAO;
 import it.portalECI.DAO.GestioneDomandaVerbaleDAO;
@@ -273,11 +284,26 @@ public class GestioneVerbaleBO {
         FileOutputStream fileOutput = new FileOutputStream(file);
 		
 		String html = new String();
-        
-		//TODO: cerca certificato/scheda tecnica valido
-        //TODO: se lo trovo lo invalido: invalido sul DB e aggiungo dicitura du PDF
-        //TODO: se lo trovo aggiungo dicitura sul nuovo 
 		
+		String documentoType = "";
+        if(verbale.getType().equals(VerbaleDTO.VERBALE)) {
+        	documentoType = DocumentoDTO.CERTIFIC;
+        } else {
+        	documentoType = DocumentoDTO.SK_TEC;
+        }
+        
+        DocumentoDTO vecchioDocumento = null;
+		for(DocumentoDTO documento:verbale.getDocumentiVerbale()) {
+			if(!documento.getInvalid() && documento.getType().equals(documentoType)) {
+				invalidDocument(documento, session, nomefile );
+				vecchioDocumento = documento;
+				break; // Ci può essere al massimo un documento valido dello stesso tipo (CERTIFICATO|SCHEDA TECNICA)
+			}
+		}
+        if(vecchioDocumento != null) {
+        	html = html + "<p style=\"text-align:center;font-size:16px;font-family:Helvetica,sans-serif;font-weight:900\">"+String.format(Costanti.DOCUMENT_INVALIDS_PHRASE, vecchioDocumento.getFileName())+"</p>";
+        }
+        
 		html = html + template.getTemplate();
 		html = replacePlaceholders(html, verbale,intervento, session);
 		
@@ -286,11 +312,7 @@ public class GestioneVerbaleBO {
 		DocumentoDTO certificato = new DocumentoDTO();
         certificato.setFilePath(path+file.getName());
         //cambio il type del DocumentoDTO in base a certificato o scheda_tecnica
-        if(verbale.getType().equals(VerbaleDTO.VERBALE)) {
-        	certificato.setType(DocumentoDTO.CERTIFIC);
-        } else {
-        	certificato.setType(DocumentoDTO.SK_TEC);
-        }
+        certificato.setType(documentoType);
         certificato.setVerbale(verbale);        
         verbale.addToDocumentiVerbale(certificato);
         GestioneDocumentoDAO.save(certificato, session);
@@ -551,6 +573,36 @@ public class GestioneVerbaleBO {
 	        GestioneVerbaleDAO.save(verbale, session);
 		}
 
+	}
+	
+	public static void invalidDocument(DocumentoDTO documento, Session session, String newfile) {
+		documento.setInvalid(true);
+		GestioneDocumentoDAO.save(documento, session);
+		try {
+			String filepath = Costanti.PATH_CERTIFICATI+documento.getFilePath();
+			File tmpFile = new File(filepath+".tmp");
+	        PdfReader reader = new PdfReader(filepath);
+	        PdfStamper stamper = new PdfStamper(reader, new FileOutputStream(tmpFile));
+	        Font f = new Font(FontFamily.HELVETICA, 15);
+	        f.setColor(BaseColor.RED);
+	        PdfContentByte over = stamper.getOverContent(1);
+	        Phrase p = new Phrase(String.format(Costanti.DOCUMENT_IS_INVALID_PHRASE, newfile), f);
+	        over.saveState();
+	        PdfGState gs1 = new PdfGState();
+	        gs1.setFillOpacity(0.7f);
+	        over.setGState(gs1);
+	        ColumnText.showTextAligned(over, Element.ALIGN_CENTER, p, 563, 450, 90);
+	        over.restoreState();
+	        stamper.close();
+	        reader.close();
+			tmpFile.renameTo(new File(filepath));
+		} catch (IOException e) {
+			e.printStackTrace();
+		} catch (DocumentException e) {
+			e.printStackTrace();
+		}
+		
+		
 	}
 
 }

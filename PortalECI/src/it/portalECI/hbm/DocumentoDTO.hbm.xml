@@ -21,7 +21,12 @@
 		
         <property name="filePath" type="java.lang.String">
             <column name="file_path" not-null="true"/>
+        </property>
+        		
+        <property name="invalid" type="java.lang.Boolean">
+            <column name="invalid" not-null="true" default="0"/>
         </property>		
+        
 		<many-to-one name="verbale" class="it.portalECI.DTO.VerbaleDTO">
             <column name="verbale_id" not-null="false" />
         </many-to-one>
