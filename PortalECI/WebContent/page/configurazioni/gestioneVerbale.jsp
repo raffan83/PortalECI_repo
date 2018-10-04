@@ -148,7 +148,7 @@
 											<div class="box-body">
 												<ul class="list-group list-group-unbordered" id="">
         											<c:forEach items="${listaCertificati}" var="certificato"> 
-	        											<li class="list-group-item">
+	        											<li class="list-group-item ${certificato.getInvalid()?"text-muted":""}">
 	                  										<b>${certificato.getFileName()}</b>
 	                  										<c:if test="${user.checkPermesso('DOWNLOAD_CERTIFICATO')}">             										
 	                  											<a class="btn btn-default btn-xs pull-right" href="gestioneDocumento.do?idDocumento=${certificato.getId()}" style="margin-left:5px"><i class="glyphicon glyphicon-file"></i> Download Certificato</a>														
@@ -309,7 +309,7 @@
 														</c:forEach>
 													</form>
 												</div>
-												<div class="box-footer">																										
+												<div class="box-footer" id="formScTecnicabox">																										
 													<c:if test="${user.checkPermesso('UPD_VERBALE')}">
 														<button type="button" class="btn btn-default ml-1 savebutt" onclick="modificaRisposte(${verbale.getSchedaTecnica().getId()},'formScTecnica')" style="margin-left: 1em; float: right;">	
 															<span >SALVA MODIFICHE</span>
@@ -503,11 +503,11 @@
 								location.reload();
 							}else{
 								$("."+idform+"box").css("display", "none");
-								
+								//TODO: modificare logica
 								if(idform=="formVerbale" && ${user.checkPermesso('GENERA_CERTIFICATO')}){									
-									$("#topbar").append('<button class="btn btn-default pull-right" onClick="generaCertificato(${verbale.getId()})" style="margin-left:5px"><i class="glyphicon glyphicon-edit"></i> Genera Certificato</button>');
+									$("#"+idform+"box").append('<button class="btn btn-default pull-right" onClick="generaCertificato(${verbale.getId()})" style="margin-left:5px"><i class="glyphicon glyphicon-edit"></i> Genera Certificato</button>');
 								}else if(idform=="formScTecnica" && ${user.checkPermesso('GENERA_SKTECNICA')}){
-									$("#topbar").append('<button class="btn btn-default pull-right" onClick="generaCertificato(${verbale.getSchedaTecnica().getId()})" style="margin-left:5px"><i class="glyphicon glyphicon-edit"></i> Genera Scheda Tecnica</button>');
+									$("#"+idform+"box").append('<button class="btn btn-default pull-right" onClick="generaCertificato(${verbale.getSchedaTecnica().getId()})" style="margin-left:5px"><i class="glyphicon glyphicon-edit"></i> Genera Scheda Tecnica</button>');
 								}
 							}
 						}else{							
