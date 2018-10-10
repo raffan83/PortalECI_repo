@@ -17,7 +17,8 @@ public class DocumentoDTO implements Serializable {
 	private Date createDate;
 	private Date updateDate;
 	private VerbaleDTO verbale;
-
+	private Boolean invalid = false;
+	
 	public Date getCreateDate() {
 		return createDate;
 	}
@@ -54,10 +55,15 @@ public class DocumentoDTO implements Serializable {
 	public void setVerbale(VerbaleDTO verbale) {
 		this.verbale = verbale;
 	}
-	
-	public String getFileName(String filePath) {
+	public String getFileName() {
 		File file = new File(filePath);
 		return file.getName();
+	}
+	public Boolean getInvalid() {
+		return invalid;
+	}
+	public void setInvalid(Boolean invalid) {
+		this.invalid = invalid;
 	}
 	
 }

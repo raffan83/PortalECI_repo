@@ -148,8 +148,8 @@
 											<div class="box-body">
 												<ul class="list-group list-group-unbordered" id="">
         											<c:forEach items="${listaCertificati}" var="certificato"> 
-	        											<li class="list-group-item">
-	                  										<b>${certificato.getFileName(certificato.getFilePath())}</b>
+	        											<li class="list-group-item ${certificato.getInvalid()?"text-muted":""}">
+	                  										<b>${certificato.getFileName()}</b>
 	                  										<c:if test="${user.checkPermesso('DOWNLOAD_CERTIFICATO')}">             										
 	                  											<a class="btn btn-default btn-xs pull-right" href="gestioneDocumento.do?idDocumento=${certificato.getId()}" style="margin-left:5px"><i class="glyphicon glyphicon-file"></i> Download Certificato</a>														
 	                										</c:if>
@@ -177,7 +177,7 @@
 												<ul class="list-group list-group-unbordered" id="">
 	       											<c:forEach items="${listaSchedeTecniche}" var="schedaTec"> 
 	        											<li class="list-group-item">
-	                  										<b>${schedaTec.getFileName(schedaTec.getFilePath())}</b>
+	                  										<b>${schedaTec.getFileName()}</b>
 	                  										<c:if test="${user.checkPermesso('DOWNLOAD_SKTECNICA')}">             										
 	                  											<a class="btn btn-default btn-xs pull-right" href="gestioneDocumento.do?idDocumento=${schedaTec.getId()}" style="margin-left:5px"><i class="glyphicon glyphicon-file"></i> Download SchedaTecnica</a>														
 	                										</c:if>
@@ -208,7 +208,7 @@
         										<ul class="list-group list-group-unbordered" id="allegatiList">
         											<c:forEach items="${listaAllegati}" var="allegato"> 
         											<li class="list-group-item">
-                  										<b>${allegato.getFileName(allegato.getFilePath())}</b>    
+                  										<b>${allegato.getFileName()}</b>    
                   										<c:if test="${user.checkPermesso('DOWNLOAD_ALLEGATO')}">              										
                   											<a class="btn btn-default btn-xs pull-right" href="gestioneDocumento.do?idDocumento=${allegato.getId()}" style="margin-left:5px"><i class="glyphicon glyphicon-file"></i> Download Allegato</a>														
                 										</c:if>
@@ -245,7 +245,10 @@
         													<div class="col-xs-12" style="border-bottom: 1px solid #ddd;">
         														<label for="titolo-input" class="control-label col-xs-12">${domVerbale.getDomandaQuestionario().getTesto()}</label><br/>
         												
-    	    													<c:set var="domVerbale" value="${domVerbale}" scope="request"></c:set>    	    													    	    													
+    	    													<c:set var="domVerbale" value="${domVerbale}" scope="request"></c:set>
+    	    													<c:set var="storicoModificheVerb" value="${storicoModificheVerb}" scope="request"></c:set>        	
+    	    													<c:set var="storicoModificheSkTec" value="${storicoModificheSkTec}" scope="request"></c:set>    
+    	    													<c:set var="type" value="Verbale" scope="request"></c:set>    													    	    													
 																<jsp:include page="gestioneVerbaleDettaglio.jsp"></jsp:include>        													
         													</div>
 														</c:forEach>
@@ -298,14 +301,15 @@
         													<div class="col-xs-12" style="border-bottom: 1px solid #ddd;">
         														<label for="titolo-input" class="control-label col-xs-12">${domVerbale.getDomandaQuestionario().getTesto()}</label><br/>
         												
-    	    													<c:set var="domVerbale" value="${domVerbale}" scope="request"></c:set>    	    													
+    	    													<c:set var="domVerbale" value="${domVerbale}" scope="request"></c:set>
+    	    													<c:set var="type" value="SchedaTecnica" scope="request"></c:set>    	      	    													
 																<jsp:include page="gestioneVerbaleDettaglio.jsp"></jsp:include>        													
 
         													</div>
 														</c:forEach>
 													</form>
 												</div>
-												<div class="box-footer">																										
+												<div class="box-footer" id="formScTecnicabox">																										
 													<c:if test="${user.checkPermesso('UPD_VERBALE')}">
 														<button type="button" class="btn btn-default ml-1 savebutt" onclick="modificaRisposte(${verbale.getSchedaTecnica().getId()},'formScTecnica')" style="margin-left: 1em; float: right;">	
 															<span >SALVA MODIFICHE</span>
@@ -397,6 +401,25 @@
     							</div>
   							</div>
 						</div> 
+						
+						<div id="listChange" class="modal fade" role="dialog" aria-labelledby="myLargeModalLabel">
+    						<div class="modal-dialog" role="document">
+    							<div class="modal-content">
+     								<div class="modal-header">
+        								<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        								<h4 class="modal-title" id="myModalLabel">Lista Modifiche</h4>
+      								</div>
+       								<div class="modal-body">
+										<div id="listChangeDiv">				
+										
+										</div>	   
+  		 							</div>
+      								<div class="modal-footer">
+        								<button type="button" class="btn btn-outline" data-dismiss="modal">Chiudi</button>
+      								</div>
+    							</div>
+  							</div>
+						</div> 
 														
      					<div id="myModalError" class="modal fade" role="dialog" aria-labelledby="myLargeModalLabel">
     						<div class="modal-dialog" role="document">
@@ -480,11 +503,11 @@
 								location.reload();
 							}else{
 								$("."+idform+"box").css("display", "none");
-								
+								//TODO: modificare logica
 								if(idform=="formVerbale" && ${user.checkPermesso('GENERA_CERTIFICATO')}){									
-									$("#topbar").append('<button class="btn btn-default pull-right" onClick="generaCertificato(${verbale.getId()})" style="margin-left:5px"><i class="glyphicon glyphicon-edit"></i> Genera Certificato</button>');
+									$("#"+idform+"box").append('<button class="btn btn-default pull-right" onClick="generaCertificato(${verbale.getId()})" style="margin-left:5px"><i class="glyphicon glyphicon-edit"></i> Genera Certificato</button>');
 								}else if(idform=="formScTecnica" && ${user.checkPermesso('GENERA_SKTECNICA')}){
-									$("#topbar").append('<button class="btn btn-default pull-right" onClick="generaCertificato(${verbale.getSchedaTecnica().getId()})" style="margin-left:5px"><i class="glyphicon glyphicon-edit"></i> Genera Scheda Tecnica</button>');
+									$("#"+idform+"box").append('<button class="btn btn-default pull-right" onClick="generaCertificato(${verbale.getSchedaTecnica().getId()})" style="margin-left:5px"><i class="glyphicon glyphicon-edit"></i> Genera Scheda Tecnica</button>');
 								}
 							}
 						}else{							
@@ -632,6 +655,29 @@
 				});
 			}
 					
+			function detailStorico(idrisp){
+				$.ajax({
+					type: "GET",
+					url: "gestioneStoricoModifiche.do?idRisposta="+idrisp,	
+					dataType: "json",
+					success: function( data, textStatus) {
+
+						
+						$('#listChangeDiv').html(data.dataobject);
+
+						$('#listChange').modal('show');
+						
+						
+						pleaseWaitDiv.modal('hide');
+					},
+
+					error: function(jqXHR, textStatus, errorThrown){
+						$('#errorMsg').html("<h3 class='label label-danger'>"+textStatus+"</h3>");
+						//callAction('logout.do');
+						pleaseWaitDiv.modal('hide');
+					}
+				});
+			}
 			
   		</script>	  
 	</jsp:attribute> 

@@ -24,7 +24,7 @@
 	
 	}else if(domVerbale!=null && domVerbale.getRisposta().getTipo().equals("RES_CHOICE")){
 		RispostaSceltaVerbaleDTO risp =(RispostaSceltaVerbaleDTO) hibernateSession.get(RispostaSceltaVerbaleDTO.class, domVerbale.getRisposta().getId());	
-		List opzioni=new ArrayList();
+		List<OpzioneRispostaVerbaleDTO> opzioni=new ArrayList<OpzioneRispostaVerbaleDTO>();
 		opzioni.addAll(risp.getOpzioni());
 		
 		Collections.sort(opzioni, new Comparator<OpzioneRispostaVerbaleDTO>() {
@@ -42,13 +42,24 @@
 	}else if(domVerbale!=null && domVerbale.getRisposta().getTipo().equals("RES_TEXT")){
 		RispostaTestoVerbaleDTO risp =(RispostaTestoVerbaleDTO) hibernateSession.get(RispostaTestoVerbaleDTO.class, domVerbale.getRisposta().getId());	
 		request.setAttribute("risposta",risp);
-	} %>
+	}
+	
+	if(request.getAttribute("type").equals("Verbale")){
+		request.setAttribute("storico", request.getAttribute("storicoModificheVerb"));		
+	}else{
+		request.setAttribute("storico",request.getAttribute("storicoModificheSkTec"));
+	}
+%>
 	
 <c:choose>
 	<c:when test="${domVerbale.getRisposta().getTipo().equals('RES_CHOICE')}">
   																
   		<div class="col-sm-12">	
   			<div class="form-group">	
+  				<c:if test="${storico.contains(risposta.getId()) }">	
+  					<p><a class="label label-warning" onclick="detailStorico('${risposta.getId()}')" title="Clicca per vedere lo storico delle modifiche"> Elemento modificato <i class="fa fa-pencil" aria-hidden="true"></i></a></p>
+  				</c:if>
+  				
   				<c:set var="domVerbalePage" value="${domVerbale}" scope="page"></c:set>
   				<c:set var="rispostaPage" value="${risposta}" scope="page"></c:set>
     			
@@ -61,7 +72,7 @@
 					<c:if test="${opzione.getDomande().size()>0}">
 						<c:forEach items="${opzione.getDomande()}" var="domVerbalenew" varStatus="loop">	
 							<div class="options${domVerbalePage.getId()}" style="margin-left:20px;">   	 
-								<label>Se opzione ${opzione.getOpzioneQuestionario().getTesto()} è selezionata</label>
+								<label>Se opzione ${opzione.getOpzioneQuestionario().getTesto()} ï¿½ selezionata</label>
 							   			
 								<c:set var="domVerbale" value="${domVerbalenew}" scope="request"></c:set>
 								<div class="box box-danger box-domanda ">
@@ -76,7 +87,10 @@
 		</div>
   	</c:when>
   	<c:when test="${domVerbale.getRisposta().getTipo().equals('RES_FORMULA')}">
-
+		<c:if test="${storico.contains(risposta.getId()) }">	
+  			<p><a class="label label-warning" onclick="detailStorico('${risposta.getId()}')" title="Clicca per vedere lo storico delle modifiche"> Elemento modificato <i class="fa fa-pencil" aria-hidden="true"></i></a></p>
+  		</c:if>
+  		
   		<div class="col-sm-3">
 			<div class="form-group">
 				<label for="titolo-input" class="control-label">${risposta.getRispostaQuestionario().getValore1()}</label>
@@ -104,7 +118,11 @@
   	</c:when>
   	<c:when test="${domVerbale.getRisposta().getTipo().equals('RES_TEXT')}">
   		<div class="col-sm-12">
-  			<div class="form-group">		
+  			<div class="form-group">
+  				<c:if test="${storico.contains(risposta.getId()) }">
+  					<p><a class="label label-warning" onclick="detailStorico('${risposta.getId()}')" title="Clicca per vedere lo storico delle modifiche"> Elemento modificato <i class="fa fa-pencil" aria-hidden="true"></i></a></p>
+  				</c:if>
+  				
   				<textarea class="form-control rispVerb" rows="5" id="comment" name="${risposta.getId()}" ${domVerbale.getDomandaQuestionario().getObbligatoria()?'required':''} >${risposta.getResponseValue()}</textarea>
   			</div>
   		</div>

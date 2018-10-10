@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
@@ -17,6 +18,17 @@ import org.hibernate.Session;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import com.itextpdf.text.BaseColor;
+import com.itextpdf.text.DocumentException;
+import com.itextpdf.text.Element;
+import com.itextpdf.text.Font;
+import com.itextpdf.text.Font.FontFamily;
+import com.itextpdf.text.Phrase;
+import com.itextpdf.text.pdf.ColumnText;
+import com.itextpdf.text.pdf.PdfContentByte;
+import com.itextpdf.text.pdf.PdfGState;
+import com.itextpdf.text.pdf.PdfReader;
+import com.itextpdf.text.pdf.PdfStamper;
 
 import it.portalECI.DAO.GestioneDocumentoDAO;
 import it.portalECI.DAO.GestioneDomandaVerbaleDAO;
@@ -69,7 +81,13 @@ public class GestioneVerbaleBO {
 	}
 	
 	public static void cambioStato(VerbaleDTO verbale,StatoVerbaleDTO stato, Session session) {		
-		
+				
+		if(verbale.getStato()==GestioneStatoVerbaleDAO.getStatoVerbaleById(StatoVerbaleDTO.CREATO, session) && stato.getId()==StatoVerbaleDTO.IN_COMPILAZIONE) {
+			verbale.setDataScaricamento(new Date());
+		}else if(verbale.getStato()==GestioneStatoVerbaleDAO.getStatoVerbaleById(StatoVerbaleDTO.IN_COMPILAZIONE, session) && stato.getId()==StatoVerbaleDTO.DA_VERIFICARE) {
+			verbale.setDataTrasferimento(new Date());
+		}
+				
 		verbale.setStato(stato);			
 		session.update(verbale);
 		InterventoDTO intervento= verbale.getIntervento();	
@@ -248,7 +266,6 @@ public class GestioneVerbaleBO {
 			intervento = verbale.getIntervento();
 			template = questionario.getTemplateVerbale();
 			nomefile = generaNumeroVerbale(questionario.getTipo().getCategoria(), intervento, session);
-			verbale.setNumeroVerbale(nomefile);
 		}else {
 			VerbaleDTO verb=GestioneVerbaleDAO.getVerbaleFromSkTec(String.valueOf(verbale.getId()), session);
 			intervento = verb.getIntervento();
@@ -266,7 +283,28 @@ public class GestioneVerbaleBO {
 		}
         FileOutputStream fileOutput = new FileOutputStream(file);
 		
-		String html = new String(template.getTemplate());
+		String html = new String();
+		
+		String documentoType = "";
+        if(verbale.getType().equals(VerbaleDTO.VERBALE)) {
+        	documentoType = DocumentoDTO.CERTIFIC;
+        } else {
+        	documentoType = DocumentoDTO.SK_TEC;
+        }
+        
+        DocumentoDTO vecchioDocumento = null;
+		for(DocumentoDTO documento:verbale.getDocumentiVerbale()) {
+			if(!documento.getInvalid() && documento.getType().equals(documentoType)) {
+				invalidDocument(documento, session, nomefile );
+				vecchioDocumento = documento;
+				break; // Ci può essere al massimo un documento valido dello stesso tipo (CERTIFICATO|SCHEDA TECNICA)
+			}
+		}
+        if(vecchioDocumento != null) {
+        	html = html + "<p style=\"text-align:center;font-size:16px;font-family:Helvetica,sans-serif;font-weight:900\">"+String.format(Costanti.DOCUMENT_INVALIDS_PHRASE, vecchioDocumento.getFileName())+"</p>";
+        }
+        
+		html = html + template.getTemplate();
 		html = replacePlaceholders(html, verbale,intervento, session);
 		
 		GestioneTemplateQuestionarioBO.writePDF(fileOutput, html, template.getHeader(), template.getFooter());
@@ -274,27 +312,12 @@ public class GestioneVerbaleBO {
 		DocumentoDTO certificato = new DocumentoDTO();
         certificato.setFilePath(path+file.getName());
         //cambio il type del DocumentoDTO in base a certificato o scheda_tecnica
-        if(verbale.getType().equals(VerbaleDTO.VERBALE)) {
-        	certificato.setType(DocumentoDTO.CERTIFIC);
-        } else {
-        	certificato.setType(DocumentoDTO.SK_TEC);
-        }
-        certificato.setVerbale(verbale);
-//        if(verbale.getDocumentiVerbale() != null) {
-//	        for(DocumentoDTO doc:verbale.getDocumentiVerbale()) {
-//        		//gestiosco anche qui certificato o scheda tecnica
-//	        	if(verbale.getType().equals(VerbaleDTO.VERBALE) && doc.getType().equalsIgnoreCase(DocumentoDTO.CERTIFIC)){
-//		        	certificato.setId(doc.getId());
-//		        	verbale.getDocumentiVerbale().remove(doc);
-//	        	} else if (verbale.getType().equals(VerbaleDTO.SK_TEC) && doc.getType().equalsIgnoreCase(DocumentoDTO.SK_TEC)){
-//	        		certificato.setId(doc.getId());
-//		        	verbale.getDocumentiVerbale().remove(doc);
-//	        	}
-//	        }
-//        }
+        certificato.setType(documentoType);
+        certificato.setVerbale(verbale);        
         verbale.addToDocumentiVerbale(certificato);
         GestioneDocumentoDAO.save(certificato, session);
         verbale.getDocumentiVerbale().add(certificato);
+        verbale.setNumeroVerbale(nomefile);
         GestioneVerbaleDAO.save(verbale, session);
     	
 		return file;
@@ -550,6 +573,36 @@ public class GestioneVerbaleBO {
 	        GestioneVerbaleDAO.save(verbale, session);
 		}
 
+	}
+	
+	public static void invalidDocument(DocumentoDTO documento, Session session, String newfile) {
+		documento.setInvalid(true);
+		GestioneDocumentoDAO.save(documento, session);
+		try {
+			String filepath = Costanti.PATH_CERTIFICATI+documento.getFilePath();
+			File tmpFile = new File(filepath+".tmp");
+	        PdfReader reader = new PdfReader(filepath);
+	        PdfStamper stamper = new PdfStamper(reader, new FileOutputStream(tmpFile));
+	        Font f = new Font(FontFamily.HELVETICA, 15);
+	        f.setColor(BaseColor.RED);
+	        PdfContentByte over = stamper.getOverContent(1);
+	        Phrase p = new Phrase(String.format(Costanti.DOCUMENT_IS_INVALID_PHRASE, newfile), f);
+	        over.saveState();
+	        PdfGState gs1 = new PdfGState();
+	        gs1.setFillOpacity(0.7f);
+	        over.setGState(gs1);
+	        ColumnText.showTextAligned(over, Element.ALIGN_CENTER, p, 563, 450, 90);
+	        over.restoreState();
+	        stamper.close();
+	        reader.close();
+			tmpFile.renameTo(new File(filepath));
+		} catch (IOException e) {
+			e.printStackTrace();
+		} catch (DocumentException e) {
+			e.printStackTrace();
+		}
+		
+		
 	}
 
 }
