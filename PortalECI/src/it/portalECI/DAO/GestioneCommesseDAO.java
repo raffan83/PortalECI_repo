@@ -97,10 +97,10 @@ public class GestioneCommesseDAO {
 				String indirizzoSede=rs.getString(10);
 				if (indirizzoSede!=null){
 					commessa.setANAGEN_INDR_INDIRIZZO(indirizzoSede+" - "+rs.getString(11)+" ("+rs.getString(12)+")");
-					commessa.setCOD_PROV(rs.getString(11));
+					commessa.setCOD_PROV(rs.getString(15));
 				}else{
 					commessa.setANAGEN_INDR_INDIRIZZO("");
-					commessa.setCOD_PROV(rs.getString(14));					
+					commessa.setCOD_PROV(rs.getString(15));					
 				}
 		
 				commessa.setINDIRIZZO_PRINCIPALE(rs.getString(13)+" - "+rs.getString(14)+" ("+rs.getString(15)+")");
@@ -148,10 +148,10 @@ public class GestioneCommesseDAO {
 				String indirizzoSede=rs.getString(10);
 				if (indirizzoSede!=null){
 					commessa.setANAGEN_INDR_INDIRIZZO(indirizzoSede+" - "+rs.getString(11)+" ("+rs.getString(12)+")");
-					commessa.setCOD_PROV(rs.getString(11));					
+					commessa.setCOD_PROV(rs.getString(15));					
 				}else{
 					commessa.setANAGEN_INDR_INDIRIZZO("");
-					commessa.setCOD_PROV(rs.getString(14));					
+					commessa.setCOD_PROV(rs.getString(15));					
 				}
 			
 				commessa.setINDIRIZZO_PRINCIPALE(rs.getString(13)+" - "+rs.getString(14)+" ("+rs.getString(15)+")");
