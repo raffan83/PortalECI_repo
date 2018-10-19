@@ -416,7 +416,11 @@ public class GestioneVerbaleBO {
 		String numeroVerbale = new String();
 		UtenteDTO utente = intervento.getTecnico_verificatore();
 		ProgressivoVerbaleDTO progressivo = GestioneVerbaleDAO.getProgressivoVerbale(utente, categoria, session);
-		numeroVerbale = String.format("%s-%s-%03d-%s", utente.getCodice(), categoria.getSigla(), progressivo.getProgressivo(), intervento.getCodiceProvincia());
+		String codUtente = utente.getCodice() == null ? "" : utente.getCodice();
+		String sigla = categoria.getSigla() == null ? "" : categoria.getSigla();
+		int prog = progressivo.getProgressivo();
+		String codProv = intervento.getCodiceProvincia() == null ? " " : intervento.getCodiceProvincia();
+		numeroVerbale = String.format("%s-%s-%03d-%s", codUtente, sigla, prog, codProv);
 		return numeroVerbale;
 	}
 	
