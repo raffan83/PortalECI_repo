@@ -100,7 +100,7 @@ public class GestioneCommesseDAO {
 					commessa.setCOD_PROV(rs.getString(11));
 				}else{
 					commessa.setANAGEN_INDR_INDIRIZZO("");
-					commessa.setCOD_PROV(rs.getString(14));					
+					commessa.setCOD_PROV(rs.getString(15));					
 				}
 		
 				commessa.setINDIRIZZO_PRINCIPALE(rs.getString(13)+" - "+rs.getString(14)+" ("+rs.getString(15)+")");
