@@ -266,6 +266,7 @@ public class GestioneVerbaleBO {
 			intervento = verbale.getIntervento();
 			template = questionario.getTemplateVerbale();
 			nomefile = generaNumeroVerbale(questionario.getTipo().getCategoria(), intervento, session);
+			verbale.setNumeroVerbale(nomefile);
 		}else {
 			VerbaleDTO verb=GestioneVerbaleDAO.getVerbaleFromSkTec(String.valueOf(verbale.getId()), session);
 			intervento = verb.getIntervento();
@@ -317,7 +318,6 @@ public class GestioneVerbaleBO {
         verbale.addToDocumentiVerbale(certificato);
         GestioneDocumentoDAO.save(certificato, session);
         verbale.getDocumentiVerbale().add(certificato);
-        verbale.setNumeroVerbale(nomefile);
         GestioneVerbaleDAO.save(verbale, session);
     	
 		return file;
@@ -421,6 +421,7 @@ public class GestioneVerbaleBO {
 		int prog = progressivo.getProgressivo();
 		String codProv = intervento.getCodiceProvincia() == null ? " " : intervento.getCodiceProvincia();
 		numeroVerbale = String.format("%s-%s-%03d-%s", codUtente, sigla, prog, codProv);
+		System.out.println("numeroVerbale" + numeroVerbale);
 		return numeroVerbale;
 	}
 	
@@ -432,15 +433,21 @@ public class GestioneVerbaleBO {
 		//Inserisco il nome del tecnico
 		UtenteDTO verificatore = intervento.getTecnico_verificatore();
 		String nomeVerificatore = verificatore.getNome()+" "+verificatore.getCognome();
-		html = html.replaceAll("\\$\\{TECNICO_VERIFICATORE\\}", nomeVerificatore);
+		if(nomeVerificatore != null) {
+			html = html.replaceAll("\\$\\{TECNICO_VERIFICATORE\\}", nomeVerificatore);
+		}
 		
 		//Inserisco la sede del cliente
 		String sedeIntevento = intervento.getNome_sede();
-		html = html.replaceAll("\\$\\{SEDE_CLIENTE\\}", sedeIntevento);
+		if(sedeIntevento != null) {
+			html = html.replaceAll("\\$\\{SEDE_CLIENTE\\}", sedeIntevento);
+		}
 
 		//Inserisco numero verbale
 		String numeroVerbale = verbale.getNumeroVerbale();
-		html = html.replaceAll("\\$\\{NUMERO_VERBALE\\}", numeroVerbale);
+		if(numeroVerbale != null) {
+			html = html.replaceAll("\\$\\{NUMERO_VERBALE\\}", numeroVerbale);
+		}
 		
 		// Elimino i placeholder non utilizzati
 		html = html.replaceAll("\\$\\{(.*?)\\}", "");
@@ -584,6 +591,7 @@ public class GestioneVerbaleBO {
 		GestioneDocumentoDAO.save(documento, session);
 		try {
 			String filepath = Costanti.PATH_CERTIFICATI+documento.getFilePath();
+			//System.out.println("filepath" + filepath);
 			File tmpFile = new File(filepath+".tmp");
 	        PdfReader reader = new PdfReader(filepath);
 	        PdfStamper stamper = new PdfStamper(reader, new FileOutputStream(tmpFile));
@@ -601,8 +609,10 @@ public class GestioneVerbaleBO {
 	        reader.close();
 			tmpFile.renameTo(new File(filepath));
 		} catch (IOException e) {
+			System.out.println("IOException: " + e);
 			e.printStackTrace();
 		} catch (DocumentException e) {
+			System.out.println("DocumentException: " + e);
 			e.printStackTrace();
 		}
 		
