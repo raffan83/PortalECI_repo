@@ -35,6 +35,8 @@ import it.portalECI.bo.GestioneQuestionarioBO;
 
 @WebServlet(name = "gestioneQuestionario", urlPatterns = { "/gestioneQuestionario.do" })
 public class GestioneQuestionario extends HttpServlet {
+	
+	int count = 0;
 
 	public GestioneQuestionario() {
 		// TODO Auto-generated constructor stub
@@ -193,6 +195,7 @@ public class GestioneQuestionario extends HttpServlet {
 		String[] domandaIndice = request.getParameterValues("domanda.indice");
 		
 		for(int i=0; i<domandaIndice.length;i++) {
+			count = i;
 			getDomandaFromRequest(request,questionario,hibernateSession,domandaIndice, i);
 		}
 		
@@ -201,6 +204,7 @@ public class GestioneQuestionario extends HttpServlet {
 	
 	private DomandaQuestionarioDTO getDomandaFromRequest(HttpServletRequest request, QuestionarioDTO questionario, Session hibernateSession, String[] domandaIndice, int i) {
 		String indice = domandaIndice[i];
+		
 		DomandaQuestionarioDTO domandaQuestionario = new  DomandaQuestionarioDTO();
 		String domandaGruppo = request.getParameter("domanda.gruppo"+indice);
 		if(domandaGruppo.equals("Verbale")) {
@@ -266,6 +270,8 @@ public class GestioneQuestionario extends HttpServlet {
 			String[] nomiOpzione = request.getParameterValues("opzione"+indice);
 			String[] numeroDomandeOpzioneParams = request.getParameterValues("numero-domande-opzione"+indice);
 			for(int idx=0;idx<nomiOpzione.length; idx++) {
+				System.out.println("ciclo for 2");
+				System.out.println("idx: "+idx);
 				OpzioneRispostaQuestionarioDTO opzione = new OpzioneRispostaQuestionarioDTO();
 				opzione.setPosizione(idx);
 				opzione.setTesto(nomiOpzione[idx]);
@@ -274,8 +280,8 @@ public class GestioneQuestionario extends HttpServlet {
 				int numeroDomandeOpzione = Integer.parseInt(numeroDomandeOpzioneParams[idx]);
 				List<DomandaOpzioneQuestionarioDTO> listadomandeOpzione  = new ArrayList<DomandaOpzioneQuestionarioDTO>();
 				for(int k=0; k<numeroDomandeOpzione;k++ ) {
-					i++;
-					DomandaOpzioneQuestionarioDTO domandaOpzione = (DomandaOpzioneQuestionarioDTO)getDomandaFromRequest(request, questionario, hibernateSession, domandaIndice, i);
+					count++;
+					DomandaOpzioneQuestionarioDTO domandaOpzione = (DomandaOpzioneQuestionarioDTO)getDomandaFromRequest(request, questionario, hibernateSession, domandaIndice, count);
 					domandaOpzione.setPosizione(k);
 					domandaOpzione.setOpzione(opzione);
 					listadomandeOpzione.add(domandaOpzione);
