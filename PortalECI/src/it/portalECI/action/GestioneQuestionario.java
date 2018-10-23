@@ -270,8 +270,6 @@ public class GestioneQuestionario extends HttpServlet {
 			String[] nomiOpzione = request.getParameterValues("opzione"+indice);
 			String[] numeroDomandeOpzioneParams = request.getParameterValues("numero-domande-opzione"+indice);
 			for(int idx=0;idx<nomiOpzione.length; idx++) {
-				System.out.println("ciclo for 2");
-				System.out.println("idx: "+idx);
 				OpzioneRispostaQuestionarioDTO opzione = new OpzioneRispostaQuestionarioDTO();
 				opzione.setPosizione(idx);
 				opzione.setTesto(nomiOpzione[idx]);
