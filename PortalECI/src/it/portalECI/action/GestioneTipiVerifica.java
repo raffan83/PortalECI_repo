@@ -99,6 +99,7 @@ public class GestioneTipiVerifica extends HttpServlet {
 					
 	       		 if(action.equals("nuovo")){
 	       			
+	       			String sigla = request.getParameter("sigla");
 	       			String codiceCategoria = request.getParameter("categoria");
 	    	 		String descrizione = request.getParameter("descrizione");
 	    	 		String codice = request.getParameter("codice");    	 			    	 
@@ -109,6 +110,7 @@ public class GestioneTipiVerifica extends HttpServlet {
     	 			int codCategoria = Integer.parseInt(codiceCategoria);
     	 			categoria.setId(codCategoria);
     	 			
+    	 			tipo.setSigla(sigla);
     	 			tipo.setCategoria(categoria);
     	 			tipo.setDescrizione(descrizione);
     	 			tipo.setCodice(codice);	 			
@@ -134,11 +136,16 @@ public class GestioneTipiVerifica extends HttpServlet {
     	 		}else if(action.equals("modifica")){
 	    	 			
     	 			String id = request.getParameter("id");
+    	 			String sigla = request.getParameter("sigla");
     	 			String codiceCategoria = request.getParameter("categoria");
     	 			String descrizione = request.getParameter("descrizione");
     	 			String codice = request.getParameter("codice");    	 				    	 
 	    	 			
     	 			TipoVerificaDTO tipo = GestioneTipiVerificaBO.getTipoVerificaById(id, session);
+    	 			
+    	 			if(sigla != null && !sigla.equals("")){
+	    	 			tipo.setSigla(sigla);
+    	 			}
 	    	 			
     	 			if(codiceCategoria != null && !codiceCategoria.equals("")){
     	 				CategoriaVerificaDTO categoria = new CategoriaVerificaDTO();
@@ -153,7 +160,7 @@ public class GestioneTipiVerifica extends HttpServlet {
     	 			}
     	 			if(codice != null && !codice.equals("")){
 	    	 			tipo.setCodice(codice);
-    	 			}	    	 			
+    	 			}    	 			
 
     	 			int success = GestioneTipiVerificaBO.saveTipoVerifica(tipo,action,session);
 

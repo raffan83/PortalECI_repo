@@ -72,7 +72,7 @@
 					<c:if test="${opzione.getDomande().size()>0}">
 						<c:forEach items="${opzione.getDomande()}" var="domVerbalenew" varStatus="loop">	
 							<div class="options${domVerbalePage.getId()}" style="margin-left:20px;">   	 
-								<label>Se opzione ${opzione.getOpzioneQuestionario().getTesto()} � selezionata</label>
+								<label>Se opzione ${opzione.getOpzioneQuestionario().getTesto()} &egrave; selezionata</label>
 							   			
 								<c:set var="domVerbale" value="${domVerbalenew}" scope="request"></c:set>
 								<div class="box box-danger box-domanda ">

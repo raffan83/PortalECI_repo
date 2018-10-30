@@ -240,7 +240,7 @@
 													</div>
 												</div>
 												<div class="box-body">	
-													<form id="formVerbale" >
+													<form id="formVerbale">
 														<c:forEach items="${domandeVerbale}" var="domVerbale" varStatus="loop">	
         													<div class="col-xs-12" style="border-bottom: 1px solid #ddd;">
         														<label for="titolo-input" class="control-label col-xs-12">${domVerbale.getDomandaQuestionario().getTesto()}</label><br/>
@@ -598,6 +598,8 @@
 						}
 						
 						pleaseWaitDiv.modal('hide');
+						
+						location.reload();
 					},
 
 					error: function(jqXHR, textStatus, errorThrown){
