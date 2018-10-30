@@ -29,7 +29,7 @@ public class Costanti {
 	public static String PATH_FOOTER_IMAGE = "/verbaliImage/footer/";
 	
 	//Usare il placehlder %s se si vuole inserire il numero del nuovo documento generato nella dicitura 
-	public static String DOCUMENT_IS_INVALID_PHRASE = "Questo documento è stato sostituito dal documento %s";
+	public static String DOCUMENT_IS_INVALID_PHRASE = "Questo documento \u00E8 stato sostituito dal documento %s";
 	
 	//Usare il placehlder %s se si vuole inserire il numero del documento invalidato nella dicitura
 	public static String DOCUMENT_INVALIDS_PHRASE = "Questo documento annulla e sostituisce il documento %s";
