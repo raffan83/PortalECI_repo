@@ -15,6 +15,7 @@ public class TipoVerificaDTO implements Serializable{
 	private CategoriaVerificaDTO categoria;
 	private String descrizione;
 	private String codice;
+	private String sigla;
 	
 	private Collection<InterventoDTO> intervento;
 	
@@ -65,6 +66,14 @@ public class TipoVerificaDTO implements Serializable{
 		jobj.addProperty("codice", this.codice);
 		
 		return jobj;
+	}
+
+	public String getSigla() {
+		return sigla;
+	}
+
+	public void setSigla(String sigla) {
+		this.sigla = sigla;
 	}
 
 }

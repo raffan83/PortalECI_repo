@@ -62,6 +62,7 @@
  																<thead>
  																	<tr class="active">
  																		<td>ID</td>
+ 																		<th>Sigla</th>
  																		<th>Codice Categoria</th>
  																		<th>Descrizione</th>
  																		<th>Codice</th>
@@ -72,12 +73,13 @@
  																	<c:forEach items="${listaTipiVerifica}" var="tipo" varStatus="loop">	
 	 																	<tr role="row" id="${tipo.id}-${loop.index}">	
 																			<td>${tipo.id}</td>
+																			<td>${tipo.sigla}</td>
 																			<td>${tipo.categoria.codice}</td>
 																			<td>${tipo.descrizione}</td>
 																			<td>${tipo.codice}</td>
 																			<td>																					
 																				<c:if test="${user.checkPermesso('UPD_TIPO_VERIFICA')}">
-																					<a href="#" onClick="modalModificaTipoVerifica('${tipo.id}','${tipo.categoria.id}','${tipo.descrizione}','${tipo.codice}')" class="btn btn-warning "><i class="fa fa-edit"></i></a>
+																					<a href="#" onClick="modalModificaTipoVerifica('${tipo.id}','${tipo.sigla}','${tipo.categoria.id}','${tipo.descrizione}','${tipo.codice}')" class="btn btn-warning "><i class="fa fa-edit"></i></a>
 																				</c:if>																			
 																				<c:if test="${user.checkPermesso('DEL_TIPO_VERIFICA')}">
 																					<a href="#" onClick="modalEliminaTipoVerifica('${tipo.id}','${tipo.descrizione}')" class="btn btn-danger "><i class="fa fa-remove"></i></a>
@@ -126,18 +128,25 @@
    														</div>
    														 
                											<div class="form-group">
-         														<label for="descrizione" class="col-sm-2 control-label">Descrizione:</label>
-        														<div class="col-sm-10">
-        															<input class="form-control" id="descrizione" type="text" name="descrizione" value="" required />
-    															</div>	     
-  															</div>    
+       														<label for="descrizione" class="col-sm-2 control-label">Descrizione:</label>
+      														<div class="col-sm-10">
+      															<input class="form-control" id="descrizione" type="text" name="descrizione" value="" required />
+  															</div>	     
+  														</div>    
 
    														<div class="form-group">
-         														<label for="codice" class="col-sm-2 control-label">Codice:</label>
-        														<div class="col-sm-10">
-        															<input class="form-control" id="codice" type="text" name="codice" value="" required />	
-    															</div>
-  															</div>
+         													<label for="codice" class="col-sm-2 control-label">Codice:</label>
+        													<div class="col-sm-10">
+        														<input class="form-control" id="codice" type="text" name="codice" value="" required />	
+    														</div>
+  														</div>
+  														
+  														<div class="form-group">
+       														<label for="sigla" class="col-sm-2 control-label">Sigla:</label>
+      														<div class="col-sm-10">
+      															<input class="form-control" id="sigla" type="text" name="sigla" value="" required />
+  															</div>	     
+  														</div> 
 	    
 								    						
 	 													</div>	
@@ -195,7 +204,14 @@
          														<div class="col-sm-10">
          															<input class="form-control" id="modcodice" type="text" name="modcodice" value=""  />	         			
      															</div>
-   															</div>           
+   															</div>  
+   															
+   															<div class="form-group">
+         														<label for="modsigla" class="col-sm-2 control-label">Sigla:</label>
+         														<div class="col-sm-10">
+         															<input class="form-control" id="modsigla" type="text" name="modsigla" value=""  />
+     															</div>	     	 
+   															</div>         
 
 	 													</div>
               											<!-- /.tab-pane -->

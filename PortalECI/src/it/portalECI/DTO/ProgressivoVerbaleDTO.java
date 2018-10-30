@@ -8,15 +8,15 @@ public class ProgressivoVerbaleDTO implements Serializable {
 	
 	private int id;
 	private int idUtente;
-	private int idCategoria;
+	private int idTipo;
 	private int progressivo = 0;
 	
 	public ProgressivoVerbaleDTO() {
 		
 	}
-	public ProgressivoVerbaleDTO(int idUtente, int idCategoria) {
+	public ProgressivoVerbaleDTO(int idUtente, int idTipo) {
 		this.idUtente = idUtente;
-		this.idCategoria = idCategoria;
+		this.idTipo = idTipo;
 	}
 
 	
@@ -34,11 +34,11 @@ public class ProgressivoVerbaleDTO implements Serializable {
 	public void setIdUtente(int utente) {
 		this.idUtente = utente;
 	}
-	public int getIdCategoria() {
-		return idCategoria;
+	public int getIdTipo() {
+		return idTipo;
 	}
-	public void setIdCategoria(int categoria) {
-		this.idCategoria = categoria;
+	public void setIdTipo(int tipo) {
+		this.idTipo = tipo;
 	}
 	public int getProgressivo() {
 		return progressivo;

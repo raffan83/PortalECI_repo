@@ -2703,11 +2703,13 @@ function nuovoTipoVerifica(){
 		pleaseWaitDiv = $('#pleaseWaitDialog');
 		pleaseWaitDiv.modal();
 
+		var sigla=$('#sigla').val();
 		var categoria=$('#categoria').val();
 		var descrizione=$('#descrizione').val();
 		var codice=$('#codice').val();
 		var dataObj = {};
 		
+		dataObj.sigla = sigla;
 		dataObj.categoria = categoria;
 		dataObj.descrizione = descrizione;
 		dataObj.codice = codice;
@@ -2753,12 +2755,14 @@ function modificaTipoVerifica(){
 	pleaseWaitDiv.modal();
 	
 	var id=$('#modid').val();
+	var sigla=$('#modsigla').val();
 	var categoria=$('#modcategoria').val();
 	var descrizione=$('#moddescrizione').val();
 	var codice=$('#modcodice').val();
 	    
 	var dataObj = {};
 	dataObj.id = id;
+	dataObj.sigla = sigla;
 	dataObj.categoria = categoria;
 	dataObj.descrizione = descrizione;
 	dataObj.codice = codice;
@@ -2839,9 +2843,10 @@ function eliminaTipoVerifica(){
 	});
 }
 
-function modalModificaTipoVerifica(id,categoria,descrizione,codice){
+function modalModificaTipoVerifica(id,sigla,categoria,descrizione,codice){
 	  
 	$('#modid').val(id);
+	$('#modsigla').val(sigla);
 	$('#modcategoria').val(categoria);
 	$('#moddescrizione').val(descrizione);
 	$('#modcodice').val(codice);

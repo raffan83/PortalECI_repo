@@ -38,7 +38,6 @@ import it.portalECI.DAO.GestioneRispostaVerbaleDAO;
 import it.portalECI.DAO.GestioneStatoInterventoDAO;
 import it.portalECI.DAO.GestioneStatoVerbaleDAO;
 import it.portalECI.DAO.GestioneVerbaleDAO;
-import it.portalECI.DTO.CategoriaVerificaDTO;
 import it.portalECI.DTO.DocumentoDTO;
 import it.portalECI.DTO.DomandaOpzioneQuestionarioDTO;
 import it.portalECI.DTO.DomandaQuestionarioDTO;
@@ -59,6 +58,7 @@ import it.portalECI.DTO.RispostaVerbaleDTO;
 import it.portalECI.DTO.StatoInterventoDTO;
 import it.portalECI.DTO.StatoVerbaleDTO;
 import it.portalECI.DTO.TemplateQuestionarioDTO;
+import it.portalECI.DTO.TipoVerificaDTO;
 import it.portalECI.DTO.UtenteDTO;
 import it.portalECI.DTO.VerbaleDTO;
 import it.portalECI.Util.Costanti;
@@ -265,7 +265,8 @@ public class GestioneVerbaleBO {
 		if(verbale.getType().equals(VerbaleDTO.VERBALE)) {
 			intervento = verbale.getIntervento();
 			template = questionario.getTemplateVerbale();
-			nomefile = generaNumeroVerbale(questionario.getTipo().getCategoria(), intervento, session);
+			nomefile = generaNumeroVerbale(questionario.getTipo(), intervento, session);
+			
 			verbale.setNumeroVerbale(nomefile);
 		}else {
 			VerbaleDTO verb=GestioneVerbaleDAO.getVerbaleFromSkTec(String.valueOf(verbale.getId()), session);
@@ -412,12 +413,12 @@ public class GestioneVerbaleBO {
 		}
 	}
 	
-	public static String generaNumeroVerbale(CategoriaVerificaDTO categoria, InterventoDTO intervento, Session session) {
+	public static String generaNumeroVerbale(TipoVerificaDTO tipo, InterventoDTO intervento, Session session) {
 		String numeroVerbale = new String();
 		UtenteDTO utente = intervento.getTecnico_verificatore();
-		ProgressivoVerbaleDTO progressivo = GestioneVerbaleDAO.getProgressivoVerbale(utente, categoria, session);
+		ProgressivoVerbaleDTO progressivo = GestioneVerbaleDAO.getProgressivoVerbale(utente, tipo, session);
 		String codUtente = utente.getCodice() == null ? "" : utente.getCodice();
-		String sigla = categoria.getSigla() == null ? "" : categoria.getSigla();
+		String sigla = tipo.getSigla() == null ? "" : tipo.getSigla();
 		int prog = progressivo.getProgressivo();
 		String codProv = intervento.getCodiceProvincia() == null ? " " : intervento.getCodiceProvincia();
 		numeroVerbale = String.format("%s-%s-%03d-%s", codUtente, sigla, prog, codProv);
