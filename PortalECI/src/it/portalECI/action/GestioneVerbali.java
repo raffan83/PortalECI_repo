@@ -66,6 +66,9 @@ public class GestioneVerbali extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+
+		request.setCharacterEncoding("UTF-8"); 
+		
 		JsonObject myObj = new JsonObject();
 		PrintWriter  out = response.getWriter();
 		
@@ -162,6 +165,7 @@ public class GestioneVerbali extends HttpServlet {
 					}						
 				
 				}else if(!paramName.contains("idVerbale") && !paramName.contains("options") && !paramName.contains("responseValue") && !paramName.contains("value2") && !paramName.contains("value1")){			
+					
 					String testo=request.getParameter(paramName);
 
 					RispostaTestoVerbaleDTO rispostaTesto = GestioneRispostaVerbaleDAO.getRispostaInstance(RispostaTestoVerbaleDTO.class, Integer.parseInt(paramName), session);
@@ -180,6 +184,8 @@ public class GestioneVerbali extends HttpServlet {
 						}
 					
 					rispostaTesto.setResponseValue(testo);
+					System.out.println("RISPOSTA: "+testo);
+					System.out.println("RISPOSTA2: "+rispostaTesto.getResponseValue());
 					GestioneRispostaVerbaleDAO.save(rispostaTesto, session);
 
 				}

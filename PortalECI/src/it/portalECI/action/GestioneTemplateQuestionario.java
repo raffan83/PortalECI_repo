@@ -40,6 +40,8 @@ public class GestioneTemplateQuestionario extends HttpServlet {
 	
 	public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
+		request.setCharacterEncoding("UTF-8");
+		
 		if(Utility.validateSession(request,response,getServletContext()))return;
 		
 		Session session=SessionFacotryDAO.get().openSession();
