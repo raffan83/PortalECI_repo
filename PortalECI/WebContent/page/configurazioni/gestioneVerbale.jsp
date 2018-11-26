@@ -157,7 +157,7 @@
                 									</c:forEach>
                 								</ul>
                 								<c:if test="${user.checkPermesso('GENERA_CERTIFICATO')}">    
-                									<button class="btn btn-default pull-right" onClick="generaCertificato(${verbale.getId()})" style="margin-left:5px"><i class="glyphicon glyphicon-edit"></i> Genera Certificato</button>
+                									<button class="btn btn-default pull-right" onClick="$('#confirmCertificato').modal('show');" style="margin-left:5px"><i class="glyphicon glyphicon-edit"></i> Genera Certificato</button>
                 									<a class="btn btn-default pull-right" href="anteprimaCertificato.do?idVerbale=${verbale.getId()}" style="margin-left:5px"><i class="glyphicon glyphicon-eye-open"></i> Anteprima Certificato</a>
 												</c:if>
 											</div>
@@ -186,7 +186,7 @@
 	               									</c:forEach>
 	               								</ul>
 	               								<c:if test="${user.checkPermesso('GENERA_SKTECNICA')}">
-	               									<button class="btn btn-default pull-right" onClick="generaCertificato(${verbale.getSchedaTecnica().getId()})" style="margin-left:5px"><i class="glyphicon glyphicon-edit"></i> Genera Scheda Tecnica</button>
+	               									<button class="btn btn-default pull-right" onClick="$('#confirmSchedaTecnica').modal('show');" style="margin-left:5px"><i class="glyphicon glyphicon-edit"></i> Genera Scheda Tecnica</button>
 													<a class="btn btn-default pull-right" href="anteprimaCertificato.do?idVerbale=${verbale.getSchedaTecnica().getId()}" style="margin-left:5px"><i class="glyphicon glyphicon-eye-open"></i> Anteprima Certificato</a>
 												</c:if>
 											</div>
@@ -404,6 +404,45 @@
   							</div>
 						</div> 
 						
+						<div id="confirmCertificato" class="modal fade" role="dialog" aria-labelledby="myLargeModalLabel">
+    						<div class="modal-dialog" role="document">
+    							<div class="modal-content">
+     								<div class="modal-header">
+        								<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        								<h4 class="modal-title text-center" id="myModalLabel">Attenzione!</h4>
+      								</div>
+       								<div class="modal-body">
+										<h3 class="text-center">Attenzione, stai per generare un certificato!<br/>
+											Questa operazione non può essere annullata. <br/>
+											Sei sicuro di voler generare il certificato?</h3>
+  		 							</div>
+      								<div class="modal-footer">
+      									<button type="button" class="btn btn-default" onclick="generaCertificato(${verbale.getId()})" >Genera Certificato</button>     									
+        								<button type="button" class="btn btn-default" data-dismiss="modal">Annulla</button>
+      								</div>
+    							</div>
+  							</div>
+						</div>
+						<div id="confirmSchedaTecnica" class="modal fade" role="dialog" aria-labelledby="myLargeModalLabel">
+    						<div class="modal-dialog" role="document">
+    							<div class="modal-content">
+     								<div class="modal-header">
+        								<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        								<h4 class="modal-title text-center" id="myModalLabel">Attenzione!</h4>
+      								</div>
+       								<div class="modal-body">
+										<h3 class="text-center">Attenzione, stai per generare una scheda tecnica!<br/>
+											Questa operazione non può essere annullata. <br/>
+											Sei sicuro di voler generare la scheda tecnica?</h3>
+  		 							</div>
+      								<div class="modal-footer">
+      									<button type="button" class="btn btn-default" onclick="generaCertificato(${verbale.getSchedaTecnica().getId()})" >Genera Scheda Tecnica</button>     									
+        								<button type="button" class="btn btn-default" data-dismiss="modal">Annulla</button>
+      								</div>
+    							</div>
+  							</div>
+						</div> 
+						
 						<div id="listChange" class="modal fade" role="dialog" aria-labelledby="myLargeModalLabel">
     						<div class="modal-dialog" role="document">
     							<div class="modal-content">
@@ -507,9 +546,9 @@
 								$("."+idform+"box").css("display", "none");
 								//TODO: modificare logica
 								if(idform=="formVerbale" && ${user.checkPermesso('GENERA_CERTIFICATO')}){									
-									$("#"+idform+"box").append('<button class="btn btn-default pull-right" onClick="generaCertificato(${verbale.getId()})" style="margin-left:5px"><i class="glyphicon glyphicon-edit"></i> Genera Certificato</button>');
+									$("#"+idform+"box").append('<button class="btn btn-default pull-right" onClick="$("#confirmCertificato").modal("show");" style="margin-left:5px"><i class="glyphicon glyphicon-edit"></i> Genera Certificato</button>');
 								}else if(idform=="formScTecnica" && ${user.checkPermesso('GENERA_SKTECNICA')}){
-									$("#"+idform+"box").append('<button class="btn btn-default pull-right" onClick="generaCertificato(${verbale.getSchedaTecnica().getId()})" style="margin-left:5px"><i class="glyphicon glyphicon-edit"></i> Genera Scheda Tecnica</button>');
+									$("#"+idform+"box").append('<button class="btn btn-default pull-right" onClick="$("#confirmSchedaTecnica").modal("show");" style="margin-left:5px"><i class="glyphicon glyphicon-edit"></i> Genera Scheda Tecnica</button>');
 								}
 							}
 						}else{							
@@ -531,6 +570,8 @@
 			}
 			
 			function generaCertificato(id){
+				$("#confirmCertificato").modal('hide');
+				$("#confirmSchedaTecnica").modal('hide');
 				pleaseWaitDiv = $('#pleaseWaitDialog');
 				pleaseWaitDiv.modal();
 				$.ajax({
