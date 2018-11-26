@@ -51,10 +51,16 @@
 													</div>
 													<div class="box-body">
 														<div class="row">
-															<div class="col-sm-12">
+															<div class="col-sm-6">
 																<div class="form-group">
 																	<label for="titolo-input" class="control-label">Titolo</label>
 																	<input type="text" name="titolo" class="form-control" id="titolo-input" placeholder="Titolo" value="${template.titolo}">
+																</div>
+															</div>
+															<div class="col-sm-6">
+																<div class="form-group">
+																	<label for="revisione-input" class="control-label">Revisione</label>
+																	<input type="text" name="revisione" class="form-control" id="titolo-input" placeholder="Revisione" value="${template.revisione}">
 																</div>
 															</div>
 														</div>

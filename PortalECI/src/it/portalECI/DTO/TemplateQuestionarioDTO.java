@@ -11,6 +11,7 @@ public class TemplateQuestionarioDTO {
 	private String template;
 	private String header;
 	private String footer;
+	private String revisione;
 	
 	public TemplateQuestionarioDTO() {
 		// TODO Auto-generated constructor stub
@@ -70,6 +71,14 @@ public class TemplateQuestionarioDTO {
 
 	public void setFooter(String footer) {
 		this.footer = footer;
+	}
+
+	public String getRevisione() {
+		return revisione;
+	}
+
+	public void setRevisione(String revisione) {
+		this.revisione = revisione;
 	}
 	
 	

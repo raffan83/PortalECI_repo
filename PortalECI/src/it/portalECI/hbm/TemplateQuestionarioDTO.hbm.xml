@@ -28,5 +28,9 @@
 		<property name="footer">
 			<column name="footer" length="256"/>
 		</property> 
+		
+		<property name="revisione">
+			<column name="revisione" length="256"/>
+		</property> 
 	</class>
 </hibernate-mapping> 
