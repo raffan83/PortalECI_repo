@@ -31,6 +31,10 @@
 		
 		<property name="revisione">
 			<column name="revisione" length="256"/>
+		</property>
+		
+		<property name="subheader">
+			<column name="subheader" sql-type="LONGTEXT"/>
 		</property> 
 	</class>
 </hibernate-mapping> 

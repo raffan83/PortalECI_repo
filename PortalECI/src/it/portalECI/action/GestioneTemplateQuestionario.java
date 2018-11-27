@@ -81,6 +81,7 @@ public class GestioneTemplateQuestionario extends HttpServlet {
 		TemplateQuestionarioDTO template = new  TemplateQuestionarioDTO();
 		template.setTitolo(request.getParameter("titolo"));
 		template.setRevisione(request.getParameter("revisione"));
+		template.setSubheader(request.getParameter("subheader"));
 		template.setTemplate(request.getParameter("template"));
 		template.setHeader(request.getParameter("headerFileName"));
 		template.setFooter(request.getParameter("footerFileName"));
@@ -139,6 +140,7 @@ public class GestioneTemplateQuestionario extends HttpServlet {
 				TemplateQuestionarioDTO template = new  TemplateQuestionarioDTO();
 				template.setTitolo(request.getParameter("titolo"));
 				template.setRevisione(request.getParameter("revisione"));
+				template.setSubheader(request.getParameter("subheader"));
 				template.setTemplate(request.getParameter("template"));
 				template.setHeader(request.getParameter("headerFileName"));
 				template.setFooter(request.getParameter("footerFileName"));
@@ -182,6 +184,7 @@ public class GestioneTemplateQuestionario extends HttpServlet {
 			TemplateQuestionarioDTO template = GestioneTemplateQuestionarioBO.getQuestionarioById(idTemplateInt, session);		
 			template.setTitolo(request.getParameter("titolo"));
 			template.setRevisione(request.getParameter("revisione"));
+			template.setSubheader(request.getParameter("subheader"));
 			template.setTemplate(request.getParameter("template"));
 			template.setHeader(request.getParameter("headerFileName"));
 			template.setFooter(request.getParameter("footerFileName"));

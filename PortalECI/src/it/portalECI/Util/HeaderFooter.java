@@ -1,7 +1,6 @@
 package it.portalECI.Util;
 
 import java.io.IOException;
-
 import com.itextpdf.text.BadElementException;
 import com.itextpdf.text.Document;
 import com.itextpdf.text.DocumentException;
@@ -19,6 +18,8 @@ import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfPageEventHelper;
 import com.itextpdf.text.pdf.PdfTemplate;
 import com.itextpdf.text.pdf.PdfWriter;
+import com.itextpdf.tool.xml.ElementList;
+import com.itextpdf.tool.xml.XMLWorkerHelper;
 
 public class HeaderFooter extends PdfPageEventHelper {
 	
@@ -31,16 +32,21 @@ public class HeaderFooter extends PdfPageEventHelper {
 	
     protected Image imgHeader;
     protected Image imgFooter;
+    protected PdfPTable tblSubheader;
     
+    protected String subheader; 
     protected PdfTemplate totalPage;
     protected String footerLeft;
     protected String footerRight;
     protected Font font;
+    protected float docWidth;
+    protected float subheaderHeight;
     
     
-    public HeaderFooter(String imgHeaderPath, String imgFooterPath, String footerLeft, String footerRight) throws IOException, BadElementException {
+    public HeaderFooter(String imgHeaderPath, String subheader, String imgFooterPath, String footerLeft, String footerRight) throws IOException, BadElementException {
     	this.footerLeft = footerLeft;
     	this.footerRight = footerRight;
+    	this.subheader = subheader;
 
     	if(imgHeaderPath != null && !imgHeaderPath.isEmpty()) {
     		imgHeader = Image.getInstance(Costanti.PATH_HEADER_IMAGE+imgHeaderPath);
@@ -67,7 +73,7 @@ public class HeaderFooter extends PdfPageEventHelper {
 	public void onEndPage(PdfWriter writer, Document document) {
         PdfContentByte cb = writer.getDirectContent();
 		
-        float docWidth = document.getPageSize().getWidth();
+        //float docWidth = document.getPageSize().getWidth();
         float tableWith= docWidth-LEFT_MARGIN-RIGHT_MARGIN;
         float standardCellWidth = tableWith/3;
         
@@ -112,20 +118,26 @@ public class HeaderFooter extends PdfPageEventHelper {
 		} catch (DocumentException e) {
 			e.printStackTrace();
 		}
+
+        float docHeight = document.getPageSize().getHeight();
+        float imgHeight = 0;
         
-        if(imgHeader !=null) {
-        	try {
-	            float docHeight = document.getPageSize().getHeight();
-	            float imgHeight = imgHeader.getScaledHeight();
+        if (imgHeader !=null) {
+	    	try {
+	            imgHeight = imgHeader.getScaledHeight();
 	            imgHeader.setAbsolutePosition(0,docHeight-imgHeight);
-	            cb.addImage(imgHeader);
+	            cb.addImage(imgHeader);        
 	        } catch (DocumentException de) {
 	        	de.printStackTrace();
 	            throw new ExceptionConverter(de);
 	        }
         }
+        
+    	if (tblSubheader != null) {
+    		tblSubheader.writeSelectedRows(0, -1, LEFT_MARGIN, docHeight-imgHeight, cb);
+    	}
 
-        if(imgFooter !=null) {
+        if (imgFooter !=null) {
 	        try {
             	imgFooter.setAbsolutePosition(0, TABLE_FOOTER_HEIGHT);
 	            cb.addImage(imgFooter);
@@ -145,10 +157,31 @@ public class HeaderFooter extends PdfPageEventHelper {
     public void formatDocument(Document document) {
 		float marginTop = MIN_TOP_MARGIN;
 		float marginBottom = MIN_BOTTOM_MARGIN;
+		docWidth = document.getPageSize().getWidth();
+		
+		if(subheader != null && !subheader.isEmpty()) {
+    		StringBuilder sb = new StringBuilder(subheader);
+    		tblSubheader = new PdfPTable(1);
+			try {			
+				tblSubheader.setTotalWidth(docWidth-LEFT_MARGIN-RIGHT_MARGIN);
+				PdfPCell cell = new PdfPCell();
+				ElementList list = new ElementList();
+				list = XMLWorkerHelper.parseToElementList(sb.toString(), null);
+				for (Element element : list) {
+				    cell.addElement(element);
+				}
+				cell.setBorder(Rectangle.NO_BORDER);
+				cell.setVerticalAlignment(Element.ALIGN_BASELINE);
+				tblSubheader.addCell(cell);
+				subheaderHeight = tblSubheader.getTotalHeight();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+    	}
 		
 		if(imgHeader != null) {
 			imgHeader.scaleToFit(document.getPageSize());
-			marginTop = Math.max(MIN_TOP_MARGIN, imgHeader.getScaledHeight());
+			marginTop = Math.max(MIN_TOP_MARGIN, imgHeader.getScaledHeight()+subheaderHeight);
 		}
 		
 		if(imgFooter != null) {
