@@ -51,15 +51,20 @@
 													</div>
 													<div class="box-body">
 														<div class="row">
-															<div class="col-sm-12">
+															<div class="col-sm-6">
 																<div class="form-group">
 																	<label for="titolo-input" class="control-label">Titolo</label>
 																	<input type="text" name="titolo" class="form-control" id="titolo-input" placeholder="Titolo" value="${template.titolo}">
 																</div>
 															</div>
+															<div class="col-sm-6">
+																<div class="form-group">
+																	<label for="revisione-input" class="control-label">Revisione</label>
+																	<input type="text" name="revisione" class="form-control" id="titolo-input" placeholder="Revisione" value="${template.revisione}">
+																</div>
+															</div>
 														</div>
-														<textarea id="summernote">${template.template}</textarea>
-							       						
+														<textarea id="summernoteTemplate">${template.template}</textarea>
 				        							</div>
 				   								</div>
 				   							</div>
@@ -95,6 +100,7 @@
                     		 											</c:forEach>
                   													</select>
 																</div>
+																<textarea id="summernoteSubheader">${template.subheader}</textarea>
 															</div>
 														</div>
 													</div>
@@ -138,7 +144,8 @@
 											</div>
 				   						</div>
 						        	</div>
-						        	<input name="template" id="templateHiddenField" type="hidden" />
+						        	<input name="subheader" id="templateHiddenField" type="hidden" />
+						        	<input name="template" id="subheaderHiddenField" type="hidden" />  	
 							        <div class="col-xs-12 margin-bottom">							        	
 										
 										<button class="btn btn-default pull-right" type="submit">
@@ -195,12 +202,15 @@
 		<script src="plugins/ckeditor/ckeditor.js"></script>
 		<script src="js/template-questionario.js" type="text/javascript"></script>
 	
-		<script>
+		<script >
 			$(document).ready(function() {
+				
 				<c:if test="${error!=null }">
 					showError("${error}");
 				</c:if>
-			})
+				
+			
+			});
 		</script>
 	</jsp:attribute>
 </t:layout>

@@ -12,8 +12,9 @@ $(function () {
 	    }
 	});
 
-
-	CKEDITOR.replace( 'summernote', {
+	var editor_config = {
+	//for (i=1;i<=2;i++) {
+	//CKEDITOR.replace( 'summernote',{
 		// Define the toolbar: http://docs.ckeditor.com/ckeditor4/docs/#!/guide/dev_toolbar
 		// The full preset from CDN which we used as a base provides more features than we need.
 		// Also by default it comes with a 3-line toolbar. Here we put all buttons in a single row.
@@ -65,8 +66,12 @@ $(function () {
 	    			'Times New Roman/Times New Roman, Times, serif;' +
 	    			'Courier New/Courier New,Courier,monospace'
 		
-	} );
-
+	//} );
+	}
+	CKEDITOR.replace('summernoteTemplate', editor_config );
+	editor_config.height = 200;
+	CKEDITOR.replace('summernoteSubheader', editor_config );
+	
 
 })
 
@@ -86,7 +91,8 @@ $(document).ready(function() {
 	});
 	
 	$("#template-form").submit(function() {
-		$('#templateHiddenField').val(CKEDITOR.instances['summernote'].getData());
+		$('#templateHiddenField').val(CKEDITOR.instances['summernote1'].getData());
+		$('#subheaderHiddenField').val(CKEDITOR.instances['summernote2'].getData());
 	});
 });
 

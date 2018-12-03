@@ -43,6 +43,8 @@ public class GestioneTipiVerifica extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
+		request.setCharacterEncoding("UTF-8");
+		
 		String action =  request.getParameter("action");
 		if(action.equals("checkSchedaTecnica")) {
 			String idVerifica =  request.getParameter("idVerifica");

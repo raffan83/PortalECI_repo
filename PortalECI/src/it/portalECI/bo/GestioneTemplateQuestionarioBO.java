@@ -67,7 +67,7 @@ public class GestioneTemplateQuestionarioBO {
 		String html = new String(template.getTemplate());
 		html = replacePlaceholders(html, questionario, session);
 	
-		writePDF(fileOutput,html, template.getHeader(), template.getFooter());
+		writePDF(fileOutput,html, template);
 		
 		return file;
 	}
@@ -75,7 +75,7 @@ public class GestioneTemplateQuestionarioBO {
 	
 	
 	
-	static public void writePDF(OutputStream fileOutput,String html, String headerPath, String footerPath) throws DocumentException, IOException {
+	static public void writePDF(OutputStream fileOutput,String html, TemplateQuestionarioDTO template) throws DocumentException, IOException {
 		final org.jsoup.nodes.Document documentJsoup = Jsoup.parse(html);
 		documentJsoup.outputSettings().syntax(org.jsoup.nodes.Document.OutputSettings.Syntax.xml);
 		String validXHTML = documentJsoup.html();
@@ -85,12 +85,14 @@ public class GestioneTemplateQuestionarioBO {
         
 		SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
 		HeaderFooter pageEventHandler;
+
 		try {
 			pageEventHandler = new HeaderFooter(
-					headerPath,
-					footerPath,
-					"",
-					"Revisione del "+dateFormat.format(new Date())
+					template.getHeader(),
+					template.getSubheader(),
+					template.getFooter(),
+					template.getTitolo(),
+					"Revisione "+template.getRevisione()+" del "+dateFormat.format(new Date())
 			);
 		}catch (Exception e) {
 			return;

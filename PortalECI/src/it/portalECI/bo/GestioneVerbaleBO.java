@@ -13,6 +13,7 @@ import java.util.List;
 import javax.xml.bind.ValidationException;
 
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.FilenameUtils;
 import org.hibernate.Session;
 
 import com.google.gson.JsonArray;
@@ -302,14 +303,16 @@ public class GestioneVerbaleBO {
 				break; // Ci può essere al massimo un documento valido dello stesso tipo (CERTIFICATO|SCHEDA TECNICA)
 			}
 		}
+       /* 
         if(vecchioDocumento != null) {
         	html = html + "<p style=\"text-align:center;font-size:16px;font-family:Helvetica,sans-serif;font-weight:900\">"+String.format(Costanti.DOCUMENT_INVALIDS_PHRASE, vecchioDocumento.getFileName())+"</p>";
         }
+        */
         
 		html = html + template.getTemplate();
 		html = replacePlaceholders(html, verbale,intervento, session);
 		
-		GestioneTemplateQuestionarioBO.writePDF(fileOutput, html, template.getHeader(), template.getFooter());
+		GestioneTemplateQuestionarioBO.writePDF(fileOutput, html, template);
 
 		DocumentoDTO certificato = new DocumentoDTO();
         certificato.setFilePath(path+file.getName());
@@ -317,12 +320,75 @@ public class GestioneVerbaleBO {
         certificato.setType(documentoType);
         certificato.setVerbale(verbale);        
         verbale.addToDocumentiVerbale(certificato);
+        
+        if(vecchioDocumento != null) {
+        	String vecchioDocFileName = vecchioDocumento.getFileName();
+        	vecchioDocFileName = FilenameUtils.removeExtension(vecchioDocFileName);
+        	newDocument(certificato.getFilePath(), vecchioDocFileName);
+        }
+        
+        
         GestioneDocumentoDAO.save(certificato, session);
         verbale.getDocumentiVerbale().add(certificato);
         GestioneVerbaleDAO.save(verbale, session);
     	
 		return file;
 
+	}
+	
+	public static File getPDFVerbaleAnteprima(VerbaleDTO verbale, QuestionarioDTO questionario, Session session) throws Exception{
+		if(questionario == null || (questionario.getTemplateVerbale() == null && questionario.getTemplateSchedaTecnica() == null)) {
+			throw new IllegalArgumentException();
+		}
+		
+		InterventoDTO intervento = null;
+		TemplateQuestionarioDTO template = null;
+		
+		if(verbale.getType().equals(VerbaleDTO.VERBALE)) {
+			intervento = verbale.getIntervento();
+			template = questionario.getTemplateVerbale();
+
+		}else {
+			VerbaleDTO verb=GestioneVerbaleDAO.getVerbaleFromSkTec(String.valueOf(verbale.getId()), session);
+			intervento = verb.getIntervento();
+			template = questionario.getTemplateSchedaTecnica();
+			
+		}
+		
+		String path = "AnteprimaCertificati"+File.separator;
+		new File(Costanti.PATH_CERTIFICATI+path).mkdirs();
+		File file = new File(Costanti.PATH_CERTIFICATI+path,"AnteprimaCertificato.pdf");
+        FileOutputStream fileOutput = new FileOutputStream(file);
+		
+		String html = new String();
+		
+		String documentoType = "";
+        if(verbale.getType().equals(VerbaleDTO.VERBALE)) {
+        	documentoType = DocumentoDTO.CERTIFIC;
+        } else {
+        	documentoType = DocumentoDTO.SK_TEC;
+        }
+        
+        DocumentoDTO vecchioDocumento = null;
+		for(DocumentoDTO documento:verbale.getDocumentiVerbale()) {
+			if(!documento.getInvalid() && documento.getType().equals(documentoType)) {
+				vecchioDocumento = documento;
+				break;
+			}
+		}
+        
+		html = html + template.getTemplate();
+		html = replacePlaceholders(html, verbale,intervento, session);
+		
+		GestioneTemplateQuestionarioBO.writePDF(fileOutput, html, template);
+        
+        if(vecchioDocumento != null) {
+        	String vecchioDocFileName = vecchioDocumento.getFileName();
+        	vecchioDocFileName = FilenameUtils.removeExtension(vecchioDocFileName);
+        	newDocument(path+file.getName(), vecchioDocFileName);
+        }
+
+		return file;
 	}
 	
 	private static String getTemplateRisposta(RispostaTestoVerbaleDTO risposta) {
@@ -598,14 +664,51 @@ public class GestioneVerbaleBO {
 	        PdfStamper stamper = new PdfStamper(reader, new FileOutputStream(tmpFile));
 	        Font f = new Font(FontFamily.HELVETICA, 15);
 	        f.setColor(BaseColor.RED);
-	        PdfContentByte over = stamper.getOverContent(1);
-	        Phrase p = new Phrase(String.format(Costanti.DOCUMENT_IS_INVALID_PHRASE, newfile), f);
-	        over.saveState();
-	        PdfGState gs1 = new PdfGState();
-	        gs1.setFillOpacity(0.7f);
-	        over.setGState(gs1);
-	        ColumnText.showTextAligned(over, Element.ALIGN_CENTER, p, 563, 450, 90);
-	        over.restoreState();
+	        int pages = reader.getNumberOfPages();
+	        for (int i=0; i<pages; i++) {	        
+		        PdfContentByte over = stamper.getOverContent(i+1);
+		        Phrase p = new Phrase(String.format(Costanti.DOCUMENT_IS_INVALID_PHRASE, newfile), f);
+		        over.saveState();
+		        PdfGState gs1 = new PdfGState();
+		        gs1.setFillOpacity(0.7f);
+		        over.setGState(gs1);
+		        ColumnText.showTextAligned(over, Element.ALIGN_CENTER, p, 563, 450, 90);
+		        over.restoreState();
+	        }
+	        stamper.close();
+	        reader.close();
+			tmpFile.renameTo(new File(filepath));
+		} catch (IOException e) {
+			System.out.println("IOException: " + e);
+			e.printStackTrace();
+		} catch (DocumentException e) {
+			System.out.println("DocumentException: " + e);
+			e.printStackTrace();
+		}
+		
+		
+	}
+	
+	public static void newDocument(String path, String newfile) {
+
+		try {
+			String filepath = Costanti.PATH_CERTIFICATI+path;
+			File tmpFile = new File(filepath+".tmp");
+	        PdfReader reader = new PdfReader(filepath);
+	        PdfStamper stamper = new PdfStamper(reader, new FileOutputStream(tmpFile));
+	        Font f = new Font(FontFamily.HELVETICA, 15);
+	        //f.setColor(BaseColor.RED);
+	        int pages = reader.getNumberOfPages();
+	        for (int i=0; i<pages; i++) {	        
+		        PdfContentByte over = stamper.getOverContent(i+1);
+		        Phrase p = new Phrase(String.format(Costanti.DOCUMENT_INVALIDS_PHRASE, newfile), f);
+		        over.saveState();
+		        PdfGState gs1 = new PdfGState();
+		        gs1.setFillOpacity(0.7f);
+		        over.setGState(gs1);
+		        ColumnText.showTextAligned(over, Element.ALIGN_CENTER, p, 35, 450, 90);
+		        over.restoreState();
+	        }
 	        stamper.close();
 	        reader.close();
 			tmpFile.renameTo(new File(filepath));

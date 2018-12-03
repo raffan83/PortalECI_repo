@@ -69,6 +69,8 @@ public class GestioneStoricoModifiche extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
+		request.setCharacterEncoding("UTF-8");
+		
 		JsonObject myObj = new JsonObject();
 		PrintWriter  out = response.getWriter();
 		
