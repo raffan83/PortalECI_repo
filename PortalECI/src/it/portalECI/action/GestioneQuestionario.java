@@ -89,7 +89,7 @@ public class GestioneQuestionario extends HttpServlet {
 		request.setAttribute("categorie_verifica", categorie_verifica);
 		QuestionarioDTO questionario = new QuestionarioDTO();
 		questionario.setVersion(1);
-		// se c'� l'id � una modifica se non c'� � l'inserimento di un nuovo questionario
+	
 		String idQuestionario = request.getParameter("idQuestionario");
 		Integer id = null;
 		if(idQuestionario != null && idQuestionario != "") {
