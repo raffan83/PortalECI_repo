@@ -1,3 +1,5 @@
+<%@page import="it.portalECI.DTO.ColonnaTabellaQuestionarioDTO"%>
+<%@page import="it.portalECI.DTO.RispostaTabellaQuestionarioDTO"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@page import="it.portalECI.Util.Funzioni"%>
 <%@page import="java.util.ArrayList"%>
@@ -14,7 +16,7 @@
 
 	org.hibernate.Session hibernateSession = (org.hibernate.Session) request.getAttribute("hibernateSession");
 	List<OpzioneRispostaQuestionarioDTO> lista_opzioni = new ArrayList<OpzioneRispostaQuestionarioDTO>();
-	
+	List<ColonnaTabellaQuestionarioDTO> lista_colonne = new ArrayList<ColonnaTabellaQuestionarioDTO>();
 	if(domanda!=null && domanda.getRisposta().getTipo().equals("RES_FORMULA")){
 		RispostaFormulaQuestionarioDTO risp =(RispostaFormulaQuestionarioDTO) hibernateSession.get(RispostaFormulaQuestionarioDTO.class, domanda.getRisposta().getId());
 		request.setAttribute("risposta",risp);
@@ -23,9 +25,14 @@
 		RispostaSceltaQuestionarioDTO risp =(RispostaSceltaQuestionarioDTO) hibernateSession.get(RispostaSceltaQuestionarioDTO.class, domanda.getRisposta().getId());
 		lista_opzioni = risp.getOpzioni();
 		request.setAttribute("risposta",risp);
+	}else if(domanda!=null && domanda.getRisposta().getTipo().equals("RES_TABLE")){
+		RispostaTabellaQuestionarioDTO risp =(RispostaTabellaQuestionarioDTO) hibernateSession.get(RispostaTabellaQuestionarioDTO.class, domanda.getRisposta().getId());
+		lista_colonne = risp.getColonne();
+		request.setAttribute("risposta",risp);
 	}
 	
 	request.setAttribute("lista_opzioni",lista_opzioni);
+	request.setAttribute("lista_colonne",lista_colonne);
 %>
 <div class="box box-danger box-domanda">
 
@@ -61,6 +68,9 @@
 			<c:if test="${domanda.risposta.tipo=='RES_TEXT'}">
 				<p class="well well-sm">Testo libero</p>
 			</c:if>
+			<c:if test="${domanda.risposta.tipo=='RES_TABLE'}">
+				<p class="well well-sm">Tabella</p>
+			</c:if>			
 		</div>
 		
 		<c:if test="${domanda.risposta.tipo=='RES_FORMULA'}">
@@ -93,6 +103,19 @@
 					</p>
 				</div>
 			</c:forEach>
+		</c:if>
+		<c:if test="${domanda.risposta.tipo=='RES_TABLE'}">
+			<div class="col-xs-12">
+			<table class="table table-bordered">
+				<tr>
+					<c:forEach items="${risposta.colonne }" var="colonna" varStatus="status">
+						<th style="width: ${colonna.larghezza}%">
+							${colonna.domanda.testo}
+						</th>
+					</c:forEach>
+				</tr>
+			</table>
+			 </div>
 		</c:if>
 		<div class="clearfix"></div>
 	</div>

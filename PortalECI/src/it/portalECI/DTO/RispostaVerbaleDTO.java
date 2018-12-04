@@ -10,6 +10,7 @@ public abstract class RispostaVerbaleDTO {
 	public static final String TIPO_TESTO="RES_TEXT";
 	public static final String TIPO_SCELTA="RES_CHOICE";
 	public static final String TIPO_FORMULA="RES_FORMULA";
+	public static final String TIPO_TABELLA="RES_TABLE";
 
 	
 	private int id;

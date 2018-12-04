@@ -17,7 +17,7 @@
             <column name="risposta_id" not-null="true" />
         </many-to-one>
      	
-     	<many-to-one name="domanda" class="it.portalECI.DTO.DomandaQuestionarioDTO">
+     	<many-to-one name="domanda" class="it.portalECI.DTO.DomandaQuestionarioDTO" cascade="all">
             <column name="domanda_id" not-null="true" />
         </many-to-one>		
 	</class>

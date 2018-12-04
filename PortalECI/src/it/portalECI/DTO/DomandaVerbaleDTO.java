@@ -14,6 +14,7 @@ public class DomandaVerbaleDTO {
 	private RispostaVerbaleDTO risposta;
 	private VerbaleDTO verbale;
 	private OpzioneRispostaVerbaleDTO opzione;
+	private ColonnaTabellaVerbaleDTO colonnaTabella;
 	
 	public DomandaVerbaleDTO() {
 	}
@@ -121,6 +122,14 @@ public class DomandaVerbaleDTO {
 		session.close();	
 		
 		return risp;
+	}
+
+	public ColonnaTabellaVerbaleDTO getColonnaTabella() {
+		return colonnaTabella;
+	}
+
+	public void setColonnaTabella(ColonnaTabellaVerbaleDTO colonnaTabella) {
+		this.colonnaTabella = colonnaTabella;
 	}
 	
 	

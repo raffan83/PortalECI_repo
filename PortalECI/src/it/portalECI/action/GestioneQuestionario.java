@@ -16,6 +16,7 @@ import org.hibernate.Transaction;
 
 import it.portalECI.DAO.SessionFacotryDAO;
 import it.portalECI.DTO.CategoriaVerificaDTO;
+import it.portalECI.DTO.ColonnaTabellaQuestionarioDTO;
 import it.portalECI.DTO.DomandaOpzioneQuestionarioDTO;
 import it.portalECI.DTO.DomandaQuestionarioDTO;
 import it.portalECI.DTO.DomandaSchedaTecnicaQuestionarioDTO;
@@ -25,6 +26,7 @@ import it.portalECI.DTO.QuestionarioDTO;
 import it.portalECI.DTO.RispostaFormulaQuestionarioDTO;
 import it.portalECI.DTO.RispostaQuestionario;
 import it.portalECI.DTO.RispostaSceltaQuestionarioDTO;
+import it.portalECI.DTO.RispostaTabellaQuestionarioDTO;
 import it.portalECI.DTO.RispostaTestoQuestionarioDTO;
 import it.portalECI.DTO.TemplateQuestionarioDTO;
 import it.portalECI.DTO.TipoVerificaDTO;
@@ -36,6 +38,7 @@ import it.portalECI.bo.GestioneQuestionarioBO;
 @WebServlet(name = "gestioneQuestionario", urlPatterns = { "/gestioneQuestionario.do" })
 public class GestioneQuestionario extends HttpServlet {
 	
+	private static final long serialVersionUID = 1L;
 	int count = 0;
 
 	public GestioneQuestionario() {
@@ -196,15 +199,24 @@ public class GestioneQuestionario extends HttpServlet {
 		
 		String[] domandaIndice = request.getParameterValues("domanda.indice");
 		
-		for(int i=0; i<domandaIndice.length;i++) {
-			count = i;
-			getDomandaFromRequest(request,questionario,hibernateSession,domandaIndice, i);
+		Integer index=0;
+		while(index<domandaIndice.length) {
+			getDomandaFromRequest(request,questionario,hibernateSession,domandaIndice, index);
+			index++;
 		}
+		
+		
+		/*Integer i=0;
+		for( Integer index=0; index<domandaIndice.length;index++) {
+			count = i;
+			
+			System.out.println(index);
+		}*/
 		
 		return questionario;
 	}
 	
-	private DomandaQuestionarioDTO getDomandaFromRequest(HttpServletRequest request, QuestionarioDTO questionario, Session hibernateSession, String[] domandaIndice, int i) {
+	private DomandaQuestionarioDTO getDomandaFromRequest(HttpServletRequest request, QuestionarioDTO questionario, Session hibernateSession, String[] domandaIndice, Integer i) {
 		String indice = domandaIndice[i];
 		
 		DomandaQuestionarioDTO domandaQuestionario = new  DomandaQuestionarioDTO();
@@ -235,8 +247,11 @@ public class GestioneQuestionario extends HttpServlet {
 			domanda.setTesto(request.getParameter("domanda.testo"+indice));
 			domanda.setObbligatoria(new Boolean(request.getParameter("domanda.obbligatoria"+indice)));
 			domanda.setPlaceholder(request.getParameter("domanda.placeholder"+indice)+"_QST");
-			//domanda.setPosizione(questionario.getDomandeSchedaTecnica().size());
 			domandaQuestionario = domanda;
+		}else {
+			domandaQuestionario.setTesto(request.getParameter("domanda.testo"+indice));
+			domandaQuestionario.setObbligatoria(new Boolean(request.getParameter("domanda.obbligatoria"+indice)));
+			domandaQuestionario.setPlaceholder(request.getParameter("domanda.placeholder"+indice)+"_QST");
 		}
 		
 		String rispostaTipo = request.getParameter("risposta.tipo"+indice);
@@ -280,8 +295,8 @@ public class GestioneQuestionario extends HttpServlet {
 				int numeroDomandeOpzione = Integer.parseInt(numeroDomandeOpzioneParams[idx]);
 				List<DomandaOpzioneQuestionarioDTO> listadomandeOpzione  = new ArrayList<DomandaOpzioneQuestionarioDTO>();
 				for(int k=0; k<numeroDomandeOpzione;k++ ) {
-					count++;
-					DomandaOpzioneQuestionarioDTO domandaOpzione = (DomandaOpzioneQuestionarioDTO)getDomandaFromRequest(request, questionario, hibernateSession, domandaIndice, count);
+					i++;
+					DomandaOpzioneQuestionarioDTO domandaOpzione = (DomandaOpzioneQuestionarioDTO)getDomandaFromRequest(request, questionario, hibernateSession, domandaIndice, i);
 					domandaOpzione.setPosizione(k);
 					domandaOpzione.setOpzione(opzione);
 					listadomandeOpzione.add(domandaOpzione);
@@ -290,6 +305,28 @@ public class GestioneQuestionario extends HttpServlet {
 				listaOpzioni.add(opzione);
 			}
 			risposta.setOpzioni(listaOpzioni);
+			domandaQuestionario.setRisposta(risposta);
+		}else if(rispostaTipo.equals(RispostaQuestionario.TIPO_TABELLA)) {
+			RispostaTabellaQuestionarioDTO risposta = new RispostaTabellaQuestionarioDTO();
+			risposta.setTipo(RispostaQuestionario.TIPO_TABELLA);
+			String placeholderRisposta = request.getParameter("risposta.placeholder"+indice);
+			risposta.setPlaceholder(placeholderRisposta+"_RES");
+			risposta.setDomanda(domandaQuestionario);
+			int numeroColonne = Integer.parseInt(request.getParameter("numero-colonne-tabella"+indice));
+			List<ColonnaTabellaQuestionarioDTO> colonne = new ArrayList<ColonnaTabellaQuestionarioDTO>();
+			String[] larghezzaParam = request.getParameterValues("colonna_larghezza"+indice);
+			for(int k=0; k<numeroColonne;k++ ) {
+				ColonnaTabellaQuestionarioDTO colonna = new ColonnaTabellaQuestionarioDTO();
+				String larghezzaString = larghezzaParam[k];
+				colonna.setRisposta(risposta);
+				colonna.setLarghezza(Long.parseLong(larghezzaString));
+				colonna.setPosizione(Long.valueOf(k));
+				i++;
+				DomandaQuestionarioDTO domandaColonna = (DomandaQuestionarioDTO)getDomandaFromRequest(request, questionario, hibernateSession, domandaIndice, i);
+				colonna.setDomanda(domandaColonna);
+				colonne.add(colonna);
+			}
+			risposta.setColonne(colonne);
 			domandaQuestionario.setRisposta(risposta);
 		}
 		return domandaQuestionario;

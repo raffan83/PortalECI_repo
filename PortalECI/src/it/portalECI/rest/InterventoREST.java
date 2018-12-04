@@ -27,6 +27,7 @@ import it.portalECI.DTO.StatoInterventoDTO;
 import it.portalECI.DTO.UtenteDTO;
 import it.portalECI.Exception.ECIException;
 import it.portalECI.bo.GestioneInterventoBO;
+import it.portalECI.bo.GestioneUtenteBO;
 import it.portalECI.bo.GestioneVerbaleBO;
 
 @WebServlet(name="InterventoREST" , urlPatterns = { "/rest/intervento" })
