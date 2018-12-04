@@ -187,7 +187,7 @@
 	               								</ul>
 	               								<c:if test="${user.checkPermesso('GENERA_SKTECNICA')}">
 	               									<button class="btn btn-default pull-right" onClick="$('#confirmSchedaTecnica').modal('show');" style="margin-left:5px"><i class="glyphicon glyphicon-edit"></i> Genera Scheda Tecnica</button>
-													<a class="btn btn-default pull-right" href="anteprimaCertificato.do?idVerbale=${verbale.getSchedaTecnica().getId()}" style="margin-left:5px"><i class="glyphicon glyphicon-eye-open"></i> Anteprima Certificato</a>
+													<a class="btn btn-default pull-right" href="anteprimaCertificato.do?idVerbale=${verbale.getSchedaTecnica().getId()}" style="margin-left:5px"><i class="glyphicon glyphicon-eye-open"></i> Anteprima Scheda Tecnica</a>
 												</c:if>
 											</div>
 										</div>

@@ -64,8 +64,7 @@
 																</div>
 															</div>
 														</div>
-														<textarea id="summernote">${template.template}</textarea>
-							       						
+														<textarea id="summernoteTemplate">${template.template}</textarea>
 				        							</div>
 				   								</div>
 				   							</div>
@@ -101,6 +100,7 @@
                     		 											</c:forEach>
                   													</select>
 																</div>
+																<textarea id="summernoteSubheader">${template.subheader}</textarea>
 															</div>
 														</div>
 													</div>
@@ -144,7 +144,8 @@
 											</div>
 				   						</div>
 						        	</div>
-						        	<input name="template" id="templateHiddenField" type="hidden" />
+						        	<input name="subheader" id="templateHiddenField" type="hidden" />
+						        	<input name="template" id="subheaderHiddenField" type="hidden" />  	
 							        <div class="col-xs-12 margin-bottom">							        	
 										
 										<button class="btn btn-default pull-right" type="submit">
@@ -201,12 +202,15 @@
 		<script src="plugins/ckeditor/ckeditor.js"></script>
 		<script src="js/template-questionario.js" type="text/javascript"></script>
 	
-		<script>
+		<script >
 			$(document).ready(function() {
+				
 				<c:if test="${error!=null }">
 					showError("${error}");
 				</c:if>
-			})
+				
+			
+			});
 		</script>
 	</jsp:attribute>
 </t:layout>

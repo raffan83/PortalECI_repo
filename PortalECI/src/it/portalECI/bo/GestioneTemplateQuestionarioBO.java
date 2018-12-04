@@ -89,6 +89,7 @@ public class GestioneTemplateQuestionarioBO {
 		try {
 			pageEventHandler = new HeaderFooter(
 					template.getHeader(),
+					template.getSubheader(),
 					template.getFooter(),
 					template.getTitolo(),
 					"Revisione "+template.getRevisione()+" del "+dateFormat.format(new Date())

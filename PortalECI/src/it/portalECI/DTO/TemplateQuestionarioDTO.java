@@ -12,6 +12,7 @@ public class TemplateQuestionarioDTO {
 	private String header;
 	private String footer;
 	private String revisione;
+	private String subheader;
 	
 	public TemplateQuestionarioDTO() {
 		// TODO Auto-generated constructor stub
@@ -79,6 +80,14 @@ public class TemplateQuestionarioDTO {
 
 	public void setRevisione(String revisione) {
 		this.revisione = revisione;
+	}
+	
+	public String getSubheader() {
+		return subheader;
+	}
+
+	public void setSubheader(String subheader) {
+		this.subheader = subheader;
 	}
 	
 	
