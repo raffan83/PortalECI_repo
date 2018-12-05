@@ -261,7 +261,9 @@ public class GestioneVerbaleBO {
 						ColonnaTabellaVerbaleDTO colonnaVerbale = new ColonnaTabellaVerbaleDTO();
 						colonnaVerbale.setColonnaQuestionario(colonnaQuestionario);
 						colonnaVerbale.setRispostaParent(rispostaTabella);
-						colonnaVerbale.setDomanda(buildDomandaVerbalebyDomadaQuestionario(colonnaQuestionario.getDomanda(), session));
+						DomandaVerbaleDTO domandaColonna = buildDomandaVerbalebyDomadaQuestionario(colonnaQuestionario.getDomanda(), session);
+						GestioneDomandaVerbaleDAO.save(domandaColonna, session);
+						colonnaVerbale.setDomanda(domandaColonna);
 						rispostaTabella.getColonne().add(colonnaVerbale);
 					}
 				}
