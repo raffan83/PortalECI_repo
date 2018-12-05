@@ -10,7 +10,13 @@
 		<many-to-one name="rispostaParent" class="it.portalECI.DTO.RispostaTabellaVerbaleDTO">
             <column name="risposta_id" not-null="true" />
         </many-to-one>
-     	
+		<many-to-one name="colonnaQuestionario" class="it.portalECI.DTO.ColonnaTabellaQuestionarioDTO">
+            <column name="colonna_questionario_id" not-null="true" />
+        </many-to-one>
+ 		<many-to-one name="domanda" class="it.portalECI.DTO.DomandaVerbaleDTO">
+            <column name="domanda_id" not-null="true" />
+        </many-to-one>
+   		
    		<set name="risposte" table="RISPOSTA_VERBALE" inverse="true" lazy="true" fetch="select" cascade="all, delete-orphan">
 			<key>
 				<column name="colonna_id"></column>
