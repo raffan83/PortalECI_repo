@@ -57,7 +57,7 @@
 						<select name="risposta.tipo${indice}" class="form-control tipo-risposta-select">
 					    	<option value="" disabled selected>Seleziona Tipo...</option>
 					    	<option value="RES_TEXT" ${colonna.domanda.risposta.tipo!=null && colonna.domanda.risposta.tipo.equals('RES_TEXT')?'selected':''}>Testo libero</option>
-					    	<option value="RES_CHOICE" ${colonna.domanda.risposta.tipo!=null && colonna.domanda.risposta.tipo.equals('RES_CHOICE')?'selected':''}>Scelta multipla</option>
+					    	<option value="RES_CHOICE" ${colonna.domanda.risposta.tipo!=null && colonna.domanda.risposta.tipo.equals('RES_CHOICE')?'selected':''}>Scelta mutua esclusione</option>
 					    	<option value="RES_FORMULA" ${colonna.domanda.risposta.tipo!=null && colonna.domanda.risposta.tipo.equals('RES_FORMULA')?'selected':''}>Formula</option>					    	
 						</select>
 					</div>
@@ -85,17 +85,6 @@
 						request.setAttribute("lista_opzioni",lista_opzioni);
 					%>
 			<div class="risposta-div risposta-RES_CHOICE" style="display: ${colonna.domanda!=null && colonna.domanda.risposta.tipo.equals('RES_CHOICE')?'block':'none'}">
-				<div class="form-horizontal">
-					<div class="form-group">
-						<label for="risposta.multipla" class="col-sm-2 control-label">Mutua esclusione</label>
-						<div class="col-sm-10">
-							<select name="risposta.multipla${indice}" class="form-control domanda-obbligatoria-select">
-					    		<option value="false">SI</option>
-					    		<option value="true" ${colonna.domanda.risposta!=null && risposta.tipo.equals('RES_CHOICE') && risposta.multipla?'selected':''}>NO</option>
-							</select>
-						</div>
-					</div>
-				</div>
 				<div class="form-group row">
 					<label for="risposta.tipo" class="col-sm-2 control-label text-right">Opzioni</label>
 					<div class="col-sm-10">
@@ -110,20 +99,7 @@
 									<div class="col-sm-3 ">
 										<button type="button" class="btn btn-danger btn-block rimuovi-opzione-button">elimina</button>
 									</div>
-									<div class="col-sm-3">
-										<a class="btn btn-danger btn-block" onclick="aggiungiDomanda('Opzione', this)">
-											<i class="fa fa-plus"></i> Aggiungi domanda
-										</a>
-									</div>
 									<div class="clearfix"></div>
-									<div class="lista-domande-opzioni-div">
-										<input type="hidden" name="numero-domande-opzione${indice}" class="numero-domande-opzione-input" value="${opzione.domande==null?0:opzione.domande.size()}"/>
-										<c:forEach items="${opzione.domande}" var="domanda_opzione" >
-											<c:set var="domanda" value="${domanda_opzione}" scope="request"></c:set>
-											<c:set var="gruppo" value="Opzione" scope="request"></c:set>
-											<jsp:include page="formDomanda.jsp"></jsp:include>
-										</c:forEach>
-									</div>
 								</div>
 							</c:forEach>
 							<div class="aggiungi-opzione-button-wp">
