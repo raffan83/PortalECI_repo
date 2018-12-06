@@ -2,7 +2,7 @@ package it.portalECI.DTO;
 
 public class ColonnaTabellaQuestionarioDTO {
 	
-	private Long id;
+	private int id;
 	private Long posizione;
 
 	private RispostaTabellaQuestionarioDTO risposta;
@@ -10,7 +10,7 @@ public class ColonnaTabellaQuestionarioDTO {
 	private Long larghezza;
 
 	
-	public Long getId() {
+	public int getId() {
 		return id;
 	}
 	
@@ -22,7 +22,7 @@ public class ColonnaTabellaQuestionarioDTO {
 		this.posizione = posizione;
 	}
 
-	public void setId(Long id) {
+	public void setId(int id) {
 		this.id = id;
 	}
 

@@ -6,7 +6,7 @@ import com.google.gson.JsonObject;
 
 public class ColonnaTabellaVerbaleDTO {
 	
-	private Long id;
+	private int id;
 	
 	private ColonnaTabellaQuestionarioDTO colonnaQuestionario;
 	
@@ -19,11 +19,11 @@ public class ColonnaTabellaVerbaleDTO {
 	public ColonnaTabellaVerbaleDTO() {
 	}
 
-	public Long getId() {
+	public int getId() {
 		return id;
 	}
 
-	public void setId(Long id) {
+	public void setId(int id) {
 		this.id = id;
 	}
 
