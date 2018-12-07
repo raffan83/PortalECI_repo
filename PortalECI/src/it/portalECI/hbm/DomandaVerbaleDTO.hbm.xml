@@ -17,5 +17,8 @@
 		<many-to-one name="opzione" class="it.portalECI.DTO.OpzioneRispostaVerbaleDTO">
             <column name="opzione_id" not-null="false" />
         </many-to-one>
+		<many-to-one name="colonnaTabella" class="it.portalECI.DTO.ColonnaTabellaVerbaleDTO">
+            <column name="colonna_id" not-null="false" />
+        </many-to-one>
 	</class>
 </hibernate-mapping> 

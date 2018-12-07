@@ -56,6 +56,33 @@ function aggiungiDomanda(gruppo, button){
 	});
 	
 };
+
+function aggiungiColonna(button, indiceColonna){
+	$.ajax({
+		type: "GET",
+		url: "gestioneColonnaTabellaQuestionario.do",
+		data: {indice:indice, indiceColonna:indiceColonna},
+		//if received a response from the server
+		success: function( data, textStatus) {
+			container = $(button).parents(".risposta-RES_TABLE").first().find(".lista-colonne-div").first();
+			var counter = container.find(".numero-colonne-tabella-input");
+			counter.val(parseInt(counter.val())+1);
+
+			var new_colonna_element = jQuery(data)
+			container.append(new_colonna_element);
+			indice++;
+            $('html, body').animate({
+                scrollTop: $(new_colonna_element).offset().top
+            }, 800);
+
+		},
+		error: function( data, textStatus) {
+			alert("ERRORE "+data.status)
+		}
+	});
+	
+};
+
 $(document).ready(function(){
 	if($(".domanda-indice-input").length)
 		indice = Math.max.apply(Math, $(".domanda-indice-input").map(function() { return parseFloat(this.value) }));
@@ -72,6 +99,13 @@ $(document).on("click",".elimina-domanda-button",function() {
 	domanda_div.remove();
 });
 
+$(document).on("click",".elimina-colonna-button",function() {
+	container = $(this).parents(".risposta-RES_TABLE").first().find(".lista-colonne-div").first();
+	var counter = container.find(".numero-colonne-tabella-input");
+	counter.val(parseInt(counter.val())-1);
+	var colonna_div = $(this).parents('.colonna-div').first();
+	colonna_div.remove();
+});
 
 
 $(document).on("change",".tipo-risposta-select",function() {
@@ -88,8 +122,8 @@ $(document).on("change",".tipo-risposta-select",function() {
 	}
 });
 
-function aggiungiOpzione(indice, button) {
-	newOption(indice).insertBefore($(button).parents(".aggiungi-opzione-button-wp").first());
+function aggiungiOpzione(indice, button, aggiungiDomandaFlag=true) {
+	newOption(indice, aggiungiDomandaFlag).insertBefore($(button).parents(".aggiungi-opzione-button-wp").first());
 	
 };
 
@@ -100,7 +134,7 @@ $(document).on("click",".rimuovi-opzione-button",function() {
 });
 
 
-function newOption(indice){
+function newOption(indice, aggiungiDomandaFlag){
 	var elementString = '<div class="opzione-div row">'
 							+'<div class="col-sm-6">'
 								+'<div class="form-group">'
@@ -109,17 +143,19 @@ function newOption(indice){
 							+'</div>'
 							+'<div class="col-sm-3 ">'
 								+'<button type="button" class="btn btn-danger btn-block rimuovi-opzione-button">elimina</button>'
-							+'</div>'
-							+'<div class="col-sm-3">'
-								+'<a class="btn btn-danger btn-block" onclick="aggiungiDomanda(\'Opzione\', this)">'
-									+'<i class="fa fa-plus"></i> Aggiungi domanda'
-								+'</a>'
-							+'</div>'
-							+'<div class="clearfix"></div>'
-							+'<div class="lista-domande-opzioni-div">'
-								+'<input type="hidden" name="numero-domande-opzione'+indice+'" class="numero-domande-opzione-input" value="0"/>'
-							+'</div>'
-						+'</div>';
+							 +'</div>';
+	if(aggiungiDomandaFlag){
+		elementString = elementString+'<div class="col-sm-3">'
+									+'<a class="btn btn-danger btn-block" onclick="aggiungiDomanda(\'Opzione\', this)">'
+										+'<i class="fa fa-plus"></i> Aggiungi domanda'
+									+'</a>'
+								+'</div>';
+	}
+		elementString = elementString+'<div class="clearfix"></div>'
+								+'<div class="lista-domande-opzioni-div">'
+									+'<input type="hidden" name="numero-domande-opzione'+indice+'" class="numero-domande-opzione-input" value="0"/>'
+								+'</div>'
+							+'</div>';
 	return jQuery(elementString)
 }
 
@@ -162,6 +198,15 @@ $("#questionario-form").on("submit", function(event){
 					issueError(form_group,target, event,"Valore duplicato");
 				}
 			});
+		}
+		if($(this).hasClass("larghezza-colonna-input")){
+			var somma = 0;
+			$("[name="+$(this).attr("name")+"]").each(function(idx, el){
+				somma=somma+parseInt(el.value);
+			});
+			if(somma != 100){
+				issueError(form_group,target, event,"La somma deve essere 100");
+			}
 		}
 
 	});

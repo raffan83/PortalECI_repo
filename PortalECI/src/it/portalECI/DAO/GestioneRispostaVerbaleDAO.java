@@ -2,6 +2,7 @@ package it.portalECI.DAO;
 
 import org.hibernate.Session;
 
+import it.portalECI.DTO.ColonnaTabellaVerbaleDTO;
 import it.portalECI.DTO.OpzioneRispostaVerbaleDTO;
 import it.portalECI.DTO.RispostaQuestionario;
 import it.portalECI.DTO.RispostaSceltaVerbaleDTO;
@@ -30,6 +31,10 @@ public class GestioneRispostaVerbaleDAO {
 	public static RispostaSceltaVerbaleDTO getRispostaSceltaVerbaleDTO(int id, Session session) {
 		return (RispostaSceltaVerbaleDTO) session.get(RispostaSceltaVerbaleDTO.class, id);
 		
+	}
+
+	public static ColonnaTabellaVerbaleDTO getColonnaVerble(int id, Session session) {
+		return (ColonnaTabellaVerbaleDTO) session.get(ColonnaTabellaVerbaleDTO.class, id);
 	}
 
 }

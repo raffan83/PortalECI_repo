@@ -1,3 +1,5 @@
+<%@page import="it.portalECI.DTO.RispostaTabellaQuestionarioDTO"%>
+<%@page import="it.portalECI.DTO.ColonnaTabellaQuestionarioDTO"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@page import="it.portalECI.DTO.RispostaQuestionario"%>
 <%@page import="it.portalECI.Util.Funzioni"%>
@@ -17,9 +19,11 @@
 	<input type="hidden" class="domanda-indice-input" name="domanda.indice" value="${indice}"/>
 	<input type="hidden" name="domanda.gruppo${indice}" class="domanda-gruppo-input" value="${gruppo}" >
 	<div class="form-horizontal">
+		<c:if test="${gruppo!='Colonna'}">
 		<div class="form-group">
 			<div class="col-sm-12"><a class="btn btn-danger btn-xs pull-right margin-right elimina-domanda-button">elimina domanda</a></div>
 		</div>
+		</c:if>
 		<div class="form-group">
 			<label for="domanda.testo" class="col-sm-2 control-label">Testo della domanda</label>
 			<div class="col-sm-10">
@@ -52,6 +56,8 @@
 			    	<option value="RES_TEXT" ${domanda.risposta.tipo!=null && domanda.risposta.tipo.equals('RES_TEXT')?'selected':''}>Testo libero</option>
 			    	<option value="RES_CHOICE" ${domanda.risposta.tipo!=null && domanda.risposta.tipo.equals('RES_CHOICE')?'selected':''}>Scelta multipla</option>
 			    	<option value="RES_FORMULA" ${domanda.risposta.tipo!=null && domanda.risposta.tipo.equals('RES_FORMULA')?'selected':''}>Formula</option>
+			    	<option value="RES_TABLE" ${domanda.risposta.tipo!=null && domanda.risposta.tipo.equals('RES_TABLE')?'selected':''}>Tabella</option>
+			    	
 				</select>
 			</div>
 		</div>	
@@ -69,6 +75,7 @@
 			<%org.hibernate.Session hibernateSession = (org.hibernate.Session) request.getAttribute("hibernateSession");%>
 			<%	
 				List<OpzioneRispostaQuestionarioDTO> lista_opzioni = new ArrayList<OpzioneRispostaQuestionarioDTO>();
+				List<ColonnaTabellaQuestionarioDTO>  lista_colonne = new ArrayList<ColonnaTabellaQuestionarioDTO>();
 				if(domanda!=null && domanda.getRisposta().getTipo().equals("RES_FORMULA")){
 					RispostaFormulaQuestionarioDTO risp =(RispostaFormulaQuestionarioDTO) hibernateSession.get(RispostaFormulaQuestionarioDTO.class, domanda.getRisposta().getId());
 					request.setAttribute("risposta",risp);
@@ -76,7 +83,11 @@
 					RispostaSceltaQuestionarioDTO risp =(RispostaSceltaQuestionarioDTO) hibernateSession.get(RispostaSceltaQuestionarioDTO.class, domanda.getRisposta().getId());
 					lista_opzioni = risp.getOpzioni();
 					request.setAttribute("risposta",risp);
+				}else if(domanda!=null && domanda.getRisposta().getTipo().equals("RES_TABLE")){
+					RispostaTabellaQuestionarioDTO risp =(RispostaTabellaQuestionarioDTO) hibernateSession.get(RispostaTabellaQuestionarioDTO.class, domanda.getRisposta().getId());
+					lista_colonne = risp.getColonne();
 				}
+				request.setAttribute("lista_colonne", lista_colonne);
 				request.setAttribute("lista_opzioni",lista_opzioni);
 			%>
 	<div class="risposta-div risposta-RES_CHOICE" style="display: ${domanda!=null && domanda.risposta.tipo.equals('RES_CHOICE')?'block':'none'}">
@@ -166,6 +177,28 @@
 				<div class="form-group">
 					<label for="titolo-input" class=" control-label">Nome risultato</label>
 					<input type="text" name="formula-risultato${indice}" class="form-control" placeholder="Nome risultato" value="${risposta!=null && risposta.tipo.equals('RES_FORMULA')?risposta.risultato:''}">
+				</div>
+			</div>
+		</div>
+	</div>
+
+	
+	<div class="form-group risposta-div risposta-RES_TABLE" style="display: ${domanda!=null && domanda.risposta.tipo.equals('RES_TABLE')?'block':'none'}">
+		<div class="form-group row">
+			<label for="risposta.tipo" class="col-sm-2 control-label text-right">Colonne</label>
+			<div class="col-sm-10">
+				<div class="lista-colonne-div">
+					<input type="hidden" name="numero-colonne-tabella${indice}" class="numero-colonne-tabella-input" value="${lista_colonne.size()}" >
+					<c:forEach items="${lista_colonne}" var="colonna" >
+						<c:set var="colonna" value="${colonna}" scope="request" ></c:set>
+						<c:set var="indiceColonna" value="${indice}" scope="request" ></c:set>
+						<jsp:include page="formColonnaTabella.jsp"></jsp:include> 
+					</c:forEach>
+				</div>
+				<div class="aggiungi-colonna-button-wp">
+					<button type="button" class="btn btn-block btn-danger aggiungi-colonna-button" onclick="aggiungiColonna(this, '${indice }')" >
+						<i class="fa fa-plus"></i>Aggiungi una colonna
+					</button>
 				</div>
 			</div>
 		</div>

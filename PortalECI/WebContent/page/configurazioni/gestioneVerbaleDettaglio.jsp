@@ -1,3 +1,5 @@
+<%@page import="it.portalECI.DTO.RispostaVerbaleDTO"%>
+<%@page import="it.portalECI.DTO.ColonnaTabellaVerbaleDTO"%>
 <%@page import="java.util.ArrayList"%>
 <%@page import="java.util.List"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
@@ -9,6 +11,7 @@
 <%@ page import="it.portalECI.DTO.RispostaSceltaVerbaleDTO" %>
 <%@ page import="it.portalECI.DTO.RispostaTestoVerbaleDTO" %>
 <%@ page import="it.portalECI.DTO.OpzioneRispostaVerbaleDTO" %>
+<%@ page import="it.portalECI.DTO.RispostaTabellaVerbaleDTO" %>
 <%@ page import="it.portalECI.DTO.DomandaVerbaleDTO" %>
 <%@ page import="java.util.Collections" %>
 <%@ page import="java.util.Comparator" %>
@@ -42,6 +45,29 @@
 	}else if(domVerbale!=null && domVerbale.getRisposta().getTipo().equals("RES_TEXT")){
 		RispostaTestoVerbaleDTO risp =(RispostaTestoVerbaleDTO) hibernateSession.get(RispostaTestoVerbaleDTO.class, domVerbale.getRisposta().getId());	
 		request.setAttribute("risposta",risp);
+	}else if(domVerbale!=null && domVerbale.getRisposta().getTipo().equals("RES_TABLE")){
+		RispostaTabellaVerbaleDTO risp =(RispostaTabellaVerbaleDTO) hibernateSession.get(RispostaTabellaVerbaleDTO.class, domVerbale.getRisposta().getId());	
+		List<ColonnaTabellaVerbaleDTO> colonne=new ArrayList<ColonnaTabellaVerbaleDTO>();
+		colonne.addAll(risp.getColonne());
+		
+		Collections.sort(colonne, new Comparator<ColonnaTabellaVerbaleDTO>() {
+	        @Override
+	        public int compare(ColonnaTabellaVerbaleDTO op2, ColonnaTabellaVerbaleDTO op1){
+				int pos1=op1.getColonnaQuestionario().getPosizione().intValue();
+				int pos2=op2.getColonnaQuestionario().getPosizione().intValue();
+	            return  pos2 - pos1;
+	        }
+	    });
+		
+		ArrayList<Object[]> dati = new ArrayList<Object[]>();
+		for(ColonnaTabellaVerbaleDTO colonna:colonne){
+			dati.add(colonna.getRisposte().toArray());
+		}
+		
+		request.setAttribute("colonne",colonne);
+		request.setAttribute("dati",dati);
+		request.setAttribute("risposta",risp);
+	
 	}
 	
 	if(request.getAttribute("type").equals("Verbale")){
@@ -127,4 +153,40 @@
   			</div>
   		</div>
 	</c:when>
+	<c:when test="${domVerbale.getRisposta().getTipo().equals('RES_TABLE')}">
+		<c:if test="${storico.contains(risposta.getId()) }">
+			<p><a class="label label-warning" onclick="detailStorico('${risposta.getId()}')" title="Clicca per vedere lo storico delle modifiche"> Elemento modificato <i class="fa fa-pencil" aria-hidden="true"></i></a></p>
+		</c:if>
+		
+		<table class="table table-bordered table-condensed">
+			<thead>
+				<tr>
+					<c:forEach items="${colonne}" var="colonnaVerbale" varStatus="loop">
+        				<th style="width: ${colonnaVerbale.getColonnaQuestionario().getLarghezza()}%"> ${colonnaVerbale.getColonnaQuestionario().getDomanda().getTesto()}</th>
+        			</c:forEach>
+        			<th></th>
+				</tr>
+			</thead>
+			<tbody id="tabella_risposta_${domVerbale.getRisposta().getId()}" class="table table-bordered">
+				<c:forEach items="${colonne[0].risposte}" var="rispostaPrimaColonna" varStatus="loopRes" >
+					<tr>
+						<c:forEach items="${colonne}" var="colonnaVerbale" varStatus="loopCol">
+							<c:set var="rispostaTabella" value="${dati.get(loopCol.index)[loopRes.index]}" scope="request"></c:set>
+							<jsp:include page="gestioneVerbaleDettaglioTabella.jsp"></jsp:include>
+						</c:forEach>
+						<td>
+							<a onclick="eliminaRigaTabella(this)"> Elimina</a>
+						</td>					
+					</tr>
+				</c:forEach>
+
+			</tbody>
+			<tr>
+				<c:forEach items="${colonne}" var="colonnaVerbale" varStatus="loop">
+					<c:set var="rispostaTabella" value="${colonnaVerbale.domanda.risposta}" scope="request"></c:set>
+       				<jsp:include page="gestioneVerbaleDettaglioTabella.jsp"></jsp:include>
+       			</c:forEach>
+			</tr>
+		</table>
+  	</c:when>
 </c:choose>

@@ -36,5 +36,7 @@
   		<mapping class="ProgressivoVerbaleDTO" package="it.portalECI.DTO" resource="it/portalECI/hbm/ProgressivoVerbaleDTO.hbm.xml"/>
   		<mapping class="StoricoModificheDTO" package="it.portalECI.DTO" resource="it/portalECI/hbm/StoricoModificheDTO.hbm.xml"/>
   	
+   		<mapping class="ColonnaTabellaQuestionarioDTO" package="it.portalECI.DTO" resource="it/portalECI/hbm/ColonnaTabellaQuestionarioDTO.hbm.xml"/>
+   		<mapping class="ColonnaTabellaVerbaleDTO" package="it.portalECI.DTO" resource="it/portalECI/hbm/ColonnaTabellaVerbaleDTO.hbm.xml"/>
  	</session-factory>
 </hibernate-configuration>

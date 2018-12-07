@@ -58,5 +58,17 @@
 	
 		</subclass>
 		
+		<subclass name="it.portalECI.DTO.RispostaTabellaVerbaleDTO"	discriminator-value="RES_TABLE">
+			<many-to-one name="rispostaQuestionario" class="it.portalECI.DTO.RispostaTabellaQuestionarioDTO" column="risposta_questionario_id"  cascade="none"  />
+					
+			<set name="colonne" table="COLONNA_TABELLA_VERBALE" inverse="true" lazy="true" fetch="select" cascade="all, delete-orphan">
+				<key>
+					<column name="risposta_id"></column>
+				</key>
+				
+				<one-to-many class="it.portalECI.DTO.ColonnaTabellaVerbaleDTO"/>
+			</set>
+			
+		</subclass>
 	</class>
 </hibernate-mapping> 
