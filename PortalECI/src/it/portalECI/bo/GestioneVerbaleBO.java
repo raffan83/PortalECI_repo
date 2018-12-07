@@ -658,7 +658,7 @@ public class GestioneVerbaleBO {
 					if(rispostejson!=null) {
 						Iterator<JsonElement> risposteIterator = rispostejson.iterator();
 						while (risposteIterator.hasNext()) {
-							colonnaVerbale.getRisposte().add(getRispostaByJson((JsonObject)risposteIterator.next(), domandaQuestionario));
+							colonnaVerbale.getRisposte().add(getRispostaByJson((JsonObject)risposteIterator.next(), domandaQuestionario, session));
 							
 						}
 					}
@@ -671,20 +671,20 @@ public class GestioneVerbaleBO {
 
 	}
 	
-	private static <T extends RispostaVerbaleDTO> T getRispostaByJson(JsonObject risposta, DomandaQuestionarioDTO domandaQuestionario) {
+	private static <T extends RispostaVerbaleDTO> T getRispostaByJson(JsonObject risposta, DomandaQuestionarioDTO domandaQuestionario, Session session) {
 		RispostaQuestionario rispostaQuestionario = domandaQuestionario.getRisposta();
 		String tipo = rispostaQuestionario.getTipo();
 		RispostaVerbaleDTO result = null; 
 		switch (tipo) {
 		case RispostaVerbaleDTO.TIPO_TESTO:
 			RispostaTestoVerbaleDTO rispostaVerbale = new RispostaTestoVerbaleDTO();
-			rispostaVerbale.setRispostaQuestionario((RispostaTestoQuestionarioDTO)rispostaQuestionario);
+			rispostaVerbale.setRispostaQuestionario((RispostaTestoQuestionarioDTO)session.get(RispostaTestoQuestionarioDTO.class, rispostaQuestionario.getId()));
 			if(risposta.get("valore")!=null) rispostaVerbale.setResponseValue(risposta.get("valore").getAsString());
 			result = rispostaVerbale;
 			break;
 		case RispostaVerbaleDTO.TIPO_FORMULA:
 			RispostaFormulaVerbaleDTO rispostaFormula =  new RispostaFormulaVerbaleDTO();
-			rispostaFormula.setRispostaQuestionario((RispostaFormulaQuestionarioDTO) rispostaQuestionario);
+			rispostaFormula.setRispostaQuestionario((RispostaFormulaQuestionarioDTO) session.get(RispostaFormulaQuestionarioDTO.class, rispostaQuestionario.getId()));
 			rispostaFormula.setValue1(risposta.get("valore_1").getAsString());
 			rispostaFormula.setValue2(risposta.get("valore_2").getAsString());
 			rispostaFormula.setResponseValue(risposta.get("risultato").getAsString());
@@ -692,7 +692,7 @@ public class GestioneVerbaleBO {
 			break;
 		case RispostaVerbaleDTO.TIPO_SCELTA:
 			RispostaSceltaVerbaleDTO rispostaScelta = new RispostaSceltaVerbaleDTO();
-			RispostaSceltaQuestionarioDTO rispostaSceltaQuestionario = (RispostaSceltaQuestionarioDTO) rispostaQuestionario;
+			RispostaSceltaQuestionarioDTO rispostaSceltaQuestionario = (RispostaSceltaQuestionarioDTO) session.get(RispostaSceltaQuestionarioDTO.class, rispostaQuestionario.getId());
 			rispostaScelta.setRispostaQuestionario(rispostaSceltaQuestionario);
 			rispostaScelta.setOpzioni(new HashSet<OpzioneRispostaVerbaleDTO>());
 			JsonArray scelte = risposta.getAsJsonArray("scelte");
