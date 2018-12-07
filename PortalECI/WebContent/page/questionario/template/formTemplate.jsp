@@ -144,8 +144,8 @@
 											</div>
 				   						</div>
 						        	</div>
-						        	<input name="subheader" id="templateHiddenField" type="hidden" />
-						        	<input name="template" id="subheaderHiddenField" type="hidden" />  	
+						        	<input name="template" id="templateHiddenField" type="hidden" />
+						        	<input name="subheader" id="subheaderHiddenField" type="hidden" />  	
 							        <div class="col-xs-12 margin-bottom">							        	
 										
 										<button class="btn btn-default pull-right" type="submit">

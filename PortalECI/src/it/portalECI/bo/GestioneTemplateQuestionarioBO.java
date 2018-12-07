@@ -40,12 +40,14 @@ import com.itextpdf.tool.xml.pipeline.html.LinkProvider;
 
 import it.portalECI.DAO.GestioneRispostaQuestionarioDAO;
 import it.portalECI.DAO.GestioneTemplateQuestionarioDAO;
+import it.portalECI.DTO.ColonnaTabellaQuestionarioDTO;
 import it.portalECI.DTO.DomandaQuestionarioDTO;
 import it.portalECI.DTO.OpzioneRispostaQuestionarioDTO;
 import it.portalECI.DTO.QuestionarioDTO;
 import it.portalECI.DTO.RispostaFormulaQuestionarioDTO;
 import it.portalECI.DTO.RispostaQuestionario;
 import it.portalECI.DTO.RispostaSceltaQuestionarioDTO;
+import it.portalECI.DTO.RispostaTabellaQuestionarioDTO;
 import it.portalECI.DTO.RispostaTestoQuestionarioDTO;
 import it.portalECI.DTO.RispostaVerbaleDTO;
 import it.portalECI.DTO.TemplateQuestionarioDTO;
@@ -197,6 +199,11 @@ public class GestioneTemplateQuestionarioBO {
 			rispostaPlaceholder = rispostaFormula.getPlaceholder();
 			rispostaValore = getTemplateRisposta(rispostaFormula);
 			break;
+		case RispostaVerbaleDTO.TIPO_TABELLA:
+			RispostaTabellaQuestionarioDTO rispostaTabella = GestioneRispostaQuestionarioDAO.getRispostaInstance(RispostaTabellaQuestionarioDTO.class, risposta.getId(), session);
+			rispostaPlaceholder = rispostaTabella.getPlaceholder();
+			rispostaValore = getTemplateRisposta(rispostaTabella);
+			break;
 		default:
 			break;
 		}
@@ -241,6 +248,22 @@ public class GestioneTemplateQuestionarioBO {
 		String optionName = opzione.getTesto();
 		String template = "<img src=\"" + Costanti.PATH_FONT_IMAGE + checked+"-"+typeInput+".png" + "\" style=\"height:12px;\" />&nbsp;" + optionName;
 		return template;
+	}
+	
+	private static String getTemplateRisposta(RispostaTabellaQuestionarioDTO risposta) {
+		String template = "";
+		template += "<table border='1' cellpadding='1' style='width:100%;'><tr>";
+		
+		String td = "";
+		List<ColonnaTabellaQuestionarioDTO> colonne = risposta.getColonne();
+		for (ColonnaTabellaQuestionarioDTO colonna: colonne) {
+			template += "<th style='width:"+colonna.getLarghezza()+"%;'>"+colonna.getDomanda().getTesto()+"</th>";
+			td += "<td>&nbsp;</td>";
+		}
+		template += "</tr><tr>"+td+"</tr>"+"<tr>"+td+"</tr>"+"<tr>"+td+"</tr></table>";
+		
+		return template;
+		
 	}
 
 }
