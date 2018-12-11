@@ -60,5 +60,16 @@ public class RispostaSceltaVerbaleDTO extends RispostaVerbaleDTO {
 		return jobj;
 	}
 	
+	@Override
+	public String toString() {
+		
+		String result = "";
+		for(OpzioneRispostaVerbaleDTO opzione: this.opzioni) {
+			if (opzione.getChecked()) result = result + "<br/>"+ opzione.getOpzioneQuestionario().getTesto();
+		}
+		return result;
+	}
+
+	
 
 }

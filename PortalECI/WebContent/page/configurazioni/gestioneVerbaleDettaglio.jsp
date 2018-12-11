@@ -59,13 +59,7 @@
 	        }
 	    });
 		
-		ArrayList<Object[]> dati = new ArrayList<Object[]>();
-		for(ColonnaTabellaVerbaleDTO colonna:colonne){
-			dati.add(colonna.getRisposte().toArray());
-		}
-		
 		request.setAttribute("colonne",colonne);
-		request.setAttribute("dati",dati);
 		request.setAttribute("risposta",risp);
 	
 	}
@@ -157,12 +151,12 @@
 		<c:if test="${storico.contains(risposta.getId()) }">
 			<p><a class="label label-warning" onclick="detailStorico('${risposta.getId()}')" title="Clicca per vedere lo storico delle modifiche"> Elemento modificato <i class="fa fa-pencil" aria-hidden="true"></i></a></p>
 		</c:if>
-		
+		<div class="col-sm-12"><div class="table-responsive">
 		<table class="table table-bordered table-condensed">
 			<thead>
 				<tr>
 					<c:forEach items="${colonne}" var="colonnaVerbale" varStatus="loop">
-        				<th style="width: ${colonnaVerbale.getColonnaQuestionario().getLarghezza()}%"> ${colonnaVerbale.getColonnaQuestionario().getDomanda().getTesto()}</th>
+        				<th> ${colonnaVerbale.getColonnaQuestionario().getDomanda().getTesto()}</th>
         			</c:forEach>
         			<th></th>
 				</tr>
@@ -171,22 +165,19 @@
 				<c:forEach items="${colonne[0].risposte}" var="rispostaPrimaColonna" varStatus="loopRes" >
 					<tr>
 						<c:forEach items="${colonne}" var="colonnaVerbale" varStatus="loopCol">
-							<c:set var="rispostaTabella" value="${dati.get(loopCol.index)[loopRes.index]}" scope="request"></c:set>
+							<c:set var="rispostaTabella" value="${colonnaVerbale.getRisposte().get(loopRes.index)}" scope="request"></c:set>
 							<jsp:include page="gestioneVerbaleDettaglioTabella.jsp"></jsp:include>
 						</c:forEach>
 						<td>
-							<a onclick="eliminaRigaTabella(this)"> Elimina</a>
+							<a onclick="eliminaRigaTabella(this,${domVerbale.getRisposta().getId()} ,${loopRes.index})"> Elimina</a>
 						</td>					
 					</tr>
 				</c:forEach>
-
 			</tbody>
 			<tr>
-				<c:forEach items="${colonne}" var="colonnaVerbale" varStatus="loop">
-					<c:set var="rispostaTabella" value="${colonnaVerbale.domanda.risposta}" scope="request"></c:set>
-       				<jsp:include page="gestioneVerbaleDettaglioTabella.jsp"></jsp:include>
-       			</c:forEach>
+				<td colspan="${colonne.size()}"><a class="btn btn-block btn-danger" style="cursor:pointer" data-loading-text="<i class='fa fa-circle-o-notch fa-spin'></i> Caricamento" onclick="aggiungiRigaTabella(${domVerbale.getRisposta().getId()}, this)"> Aggiungi riga </a></td>
 			</tr>
 		</table>
+		</div></div>
   	</c:when>
 </c:choose>

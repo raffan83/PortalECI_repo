@@ -158,6 +158,13 @@ public class GestioneStoricoModifiche extends HttpServlet {
 				}
 			
 			
+		}else if( risp.getTipo().equals(RispostaVerbaleDTO.TIPO_TABELLA)) {
+			for (int i = 0; i < list.size(); i++) {
+				dataobject+="<p>Riga eliminata il "+list.get(i).getCreateDateFormat()+" da "+list.get(i).getUsername()+"</p>";
+				dataobject+="<table class='table table-bordered table-collapsed'>" + 
+						"<tr>"+list.get(i).getVecchioValore()+"</tr>"+"</table>";
+						
+			}
 		}
 		
 		

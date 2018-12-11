@@ -79,4 +79,15 @@ public class RispostaFormulaVerbaleDTO extends RispostaVerbaleDTO {
 		return jobj;
 	}
 	
+	@Override
+	public String toString() {
+		String v1 ="";
+		if(this.value1!=null) v1=this.value1;
+		String v2="";
+		if(this.value2!=null) v2=this.value2;
+		String res="";
+		if(this.responseValue!=null) res=this.responseValue;
+		if(v1.isEmpty() && v2.isEmpty() && res.isEmpty()) return "";
+		return v1+" "+this.getRispostaQuestionario().getSimboloOperatore()+" "+v2+" = "+res;
+	}
 }

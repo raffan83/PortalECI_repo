@@ -90,6 +90,9 @@
 					<div class="col-sm-10">
 						<div class="lista-opzioni-div">
 							<c:forEach items="${lista_opzioni}" var="opzione" >
+								<input type="hidden" name="numero-domande-opzione${indice}" class="numero-domande-opzione-input" value="0"/>
+							
+							
 								<div class="opzione-div row">
 									<div class="col-sm-6">
 										<div class="form-group">

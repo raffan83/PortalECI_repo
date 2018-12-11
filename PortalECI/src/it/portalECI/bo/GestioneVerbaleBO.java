@@ -10,6 +10,7 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 
 import javax.xml.bind.ValidationException;
 
@@ -452,6 +453,71 @@ public class GestioneVerbaleBO {
 		
 	}
 	
+	private static String getTemplateRisposta(RispostaTabellaVerbaleDTO risposta, Session session) {
+		String template = "";
+		template += "<table border='1' cellpadding='1' style='width:100%;'>";
+
+		template += "<tr>";
+		//Set<ColonnaTabellaVerbaleDTO> colonne = risposta.getColonne();
+
+		List<ColonnaTabellaVerbaleDTO> colonne=new ArrayList<ColonnaTabellaVerbaleDTO>();
+		colonne.addAll(risposta.getColonne());
+		
+		Collections.sort(colonne, new Comparator<ColonnaTabellaVerbaleDTO>() {
+	        @Override
+	        public int compare(ColonnaTabellaVerbaleDTO op2, ColonnaTabellaVerbaleDTO op1){
+				int pos1=op1.getColonnaQuestionario().getPosizione().intValue();
+				int pos2=op2.getColonnaQuestionario().getPosizione().intValue();
+	            return  pos2 - pos1;
+	        }
+	    });
+			
+		for (ColonnaTabellaVerbaleDTO colonna: colonne) {
+			template += "<th style='width:"+colonna.getColonnaQuestionario().getLarghezza()+"%;'>"+colonna.getColonnaQuestionario().getDomanda().getTesto()+"</th>";
+			List<RispostaVerbaleDTO> risposte = colonna.getRisposte();
+			
+		}
+		template += "</tr>";
+		
+		int numeroRighe = colonne.iterator().next().getRisposte().size();
+		for (int i=0; i<numeroRighe; i++) {
+			template += "<tr>";
+			for (ColonnaTabellaVerbaleDTO colonna: colonne) {
+				RispostaVerbaleDTO[] rispostaVerbaleList = colonna.getRisposte().toArray(new RispostaVerbaleDTO[numeroRighe]);
+				template += "<td>";
+				RispostaVerbaleDTO rispostaVerbale =  rispostaVerbaleList[i];
+				switch (colonna.getColonnaQuestionario().getDomanda().getRisposta().getTipo()) {
+				case RispostaQuestionario.TIPO_TESTO:
+					RispostaTestoVerbaleDTO rispostaTesto = GestioneRispostaVerbaleDAO.getRispostaInstance(RispostaTestoVerbaleDTO.class, rispostaVerbale.getId(), session);
+					template += getTemplateRisposta(rispostaTesto);
+					break;
+				case RispostaQuestionario.TIPO_FORMULA:
+					RispostaFormulaVerbaleDTO rispostaFormula = GestioneRispostaVerbaleDAO.getRispostaInstance(RispostaFormulaVerbaleDTO.class, rispostaVerbale.getId(), session);
+					template += getTemplateRisposta(rispostaFormula);
+					break;
+				case RispostaQuestionario.TIPO_SCELTA:
+					RispostaSceltaVerbaleDTO rispostaScelta = GestioneRispostaVerbaleDAO.getRispostaInstance(RispostaSceltaVerbaleDTO.class, rispostaVerbale.getId(), session);
+					for(OpzioneRispostaVerbaleDTO opzione: rispostaScelta.getOpzioni()) {
+						if(opzione.getChecked()) {
+							template += opzione.getOpzioneQuestionario().getTesto();
+							break;
+						}		
+					}
+					break;
+				default:
+					break;
+				}
+				template += "</td>";
+			}
+			template += "</tr>";
+		}
+
+		template += "</table>";
+		
+		return template;
+		
+	}
+	
 	public static void saveVerbaleResponses(UtenteDTO user, JsonObject jsonRequest,Session session) throws ValidationException {
 		
 		if (!jsonRequest.isJsonNull()) {
@@ -513,7 +579,7 @@ public class GestioneVerbaleBO {
 		int prog = progressivo.getProgressivo();
 		String codProv = intervento.getCodiceProvincia() == null ? " " : intervento.getCodiceProvincia();
 		numeroVerbale = String.format("%s-%s-%03d-%s", codUtente, sigla, prog, codProv);
-		System.out.println("numeroVerbale" + numeroVerbale);
+		//System.out.println("numeroVerbale" + numeroVerbale);
 		return numeroVerbale;
 	}
 	
@@ -579,6 +645,11 @@ public class GestioneVerbaleBO {
 			RispostaFormulaVerbaleDTO rispostaFormula = GestioneRispostaVerbaleDAO.getRispostaInstance(RispostaFormulaVerbaleDTO.class, rispostaVerbale.getId(), session);
 			rispostaPlaceholder = rispostaFormula.getRispostaQuestionario().getPlaceholder();
 			rispostaValore = getTemplateRisposta(rispostaFormula);
+			break;
+		case RispostaVerbaleDTO.TIPO_TABELLA:
+			RispostaTabellaVerbaleDTO rispostaTabella = GestioneRispostaVerbaleDAO.getRispostaInstance(RispostaTabellaVerbaleDTO.class, rispostaVerbale.getId(), session);
+			rispostaPlaceholder = rispostaTabella.getRispostaQuestionario().getPlaceholder();
+			rispostaValore = getTemplateRisposta(rispostaTabella, session);
 			break;
 		default:
 			break;

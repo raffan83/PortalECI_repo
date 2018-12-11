@@ -502,6 +502,7 @@
 	</jsp:attribute>
 
 	<jsp:attribute name="extra_js_footer">
+		<script src="js/verbale.js" type="text/javascript"></script>
  		<script type="text/javascript">
 		   
 			$(document).ready(function() {			

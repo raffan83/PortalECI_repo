@@ -91,8 +91,8 @@ $(document).ready(function() {
 	});
 	
 	$("#template-form").submit(function() {
-		$('#templateHiddenField').val(CKEDITOR.instances['summernote1'].getData());
-		$('#subheaderHiddenField').val(CKEDITOR.instances['summernote2'].getData());
+		$('#templateHiddenField').val(CKEDITOR.instances['summernoteTemplate'].getData());
+		$('#subheaderHiddenField').val(CKEDITOR.instances['summernoteSubheader'].getData());
 	});
 });
 

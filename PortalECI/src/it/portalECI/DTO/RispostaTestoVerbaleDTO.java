@@ -2,6 +2,7 @@ package it.portalECI.DTO;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import com.itextpdf.text.pdf.PdfStructTreeController.returnType;
 
 public class RispostaTestoVerbaleDTO extends RispostaVerbaleDTO {
 	
@@ -51,4 +52,9 @@ public class RispostaTestoVerbaleDTO extends RispostaVerbaleDTO {
 		return jobj;
 	}
 
+	@Override
+	public String toString() {
+		if(this.responseValue==null) return "";
+		return this.responseValue;
+	}
 }
