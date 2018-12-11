@@ -474,7 +474,7 @@ public class GestioneVerbaleBO {
 			
 		for (ColonnaTabellaVerbaleDTO colonna: colonne) {
 			template += "<th style='width:"+colonna.getColonnaQuestionario().getLarghezza()+"%;'>"+colonna.getColonnaQuestionario().getDomanda().getTesto()+"</th>";
-			Set<RispostaVerbaleDTO> risposte = colonna.getRisposte();
+			List<RispostaVerbaleDTO> risposte = colonna.getRisposte();
 			
 		}
 		template += "</tr>";

@@ -11,7 +11,10 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.Enumeration;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import javax.servlet.RequestDispatcher;
@@ -32,12 +35,15 @@ import it.portalECI.DAO.GestioneRispostaVerbaleDAO;
 import it.portalECI.DAO.GestioneStatoVerbaleDAO;
 import it.portalECI.DAO.GestioneStoricoModificheDAO;
 import it.portalECI.DAO.SessionFacotryDAO;
+import it.portalECI.DTO.ColonnaTabellaVerbaleDTO;
 import it.portalECI.DTO.DocumentoDTO;
 import it.portalECI.DTO.DomandaVerbaleDTO;
 import it.portalECI.DTO.InterventoDTO;
 import it.portalECI.DTO.OpzioneRispostaVerbaleDTO;
 import it.portalECI.DTO.QuestionarioDTO;
 import it.portalECI.DTO.RispostaFormulaVerbaleDTO;
+import it.portalECI.DTO.RispostaSceltaVerbaleDTO;
+import it.portalECI.DTO.RispostaTabellaVerbaleDTO;
 import it.portalECI.DTO.RispostaTestoVerbaleDTO;
 import it.portalECI.DTO.RispostaVerbaleDTO;
 import it.portalECI.DTO.StoricoModificheDTO;
@@ -164,7 +170,7 @@ public class GestioneVerbali extends HttpServlet {
 						addStorico(verbale, oldCheck, null, Integer.parseInt(idrispostaSceltaVerbale), StoricoModificheDTO.UPDATE, request, session);
 					}						
 				
-				}else if(!paramName.contains("idVerbale") && !paramName.contains("options") && !paramName.contains("responseValue") && !paramName.contains("value2") && !paramName.contains("value1")){			
+				}else if(isInt(paramName)){			
 					
 					String testo=request.getParameter(paramName);
 
@@ -184,12 +190,58 @@ public class GestioneVerbali extends HttpServlet {
 						}
 					
 					rispostaTesto.setResponseValue(testo);
-					System.out.println("RISPOSTA: "+testo);
-					System.out.println("RISPOSTA2: "+rispostaTesto.getResponseValue());
 					GestioneRispostaVerbaleDAO.save(rispostaTesto, session);
 
 				}
-						
+				
+			}
+			String[] idRisposteEliminate = request.getParameterValues("risposte_eliminate");
+			if(idRisposteEliminate!=null) {
+				Map<String,String> storici = new HashMap<String,String>();
+				for(String idRispString:idRisposteEliminate) {
+					Integer idRisp = Integer.parseInt(idRispString);
+					RispostaVerbaleDTO risposta = (RispostaVerbaleDTO)session.get(RispostaVerbaleDTO.class,idRisp);
+					if(risposta==null) continue;
+					String  valoreStorico ="<td>";
+					switch (risposta.getTipo()) {
+					case RispostaVerbaleDTO.TIPO_TESTO:
+						RispostaTestoVerbaleDTO rispT = (RispostaTestoVerbaleDTO)session.get(RispostaTestoVerbaleDTO.class, idRisp);
+						valoreStorico=valoreStorico.concat(rispT.toString());
+						break;
+					case RispostaVerbaleDTO.TIPO_SCELTA:
+						RispostaSceltaVerbaleDTO rispS = (RispostaSceltaVerbaleDTO)session.get(RispostaSceltaVerbaleDTO.class, idRisp);
+						valoreStorico=valoreStorico.concat(rispS.toString());
+						break;
+					case RispostaVerbaleDTO.TIPO_FORMULA:
+						RispostaFormulaVerbaleDTO rispF = (RispostaFormulaVerbaleDTO) session.get(RispostaFormulaVerbaleDTO.class, idRisp);
+						valoreStorico=valoreStorico.concat(rispF.toString());
+					}
+					valoreStorico=valoreStorico.concat("</td>");
+					
+					String id_risposta_tabella = request.getParameter("id_risposta_tabella"+idRispString);
+					String riga = request.getParameter("riga_risposta"+idRispString);
+					String pointer = id_risposta_tabella+"_"+riga;
+					if(storici.get(pointer)==null) 
+						storici.put(pointer, valoreStorico); 
+					else 
+						storici.put(pointer,storici.get(pointer).concat(valoreStorico));
+					RispostaTabellaVerbaleDTO rispostaTabella = (RispostaTabellaVerbaleDTO) session.get(RispostaTabellaVerbaleDTO.class, Integer.parseInt(id_risposta_tabella));
+					for (ColonnaTabellaVerbaleDTO colonna: rispostaTabella.getColonne()) {
+						colonna.getRisposte().remove(risposta);
+					}
+					session.save(rispostaTabella);
+				    session.delete(risposta);
+					
+				}
+			    Iterator<Map.Entry<String,String>> it = storici.entrySet().iterator();
+			    while (it.hasNext()) {
+			        Map.Entry<String, String> pair = (Map.Entry<String, String>)it.next();
+			        if(!pair.getValue().replaceAll("<td>", "").replaceAll("</td>", "").isEmpty()) {
+				        String pointer = pair.getKey();
+				        String idRispostaTabellaId = pointer.split("_")[0];
+				        addStorico(verbale, pair.getValue(), "riga", Integer.parseInt(idRispostaTabellaId), StoricoModificheDTO.DELETE, request, session);
+			        }
+			    }
 			}	
 		
 			for (DomandaVerbaleDTO domanda:verbale.getDomandeVerbale()) {
@@ -460,4 +512,14 @@ public class GestioneVerbali extends HttpServlet {
 		
 		GestioneStoricoModificheDAO.save(nuovoSt, session);
 	}
+	
+	private static boolean isInt(String strNum) {
+		try {
+			double d = Integer.parseInt(strNum);
+		} catch (NumberFormatException | NullPointerException nfe) {
+			return false;
+		}
+			return true;
+		}
+	
 }

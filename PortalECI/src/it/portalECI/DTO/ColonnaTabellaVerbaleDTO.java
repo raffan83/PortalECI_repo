@@ -1,5 +1,6 @@
 package it.portalECI.DTO;
 
+import java.util.List;
 import java.util.Set;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
@@ -14,7 +15,7 @@ public class ColonnaTabellaVerbaleDTO {
 	
 	private DomandaVerbaleDTO domanda;
 	
-	private Set<RispostaVerbaleDTO> risposte;
+	private List<RispostaVerbaleDTO> risposte;
 
 	public ColonnaTabellaVerbaleDTO() {
 	}
@@ -51,11 +52,11 @@ public class ColonnaTabellaVerbaleDTO {
 		this.colonnaQuestionario = colonnaQuestionario;
 	}
 
-	public Set<RispostaVerbaleDTO> getRisposte() {
+	public List<RispostaVerbaleDTO> getRisposte() {
 		return risposte;
 	}
 
-	public void setRisposte(Set<RispostaVerbaleDTO> risposte) {
+	public void setRisposte(List<RispostaVerbaleDTO> risposte) {
 		this.risposte = risposte;
 	}
 

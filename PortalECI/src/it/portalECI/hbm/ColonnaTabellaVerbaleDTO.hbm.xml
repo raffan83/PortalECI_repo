@@ -17,13 +17,12 @@
             <column name="domanda_id" not-null="true" />
         </many-to-one>
 
-   		<set name="risposte" table="RISPOSTA_VERBALE" order-by="id" lazy="true" fetch="select" cascade="all, delete-orphan">
-
+   		<list name="risposte" table="RISPOSTA_VERBALE" lazy="true" fetch="select" cascade="all, delete-orphan">
 			<key>
 				<column name="colonna_id"></column>
 			</key>
-			
+			<list-index column="riga"></list-index>
 			<one-to-many class="it.portalECI.DTO.RispostaVerbaleDTO"/>
-		</set>
+		</list>
 	</class>
 </hibernate-mapping>

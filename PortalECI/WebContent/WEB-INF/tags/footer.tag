@@ -1,6 +1,7 @@
 <%@ tag language="java" pageEncoding="ISO-8859-1"%>
 <!-- jQuery 2.2.3 -->
 <script src="plugins/jQuery/jquery-2.2.3.min.js"></script>
+<script  src = "https://code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
 
 <!-- Bootstrap 3.3.6 -->
 <script src="bootstrap/js/bootstrap.min.js"></script>
@@ -36,7 +37,6 @@
 <script src="plugins/js-cookie/js.cookie.js"></script>
 <script src="plugins/tooltipster/dist/js/tooltipster.bundle.min.js"></script>
 	
-<script  src = "https://code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
 
 <script src="plugins/datepicker/bootstrap-datepicker.js"></script>
 
