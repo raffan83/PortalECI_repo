@@ -1,4 +1,26 @@
-table{
+table.table-question{
+	border-bottom : 1px solid;
+	border-right : 1px solid;
+	
+}
+
+table.table-question th,table.table-question td{
+	border-left : 1px solid;
+	border-top :  1px solid;
+}
+
+table.table-question{
 	border-collapse: collapse;
 }
 
+table.table-question th{
+	font-size: 12px !important;
+	font-weight: bold !important;
+	padding: 2px;
+}
+
+table.table-question td{
+	font-size: 12px !important;
+	font-weight: normal !important;
+	padding: 2px;
+}

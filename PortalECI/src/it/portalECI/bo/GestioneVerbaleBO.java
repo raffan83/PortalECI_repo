@@ -337,8 +337,9 @@ public class GestioneVerbaleBO {
         
 		html = html + template.getTemplate();
 		html = replacePlaceholders(html, verbale,intervento, session);
-		
-		GestioneTemplateQuestionarioBO.writePDF(fileOutput, html, template);
+		String subheader = replacePlaceholders(template.getSubheader(), verbale,intervento, session);
+
+		GestioneTemplateQuestionarioBO.writePDF(fileOutput, html, template,subheader);
 
 		DocumentoDTO certificato = new DocumentoDTO();
         certificato.setFilePath(path+file.getName());
@@ -405,8 +406,8 @@ public class GestioneVerbaleBO {
         
 		html = html + template.getTemplate();
 		html = replacePlaceholders(html, verbale,intervento, session);
-		
-		GestioneTemplateQuestionarioBO.writePDF(fileOutput, html, template);
+		String subheader = replacePlaceholders(template.getSubheader(), verbale,intervento, session);
+		GestioneTemplateQuestionarioBO.writePDF(fileOutput, html, template, subheader);
         
         if(vecchioDocumento != null) {
         	String vecchioDocFileName = vecchioDocumento.getFileName();
@@ -455,7 +456,7 @@ public class GestioneVerbaleBO {
 	
 	private static String getTemplateRisposta(RispostaTabellaVerbaleDTO risposta, Session session) {
 		String template = "";
-		template += "<table border='1' cellpadding='1' style='width:100%;'>";
+		template += "<table class=\"table-question\">";
 
 		template += "<tr>";
 		//Set<ColonnaTabellaVerbaleDTO> colonne = risposta.getColonne();
@@ -584,6 +585,11 @@ public class GestioneVerbaleBO {
 	}
 	
 	private static String replacePlaceholders(String html, VerbaleDTO verbale, InterventoDTO intervento, Session session) {
+		
+		if(html==null || html.equals("")) {
+			return "";
+		}
+		
 		for (DomandaVerbaleDTO domanda:verbale.getDomandeVerbale()) {
 			html = replacePlaceholderDomanda(html,domanda, session);
 		}
@@ -867,9 +873,10 @@ public class GestioneVerbaleBO {
 
 		try {
 			String filepath = Costanti.PATH_CERTIFICATI+path;
-			File tmpFile = new File(filepath+".tmp");
+			File tmpFile = new File(filepath+"tmp");
 	        PdfReader reader = new PdfReader(filepath);
-	        PdfStamper stamper = new PdfStamper(reader, new FileOutputStream(tmpFile));
+	        FileOutputStream tmpfos = new FileOutputStream(tmpFile);
+	        PdfStamper stamper = new PdfStamper(reader, tmpfos);
 	        Font f = new Font(FontFamily.HELVETICA, 15);
 	        //f.setColor(BaseColor.RED);
 	        int pages = reader.getNumberOfPages();
@@ -884,6 +891,7 @@ public class GestioneVerbaleBO {
 		        over.restoreState();
 	        }
 	        stamper.close();
+	        tmpfos.close();
 	        reader.close();
 			tmpFile.renameTo(new File(filepath));
 		} catch (IOException e) {
