@@ -199,19 +199,10 @@ public class GestioneQuestionario extends HttpServlet {
 		
 		String[] domandaIndice = request.getParameterValues("domanda.indice");
 		
-		Integer index=0;
-		while(index<domandaIndice.length) {
-			getDomandaFromRequest(request,questionario,hibernateSession,domandaIndice, index);
-			index++;
-		}
-		
-		
-		/*Integer i=0;
-		for( Integer index=0; index<domandaIndice.length;index++) {
+		for(int i=0; i<domandaIndice.length;i++) {
 			count = i;
-			
-			System.out.println(index);
-		}*/
+			getDomandaFromRequest(request,questionario,hibernateSession,domandaIndice, i);
+		}
 		
 		return questionario;
 	}
@@ -295,8 +286,8 @@ public class GestioneQuestionario extends HttpServlet {
 				int numeroDomandeOpzione = Integer.parseInt(numeroDomandeOpzioneParams[idx]);
 				List<DomandaOpzioneQuestionarioDTO> listadomandeOpzione  = new ArrayList<DomandaOpzioneQuestionarioDTO>();
 				for(int k=0; k<numeroDomandeOpzione;k++ ) {
-					i++;
-					DomandaOpzioneQuestionarioDTO domandaOpzione = (DomandaOpzioneQuestionarioDTO)getDomandaFromRequest(request, questionario, hibernateSession, domandaIndice, i);
+					count++;
+					DomandaOpzioneQuestionarioDTO domandaOpzione = (DomandaOpzioneQuestionarioDTO)getDomandaFromRequest(request, questionario, hibernateSession, domandaIndice, count);
 					domandaOpzione.setPosizione(k);
 					domandaOpzione.setOpzione(opzione);
 					listadomandeOpzione.add(domandaOpzione);
@@ -321,8 +312,8 @@ public class GestioneQuestionario extends HttpServlet {
 				colonna.setRisposta(risposta);
 				colonna.setLarghezza(Long.parseLong(larghezzaString));
 				colonna.setPosizione(Long.valueOf(k));
-				i++;
-				DomandaQuestionarioDTO domandaColonna = (DomandaQuestionarioDTO)getDomandaFromRequest(request, questionario, hibernateSession, domandaIndice, i);
+				count++;
+				DomandaQuestionarioDTO domandaColonna = (DomandaQuestionarioDTO)getDomandaFromRequest(request, questionario, hibernateSession, domandaIndice, count);
 				colonna.setDomanda(domandaColonna);
 				colonne.add(colonna);
 			}

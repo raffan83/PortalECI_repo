@@ -68,8 +68,8 @@ public class GestioneTemplateQuestionarioBO {
 		FileOutputStream fileOutput = new FileOutputStream(file);
 		String html = new String(template.getTemplate());
 		html = replacePlaceholders(html, questionario, session);
-	
-		writePDF(fileOutput,html, template);
+		String subheader = replacePlaceholders(template.getSubheader(), questionario, session);
+		writePDF(fileOutput,html, template, subheader);
 		
 		return file;
 	}
@@ -77,7 +77,7 @@ public class GestioneTemplateQuestionarioBO {
 	
 	
 	
-	static public void writePDF(OutputStream fileOutput,String html, TemplateQuestionarioDTO template) throws DocumentException, IOException {
+	static public void writePDF(OutputStream fileOutput,String html, TemplateQuestionarioDTO template, String subhedaer) throws DocumentException, IOException {
 		final org.jsoup.nodes.Document documentJsoup = Jsoup.parse(html);
 		documentJsoup.outputSettings().syntax(org.jsoup.nodes.Document.OutputSettings.Syntax.xml);
 		String validXHTML = documentJsoup.html();
@@ -86,15 +86,24 @@ public class GestioneTemplateQuestionarioBO {
 		PdfWriter writer = PdfWriter.getInstance(document, fileOutput);
         
 		SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+		Date revisionDate = template.getUpdateDate()==null?new Date():template.getUpdateDate();
 		HeaderFooter pageEventHandler;
-
+		
+		String revisione = "Revisione del "+dateFormat.format(revisionDate);
+		if(template.getRevisione()!=null && !template.getRevisione().equals("")) {
+			revisione = template.getRevisione();
+		}
+		if(subhedaer == null) {
+			subhedaer = "";
+		}
+		
 		try {
 			pageEventHandler = new HeaderFooter(
 					template.getHeader(),
-					template.getSubheader(),
+					subhedaer,
 					template.getFooter(),
 					template.getTitolo(),
-					"Revisione "+template.getRevisione()+" del "+dateFormat.format(new Date())
+					revisione
 			);
 		}catch (Exception e) {
 			return;
@@ -145,6 +154,10 @@ public class GestioneTemplateQuestionarioBO {
 	}
 	
 	private static String replacePlaceholders(String html, QuestionarioDTO questionario, Session session) {
+		if(html==null || html.isEmpty()) {
+			return "";
+		}
+		
 		for (DomandaQuestionarioDTO domanda:questionario.getDomandeVerbale()) {
 			html = replacePlaceholderDomanda(html,domanda, session);
 		}
@@ -252,7 +265,7 @@ public class GestioneTemplateQuestionarioBO {
 	
 	private static String getTemplateRisposta(RispostaTabellaQuestionarioDTO risposta) {
 		String template = "";
-		template += "<table border='1' cellpadding='1' style='width:100%;'><tr>";
+		template += "<table class=\"table-question\"><tr>";
 		
 		String td = "";
 		List<ColonnaTabellaQuestionarioDTO> colonne = risposta.getColonne();
