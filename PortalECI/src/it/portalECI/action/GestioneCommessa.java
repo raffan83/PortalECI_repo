@@ -57,7 +57,7 @@ public class GestioneCommessa extends HttpServlet {
 			
 			UtenteDTO user = (UtenteDTO)request.getSession().getAttribute("userObj");
 					
-			ArrayList<CommessaDTO> listaCommesse =GestioneCommesseBO.getListaCommesse(company,"",user);
+			ArrayList<CommessaDTO> listaCommesse =GestioneCommesseBO.getListaCommesse(company,"",user,2018);
 			
 			request.getSession().setAttribute("listaCommesse", listaCommesse);
 			

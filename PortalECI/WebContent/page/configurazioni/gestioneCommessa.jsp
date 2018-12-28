@@ -47,7 +47,9 @@
  															<tr class="active"> 
  																<th>ID commessa</th>
  																<th>Cliente</th>
- 																<th>Sede</th>
+ 																<th>Indirizzo Cliente</th>
+ 																<th>Utilizzatore</th>
+ 																<th>Indirizzo Utilizzatore</th>
  																<th>Stato Richiedente</th>
  																<th>Data Apertura</th>
  																<th>Data Chiusura</th>
@@ -67,8 +69,16 @@
 																		<c:out value="${commessa.ID_ANAGEN_NOME}"/>
 																	</td>
 																	<td>
-																		<c:out value="${commessa.ANAGEN_INDR_DESCR}"/>  <c:out value="${commessa.ANAGEN_INDR_INDIRIZZO}"/>
+																		<c:out value="${commessa.INDIRIZZO_PRINCIPALE}"/>
 																	</td>
+																		<td>
+																		<c:out value="${commessa.NOME_UTILIZZATORE}"/>
+																	</td>
+																		<td>
+																		<c:out value="${commessa.INDIRIZZO_UTILIZZATORE}"/>
+																	</td>
+																	
+																
 																	<td class="centered">
  																		<c:choose>
   																			<c:when test="${commessa.SYS_STATO == '1CHIUSA'}">

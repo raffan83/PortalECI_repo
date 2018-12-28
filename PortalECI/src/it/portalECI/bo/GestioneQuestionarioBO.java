@@ -22,7 +22,7 @@ import it.portalECI.DTO.VerbaleDTO;
 
 public class GestioneQuestionarioBO {
 	
-	public static final String[] GLOBAL_PLACEHOLDERS = new String[]{"TECNICO_VERIFICATORE","SEDE_CLIENTE", "NUMERO_VERBALE"}; 
+	public static final String[] GLOBAL_PLACEHOLDERS = new String[]{"TECNICO_VERIFICATORE","SEDE_CLIENTE", "NUMERO_VERBALE","CLIENTE_UTILIZZATORE"}; 
 
 	public static List<QuestionarioDTO> getListaQuestionari(Session session) {
 		return GestioneQuestionarioDAO.getListaQuestionari(session); 

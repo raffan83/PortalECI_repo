@@ -41,6 +41,7 @@ import com.itextpdf.tool.xml.pipeline.html.LinkProvider;
 import it.portalECI.DAO.GestioneRispostaQuestionarioDAO;
 import it.portalECI.DAO.GestioneTemplateQuestionarioDAO;
 import it.portalECI.DTO.ColonnaTabellaQuestionarioDTO;
+import it.portalECI.DTO.CommessaDTO;
 import it.portalECI.DTO.DomandaQuestionarioDTO;
 import it.portalECI.DTO.OpzioneRispostaQuestionarioDTO;
 import it.portalECI.DTO.QuestionarioDTO;
@@ -173,6 +174,10 @@ public class GestioneTemplateQuestionarioBO {
 		//Inserisco numero verbale
 		String numeroVerbale = "NUMERO_VERBALE";
 		html = html.replaceAll("\\$\\{NUMERO_VERBALE\\}", numeroVerbale);
+	
+		html = html.replaceAll("\\$\\{CLIENTE_UTILIZZATORE\\}", "CLIENTE UTILIZZATORE");
+				
+				
 
 		// Elimino i placeholder non utilizzati
 		html = html.replaceAll("\\$\\{(.*?)\\}", "");

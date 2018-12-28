@@ -43,6 +43,7 @@ import it.portalECI.DAO.GestioneStatoVerbaleDAO;
 import it.portalECI.DAO.GestioneVerbaleDAO;
 import it.portalECI.DTO.ColonnaTabellaQuestionarioDTO;
 import it.portalECI.DTO.ColonnaTabellaVerbaleDTO;
+import it.portalECI.DTO.CommessaDTO;
 import it.portalECI.DTO.DocumentoDTO;
 import it.portalECI.DTO.DomandaOpzioneQuestionarioDTO;
 import it.portalECI.DTO.DomandaQuestionarioDTO;
@@ -571,20 +572,28 @@ public class GestioneVerbaleBO {
 		}
 	}
 	
-	public static String generaNumeroVerbale(TipoVerificaDTO tipo, InterventoDTO intervento, Session session) {
+	public static String generaNumeroVerbale(TipoVerificaDTO tipo, InterventoDTO intervento, Session session) throws Exception {
 		String numeroVerbale = new String();
 		UtenteDTO utente = intervento.getTecnico_verificatore();
 		ProgressivoVerbaleDTO progressivo = GestioneVerbaleDAO.getProgressivoVerbale(utente, tipo, session);
 		String codUtente = utente.getCodice() == null ? "" : utente.getCodice();
 		String sigla = tipo.getSigla() == null ? "" : tipo.getSigla();
 		int prog = progressivo.getProgressivo();
-		String codProv = intervento.getCodiceProvincia() == null ? " " : intervento.getCodiceProvincia();
+		CommessaDTO comm=GestioneCommesseBO.getCommessaById(intervento.getIdCommessa());
+		
+		String codProv="";
+		if(comm!=null && comm.getCOD_PROV()!=null ) 
+		{
+			codProv=comm.getCOD_PROV();
+		}
+		
+	//	String codProv = intervento.getCodiceProvincia() == null ? " " : intervento.getCodiceProvincia();
 		numeroVerbale = String.format("%s-%s-%03d-%s", codUtente, sigla, prog, codProv);
 		//System.out.println("numeroVerbale" + numeroVerbale);
 		return numeroVerbale;
 	}
 	
-	private static String replacePlaceholders(String html, VerbaleDTO verbale, InterventoDTO intervento, Session session) {
+	private static String replacePlaceholders(String html, VerbaleDTO verbale, InterventoDTO intervento, Session session) throws Exception {
 		
 		if(html==null || html.equals("")) {
 			return "";
@@ -611,6 +620,12 @@ public class GestioneVerbaleBO {
 		String numeroVerbale = verbale.getNumeroVerbale();
 		if(numeroVerbale != null) {
 			html = html.replaceAll("\\$\\{NUMERO_VERBALE\\}", numeroVerbale);
+		}
+		
+		//Inserisco Nome Utilizzatore
+		CommessaDTO clienteUtilizzatore = GestioneCommesseBO.getCommessaById(intervento.getIdCommessa());
+		if(clienteUtilizzatore != null && clienteUtilizzatore.getNOME_UTILIZZATORE()!=null) {
+			html = html.replaceAll("\\$\\{CLIENTE_UTILIZZATORE\\}", clienteUtilizzatore.getNOME_UTILIZZATORE());
 		}
 		
 		// Elimino i placeholder non utilizzati

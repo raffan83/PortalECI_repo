@@ -306,7 +306,7 @@ public class GestioneVerbali extends HttpServlet {
 		if(request.getParameter("idVerbale") != null && (String)request.getParameter("idVerbale")!="" ) {
 			verbale = GestioneVerbaleBO.getVerbale(idVerbale, session);
 		}
-		verbale.setNumeroVerbale("TMP_01");
+		//verbale.setNumeroVerbale("TMP_01");
 		JsonObject myObj = new JsonObject();
 		PrintWriter  out = response.getWriter();
 		String action=request.getParameter("action");

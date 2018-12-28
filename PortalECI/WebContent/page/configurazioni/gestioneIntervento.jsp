@@ -67,9 +67,13 @@
                   										<b>Indirizzo Cliente</b> 
                   										<a class="pull-right">${commessa.INDIRIZZO_PRINCIPALE}</a>
                 									</li>
+                								<li class="list-group-item">
+                  										<b>Utilizzatore</b> 
+                  										<a class="pull-right">${commessa.NOME_UTILIZZATORE}</a>
+                									</li>
                 									<li class="list-group-item">
-                  										<b>Sede</b> 
-                  										<a class="pull-right">${commessa.ANAGEN_INDR_DESCR} ${commessa.ANAGEN_INDR_INDIRIZZO}</a>
+                  										<b>Indirizzo Utilizzatore</b> 
+                  										<a class="pull-right">${commessa.INDIRIZZO_UTILIZZATORE}</a>
                 									</li>
                 									<li class="list-group-item">
                   										<b>Stato</b> 
