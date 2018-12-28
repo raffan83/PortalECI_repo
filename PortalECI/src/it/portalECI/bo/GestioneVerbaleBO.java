@@ -609,13 +609,6 @@ public class GestioneVerbaleBO {
 		if(nomeVerificatore != null) {
 			html = html.replaceAll("\\$\\{TECNICO_VERIFICATORE\\}", nomeVerificatore);
 		}
-		
-		//Inserisco la sede del cliente
-		String sedeIntevento = intervento.getNome_sede();
-		if(sedeIntevento != null) {
-			html = html.replaceAll("\\$\\{SEDE_CLIENTE\\}", sedeIntevento);
-		}
-
 		//Inserisco numero verbale
 		String numeroVerbale = verbale.getNumeroVerbale();
 		if(numeroVerbale != null) {
@@ -624,10 +617,26 @@ public class GestioneVerbaleBO {
 		
 		//Inserisco Nome Utilizzatore
 		CommessaDTO clienteUtilizzatore = GestioneCommesseBO.getCommessaById(intervento.getIdCommessa());
+		
 		if(clienteUtilizzatore != null && clienteUtilizzatore.getNOME_UTILIZZATORE()!=null) {
 			html = html.replaceAll("\\$\\{CLIENTE_UTILIZZATORE\\}", clienteUtilizzatore.getNOME_UTILIZZATORE());
 		}
+		//Inserisco Indirizzo Utilizzatore
+
+		if(clienteUtilizzatore != null && clienteUtilizzatore.getINDIRIZZO_UTILIZZATORE()!=null) {
+			html = html.replaceAll("\\$\\{INDIRIZZO_CLIENTE_UTILIZZATORE\\}", clienteUtilizzatore.getINDIRIZZO_UTILIZZATORE());
+		}
 		
+		// Inserisco Cliente
+		if(clienteUtilizzatore != null && clienteUtilizzatore.getID_ANAGEN_NOME()!=null) {
+			html = html.replaceAll("\\$\\{CLIENTE\\}", clienteUtilizzatore.getID_ANAGEN_NOME());
+		}
+		//Inserisco Indirizzo Utilizzatore
+
+		if(clienteUtilizzatore != null && clienteUtilizzatore.getINDIRIZZO_PRINCIPALE()!=null) {
+			html = html.replaceAll("\\$\\{INDIRIZZO_CLIENTE\\}", clienteUtilizzatore.getINDIRIZZO_PRINCIPALE());
+		}
+
 		// Elimino i placeholder non utilizzati
 		html = html.replaceAll("\\$\\{(.*?)\\}", "");
 		return html;

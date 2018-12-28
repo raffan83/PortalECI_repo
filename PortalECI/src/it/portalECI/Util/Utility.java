@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 
 
@@ -35,6 +36,18 @@ public class Utility extends HttpServlet {
 		}
 	}
 
+	public static ArrayList<Integer> getYearList() {
+		
+		ArrayList<Integer> yearList=new ArrayList<Integer>();
+		
+		yearList.add(2015);
+		yearList.add(2016);
+		yearList.add(2017);
+		yearList.add(2018);
+		yearList.add(2019);
+		
+		return yearList;
+	}
 	public static  void copiaFile(String origine, String destinazione)throws Exception{
 		FileInputStream fis = new FileInputStream(origine);
 		FileOutputStream fos = new FileOutputStream(destinazione);

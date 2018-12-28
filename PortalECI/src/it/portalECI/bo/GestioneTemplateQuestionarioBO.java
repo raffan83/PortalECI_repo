@@ -166,18 +166,15 @@ public class GestioneTemplateQuestionarioBO {
 		//Inserisco il nome del tecnico
 		String nomeVerificatore = "TECNICO_VERIFICATORE";
 		html = html.replaceAll("\\$\\{TECNICO_VERIFICATORE\\}", nomeVerificatore);
-		
-		//Inserisco la sede del cliente
-		String sedeIntevento = "SEDE_CLIENTE";
-		html = html.replaceAll("\\$\\{SEDE_CLIENTE\\}", sedeIntevento);
 
 		//Inserisco numero verbale
 		String numeroVerbale = "NUMERO_VERBALE";
 		html = html.replaceAll("\\$\\{NUMERO_VERBALE\\}", numeroVerbale);
 	
 		html = html.replaceAll("\\$\\{CLIENTE_UTILIZZATORE\\}", "CLIENTE UTILIZZATORE");
-				
-				
+		html = html.replaceAll("\\$\\{INDIRIZZO_CLIENTE_UTILIZZATORE\\}","INDIRIZZO UTILIZZATORE"); 
+		html = html.replaceAll("\\$\\{CLIENTE\\}","CLIENTE");
+		html = html.replaceAll("\\$\\{INDIRIZZO_CLIENTE\\}", "INDIRIZZO CLIENTE");
 
 		// Elimino i placeholder non utilizzati
 		html = html.replaceAll("\\$\\{(.*?)\\}", "");
