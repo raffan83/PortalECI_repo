@@ -863,7 +863,7 @@ public class GestioneVerbaleBO {
 		try {
 			String filepath = Costanti.PATH_CERTIFICATI+documento.getFilePath();
 			//System.out.println("filepath" + filepath);
-			File tmpFile = new File(filepath+".tmp");
+			File tmpFile = new File(filepath+"tmp");
 	        PdfReader reader = new PdfReader(filepath);
 	        PdfStamper stamper = new PdfStamper(reader, new FileOutputStream(tmpFile));
 	        Font f = new Font(FontFamily.HELVETICA, 15);
@@ -881,6 +881,10 @@ public class GestioneVerbaleBO {
 	        }
 	        stamper.close();
 	        reader.close();
+	        File fil = new File (filepath);
+	        if(fil.exists()) {
+	        	fil.delete();
+	        }
 			tmpFile.renameTo(new File(filepath));
 		} catch (IOException e) {
 			System.out.println("IOException: " + e);
@@ -917,6 +921,10 @@ public class GestioneVerbaleBO {
 	        stamper.close();
 	        tmpfos.close();
 	        reader.close();
+	        File fil = new File (filepath);
+	        if(fil.exists()) {
+	        	fil.delete();
+	        }
 			tmpFile.renameTo(new File(filepath));
 		} catch (IOException e) {
 			System.out.println("IOException: " + e);
