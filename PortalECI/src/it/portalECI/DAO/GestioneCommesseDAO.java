@@ -274,6 +274,9 @@ public class GestioneCommesseDAO {
 		{
 		throw e;
 		}
+		if(con!=null) {
+			con.close();
+		}
 		return listaCommesse;
 	}
 
@@ -475,6 +478,9 @@ public class GestioneCommesseDAO {
 		{
 		throw e;
 		}
+		if(con!=null) {
+			con.close();
+		}
 		return commessa;
 	}
 
@@ -536,7 +542,9 @@ public class GestioneCommesseDAO {
 		}catch (Exception e) {
 			throw e;
 		}
-		
+		if(con!=null) {
+			con.close();
+		}
 		return mappaClienti;
 	}
 	
