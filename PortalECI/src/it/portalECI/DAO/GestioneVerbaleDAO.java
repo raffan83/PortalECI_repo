@@ -79,7 +79,7 @@ public class GestioneVerbaleDAO {
 			return result;
 	}
 
-	public static ProgressivoVerbaleDTO getProgressivoVerbale(UtenteDTO utente, TipoVerificaDTO tipo, Session session) {
+	public static synchronized ProgressivoVerbaleDTO getProgressivoVerbale(UtenteDTO utente, TipoVerificaDTO tipo, Session session) {
 		Query query = session.createQuery("from ProgressivoVerbaleDTO where idUtente= :_idUtente and idTipo= :_idTipo");
 		query.setInteger("_idTipo", tipo.getId());
 		query.setInteger("_idUtente", utente.getId());
