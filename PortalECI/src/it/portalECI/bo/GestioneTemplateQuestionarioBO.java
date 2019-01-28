@@ -43,6 +43,7 @@ import it.portalECI.DAO.GestioneTemplateQuestionarioDAO;
 import it.portalECI.DTO.ColonnaTabellaQuestionarioDTO;
 import it.portalECI.DTO.CommessaDTO;
 import it.portalECI.DTO.DomandaQuestionarioDTO;
+import it.portalECI.DTO.DomandaSchedaTecnicaQuestionarioDTO;
 import it.portalECI.DTO.OpzioneRispostaQuestionarioDTO;
 import it.portalECI.DTO.QuestionarioDTO;
 import it.portalECI.DTO.RispostaFormulaQuestionarioDTO;
@@ -161,6 +162,11 @@ public class GestioneTemplateQuestionarioBO {
 		
 		for (DomandaQuestionarioDTO domanda:questionario.getDomandeVerbale()) {
 			html = replacePlaceholderDomanda(html,domanda, session);
+		}
+		
+		for( DomandaSchedaTecnicaQuestionarioDTO domandeST:questionario.getDomandeSchedaTecnica())
+		{
+			html = replacePlaceholderDomanda(html,domandeST, session);
 		}
 		
 		//Inserisco il nome del tecnico
