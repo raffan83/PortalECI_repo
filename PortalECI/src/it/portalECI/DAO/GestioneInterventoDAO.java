@@ -32,8 +32,9 @@ public class GestioneInterventoDAO {
 			
 		session.beginTransaction();
 		Query query;  
+		boolean ck=user.checkRuolo("AM");
 		if(idCommessa!=null) {
-			if(user.getTipoutente().equals("2")) 
+			if(user.getTipoutente().equals("2") && ck==false ) 
 			{
 				query= session.createQuery( "from InterventoDTO WHERE id_commessa= :_id_commessa AND user.id=:_idUser");
 				query.setParameter("_id_commessa", idCommessa);		
@@ -48,9 +49,9 @@ public class GestioneInterventoDAO {
 		}else 
 		
 		{
-			if(user.getTipoutente().equals("2")) 
+			if(user.getTipoutente().equals("2")&& ck==false) 
 			{
-				query= session.createQuery( "from InterventoDTO WHERE user.id=:_idUser");
+				query= session.createQuery( "from InterventoDTO WHERE tecnico_verificatore.id=:_idUser");
 				query.setParameter("_idUser", user.getId());
 			}else 
 			{

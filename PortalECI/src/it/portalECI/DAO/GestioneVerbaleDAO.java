@@ -15,9 +15,12 @@ public class GestioneVerbaleDAO {
 	
 	public static List<VerbaleDTO> getListaVerbali(Session session, UtenteDTO user){
 		Query query=null;
-		if(user.getTipoutente().equals("2")) 
+		
+		boolean ck=user.checkRuolo("AM");
+		if(user.getTipoutente().equals("2") && ck==false) 
 		{
-		 query  = session.createQuery( "from VerbaleDTO WHERE type = :_type AND intervento.user.id=:_idUser");
+		 
+		query  = session.createQuery( "from VerbaleDTO WHERE type = :_type AND intervento.user.id=:_idUser");
 		query.setParameter("_type",VerbaleDTO.VERBALE);
 		query.setParameter("_idUser",user.getId());
 		}
