@@ -71,7 +71,8 @@ public class GestioneIntervento extends HttpServlet {
 		JsonObject myObj = new JsonObject();
 		PrintWriter  out = response.getWriter();
 		String action=request.getParameter("action");
-	
+		
+		UtenteDTO user = (UtenteDTO)request.getSession().getAttribute("userObj");
 		try {												
 			
 			if(action ==null || action.equals("")){
@@ -82,7 +83,7 @@ public class GestioneIntervento extends HttpServlet {
 				CommessaDTO comm=GestioneCommesseBO.getCommessaById(idCommessa);									
 				request.getSession().setAttribute("commessa", comm);
 			
-				List<InterventoDTO> listaInterventi =GestioneInterventoBO.getListaInterventi(idCommessa,session);	
+				List<InterventoDTO> listaInterventi =GestioneInterventoBO.getListaInterventi(idCommessa,session,user);	
 			
 				if(comm.getSYS_STATO().equals("1CHIUSA")) {
 					

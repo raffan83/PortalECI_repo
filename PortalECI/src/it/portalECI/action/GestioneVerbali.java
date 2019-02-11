@@ -83,6 +83,7 @@ public class GestioneVerbali extends HttpServlet {
 		try {
 			VerbaleDTO verbale = GestioneVerbaleBO.getVerbale(request.getParameter("idVerbale"),session); 
 			
+			
 			Enumeration<String> parameterNames = request.getParameterNames(); //lista id elementi modificati
 
 			ArrayList<String> listaFormulaAggiornate=new ArrayList<String>();

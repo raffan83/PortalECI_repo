@@ -66,7 +66,7 @@ public class GestioneListaInterventi extends HttpServlet {
 			
 			UtenteDTO user = (UtenteDTO)request.getSession().getAttribute("userObj");
 					
-			List<InterventoDTO> listaInterventi =GestioneInterventoBO.getListaInterventi(null,session) ;
+			List<InterventoDTO> listaInterventi =GestioneInterventoBO.getListaInterventi(null,session,user) ;
 			
 			ArrayList<TipoVerificaDTO> tipi_verifica = GestioneInterventoBO.getTipoVerifica(session);
 			ArrayList<CategoriaVerificaDTO> categorie_verifica = GestioneInterventoBO.getCategoriaVerifica(session);

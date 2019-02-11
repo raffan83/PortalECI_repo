@@ -74,8 +74,8 @@ import org.apache.commons.codec.binary.Base64;
 
 public class GestioneVerbaleBO {
 	
-	public static List<VerbaleDTO> getListaVerbali(Session session) throws Exception {
-		return GestioneVerbaleDAO.getListaVerbali(session);
+	public static List<VerbaleDTO> getListaVerbali(Session session, UtenteDTO user) throws Exception {
+		return GestioneVerbaleDAO.getListaVerbali(session,user);
 	}
 	
 	public static VerbaleDTO getVerbale(String idVerbale,Session session) {

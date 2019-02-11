@@ -4,6 +4,7 @@ import it.portalECI.DTO.CategoriaVerificaDTO;
 import it.portalECI.DTO.InterventoDTO;
 import it.portalECI.DTO.StatoInterventoDTO;
 import it.portalECI.DTO.TipoVerificaDTO;
+import it.portalECI.DTO.UtenteDTO;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,18 +26,38 @@ public class GestioneInterventoDAO {
 			"LEFT JOIN BWT_ANAGEN AS b ON  a.ID_ANAGEN=b.ID_ANAGEN " +
 			"LEFT JOIN BWT_ANAGEN_INDIR AS c on a.K2_ANAGEN_INDIR=c.K2_ANAGEN_INDIR AND a.ID_ANAGEN=c.ID_ANAGEN ";*/
 
-	public static List<InterventoDTO> getListaInterventi(String idCommessa, Session session) throws Exception {
+	public static List<InterventoDTO> getListaInterventi(String idCommessa, Session session, UtenteDTO user) throws Exception {
 		
 		List<InterventoDTO> lista =null;
 			
 		session.beginTransaction();
 		Query query;  
 		if(idCommessa!=null) {
-			query= session.createQuery( "from InterventoDTO WHERE id_commessa= :_id_commessa");
+			if(user.getTipoutente().equals("2")) 
+			{
+				query= session.createQuery( "from InterventoDTO WHERE id_commessa= :_id_commessa AND user.id=:_idUser");
+				query.setParameter("_id_commessa", idCommessa);		
+				query.setParameter("_idUser", user.getId());	
+			}else 
+			{
+				query= session.createQuery( "from InterventoDTO WHERE id_commessa= :_id_commessa");
+				query.setParameter("_id_commessa", idCommessa);		
+			}
 		
-			query.setParameter("_id_commessa", idCommessa);		
-		}else {
-			query= session.createQuery( "from InterventoDTO");
+			
+		}else 
+		
+		{
+			if(user.getTipoutente().equals("2")) 
+			{
+				query= session.createQuery( "from InterventoDTO WHERE user.id=:_idUser");
+				query.setParameter("_idUser", user.getId());
+			}else 
+			{
+				query= session.createQuery( "from InterventoDTO");
+			}
+	
+			
 		}
 		
 		lista=query.list();

@@ -63,8 +63,10 @@ public class GestioneListaVerbali extends HttpServlet {
 		try {
 			Session session=SessionFacotryDAO.get().openSession();
 			session.beginTransaction();
-					
-			List<VerbaleDTO> listaVerbali =GestioneVerbaleBO.getListaVerbali(session) ;
+				
+			UtenteDTO user = (UtenteDTO)request.getSession().getAttribute("userObj");
+			
+			List<VerbaleDTO> listaVerbali =GestioneVerbaleBO.getListaVerbali(session,user) ;
 			
 			request.getSession().setAttribute("listaVerbali", listaVerbali);
 

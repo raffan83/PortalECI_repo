@@ -13,10 +13,19 @@ import it.portalECI.DTO.VerbaleDTO;
 
 public class GestioneVerbaleDAO {
 	
-	public static List<VerbaleDTO> getListaVerbali(Session session){
-		Query query  = session.createQuery( "from VerbaleDTO WHERE type = :_type");
+	public static List<VerbaleDTO> getListaVerbali(Session session, UtenteDTO user){
+		Query query=null;
+		if(user.getTipoutente().equals("2")) 
+		{
+		 query  = session.createQuery( "from VerbaleDTO WHERE type = :_type AND intervento.user.id=:_idUser");
 		query.setParameter("_type",VerbaleDTO.VERBALE);
-		
+		query.setParameter("_idUser",user.getId());
+		}
+		else 
+		{
+			 query  = session.createQuery( "from VerbaleDTO WHERE type = :_type");
+			query.setParameter("_type",VerbaleDTO.VERBALE);
+		}
 		List<VerbaleDTO> result = query.list();
 		return result;
 	}
