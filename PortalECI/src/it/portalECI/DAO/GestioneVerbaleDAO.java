@@ -20,7 +20,7 @@ public class GestioneVerbaleDAO {
 		if(user.getTipoutente().equals("2") && ck==false) 
 		{
 		 
-		query  = session.createQuery( "from VerbaleDTO WHERE type = :_type AND intervento.user.id=:_idUser");
+		query  = session.createQuery( "from VerbaleDTO WHERE type = :_type AND intervento.tecnico_verificatore.id=:_idUser");
 		query.setParameter("_type",VerbaleDTO.VERBALE);
 		query.setParameter("_idUser",user.getId());
 		}

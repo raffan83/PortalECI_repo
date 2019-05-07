@@ -304,6 +304,8 @@
         														<label for="titolo-input" class="control-label col-xs-12">${domVerbale.getDomandaQuestionario().getTesto()}</label><br/>
         												
     	    													<c:set var="domVerbale" value="${domVerbale}" scope="request"></c:set>
+    	    													<c:set var="storicoModificheVerb" value="${storicoModificheVerb}" scope="request"></c:set>        	
+    	    													<c:set var="storicoModificheSkTec" value="${storicoModificheSkTec}" scope="request"></c:set>    
     	    													<c:set var="type" value="SchedaTecnica" scope="request"></c:set>    	      	    													
 																<jsp:include page="gestioneVerbaleDettaglio.jsp"></jsp:include>        													
 
