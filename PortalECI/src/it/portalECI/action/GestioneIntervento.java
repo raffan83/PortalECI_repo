@@ -115,12 +115,14 @@ public class GestioneIntervento extends HttpServlet {
 				dispatcher.forward(request,response);
 			}else if(action !=null && action.equals("new")){
 		 												
-				String id_tecnico = request.getParameter("tecnico");				
+				String id_tecnico = request.getParameter("tecnico");
 				List<TipoVerificaDTO> tipoverificalist = new ArrayList<TipoVerificaDTO>();
 				List<VerbaleDTO> verbali = new ArrayList<>();
 
 				String[] categoriaTipo=request.getParameterValues("categoriaTipo");
 				String[] schedaTecnicaObbligatoria=request.getParameterValues("schedaTecnica");
+				String[] listaNote =request.getParameterValues("note");
+				
 				for( int i = 0; i <= categoriaTipo.length - 1; i++){
 					
 					String id_tipo=categoriaTipo[i].substring(0, categoriaTipo[i].indexOf("_"));
@@ -140,7 +142,7 @@ public class GestioneIntervento extends HttpServlet {
 						}
 					}
 					
-					VerbaleDTO verbale =GestioneVerbaleBO.buildVerbale(tipoVerificaDTO.getCodice(), session, createSkTec);
+					VerbaleDTO verbale =GestioneVerbaleBO.buildVerbale(tipoVerificaDTO.getCodice(), session, createSkTec,listaNote[i]);
 					if(verbale !=null) {
 						verbali.add(verbale);
 					}else {
@@ -307,7 +309,7 @@ public class GestioneIntervento extends HttpServlet {
 						}
 					}
 											
-					verbaleTarget =GestioneVerbaleBO.buildVerbale(tipoVerificaDTO.getCodice(), session, createSkTec);
+					verbaleTarget =GestioneVerbaleBO.buildVerbale(tipoVerificaDTO.getCodice(), session, createSkTec,"");
 						
 					if(verbaleTarget ==null) {														
 						myObj.addProperty("success", false);

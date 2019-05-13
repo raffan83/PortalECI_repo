@@ -137,7 +137,8 @@
  															<th>Descrizione Verifica</th>
  															<th>Stato</th>
  															<th>Certificato</th>
- 															<th>Sc. Tecnica</th>
+ 															<th width="150px">Sc. Tecnica</th>
+ 															<th>Note</th>
  															<td></td>
 														</tr>
 													</thead>
@@ -181,6 +182,9 @@
       																	</c:forEach>
       																</c:if> 
 																</td>
+																<td>
+  																	${verbale.getNote()}
+																</td>	
 																<td>
 																	<c:if test="${user.checkPermesso('GESTIONE_VERBALI')}">
 																		<a class="btn customTooltip" title="Click per aprire il dettaglio del Verbale" onclick="callAction('gestioneVerbale.do?idVerbale=${verbale.id}');">

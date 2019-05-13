@@ -38,6 +38,10 @@
 			<column name="codiceCategoria" length="256"/>
 		</property>  
 		
+		<property name="note">
+			<column name="note" length="512"/>
+		</property>
+		
 		<many-to-one name="stato" class="it.portalECI.DTO.StatoVerbaleDTO" fetch="join" lazy="false">
             <column name="id_stato_verbale" />
         </many-to-one>

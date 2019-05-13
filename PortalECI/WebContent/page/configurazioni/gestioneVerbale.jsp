@@ -118,6 +118,12 @@
 		 													<c:if test="${questionario.isObsoleto}"> <span class="label bg-red">OBSOLETO</span> </c:if> ${questionario.titolo} del <fmt:formatDate pattern="dd/MM/yyyy" value='${questionario.createDate}' type='date' /> <i class="fa fa-arrow-right"></i>
                   										</a>
                 									</li>
+                									<li class="list-group-item">
+                  										<b>Note verbale</b>
+                  										<a class="pull-right">
+		 													${verbale.getNote()}
+                  										</a>
+                									</li>
         										</ul>     
         										<div class="row" id="cambiostato">    
         											<c:if test='${verbale.getStato().getId()== 4 && user.checkPermesso("CH_STA_VERBALE")}'>
