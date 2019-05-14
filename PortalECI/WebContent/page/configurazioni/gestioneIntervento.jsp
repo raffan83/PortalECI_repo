@@ -287,17 +287,23 @@
         									</div>    
         									<div class="form-group col-sm-2 text-center" style="position: absolute;	bottom: 0; right: 0;">        									
                   								<button class="btn-sm" id="addrow" onclick="addRow()"><i class="fa fa-plus"></i></button>              
-        									</div>                                     
-  										</div>		
-  														
+        									</div> 
+        									</div>		
+  									
+  											<div class="form-group">
+        									<label>Note</label>
+											<input type="text" class="form-control" id="noteVerbale" >
+												
+                						</div>                                    			
   										<div class="row">
-  											<div class="col-sm-12 ">		
+  											<div class="col-sm-12">		
   											<table id="tabVerifica" class="table table-bordered table-hover dataTable table-striped" role="grid" width="100%">
  													<thead>
  														<tr class="active">
  															<th>Categoria Verifica</th>
  															<th>Tipo Verifica</th>
- 															<th>Scheda Tecnica da compilare</th> 		 														
+ 															<th>SC obbligatoria</th>
+ 															<th>Note</th>		 														
  															<td></td>
 														</tr>
 													</thead>
@@ -617,6 +623,7 @@
 									}
 									
 									objectdata+='</td>'+
+									'<td>'+$("#noteVerbale").val()+'</td>'+    
 										'<td><a class="btn customTooltip" title="Click per eliminare la riga" onclick="removeRow(\''+tipi_verifica+'\')"><i class="fa fa-minus"></i></a></td></tr>';
 									
 									$("#bodytabVerifica").append(objectdata);

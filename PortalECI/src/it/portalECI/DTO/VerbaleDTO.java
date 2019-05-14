@@ -33,6 +33,7 @@ public class VerbaleDTO implements Serializable {
 	private Set<DocumentoDTO> documentiVerbale;
 	private Date dataScaricamento;
 	private Date dataTrasferimento;
+	private String note;
 		
 	private String numeroVerbale;	
 	public int getId() {
@@ -194,6 +195,8 @@ public class VerbaleDTO implements Serializable {
 		jobj.addProperty("codiceVerifica", this.codiceVerifica);
 		jobj.addProperty("codiceCategoria", this.codiceCategoria);
 		jobj.addProperty("descrizioneVerifica", this.descrizioneVerifica);
+		jobj.addProperty("note", this.note);
+		
 		if(this.domandeVerbale!=null) {
 			JsonArray domandeVerbaleobj = new JsonArray();
 			
@@ -209,6 +212,14 @@ public class VerbaleDTO implements Serializable {
 		
 		
 		return jobj;
+	}
+
+	public String getNote() {
+		return note;
+	}
+
+	public void setNote(String note) {
+		this.note = note;
 	}
 
 	

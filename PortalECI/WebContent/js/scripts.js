@@ -344,7 +344,7 @@ function nuovoInterventoFromModal(divID){
 function saveInterventoFromModal(){
 
 	var str1=$('#tecnici').val();
-	//var str2=$('#select1').val();
+	//var str2="&note="+$('#noteVerbale').val();
 	//var str3=$('#select2').val();
 	var listCatVer='';
 	$('.categoriaTipiRow').each(function(index, item){
@@ -356,6 +356,14 @@ function saveInterventoFromModal(){
 			skTecObb+="&schedaTecnica="+$(this).closest('tr').prop('id');
 	});
 	
+	var noteVerb='';
+	
+	var table = $('#tabVerifica').DataTable();
+	var data = table.rows().data();
+	data.each(function (value, index) {
+		noteVerb+="&note="+value[3];
+	 });
+	 
 	if(listCatVer==""){
 		$('#empty').html("Devi inserire almeno un 'Tipo Verifica' per poter creare l'intervento!"); 
 	}else if(str1!= null){
@@ -369,7 +377,7 @@ function saveInterventoFromModal(){
 			url: "gestioneIntervento.do?action=new",
 			//data: "dataIn="+JSON.stringify(dataArr),
 			//data: "dataIn="+str1,
-			data : "tecnico="+str1 +listCatVer+skTecObb,
+			data : "tecnico="+str1 +listCatVer+skTecObb+noteVerb,
 			//	'id='+ encodeURIComponent(id) + '&name='+ encodeURIComponent(name)
 			dataType: "json",
 			success: function( data, textStatus) {
