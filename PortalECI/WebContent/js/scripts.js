@@ -2863,3 +2863,77 @@ function modalEliminaTipoVerifica(id,descrizione){
 	$('#modalEliminaTipoVerifica').modal();
 	  
 }
+
+
+
+function nuovaAttrezzatura(){
+
+	pleaseWaitDiv = $('#pleaseWaitDialog');
+	pleaseWaitDiv.modal();
+	
+	var id_cliente = $('#cliente').val();
+	var id_sede = $('#sede').val();
+	var matricola_inail = $('#matricola_inail').val();
+	var numero_fabbrica = $('#numero_fabbrica').val();
+	var descrizione = $('#descrizione').val();
+	var tipo_attivita = $('#tipo_attivita').val();
+	var data_ver_funz = $('#data_verifica_funzionamento').val();
+	var data_pross_ver_funz = $('#data_prossima_verifica_funzionamento').val();
+	var data_ver_integrita = $('#data_verifica_integrita').val();
+	var data_pross_ver_integrita = $('#data_prossima_verifica_integrita').val();
+	var data_ver_interna = $('#data_verifica_interna').val();
+	var data_pross_ver_interna = $('#data_prossima_verifica_interna').val();	
+	  		
+	var dataObj = {};
+	          
+	dataObj.id_cliente = id_cliente;
+	dataObj.id_sede = id_sede;
+	dataObj.matricola_inail = matricola_inail;
+	dataObj.numero_fabbrica = numero_fabbrica;
+	dataObj.descrizione = descrizione;
+	dataObj.tipo_attivita = tipo_attivita;
+	dataObj.data_ver_funz = data_ver_funz;
+	dataObj.data_pross_ver_funz = data_pross_ver_funz;
+	dataObj.data_ver_integrita = data_ver_integrita;
+	dataObj.data_pross_ver_integrita = data_pross_ver_integrita;
+	dataObj.data_ver_interna = data_ver_interna;
+	dataObj.data_pross_ver_interna = data_pross_ver_interna;
+
+
+	$.ajax({
+		type: "POST",
+		url: "listaAttrezzature.do?action=nuovo",
+		data: dataObj,
+		dataType: "json",
+
+		success: function( data, textStatus) {
+
+			if(data.success){ 
+				$('#modalNuovaAttrezzatura').modal('hide');
+				
+				 dataString ="action=cliente_sede&id_cliente="+ id_cliente+"&id_sede="+id_sede;
+		          exploreModal("listaAttrezzature.do",dataString,"#posTab",function(data,textStatus){
+					// $('#errorMsg').html("<h3 class='label label-success' style=\"color:green\">"+data.message+"</h3>");
+				//	$("#myModalErrorContent").html(data.message);
+		        	  
+				//	$("#myModalError").modal();
+		        	  pleaseWaitDiv.modal('hide');
+				});
+		          $('.modal-backdrop').hide();          		
+			}else{
+				pleaseWaitDiv.modal('hide');
+				// $('#empty').html("<h3 class='label label-error' style=\"color:green\">"+data.message+"</h3>");
+				$("#myModalErrorContent").html(data.messaggio);
+				$("#myModalError").modal();
+			}
+		},
+
+		error: function(jqXHR, textStatus, errorThrown){	          
+			// $('#empty').html("<h3 class='label label-danger'>"+textStatus+"</h3>");
+			pleaseWaitDiv.modal('hide');
+			$("#myModalErrorContent").html(textStatus);
+			$("#myModalError").modal();
+			
+		}
+	});	  	  	  	  
+}

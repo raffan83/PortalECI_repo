@@ -1,0 +1,315 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions targetNamespace="http://services.portalECI.it" xmlns:apachesoap="http://xml.apache.org/xml-soap" xmlns:impl="http://services.portalECI.it" xmlns:intf="http://services.portalECI.it" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:wsdlsoap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+<!--WSDL created by Apache Axis version: 1.4
+Built on Apr 22, 2006 (06:55:48 PDT)-->
+ <wsdl:types>
+  <schema elementFormDefault="qualified" targetNamespace="http://services.portalECI.it" xmlns="http://www.w3.org/2001/XMLSchema">
+   <element name="setUser">
+    <complexType>
+     <sequence>
+      <element name="user" type="xsd:string"/>
+     </sequence>
+    </complexType>
+   </element>
+   <element name="setUserResponse">
+    <complexType/>
+   </element>
+   <element name="getUser">
+    <complexType/>
+   </element>
+   <element name="getUserResponse">
+    <complexType>
+     <sequence>
+      <element name="getUserReturn" type="xsd:string"/>
+     </sequence>
+    </complexType>
+   </element>
+   <element name="getPwd">
+    <complexType/>
+   </element>
+   <element name="getPwdResponse">
+    <complexType>
+     <sequence>
+      <element name="getPwdReturn" type="xsd:string"/>
+     </sequence>
+    </complexType>
+   </element>
+   <element name="setPwd">
+    <complexType>
+     <sequence>
+      <element name="password" type="xsd:string"/>
+     </sequence>
+    </complexType>
+   </element>
+   <element name="setPwdResponse">
+    <complexType/>
+   </element>
+   <element name="checkLogin">
+    <complexType>
+     <sequence>
+      <element name="usr" type="xsd:string"/>
+      <element name="pwd" type="xsd:string"/>
+     </sequence>
+    </complexType>
+   </element>
+   <element name="checkLoginResponse">
+    <complexType>
+     <sequence>
+      <element name="checkLoginReturn" type="xsd:boolean"/>
+     </sequence>
+    </complexType>
+   </element>
+  </schema>
+ </wsdl:types>
+
+   <wsdl:message name="getUserRequest">
+
+      <wsdl:part element="impl:getUser" name="parameters">
+
+      </wsdl:part>
+
+   </wsdl:message>
+
+   <wsdl:message name="getPwdResponse">
+
+      <wsdl:part element="impl:getPwdResponse" name="parameters">
+
+      </wsdl:part>
+
+   </wsdl:message>
+
+   <wsdl:message name="checkLoginResponse">
+
+      <wsdl:part element="impl:checkLoginResponse" name="parameters">
+
+      </wsdl:part>
+
+   </wsdl:message>
+
+   <wsdl:message name="setUserRequest">
+
+      <wsdl:part element="impl:setUser" name="parameters">
+
+      </wsdl:part>
+
+   </wsdl:message>
+
+   <wsdl:message name="getUserResponse">
+
+      <wsdl:part element="impl:getUserResponse" name="parameters">
+
+      </wsdl:part>
+
+   </wsdl:message>
+
+   <wsdl:message name="setUserResponse">
+
+      <wsdl:part element="impl:setUserResponse" name="parameters">
+
+      </wsdl:part>
+
+   </wsdl:message>
+
+   <wsdl:message name="checkLoginRequest">
+
+      <wsdl:part element="impl:checkLogin" name="parameters">
+
+      </wsdl:part>
+
+   </wsdl:message>
+
+   <wsdl:message name="getPwdRequest">
+
+      <wsdl:part element="impl:getPwd" name="parameters">
+
+      </wsdl:part>
+
+   </wsdl:message>
+
+   <wsdl:message name="setPwdResponse">
+
+      <wsdl:part element="impl:setPwdResponse" name="parameters">
+
+      </wsdl:part>
+
+   </wsdl:message>
+
+   <wsdl:message name="setPwdRequest">
+
+      <wsdl:part element="impl:setPwd" name="parameters">
+
+      </wsdl:part>
+
+   </wsdl:message>
+
+   <wsdl:portType name="LoginServices">
+
+      <wsdl:operation name="setUser">
+
+         <wsdl:input message="impl:setUserRequest" name="setUserRequest">
+
+       </wsdl:input>
+
+         <wsdl:output message="impl:setUserResponse" name="setUserResponse">
+
+       </wsdl:output>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="getUser">
+
+         <wsdl:input message="impl:getUserRequest" name="getUserRequest">
+
+       </wsdl:input>
+
+         <wsdl:output message="impl:getUserResponse" name="getUserResponse">
+
+       </wsdl:output>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="getPwd">
+
+         <wsdl:input message="impl:getPwdRequest" name="getPwdRequest">
+
+       </wsdl:input>
+
+         <wsdl:output message="impl:getPwdResponse" name="getPwdResponse">
+
+       </wsdl:output>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="setPwd">
+
+         <wsdl:input message="impl:setPwdRequest" name="setPwdRequest">
+
+       </wsdl:input>
+
+         <wsdl:output message="impl:setPwdResponse" name="setPwdResponse">
+
+       </wsdl:output>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="checkLogin">
+
+         <wsdl:input message="impl:checkLoginRequest" name="checkLoginRequest">
+
+       </wsdl:input>
+
+         <wsdl:output message="impl:checkLoginResponse" name="checkLoginResponse">
+
+       </wsdl:output>
+
+      </wsdl:operation>
+
+   </wsdl:portType>
+
+   <wsdl:binding name="LoginServicesSoapBinding" type="impl:LoginServices">
+
+      <wsdlsoap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+
+      <wsdl:operation name="setUser">
+
+         <wsdlsoap:operation soapAction=""/>
+
+         <wsdl:input name="setUserRequest">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="setUserResponse">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:output>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="getUser">
+
+         <wsdlsoap:operation soapAction=""/>
+
+         <wsdl:input name="getUserRequest">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="getUserResponse">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:output>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="getPwd">
+
+         <wsdlsoap:operation soapAction=""/>
+
+         <wsdl:input name="getPwdRequest">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="getPwdResponse">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:output>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="setPwd">
+
+         <wsdlsoap:operation soapAction=""/>
+
+         <wsdl:input name="setPwdRequest">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="setPwdResponse">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:output>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="checkLogin">
+
+         <wsdlsoap:operation soapAction=""/>
+
+         <wsdl:input name="checkLoginRequest">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="checkLoginResponse">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:output>
+
+      </wsdl:operation>
+
+   </wsdl:binding>
+
+   <wsdl:service name="LoginServicesService">
+
+      <wsdl:port binding="impl:LoginServicesSoapBinding" name="LoginServices">
+
+         <wsdlsoap:address location="http://localhost:11270/PortalECI/services/LoginServices"/>
+
+      </wsdl:port>
+
+   </wsdl:service>
+
+</wsdl:definitions>

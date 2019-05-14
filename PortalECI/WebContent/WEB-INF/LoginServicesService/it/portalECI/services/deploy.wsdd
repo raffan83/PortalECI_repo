@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?><!-- Use this file to deploy some handlers/chains and services      --><!-- Two ways to do this:                                           --><!--   java org.apache.axis.client.AdminClient deploy.wsdd          --><!--      after the axis server is running                          --><!-- or                                                             --><!--   java org.apache.axis.utils.Admin client|server deploy.wsdd   --><!--      from the same directory that the Axis engine runs         --><deployment xmlns="http://xml.apache.org/axis/wsdd/" xmlns:java="http://xml.apache.org/axis/wsdd/providers/java">
+
+  <!-- Services from LoginServicesService WSDL service -->
+
+  <service name="LoginServices" provider="java:RPC" style="wrapped" use="literal">
+      <parameter name="wsdlTargetNamespace" value="http://services.portalECI.it"/>
+      <parameter name="wsdlServiceElement" value="LoginServicesService"/>
+      <parameter name="schemaQualified" value="http://services.portalECI.it"/>
+      <parameter name="wsdlServicePort" value="LoginServices"/>
+      <parameter name="className" value="it.portalECI.services.LoginServices"/>
+      <parameter name="wsdlPortType" value="LoginServices"/>
+      <parameter name="typeMappingVersion" value="1.2"/>
+      <operation xmlns:operNS="http://services.portalECI.it" name="setUser" qname="operNS:setUser" soapAction="">
+        <parameter xmlns:pns="http://services.portalECI.it" xmlns:tns="http://www.w3.org/2001/XMLSchema" qname="pns:user" type="tns:string"/>
+      </operation>
+      <operation xmlns:operNS="http://services.portalECI.it" xmlns:retNS="http://services.portalECI.it" xmlns:rtns="http://www.w3.org/2001/XMLSchema" name="getUser" qname="operNS:getUser" returnQName="retNS:getUserReturn" returnType="rtns:string" soapAction="">
+      </operation>
+      <operation xmlns:operNS="http://services.portalECI.it" xmlns:retNS="http://services.portalECI.it" xmlns:rtns="http://www.w3.org/2001/XMLSchema" name="getPwd" qname="operNS:getPwd" returnQName="retNS:getPwdReturn" returnType="rtns:string" soapAction="">
+      </operation>
+      <operation xmlns:operNS="http://services.portalECI.it" name="setPwd" qname="operNS:setPwd" soapAction="">
+        <parameter xmlns:pns="http://services.portalECI.it" xmlns:tns="http://www.w3.org/2001/XMLSchema" qname="pns:password" type="tns:string"/>
+      </operation>
+      <operation xmlns:operNS="http://services.portalECI.it" xmlns:retNS="http://services.portalECI.it" xmlns:rtns="http://www.w3.org/2001/XMLSchema" name="checkLogin" qname="operNS:checkLogin" returnQName="retNS:checkLoginReturn" returnType="rtns:boolean" soapAction="">
+        <parameter xmlns:pns="http://services.portalECI.it" xmlns:tns="http://www.w3.org/2001/XMLSchema" qname="pns:usr" type="tns:string"/>
+        <parameter xmlns:pns="http://services.portalECI.it" xmlns:tns="http://www.w3.org/2001/XMLSchema" qname="pns:pwd" type="tns:string"/>
+      </operation>
+      <parameter name="allowedMethods" value="getUser setPwd setUser checkLogin getPwd"/>
+
+  </service>
+</deployment>
