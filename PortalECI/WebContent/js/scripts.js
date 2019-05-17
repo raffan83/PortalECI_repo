@@ -3127,6 +3127,7 @@ $.ajax({
 	        	   
 	        	callAction('listaAttrezzature.do?action=scadenzario&data='+moment(calEvent.start).format()+'&tipo_data='+tipo_data);
 
+	        	
 	               $(this).css('border-color', '#228B22');
 	           },
 	     	 
