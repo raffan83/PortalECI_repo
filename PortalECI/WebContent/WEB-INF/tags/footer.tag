@@ -32,6 +32,8 @@
 <script src='https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/locale/it.js'></script>
 <script src='plugins/datatables/date-eu.js'></script>
 <script src='plugins/fullcalendar/fullcalendar.min.js'></script>
+<script src='plugins/fullcalendar370/fullcalendar.min.js'></script>
+<script src='plugins/fullcalendar370/locale/it.js'></script>
 <script src="plugins/select2/select2.full.min.js"></script>
 <script src="plugins/bignumbers/bignumber.min.js"></script>
 <script src="plugins/js-cookie/js.cookie.js"></script>
@@ -40,7 +42,10 @@
 
 <script src="plugins/datepicker/bootstrap-datepicker.js"></script>
 
-<script language="JavaScript" src="js/scripts.js"></script>
+<!-- <script language="JavaScript" src="js/scripts.js"></script> -->
+ <script type="text/javascript">
+document.write('<scr'+'ipt src="js/scripts.js?'+Math.random()+'" type="text/javascript"></scr'+'ipt>');
+</script> 
 <script src="js/app.js"></script>
 
 <script>

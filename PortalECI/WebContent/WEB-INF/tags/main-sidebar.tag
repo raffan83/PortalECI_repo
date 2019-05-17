@@ -95,6 +95,27 @@
 					<li><a href="downloadCalver.do"><i class="fa fa-link"></i>Calver Desktop</a></li>
           		</ul>
         	</li> -->
+        	<li class="treeview">
+        	 	<a href="#">
+        	 		<i class="fa fa-briefcase"></i>
+        	 		<span>Attrezzature</span>
+            		<span class="pull-right-container">
+              			<i class="fa fa-angle-left pull-right"></i>
+            		</span>
+          		</a>
+          		 <% if(user.checkPermesso("ATTREZZATURE")){%> 
+          			<ul class="treeview-menu">
+            			<li>
+            				<a href="listaAttrezzature.do">Archivio Attrezzature</a>
+            			</li>
+            			<% if(user.checkPermesso("SCADENZARIO_ATTREZZATURE")){%>
+             				<li>
+            					<a href="scadenzarioAttrezzature.do">Scadenzario Attrezzature</a>
+            				</li>
+            			<% }%>		
+          			</ul>          		
+          		<% }%>
+        	</li>
          	<li class="treeview">
           		<a href="#">
           			<i class="fa fa-group"></i> 
@@ -143,6 +164,7 @@
           			</ul>          			
           		<% }%>
         	</li>
+        	
       	</ul>
       	<!-- /.sidebar-menu -->
     </section>

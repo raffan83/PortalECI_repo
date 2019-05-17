@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 15-feb-2017 11.20.27 by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+    <class name="it.portalECI.DTO.AttrezzaturaDTO" table="attrezzatura">
+        <id name="id" type="int">
+            <column name="id" />
+            <generator class="increment" />
+        </id>
+        <property name="matricola_inail" type="java.lang.String">
+            <column name="matricola_inail" />
+        </property>
+        <property name="numero_fabbrica" type="java.lang.String">
+            <column name="numero_fabbrica" />
+        </property>
+        <property name="tipo_attivita" type="java.lang.String">
+            <column name="tipo_attivita" />
+        </property>
+          <property name="descrizione" type="java.lang.String">
+            <column name="descrizione" />
+        </property>
+          <property name="id_cliente" type="int">
+            <column name="id_cliente" />
+        </property>
+          <property name="id_sede" type="int">
+            <column name="id_sede" />
+        </property>
+          <property name="nome_cliente" type="java.lang.String">
+            <column name="nome_cliente" />
+        </property>
+          <property name="nome_sede" type="java.lang.String">
+            <column name="nome_sede" />
+        </property>
+          <property name="data_verifica_funzionamento" type="java.sql.Date">
+            <column name="data_verifica_funzionamento" />
+        </property>
+          <property name="data_prossima_verifica_funzionamento" type="java.sql.Date">
+            <column name="data_prossima_verifica_funzionamento" />
+        </property>
+          <property name="data_verifica_integrita" type="java.sql.Date">
+            <column name="data_verifica_integrita" />
+        </property>
+          <property name="data_prossima_verifica_integrita" type="java.sql.Date">
+            <column name="data_prossima_verifica_integrita" />
+        </property>
+          <property name="data_verifica_interna" type="java.sql.Date">
+            <column name="data_verifica_interna" />
+        </property>
+         <property name="data_prossima_verifica_interna" type="java.sql.Date">
+            <column name="data_prossima_verifica_interna" />
+        </property>
+
+        
+    </class>
+</hibernate-mapping>

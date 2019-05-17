@@ -2921,10 +2921,7 @@ function nuovaAttrezzatura(){
 				
 				 dataString ="action=cliente_sede&id_cliente="+ id_cliente+"&id_sede="+id_sede;
 		          exploreModal("listaAttrezzature.do",dataString,"#posTab",function(data,textStatus){
-					// $('#errorMsg').html("<h3 class='label label-success' style=\"color:green\">"+data.message+"</h3>");
-				//	$("#myModalErrorContent").html(data.message);
-		        	  
-				//	$("#myModalError").modal();
+				
 		        	  pleaseWaitDiv.modal('hide');
 				});
 		          $('.modal-backdrop').hide();          		
@@ -2944,4 +2941,237 @@ function nuovaAttrezzatura(){
 			
 		}
 	});	  	  	  	  
+}
+
+
+
+function modificaAttrezzatura(scadenzario, date, tipo_data){
+
+	pleaseWaitDiv = $('#pleaseWaitDialog');
+	pleaseWaitDiv.modal();
+	
+	var id_attrezzatura = $('#id_attrezzatura').val();
+	var id_cliente = $('#cliente_mod').val();
+	var id_sede = $('#sede_mod').val();
+	var matricola_inail = $('#matricola_inail_mod').val();
+	var numero_fabbrica = $('#numero_fabbrica_mod').val();
+	var descrizione = $('#descrizione_mod').val();
+	var tipo_attivita = $('#tipo_attivita_mod').val();
+	var data_ver_funz = $('#data_verifica_funzionamento_mod').val();
+	var data_pross_ver_funz = $('#data_prossima_verifica_funzionamento_mod').val();
+	var data_ver_integrita = $('#data_verifica_integrita_mod').val();
+	var data_pross_ver_integrita = $('#data_prossima_verifica_integrita_mod').val();
+	var data_ver_interna = $('#data_verifica_interna_mod').val();
+	var data_pross_ver_interna = $('#data_prossima_verifica_interna_mod').val();	
+	  		
+	var dataObj = {};
+	 
+	dataObj.id_attrezzatura = id_attrezzatura;
+	dataObj.id_cliente = id_cliente;
+	dataObj.id_sede = id_sede;
+	dataObj.matricola_inail = matricola_inail;
+	dataObj.numero_fabbrica = numero_fabbrica;
+	dataObj.descrizione = descrizione;
+	dataObj.tipo_attivita = tipo_attivita;
+	dataObj.data_ver_funz = data_ver_funz;
+	dataObj.data_pross_ver_funz = data_pross_ver_funz;
+	dataObj.data_ver_integrita = data_ver_integrita;
+	dataObj.data_pross_ver_integrita = data_pross_ver_integrita;
+	dataObj.data_ver_interna = data_ver_interna;
+	dataObj.data_pross_ver_interna = data_pross_ver_interna;
+
+
+	$.ajax({
+		type: "POST",
+		url: "listaAttrezzature.do?action=modifica",
+		data: dataObj,
+		dataType: "json",
+
+		success: function( data, textStatus) {
+
+			if(data.success){ 
+				$('#modalModificaaAttrezzatura').modal('hide');
+				
+				if(scadenzario){
+					dataString ="?action=scadenzario&data="+ date+"&tipo_data="+tipo_data;
+					callAction("listaAttrezzature.do"+dataString)
+		 
+				}else{
+					dataString ="action=cliente_sede&id_cliente="+ id_cliente+"&id_sede="+id_sede;
+			         exploreModal("listaAttrezzature.do",dataString,"#posTab",function(data,textStatus){
+
+			        	  pleaseWaitDiv.modal('hide');
+					});	
+				}
+				
+		          $('.modal-backdrop').hide();          		
+			}else{
+				pleaseWaitDiv.modal('hide');				
+				$("#myModalErrorContent").html(data.messaggio);
+				$("#myModalError").modal();
+			}
+		},
+
+		error: function(jqXHR, textStatus, errorThrown){	          
+			// $('#empty').html("<h3 class='label label-danger'>"+textStatus+"</h3>");
+			pleaseWaitDiv.modal('hide');
+			$("#myModalErrorContent").html(textStatus);
+			$("#myModalError").modal();
+			
+		}
+	});	  	  	  	  
+}
+
+
+
+function addCalendarAttrezzatura(tipo_data){ 
+	   
+	   pleaseWaitDiv = $('#pleaseWaitDialog');
+	   pleaseWaitDiv.modal();
+$.ajax({
+       type: "POST",
+       url: "scadenzarioCreateAttrezzatura.do",
+       data: "",
+       dataType: "json",
+       
+       //if received a response from the server
+       success: function( data, textStatus) {
+       	console.log("test");
+          	if(data.success)
+           	{
+          		
+          		 jsonObj = [];
+          		
+          		 if(tipo_data==0 || tipo_data==1){
+	             		for(var i=0 ; i<data.obj_funzionamento.length;i++)
+	                    {
+	             			var str =data.obj_funzionamento[i].split(";");
+	             			item = {};
+	             	        item ["title"] = str[1];
+	             	        item ["start"] = str[0];
+	             	        item ["allDay"] = true;
+	             	       item ["backgroundColor"] = "#ffbf00";
+	             	      item ["borderColor"] = "#ffbf00";
+	             	      item ["className"]
+	             	        jsonObj.push(item);
+	              		}
+          		 }
+          		if(tipo_data==0 || tipo_data==2){
+	             		for(var i=0 ; i<data.obj_integrita.length;i++)
+	                    {
+	             			var str =data.obj_integrita[i].split(";");
+	             			item = {};
+	             	        item ["title"] = str[1];
+	             	        item ["start"] = str[0];
+	             	        item ["allDay"] = true;
+	             	       item ["backgroundColor"] = "#222d32";
+	             	      item ["borderColor"] = "#222d32";
+	             	        jsonObj.push(item);
+	              		}
+          		}
+          		if(tipo_data==0 || tipo_data==3){
+	             		for(var i=0 ; i<data.obj_interna.length;i++)
+	                    {
+	             			var str =data.obj_interna[i].split(";");
+	             			item = {};
+	             	        item ["title"] = str[1];
+	             	        item ["start"] = str[0];
+	             	        item ["allDay"] = true;
+	             	       item ["backgroundColor"] = "#228B22";
+	             	      item ["borderColor"] = "#228B22";
+	             	        jsonObj.push(item);
+	              		}
+          		}
+          		 var calendario;
+          		if(tipo_data==0){
+          			 calendario= $('#calendario');
+          		}else{
+          			 calendario = $('#calendario2');
+          		}
+     
+          		
+     $('#calendario').fullCalendar({
+		header: {
+	        left: 'prev,next today',
+	        center: 'title',
+	        right: 'month,agendaWeek,agendaDay'
+	      },
+
+		  eventRender: function(event, element, view) {
+			  if(event.backgroundColor=="#ffbf00"){
+				  return $('<span class=\"badge bg-green bigText\"">' 
+				             + event.title + 
+				             '</span>'); 
+			  }else if(event.backgroundColor=="#222d32"){
+				  return $('<span class=\"badge bg-red bigText\"">' 
+				             + event.title + 
+				             '</span>');
+			  }
+			  else{
+				  return $('<span class=\"badge bg-grey bigText\"">' 
+				             + event.title + 
+				             '</span>');
+			  }
+	            
+	         },	 
+	  events:jsonObj,
+	           eventClick: function(calEvent, jsEvent, view) {
+	        	var tipo_data;
+	        	   if(calEvent.backgroundColor=="#ffbf00"){
+	        		   tipo_data = "data_prossima_verifica_funzionamento";
+	        	   }else if(calEvent.backgroundColor=="#222d32"){
+	        		   tipo_data = "data_prossima_verifica_integrita";
+	        	   }else if(calEvent.backgroundColor=="#228B22"){
+	        		   tipo_data = "data_prossima_verifica_interna";
+	        	   }
+	        	   
+	        	callAction('listaAttrezzature.do?action=scadenzario&data='+moment(calEvent.start).format()+'&tipo_data='+tipo_data);
+
+	               $(this).css('border-color', '#228B22');
+	           },
+	     	 
+//	         editable: true,
+	       drop: function (date, allDay) { // this function is called when something is dropped
+
+	         // retrieve the dropped element's stored Event Object
+	         var originalEventObject = $(this).data('eventObject');
+
+	         // we need to copy it, so that multiple events don't have a reference to the same object
+	         var copiedEventObject = $.extend({}, originalEventObject);
+
+	         // assign it the date that was reported
+	         copiedEventObject.start = date;
+	         copiedEventObject.allDay = allDay;
+	         copiedEventObject.backgroundColor = $(this).css("background-color");
+	         copiedEventObject.borderColor = $(this).css("border-color");
+
+	         // render the event on the calendar
+	         // the last `true` argument determines if the event "sticks" (http://arshaw.com/fullcalendar/docs/event_rendering/renderEvent/)
+	         $('#calendar').fullCalendar('renderEvent', copiedEventObject, true);
+
+	         // is the "remove after drop" checkbox checked?
+	         if ($('#drop-remove').is(':checked')) {
+	           // if so, remove the element from the "Draggable Events" list
+	           $(this).remove();
+	         }
+
+	       }
+}); 
+           	}
+           	
+
+          	if(tipo_data!=0){
+          	var	cal = $('#calendario').fullCalendar('getCalendar');
+          	cal.removeEvents();
+          	cal.addEventSource(jsonObj);
+             $('#generale_btn').show();
+          	}else{
+          		var	cal = $('#calendario').fullCalendar('getCalendar');
+          		cal.removeEvents();
+          		cal.addEventSource(jsonObj);
+          		$('#generale_btn').hide();
+          	}
+         	pleaseWaitDiv.modal('hide');
+	          }
+	         });
 }
