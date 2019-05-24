@@ -108,6 +108,7 @@ public class GestioneTemplateQuestionarioBO {
 					revisione
 			);
 		}catch (Exception e) {
+			e.printStackTrace();
 			return;
 		}
 		

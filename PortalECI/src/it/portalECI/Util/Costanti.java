@@ -21,11 +21,11 @@ public static final String CON_STR_MYSQL = "jdbc:mysql://158.58.172.111:3306/gtv
 	public static final String USR_PASS_SVR = "fantini";
 	
 	public static String PATH_ROOT = "C:/portalECI/";
-	public static String PATH_CERTIFICATI ="C:\\portalECI\\documenti\\interventi\\";
-	public static String PATH_FONT_IMAGE ="C:\\portalECI\\verbaliImage\\fonts\\";
-	public static String PATH_FONT_STYLE ="C:\\portalECI\\stile\\";
-	public static String PATH_HEADER_IMAGE ="C:\\portalECI\\verbaliImage\\header\\";
-	public static String PATH_FOOTER_IMAGE ="C:\\portalECI\\verbaliImage\\footer\\";
+	public static String PATH_CERTIFICATI ="C:/PortalECI/documenti/interventi/";
+	public static String PATH_FONT_IMAGE ="C:/PortalECI/verbaliImage/fonts/";
+	public static String PATH_FONT_STYLE ="C:/PortalECI/stile/";
+	public static String PATH_FOOTER_IMAGE ="C:/PortalECI/footerImg/";
+	public static String PATH_HEADER_IMAGE ="C:/PortalECI//headerImg/";
 	
 	//Usare il placehlder %s se si vuole inserire il numero del nuovo documento generato nella dicitura 
 	public static String DOCUMENT_IS_INVALID_PHRASE = "Questo documento \u00E8 stato sostituito dal documento %s";
