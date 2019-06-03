@@ -20,12 +20,12 @@ public static final String CON_STR_MYSQL = "jdbc:mysql://158.58.172.111:3306/gtv
     public static final String USR_SQL_SVR = "fantini";
 	public static final String USR_PASS_SVR = "fantini";
 	
-	public static String PATH_ROOT = "/";
-	public static String PATH_CERTIFICATI = "/documenti/interventi/";
-	public static String PATH_FONT_IMAGE = "/verbaliImage/fonts/";
-	public static String PATH_FONT_STYLE = "/stile/";
-	public static String PATH_HEADER_IMAGE = "/verbaliImage/header/";
-	public static String PATH_FOOTER_IMAGE = "/verbaliImage/footer/";
+	public static String PATH_ROOT = "C:/portalECI/";
+	public static String PATH_CERTIFICATI ="C:/PortalECI/documenti/interventi/";
+	public static String PATH_FONT_IMAGE ="C:/PortalECI/verbaliImage/fonts/";
+	public static String PATH_FONT_STYLE ="C:/PortalECI/stile/";
+	public static String PATH_FOOTER_IMAGE ="C:/PortalECI/footerImg/";
+	public static String PATH_HEADER_IMAGE ="C:/PortalECI//headerImg/";
 	
 	//Usare il placehlder %s se si vuole inserire il numero del nuovo documento generato nella dicitura 
 	public static String DOCUMENT_IS_INVALID_PHRASE = "Questo documento \u00E8 stato sostituito dal documento %s";
@@ -33,19 +33,5 @@ public static final String CON_STR_MYSQL = "jdbc:mysql://158.58.172.111:3306/gtv
 	//Usare il placehlder %s se si vuole inserire il numero del documento invalidato nella dicitura
 	public static String DOCUMENT_INVALIDS_PHRASE = "Questo documento annulla e sostituisce il documento %s";
 	
-	static {
-		Properties properties = System.getProperties();
-		PATH_ROOT = properties.getProperty("PATH_ROOT", PATH_ROOT);
-		DOCUMENT_IS_INVALID_PHRASE = properties.getProperty("DOCUMENT_IS_INVALID_PHRASE", DOCUMENT_IS_INVALID_PHRASE);
-		DOCUMENT_INVALIDS_PHRASE = properties.getProperty("DOCUMENT_INVALIDS_PHRASE", DOCUMENT_INVALIDS_PHRASE);
-		PATH_CERTIFICATI = properties.getProperty("PATH_CERTIFICATI", PATH_CERTIFICATI);
-		PATH_FONT_IMAGE = properties.getProperty("PATH_FONT_IMAGE", PATH_FONT_IMAGE);
-		PATH_FONT_STYLE = properties.getProperty("PATH_FONT_STYLE", PATH_FONT_STYLE);
-		PATH_HEADER_IMAGE = properties.getProperty("PATH_HEADER_IMAGE", PATH_HEADER_IMAGE);
-		File headerFolder = new File(PATH_HEADER_IMAGE);
-		if(!headerFolder.exists()) headerFolder.mkdirs();
-		PATH_FOOTER_IMAGE = properties.getProperty("PATH_FOOTER_IMAGE", PATH_FOOTER_IMAGE);
-		File footerFolder = new File(PATH_FOOTER_IMAGE);
-		if (!footerFolder.exists()) footerFolder.mkdirs();
-	}
+
 }
