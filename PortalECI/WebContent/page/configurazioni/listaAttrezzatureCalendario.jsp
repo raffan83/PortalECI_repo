@@ -44,6 +44,12 @@
                        <th>Descrizione</th>
                        <th>Cliente</th>
                        <th>Sede</th>
+                       <th>Anno di costruzione</th>
+                       <th>Fabbricante</th>
+                       <th>Modello</th>
+                       <th>Settore d'impiego</th>
+                       <th>Note tecniche</th>
+                       <th>Note generiche</th>       
                        <th>Data Verifica Funzionamento</th>
                        <th>Data Prossima Verifica Funzionamento</th>
                        <th>Data Verifica Integrità</th>
@@ -68,9 +74,16 @@
  	<td><fmt:formatDate pattern = "dd/MM/yyyy" value = "${attrezzatura.data_verifica_integrita }" /></td>
  	<td><fmt:formatDate pattern = "dd/MM/yyyy" value = "${attrezzatura.data_prossima_verifica_integrita }" /></td>
  	<td><fmt:formatDate pattern = "dd/MM/yyyy" value = "${attrezzatura.data_verifica_interna }" /></td>
- 	<td><fmt:formatDate pattern = "dd/MM/yyyy" value = "${attrezzatura.data_prossima_verifica_interna }" /></td>
- 	<td><a class="btn btn-warning" onClick="modalModificaAttrezzatura('${attrezzatura.id }','${attrezzatura.id_cliente }','${attrezzatura.id_sede }','${attrezzatura.matricola_inail }','${attrezzatura.numero_fabbrica }','${attrezzatura.tipo_attivita }','${attrezzatura.descrizione }','${attrezzatura.id_cliente }','${attrezzatura.id_sede }',
- 	'${attrezzatura.data_verifica_funzionamento }','${attrezzatura.data_prossima_verifica_funzionamento }','${attrezzatura.data_verifica_integrita }','${attrezzatura.data_prossima_verifica_integrita }','${attrezzatura.data_verifica_interna }','${attrezzatura.data_prossima_verifica_interna }',)"><i class="fa fa-edit"></i></a></td>
+ 	<td><fmt:formatDate pattern = "dd/MM/yyyy" value = "${attrezzatura.data_prossima_verifica_interna }" /></td> 	
+ 	<td>${attrezzatura.anno_costruzione }</td>
+  	<td>${attrezzatura.fabbricante }</td>
+ 	<td>${attrezzatura.modello }</td>
+ 	<td>${attrezzatura.settore_impiego }</td>
+ 	<td>${attrezzatura.note_tecniche }</td> 	
+ 	<td>${attrezzatura.note_generiche }</td> 
+ 	<td><a class="btn btn-warning" onClick="modalModificaAttrezzatura('${attrezzatura.id }','${attrezzatura.matricola_inail }','${attrezzatura.numero_fabbrica }','${attrezzatura.tipo_attivita }','${attrezzatura.descrizione }','${attrezzatura.id_cliente }','${attrezzatura.id_sede }',
+ 	'${attrezzatura.data_verifica_funzionamento }','${attrezzatura.data_prossima_verifica_funzionamento }','${attrezzatura.data_verifica_integrita }','${attrezzatura.data_prossima_verifica_integrita }','${attrezzatura.data_verifica_interna }','${attrezzatura.data_prossima_verifica_interna }',
+ 	'${attrezzatura.anno_costruzione }','${attrezzatura.fabbricante }','${attrezzatura.modello }','${attrezzatura.settore_impiego }','${attrezzatura.note_tecniche }','${attrezzatura.note_generiche }')"><i class="fa fa-edit"></i></a></td>
  	
  	</tr>
  	</c:forEach>
@@ -146,6 +159,7 @@
                       <input class="form-control" id="descrizione" type="text" name="descrizione" required value=""/>
     </div>
     </div>
+    
     <div class="form-group">
         <label for="inputName" class="col-sm-4 control-label">Tipo Attività:</label>
         <div class="col-sm-8">
@@ -262,6 +276,30 @@
         <label for="inputName" class="col-sm-4 control-label">Descrizione:</label>
         <div class="col-sm-8">
                       <input class="form-control" id="descrizione_mod" type="text" name="descrizione_mod" required value=""/>
+    </div>
+    </div>
+    <div class="form-group">
+        <label for="inputName" class="col-sm-4 control-label">Anno di costruzione:</label>
+        <div class="col-sm-8">
+                      <input class="form-control" id="anno_costruzione_mod" type="number" name="anno_costruzione_mod"  value=""/>
+    </div>
+    </div>
+    <div class="form-group">
+        <label for="inputName" class="col-sm-4 control-label">Fabbricante:</label>
+        <div class="col-sm-8">
+                      <input class="form-control" id="fabbricante_mod" type="text" name="fabbricante_mod"  value=""/>
+    </div>
+    </div>
+    <div class="form-group">
+        <label for="inputName" class="col-sm-4 control-label">Modello:</label>
+        <div class="col-sm-8">
+                      <input class="form-control" id="modello_mod" type="text" name="modello_mod"  value=""/>
+    </div>
+    </div>
+    <div class="form-group">
+        <label for="inputName" class="col-sm-4 control-label">Settore d'impiego:</label>
+        <div class="col-sm-8">
+                      <input class="form-control" id="settore_impiego_mod" type="text" name="settore_impiego_mod"  value=""/>
     </div>
     </div>
     <div class="form-group">
@@ -527,8 +565,10 @@ function formatDate(data){
 	   }			   
 	   return str;	 		
 }
-function modalModificaAttrezzatura(id_attrezzatura, id_cliente, id_sede, matricola_inail, numero_fabbrica, tipo_attivita, descrizione, id_cliente, id_sede,
-		data_verifica_funzionamento, data_prossima_verifica_funzionamento,data_verifica_integrita, data_prossima_verifica_integrita, data_verifica_interna, data_prossima_verifica_interna){
+
+function modalModificaAttrezzatura(id_attrezzatura, matricola_inail, numero_fabbrica, tipo_attivita, descrizione, id_cliente, id_sede,
+		data_verifica_funzionamento, data_prossima_verifica_funzionamento,data_verifica_integrita, data_prossima_verifica_integrita, data_verifica_interna, data_prossima_verifica_interna,
+		anno_costruzione, fabbricante, modello, settore_impiego, note_tecniche, note_generiche){
 	
 	$('#id_attrezzatura').val(id_attrezzatura)
 	$('#matricola_inail_mod').val(matricola_inail);
@@ -544,6 +584,12 @@ function modalModificaAttrezzatura(id_attrezzatura, id_cliente, id_sede, matrico
 	}
 	
 	$('#sede_mod').change();
+	
+	$('#fabbricante_mod').val(fabbricante);
+	$('#modello_mod').val(modello);
+	$('#settore_impiego_mod').val(settore_impiego);
+	$('#note_tecniche_mod').val(note_tecniche);
+	$('#note_generiche_mod').val(note_generiche);	
 	
 	if(data_verifica_funzionamento!=null && data_verifica_funzionamento!= ''){
 		$('#data_verifica_funzionamento_mod').val(Date.parse(data_verifica_funzionamento).toString("dd/MM/yyyy"));	
@@ -617,7 +663,7 @@ $(document).ready(function() {
 	      columnDefs: [
 					 
 	                   { responsivePriority: 1, targets: 0 },	                  
-	                   { responsivePriority: 2, targets: 13 }
+	                   { responsivePriority: 2, targets: 19 }
 	              
 	                  /*  { orderable: false, targets: 6 }, */
 	               ],
