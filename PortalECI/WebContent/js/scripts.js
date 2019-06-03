@@ -2891,7 +2891,13 @@ function nuovaAttrezzatura(){
 	var data_pross_ver_integrita = $('#data_prossima_verifica_integrita').val();
 	var data_ver_interna = $('#data_verifica_interna').val();
 	var data_pross_ver_interna = $('#data_prossima_verifica_interna').val();	
-	  		
+	var anno_costruzione = $('#anno_costruzione').val();
+	var fabbricante = $('#fabbricante').val();
+	var modello = $('#modello').val();
+	var settore_impiego = $('#settore_impiego').val();
+	var note_tecniche = $('#note_tecniche').val();
+	var note_generiche = $('#note_generiche').val();	
+	
 	var dataObj = {};
 	          
 	dataObj.id_cliente = id_cliente;
@@ -2906,7 +2912,12 @@ function nuovaAttrezzatura(){
 	dataObj.data_pross_ver_integrita = data_pross_ver_integrita;
 	dataObj.data_ver_interna = data_ver_interna;
 	dataObj.data_pross_ver_interna = data_pross_ver_interna;
-
+	dataObj.anno_costruzione = anno_costruzione;
+	dataObj.fabbricante = fabbricante;
+	dataObj.modello = modello;
+	dataObj.settore_impiego = settore_impiego;
+	dataObj.note_tecniche = note_tecniche;
+	dataObj.note_generiche = note_generiche;
 
 	$.ajax({
 		type: "POST",
@@ -2962,7 +2973,13 @@ function modificaAttrezzatura(scadenzario, date, tipo_data){
 	var data_ver_integrita = $('#data_verifica_integrita_mod').val();
 	var data_pross_ver_integrita = $('#data_prossima_verifica_integrita_mod').val();
 	var data_ver_interna = $('#data_verifica_interna_mod').val();
-	var data_pross_ver_interna = $('#data_prossima_verifica_interna_mod').val();	
+	var data_pross_ver_interna = $('#data_prossima_verifica_interna_mod').val();		
+	var anno_costruzione = $('#anno_costruzione_mod').val();
+	var fabbricante = $('#fabbricante_mod').val();
+	var modello = $('#modello_mod').val();
+	var settore_impiego = $('#settore_impiego_mod').val();
+	var note_tecniche = $('#note_tecniche_mod').val();
+	var note_generiche = $('#note_generiche_mod').val();	
 	  		
 	var dataObj = {};
 	 
@@ -2979,6 +2996,12 @@ function modificaAttrezzatura(scadenzario, date, tipo_data){
 	dataObj.data_pross_ver_integrita = data_pross_ver_integrita;
 	dataObj.data_ver_interna = data_ver_interna;
 	dataObj.data_pross_ver_interna = data_pross_ver_interna;
+	dataObj.anno_costruzione = anno_costruzione;
+	dataObj.fabbricante = fabbricante;
+	dataObj.modello = modello;
+	dataObj.settore_impiego = settore_impiego;
+	dataObj.note_tecniche = note_tecniche;
+	dataObj.note_generiche = note_generiche;
 
 
 	$.ajax({
@@ -3037,6 +3060,7 @@ $.ajax({
        //if received a response from the server
        success: function( data, textStatus) {
        	console.log("test");
+       	var id = 0;
           	if(data.success)
            	{
           		
@@ -3047,13 +3071,15 @@ $.ajax({
 	                    {
 	             			var str =data.obj_funzionamento[i].split(";");
 	             			item = {};
+	             			item ["id"] = id;
 	             	        item ["title"] = str[1];
 	             	        item ["start"] = str[0];
 	             	        item ["allDay"] = true;
-	             	       item ["backgroundColor"] = "#ffbf00";
-	             	      item ["borderColor"] = "#ffbf00";
+	             	       item ["backgroundColor"] = "#00a65a";
+	             	      item ["borderColor"] = "#00a65a";
 	             	      item ["className"]
 	             	        jsonObj.push(item);
+	             	      id++;
 	              		}
           		 }
           		if(tipo_data==0 || tipo_data==2){
@@ -3061,12 +3087,14 @@ $.ajax({
 	                    {
 	             			var str =data.obj_integrita[i].split(";");
 	             			item = {};
+	             			item ["id"] = id;
 	             	        item ["title"] = str[1];
 	             	        item ["start"] = str[0];
 	             	        item ["allDay"] = true;
-	             	       item ["backgroundColor"] = "#222d32";
-	             	      item ["borderColor"] = "#222d32";
+	             	       item ["backgroundColor"] = "#9d201d";
+	             	      item ["borderColor"] = "#9d201d";
 	             	        jsonObj.push(item);
+	             	       id++;
 	              		}
           		}
           		if(tipo_data==0 || tipo_data==3){
@@ -3074,12 +3102,14 @@ $.ajax({
 	                    {
 	             			var str =data.obj_interna[i].split(";");
 	             			item = {};
+	             			item ["id"] = id;
 	             	        item ["title"] = str[1];
 	             	        item ["start"] = str[0];
 	             	        item ["allDay"] = true;
-	             	       item ["backgroundColor"] = "#228B22";
-	             	      item ["borderColor"] = "#228B22";
+	             	       item ["backgroundColor"] = "#777";
+	             	      item ["borderColor"] = "#777";
 	             	        jsonObj.push(item);
+	             	       id++;
 	              		}
           		}
           		 var calendario;
@@ -3097,12 +3127,18 @@ $.ajax({
 	        right: 'month,agendaWeek,agendaDay'
 	      },
 
+//	      eventRender: function(event, element, view) {
+//			
+//	    	  return $('<canvas id="pieChart_'+event.id+'" style="width:100%;height:50%"></canvas>');
+//	    	  
+//	    	  
+//	         },	 
 		  eventRender: function(event, element, view) {
-			  if(event.backgroundColor=="#ffbf00"){
+			  if(event.backgroundColor=="#00a65a"){
 				  return $('<span class=\"badge bg-green bigText\"">' 
 				             + event.title + 
-				             '</span>'); 
-			  }else if(event.backgroundColor=="#222d32"){
+				             '</button>'); 
+			  }else if(event.backgroundColor=="#9d201d"){
 				  return $('<span class=\"badge bg-red bigText\"">' 
 				             + event.title + 
 				             '</span>');
@@ -3117,11 +3153,11 @@ $.ajax({
 	  events:jsonObj,
 	           eventClick: function(calEvent, jsEvent, view) {
 	        	var tipo_data;
-	        	   if(calEvent.backgroundColor=="#ffbf00"){
+	        	   if(calEvent.backgroundColor=="#00a65a"){
 	        		   tipo_data = "data_prossima_verifica_funzionamento";
-	        	   }else if(calEvent.backgroundColor=="#222d32"){
+	        	   }else if(calEvent.backgroundColor=="#9d201d"){
 	        		   tipo_data = "data_prossima_verifica_integrita";
-	        	   }else if(calEvent.backgroundColor=="#228B22"){
+	        	   }else if(calEvent.backgroundColor=="#777"){
 	        		   tipo_data = "data_prossima_verifica_interna";
 	        	   }
 	        	   
@@ -3165,11 +3201,64 @@ $.ajax({
           	var	cal = $('#calendario').fullCalendar('getCalendar');
           	cal.removeEvents();
           	cal.addEventSource(jsonObj);
+          
              $('#generale_btn').show();
           	}else{
           		var	cal = $('#calendario').fullCalendar('getCalendar');
           		cal.removeEvents();
           		cal.addEventSource(jsonObj);
+          		
+//          		
+//          		var dati = {};
+//          		var date =  [];
+//          		var date_multi =  [];
+//          		var dati_tot = [];
+//          		var num = [];
+//          		for(var i=0; i<jsonObj.length;i++){
+//          			if(!date.includes(jsonObj[i].start)){
+//          				date.push(jsonObj[i].start);          				
+//          			}else{
+//          				date_multi.push(jsonObj[i].start);
+//          			}
+//          		}
+//          			
+//          		
+//          		for(var i=0; i<id;i++){
+//              	var x = document.getElementById("pieChart_"+i+"");
+//              	if(x!=null){
+//              		var ctxP =  document.getElementById("pieChart_"+i+"").getContext('2d');
+//              	
+//    	    	  var myPieChart = new Chart(ctxP, {
+//    	    	    type: 'pie',
+//    	    	    data: {
+//    	    	    labels:["data verifica funzionamento", "data verifica integrita", "data verifica interna"],
+//    	    	      datasets: [{
+//    	    	       label:"data verifica funzionamento",
+//    	    	    	  data: [jsonObj[i].title],
+//    	    	  //      backgroundColor: ["#00a65a", "#9d201d", "#777"],
+//    	    	          backgroundColor: [jsonObj[i].backgroundColor],
+//    	    	        hoverBackgroundColor: ["#00a65a", "#9d201d", "#777"]
+//    	    	      }]
+//    	    	    },
+//    	    	    options: {
+//    	    	      responsive: true, 
+//    	    	      legend: {
+//    	    	    	  display:false
+//    	    	      },
+//    	    	      plugins:{
+//    	    	    	  labels: {
+//      	    	    	    render: 'value',
+//      	    	    	    fontSize: 18,
+//      	    	    	    fontStyle: 'bold',
+//      	    	    	    fontColor: '#ffffff',
+//      	    	    	    fontFamily: '"Lucida Console", Monaco, monospace'
+//      	    	    	  },
+//    	    	      }
+//    	    	    }
+//    	    	  
+//    	    	  });
+//              	}
+//          		}
           		$('#generale_btn').hide();
           	}
          	pleaseWaitDiv.modal('hide');

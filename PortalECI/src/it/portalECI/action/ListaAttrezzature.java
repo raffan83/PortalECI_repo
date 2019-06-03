@@ -114,7 +114,13 @@ public class ListaAttrezzature extends HttpServlet {
 				String data_ver_integrita = request.getParameter("data_ver_integrita");
 				String data_pross_ver_integrita = request.getParameter("data_pross_ver_integrita");
 				String data_ver_interna = request.getParameter("data_ver_interna");
-				String data_pross_ver_interna = request.getParameter("data_pross_ver_interna");
+				String data_pross_ver_interna = request.getParameter("data_pross_ver_interna");				
+				String anno_costruzione = request.getParameter("anno_costruzione");
+				String fabbricante = request.getParameter("fabbricante");
+				String modello = request.getParameter("modello");
+				String settore_impiego = request.getParameter("settore_impiego");
+				String note_tecniche = request.getParameter("note_tecniche");
+				String note_generiche = request.getParameter("note_generiche");
 				
 				List<SedeDTO> listaSedi = (List<SedeDTO>) request.getSession().getAttribute("listaSedi");
 				SedeDTO sede = null;
@@ -153,7 +159,16 @@ public class ListaAttrezzature extends HttpServlet {
 				}
 				if(data_pross_ver_interna!=null && !data_pross_ver_interna.equals("")) {
 					attrezzatura.setData_prossima_verifica_interna(format.parse(data_pross_ver_interna));	
-				}				
+				}			
+				
+				if(anno_costruzione!=null && !anno_costruzione.equals("")) {
+					attrezzatura.setAnno_costruzione(Integer.parseInt(anno_costruzione));	
+				}
+				attrezzatura.setFabbricante(fabbricante);
+				attrezzatura.setModello(modello);
+				attrezzatura.setSettore_impiego(settore_impiego);
+				attrezzatura.setNote_tecniche(note_tecniche);
+				attrezzatura.setNote_generiche(note_generiche);
 				
 				session.save(attrezzatura);
 				session.getTransaction().commit();
@@ -182,6 +197,12 @@ public class ListaAttrezzature extends HttpServlet {
 				String data_pross_ver_integrita = request.getParameter("data_pross_ver_integrita");
 				String data_ver_interna = request.getParameter("data_ver_interna");
 				String data_pross_ver_interna = request.getParameter("data_pross_ver_interna");
+				String anno_costruzione = request.getParameter("anno_costruzione");
+				String fabbricante = request.getParameter("fabbricante");
+				String modello = request.getParameter("modello");
+				String settore_impiego = request.getParameter("settore_impiego");
+				String note_tecniche = request.getParameter("note_tecniche");
+				String note_generiche = request.getParameter("note_generiche");
 				
 				
 				List<SedeDTO> listaSedi = (List<SedeDTO>) request.getSession().getAttribute("listaSedi");
@@ -222,6 +243,14 @@ public class ListaAttrezzature extends HttpServlet {
 				if(data_pross_ver_interna!=null && !data_pross_ver_interna.equals("")) {
 					attrezzatura.setData_prossima_verifica_interna(format.parse(data_pross_ver_interna));	
 				}				
+				if(anno_costruzione!=null && !anno_costruzione.equals("")) {
+					attrezzatura.setAnno_costruzione(Integer.parseInt(anno_costruzione));	
+				}				
+				attrezzatura.setFabbricante(fabbricante);
+				attrezzatura.setModello(modello);
+				attrezzatura.setSettore_impiego(settore_impiego);
+				attrezzatura.setNote_tecniche(note_tecniche);
+				attrezzatura.setNote_generiche(note_generiche);
 				
 				session.update(attrezzatura);
 				session.getTransaction().commit();

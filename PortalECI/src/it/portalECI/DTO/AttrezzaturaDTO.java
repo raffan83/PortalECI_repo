@@ -19,6 +19,49 @@ public class AttrezzaturaDTO {
 	private Date data_prossima_verifica_integrita;
 	private Date data_verifica_interna;
 	private Date data_prossima_verifica_interna;
+	private int anno_costruzione;
+	private String fabbricante;
+	private String modello;
+	private String settore_impiego;
+	private String note_tecniche;
+	private String note_generiche;
+	
+	public int getAnno_costruzione() {
+		return anno_costruzione;
+	}
+	public void setAnno_costruzione(int anno_costruzione) {
+		this.anno_costruzione = anno_costruzione;
+	}
+	public String getFabbricante() {
+		return fabbricante;
+	}
+	public void setFabbricante(String fabbricante) {
+		this.fabbricante = fabbricante;
+	}
+	public String getModello() {
+		return modello;
+	}
+	public void setModello(String modello) {
+		this.modello = modello;
+	}
+	public String getSettore_impiego() {
+		return settore_impiego;
+	}
+	public void setSettore_impiego(String settore_impiego) {
+		this.settore_impiego = settore_impiego;
+	}
+	public String getNote_tecniche() {
+		return note_tecniche;
+	}
+	public void setNote_tecniche(String note_tecniche) {
+		this.note_tecniche = note_tecniche;
+	}
+	public String getNote_generiche() {
+		return note_generiche;
+	}
+	public void setNote_generiche(String note_generiche) {
+		this.note_generiche = note_generiche;
+	}
 	public int getId() {
 		return id;
 	}

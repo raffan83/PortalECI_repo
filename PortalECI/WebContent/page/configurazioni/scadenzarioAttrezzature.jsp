@@ -81,11 +81,31 @@
 
 
 <jsp:attribute name="extra_css">
+<style>
+.btn-circle.btn-xl {
+    width: 70px;
+    height: 70px;
+    padding: 10px 16px;
+    border-radius: 35px;
+    font-size: 24px;
+    line-height: 1.33;
+}
 
-
+.btn-circle {
+    width: 30px;
+    height: 30px;
+    padding: 6px 0px;
+    border-radius: 15px;
+    text-align: center;
+    font-size: 12px;
+    line-height: 1.42857;
+}
+</style>
 </jsp:attribute>
 
 <jsp:attribute name="extra_js_footer">
+<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.0/Chart.js"></script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/gh/emn178/chartjs-plugin-labels/src/chartjs-plugin-labels.js"></script>
 
 <script type="text/javascript">
 
@@ -97,5 +117,6 @@ $(function () {
 	
 	
 </script>
+ 
 </jsp:attribute> 
 </t:layout>

@@ -50,6 +50,24 @@
          <property name="data_prossima_verifica_interna" type="java.sql.Date">
             <column name="data_prossima_verifica_interna" />
         </property>
+        <property name="anno_costruzione" type="int">
+            <column name="anno_costruzione" />
+        </property>
+        <property name="fabbricante" type="java.lang.String">
+            <column name="fabbricante" />
+        </property>
+        <property name="modello" type="java.lang.String">
+            <column name="modello" />
+        </property>
+        <property name="settore_impiego" type="java.lang.String">
+            <column name="settore_impiego" />
+        </property>
+        <property name="note_tecniche" type="java.lang.String">
+            <column name="note_tecniche" />
+        </property>
+        <property name="note_generiche" type="java.lang.String">
+            <column name="note_generiche" />
+        </property>
 
         
     </class>

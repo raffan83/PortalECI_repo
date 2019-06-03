@@ -42,7 +42,7 @@
 
 <script src="plugins/datepicker/bootstrap-datepicker.js"></script>
 
-<!-- <script language="JavaScript" src="js/scripts.js"></script> -->
+<!--  <script language="JavaScript" src="js/scripts.js"></script>  -->
  <script type="text/javascript">
 document.write('<scr'+'ipt src="js/scripts.js?'+Math.random()+'" type="text/javascript"></scr'+'ipt>');
 </script> 
