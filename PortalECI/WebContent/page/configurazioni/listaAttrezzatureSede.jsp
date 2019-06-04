@@ -3,7 +3,9 @@
     <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@taglib prefix="t" tagdir="/WEB-INF/tags"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
-    
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+<% pageContext.setAttribute("newLineChar", "\r\n"); %>
+<% pageContext.setAttribute("newLineChar2", "\n"); %>
     <div class="row">
 <div class="col-lg-12">
 <!-- <button class="btn btn-primary" onClick="nuovoInterventoFromModal('#modalNuovaAttrezzatura')">Nuova Attrezzatura</button> -->
@@ -66,7 +68,7 @@
  	<td>${attrezzatura.note_generiche }</td> 
  	<td><a class="btn btn-warning" onClick="modalModificaAttrezzatura('${attrezzatura.id }','${attrezzatura.matricola_inail }','${attrezzatura.numero_fabbrica }','${attrezzatura.tipo_attivita }','${attrezzatura.descrizione }','${attrezzatura.id_cliente }','${attrezzatura.id_sede }',
  	'${attrezzatura.data_verifica_funzionamento }','${attrezzatura.data_prossima_verifica_funzionamento }','${attrezzatura.data_verifica_integrita }','${attrezzatura.data_prossima_verifica_integrita }','${attrezzatura.data_verifica_interna }','${attrezzatura.data_prossima_verifica_interna }',
- 	'${attrezzatura.anno_costruzione }','${attrezzatura.fabbricante }','${attrezzatura.modello }','${attrezzatura.settore_impiego }','${attrezzatura.note_tecniche }','${attrezzatura.note_generiche }')"><i class="fa fa-edit"></i></a></td>
+ 	'${attrezzatura.anno_costruzione }','${attrezzatura.fabbricante }','${attrezzatura.modello }','${attrezzatura.settore_impiego }','${fn:replace(fn:replace(attrezzatura.note_tecniche.replace('\'',' ').replace('\\','/'),newLineChar, ' '),newLineChar2, ' ')}','${fn:replace(fn:replace(attrezzatura.note_generiche.replace('\'',' ').replace('\\','/').replace('\\n',' '),newLineChar, ' '),newLineChar2,' ')}')"><i class="fa fa-edit"></i></a></td>
  	
  	</tr>
  	</c:forEach>
@@ -450,7 +452,12 @@ function modalModificaAttrezzatura(id_attrezzatura, matricola_inail, numero_fabb
 	$('#descrizione_mod').val(descrizione);
 	$('#cliente_mod').val(id_cliente);
 	$('#cliente_mod').change();
-	$('#sede_mod').val(id_sede+"_"+id_cliente);
+	if(id_sede!=0){
+		$('#sede_mod').val(id_sede+"_"+id_cliente);	
+	}else{
+		$('#sede_mod').val(0);
+	}
+	
 	$('#sede_mod').change();
 	$('#anno_costruzione_mod').val(anno_costruzione);
 	$('#fabbricante_mod').val(fabbricante);

@@ -1,7 +1,9 @@
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@taglib prefix="t" tagdir="/WEB-INF/tags"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
-
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+<% pageContext.setAttribute("newLineChar", "\r\n"); %>
+<% pageContext.setAttribute("newLineChar2", "\n"); %>
 
 <t:layout title="Dashboard" bodyClass="skin-red sidebar-mini wysihtml5-supported">
 <jsp:attribute name="body_area">
@@ -44,18 +46,19 @@
                        <th>Descrizione</th>
                        <th>Cliente</th>
                        <th>Sede</th>
+                       <th>Data Verifica Funzionamento</th>
+                       <th>Data Prossima Verifica Funzionamento</th>
+                       <th>Data Verifica Integrità</th>
+                       <th>Data Prossima Verifica Integrità</th>
+                       <th>Data Verifica Interna</th>
+                       <th>Data Prossima Verifica Interna</th>         
                        <th>Anno di costruzione</th>
                        <th>Fabbricante</th>
                        <th>Modello</th>
                        <th>Settore d'impiego</th>
                        <th>Note tecniche</th>
                        <th>Note generiche</th>       
-                       <th>Data Verifica Funzionamento</th>
-                       <th>Data Prossima Verifica Funzionamento</th>
-                       <th>Data Verifica Integrità</th>
-                       <th>Data Prossima Verifica Integrità</th>
-                       <th>Data Verifica Interna</th>
-                       <th>Data Prossima Verifica Interna</th>                     
+                                   
                        <td style="min-width:100px;">Azioni</td>
  </tr></thead>
  
@@ -83,7 +86,7 @@
  	<td>${attrezzatura.note_generiche }</td> 
  	<td><a class="btn btn-warning" onClick="modalModificaAttrezzatura('${attrezzatura.id }','${attrezzatura.matricola_inail }','${attrezzatura.numero_fabbrica }','${attrezzatura.tipo_attivita }','${attrezzatura.descrizione }','${attrezzatura.id_cliente }','${attrezzatura.id_sede }',
  	'${attrezzatura.data_verifica_funzionamento }','${attrezzatura.data_prossima_verifica_funzionamento }','${attrezzatura.data_verifica_integrita }','${attrezzatura.data_prossima_verifica_integrita }','${attrezzatura.data_verifica_interna }','${attrezzatura.data_prossima_verifica_interna }',
- 	'${attrezzatura.anno_costruzione }','${attrezzatura.fabbricante }','${attrezzatura.modello }','${attrezzatura.settore_impiego }','${attrezzatura.note_tecniche }','${attrezzatura.note_generiche }')"><i class="fa fa-edit"></i></a></td>
+ 	'${attrezzatura.anno_costruzione }','${attrezzatura.fabbricante }','${attrezzatura.modello }','${attrezzatura.settore_impiego }','${fn:replace(fn:replace(attrezzatura.note_tecniche.replace('\'',' ').replace('\\','/'),newLineChar, ' '),newLineChar2,' ')}','${fn:replace(fn:replace(attrezzatura.note_generiche.replace('\'',' ').replace('\\','/'),newLineChar, ' '),newLineChar2,' ')}')"><i class="fa fa-edit"></i></a></td>
  	
  	</tr>
  	</c:forEach>
@@ -349,7 +352,18 @@
                       <input class="form-control datepicker" id="data_prossima_verifica_interna_mod" type="text" name="data_prossima_verifica_interna_mod"  value="" data-date-format="dd/mm/yyyy"/>
     </div>
        </div>
-
+ <div class="form-group">
+        <label for="inputName" class="col-sm-4 control-label">Note tecniche:</label>
+        <div class="col-sm-8">
+                      <textarea class="form-control" id="note_tecniche_mod" name="note_tecniche_mod" rows ="3"></textarea>
+    </div>
+    </div>
+    <div class="form-group">
+        <label for="inputName" class="col-sm-4 control-label">Note generiche:</label>
+        <div class="col-sm-8">
+                      <textarea class="form-control" id="note_generiche_mod" name="note_generiche_mod" rows ="3"></textarea>
+    </div>
+    </div>
   		 </div>
       <div class="modal-footer">
       
