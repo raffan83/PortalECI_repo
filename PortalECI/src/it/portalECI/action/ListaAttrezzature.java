@@ -289,7 +289,7 @@ public class ListaAttrezzature extends HttpServlet {
 				 request.getSession().setAttribute("lista_attrezzature",lista_attrezzature);
 				
 				 if(tipo_data.equals("data_prossima_verifica_integrita")) {
-					 tipo_data = tipo_data.substring(0, tipo_data.length()-1) + "à";
+					 tipo_data = tipo_data.substring(0, tipo_data.length()-1) + "Ã ";
 				 }
 				 request.getSession().setAttribute("tipo_scadenza",tipo_data.replace("_", " "));				 
 				 request.getSession().setAttribute("data_scadenza",df2.format(df.parse(data)));				
