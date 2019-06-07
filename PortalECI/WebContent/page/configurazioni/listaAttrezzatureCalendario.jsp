@@ -562,7 +562,7 @@ $('#formNuovaAttrezzatura').on('submit',function(e){
 $('#formModificaAttrezzatura').on('submit',function(e){
     e.preventDefault();
 	
-    modificaAttrezzatura(true, formatDate("${data_scadenza}"), "${tipo_scadenza.replace(' ','_')}");
+    modificaAttrezzatura(true, formatDate("${data_scadenza}"), "${tipo_scadenza.replace(' ','_').replace('à','a')}");
     $('#modalModificaAttrezzatura').modal('hide');
 });
 	 	
