@@ -136,7 +136,7 @@ public class ListaAttrezzature extends HttpServlet {
 				if(!id_sede.equals("0")) {
 					attrezzatura.setNome_sede(sede.getDescrizione() +" - "+sede.getIndirizzo()+" - "+sede.getComune()+ "("+sede.getSiglaProvincia()+")");
 				}else {
-					attrezzatura.setNome_sede("Non Associate");
+					attrezzatura.setNome_sede("");
 				}				
 				attrezzatura.setMatricola_inail(matricola_inail);
 				attrezzatura.setNumero_fabbrica(numero_fabbrica);
@@ -219,7 +219,7 @@ public class ListaAttrezzature extends HttpServlet {
 				if(!id_sede.equals("0")) {
 					attrezzatura.setNome_sede(sede.getDescrizione() +" - "+sede.getIndirizzo()+" - "+sede.getComune()+ "("+sede.getSiglaProvincia()+")");
 				}else {
-					attrezzatura.setNome_sede("Non Associate");
+					attrezzatura.setNome_sede("");
 				}				
 				attrezzatura.setMatricola_inail(matricola_inail);
 				attrezzatura.setNumero_fabbrica(numero_fabbrica);
