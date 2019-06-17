@@ -46,7 +46,15 @@
  
  <tbody>
  	<c:forEach items="${lista_attrezzature}" var="attrezzatura" varStatus="loop">
- 	<tr>
+ 	<c:choose>
+ 	<c:when test="${attrezzatura.obsoleta==0}">
+ 		<tr>
+ 	</c:when>
+ 	<c:otherwise>
+ 		<tr style="background-color:#ff6666">
+ 	</c:otherwise>
+ 	</c:choose>
+ 
  	<td>${attrezzatura.id }</td>
  	<td>${attrezzatura.matricola_inail }</td>
  	<td>${attrezzatura.numero_fabbrica }</td>
@@ -68,7 +76,7 @@
  	<td>${attrezzatura.note_generiche }</td> 
  	<td><a class="btn btn-warning" onClick="modalModificaAttrezzatura('${attrezzatura.id }','${attrezzatura.matricola_inail }','${attrezzatura.numero_fabbrica }','${attrezzatura.tipo_attivita }','${attrezzatura.descrizione }','${attrezzatura.id_cliente }','${attrezzatura.id_sede }',
  	'${attrezzatura.data_verifica_funzionamento }','${attrezzatura.data_prossima_verifica_funzionamento }','${attrezzatura.data_verifica_integrita }','${attrezzatura.data_prossima_verifica_integrita }','${attrezzatura.data_verifica_interna }','${attrezzatura.data_prossima_verifica_interna }',
- 	'${attrezzatura.anno_costruzione }','${attrezzatura.fabbricante }','${attrezzatura.modello }','${attrezzatura.settore_impiego }','${fn:replace(fn:replace(attrezzatura.note_tecniche.replace('\'',' ').replace('\\','/'),newLineChar, ' '),newLineChar2, ' ')}','${fn:replace(fn:replace(attrezzatura.note_generiche.replace('\'',' ').replace('\\','/').replace('\\n',' '),newLineChar, ' '),newLineChar2,' ')}')"><i class="fa fa-edit"></i></a></td>
+ 	'${attrezzatura.anno_costruzione }','${attrezzatura.fabbricante }','${attrezzatura.modello }','${attrezzatura.settore_impiego }','${fn:replace(fn:replace(attrezzatura.note_tecniche.replace('\'',' ').replace('\\','/'),newLineChar, ' '),newLineChar2, ' ')}','${fn:replace(fn:replace(attrezzatura.note_generiche.replace('\'',' ').replace('\\','/').replace('\\n',' '),newLineChar, ' '),newLineChar2,' ')}','${attrezzatura.obsoleta }')"><i class="fa fa-edit"></i></a></td>
  	
  	</tr>
  	</c:forEach>
@@ -383,7 +391,8 @@
       <div class="modal-footer">
       
       <input type="hidden" id="id_attrezzatura" name="id_attrezzatura">
-      
+      <a class="btn pull-left" onClick="rendiAttrezzaturaObsoleta()" id="rendi_obsoleta" style="display:none">Rendi obsoleta</a>
+      <a class="btn pull-left" onClick="rendiAttrezzaturaObsoleta()" id="rendi_non_obsoleta" style="display:none">Rendi non obsoleta</a>
 		<button type="submit" class="btn btn-primary pull-right" >Salva</button>
       </div>
     </div>
@@ -443,9 +452,9 @@ function modalNuovaAttrezzatura(){
 
 function modalModificaAttrezzatura(id_attrezzatura, matricola_inail, numero_fabbrica, tipo_attivita, descrizione, id_cliente, id_sede,
 		data_verifica_funzionamento, data_prossima_verifica_funzionamento,data_verifica_integrita, data_prossima_verifica_integrita, data_verifica_interna, data_prossima_verifica_interna,
-		anno_costruzione, fabbricante, modello, settore_impiego, note_tecniche, note_generiche){
+		anno_costruzione, fabbricante, modello, settore_impiego, note_tecniche, note_generiche, obsoleta){
 	
-	$('#id_attrezzatura').val(id_attrezzatura)
+	$('#id_attrezzatura').val(id_attrezzatura);
 	$('#matricola_inail_mod').val(matricola_inail);
 	$('#numero_fabbrica_mod').val(numero_fabbrica);
 	$('#tipo_attivita_mod').val(tipo_attivita);
@@ -490,6 +499,17 @@ function modalModificaAttrezzatura(id_attrezzatura, matricola_inail, numero_fabb
 	$('#data_prossima_verifica_funzionamento_mod').datepicker({
 			format: "dd/MM/yyyy"
 	});
+	
+	if(obsoleta==0){
+		$('#rendi_obsoleta').addClass("btn-danger");
+		$('#rendi_obsoleta').show();
+		$('#rendi_non_obsoleta').hide();
+	}else{
+		$('#rendi_non_obsoleta').addClass("btn-success");
+		$('#rendi_obsoleta').hide();
+		$('#rendi_non_obsoleta').show();
+	}
+	
 	$('#modalModificaAttrezzatura').modal();
 	
 }
@@ -504,12 +524,16 @@ function formatDate(data){
 	   return str;	 		
 }
 
+$('#modalModificaAttrezzatura').on('hidden.bs.modal', function(){
+	   $(document.body).css('padding-right', '0px'); 
+});
 
 
 $(document).ready(function() {
 	console.log("test");
 	$('.datepicker').datepicker();
 	$('.select2').select2();
+	
 	
 	table = $('#tabPM').DataTable({
 		 language: {
@@ -672,6 +696,9 @@ $("#cliente_mod").change(function() {
 
 	
 	});
+	
+	
+		
 
 
 

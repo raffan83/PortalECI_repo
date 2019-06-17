@@ -3013,7 +3013,7 @@ function modificaAttrezzatura(scadenzario, date, tipo_data){
 		success: function( data, textStatus) {
 
 			if(data.success){ 
-				$('#modalModificaaAttrezzatura').modal('hide');
+				$('#modalModificaAttrezzatura').modal('hide');
 				
 				if(scadenzario){
 					dataString ="?action=scadenzario&data="+ date+"&tipo_data="+tipo_data;
@@ -3264,4 +3264,65 @@ $.ajax({
          	pleaseWaitDiv.modal('hide');
 	          }
 	         });
+}
+
+
+
+function rendiAttrezzaturaObsoleta(scadenzario,date, tipo_data){
+	
+	pleaseWaitDiv = $('#pleaseWaitDialog');
+	pleaseWaitDiv.modal();
+	
+	var id_attrezzatura = $('#id_attrezzatura').val();
+	var id_cliente = $('#cliente_mod').val();
+	var id_sede = $('#sede_mod').val();
+	
+	var dataObj = {};
+	 
+	dataObj.id_attrezzatura = id_attrezzatura;
+
+	$.ajax({
+		type: "POST",
+		url: "listaAttrezzature.do?action=rendi_obsoleta",
+		data: dataObj,
+		dataType: "json",
+
+		success: function( data, textStatus) {
+			if(data.success){
+				$('#modalModificaAttrezzatura').modal('hide');
+				
+				if(scadenzario){
+					dataString ="?action=scadenzario&data="+ date+"&tipo_data="+tipo_data;
+					callAction("listaAttrezzature.do"+dataString)
+		 
+				}else{
+			
+					dataString ="action=cliente_sede&id_cliente="+ id_cliente+"&id_sede="+id_sede;
+			         exploreModal("listaAttrezzature.do",dataString,"#posTab",function(data,textStatus){
+			        
+			        	 pleaseWaitDiv.modal('hide');
+					});	
+		
+				}
+				 
+		          $('.modal-backdrop').hide();   
+				
+				    				        		
+				}else{
+					$('#myModalErrorContent').html(data.messaggio);
+					$('#myModalError').removeClass();
+					$('#myModalError').addClass("modal modal-danger");
+					$('#myModalError').modal('show');        			 
+				}
+		},
+
+		error: function(jqXHR, textStatus, errorThrown){	          
+			// $('#empty').html("<h3 class='label label-danger'>"+textStatus+"</h3>");
+			pleaseWaitDiv.modal('hide');
+			$("#myModalErrorContent").html(textStatus);
+			$("#myModalError").modal();
+			
+		}
+	});	  	  	  	  
+	
 }

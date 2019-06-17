@@ -68,6 +68,9 @@
         <property name="note_generiche" type="java.lang.String">
             <column name="note_generiche" />
         </property>
+        <property name="obsoleta" type="int">
+            <column name="obsoleta" />
+        </property>
 
         
     </class>
