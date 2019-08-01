@@ -10,9 +10,9 @@ import java.util.Map;
 
 public class GestioneCommesseBO {
 
-	public static ArrayList<CommessaDTO> getListaCommesse(CompanyDTO company, String categoria, UtenteDTO user,int year) throws Exception {
+	public static ArrayList<CommessaDTO> getListaCommesse(CompanyDTO company, UtenteDTO user,int year) throws Exception {
 				
-		return GestioneCommesseDAO.getListaCommesse(company,categoria,user,year);
+		return GestioneCommesseDAO.getListaCommesse(company,user,year);
 	}
 	
 	public static CommessaDTO getCommessaById(String idCommessa) throws Exception {

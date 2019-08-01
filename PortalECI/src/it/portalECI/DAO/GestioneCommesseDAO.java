@@ -19,7 +19,7 @@ public class GestioneCommesseDAO {
 			"FROM BWT_COMMESSA AS a " +
 			"LEFT JOIN BWT_ANAGEN AS b ON  a.ID_ANAGEN=b.ID_ANAGEN " +
 			"LEFT JOIN BWT_ANAGEN_INDIR AS c on a.K2_ANAGEN_INDIR=c.K2_ANAGEN_INDIR AND a.ID_ANAGEN=c.ID_ANAGEN " +
-			"WHERE ID_ANAGEN_COMM=1703";
+			"WHERE ID_ANAGEN_COMM=1703  AND (TB_CATEG_COM='VIE' OR TB_CATEG_COM='VAL')";
 	
 	private static final String querySqlServerComTrasWhitYear = "SELECT ID_COMMESSA,DT_COMMESSA,FIR_CHIUSURA_DT, B.ID_ANAGEN,b.NOME," +
 			"a.DESCR,a.SYS_STATO,C.K2_ANAGEN_INDIR,C.DESCR,C.INDIR,C.CITTA,C.CODPROV,b.INDIR AS INDIRIZZO_PRINCIPALE,b.CITTA AS CITTAPRINCIPALE, b.CODPROV AS CODICEPROVINCIA,NOTE_GEN,N_ORDINE," +
@@ -29,7 +29,7 @@ public class GestioneCommesseDAO {
 			"LEFT JOIN BWT_ANAGEN_INDIR AS c on a.K2_ANAGEN_INDIR=c.K2_ANAGEN_INDIR AND a.ID_ANAGEN=c.ID_ANAGEN " +
 			"LEFT JOIN [BTOMEN_CRESCO_DATI].[dbo].[BWT_ANAGEN_INDIR] AS d on a.K2_ANAGEN_INDIR_UTILIZ=d.K2_ANAGEN_INDIR AND a.ID_ANAGEN_UTILIZ=d.ID_ANAGEN "+
 			"LEFT JOIN [BTOMEN_CRESCO_DATI].[dbo].[BWT_ANAGEN] AS e on a.ID_ANAGEN_UTILIZ=e.ID_ANAGEN "+			
-			"WHERE ID_ANAGEN_COMM=1703 AND  year([DT_COMMESSA])=? ";
+			"WHERE ID_ANAGEN_COMM=1703 AND  year([DT_COMMESSA])=?  AND (TB_CATEG_COM='VIE' OR TB_CATEG_COM='VAL')";
 
 	
 	private static final String queryClienti = "SELECT ID_ANAGEN, NOME FROM BWT_ANAGEN";
@@ -41,7 +41,7 @@ public class GestioneCommesseDAO {
 			"FROM BWT_COMMESSA AS a " +
 			"LEFT JOIN BWT_ANAGEN AS b ON  a.ID_ANAGEN=b.ID_ANAGEN " +
 			"LEFT JOIN BWT_ANAGEN_INDIR AS c on a.K2_ANAGEN_INDIR=c.K2_ANAGEN_INDIR AND a.ID_ANAGEN=c.ID_ANAGEN " +
-			"WHERE ID_ANAGEN_COMM=?";
+			"WHERE ID_ANAGEN_COMM=?  AND (TB_CATEG_COM='VIE' OR TB_CATEG_COM='VAL')";
 	
 	private static String querySqlServerCommonWhitYear="SELECT ID_COMMESSA,DT_COMMESSA,FIR_CHIUSURA_DT, B.ID_ANAGEN,b.NOME," +
 			"a.DESCR,a.SYS_STATO,C.K2_ANAGEN_INDIR,C.DESCR,C.INDIR,C.CITTA,C.CODPROV,b.INDIR AS INDIRIZZO_PRINCIPALE,b.CITTA AS CITTAPRINCIPALE, b.CODPROV AS CODICEPROVINCIA,NOTE_GEN,N_ORDINE " +
@@ -51,7 +51,7 @@ public class GestioneCommesseDAO {
 			"LEFT JOIN BWT_ANAGEN_INDIR AS c on a.K2_ANAGEN_INDIR=c.K2_ANAGEN_INDIR AND a.ID_ANAGEN=c.ID_ANAGEN " +
 			"LEFT JOIN [BTOMEN_CRESCO_DATI].[dbo].[BWT_ANAGEN_INDIR] AS d on a.K2_ANAGEN_INDIR_UTILIZ=d.K2_ANAGEN_INDIR AND a.ID_ANAGEN_UTILIZ=d.ID_ANAGEN "+
 			"LEFT JOIN [BTOMEN_CRESCO_DATI].[dbo].[BWT_ANAGEN] AS e on a.ID_ANAGEN_UTILIZ=e.ID_ANAGEN "+
-			"WHERE ID_ANAGEN_COMM=? AND  year([DT_COMMESSA])=?";
+			"WHERE ID_ANAGEN_COMM=? AND  year([DT_COMMESSA])=?  AND (TB_CATEG_COM='VIE' OR TB_CATEG_COM='VAL')";
 	
 	private static String querySqlServerComId="SELECT ID_COMMESSA,DT_COMMESSA,FIR_CHIUSURA_DT, B.ID_ANAGEN,b.NOME," +
 			"a.DESCR,a.SYS_STATO,C.K2_ANAGEN_INDIR,C.DESCR,C.INDIR,C.CITTA,C.CODPROV,b.INDIR AS INDIRIZZO_PRINCIPALE,b.CITTA AS CITTAPRINCIPALE, b.CODPROV AS CODICEPROVINCIA,NOTE_GEN,N_ORDINE, ID_ANAGEN_COMM " +
@@ -143,7 +143,7 @@ public class GestioneCommesseDAO {
 		return listaCommesse;
 	}*/
 	
-	public static ArrayList<CommessaDTO> getListaCommesse(CompanyDTO company, String categoria, UtenteDTO user, int year) throws Exception {
+	public static ArrayList<CommessaDTO> getListaCommesse(CompanyDTO company, UtenteDTO user, int year) throws Exception {
 		Connection con=null;
 		PreparedStatement pst=null;
 		PreparedStatement pstA=null;
@@ -156,40 +156,11 @@ public class GestioneCommesseDAO {
 		{
 		
 		con =ManagerSQLServer.getConnectionSQL();
-		
-		String categ="";
-		
-		if(!categoria.equals("")){
-			
-			
-			String[] listaCategorie=categoria.split(";");
 
-			for (int i = 0; i < listaCategorie.length; i++) {
-				
-				categ=categ+" AND TB_CATEG_COM='"+listaCategorie[i]+"'";
-			}
-			
-		}
 		
 		if(user.isTras())
 		{
-			if(!categ.equals(""))
-			{
-				if(year!=0)
-				{
-					String query=querySqlServerComTrasWhitYear.concat(" WHERE ").concat(categ.substring(5,categ.length()));
-					pst=con.prepareStatement(query);
-					pst.setInt(1, year);
-				}else 
-				{
-					String query=querySqlServerComTras.concat(" WHERE ").concat(categ.substring(5,categ.length()));
-					pst=con.prepareStatement(query);
-					
-				}	
-				
-			}
-			else
-			{
+			
 				if(year!=0) 
 				{
 					pst=con.prepareStatement(querySqlServerComTrasWhitYear);
@@ -199,18 +170,18 @@ public class GestioneCommesseDAO {
 					pst=con.prepareStatement(querySqlServerComTras);
 				}
 			}
-		}
+		
 		else
 		{
 			if(year!=0) 
 			{
-				pst=con.prepareStatement(querySqlServerCommonWhitYear+categ);
+				pst=con.prepareStatement(querySqlServerCommonWhitYear);
 				pst.setInt(1, company.getId());
 				pst.setInt(2, year);
 			}
 			else 
 			{
-				pst=con.prepareStatement(querySqlServerCommon+categ);
+				pst=con.prepareStatement(querySqlServerCommon);
 				pst.setInt(1, company.getId());
 			}
 		}
