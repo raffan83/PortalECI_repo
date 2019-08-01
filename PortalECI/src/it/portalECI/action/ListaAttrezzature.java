@@ -300,6 +300,26 @@ public class ListaAttrezzature extends HttpServlet {
 		     	dispatcher.forward(request,response);
 				
 			}
+			else if(action.equals("rendi_obsoleta")) {
+				ajax = true;
+				
+				String id_attrezzatura = request.getParameter("id_attrezzatura");
+								
+				AttrezzaturaDTO attrezzatura = GestioneAttrezzatureBO.getAttrezzaturaFromId(Integer.parseInt(id_attrezzatura), session);
+				if(attrezzatura.getObsoleta()==0) {
+					attrezzatura.setObsoleta(1);
+				}else {
+					attrezzatura.setObsoleta(0);
+				}
+				
+				session.getTransaction().commit();
+				session.close();
+				
+				PrintWriter out = response.getWriter();
+				myObj.addProperty("success", true);
+				myObj.addProperty("messaggio", "Modifica effettuata con successo!");
+				out.print(myObj);
+			}
 
 		}
 		catch(Exception ex)

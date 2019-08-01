@@ -25,7 +25,8 @@ public class AttrezzaturaDTO {
 	private String settore_impiego;
 	private String note_tecniche;
 	private String note_generiche;
-	
+	private int obsoleta;
+		
 	public int getAnno_costruzione() {
 		return anno_costruzione;
 	}
@@ -151,6 +152,12 @@ public class AttrezzaturaDTO {
 	}
 	public void setData_prossima_verifica_interna(Date data_prossima_verifica_interna) {
 		this.data_prossima_verifica_interna = data_prossima_verifica_interna;
+	}
+	public int getObsoleta() {
+		return obsoleta;
+	}
+	public void setObsoleta(int obsoleta) {
+		this.obsoleta = obsoleta;
 	}
 	
 	
