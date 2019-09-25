@@ -3,9 +3,7 @@ package it.portalECI.action;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -20,12 +18,14 @@ import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 
 import it.portalECI.DAO.GestioneStatoInterventoDAO;
+import it.portalECI.DAO.GestioneStatoVerbaleDAO;
 import it.portalECI.DAO.SessionFacotryDAO;
 import it.portalECI.DTO.CategoriaVerificaDTO;
 import it.portalECI.DTO.CommessaDTO;
 import it.portalECI.DTO.CompanyDTO;
 import it.portalECI.DTO.InterventoDTO;
 import it.portalECI.DTO.StatoInterventoDTO;
+import it.portalECI.DTO.StatoVerbaleDTO;
 import it.portalECI.DTO.TipoVerificaDTO;
 import it.portalECI.DTO.UtenteDTO;
 import it.portalECI.DTO.VerbaleDTO;
@@ -353,6 +353,8 @@ public class GestioneIntervento extends HttpServlet {
 					idStato=StatoInterventoDTO.CHIUSO;
 				}else if(stato.equals("ANNULLATO")) {
 					idStato=StatoInterventoDTO.ANNULLATO;
+				}else if (stato.equals("COMPILAZIONE_WEB")){
+					idStato=StatoInterventoDTO.COMPILAZIONE_WEB;
 				}else {
 					myObj.addProperty("success", false);
 					myObj.addProperty("messaggio", "Errore imprevisto durante il passaggio di stato dell'intervento!");
@@ -362,8 +364,14 @@ public class GestioneIntervento extends HttpServlet {
 				}
 				
 				try {
-					
+					if (idStato==StatoInterventoDTO.COMPILAZIONE_WEB) {
+						// cambio lo stato di tutti i verbali in "COMPILAZIONE WEB"
+						StatoVerbaleDTO statoVerbale = GestioneStatoVerbaleDAO.getStatoVerbaleById(StatoVerbaleDTO.COMPILAZIONE_WEB, session);
+						GestioneVerbaleBO.setStatoCompilazioneWeb(intervento, statoVerbale, session);
+						//GestioneInterventoBO.setStatoCompilazioneWeb(intervento, session);
+					}				
 					intervento.cambioStatoIntervento(GestioneStatoInterventoDAO.getStatoInterventoById(idStato, session));
+					
 				}catch(IllegalStateException e) {
 					myObj.addProperty("success", false);
 					myObj.addProperty("messaggio", e.getMessage());

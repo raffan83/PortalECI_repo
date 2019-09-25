@@ -46,6 +46,7 @@ import it.portalECI.DTO.RispostaSceltaVerbaleDTO;
 import it.portalECI.DTO.RispostaTabellaVerbaleDTO;
 import it.portalECI.DTO.RispostaTestoVerbaleDTO;
 import it.portalECI.DTO.RispostaVerbaleDTO;
+import it.portalECI.DTO.StatoVerbaleDTO;
 import it.portalECI.DTO.StoricoModificheDTO;
 import it.portalECI.DTO.UtenteDTO;
 import it.portalECI.DTO.VerbaleDTO;
@@ -83,7 +84,9 @@ public class GestioneVerbali extends HttpServlet {
 		try {
 			VerbaleDTO verbale = GestioneVerbaleBO.getVerbale(request.getParameter("idVerbale"),session); 
 			
-			
+			String action = request.getParameter("action");
+			String currentState = request.getParameter("currentState");
+					
 			Enumeration<String> parameterNames = request.getParameterNames(); //lista id elementi modificati
 
 			ArrayList<String> listaFormulaAggiornate=new ArrayList<String>();
@@ -122,13 +125,17 @@ public class GestioneVerbali extends HttpServlet {
 							//if (rispostaFormula.getValue2().isEmpty()) val2 = "null";						
 							//if (rispostaFormula.getResponseValue().isEmpty()) respVal = "null";
 							
-							addStorico(verbale, 
-									val1+"|"+ val2+"|"+respVal , 
-									null, 
-									rispostaFormula.getId(), 
-									StoricoModificheDTO.UPDATE, 
-									request, 
-									session);
+							//se stiamo compilando il verbale sull'app WEB non dobbiamo salvare lo storico
+							// lo storico è gestito solo in caso di verbale DA VERIFICARE o stati successivi
+							if (currentState == null || !currentState.equals("compilazioneWeb")) {
+								addStorico(verbale, 
+										val1+"|"+ val2+"|"+respVal , 
+										null, 
+										rispostaFormula.getId(), 
+										StoricoModificheDTO.UPDATE, 
+										request, 
+										session);
+							}
 						}
 						
 						rispostaFormula.setValue1(value1);
@@ -168,9 +175,12 @@ public class GestioneVerbali extends HttpServlet {
 					}
 
 					if(change) {
-						addStorico(verbale, oldCheck, null, Integer.parseInt(idrispostaSceltaVerbale), StoricoModificheDTO.UPDATE, request, session);
+						if (currentState == null || !currentState.equals("compilazioneWeb")) {
+							addStorico(verbale, oldCheck, null, Integer.parseInt(idrispostaSceltaVerbale), StoricoModificheDTO.UPDATE, request, session);
+						}
 					}						
 				
+				// RISPOSTA TESTO
 				}else if(isInt(paramName)){			
 					
 					String testo=request.getParameter(paramName);
@@ -181,13 +191,15 @@ public class GestioneVerbali extends HttpServlet {
 					if (rispostaTestoVal == null) rispostaTestoVal = new String();
 					
 						if(!rispostaTestoVal.equals(testo)) {
-							addStorico(verbale, 
-									rispostaTestoVal, 
-									null, 
-									rispostaTesto.getId(), 
-									StoricoModificheDTO.UPDATE, 
-									request, 
-									session);
+							if (currentState == null || !currentState.equals("compilazioneWeb")) {
+								addStorico(verbale, 
+										rispostaTestoVal, 
+										null, 
+										rispostaTesto.getId(), 
+										StoricoModificheDTO.UPDATE, 
+										request, 
+										session);
+							}
 						}
 					
 					rispostaTesto.setResponseValue(testo);
@@ -240,25 +252,29 @@ public class GestioneVerbali extends HttpServlet {
 			        if(!pair.getValue().replaceAll("<td>", "").replaceAll("</td>", "").isEmpty()) {
 				        String pointer = pair.getKey();
 				        String idRispostaTabellaId = pointer.split("_")[0];
-				        addStorico(verbale, pair.getValue(), "riga", Integer.parseInt(idRispostaTabellaId), StoricoModificheDTO.DELETE, request, session);
+				        if (currentState == null || !currentState.equals("compilazioneWeb")) {
+				        	addStorico(verbale, pair.getValue(), "riga", Integer.parseInt(idRispostaTabellaId), StoricoModificheDTO.DELETE, request, session);
+			        
+				        }
 			        }
 			    }
 			}	
 		
 			for (DomandaVerbaleDTO domanda:verbale.getDomandeVerbale()) {
+				int valueRicercato=domanda.getRisposta().getId();
 
 				if(domanda.getRisposta().getTipo().equals(RispostaVerbaleDTO.TIPO_SCELTA)) {
-			
-					int valueRicercato=domanda.getRisposta().getId();
-
 					if(!request.getParameterMap().containsKey("options"+String.valueOf(valueRicercato))){			
-
-						if(domanda.getDomandaQuestionario().getObbligatoria()) {
-							myObj.addProperty("success", false);
-							myObj.addProperty("messaggio", "La domanda '"+domanda.getDomandaQuestionario().getTesto()+"' � obbligatoria.");
-					
-							out.print(myObj);
-							return;
+						// se stiamo solo salvando il verbale nello stato COMPILAZIONE WEB non facciamo controlli sulle domande obbligatorie
+						// il controllo verrà fatto quando si proverà a confermare il verbale in COMPILAZIONE WEB oppure quando si modificherà il verbale
+						if (action == null || !action.equals("salvaRisposteCompWeb")) {
+							if(domanda.getDomandaQuestionario().getObbligatoria()) {
+								myObj.addProperty("success", false);
+								myObj.addProperty("messaggio", "La domanda '"+domanda.getDomandaQuestionario().getTesto()+"' &egrave; obbligatoria.");
+						
+								out.print(myObj);
+								return;
+							}
 						}
 					
 						Set<OpzioneRispostaVerbaleDTO> listaOpzioni= GestioneRispostaVerbaleDAO.getRispostaSceltaVerbaleDTO(valueRicercato, session).getOpzioni();
@@ -269,8 +285,41 @@ public class GestioneVerbali extends HttpServlet {
 							GestioneRispostaVerbaleDAO.saveOpzioneVerbale(opzioneRispostaVerbaleDTO, session);
 						}		
 					}
+				} else if(domanda.getRisposta().getTipo().equals(RispostaVerbaleDTO.TIPO_TESTO)) {
+					if (action != null && action.equals("confermaRisposteCompWeb")) {
+						if(domanda.getDomandaQuestionario().getObbligatoria()) {
+							String rispostaTesto = request.getParameter(String.valueOf(valueRicercato));
+							if (rispostaTesto == null || rispostaTesto.equals("")) {
+								myObj.addProperty("success", false);
+								myObj.addProperty("messaggio", "La domanda '"+domanda.getDomandaQuestionario().getTesto()+"' &egrave; obbligatoria.");
+						
+								out.print(myObj);
+								return;
+							}
+						}
+					}
+				} else if(domanda.getRisposta().getTipo().equals(RispostaVerbaleDTO.TIPO_FORMULA)) {
+					if (action != null && action.equals("confermaRisposteCompWeb")) {
+						if(domanda.getDomandaQuestionario().getObbligatoria()) {
+							String value1 = request.getParameter("value1"+String.valueOf(valueRicercato));
+							String value2 = request.getParameter("value2"+String.valueOf(valueRicercato));	
+							String responseValue = request.getParameter("responseValue"+String.valueOf(valueRicercato));	
+							if (value1 == null || value1.equals("")
+								|| value2 == null || value2.equals("")
+								|| responseValue == null || responseValue.equals("")) {
+								myObj.addProperty("success", false);
+								myObj.addProperty("messaggio", "La domanda '"+domanda.getDomandaQuestionario().getTesto()+"' &egrave; obbligatoria.");
+						
+								out.print(myObj);
+								return;
+							}
+						}
+					}
 				}
+			}
 			
+			if (action != null && action.equals("confermaRisposteCompWeb")) {
+				GestioneVerbaleBO.cambioStato( verbale, GestioneStatoVerbaleDAO.getStatoVerbaleById( StatoVerbaleDTO.DA_VERIFICARE, session) , session);
 			}
 			
 			myObj.addProperty("success", true);
@@ -314,7 +363,7 @@ public class GestioneVerbali extends HttpServlet {
 		
 		if(action !=null && action.equals("cambioStato")){			 					
 			
-			String stato = request.getParameter("stato" );										
+			String stato = request.getParameter("stato" );
 			if(Boolean.parseBoolean(request.getParameter("all"))) {
 				if(verbale.getSchedaTecnica()!=null)
 					GestioneVerbaleBO.cambioStato( verbale.getSchedaTecnica(), GestioneStatoVerbaleDAO.getStatoVerbaleById( Integer.parseInt(stato), session) , session);

@@ -334,6 +334,13 @@
 													<i class="glyphicon glyphicon-remove"></i>
 													CHIUSO
 												</button>
+												
+												<c:if test='${intervento.getStatoIntervento().getDescrizione().equals("CREATO")}'>
+													<button type="button  pull-right" class="btn-sm" onclick="salvaCambioStato('COMPILAZIONE_WEB')" style="color:#000000 !important; background-color:${intervento.statoIntervento.getColore(8)} !important;">
+														<i class="glyphicon glyphicon-remove"></i>
+														COMPILAZIONE WEB
+													</button>
+												</c:if>
 																								      										
 											</div>											
 										</div>

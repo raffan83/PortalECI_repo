@@ -198,7 +198,7 @@ public class InterventoDTO implements Serializable{
 			//se uguale allo stato esistente
 			return true;
 		}else if(this.statoIntervento!=null && this.statoIntervento.id== StatoInterventoDTO.CREATO){
-			if(newStato.getId()== StatoInterventoDTO.SCARICATO || newStato.getId()==StatoInterventoDTO.ANNULLATO || newStato.getId()==StatoInterventoDTO.CHIUSO) {				
+			if(newStato.getId()== StatoInterventoDTO.SCARICATO || newStato.getId()==StatoInterventoDTO.ANNULLATO || newStato.getId()==StatoInterventoDTO.CHIUSO || newStato.getId()== StatoInterventoDTO.COMPILAZIONE_WEB) {				
 				
 			}else {
 				throw new IllegalStateException("Passaggio di Stato non consentito!");				
@@ -234,6 +234,12 @@ public class InterventoDTO implements Serializable{
 				throw new IllegalStateException("Passaggio di Stato non consentito!");	
 			}else {
 				return true;
+			}
+		}else if(this.statoIntervento!=null && this.statoIntervento.id==StatoInterventoDTO.COMPILAZIONE_WEB) {
+			if(newStato.getId()==StatoInterventoDTO.CHIUSO) {				
+				
+			}else if(newStato.getId()!= StatoInterventoDTO.COMPILAZIONE_WEB){
+				throw new IllegalStateException("Passaggio di Stato non consentito!");	
 			}
 		}else {
 			throw new IllegalStateException("Passaggio di Stato non consentito!");	

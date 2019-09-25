@@ -88,37 +88,48 @@ public class GestioneVerbaleBO {
 	
 	public static void cambioStato(VerbaleDTO verbale,StatoVerbaleDTO stato, Session session) {		
 				
-		if(verbale.getStato()==GestioneStatoVerbaleDAO.getStatoVerbaleById(StatoVerbaleDTO.CREATO, session) && stato.getId()==StatoVerbaleDTO.IN_COMPILAZIONE) {
+		if((verbale.getStato()==GestioneStatoVerbaleDAO.getStatoVerbaleById(StatoVerbaleDTO.CREATO, session) && stato.getId()==StatoVerbaleDTO.IN_COMPILAZIONE)
+				|| (verbale.getStato()==GestioneStatoVerbaleDAO.getStatoVerbaleById(StatoVerbaleDTO.CREATO, session) && stato.getId()==StatoVerbaleDTO.COMPILAZIONE_WEB)) {
 			verbale.setDataScaricamento(new Date());
-		}else if(verbale.getStato()==GestioneStatoVerbaleDAO.getStatoVerbaleById(StatoVerbaleDTO.IN_COMPILAZIONE, session) && stato.getId()==StatoVerbaleDTO.DA_VERIFICARE) {
+		}else if((verbale.getStato()==GestioneStatoVerbaleDAO.getStatoVerbaleById(StatoVerbaleDTO.IN_COMPILAZIONE, session) && stato.getId()==StatoVerbaleDTO.DA_VERIFICARE)
+				|| (verbale.getStato()==GestioneStatoVerbaleDAO.getStatoVerbaleById(StatoVerbaleDTO.COMPILAZIONE_WEB, session) && stato.getId()==StatoVerbaleDTO.DA_VERIFICARE)) {
 			verbale.setDataTrasferimento(new Date());
 		}
-				
-		verbale.setStato(stato);			
-		session.update(verbale);
-		InterventoDTO intervento= verbale.getIntervento();	
-		if(intervento==null) {
-			//la scheda tecnica non ha un intervento associato per il momento
-			return;
-		}
-		Boolean verificato=true;
 		
-		for(VerbaleDTO verbaleInt : intervento.getVerbali()) {
-			if(verbaleInt != null && verbaleInt.getStato().getId()!=StatoVerbaleDTO.RIFIUTATO && verbaleInt.getStato().getId()!= StatoVerbaleDTO.ACCETTATO ) {
-				verificato=false;
-				break;
+		InterventoDTO intervento= verbale.getIntervento();
+		
+		if (stato.getId()==StatoVerbaleDTO.COMPILAZIONE_WEB) {
+			
+			setStatoCompilazioneWeb(intervento, stato, session);
+			intervento.setStatoIntervento(GestioneStatoInterventoDAO.getStatoInterventoById(StatoInterventoDTO.COMPILAZIONE_WEB, session));
+		} else {
+				
+			verbale.setStato(stato);			
+			session.update(verbale);
+			//InterventoDTO intervento= verbale.getIntervento();	
+			if(intervento==null) {
+				//la scheda tecnica non ha un intervento associato per il momento
+				return;
+			}
+			Boolean verificato=true;
+			
+			for(VerbaleDTO verbaleInt : intervento.getVerbali()) {
+				if(verbaleInt != null && verbaleInt.getStato().getId()!=StatoVerbaleDTO.RIFIUTATO && verbaleInt.getStato().getId()!= StatoVerbaleDTO.ACCETTATO ) {
+					verificato=false;
+					break;
+				}
+				
+				if(verbaleInt != null && verbaleInt.getSchedaTecnica()!=null && verbaleInt.getSchedaTecnica().getStato().getId()!=StatoVerbaleDTO.RIFIUTATO && verbaleInt.getSchedaTecnica().getStato().getId()!= StatoVerbaleDTO.ACCETTATO) {
+					verificato=false;
+					break;
+				}
 			}
 			
-			if(verbaleInt != null && verbaleInt.getSchedaTecnica()!=null && verbaleInt.getSchedaTecnica().getStato().getId()!=StatoVerbaleDTO.RIFIUTATO && verbaleInt.getSchedaTecnica().getStato().getId()!= StatoVerbaleDTO.ACCETTATO) {
-				verificato=false;
-				break;
+			if(verificato) {
+				intervento.setStatoIntervento(GestioneStatoInterventoDAO.getStatoInterventoById(StatoInterventoDTO.VERIFICATO, session));
+			}else if(intervento.getStatoIntervento().getId()!= StatoInterventoDTO.IN_VERIFICA) {
+				intervento.setStatoIntervento(GestioneStatoInterventoDAO.getStatoInterventoById(StatoInterventoDTO.IN_VERIFICA, session));
 			}
-		}
-		
-		if(verificato) {
-			intervento.setStatoIntervento(GestioneStatoInterventoDAO.getStatoInterventoById(StatoInterventoDTO.VERIFICATO, session));
-		}else if(intervento.getStatoIntervento().getId()!= StatoInterventoDTO.IN_VERIFICA) {
-			intervento.setStatoIntervento(GestioneStatoInterventoDAO.getStatoInterventoById(StatoInterventoDTO.IN_VERIFICA, session));
 		}
 		
 		session.update(intervento);
@@ -164,6 +175,7 @@ public class GestioneVerbaleBO {
 			}
 			QuestionarioDTO questionario = GestioneQuestionarioDAO.getQuestionarioById(verbale.getQuestionarioID(),
 					session);
+			
 			if (questionario != null) {
 				if (questionario.getDomandeVerbale() != null && verbale.getType().equals(VerbaleDTO.VERBALE)) {
 					for (DomandaQuestionarioDTO domandaQuestionario : questionario.getDomandeVerbale()) {
@@ -934,6 +946,41 @@ public class GestioneVerbaleBO {
 		}
 		
 		
+	}
+	public static void setStatoCompilazioneWeb(InterventoDTO intervento, StatoVerbaleDTO stato, Session session) {	
+		for (VerbaleDTO verbale: intervento.getVerbali()) {
+			if (verbale.getSchedaTecnica()!=null) {
+				verbale.getSchedaTecnica().setDataScaricamento(new Date());
+				buildVerbaleVuotoByQuestionario(verbale.getSchedaTecnica(), session);
+				verbale.getSchedaTecnica().setStato(stato);	
+			}
+			verbale.setDataScaricamento(new Date());
+			buildVerbaleVuotoByQuestionario(verbale, session);
+			verbale.setStato(stato);
+			session.update(verbale);
+		}
+	}
+	
+	// metodo usato per creare un verbale o una scheda tecnica con questionario vuoto quando si passa nello stato "compilazione web"
+	public static void buildVerbaleVuotoByQuestionario(VerbaleDTO verbale, Session session) {
+		if (verbale != null) {
+			if (verbale.getDomandeVerbale() != null) {
+				verbale.getDomandeVerbale().clear();
+			}
+			QuestionarioDTO questionario = GestioneQuestionarioDAO.getQuestionarioById(verbale.getQuestionarioID(),
+					session);
+			
+			if (questionario != null) {
+				if (questionario.getDomandeVerbale() != null) {
+					for (DomandaQuestionarioDTO domandaQuestionario : questionario.getDomandeVerbale()) {
+						DomandaVerbaleDTO domandaVerbale = buildDomandaVerbalebyDomadaQuestionario(domandaQuestionario, session);
+						domandaVerbale.setVerbale(verbale);
+						GestioneDomandaVerbaleDAO.save(domandaVerbale, session);
+						verbale.addToDomande(domandaVerbale);
+					}
+				}
+			}
+		}
 	}
 
 }

@@ -19,6 +19,7 @@ public class StatoInterventoDTO  implements Serializable{
 	public static int VERIFICATO 	= 5;
 	public static int ANNULLATO		= 6;
 	public static int CHIUSO		= 7;
+	public static int COMPILAZIONE_WEB	= 8;
 		    
 	
 	private final static HashMap StatoColore = new HashMap();
@@ -30,6 +31,7 @@ public class StatoInterventoDTO  implements Serializable{
 		StatoColore.put(5, "#77DD77");//verde
 		StatoColore.put(6, "#CE3018");//rosso
 		StatoColore.put(7, "#D2D2D2");// grigio chiaro
+		StatoColore.put(8, "#c8b5da"); //viola chiaro
 	}
 	
 	int id=1;

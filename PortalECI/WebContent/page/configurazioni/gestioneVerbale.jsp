@@ -131,7 +131,13 @@
         													<i class="glyphicon glyphicon-transfer"></i>
         												 	Cambio Stato
         												</button>
-        											</c:if>        											      											
+        											</c:if>
+        											<c:if test='${verbale.getStato().getId()== 1 && user.checkPermesso("CH_STA_VERBALE")}'>
+        												<button class="btn btn-default pull-right" onClick="$('#modalCambioStatoVerbaleCompWeb').modal('show');" style="margin-right:10px">
+        													<i class="glyphicon glyphicon-transfer"></i>
+        												 	Compilazione Web
+        												</button>
+        											</c:if>           											      											
         										</div>   									
 												<input id="changedForm" style="display:none;" disabled="disabled">
 											</div>
@@ -142,7 +148,7 @@
       				
       			
 								<div class="row">
-									<c:if test ="${verbale.getStato().getId()>=5}">								  
+									<c:if test ="${verbale.getStato().getId()>=5 && verbale.getStato().getId()<8}">								  
        								<div class="col-md-6 col-xs-12" id="certificatoBox">
        									<div class="box box-danger box-solid">
 											<div class="box-header with-border">
@@ -242,7 +248,12 @@
         								<div class="col-xs-12">
 											<div class="box box-danger box-solid">
 												<div class="box-header with-border">
-	 												Controllo Verbale
+													<c:if test="${verbale.getStato().getId()==8 }">
+														Compila Verbale
+													</c:if>
+													<c:if test="${verbale.getStato().getId()!=8 }">
+	 													Controllo Verbale
+	 												</c:if>
 													<div class="box-tools pull-right">		
 														<button data-widget="collapse" class="btn btn-box-tool"><i class="fa fa-minus"></i></button>
 													</div>
@@ -265,13 +276,24 @@
 												
 												<div class="box-footer" id="formVerbalebox">
 													<c:if test="${user.checkPermesso('UPD_VERBALE')}">
-														<button type="button" class="btn btn-default ml-1 savebutt" onclick="modificaRisposte(${verbale.getId()},'formVerbale')" style="margin-left: 1em; float: right;">	
-															<span >SALVA MODIFICHE</span>
-														</button>	
-													
-														<button type="button" class="btn btn-default ml-1 savebutt" onclick="annullaModifiche('formVerbale')" style="margin-left: 1em; float: right;">	
-															<span >ANNULLA MODIFICHE</span>
-														</button>
+														<c:if test='${verbale.getStato().getId()!= 8}'>
+															<button type="button" class="btn btn-default ml-1 savebutt" onclick="modificaRisposte(${verbale.getId()},'formVerbale')" style="margin-left: 1em; float: right;">	
+																<span >SALVA MODIFICHE</span>
+															</button>	
+														
+															<button type="button" class="btn btn-default ml-1 savebutt" onclick="annullaModifiche('formVerbale')" style="margin-left: 1em; float: right;">	
+																<span >ANNULLA MODIFICHE</span>
+															</button>
+														</c:if>
+														<c:if test='${verbale.getStato().getId()== 8}'>
+															<button type="button" class="btn btn-default ml-1 savebutt" onclick="salvaRisposteCompWeb(${verbale.getId()},'formVerbale', 'salvaRisposteCompWeb')" style="margin-left: 1em; float: right;">	
+																<span >SALVA MODIFICHE</span>
+															</button>
+															<button type="button" class="btn btn-default ml-1 changestate formVerbalebox" onclick="salvaRisposteCompWeb(${verbale.getId()},'formVerbale', 'confermaRisposteCompWeb')" style="margin-left: 1em; color:#000000 !important; background-color:${verbale.getStato().getColore(5)} !important; float: right;">
+																<i class="glyphicon glyphicon glyphicon-ok"></i>
+																<span >CONFERMA</span>
+															</button>
+														</c:if>
 													</c:if>
 													<c:if test='${verbale.getStato().getId()== 4}'>					
 														<c:if test="${user.checkPermesso('CH_STA_VERBALE')}">
@@ -298,7 +320,12 @@
         								<div class="col-xs-12">
 											<div class="box box-danger box-solid">
 												<div class="box-header with-border">
-	 												Controllo Scheda Tecnica
+													<c:if test="${verbale.getStato().getId()==8 }">
+														Compila Scheda Tecnica
+													</c:if>
+													<c:if test="${verbale.getStato().getId()!=8 }">
+	 													Controllo Scheda Tecnica
+	 												</c:if>
 													<div class="box-tools pull-right">		
 														<button data-widget="collapse" class="btn btn-box-tool"><i class="fa fa-minus"></i></button>
 													</div>
@@ -321,13 +348,24 @@
 												</div>
 												<div class="box-footer" id="formScTecnicabox">																										
 													<c:if test="${user.checkPermesso('UPD_VERBALE')}">
-														<button type="button" class="btn btn-default ml-1 savebutt" onclick="modificaRisposte(${verbale.getSchedaTecnica().getId()},'formScTecnica')" style="margin-left: 1em; float: right;">	
-															<span >SALVA MODIFICHE</span>
-														</button>	
-												
-														<button type="button" class="btn btn-default ml-1 savebutt" onclick="annullaModifiche('formScTecnica')" style="margin-left: 1em; float: right;">	
-															<span >ANNULLA MODIFICHE</span>
-														</button>	
+														<c:if test='${verbale.getSchedaTecnica().getStato().getId()!= 8}'>
+															<button type="button" class="btn btn-default ml-1 savebutt" onclick="modificaRisposte(${verbale.getSchedaTecnica().getId()},'formScTecnica')" style="margin-left: 1em; float: right;">	
+																<span >SALVA MODIFICHE</span>
+															</button>	
+													
+															<button type="button" class="btn btn-default ml-1 savebutt" onclick="annullaModifiche('formScTecnica')" style="margin-left: 1em; float: right;">	
+																<span >ANNULLA MODIFICHE</span>
+															</button>
+														</c:if>
+														<c:if test='${verbale.getSchedaTecnica().getStato().getId()== 8}'>
+															<button type="button" class="btn btn-default ml-1 savebutt" onclick="salvaRisposteCompWeb(${verbale.getSchedaTecnica().getId()},'formScTecnica', 'salvaRisposteCompWeb')" style="margin-left: 1em; float: right;">	
+																<span >SALVA MODIFICHE</span>
+															</button>
+															<button type="button" class="btn btn-default ml-1 changestate formVerbalebox" onclick="salvaRisposteCompWeb(${verbale.getSchedaTecnica().getId()},'formScTecnica', 'confermaRisposteCompWeb')" style="margin-left: 1em; color:#000000 !important; background-color:${verbale.getStato().getColore(5)} !important; float: right;">
+																<i class="glyphicon glyphicon glyphicon-ok"></i>
+																<span >CONFERMA</span>
+															</button>
+														</c:if>	
 													</c:if>
 													<c:if test='${verbale.getSchedaTecnica().getStato().getId()== 4}'>			
 														<c:if test="${user.checkPermesso('CH_STA_VERBALE')}">
@@ -384,6 +422,37 @@
     								</div>
     								<div class="modal-footer">
 										<button onclick=" $('#modalCambioStatoVerbale').modal('hide');" class="btn btn-danger" >Esci</button>
+	      							</div>
+  								</div>
+							</div>
+						</div>
+						
+						<div id="modalCambioStatoVerbaleCompWeb" class="modal fade" role="dialog" aria-labelledby="modalCambioStatoVerbaleCompWeb">
+   							<div class="modal-dialog modal-lg" role="document">
+    							<div class="modal-content">
+     								<div class="modal-header">
+        								<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        									<span aria-hidden="true">&times;</span>
+        								</button>
+        								<h4 class="modal-title" id="myModalLabel">Compilazione Web</h4>
+      								</div>
+      									
+       								<div class="modal-body" >
+       									<div class="row">
+											<label class="col-sm-12" style="text-align:center;">Attenzione, sicuro di voler compilare il questionario direttamente dall'interfaccia WEB? </label>
+                  							
+                  							<div class="col-sm-12" style="margin:5px ; text-align:center;">
+                  								<c:if test="${user.checkPermesso('CH_STA_VERBALE')}">										
+													<button type="button  pull-right" class="btn-sm" onclick="salvaCambioStato(null,null,'8')" style="color:#000000 !important; background-color:${verbale.getStato().getColore(8)} !important;">
+														<i class="glyphicon glyphicon glyphicon-ok"></i>
+														<span>CAMBIA STATO</span>
+													</button>
+												</c:if>											      										
+											</div>											
+										</div>
+    								</div>
+    								<div class="modal-footer">
+										<button onclick=" $('#modalCambioStatoVerbaleCompWeb').modal('hide');" class="btn btn-danger" >Esci</button>
 	      							</div>
   								</div>
 							</div>
@@ -652,6 +721,41 @@
 						pleaseWaitDiv.modal('hide');
 						
 						location.reload();
+					},
+
+					error: function(jqXHR, textStatus, errorThrown){
+						$('#errorMsg').html("<h3 class='label label-danger'>"+textStatus+"</h3>");
+						//callAction('logout.do');
+						pleaseWaitDiv.modal('hide');
+					}
+				});
+								
+			}
+			
+			function salvaRisposteCompWeb(idVerb,idform,action){
+				
+				pleaseWaitDiv = $('#pleaseWaitDialog');
+				pleaseWaitDiv.modal();		
+				
+				$.ajax({
+					type: "GET",
+					url: "gestioneVerbale.do?action="+action+"&currentState=compilazioneWeb&idVerbale="+idVerb,
+					data : $("#"+idform).serializeArray(),				
+					dataType: "json",
+					success: function( data, textStatus) {
+
+						pleaseWaitDiv.modal('hide');
+						if(!data.success){	
+							$('#modalErrorDiv').html(data.messaggio);
+							$('#myModalError').removeClass();
+							$('#myModalError').addClass("modal modal-danger");
+							$('#myModalError').modal('show');
+						} else {
+							if(action == "confermaRisposteCompWeb") {
+								location.reload();
+							}
+						}
+					
 					},
 
 					error: function(jqXHR, textStatus, errorThrown){
