@@ -42,10 +42,17 @@
 			<column name="note" length="512"/>
 		</property>
 		
+		<property name="sedeUtilizzatore">
+			<column name="sede_utilizzatore" length="512"/>
+		</property>
+		
 		<many-to-one name="stato" class="it.portalECI.DTO.StatoVerbaleDTO" fetch="join" lazy="false">
             <column name="id_stato_verbale" />
         </many-to-one>
 		
+		<many-to-one name="attrezzatura" class="it.portalECI.DTO.AttrezzaturaDTO" fetch="join" lazy="false">
+            <column name="id_attrezzatura" />
+        </many-to-one>
 		
 		<set name="domandeVerbale" table="DOMANDA_VERBALE" inverse="true" lazy="true" fetch="select" cascade="all, delete-orphan">
 			<key>

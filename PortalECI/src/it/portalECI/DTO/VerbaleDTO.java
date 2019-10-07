@@ -34,6 +34,8 @@ public class VerbaleDTO implements Serializable {
 	private Date dataScaricamento;
 	private Date dataTrasferimento;
 	private String note;
+	private AttrezzaturaDTO attrezzatura;
+	private String sedeUtilizzatore;
 		
 	private String numeroVerbale;	
 	public int getId() {
@@ -220,6 +222,22 @@ public class VerbaleDTO implements Serializable {
 
 	public void setNote(String note) {
 		this.note = note;
+	}
+
+	public AttrezzaturaDTO getAttrezzatura() {
+		return attrezzatura;
+	}
+
+	public void setAttrezzatura(AttrezzaturaDTO attrezzatura) {
+		this.attrezzatura = attrezzatura;
+	}
+
+	public String getSedeUtilizzatore() {
+		return sedeUtilizzatore;
+	}
+
+	public void setSedeUtilizzatore(String sedeUtilizzatore) {
+		this.sedeUtilizzatore = sedeUtilizzatore;
 	}
 
 	

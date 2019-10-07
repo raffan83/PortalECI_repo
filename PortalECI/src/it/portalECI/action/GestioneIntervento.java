@@ -20,6 +20,7 @@ import com.google.gson.JsonObject;
 import it.portalECI.DAO.GestioneStatoInterventoDAO;
 import it.portalECI.DAO.GestioneStatoVerbaleDAO;
 import it.portalECI.DAO.SessionFacotryDAO;
+import it.portalECI.DTO.AttrezzaturaDTO;
 import it.portalECI.DTO.CategoriaVerificaDTO;
 import it.portalECI.DTO.CommessaDTO;
 import it.portalECI.DTO.CompanyDTO;
@@ -30,6 +31,7 @@ import it.portalECI.DTO.TipoVerificaDTO;
 import it.portalECI.DTO.UtenteDTO;
 import it.portalECI.DTO.VerbaleDTO;
 import it.portalECI.Util.Utility;
+import it.portalECI.bo.GestioneAttrezzatureBO;
 import it.portalECI.bo.GestioneCommesseBO;
 import it.portalECI.bo.GestioneInterventoBO;
 import it.portalECI.bo.GestioneUtenteBO;
@@ -105,11 +107,14 @@ public class GestioneIntervento extends HttpServlet {
 				List<UtenteDTO> users = GestioneUtenteBO.getTecnici("2", session);
 				ArrayList<TipoVerificaDTO> tipi_verifica = GestioneInterventoBO.getTipoVerifica(session);
 				ArrayList<CategoriaVerificaDTO> categorie_verifica = GestioneInterventoBO.getCategoriaVerifica(session);
-			
+				
+				ArrayList<AttrezzaturaDTO> listaAttrezzature =GestioneAttrezzatureBO.getlistaAttrezzatureSede(comm.getID_ANAGEN_UTIL(), comm.getK2_ANAGEN_INDR_UTIL(), session);
+				
 				request.getSession().setAttribute("tipi_verifica", tipi_verifica);
 				request.getSession().setAttribute("categorie_verifica", categorie_verifica);
 				request.getSession().setAttribute("listaInterventi", listaInterventi);
 				request.getSession().setAttribute("tecnici", users);
+				request.getSession().setAttribute("listaAttrezzature", listaAttrezzature);
 
 				RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/page/configurazioni/gestioneIntervento.jsp");
 				dispatcher.forward(request,response);
@@ -122,6 +127,10 @@ public class GestioneIntervento extends HttpServlet {
 				String[] categoriaTipo=request.getParameterValues("categoriaTipo");
 				String[] schedaTecnicaObbligatoria=request.getParameterValues("schedaTecnica");
 				String[] listaNote =request.getParameterValues("note");
+				
+				String[] listaAttrezzature =null;/*request.getParameterValues("note");*/
+				
+				CommessaDTO comm=(CommessaDTO)request.getSession().getAttribute("commessa");
 				
 				for( int i = 0; i <= categoriaTipo.length - 1; i++){
 					
@@ -142,7 +151,11 @@ public class GestioneIntervento extends HttpServlet {
 						}
 					}
 					
-					VerbaleDTO verbale =GestioneVerbaleBO.buildVerbale(tipoVerificaDTO.getCodice(), session, createSkTec,listaNote[i]);
+				//	AttrezzaturaDTO attrezzatura= GestioneAttrezzatureBO.getAttrezzaturaFromId(Integer.parseInt(listaAttrezzature[i]), session);
+				
+					AttrezzaturaDTO attrezzatura= null;
+					
+					VerbaleDTO verbale =GestioneVerbaleBO.buildVerbale(tipoVerificaDTO.getCodice(), session, createSkTec,listaNote[i],attrezzatura,comm.getINDIRIZZO_UTILIZZATORE());
 					if(verbale !=null) {
 						verbali.add(verbale);
 					}else {
@@ -154,7 +167,7 @@ public class GestioneIntervento extends HttpServlet {
 				
 				UtenteDTO tecnico = GestioneUtenteBO.getUtenteById(id_tecnico, session);
 				
-				CommessaDTO comm=(CommessaDTO)request.getSession().getAttribute("commessa");
+				
 				InterventoDTO intervento= new InterventoDTO();
 				intervento.setDataCreazione(Utility.getActualDateSQL());
 				intervento.setTecnico_verificatore(tecnico);
@@ -309,7 +322,7 @@ public class GestioneIntervento extends HttpServlet {
 						}
 					}
 											
-					verbaleTarget =GestioneVerbaleBO.buildVerbale(tipoVerificaDTO.getCodice(), session, createSkTec,"");
+					verbaleTarget =GestioneVerbaleBO.buildVerbale(tipoVerificaDTO.getCodice(), session, createSkTec,"",null,"");
 						
 					if(verbaleTarget ==null) {														
 						myObj.addProperty("success", false);

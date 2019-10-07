@@ -39,6 +39,7 @@ import it.portalECI.DAO.GestioneRispostaVerbaleDAO;
 import it.portalECI.DAO.GestioneStatoInterventoDAO;
 import it.portalECI.DAO.GestioneStatoVerbaleDAO;
 import it.portalECI.DAO.GestioneVerbaleDAO;
+import it.portalECI.DTO.AttrezzaturaDTO;
 import it.portalECI.DTO.ColonnaTabellaQuestionarioDTO;
 import it.portalECI.DTO.ColonnaTabellaVerbaleDTO;
 import it.portalECI.DTO.CommessaDTO;
@@ -135,7 +136,7 @@ public class GestioneVerbaleBO {
 		session.update(intervento);
 	}
 	
-	public static VerbaleDTO buildVerbale(String codiceVerifica, Session session, Boolean creaSchedaTecnica,String note) {
+	public static VerbaleDTO buildVerbale(String codiceVerifica, Session session, Boolean creaSchedaTecnica,String note, AttrezzaturaDTO attrezzatura, String sedeUtilizzatore) {
 		VerbaleDTO result=null;
 		QuestionarioDTO questionario= GestioneQuestionarioDAO.getQuestionarioForVerbaleInstance(codiceVerifica, session);
 		if(questionario!=null) {
@@ -146,6 +147,8 @@ public class GestioneVerbaleBO {
 			verbale.setDescrizioneVerifica(questionario.getTipo().getCategoria().getDescrizione()+" - "+questionario.getTipo().getDescrizione());
 			verbale.setStato(GestioneStatoVerbaleDAO.getStatoVerbaleById(StatoVerbaleDTO.CREATO, session));
 			verbale.setNote(note);
+			verbale.setAttrezzatura(attrezzatura);
+			verbale.setSedeUtilizzatore(sedeUtilizzatore);
 			verbale.setType(VerbaleDTO.VERBALE);
 	
 			if(questionario.getDomandeSchedaTecnica().size()>0 && creaSchedaTecnica) {
