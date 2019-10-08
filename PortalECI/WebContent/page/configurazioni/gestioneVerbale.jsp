@@ -659,7 +659,7 @@
     </div>
    
     <div class="form-group">
-        <label for="inputName" class="col-sm-4 control-label">Tipo Attività:</label>
+        <label for="inputName" class="col-sm-4 control-label">Gruppo:</label>
         <div class="col-sm-8">
                       <input class="form-control" id="tipo_attivita" type="text" name=tipo_attivita readonly value="" />
     </div>
