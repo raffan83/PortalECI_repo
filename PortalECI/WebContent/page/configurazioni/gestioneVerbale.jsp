@@ -15,7 +15,9 @@
 <%@ page import="java.util.Comparator" %>
 <%@page import="java.util.ArrayList"%>
 <%@page import="java.util.List"%>
-
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+<% pageContext.setAttribute("newLineChar", "\r\n"); %>
+<% pageContext.setAttribute("newLineChar2", "\n"); %>
 <%
 	UtenteDTO user = (UtenteDTO)request.getSession().getAttribute("userObj");
 	request.setAttribute("user",user);
@@ -123,6 +125,19 @@
                   										<a class="pull-right">
 		 													${verbale.getNote()}
                   										</a>
+                									</li>
+                									<li class="list-group-item">
+                  										<b>Attrezzatura</b>
+                  										<c:if test="${verbale.attrezzatura!=null }">
+                  										<a class="pull-right btn customTooltip customlink"   onClick="dettaglioAttrezzatura('${verbale.attrezzatura.id }','${verbale.attrezzatura.matricola_inail }','${verbale.attrezzatura.numero_fabbrica }','${verbale.attrezzatura.tipo_attivita }','${verbale.attrezzatura.descrizione }','${verbale.attrezzatura.id_cliente }','${verbale.attrezzatura.id_sede }',
+ 																'${verbale.attrezzatura.data_verifica_funzionamento }','${verbale.attrezzatura.data_prossima_verifica_funzionamento }','${verbale.attrezzatura.data_verifica_integrita }','${verbale.attrezzatura.data_prossima_verifica_integrita }','${verbale.attrezzatura.data_verifica_interna }','${verbale.attrezzatura.data_prossima_verifica_interna }',
+ 																'${verbale.attrezzatura.anno_costruzione }','${verbale.attrezzatura.fabbricante }','${verbale.attrezzatura.modello }','${verbale.attrezzatura.settore_impiego }','${fn:replace(fn:replace(verbale.attrezzatura.note_tecniche.replace('\'',' ').replace('\\','/'),newLineChar, ' '),newLineChar2, ' ')}','${fn:replace(fn:replace(verbale.attrezzatura.note_generiche.replace('\'',' ').replace('\\','/').replace('\\n',' '),newLineChar, ' '),newLineChar2,' ')}','${verbale.attrezzatura.obsoleta }')">
+		 												
+		 												${verbale.getAttrezzatura().getMatricola_inail()}
+                  										</a>
+                  									 </c:if>
+                  									 
+                  									       										
                 									</li>
         										</ul>     
         										<div class="row" id="cambiostato">    
@@ -557,18 +572,177 @@
     							</div>
   							</div>
 						</div> 
+
+						
+	 <form class="form-horizontal" id="formNuovaAttrezzatura">
+<div id="modalDettaglioAttrezzatura" class="modal fade" role="dialog" aria-labelledby="myLargeModalLabel">
+    <div class="modal-dialog modal-md" role="document">
+    <div class="modal-content">
+     <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Dettaglio Attrezzatura</h4>
+      </div>
+       <div class="modal-body">
+
+       
+        
+         <div class="form-group">
+          <label for="inputEmail" class="col-sm-4 control-label">Cliente:</label>
+
+         <div class="col-sm-8">
+          <select name="cliente" id="cliente" data-placeholder="Seleziona Cliente..." disabled class="form-control select2" aria-hidden="true" data-live-search="true" style="width:100%">
+                  <option value=""></option>
+                      <c:forEach items="${listaClienti}" var="cliente">
+                           <option value="${cliente.__id}">${cliente.nome} </option> 
+                     </c:forEach>
+                  </select>
+    	</div>
+   </div>
+    <div class="form-group">
+          <label for="inputEmail" class="col-sm-4 control-label">Sede:</label>
+
+         <div class="col-sm-8">
+       <select name="sede" id="sede" data-placeholder="Seleziona Sede..."  disabled class="form-control select2" aria-hidden="true" data-live-search="true" style="width:100%">
+                   <option value=""></option>
+             		<c:forEach items="${listaSedi}" var="sedi">
+                        <option value="${sedi.__id}_${sedi.id__cliente_}">${sedi.descrizione} - ${sedi.indirizzo} - ${sedi.comune} (${sedi.siglaProvincia})</option>              
+                     	</c:forEach>
+                  </select>
+    	</div>
+   </div>
+              
+
+    <div class="form-group">
+          <label for="inputEmail" class="col-sm-4 control-label">Numero matricola INAIL:</label>
+
+         <div class="col-sm-8">
+         <input class="form-control" id="matricola_inail" type="text" name="matricola_inail" readonly value=""/>
+    	</div>
+   </div>
+	<div class="form-group">
+          <label for="inputEmail" class="col-sm-4 control-label">Numero di fabbrica:</label>
+
+         <div class="col-sm-8">
+         <input class="form-control" id="numero_fabbrica" type="text" name="numero_fabbrica" readonly value=""/>
+    	</div>
+   </div>
+
+   <div class="form-group">
+        <label for="inputName" class="col-sm-4 control-label">Descrizione:</label>
+        <div class="col-sm-8">
+                      <input class="form-control" id="descrizione" type="text" name="descrizione" readonly value=""/>
+    </div>
+    </div>
+    <div class="form-group">
+        <label for="inputName" class="col-sm-4 control-label">Anno di costruzione:</label>
+        <div class="col-sm-8">
+                      <input class="form-control" id="anno_costruzione" type="number" name="anno_costruzione"  value="" readonly/>
+    </div>
+    </div>
+    <div class="form-group">
+        <label for="inputName" class="col-sm-4 control-label">Fabbricante:</label>
+        <div class="col-sm-8">
+                      <input class="form-control" id="fabbricante" type="text" name="fabbricante"  value="" readonly/>
+    </div>
+    </div>
+    <div class="form-group">
+        <label for="inputName" class="col-sm-4 control-label">Modello:</label>
+        <div class="col-sm-8">
+                      <input class="form-control" id="modello" type="text" name="modello"  value="" readonly/>
+    </div>
+    </div>
+    <div class="form-group">
+        <label for="inputName" class="col-sm-4 control-label">Settore d'impiego:</label>
+        <div class="col-sm-8">
+                      <input class="form-control" id="settore_impiego" type="text" name="settore_impiego"  value="" readonly/>
+    </div>
+    </div>
+   
+    <div class="form-group">
+        <label for="inputName" class="col-sm-4 control-label">Tipo Attività:</label>
+        <div class="col-sm-8">
+                      <input class="form-control" id="tipo_attivita" type="text" name=tipo_attivita readonly value="" />
+    </div>
+    </div>
+
+         <div class="form-group">
+        <label for="inputName" class="col-sm-4 control-label">Data verifica funzionamento:</label>
+        <div class="col-sm-8">
+                      <input class="form-control datepicker" id="data_verifica_funzionamento" type="text" name="data_verifica_funzionamento"  value="" data-date-format="dd/mm/yyyy" readonly/>
+    </div>
+       </div> 
+       
+         <div class="form-group">
+        <label for="inputName" class="col-sm-4 control-label">Data prossima verifica funzionamento:</label>
+        <div class="col-sm-8">
+                      <input class="form-control datepicker" id="data_prossima_verifica_funzionamento" type="text" name="data_prossima_verifica_funzionamento"  value="" data-date-format="dd/mm/yyyy" readonly/>
+    </div>
+       </div> 
+       
+             <div class="form-group">
+        <label for="inputName" class="col-sm-4 control-label">Data verifica integrità:</label>
+        <div class="col-sm-8">
+                      <input class="form-control datepicker" id="data_verifica_integrita" type="text" name="data_verifica_integrita"  value="" data-date-format="dd/mm/yyyy" readonly/>
+    </div>
+       </div> 
+       
+         <div class="form-group">
+        <label for="inputName" class="col-sm-4 control-label">Data prossima verifica integrità:</label>
+        <div class="col-sm-8">
+                      <input class="form-control datepicker" id="data_prossima_verifica_integrita" type="text" name="data_prossima_verifica_integrita"  value="" data-date-format="dd/mm/yyyy" readonly/>
+    </div>
+       </div>
+             <div class="form-group">
+        <label for="inputName" class="col-sm-4 control-label">Data verifica interna:</label>
+        <div class="col-sm-8">
+                      <input class="form-control datepicker" id="data_verifica_interna" type="text" name="data_verifica_interna"  value="" data-date-format="dd/mm/yyyy" readonly/>
+    </div>
+       </div> 
+       
+         <div class="form-group">
+        <label for="inputName" class="col-sm-4 control-label">Data prossima verifica interna:</label>
+        <div class="col-sm-8">
+                      <input class="form-control datepicker" id="data_prossima_verifica_interna" type="text" name="data_prossima_verifica_interna"  value="" data-date-format="dd/mm/yyyy" readonly/>
+    </div>
+       </div>
+ <div class="form-group">
+        <label for="inputName" class="col-sm-4 control-label">Note tecniche:</label>
+        <div class="col-sm-8">
+                      <textarea class="form-control" id="note_tecniche" name="note_tecniche" rows ="3" readonly></textarea>
+    </div>
+    </div>
+    <div class="form-group">
+        <label for="inputName" class="col-sm-4 control-label">Note generiche:</label>
+        <div class="col-sm-8">
+                      <textarea class="form-control" id="note_generiche" name="note_generiche" rows ="3" readonly></textarea>
+    </div>
+    </div>
+
+  		 </div>
+      <div class="modal-footer">
+
+      </div>
+    </div>
+  </div>
+ 
+</div>
+   </form>
+						
 						
      					<div id="errorMsg"><!-- Place at bottom of page --></div> 
 					</section>
   				</div>
   				<!-- /.content-wrapper -->	
- 
+  				
+
  	 		<t:dash-footer />
  
   			<t:control-sidebar />
    
 		</div>
 		<!-- ./wrapper -->
+		
+
 
 	</jsp:attribute>
 
@@ -579,9 +753,75 @@
 	</jsp:attribute>
 
 	<jsp:attribute name="extra_js_footer">
+	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/datejs/1.0/date.min.js"></script>
 		<script src="js/verbale.js" type="text/javascript"></script>
  		<script type="text/javascript">
 		   
+ 		function dettaglioAttrezzatura(id_attrezzatura, matricola_inail, numero_fabbrica, tipo_attivita, descrizione, id_cliente, id_sede,
+ 				data_verifica_funzionamento, data_prossima_verifica_funzionamento,data_verifica_integrita, data_prossima_verifica_integrita, data_verifica_interna, data_prossima_verifica_interna,
+ 				anno_costruzione, fabbricante, modello, settore_impiego, note_tecniche, note_generiche, obsoleta){
+ 			
+ 			
+ 			$('#id_attrezzatura').val(id_attrezzatura);
+ 			$('#matricola_inail').val(matricola_inail);
+ 			$('#numero_fabbrica').val(numero_fabbrica);
+ 			$('#tipo_attivita').val(tipo_attivita);
+ 			$('#descrizione').val(descrizione);
+ 			$('#cliente').val(id_cliente);
+ 			$('#cliente').change();
+ 			if(id_sede!=0){
+ 				$('#sede').val(id_sede+"_"+id_cliente);	
+ 			}else{
+ 				$('#sede').val(0);
+ 			}
+ 			
+ 			$('#sede').change();
+ 			$('#anno_costruzione').val(anno_costruzione);
+ 			$('#fabbricante').val(fabbricante);
+ 			$('#modello').val(modello);
+ 			$('#settore_impiego').val(settore_impiego);
+ 			$('#note_tecniche').val(note_tecniche);
+ 			$('#note_generiche').val(note_generiche);	
+ 			
+ 			if(data_verifica_funzionamento!=null && data_verifica_funzionamento!= ''){
+ 				$('#data_verifica_funzionamento').val(Date.parse(data_verifica_funzionamento).toString("dd/MM/yyyy"));	
+ 			}
+ 			if(data_prossima_verifica_funzionamento!=null && data_prossima_verifica_funzionamento!= ''){
+ 				$('#data_prossima_verifica_funzionamento').val(Date.parse(data_prossima_verifica_funzionamento).toString("dd/MM/yyyy"));	
+ 			}
+ 			if(data_verifica_integrita!=null && data_verifica_integrita!= ''){
+ 				$('#data_verifica_integrita').val(Date.parse(data_verifica_integrita).toString("dd/MM/yyyy"));	
+ 			}
+ 			if(data_prossima_verifica_integrita!=null && data_prossima_verifica_integrita!= ''){
+ 				$('#data_prossima_verifica_integrita').val(Date.parse(data_prossima_verifica_integrita).toString("dd/MM/yyyy"));	
+ 			}
+ 			if(data_verifica_interna!=null && data_verifica_interna!= ''){
+ 				$('#data_verifica_interna').val(Date.parse(data_verifica_interna).toString("dd/MM/yyyy"));	
+ 			}
+ 			if(data_prossima_verifica_interna!=null && data_prossima_verifica_interna!= ''){
+ 				$('#data_prossima_verifica_interna').val(Date.parse(data_prossima_verifica_interna).toString("dd/MM/yyyy"));	
+ 			}
+ 			
+ 		//	$('#id_attrezzatura').val(id_attrezzatura);	
+ 			
+ 			$('#data_prossima_verifica_funzionamento').datepicker({
+ 					format: "dd/MM/yyyy"
+ 			});
+ 			
+ 			if(obsoleta==0){
+ 				$('#rendi_obsoleta').addClass("btn-danger");
+ 				$('#rendi_obsoleta').show();
+ 				$('#rendi_non_obsoleta').hide();
+ 			}else{
+ 				$('#rendi_non_obsoleta').addClass("btn-success");
+ 				$('#rendi_obsoleta').hide();
+ 				$('#rendi_non_obsoleta').show();
+ 			}
+ 			
+ 			$('#modalDettaglioAttrezzatura').modal();
+ 		}
+ 		
+ 		
 			$(document).ready(function() {			
 				$('.rispVerb').on('ifChanged', function(event) {
 					$('.'+$(this).attr('id')).find('input').val('');

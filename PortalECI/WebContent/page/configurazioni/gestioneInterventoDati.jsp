@@ -138,6 +138,7 @@
  															<th>Stato</th>
  															<th>Certificato</th>
  															<th width="150px">Sc. Tecnica</th>
+ 															<th>Attrezzatura</th>
  															<th>Note</th>
  															<td></td>
 														</tr>
@@ -182,6 +183,7 @@
       																	</c:forEach>
       																</c:if> 
 																</td>
+																<td>${verbale.attrezzatura.matricola_inail }</td>
 																<td>
   																	${verbale.getNote()}
 																</td>	

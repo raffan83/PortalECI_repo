@@ -25,7 +25,7 @@
  						<th>ID</th> 						  
             	       <th>N. matricola INAIL</th>		   
             		   <th>N. di fabbrica</th>
-                       <th>Tipo attività</th>
+                       <th>Gruppo</th>
                        <th>Descrizione</th>
                        <th>Cliente</th>
                        <th>Sede</th>
@@ -176,7 +176,7 @@
     </div>
    
     <div class="form-group">
-        <label for="inputName" class="col-sm-4 control-label">Tipo Attività:</label>
+        <label for="inputName" class="col-sm-4 control-label">gruppo:</label>
         <div class="col-sm-8">
                       <input class="form-control" id="tipo_attivita" type="text" name=tipo_attivita required value=""/>
     </div>
@@ -329,7 +329,7 @@
     </div>
     </div>
     <div class="form-group">
-        <label for="inputName" class="col-sm-4 control-label">Tipo Attività:</label>
+        <label for="inputName" class="col-sm-4 control-label">Gruppo:</label>
         <div class="col-sm-8">
                       <input class="form-control" id="tipo_attivita_mod" type="text" name="tipo_attivita_mod" required value=""/>
     </div>

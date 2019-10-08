@@ -128,8 +128,8 @@ public class GestioneIntervento extends HttpServlet {
 				String[] schedaTecnicaObbligatoria=request.getParameterValues("schedaTecnica");
 				String[] listaNote =request.getParameterValues("note");
 				
-				String[] listaAttrezzature =null;/*request.getParameterValues("note");*/
-				
+				String[] listaAttrezzature =request.getParameterValues("attrezzature");
+
 				CommessaDTO comm=(CommessaDTO)request.getSession().getAttribute("commessa");
 				
 				for( int i = 0; i <= categoriaTipo.length - 1; i++){
@@ -151,10 +151,12 @@ public class GestioneIntervento extends HttpServlet {
 						}
 					}
 					
-				//	AttrezzaturaDTO attrezzatura= GestioneAttrezzatureBO.getAttrezzaturaFromId(Integer.parseInt(listaAttrezzature[i]), session);
-				
 					AttrezzaturaDTO attrezzatura= null;
 					
+					if(listaAttrezzature!=null && listaAttrezzature[i]!=null && !listaAttrezzature[i].equals("") && !listaAttrezzature[i].equals("0")) {
+							attrezzatura = GestioneAttrezzatureBO.getAttrezzaturaFromId(Integer.parseInt(listaAttrezzature[i]), session);
+					}
+						
 					VerbaleDTO verbale =GestioneVerbaleBO.buildVerbale(tipoVerificaDTO.getCodice(), session, createSkTec,listaNote[i],attrezzatura,comm.getINDIRIZZO_UTILIZZATORE());
 					if(verbale !=null) {
 						verbali.add(verbale);

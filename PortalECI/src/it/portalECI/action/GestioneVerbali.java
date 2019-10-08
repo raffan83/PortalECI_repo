@@ -25,6 +25,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.tomcat.util.codec.binary.Base64;
+import org.hibernate.HibernateException;
 import org.hibernate.Session;
 
 import com.google.gson.JsonObject;
@@ -35,7 +36,9 @@ import it.portalECI.DAO.GestioneRispostaVerbaleDAO;
 import it.portalECI.DAO.GestioneStatoVerbaleDAO;
 import it.portalECI.DAO.GestioneStoricoModificheDAO;
 import it.portalECI.DAO.SessionFacotryDAO;
+import it.portalECI.DTO.ClienteDTO;
 import it.portalECI.DTO.ColonnaTabellaVerbaleDTO;
+import it.portalECI.DTO.CompanyDTO;
 import it.portalECI.DTO.DocumentoDTO;
 import it.portalECI.DTO.DomandaVerbaleDTO;
 import it.portalECI.DTO.InterventoDTO;
@@ -46,12 +49,15 @@ import it.portalECI.DTO.RispostaSceltaVerbaleDTO;
 import it.portalECI.DTO.RispostaTabellaVerbaleDTO;
 import it.portalECI.DTO.RispostaTestoVerbaleDTO;
 import it.portalECI.DTO.RispostaVerbaleDTO;
+import it.portalECI.DTO.SedeDTO;
 import it.portalECI.DTO.StatoVerbaleDTO;
 import it.portalECI.DTO.StoricoModificheDTO;
 import it.portalECI.DTO.UtenteDTO;
 import it.portalECI.DTO.VerbaleDTO;
+import it.portalECI.Exception.ECIException;
 import it.portalECI.Util.Costanti;
 import it.portalECI.Util.Utility;
+import it.portalECI.bo.GestioneAnagraficaRemotaBO;
 import it.portalECI.bo.GestioneQuestionarioBO;
 import it.portalECI.bo.GestioneVerbaleBO;
 
@@ -512,6 +518,38 @@ public class GestioneVerbali extends HttpServlet {
 		        	}
 	 			}
 			}
+			
+			
+			CompanyDTO cmp=(CompanyDTO)request.getSession().getAttribute("usrCompany");
+			
+			String idCompany=""+cmp.getId();
+			
+			List<ClienteDTO> listaClientiFull =(List<ClienteDTO>) request.getSession().getAttribute("listaClienti");
+			List<SedeDTO> listaSedi = (List<SedeDTO>) request.getSession().getAttribute("listaSedi");
+			try {
+			
+				if(listaClientiFull==null) {
+					listaClientiFull = GestioneAnagraficaRemotaBO.getListaClienti(idCompany);	
+				}
+				
+				if(listaSedi==null) {
+					listaSedi = GestioneAnagraficaRemotaBO.getListaSedi();	
+				}
+			
+			} catch (Exception ex) {
+				ex.printStackTrace();
+				session.getTransaction().rollback();
+				session.close();
+		   		request.setAttribute("error",ECIException.callException(ex));
+		   	    request.getSession().setAttribute("exception", ex);
+		   		RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/page/error.jsp");
+		   	    dispatcher.forward(request,response);	
+			}				
+
+			request.getSession().setAttribute("listaClienti",listaClientiFull);
+
+			request.getSession().setAttribute("listaSedi",listaSedi);	
+			
 			request.getSession().setAttribute("listaAllegati", listaAllegati);
 			request.getSession().setAttribute("listaCertificati", listaCertificati);
 			request.getSession().setAttribute("listaSchedeTecniche", listaSchedeTecniche);

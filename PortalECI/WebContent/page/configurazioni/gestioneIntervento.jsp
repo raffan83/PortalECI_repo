@@ -285,11 +285,24 @@
     	                 							</c:forEach>
         	         							</select>                  
         									</div>    
+        									<div id="content_attrezzatura" style="display:none" >
+	        									<div class="form-group col-sm-5">
+	                  								<label>Attrezzatura</label>
+	                  								<select name="attrezzatura" id="attrezzatura" data-placeholder="Seleziona Attrezzatura"  class="form-control select2" aria-hidden="true" data-live-search="true">
+	                									<option value="" disabled selected>Seleziona Tipo...</option>
+	                									<option value="0">Nessuna</option>
+	                									<c:forEach items="${listaAttrezzature}" var="attrezzatura">                		
+		                        							<option value="${attrezzatura.id}_${attrezzatura.matricola_inail}">${attrezzatura.matricola_inail}</option>     	                            
+	    	                 							</c:forEach>
+	        	         							</select>                  
+	        									</div>  
+        									</div>
         									<div class="form-group col-sm-2 text-center" style="position: absolute;	bottom: 0; right: 0;">        									
                   								<button class="btn-sm" id="addrow" onclick="addRow()"><i class="fa fa-plus"></i></button>              
         									</div> 
         									</div>		
-  									
+        									
+        								        									 									
   											<div class="form-group">
         									<label>Note</label>
 											<input type="text" class="form-control" id="noteVerbale" >
@@ -302,7 +315,9 @@
  														<tr class="active">
  															<th>Categoria Verifica</th>
  															<th>Tipo Verifica</th>
- 															<th>SC obbligatoria</th>
+ 															<th>ST obbligatoria</th>
+ 															<th>Attrezzatura</th>
+ 															<th style="display:none"></th>
  															<th>Note</th>		 														
  															<td></td>
 														</tr>
@@ -315,6 +330,7 @@
   											</div>
   										</div>
   										<div id="empty" class=" label label-danger testo12"></div>
+  										<input type="hidden" id="str_attrezzature" name="str_attrezzature" >
   		 							</div>
       								<div class="modal-footer">
 						        		<button type="button" class="btn btn-danger"onclick="saveInterventoFromModal()"  >Salva</button>
@@ -364,6 +380,8 @@
 
 		<jsp:attribute name="extra_js_footer">
  			<script type="text/javascript">
+ 			
+ 			var str_attrezzature = "";
 		   
 			    $(document).ready(function() {
     				table = $('#tabPM').DataTable({
@@ -460,7 +478,7 @@
 		    			});
 		  			} );
     
-    				var tableAttiìvita = $('#tabAttivita').DataTable({
+    				/* var tableAttivita = $('#tabAttivita').DataTable({
     					language: {
 	        				emptyTable : 	"Nessun dato presente nella tabella",
 	        				info	:"Vista da _START_ a _END_ di _TOTAL_ elementi",
@@ -479,23 +497,25 @@
   	        					next:	"Successivo",
   	        					last:	"Fine",
 	        				},
-	        				aria:	{
+	        				 aria:	{
   	        					srtAscending:	": attiva per ordinare la colonna in ordine crescente",
   	        					sortDescending:	": attiva per ordinare la colonna in ordine decrescente",
-	        				}
+	        				} 
       					},
 	      				paging: true, 
 	      				pageLength: 5,
-	      				ordering: true,
+	      				ordering: false,
 	      				info: true, 
 	      				searchable: false, 
-	      				targets: 0,
+	      				//targets: 0,
 	      				responsive: true,
 	      				scrollX: false,
-	      				order: [[ 0, "desc" ]],
+	      				//order: [[ 0, "desc" ]],
 	      				columnDefs: [
 					   		{ responsivePriority: 1, targets: 0 },
 	                   		{ responsivePriority: 3, targets: 2 },
+	                   	
+	                   	
 	               		],       
 	               		buttons: [ {
 	                   		extend: 'copy',
@@ -516,7 +536,7 @@
 	                    }	    		      
 	    			});
     				
-    				tableAttiìvita.buttons().container().appendTo( '#tabAttivita_wrapper .col-sm-6:eq(1)' );	   
+    				tableAttivita.buttons().container().appendTo( '#tabAttivita_wrapper .col-sm-6:eq(1)' );	   
     				$('#tabAttivita').on( 'page.dt', function () {
 						$('.customTooltip').tooltipster({
 		        			theme: 'tooltipster-light'
@@ -533,9 +553,9 @@
  					});
 					
 					// DataTable
-					tableAttiìvita = $('#tabAttivita').DataTable();
+					tableAttivita = $('#tabAttivita').DataTable();
 					// Apply the search
-					tableAttiìvita.columns().eq( 0 ).each( function ( colIdx ) {
+					tableAttivita.columns().eq( 0 ).each( function ( colIdx ) {
   						$( 'input', table.column( colIdx ).header() ).on( 'keyup', function () {
       						table
           						.column( colIdx )
@@ -544,7 +564,7 @@
   						} );
 					} ); 
 					
-					tableAttiìvita.columns.adjust().draw();            
+					tableAttivita.columns.adjust().draw();      */       
     
 				    $('#myModal').on('hidden.bs.modal', function (e) {
    	  					$('#noteApp').val("");
@@ -566,7 +586,11 @@
     	 			$("#tecnici option[value='']").remove();
      			});
 
-      			$("#select1").change(function() {    
+      			$("#select1").change(function() {   
+      				
+      				$('#content_attrezzatura').hide();
+      				
+      				
     	  			$("#select1 option[value='']").remove();
     	  			$("#select2 option[value='']").remove(); 
     	  			if ($(this).data('options') == undefined) {
@@ -592,11 +616,24 @@
 			    	$("#select2").trigger("chosen:updated");    	      	 
     				$("#select2").change();  
     	      	
+    				if(id=="10"){
+    					$('#content_attrezzatura').show();	
+    					$('#attrezzatura').select2();
+    					
+    				}
+    				
+    				
     			});	        
       			
 				function addRow(){
 					var categorie_verifica=$('#select1').val();
-					var tipi_verifica=$('#select2').val();									
+					var tipi_verifica=$('#select2').val();		
+					var attrezzatura = "";
+					
+					if(categorie_verifica == "10" && $('#attrezzatura').val()!='0'){
+						attrezzatura = $('#attrezzatura').val();	
+					}
+					
 					
 					if(categorie_verifica!=null && tipi_verifica!=null){
 						//if($("#" +tipi_verifica).length == 0) {						 										
@@ -621,13 +658,22 @@
 									}else{
 										objectdata+='<input type="checkbox" class="skTecObb" />';
 									}
+									objectdata+='</td>';
+									if(attrezzatura !=null && attrezzatura!=""){
+										objectdata+='<td>'+attrezzatura.split("_")[1]+'</td>';
+										objectdata+='<td style="display:none">' +attrezzatura.split("_")[0]+'</td>';
+									}else{
+										objectdata+='<td></td>';
+										objectdata+='<td style="display:none"></td>';
+										//str_attrezzature +=  "_";
+									}									
+									//objectdata+='</td>'+
 									
-									objectdata+='</td>'+
-									'<td>'+$("#noteVerbale").val()+'</td>'+    
+									objectdata+='<td>'+$("#noteVerbale").val()+'</td>'+    
 										'<td><a class="btn customTooltip" title="Click per eliminare la riga" onclick="removeRow(\''+tipi_verifica+'\')"><i class="fa fa-minus"></i></a></td></tr>';
 									
 									$("#bodytabVerifica").append(objectdata);
-									
+									$('#str_attrezzature').val(str_attrezzature)
 									$('.skTecObb').iCheck({
 							      		checkboxClass: 'icheckbox_square-blue',
 							      		radioClass: 'iradio_square-blue',
