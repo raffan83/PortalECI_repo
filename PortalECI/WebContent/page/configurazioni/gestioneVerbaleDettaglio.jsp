@@ -114,7 +114,7 @@
   		<div class="col-sm-3">
 			<div class="form-group">
 				<label for="titolo-input" class="control-label">${risposta.getRispostaQuestionario().getValore1()}</label>
-				<input type="text" name="value1${risposta.getId()}" class="form-control rispVerb" value="${risposta.getValue1()}" ${domVerbale.getDomandaQuestionario().getObbligatoria()?'required':''} />
+				<input type="text" name="value1${risposta.getId()}" class="form-control rispVerb" value="${risposta.getValue1()}" onkeyup="calcoloRisultato(${risposta.getId()}, '${risposta.getRispostaQuestionario().getOperatore()}')" ${domVerbale.getDomandaQuestionario().getObbligatoria()?'required':''} />
 			</div>
 		</div>
 		<div class="col-sm-1">
@@ -125,13 +125,13 @@
 		<div class="col-sm-3">
 			<div class="form-group">
 				<label for="titolo-input" class="control-label">${risposta.getRispostaQuestionario().getValore2()}</label>
-	 			<input type="text" name="value2${risposta.getId()}" class="form-control rispVerb" value="${risposta.getValue2()}" ${domVerbale.getDomandaQuestionario().getObbligatoria()?'required':''}/>
+	 			<input type="text" name="value2${risposta.getId()}" class="form-control rispVerb" value="${risposta.getValue2()}" onkeyup="calcoloRisultato(${risposta.getId()}, '${risposta.getRispostaQuestionario().getOperatore()}')" ${domVerbale.getDomandaQuestionario().getObbligatoria()?'required':''}/>
 			</div>
 		</div>
 		<div class="col-sm-3">
 			<div class="form-group">
 				<label for="titolo-input" class="control-label">${risposta.getRispostaQuestionario().getRisultato()}</label>
-				<input type="text" class="form-control rispVerb"  name="responseValue${risposta.getId()}" value="${risposta.getResponseValue()}" ${domVerbale.getDomandaQuestionario().getObbligatoria()?'required':''} />
+				<input type="text" class="form-control rispVerb"  name="responseValue${risposta.getId()}" value="${risposta.getResponseValue()}" ${domVerbale.getDomandaQuestionario().getObbligatoria()?'required':''} readonly/>
 			</div>
 		</div>
   																
@@ -181,3 +181,33 @@
 		</div></div>
   	</c:when>
 </c:choose>
+
+<script type="text/javascript">
+	function calcoloRisultato(idrisposta, operatore){
+		var valore1 = parseFloat($("[name='value1"+idrisposta+"']").val());
+		var valore2 = parseFloat($("[name='value2"+idrisposta+"']").val());
+		var risultato = null;
+		
+		if (!isNaN(valore1) && !isNaN(valore2)) {
+			switch (operatore) {
+			case "Somma":
+				risultato = valore1 + valore2;
+				break;
+			case "Sottrazione":
+				risultato = valore1 - valore2;
+				break;
+			case "Moltiplicazione":
+				risultato = valore1 * valore2;
+				break;
+			case "Divisione":
+				risultato = valore1 / valore2;
+				break;
+			case "Potenza":
+				risultato = Math.pow(valore1, valore2);
+				break;
+			}
+		}
+		
+		$("[name='responseValue"+idrisposta+"']").val(risultato);
+	}
+</script>
