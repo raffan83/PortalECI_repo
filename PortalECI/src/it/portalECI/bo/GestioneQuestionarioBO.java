@@ -22,7 +22,8 @@ import it.portalECI.DTO.VerbaleDTO;
 
 public class GestioneQuestionarioBO {
 	
-	public static final String[] GLOBAL_PLACEHOLDERS = new String[]{"TECNICO_VERIFICATORE","NUMERO_VERBALE","CLIENTE_UTILIZZATORE","INDIRIZZO_CLIENTE_UTILIZZATORE","CLIENTE","INDIRIZZO_CLIENTE"};
+	public static final String[] GLOBAL_PLACEHOLDERS = new String[]{"TECNICO_VERIFICATORE","NUMERO_VERBALE","CLIENTE_UTILIZZATORE","INDIRIZZO_CLIENTE_UTILIZZATORE","CLIENTE","INDIRIZZO_CLIENTE",
+																	"ATT_MATRICOLA","ATT_N_FABBRICA","ATT_DESCRIZIONE","ATT_ANNO_COSTRUZIONE","ATT_FABBRICANTE","ATT_MODELLO","ATT_SETTORE_IMPIEGO","SEDE_VIE"};
 
 	public static List<QuestionarioDTO> getListaQuestionari(Session session) {
 		return GestioneQuestionarioDAO.getListaQuestionari(session); 

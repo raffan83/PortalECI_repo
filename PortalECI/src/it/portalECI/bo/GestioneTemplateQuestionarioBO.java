@@ -182,7 +182,21 @@ public class GestioneTemplateQuestionarioBO {
 		html = html.replaceAll("\\$\\{INDIRIZZO_CLIENTE_UTILIZZATORE\\}","INDIRIZZO UTILIZZATORE"); 
 		html = html.replaceAll("\\$\\{CLIENTE\\}","CLIENTE");
 		html = html.replaceAll("\\$\\{INDIRIZZO_CLIENTE\\}", "INDIRIZZO CLIENTE");
-
+		
+		/*Attrezzatura*/
+		html = html.replaceAll("\\$\\{ATT_MATRICOLA\\}", "MATRICOLA ATTREZZATURA");
+		html = html.replaceAll("\\$\\{ATT_N_FABBRICA\\}", "N° FABBRICA");
+		html = html.replaceAll("\\$\\{ATT_DESCRIZIONE\\}", "DESCRIZIONE ATTREZZATURA");
+		html = html.replaceAll("\\$\\{ATT_ANNO_COSTRUZIONE\\}", "ANNO COSTRUZIONE");
+		html = html.replaceAll("\\$\\{ATT_FABBRICANTE\\}", "FABBRICANTE");
+		html = html.replaceAll("\\$\\{ATT_MODELLO\\}", "MODELLO");
+		html = html.replaceAll("\\$\\{ATT_SETTORE_IMPIEGO\\}", "SETTORE IMPIEGO");
+		
+		html = html.replaceAll("\\$\\{SEDE_VIE\\}", "SEDE VIE");
+		
+	
+		
+		
 		// Elimino i placeholder non utilizzati
 		html = html.replaceAll("\\$\\{(.*?)\\}", "");
 		return html;

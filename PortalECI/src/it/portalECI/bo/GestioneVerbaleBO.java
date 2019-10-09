@@ -650,6 +650,48 @@ public class GestioneVerbaleBO {
 		if(clienteUtilizzatore != null && clienteUtilizzatore.getINDIRIZZO_PRINCIPALE()!=null) {
 			html = html.replaceAll("\\$\\{INDIRIZZO_CLIENTE\\}", clienteUtilizzatore.getINDIRIZZO_PRINCIPALE());
 		}
+		
+	
+		//Attrezzatura
+		if(verbale.getAttrezzatura() != null && verbale.getAttrezzatura().getMatricola_inail()!=null) 
+		{
+			html = html.replaceAll("\\$\\{ATT_MATRICOLA\\}", verbale.getAttrezzatura().getMatricola_inail());
+		}
+		
+		if(verbale.getAttrezzatura() != null && verbale.getAttrezzatura().getNumero_fabbrica()!=null) 
+		{
+			html = html.replaceAll("\\$\\{ATT_N_FABBRICA\\}",verbale.getAttrezzatura().getNumero_fabbrica());
+		}
+		
+		if(verbale.getAttrezzatura() != null && verbale.getAttrezzatura().getDescrizione()!=null) 
+		{
+			html = html.replaceAll("\\$\\{ATT_DESCRIZIONE\\}", verbale.getAttrezzatura().getDescrizione());
+		}
+		
+		if(verbale.getAttrezzatura() != null && verbale.getAttrezzatura().getAnno_costruzione()!=0) 
+		{
+			html = html.replaceAll("\\$\\{ATT_ANNO_COSTRUZIONE\\}", ""+verbale.getAttrezzatura().getAnno_costruzione());
+		}
+		
+		if(verbale.getAttrezzatura() != null && verbale.getAttrezzatura().getFabbricante()!=null) 
+		{
+			html = html.replaceAll("\\$\\{ATT_FABBRICANTE\\}", verbale.getAttrezzatura().getFabbricante());
+		}
+		
+		if(verbale.getAttrezzatura() != null && verbale.getAttrezzatura().getModello()!=null) 
+		{
+			html = html.replaceAll("\\$\\{ATT_MODELLO\\}", verbale.getAttrezzatura().getModello());
+		}
+		
+		if(verbale.getAttrezzatura() != null && verbale.getAttrezzatura().getSettore_impiego()!=null) 
+		{
+			html = html.replaceAll("\\$\\{ATT_SETTORE_IMPIEGO\\}", verbale.getAttrezzatura().getSettore_impiego());
+		}
+		
+		if(verbale.getSedeUtilizzatore() != null ) 
+		{
+			html = html.replaceAll("\\$\\{SEDE_VIE\\}", verbale.getSedeUtilizzatore());
+		}
 
 		// Elimino i placeholder non utilizzati
 		html = html.replaceAll("\\$\\{(.*?)\\}", "");
