@@ -22,15 +22,18 @@ import it.portalECI.DAO.GestioneStatoVerbaleDAO;
 import it.portalECI.DAO.SessionFacotryDAO;
 import it.portalECI.DTO.AttrezzaturaDTO;
 import it.portalECI.DTO.CategoriaVerificaDTO;
+import it.portalECI.DTO.ClienteDTO;
 import it.portalECI.DTO.CommessaDTO;
 import it.portalECI.DTO.CompanyDTO;
 import it.portalECI.DTO.InterventoDTO;
+import it.portalECI.DTO.SedeDTO;
 import it.portalECI.DTO.StatoInterventoDTO;
 import it.portalECI.DTO.StatoVerbaleDTO;
 import it.portalECI.DTO.TipoVerificaDTO;
 import it.portalECI.DTO.UtenteDTO;
 import it.portalECI.DTO.VerbaleDTO;
 import it.portalECI.Util.Utility;
+import it.portalECI.bo.GestioneAnagraficaRemotaBO;
 import it.portalECI.bo.GestioneAttrezzatureBO;
 import it.portalECI.bo.GestioneCommesseBO;
 import it.portalECI.bo.GestioneInterventoBO;
@@ -108,13 +111,25 @@ public class GestioneIntervento extends HttpServlet {
 				ArrayList<TipoVerificaDTO> tipi_verifica = GestioneInterventoBO.getTipoVerifica(session);
 				ArrayList<CategoriaVerificaDTO> categorie_verifica = GestioneInterventoBO.getCategoriaVerifica(session);
 				
+				CompanyDTO cmp=(CompanyDTO)request.getSession().getAttribute("usrCompany");
+				
+				String idCompany=""+cmp.getId();				
+			
+				List<SedeDTO> listaSedi = (List<SedeDTO>) request.getSession().getAttribute("listaSedi");
+				if(listaSedi==null) {
+						listaSedi = GestioneAnagraficaRemotaBO.getListaSedi();							
+				}
+				
+				List<SedeDTO> lista_sedi_cliente = GestioneAnagraficaRemotaBO.getSediFromCliente(listaSedi, comm.getID_ANAGEN());
+						
 				ArrayList<AttrezzaturaDTO> listaAttrezzature =GestioneAttrezzatureBO.getlistaAttrezzatureSede(comm.getID_ANAGEN_UTIL(), comm.getK2_ANAGEN_INDR_UTIL(), session);
 				
 				request.getSession().setAttribute("tipi_verifica", tipi_verifica);
 				request.getSession().setAttribute("categorie_verifica", categorie_verifica);
 				request.getSession().setAttribute("listaInterventi", listaInterventi);
 				request.getSession().setAttribute("tecnici", users);
-				request.getSession().setAttribute("listaAttrezzature", listaAttrezzature);
+				request.getSession().setAttribute("listaAttrezzature", listaAttrezzature);			
+				request.getSession().setAttribute("lista_sedi_cliente",lista_sedi_cliente);	
 
 				RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/page/configurazioni/gestioneIntervento.jsp");
 				dispatcher.forward(request,response);
@@ -127,6 +142,7 @@ public class GestioneIntervento extends HttpServlet {
 				String[] categoriaTipo=request.getParameterValues("categoriaTipo");
 				String[] schedaTecnicaObbligatoria=request.getParameterValues("schedaTecnica");
 				String[] listaNote =request.getParameterValues("note");
+				String[] listaSedi =request.getParameterValues("sedi");
 				
 				String[] listaAttrezzature =request.getParameterValues("attrezzature");
 
@@ -157,7 +173,7 @@ public class GestioneIntervento extends HttpServlet {
 							attrezzatura = GestioneAttrezzatureBO.getAttrezzaturaFromId(Integer.parseInt(listaAttrezzature[i]), session);
 					}
 						
-					VerbaleDTO verbale =GestioneVerbaleBO.buildVerbale(tipoVerificaDTO.getCodice(), session, createSkTec,listaNote[i],attrezzatura,comm.getINDIRIZZO_UTILIZZATORE());
+					VerbaleDTO verbale =GestioneVerbaleBO.buildVerbale(tipoVerificaDTO.getCodice(), session, createSkTec,listaNote[i],attrezzatura,listaSedi[i]);
 					if(verbale !=null) {
 						verbali.add(verbale);
 					}else {

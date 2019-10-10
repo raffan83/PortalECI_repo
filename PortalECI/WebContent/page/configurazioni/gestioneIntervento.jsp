@@ -285,6 +285,18 @@
     	                 							</c:forEach>
         	         							</select>                  
         									</div>    
+        									<div id="content_sede" style="display:none">
+	        									<div class="form-group col-sm-5" >
+	                  								<label>Sede</label>
+	                  								<select name="sede" id="sede" data-placeholder="Seleziona Sede"  class="form-control select2" aria-hidden="true" data-live-search="true">
+	                									<option value="" disabled selected>Seleziona Sede...</option>
+	                									<option value="0">Default</option>
+	                									<c:forEach items="${lista_sedi_cliente}" var="sd">                		
+		                        							<option value="${sd.indirizzo} - ${sd.comune } (${sd.siglaProvincia })">${sd.indirizzo} - ${sd.comune } (${sd.siglaProvincia })</option>     	                            
+	    	                 							</c:forEach>
+	        	         							</select>                  
+	        									</div>  
+        									</div>
         									<div id="content_attrezzatura" style="display:none" >
 	        									<div class="form-group col-sm-5">
 	                  								<label>Attrezzatura</label>
@@ -318,6 +330,7 @@
  															<th>ST obbligatoria</th>
  															<th>Attrezzatura</th>
  															<th style="display:none"></th>
+ 															<th>Sede</th>
  															<th>Note</th>		 														
  															<td></td>
 														</tr>
@@ -589,7 +602,7 @@
       			$("#select1").change(function() {   
       				
       				$('#content_attrezzatura').hide();
-      				
+      				$('#content_sede').hide();      				
       				
     	  			$("#select1 option[value='']").remove();
     	  			$("#select2 option[value='']").remove(); 
@@ -620,6 +633,9 @@
     					$('#content_attrezzatura').show();	
     					$('#attrezzatura').select2();
     					
+    				}else if(id=="1"){
+    					$('#content_sede').show();	
+    					$('#sede').select2();
     				}
     				
     				
@@ -666,13 +682,20 @@
 										objectdata+='<td></td>';
 										objectdata+='<td style="display:none"></td>';
 										//str_attrezzature +=  "_";
-									}									
-									//objectdata+='</td>'+
+									}	
+									
+									var sede = $('#sede').val();
+									if(sede!= null && sede!= "" && sede !="0"){
+										objectdata+='<td>'+	sede+'</td>';	
+									}else{
+										objectdata+='<td>${commessa.INDIRIZZO_UTILIZZATORE}</td>';
+									}
+																
 									
 									objectdata+='<td>'+$("#noteVerbale").val()+'</td>'+    
 										'<td><a class="btn customTooltip" title="Click per eliminare la riga" onclick="removeRow(\''+tipi_verifica+'\')"><i class="fa fa-minus"></i></a></td></tr>';
 									
-									$("#bodytabVerifica").append(objectdata);
+									$("#bodytabVerifica").append(objectdata);									
 									$('#str_attrezzature').val(str_attrezzature)
 									$('.skTecObb').iCheck({
 							      		checkboxClass: 'icheckbox_square-blue',

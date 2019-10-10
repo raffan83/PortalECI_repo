@@ -360,23 +360,19 @@ function saveInterventoFromModal(){
 	
 	var attrezzature='';
 	
-//	if($('#str_attrezzature').val()!=null && $('#str_attrezzature').val()!=''){
-//		attrezzature = "&attrezzature="+$('#str_attrezzature').val();
-//		//attrezzature = attrezzature.substring(0,(attrezzature.length-1));
-//	}
-		
-	
+	var sedi = '';
 	
 	
 	if(listCatVer==""){
 		$('#empty').html("Devi inserire almeno un 'Tipo Verifica' per poter creare l'intervento!"); 
 	}else if(str1!= null){
 		//var dataArr={"tecnico":str};
-		var table = $('#tabVerifica').DataTable({ordering:false});
+		var table = $('#tabVerifica').DataTable({ordering:false, responsive: true});
 		
 		var data = table.rows().data();
 		data.each(function (value, index) {
-			noteVerb+="&note="+value[5];
+			noteVerb+="&note="+value[6];
+			sedi+= "&sedi="+value[5];
 			attrezzature+='&attrezzature='+value[4];
 		 });
 	            
@@ -388,7 +384,7 @@ function saveInterventoFromModal(){
 			url: "gestioneIntervento.do?action=new",
 			//data: "dataIn="+JSON.stringify(dataArr),
 			//data: "dataIn="+str1,
-			data : "tecnico="+str1 +listCatVer+skTecObb+noteVerb+attrezzature,
+			data : "tecnico="+str1 +listCatVer+skTecObb+noteVerb+attrezzature+sedi,
 			//	'id='+ encodeURIComponent(id) + '&name='+ encodeURIComponent(name)
 			dataType: "json",
 			success: function( data, textStatus) {
