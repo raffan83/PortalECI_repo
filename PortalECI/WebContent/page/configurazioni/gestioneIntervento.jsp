@@ -395,6 +395,31 @@
  			<script type="text/javascript">
  			
  			var str_attrezzature = "";
+ 			
+ 			
+ 			var lang = {
+				emptyTable : 	"Nessun dato presente nella tabella",
+				info	:"Vista da _START_ a _END_ di _TOTAL_ elementi",
+				infoEmpty:	"Vista da 0 a 0 di 0 elementi",
+				infoFiltered:	"(filtrati da _MAX_ elementi totali)",
+				infoPostFix:	"",
+				infoThousands:	".",
+				lengthMenu:	"Visualizza _MENU_ elementi",
+				loadingRecords:	"Caricamento...",
+				processing:	"Elaborazione...",
+				search:	"Cerca:",
+				zeroRecords	:"La ricerca non ha portato alcun risultato.",
+				paginate:	{
+  					first:	"Inizio",
+  					previous:	"Precedente",
+  					next:	"Successivo",
+  					last:	"Fine",
+				},
+				 aria:	{
+  					srtAscending:	": attiva per ordinare la colonna in ordine crescente",
+  					sortDescending:	": attiva per ordinare la colonna in ordine decrescente",
+				} 
+ 			}
 		   
 			    $(document).ready(function() {
     				table = $('#tabPM').DataTable({
@@ -695,7 +720,15 @@
 									objectdata+='<td>'+$("#noteVerbale").val()+'</td>'+    
 										'<td><a class="btn customTooltip" title="Click per eliminare la riga" onclick="removeRow(\''+tipi_verifica+'\')"><i class="fa fa-minus"></i></a></td></tr>';
 									
-									$("#bodytabVerifica").append(objectdata);									
+										
+									if($("#bodytabVerifica").find("tr").size()>0){
+										$('#tabVerifica').DataTable().destroy();	
+									}
+									$("#bodytabVerifica").append(objectdata);	
+										 
+									 var table = $('#tabVerifica').DataTable({language : lang, responsive: true, ordering: false});
+									var column =  table.column(4 );
+									column.visible(!column.visible());
 									$('#str_attrezzature').val(str_attrezzature)
 									$('.skTecObb').iCheck({
 							      		checkboxClass: 'icheckbox_square-blue',

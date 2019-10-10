@@ -367,7 +367,7 @@ function saveInterventoFromModal(){
 		$('#empty').html("Devi inserire almeno un 'Tipo Verifica' per poter creare l'intervento!"); 
 	}else if(str1!= null){
 		//var dataArr={"tecnico":str};
-		var table = $('#tabVerifica').DataTable({ordering:false, responsive: true});
+		var table = $('#tabVerifica').DataTable();
 		
 		var data = table.rows().data();
 		data.each(function (value, index) {
