@@ -77,5 +77,9 @@
 			</key>
 			<one-to-many class="it.portalECI.DTO.DocumentoDTO"/>
 		</set>
+		
+		<property name="esercente">
+			<column name="esercente" length="256"/>
+		</property>
 	</class>
 </hibernate-mapping> 

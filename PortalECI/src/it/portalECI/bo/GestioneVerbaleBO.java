@@ -136,7 +136,7 @@ public class GestioneVerbaleBO {
 		session.update(intervento);
 	}
 	
-	public static VerbaleDTO buildVerbale(String codiceVerifica, Session session, Boolean creaSchedaTecnica,String note, AttrezzaturaDTO attrezzatura, String sedeUtilizzatore) {
+	public static VerbaleDTO buildVerbale(String codiceVerifica, Session session, Boolean creaSchedaTecnica,String note, AttrezzaturaDTO attrezzatura, String sedeUtilizzatore, String esercente) {
 		VerbaleDTO result=null;
 		QuestionarioDTO questionario= GestioneQuestionarioDAO.getQuestionarioForVerbaleInstance(codiceVerifica, session);
 		if(questionario!=null) {
@@ -150,6 +150,9 @@ public class GestioneVerbaleBO {
 			verbale.setAttrezzatura(attrezzatura);
 			verbale.setSedeUtilizzatore(sedeUtilizzatore);
 			verbale.setType(VerbaleDTO.VERBALE);
+			if(esercente!=null) {
+				verbale.setEsercente(esercente);	
+			}			
 	
 			if(questionario.getDomandeSchedaTecnica().size()>0 && creaSchedaTecnica) {
 				VerbaleDTO schedaTecnica = new VerbaleDTO();
