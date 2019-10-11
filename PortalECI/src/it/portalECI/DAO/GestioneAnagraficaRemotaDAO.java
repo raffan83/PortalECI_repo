@@ -84,6 +84,7 @@ public class GestioneAnagraficaRemotaDAO {
 				sede.setSiglaProvincia(rs.getString("CODPROV"));
 				sede.setDescrizione(rs.getString("DESCR"));
 				sede.setCap(rs.getString("CAP")); 
+				sede.setEsercente(rs.getString("NOTE"));
 				
 				
 				lista.add(sede);

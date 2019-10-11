@@ -10,6 +10,7 @@ public class SedeDTO {
 	private Integer  id__provincia_ = 0 ;
 	private String siglaProvincia;
 	private String descrizione = "";
+	private String esercente;
 
 	public String getSiglaProvincia() {
 		return siglaProvincia;
@@ -89,6 +90,14 @@ public class SedeDTO {
 
 	public void setDescrizione(String descrizione) {
 		this.descrizione = descrizione;
+	}
+
+	public String getEsercente() {
+		return esercente;
+	}
+
+	public void setEsercente(String esercente) {
+		this.esercente = esercente;
 	};
 	
 	
