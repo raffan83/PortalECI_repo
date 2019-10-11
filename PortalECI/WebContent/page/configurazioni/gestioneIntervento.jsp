@@ -292,9 +292,15 @@
 	                									<option value="" disabled selected>Seleziona Sede...</option>
 	                									<option value="0">Default</option>
 	                									<c:forEach items="${lista_sedi_cliente}" var="sd">                		
-		                        							<option value="${sd.indirizzo} - ${sd.comune } (${sd.siglaProvincia })">${sd.indirizzo} - ${sd.comune } (${sd.siglaProvincia })</option>     	                            
+		                        							<option value="${sd.indirizzo} - ${sd.comune } (${sd.siglaProvincia })_${sd.esercente }">${sd.indirizzo} - ${sd.comune } (${sd.siglaProvincia })</option>     	                            
 	    	                 							</c:forEach>
 	        	         							</select>                  
+	        									</div>  
+        									</div>
+        									<div id="content_esercente" style="display:none">
+	        									<div class="form-group col-sm-5" >
+	                  								<label>Esercente</label>
+	                  								<input id="esercente" name = "esercente" class="form-control" type="text" value="${esercente }">                 
 	        									</div>  
         									</div>
         									<div id="content_attrezzatura" style="display:none" >
@@ -331,6 +337,7 @@
  															<th>Attrezzatura</th>
  															<th style="display:none"></th>
  															<th>Sede</th>
+ 															<th>Esercente</th>
  															<th>Note</th>		 														
  															<td></td>
 														</tr>
@@ -627,7 +634,8 @@
       			$("#select1").change(function() {   
       				
       				$('#content_attrezzatura').hide();
-      				$('#content_sede').hide();      				
+      				$('#content_sede').hide();
+      				$('#content_esercente').hide();
       				
     	  			$("#select1 option[value='']").remove();
     	  			$("#select2 option[value='']").remove(); 
@@ -661,10 +669,24 @@
     				}else if(id=="1"){
     					$('#content_sede').show();	
     					$('#sede').select2();
+    					$('#content_esercente').show();
     				}
     				
     				
-    			});	        
+    			});	       
+      			
+      			
+      			$('#sede').change(function(){
+      				
+      				var value = $(this).val();
+      				
+      				if(value!='' && value!="0"){
+      					$('#esercente').val(value.split("_")[1]);
+      				}else if(value=="0"){
+      					$('#esercente').val("${esercente}");
+      				}
+      				
+      			});
       			
 				function addRow(){
 					var categorie_verifica=$('#select1').val();
@@ -711,11 +733,14 @@
 									
 									var sede = $('#sede').val();
 									if(sede!= null && sede!= "" && sede !="0"){
-										objectdata+="<td>"+	sede+"</td>";	
+										objectdata+="<td>"+	sede.split("_")[0]+"</td>";	
 									}else{
 										objectdata+="<td>${commessa.INDIRIZZO_UTILIZZATORE}</td>";
 									}
-																
+									var esercente = $('#esercente').val();
+									if(esercente !=null && esercente !=''){
+										objectdata+="<td>"+esercente+"</td>";	
+									}
 									
 									objectdata+='<td>'+$("#noteVerbale").val()+'</td>'+    
 										'<td><a class="btn customTooltip" title="Click per eliminare la riga" onclick="removeRow(\''+tipi_verifica+'\')"><i class="fa fa-minus"></i></a></td></tr>';

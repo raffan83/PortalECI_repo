@@ -38,6 +38,8 @@ public class VerbaleDTO implements Serializable {
 	private String sedeUtilizzatore;
 		
 	private String numeroVerbale;	
+	private String esercente;
+	
 	public int getId() {
 		return id;
 	}
@@ -238,6 +240,14 @@ public class VerbaleDTO implements Serializable {
 
 	public void setSedeUtilizzatore(String sedeUtilizzatore) {
 		this.sedeUtilizzatore = sedeUtilizzatore;
+	}
+
+	public String getEsercente() {
+		return esercente;
+	}
+
+	public void setEsercente(String esercente) {
+		this.esercente = esercente;
 	}
 
 	

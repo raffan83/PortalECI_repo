@@ -120,16 +120,22 @@ public class GestioneIntervento extends HttpServlet {
 						listaSedi = GestioneAnagraficaRemotaBO.getListaSedi();							
 				}
 				
-				List<SedeDTO> lista_sedi_cliente = GestioneAnagraficaRemotaBO.getSediFromCliente(listaSedi, comm.getID_ANAGEN());
+				List<SedeDTO> lista_sedi_cliente = GestioneAnagraficaRemotaBO.getSediFromCliente(listaSedi, comm.getID_ANAGEN_UTIL());
 						
 				ArrayList<AttrezzaturaDTO> listaAttrezzature =GestioneAttrezzatureBO.getlistaAttrezzatureSede(comm.getID_ANAGEN_UTIL(), comm.getK2_ANAGEN_INDR_UTIL(), session);
-				
+				SedeDTO sede = GestioneAnagraficaRemotaBO.getSedeFromId(listaSedi, comm.getK2_ANAGEN_INDR_UTIL(), comm.getID_ANAGEN_UTIL());
 				request.getSession().setAttribute("tipi_verifica", tipi_verifica);
 				request.getSession().setAttribute("categorie_verifica", categorie_verifica);
 				request.getSession().setAttribute("listaInterventi", listaInterventi);
 				request.getSession().setAttribute("tecnici", users);
 				request.getSession().setAttribute("listaAttrezzature", listaAttrezzature);			
-				request.getSession().setAttribute("lista_sedi_cliente",lista_sedi_cliente);	
+				request.getSession().setAttribute("lista_sedi_cliente",lista_sedi_cliente);
+				if(sede.getEsercente()!=null) {
+					request.getSession().setAttribute("esercente",sede.getEsercente());	
+				}else {
+					request.getSession().setAttribute("esercente","");
+				}
+					
 
 				RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/page/configurazioni/gestioneIntervento.jsp");
 				dispatcher.forward(request,response);
@@ -143,8 +149,8 @@ public class GestioneIntervento extends HttpServlet {
 				String[] schedaTecnicaObbligatoria=request.getParameterValues("schedaTecnica");
 				String[] listaNote =request.getParameterValues("note");
 				String[] listaSedi =request.getParameterValues("sedi");
-				
 				String[] listaAttrezzature =request.getParameterValues("attrezzature");
+				String[] listaEsercenti =request.getParameterValues("esercenti");
 
 				CommessaDTO comm=(CommessaDTO)request.getSession().getAttribute("commessa");
 				
@@ -173,7 +179,7 @@ public class GestioneIntervento extends HttpServlet {
 							attrezzatura = GestioneAttrezzatureBO.getAttrezzaturaFromId(Integer.parseInt(listaAttrezzature[i]), session);
 					}
 						
-					VerbaleDTO verbale =GestioneVerbaleBO.buildVerbale(tipoVerificaDTO.getCodice(), session, createSkTec,listaNote[i],attrezzatura,listaSedi[i]);
+					VerbaleDTO verbale =GestioneVerbaleBO.buildVerbale(tipoVerificaDTO.getCodice(), session, createSkTec,listaNote[i],attrezzatura,listaSedi[i], listaEsercenti[i]);
 					if(verbale !=null) {
 						verbali.add(verbale);
 					}else {
@@ -340,7 +346,7 @@ public class GestioneIntervento extends HttpServlet {
 						}
 					}
 											
-					verbaleTarget =GestioneVerbaleBO.buildVerbale(tipoVerificaDTO.getCodice(), session, createSkTec,"",null,"");
+					verbaleTarget =GestioneVerbaleBO.buildVerbale(tipoVerificaDTO.getCodice(), session, createSkTec,"",null,"","");
 						
 					if(verbaleTarget ==null) {														
 						myObj.addProperty("success", false);
