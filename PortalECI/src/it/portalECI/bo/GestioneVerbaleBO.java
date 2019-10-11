@@ -692,6 +692,11 @@ public class GestioneVerbaleBO {
 		{
 			html = html.replaceAll("\\$\\{SEDE_VIE\\}", verbale.getSedeUtilizzatore());
 		}
+		
+		if(verbale.getEsercente() != null ) 
+		{
+			html = html.replaceAll("\\$\\{ESERCENTE\\}", verbale.getEsercente());
+		}
 
 		// Elimino i placeholder non utilizzati
 		html = html.replaceAll("\\$\\{(.*?)\\}", "");

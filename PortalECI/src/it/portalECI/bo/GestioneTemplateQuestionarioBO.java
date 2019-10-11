@@ -194,6 +194,8 @@ public class GestioneTemplateQuestionarioBO {
 		
 		html = html.replaceAll("\\$\\{SEDE_VIE\\}", "SEDE VIE");
 		
+		html = html.replaceAll("\\$\\{ESERCENTE\\}", "ESERCENTE");
+		
 	
 		
 		
