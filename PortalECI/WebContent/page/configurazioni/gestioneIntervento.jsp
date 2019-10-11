@@ -247,7 +247,7 @@
 						</div>
   						
   						<div id="myModal" class="modal fade" role="dialog" aria-labelledby="myLargeModalLabel">
-    						<div class="modal-dialog" role="document">
+    						<div class="modal-dialog modal-lg" role="document">
     							<div class="modal-content">
      								<div class="modal-header">
         								<button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -300,7 +300,7 @@
         									<div id="content_esercente" style="display:none">
 	        									<div class="form-group col-sm-5" >
 	                  								<label>Esercente</label>
-	                  								<input id="esercente" name = "esercente" class="form-control" type="text" value="${esercente }">                 
+	                  								<input id="esercente" name = "esercente" class="form-control" type="text" value="${esercente }" readonly>                 
 	        									</div>  
         									</div>
         									<div id="content_attrezzatura" style="display:none" >
@@ -523,106 +523,27 @@
 		    			});
 		  			} );
     
-    				/* var tableAttivita = $('#tabAttivita').DataTable({
-    					language: {
-	        				emptyTable : 	"Nessun dato presente nella tabella",
-	        				info	:"Vista da _START_ a _END_ di _TOTAL_ elementi",
-	        				infoEmpty:	"Vista da 0 a 0 di 0 elementi",
-	        				infoFiltered:	"(filtrati da _MAX_ elementi totali)",
-	        				infoPostFix:	"",
-	        				infoThousands:	".",
-	        				lengthMenu:	"Visualizza _MENU_ elementi",
-	        				loadingRecords:	"Caricamento...",
-	        				processing:	"Elaborazione...",
-	        				search:	"Cerca:",
-	        				zeroRecords	:"La ricerca non ha portato alcun risultato.",
-	        				paginate:	{
-  	        					first:	"Inizio",
-  	        					previous:	"Precedente",
-  	        					next:	"Successivo",
-  	        					last:	"Fine",
-	        				},
-	        				 aria:	{
-  	        					srtAscending:	": attiva per ordinare la colonna in ordine crescente",
-  	        					sortDescending:	": attiva per ordinare la colonna in ordine decrescente",
-	        				} 
-      					},
-	      				paging: true, 
-	      				pageLength: 5,
-	      				ordering: false,
-	      				info: true, 
-	      				searchable: false, 
-	      				//targets: 0,
-	      				responsive: true,
-	      				scrollX: false,
-	      				//order: [[ 0, "desc" ]],
-	      				columnDefs: [
-					   		{ responsivePriority: 1, targets: 0 },
-	                   		{ responsivePriority: 3, targets: 2 },
-	                   	
-	                   	
-	               		],       
-	               		buttons: [ {
-	                   		extend: 'copy',
-	                   		text: 'Copia',	                   
-	               		},{
-	                   		extend: 'excel',
-	                   		text: 'Esporta Excel',	                 
-	               		},{
-	                   		extend: 'pdf',
-	                   		text: 'Esporta Pdf',	                  
-	               		},{
-	                   		extend: 'colvis',
-	                   		text: 'Nascondi Colonne'	                   
-	               		}],
-	                    "rowCallback": function( row, data, index ) {	                        	  
-	                    	$('td:eq(1)', row).addClass("centered");
-	                       	$('td:eq(4)', row).addClass("centered");
-	                    }	    		      
-	    			});
     				
-    				tableAttivita.buttons().container().appendTo( '#tabAttivita_wrapper .col-sm-6:eq(1)' );	   
-    				$('#tabAttivita').on( 'page.dt', function () {
-						$('.customTooltip').tooltipster({
-		        			theme: 'tooltipster-light'
-		    			});
-		  			} );
- 	     	 
-					$('#tabAttivita thead th').each( function () {
-  						var title = $('#tabAttivita thead th').eq( $(this).index() ).text();
-  						$(this).append( '<div><input class="inputsearchtable" style="width:100%" type="text"  /></div>');
-					} );
-					
-					$('.inputsearchtable').on('click', function(e){
-    					e.stopPropagation();    
- 					});
-					
-					// DataTable
-					tableAttivita = $('#tabAttivita').DataTable();
-					// Apply the search
-					tableAttivita.columns().eq( 0 ).each( function ( colIdx ) {
-  						$( 'input', table.column( colIdx ).header() ).on( 'keyup', function () {
-      						table
-          						.column( colIdx )
-          						.search( this.value )
-          						.draw();
-  						} );
-					} ); 
-					
-					tableAttivita.columns.adjust().draw();      */       
-    
+    				
 				    $('#myModal').on('hidden.bs.modal', function (e) {
    	  					$('#noteApp').val("");
    	 					$('#empty').html("");
    	 					
-   	 					$("#select1").val(null).trigger("change");
-   	 					$("#tecnici").val(null).trigger("change");
-   						$("#select2").val(null).trigger("change");
-   					
-   					
+   	 					$("#select1").val("").trigger("change");
+   	 					$("#tecnici").val("").trigger("change");
+   						$("#select2").val("").trigger("change");
+   						
+   						
    						$("#select2").prop("disabled", true); 
    					
    						$(".categoriaTipiRow").remove();
+   						
+   						
+   						$('#tabVerifica').DataTable().clear().destroy();
+   						$('#bodytabVerifica').html("");
+   						$('#noteVerbale').val("");
+   						$('#sede').val("");
+   						$('#esercente').val("${esercente}")
    					})    
     			});
                 
@@ -665,7 +586,8 @@
     				if(id=="10"){
     					$('#content_attrezzatura').show();	
     					$('#attrezzatura').select2();
-    					
+    					$('#sede').val("${commessa.INDIRIZZO_UTILIZZATORE}");
+    					$('#esercente').val("${esercente}");
     				}else if(id=="1"){
     					$('#content_sede').show();	
     					$('#sede').select2();
@@ -740,6 +662,8 @@
 									var esercente = $('#esercente').val();
 									if(esercente !=null && esercente !=''){
 										objectdata+="<td>"+esercente+"</td>";	
+									}else{
+										objectdata+="<td></td>";
 									}
 									
 									objectdata+='<td>'+$("#noteVerbale").val()+'</td>'+    
@@ -751,7 +675,7 @@
 									}
 									$("#bodytabVerifica").append(objectdata);	
 										 
-									 var table = $('#tabVerifica').DataTable({language : lang, responsive: true, ordering: false});
+									 var table = $('#tabVerifica').DataTable({language : lang, responsive: true, ordering: false,columnDefs: [{ responsivePriority: 1, targets: 8 }]});
 									var column =  table.column(4 );
 									column.visible(!column.visible());
 									$('#str_attrezzature').val(str_attrezzature)
@@ -782,6 +706,10 @@
       			
       			function removeRow(tipi_verifica){
       				$("#"+tipi_verifica).remove();
+      				if($("#bodytabVerifica").find("tr").size()==0){
+      					$("#bodytabVerifica").html("");
+      					$('#tabVerifica').DataTable().clear().destroy();
+      				}
       			}
   			</script>	  
 	</jsp:attribute> 
