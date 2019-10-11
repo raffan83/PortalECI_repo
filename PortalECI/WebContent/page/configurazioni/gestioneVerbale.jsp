@@ -139,6 +139,22 @@
                   									 
                   									       										
                 									</li>
+                									<li class="list-group-item">
+                  										<b>Sede Utilizzatore</b>                  										
+                  										<a class="pull-right "  >${verbale.sedeUtilizzatore}
+                  										</a>
+                  									
+                  									 
+                  									       										
+                									</li>
+                									<li class="list-group-item">
+                  										<b>Esercente</b>
+                  										<a class="pull-right b"  >${verbale.esercente}
+                  										</a>
+                  								
+                  									       										
+                									</li>
+                									
         										</ul>     
         										<div class="row" id="cambiostato">    
         											<c:if test='${verbale.getStato().getId()== 4 && user.checkPermesso("CH_STA_VERBALE")}'>
