@@ -10,6 +10,7 @@ import org.hibernate.Query;
 import org.hibernate.Session;
 
 import it.portalECI.DTO.AttrezzaturaDTO;
+import it.portalECI.DTO.DescrizioneGruppoAttrezzaturaDTO;
 
 
 public class GestioneAttrezzatureDAO {
@@ -119,6 +120,17 @@ public class GestioneAttrezzatureDAO {
 				 
 		return lista= (ArrayList<AttrezzaturaDTO>)query.list();		
 		
+	}
+
+	public static ArrayList<DescrizioneGruppoAttrezzaturaDTO> getListaDescrizioniGruppi(Session session) {
+		
+		ArrayList<DescrizioneGruppoAttrezzaturaDTO> lista =null;
+		
+		Query query = session.createQuery("from DescrizioneGruppoAttrezzaturaDTO");
+		
+		lista= (ArrayList<DescrizioneGruppoAttrezzaturaDTO>)query.list();	
+		
+		return 	lista;
 	}
 
 }

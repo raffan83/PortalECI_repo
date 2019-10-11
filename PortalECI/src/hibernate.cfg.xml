@@ -40,5 +40,6 @@
    		<mapping class="ColonnaTabellaVerbaleDTO" package="it.portalECI.DTO" resource="it/portalECI/hbm/ColonnaTabellaVerbaleDTO.hbm.xml"/>
    		
    		<mapping class="AttrezzaturaDTO" package="it.portalECI.DTO" resource="it/portalECI/hbm/AttrezzaturaDTO.hbm.xml"/>
+   		<mapping class="DescrizioneGruppoAttrezzaturaDTO" package="it.portalECI.DTO" resource="it/portalECI/hbm/DescrizioneGruppoAttrezzaturaDTO.hbm.xml"/>
  	</session-factory>
 </hibernate-configuration>

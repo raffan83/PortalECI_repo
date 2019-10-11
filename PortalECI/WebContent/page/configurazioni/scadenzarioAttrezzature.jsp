@@ -1,5 +1,6 @@
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@taglib prefix="t" tagdir="/WEB-INF/tags"%>
+<%@ page language="java" contentType="text/html;charset=UTF-8" pageEncoding="UTF-8"%>
 <t:layout title="Dashboard" bodyClass="skin-red sidebar-mini wysihtml5-supported">
 
 
@@ -37,7 +38,7 @@
 	<div class="btn btn-primary" style="background-color:#00a65a;border-color:#00a65a" onClick="addCalendarAttrezzatura(1)"></div><label style="margin-left:5px">Data verifica funzionamento</label>
 	</div>
 	<div class="col-xs-3">
-	<div class="btn btn-primary" style="background-color:#9d201d;border-color:#9d201d"  onClick="addCalendarAttrezzatura(2)"></div><label style="margin-left:5px">Data verifica integrit‡</label>
+	<div class="btn btn-primary" style="background-color:#9d201d;border-color:#9d201d"  onClick="addCalendarAttrezzatura(2)"></div><label style="margin-left:5px">Data verifica integrit√†</label>
 	</div>
 	<div class="col-xs-3">
 	<div class="btn btn-primary" style="background-color:#777;border-color:#777"  onClick="addCalendarAttrezzatura(3)"></div><label style="margin-left:5px">Data verifica interna</label>

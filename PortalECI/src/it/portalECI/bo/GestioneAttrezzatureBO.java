@@ -8,6 +8,7 @@ import org.hibernate.Session;
 
 import it.portalECI.DAO.GestioneAttrezzatureDAO;
 import it.portalECI.DTO.AttrezzaturaDTO;
+import it.portalECI.DTO.DescrizioneGruppoAttrezzaturaDTO;
 
 public class GestioneAttrezzatureBO {
 
@@ -29,6 +30,11 @@ public class GestioneAttrezzatureBO {
 	public static ArrayList<AttrezzaturaDTO> getlistaAttrezzatureData(Date data, String tipo_data, Session session) {
 	
 		return GestioneAttrezzatureDAO.getlistaAttrezzatureData(data, tipo_data, session);
+	}
+
+	public static ArrayList<DescrizioneGruppoAttrezzaturaDTO> getListaDescrizioniGruppi(Session session) {
+		
+		return GestioneAttrezzatureDAO.getListaDescrizioniGruppi(session);
 	}
 
 }

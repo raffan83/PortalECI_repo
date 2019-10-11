@@ -26,6 +26,7 @@ import it.portalECI.Util.Utility;
 import it.portalECI.bo.GestioneAttrezzatureBO;
 import it.portalECI.DTO.ClienteDTO;
 import it.portalECI.DTO.CompanyDTO;
+import it.portalECI.DTO.DescrizioneGruppoAttrezzaturaDTO;
 import it.portalECI.DTO.SedeDTO;
 import it.portalECI.bo.GestioneAnagraficaRemotaBO;
 
@@ -83,6 +84,7 @@ public class ListaAttrezzature extends HttpServlet {
 
 				request.getSession().setAttribute("listaSedi",listaSediFull);	
 				
+				session.close();
 				RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/page/configurazioni/listaAttrezzature.jsp");
 		     	dispatcher.forward(request,response);
 			}
@@ -93,9 +95,12 @@ public class ListaAttrezzature extends HttpServlet {
 				
 				ArrayList<AttrezzaturaDTO> lista_attrezzature = GestioneAttrezzatureBO.getlistaAttrezzatureSede(Integer.parseInt(id_cliente), Integer.parseInt(id_sede.split("_")[0]),session);
 				
-				 request.getSession().setAttribute("lista_attrezzature",lista_attrezzature);
+				ArrayList<DescrizioneGruppoAttrezzaturaDTO> lista_descrizioni_gruppi = GestioneAttrezzatureBO.getListaDescrizioniGruppi(session);
 				
-	
+				 request.getSession().setAttribute("lista_attrezzature",lista_attrezzature);
+				 request.getSession().setAttribute("lista_descrizioni_gruppi",lista_descrizioni_gruppi);
+				
+				 session.close();
 				RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/page/configurazioni/listaAttrezzatureSede.jsp");
 		     	dispatcher.forward(request,response);
 			}
@@ -140,7 +145,9 @@ public class ListaAttrezzature extends HttpServlet {
 				}				
 				attrezzatura.setMatricola_inail(matricola_inail);
 				attrezzatura.setNumero_fabbrica(numero_fabbrica);
-				attrezzatura.setDescrizione(descrizione);
+				if(descrizione!=null && !descrizione.equals("")) {
+					attrezzatura.setDescrizione(descrizione.split("_")[1]);	
+				}				
 				attrezzatura.setTipo_attivita(tipo_attivita);
 				if(data_ver_funz!=null && !data_ver_funz.equals("")) {
 					attrezzatura.setData_verifica_funzionamento(format.parse(data_ver_funz));
@@ -223,7 +230,9 @@ public class ListaAttrezzature extends HttpServlet {
 				}				
 				attrezzatura.setMatricola_inail(matricola_inail);
 				attrezzatura.setNumero_fabbrica(numero_fabbrica);
-				attrezzatura.setDescrizione(descrizione);
+				if(descrizione!=null && !descrizione.equals("")) {
+					attrezzatura.setDescrizione(descrizione.split("_")[1]);	
+				}	
 				attrezzatura.setTipo_attivita(tipo_attivita);
 				if(data_ver_funz!=null && !data_ver_funz.equals("")) {
 					attrezzatura.setData_verifica_funzionamento(format.parse(data_ver_funz));

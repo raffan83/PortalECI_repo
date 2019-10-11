@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 13-apr-2017 11.24.04 by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+    <class name="it.portalECI.DTO.DescrizioneGruppoAttrezzaturaDTO" table="descrizione_gruppo_attrezzatura">
+        <id name="id" type="int">
+            <column name="id" />
+            <generator class="native" />
+        </id>
+        <property name="gruppo" type="java.lang.String">
+            <column name="gruppo" />
+        </property>
+        <property name="descrizione" type="java.lang.String">
+            <column name="descrizione" />
+        </property>
+    </class>
+</hibernate-mapping>

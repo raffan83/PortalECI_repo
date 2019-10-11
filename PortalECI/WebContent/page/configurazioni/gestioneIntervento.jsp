@@ -711,9 +711,9 @@
 									
 									var sede = $('#sede').val();
 									if(sede!= null && sede!= "" && sede !="0"){
-										objectdata+='<td>'+	sede+'</td>';	
+										objectdata+="<td>"+	sede+"</td>";	
 									}else{
-										objectdata+='<td>${commessa.INDIRIZZO_UTILIZZATORE}</td>';
+										objectdata+="<td>${commessa.INDIRIZZO_UTILIZZATORE}</td>";
 									}
 																
 									
