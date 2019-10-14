@@ -371,7 +371,7 @@ public class GestioneVerbali extends HttpServlet {
 			
 			String stato = request.getParameter("stato" );
 			if(Boolean.parseBoolean(request.getParameter("all"))) {
-				if(verbale.getSchedaTecnica()!=null)
+				if(verbale.getSchedaTecnica()!=null && Integer.parseInt(stato) != StatoVerbaleDTO.COMPILAZIONE_WEB)
 					GestioneVerbaleBO.cambioStato( verbale.getSchedaTecnica(), GestioneStatoVerbaleDAO.getStatoVerbaleById( Integer.parseInt(stato), session) , session);
 			}
 			GestioneVerbaleBO.cambioStato( verbale, GestioneStatoVerbaleDAO.getStatoVerbaleById( Integer.parseInt(stato), session) , session);	
