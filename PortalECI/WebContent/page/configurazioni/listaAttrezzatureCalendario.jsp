@@ -161,7 +161,19 @@
          <div class="col-sm-8">
          <input class="form-control" id="numero_fabbrica" type="text" name="numero_fabbrica" required value=""/>
     	</div>
-   </div>
+    	
+   </div>  <div class="form-group">
+        <label for="inputName" class="col-sm-4 control-label">Gruppo:</label>
+        <div class="col-sm-8">
+                      <!-- <input class="form-control" id="tipo_attivita" type="text" name=tipo_attivita required value=""/> -->
+         <select class="form-control select2" required id="tipo_attivita" name="tipo_attivita" data-placeholder="Seleziona Gruppo..." style="width:100%">
+         <option value=""></option>
+         <option value="SP">SP</option>
+         <option value="SC">SC</option>
+         <option value="GVR">GVR</option>
+         </select>   
+    </div>
+    </div>
 
    <div class="form-group">
         <label for="inputName" class="col-sm-4 control-label">Descrizione:</label>
@@ -169,13 +181,7 @@
                       <input class="form-control" id="descrizione" type="text" name="descrizione" required value=""/>
     </div>
     </div>
-    
-    <div class="form-group">
-        <label for="inputName" class="col-sm-4 control-label">Tipo Attività:</label>
-        <div class="col-sm-8">
-                      <input class="form-control" id="tipo_attivita" type="text" name=tipo_attivita required value=""/>
-    </div>
-    </div>
+   
 
          <div class="form-group">
         <label for="inputName" class="col-sm-4 control-label">Data verifica funzionamento:</label>
@@ -281,11 +287,29 @@
          <input class="form-control" id="numero_fabbrica_mod" type="text" name="numero_fabbrica_mod" required value=""/>
     	</div>
    </div>
-
+    <div class="form-group">
+        <label for="inputName" class="col-sm-4 control-label">Gruppo:</label>
+        <div class="col-sm-8">
+                      <!-- <input class="form-control" id="tipo_attivita_mod" type="text" name="tipo_attivita_mod" required value=""/> -->
+         <select class="form-control select2" required id="tipo_attivita_mod" name="tipo_attivita_mod" data-placeholder="Seleziona Gruppo..." style="width:100%">
+         <option value=""></option>
+         <option value="SP">SP</option>
+         <option value="SC">SC</option>
+         <option value="GVR">GVR</option>
+         </select>   
+    </div>
+    </div>
    <div class="form-group">
         <label for="inputName" class="col-sm-4 control-label">Descrizione:</label>
         <div class="col-sm-8">
-                      <input class="form-control" id="descrizione_mod" type="text" name="descrizione_mod" required value=""/>
+                    <!--   <input class="form-control" id="descrizione_mod" type="text" name="descrizione_mod" required value=""/> -->
+                      <select class="form-control select2" disabled id="descrizione_mod" name="descrizione_mod" data-placeholder="Seleziona Descrizione..." style="width:100%">
+         <option value=""></option>
+        <c:forEach items="${lista_descrizioni_gruppi }" var="desc">
+        <option value="${desc.gruppo}_${desc.descrizione}">${desc.descrizione }</option>
+        
+        </c:forEach>
+         </select>  
     </div>
     </div>
     <div class="form-group">
@@ -309,15 +333,14 @@
     <div class="form-group">
         <label for="inputName" class="col-sm-4 control-label">Settore d'impiego:</label>
         <div class="col-sm-8">
-                      <input class="form-control" id="settore_impiego_mod" type="text" name="settore_impiego_mod"  value=""/>
+                      <!-- <input class="form-control" id="settore_impiego_mod" type="text" name="settore_impiego_mod"  value=""/> -->
+         <select class="form-control select2" disabled id="settore_impiego_mod" name="settore_impiego_mod" data-placeholder="Seleziona settore d'impiego..." style="width:100%">
+		<option value=""></option>
+              
+          </select> 
     </div>
     </div>
-    <div class="form-group">
-        <label for="inputName" class="col-sm-4 control-label">Tipo Attività:</label>
-        <div class="col-sm-8">
-                      <input class="form-control" id="tipo_attivita_mod" type="text" name="tipo_attivita_mod" required value=""/>
-    </div>
-    </div>
+
 
          <div class="form-group">
         <label for="inputName" class="col-sm-4 control-label">Data verifica funzionamento:</label>
@@ -597,7 +620,9 @@ function modalModificaAttrezzatura(id_attrezzatura, matricola_inail, numero_fabb
 	$('#matricola_inail_mod').val(matricola_inail);
 	$('#numero_fabbrica_mod').val(numero_fabbrica);
 	$('#tipo_attivita_mod').val(tipo_attivita);
-	$('#descrizione_mod').val(descrizione);
+	$('#tipo_attivita_mod').change();
+	$('#descrizione_mod').val(tipo_attivita+"_"+descrizione);
+	$('#descrizione_mod').change();
 	$('#cliente_mod').val(id_cliente);
 	$('#cliente_mod').change();
 	if(id_sede!=0){
@@ -611,6 +636,7 @@ function modalModificaAttrezzatura(id_attrezzatura, matricola_inail, numero_fabb
 	$('#fabbricante_mod').val(fabbricante);
 	$('#modello_mod').val(modello);
 	$('#settore_impiego_mod').val(settore_impiego);
+	$('#settore_impiego_mod').change();
 	$('#note_tecniche_mod').val(note_tecniche);
 	$('#note_generiche_mod').val(note_generiche);	
 	
@@ -823,6 +849,55 @@ $("#cliente_mod").change(function() {
 	});
 
 
+$("#tipo_attivita_mod").change(function() {
+    
+	  if ($(this).data('options') == undefined) 
+	  {
+	    /*Taking an array of all options-2 and kind of embedding it on the select1*/
+	    $(this).data('options', $('#descrizione_mod option').clone());
+	  }
+	  
+	  var gruppo = $(this).val();
+	 
+	  var options = $(this).data('options');
+
+	  var opt=[];
+	
+	//  opt.push("<option value = 0>Non Associate</option>");
+
+	   for(var  i=0; i<options.length;i++)
+	   {
+		var str=options[i].value; 
+	
+		//if(str.substring(str.indexOf("_")+1,str.length)==id)
+		if(str.split("_")[0] == gruppo)	
+		{
+			opt.push(options[i]);
+		}   
+	   }
+	 $("#descrizione_mod").prop("disabled", false);
+	 
+	  $('#descrizione_mod').html(opt);
+
+		$("#descrizione_mod").change();  
+		
+		var settore_opt = [];
+		
+				
+		if(gruppo == "SP" || gruppo == "GVR"){
+			settore_opt.push('<option value="N.A.">N.A.</option>');
+		}else if(gruppo == "SC"){
+			settore_opt.push('<option value="regolare">Regolare</option>');
+			settore_opt.push('<option value="costruzioni">Costruzioni</option>');
+			settore_opt.push('<option value="siderurgico">Siderurgico</option>');
+			settore_opt.push('<option value="estrattivo">Estrattivo</option>');
+			settore_opt.push('<option value="rorturale">Portuale</option>');			
+		}
+		 $("#settore_impiego_mod").prop("disabled", false);
+		  $('#settore_impiego_mod').html(settore_opt);
+			$("#settore_impiego_mod").change();  
+	});
+	
 
     
     
