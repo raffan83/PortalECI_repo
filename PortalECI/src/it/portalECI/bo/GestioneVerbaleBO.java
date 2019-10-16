@@ -1019,15 +1019,27 @@ public class GestioneVerbaleBO {
 					session);
 			
 			if (questionario != null) {
-				if (questionario.getDomandeVerbale() != null) {
-					for (DomandaQuestionarioDTO domandaQuestionario : questionario.getDomandeVerbale()) {
-						DomandaVerbaleDTO domandaVerbale = buildDomandaVerbalebyDomadaQuestionario(domandaQuestionario, session);
-						domandaVerbale.setVerbale(verbale);
-						GestioneDomandaVerbaleDAO.save(domandaVerbale, session);
-						verbale.addToDomande(domandaVerbale);
+				if (verbale.getType().equals(VerbaleDTO.VERBALE)) {
+					if (questionario.getDomandeVerbale() != null) {
+						for (DomandaQuestionarioDTO domandaQuestionario : questionario.getDomandeVerbale()) {
+							DomandaVerbaleDTO domandaVerbale = buildDomandaVerbalebyDomadaQuestionario(domandaQuestionario, session);
+							domandaVerbale.setVerbale(verbale);
+							GestioneDomandaVerbaleDAO.save(domandaVerbale, session);
+							verbale.addToDomande(domandaVerbale);
+						}
+					}
+				} else if (verbale.getType().equals(VerbaleDTO.SK_TEC)){
+					if (questionario.getDomandeSchedaTecnica() != null) {
+						for (DomandaQuestionarioDTO domandaQuestionario : questionario.getDomandeSchedaTecnica()) {
+							DomandaVerbaleDTO domandaVerbale = buildDomandaVerbalebyDomadaQuestionario(domandaQuestionario, session);
+							domandaVerbale.setVerbale(verbale);
+							GestioneDomandaVerbaleDAO.save(domandaVerbale, session);
+							verbale.addToDomande(domandaVerbale);
+						}
 					}
 				}
 			}
+
 		}
 	}
 

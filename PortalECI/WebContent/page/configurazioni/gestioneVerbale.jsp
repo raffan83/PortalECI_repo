@@ -208,7 +208,7 @@
 									</div>
 								</c:if>
 								
-								<c:if test="${verbale.getSchedaTecnica()!=null && verbale.getSchedaTecnica().getStato().getId()>=5 && user.checkPermesso('GENERA_SKTECNICA')}">
+								<c:if test="${verbale.getSchedaTecnica()!=null && verbale.getSchedaTecnica().getStato().getId()>=5 && verbale.getSchedaTecnica().getStato().getId()<8 && user.checkPermesso('GENERA_SKTECNICA')}">
 									<div class="col-md-6 col-xs-12" id="schedaTecnicaBox">
 	     									<div class="box box-danger box-solid">
 											<div class="box-header with-border">
