@@ -1310,7 +1310,7 @@ function eliminaUtente(){
 }
 
 function modalModificaUtente(id,codice,user,nome,cognome,indirizzo,comune,cap,email,telefono,company){
-	  
+	
 	$('#modid').val(id);
 	$('#modcodice').val(codice)
 	$('#moduser').val(user);

@@ -111,7 +111,8 @@
 																			<td>${utente.company.denominazione}</td>
 																			<td>
 																				<c:if test="${user.checkPermesso('UPD_UTENTE')}">
-																					<a href="#" onClick="modalModificaUtente('${utente.id}','${utente.codice}','${utente.user}','${utente.nome}','${utente.cognome}','${utente.indirizzo}','${utente.comune}','${utente.cap}','${utente.EMail}','${utente.telefono}','${utente.company.id}')" class="btn btn-warning "><i class="fa fa-edit"></i></a>
+																					<a href="#" onClick="modalModificaUtente('${utente.id}','${utente.codice}','${utente.user}','${utente.nome}','${utente.cognome.replace('\'','&#39;')}','${utente.indirizzo}','${utente.comune}','${utente.cap}','${utente.EMail}','${utente.telefono}','${utente.company.id}')" class="btn btn-warning "><i class="fa fa-edit"></i></a>
+																					
 																				</c:if> 
 																				<%-- <a href="#" onClick="modalEliminaUtente('${utente.id}','${utente.nominativo}')" class="btn btn-danger "><i class="fa fa-remove"></i></a>	 --%>
 																			</td>
@@ -316,7 +317,7 @@
     														<div class="form-group">
         														<label for="modemail" class="col-sm-2 control-label">E-mail:</label>
         														<div class="col-sm-10">
-                    	  											<input class="form-control required" type="modemail" id="email" type="text" name="modemail"  value="" />
+                    	  											<input class="form-control required" type="text" id="modemail"  name="modemail"  value="" />
     															</div>
     														</div>
     	 													<div class="form-group">
