@@ -5,8 +5,9 @@
 <%@page import="it.portalECI.DTO.UtenteDTO"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
-
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@taglib prefix="t" tagdir="/WEB-INF/tags"%>
+<% pageContext.setAttribute("newLineChar", "\'"); %>
 <%
 
 	UtenteDTO utente = (UtenteDTO)request.getSession().getAttribute("userObj");
@@ -111,7 +112,9 @@
 																			<td>${utente.company.denominazione}</td>
 																			<td>
 																				<c:if test="${user.checkPermesso('UPD_UTENTE')}">
-																					<a href="#" onClick="modalModificaUtente('${utente.id}','${utente.codice}','${utente.user}','${utente.nome}','${utente.cognome.replace('\'','&#39;')}','${utente.indirizzo}','${utente.comune}','${utente.cap}','${utente.EMail}','${utente.telefono}','${utente.company.id}')" class="btn btn-warning "><i class="fa fa-edit"></i></a>
+																					 <%-- <a href="#" onClick="modalModificaUtente('${utente.id}','${utente.codice}','${utente.user}','${utente.nome}','<c:out value="${fn:escapeXml(utente.cognome)}" />','${utente.indirizzo}','${utente.comune}','${utente.cap}','${utente.EMail}','${utente.telefono}','${utente.company.id}')" class="btn btn-warning "><i class="fa fa-edit"></i></a> --%> 
+																					 <a href="#" onClick="modalModificaUtente('${utente.id}','${utente.codice}','${utente.user}','${utente.nome}','${utente.cognome.replace('\'', '&prime;') }','${utente.indirizzo.replace('\'', '&prime;')}','${utente.comune.replace('\'', '&prime;')}','${utente.cap}','${utente.EMail}','${utente.telefono}','${utente.company.id}')" class="btn btn-warning "><i class="fa fa-edit"></i></a>
+																					
 																					
 																				</c:if> 
 																				<%-- <a href="#" onClick="modalEliminaUtente('${utente.id}','${utente.nominativo}')" class="btn btn-danger "><i class="fa fa-remove"></i></a>	 --%>
