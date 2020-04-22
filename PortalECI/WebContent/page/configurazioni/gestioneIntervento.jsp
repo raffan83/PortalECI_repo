@@ -281,7 +281,7 @@
                   								<select name="select2" id="select2" data-placeholder="Seleziona Tipo"  disabled class="form-control select2" aria-hidden="true" data-live-search="true">
                 									<option value="" disabled selected>Seleziona Tipo...</option>
                 									<c:forEach items="${tipi_verifica}" var="tipo">                		
-	                        							<option value="${tipo.id}_${tipo.categoria.id}">${tipo.codice}</option>     	                            
+	                        							<option value="${tipo.id}_${tipo.categoria.id}_${tipo.sigla}">${tipo.codice}</option>     	                            
     	                 							</c:forEach>
         	         							</select>                  
         									</div>    
@@ -306,6 +306,21 @@
         									<div id="content_attrezzatura" style="display:none" >
 	        									<div class="form-group col-sm-5">
 	                  								<label>Attrezzatura</label>
+	                  								 <select name="attrezzatura" id="attrezzatura" data-placeholder="Seleziona Attrezzatura"  class="form-control select2" aria-hidden="true" data-live-search="true">
+	                									     
+	        	         							</select>          
+	        	         							<select name="attrezzatura_temp" id="attrezzatura_temp" data-placeholder="Seleziona Attrezzatura"  class="form-control select2" aria-hidden="true" data-live-search="true" style="display:none">
+	                									<option value="" disabled selected>Seleziona Tipo...</option>
+	                									<option value="0">Nessuna</option>
+	                									<c:forEach items="${listaAttrezzature}" var="attrezzatura">                		
+		                        							<option value="${attrezzatura.id}_${attrezzatura.matricola_inail}_${attrezzatura.tipo_attivita}">${attrezzatura.matricola_inail}</option>     	                            
+	    	                 							</c:forEach>
+	        	         							</select>    
+	        									</div>  
+        									</div>
+        									<%-- <div id="content_attrezzatura" style="display:none" >
+	        									<div class="form-group col-sm-5">
+	                  								<label>Attrezzatura</label>
 	                  								<select name="attrezzatura" id="attrezzatura" data-placeholder="Seleziona Attrezzatura"  class="form-control select2" aria-hidden="true" data-live-search="true">
 	                									<option value="" disabled selected>Seleziona Tipo...</option>
 	                									<option value="0">Nessuna</option>
@@ -314,7 +329,7 @@
 	    	                 							</c:forEach>
 	        	         							</select>                  
 	        									</div>  
-        									</div>
+        									</div> --%>
         									<div class="form-group col-sm-2 text-center" style="position: absolute;	bottom: 0; right: 0;">        									
                   								<button class="btn-sm" id="addrow" onclick="addRow()"><i class="fa fa-plus"></i></button>              
         									</div> 
@@ -428,7 +443,30 @@
 				} 
  			}
 		   
+ 			var attrezzatura_options;
+ 			
+ 			$('#select2').change(function(){
+ 				var selection = $(this).val();
+ 				if(selection!=null){
+	 				var sigla = selection.split("_")[2];
+	 				
+	 				var opt =[];
+	 				opt.push("<option value='0'>Nessuna</option>")
+	 				for(var i = 0;i<attrezzatura_options.length;i++){
+	 					if( attrezzatura_options[i].value.split("_")[2]!=null && sigla == attrezzatura_options[i].value.split("_")[2]){
+	 						opt.push(attrezzatura_options[i]);		
+	 					}
+	 				}
+	 				
+	 				$('#attrezzatura').html(opt)
+	 				document.getElementById("attrezzatura").selectedIndex = 0;
+ 				}
+ 			});
+ 			
 			    $(document).ready(function() {
+			    	
+			    	 attrezzatura_options = $('#attrezzatura_temp option').clone();
+			    	
     				table = $('#tabPM').DataTable({
     					language: {
   	        				emptyTable : 	"Nessun dato presente nella tabella",
@@ -572,7 +610,8 @@
 		    	   for(var  i=0; i<options.length;i++){
     					var str=options[i].value; 	    	
     		 			
-    					if(str.substring(str.indexOf("_")+1,str.length)==id){     			        		
+    					/* if(str.substring(str.indexOf("_")+1,str.length)==id){ */     			        		
+    					if(str.split("_")[1]==id){
     						opt.push(options[i]);
     		  			}   
     	   			}
@@ -580,7 +619,8 @@
 		    	   	$("#select2").prop("disabled", false);    	 
     	  		   	$('#select2').html(opt);
     	  
-			    	$("#select2").trigger("chosen:updated");    	      	 
+			    	$("#select2").trigger("chosen:updated");    
+			    	document.getElementById("select2").selectedIndex = 0;
     				$("#select2").change();  
     	      	
     				if(id=="10"){
