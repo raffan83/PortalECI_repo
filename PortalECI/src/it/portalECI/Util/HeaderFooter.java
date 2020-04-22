@@ -23,8 +23,8 @@ import com.itextpdf.tool.xml.XMLWorkerHelper;
 
 public class HeaderFooter extends PdfPageEventHelper {
 	
-	private static float LEFT_MARGIN = 20;
-	private static float RIGHT_MARGIN = 20;
+	private static float LEFT_MARGIN = 40;
+	private static float RIGHT_MARGIN = 40;
 	private static float MIN_TOP_MARGIN = 72;
 	private static float MIN_BOTTOM_MARGIN = 72;
 	private static float TABLE_FOOTER_HEIGHT = 24;

@@ -70,7 +70,7 @@
 	                  										<c:if test="${user.checkPermesso('NEW_TEMPLATE_VERBALE')}">
 	                  											<a href="gestioneTemplateQuestionario.do?idQuestionario=${questionario.id}&tipo=Verbale&idTemplate=${questionario.templateVerbale.id}" class="btn btn-default btn-xs pull-right">Imposta Template</a>
 	                  										</c:if>
-	                  										<a class="pull-right">${questionario.templateVerbale.titolo}</a>
+	                  										<a class="pull-right">${questionario.templateVerbale.titolo}&nbsp;&nbsp;</a><br>
 	                									</li>
                 									</c:if>
                 									<c:if test="${questionario.domandeSchedaTecnica.size()>0 }">
@@ -79,7 +79,7 @@
 	                  										<c:if test="${user.checkPermesso('NEW_TEMPLATE_SKTECNICA')}">
 	                  											<a href="gestioneTemplateQuestionario.do?idQuestionario=${questionario.id}&tipo=SchedaTecnica&idTemplate=${questionario.templateSchedaTecnica.id}" class="btn btn-default btn-xs pull-right">Imposta Template</a>
 	                  										</c:if> 
-	                  										<a class="pull-right">${questionario.templateSchedaTecnica.titolo}</a>
+	                  										<a class="pull-right">${questionario.templateSchedaTecnica.titolo}&nbsp;&nbsp;</a>
 	                									</li>
                 									</c:if>
         										</ul>
