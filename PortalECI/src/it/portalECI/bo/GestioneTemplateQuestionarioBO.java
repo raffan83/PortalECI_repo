@@ -85,6 +85,7 @@ public class GestioneTemplateQuestionarioBO {
 		String validXHTML = documentJsoup.html();
 	
 		Document document = new Document(PageSize.A4);
+		
 		PdfWriter writer = PdfWriter.getInstance(document, fileOutput);
         
 		SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
@@ -144,6 +145,7 @@ public class GestioneTemplateQuestionarioBO {
 			}
 		});
 		// 	Pipelines
+		
 		PdfWriterPipeline pdf = new PdfWriterPipeline(document, writer);
 		HtmlPipeline htmlPipeline = new HtmlPipeline(htmlContext, pdf);
 		CssResolverPipeline css = new CssResolverPipeline(cssResolver, htmlPipeline);

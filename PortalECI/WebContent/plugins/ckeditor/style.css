@@ -1,9 +1,9 @@
 @import url('https://fonts.googleapis.com/css?family=Nunito+Sans:200,200i,400,400i,600,600i,700,700i');
 
 body.document-editor {
-    width: 595px;
+    width: 695px;
     min-height: 21cm;
-    padding: 30px;
+    padding: 20px;
     margin: 0.5cm auto;
     border: 1px #D3D3D3 solid;
     background: white;
