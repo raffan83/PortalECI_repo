@@ -940,7 +940,7 @@ public class GestioneVerbaleBO {
 		        PdfGState gs1 = new PdfGState();
 		        gs1.setFillOpacity(0.7f);
 		        over.setGState(gs1);
-		        ColumnText.showTextAligned(over, Element.ALIGN_CENTER, p, 563, 450, 90);
+		        ColumnText.showTextAligned(over, Element.ALIGN_CENTER, p, 570, 450, 90);
 		        over.restoreState();
 	        }
 	        stamper.close();
