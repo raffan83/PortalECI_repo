@@ -64,6 +64,7 @@
         	  		</ul>
         	  	<% }%>
         	</li>
+        	<% if(user.checkPermesso("GESTIONE_QUESTIONARI")){%>
         	<li class="treeview">
         	 	<a href="#">
         	 		<i class="fa fa-question"></i> 
@@ -72,7 +73,7 @@
               			<i class="fa fa-angle-left pull-right"></i>
             		</span>
           		</a>
-          		<% if(user.checkPermesso("GESTIONE_QUESTIONARI")){%>
+          		
           			<ul class="treeview-menu">
             			<li>
             				<a href="gestioneListaQuestionari.do">Gestione Questionario</a>

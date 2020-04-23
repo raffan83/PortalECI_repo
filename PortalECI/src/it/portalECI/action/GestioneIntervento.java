@@ -130,7 +130,7 @@ public class GestioneIntervento extends HttpServlet {
 				request.getSession().setAttribute("tecnici", users);
 				request.getSession().setAttribute("listaAttrezzature", listaAttrezzature);			
 				request.getSession().setAttribute("lista_sedi_cliente",lista_sedi_cliente);
-				if(sede.getEsercente()!=null) {
+				if(sede!=null && sede.getEsercente()!=null) {
 					request.getSession().setAttribute("esercente",sede.getEsercente());	
 				}else {
 					request.getSession().setAttribute("esercente","");

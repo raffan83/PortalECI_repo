@@ -116,9 +116,20 @@
                 									</li>
                 									<li class="list-group-item">
                   										<b>Questionario</b>
+                  										<c:choose>
+                  										<c:when test='${user.checkPermesso("UPD_QUESTIONARIO")}' >
                   										<a class="pull-right"  href="gestioneQuestionario.do?idQuestionario=${questionario.id}" target="_blank">
-		 													<c:if test="${questionario.isObsoleto}"> <span class="label bg-red">OBSOLETO</span> </c:if> ${questionario.titolo} del <fmt:formatDate pattern="dd/MM/yyyy" value='${questionario.createDate}' type='date' /> <i class="fa fa-arrow-right"></i>
+		 												<c:if test="${questionario.isObsoleto}"> <span class="label bg-red">OBSOLETO</span> </c:if> ${questionario.titolo} del <fmt:formatDate pattern="dd/MM/yyyy" value='${questionario.createDate}' type='date' /> <i class="fa fa-arrow-right"></i>
                   										</a>
+                  										</c:when>
+                  										
+                  										<c:otherwise>
+                  										<a class="pull-right">
+		 												<c:if test="${questionario.isObsoleto}"> <span class="label bg-red">OBSOLETO</span> </c:if> ${questionario.titolo} del <fmt:formatDate pattern="dd/MM/yyyy" value='${questionario.createDate}' type='date' />
+                  										</a>
+                  										</c:otherwise>
+                  										</c:choose>
+                  										
                 									</li>
                 									<li class="list-group-item">
                   										<b>Note verbale</b>
@@ -326,8 +337,8 @@
 															</button>
 														</c:if>
 													</c:if>
-													<c:if test='${verbale.getStato().getId()== 4}'>					
-														<c:if test="${user.checkPermesso('CH_STA_VERBALE')}">
+													<c:if test='${verbale.getStato().getId()== 4 && user.checkPermesso("UPD_QUESTIONARIO")}'>					
+														
             	      										<button type="button" class="btn btn-default  ml-1 changestate formVerbalebox" onclick="preCambioStato(${verbale.getId()},'formVerbale','6')" style="margin-left: 1em; color:#000000 !important; background-color:${verbale.getStato().getColore(6)} !important; float: right;">
                 	  											<i class="glyphicon glyphicon-remove"></i>
                   												<span >RIFIUTATO</span>
@@ -337,7 +348,7 @@
 																<i class="glyphicon glyphicon glyphicon-ok"></i>
 																<span >ACCETTATO</span>
 															</button>
-														</c:if>
+		
 															      																							
 													</c:if>		
 												</div>
