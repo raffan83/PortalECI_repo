@@ -78,7 +78,8 @@
  																<thead>
  																	<tr class="active">
  																		<td>ID</td>
- 																		<td>Codice</td>
+ 																		<th>Codice</th>
+ 																		<th>Qualifica</th>
  																		<th>Username</th>
  																		<th>Nominativo</th>
  																		<th>Nome</th>
@@ -100,6 +101,7 @@
 
 																			<td>${utente.id}</td>
 																			<td>${utente.codice}</td>
+																			<td>${utente.qualifica }</td>
 																			<td>${utente.user}</td>
 																			<td>${utente.nominativo}</td>
 																			<td>${utente.nome}</td>
@@ -113,7 +115,7 @@
 																			<td>
 																				<c:if test="${user.checkPermesso('UPD_UTENTE')}">
 																					 <%-- <a href="#" onClick="modalModificaUtente('${utente.id}','${utente.codice}','${utente.user}','${utente.nome}','<c:out value="${fn:escapeXml(utente.cognome)}" />','${utente.indirizzo}','${utente.comune}','${utente.cap}','${utente.EMail}','${utente.telefono}','${utente.company.id}')" class="btn btn-warning "><i class="fa fa-edit"></i></a> --%> 
-																					 <a href="#" onClick="modalModificaUtente('${utente.id}','${utente.codice}','${utente.user}','${utente.nome}','${utente.cognome.replace('\'', '&prime;') }','${utente.indirizzo.replace('\'', '&prime;')}','${utente.comune.replace('\'', '&prime;')}','${utente.cap}','${utente.EMail}','${utente.telefono}','${utente.company.id}')" class="btn btn-warning "><i class="fa fa-edit"></i></a>
+																					 <a href="#" onClick="modalModificaUtente('${utente.id}','${utente.codice}','${utente.user}','${utente.nome}','${utente.cognome.replace('\'', '&prime;') }','${utente.indirizzo.replace('\'', '&prime;')}','${utente.comune.replace('\'', '&prime;')}','${utente.cap}','${utente.EMail}','${utente.telefono}','${utente.company.id}','${utente.qualifica }')" class="btn btn-warning "><i class="fa fa-edit"></i></a>
 																					
 																					
 																				</c:if> 
@@ -170,6 +172,15 @@
          															<input class="form-control" id="codice" type="text" name="codice" value="" required />	         		
      															</div>
    															</div>
+   															
+   															<div class="form-group">
+          														<label for="modcodice" class="col-sm-2 control-label">Qualifica:</label>
+
+         														<div class="col-sm-10">
+         															<input class="form-control" id="qualifica" type="text" name="qualifica" value="" required/>	         			
+     															</div>
+   															</div>
+	    
 	    
     														<div class="form-group">
           														<label for="nome" class="col-sm-2 control-label">Nome:</label>
@@ -282,6 +293,14 @@
 
          														<div class="col-sm-10">
          															<input class="form-control" id="modcodice" type="text" name="modcodice" value="" required/>	         			
+     															</div>
+   															</div>
+   															
+   															<div class="form-group">
+          														<label for="modcodice" class="col-sm-2 control-label">Qualifica:</label>
+
+         														<div class="col-sm-10">
+         															<input class="form-control" id="modqualifica" type="text" name="modqualifica" value=""/>	         			
      															</div>
    															</div>
    															
@@ -491,9 +510,14 @@
 	  
   				$('#tabPM thead th').each( function () {
       				var title = $('#tabPM thead th').eq( $(this).index() ).text();
-      				$(this).append( '<div><input style="width:100%" type="text" placeholder="'+title+'" /></div>');
+      				$(this).append( '<div><input style="width:100%" type="text" class="inputsearchtable" /></div>');
   				} );
-
+  				
+  				
+  				table.buttons().container().appendTo( '#tabPM_wrapper .col-sm-6:eq(1)');
+  		 	    $('.inputsearchtable').on('click', function(e){
+  		 	       e.stopPropagation();    
+  		 	    });
   				// DataTable
 				table = $('#tabPM').DataTable();
   				// Apply the search

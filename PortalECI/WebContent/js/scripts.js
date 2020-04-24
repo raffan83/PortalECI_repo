@@ -1124,6 +1124,7 @@ function nuovoUtente(){
 		pleaseWaitDiv.modal();
 
 		var codice = $('#codice').val();
+		var qualifica = $('#qualifica').val();
 		var user=$('#user').val();
 		var passw=$('#passw').val();
 		var nome=$('#nome').val();
@@ -1137,6 +1138,7 @@ function nuovoUtente(){
 		var dataObj = {};
 		
 		dataObj.codice = codice;
+		dataObj.qualifica = qualifica;
 		dataObj.user = user;
 		dataObj.passw = passw;
 		dataObj.nome = nome;
@@ -1203,6 +1205,7 @@ function modificaUtente(){
 	
 	var id=$('#modid').val();
 	var codice = $('#modcodice').val();
+	var qualifica = $('#modqualifica').val();
 	var user=$('#moduser').val();
 	var passw=$('#modpassw').val();
 	var nome=$('#modnome').val();
@@ -1216,6 +1219,7 @@ function modificaUtente(){
 	var dataObj = {};
 	dataObj.id = id;
 	dataObj.codice = codice;
+	dataObj.qualifica = qualifica;
 	dataObj.user = user;
 	dataObj.passw = passw;
 	dataObj.nome = nome;
@@ -1309,7 +1313,7 @@ function eliminaUtente(){
 	});
 }
 
-function modalModificaUtente(id,codice,user,nome,cognome,indirizzo,comune,cap,email,telefono,company){
+function modalModificaUtente(id,codice,user,nome,cognome,indirizzo,comune,cap,email,telefono,company, qualifica){
 	
 	$('#modid').val(id);
 	$('#modcodice').val(codice)
@@ -1322,6 +1326,8 @@ function modalModificaUtente(id,codice,user,nome,cognome,indirizzo,comune,cap,em
 	$('#modemail').val(email);
 	$('#modtelefono').val(telefono);
 	$('#modcompany').val(company);
+	$('#modqualifica').val(qualifica);
+	
 	  	  
 	$('#modalModificaUtente').modal();
 	  

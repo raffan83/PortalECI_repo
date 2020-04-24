@@ -38,6 +38,7 @@ public class UtenteDTO implements Serializable {
 	private int idSede = 0;
 	private int trasversale = 0;
 	private String resetToken = "";
+	private String qualifica = "";
 	
 	private Set<RuoloDTO> listaRuoli = new HashSet<RuoloDTO>(0);
 	
@@ -300,5 +301,13 @@ public class UtenteDTO implements Serializable {
 		}
 		
 		return userjobj;
+	}
+
+	public String getQualifica() {
+		return qualifica;
+	}
+
+	public void setQualifica(String qualifica) {
+		this.qualifica = qualifica;
 	}
 }

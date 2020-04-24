@@ -626,6 +626,10 @@ public class GestioneVerbaleBO {
 		if(nomeVerificatore != null) {
 			html = html.replaceAll("\\$\\{TECNICO_VERIFICATORE\\}", nomeVerificatore);
 		}
+		
+		if(verificatore.getQualifica() != null) {
+			html = html.replaceAll("\\$\\{QUAL_TV\\}", verificatore.getQualifica());
+		}
 		//Inserisco numero verbale
 		String numeroVerbale = verbale.getNumeroVerbale();
 		if(numeroVerbale != null) {

@@ -36,7 +36,7 @@ public class GestioneInterventoDAO {
 		if(idCommessa!=null) {
 			if(user.getTipoutente().equals("2") && ck==false ) 
 			{
-				query= session.createQuery( "from InterventoDTO WHERE id_commessa= :_id_commessa AND user.id=:_idUser");
+				query= session.createQuery( "from InterventoDTO WHERE id_commessa= :_id_commessa AND tecnico_verificatore.id=:_idUser");
 				query.setParameter("_id_commessa", idCommessa);		
 				query.setParameter("_idUser", user.getId());	
 			}else 

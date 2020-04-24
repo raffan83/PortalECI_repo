@@ -173,9 +173,9 @@ public class GestioneTemplateQuestionarioBO {
 		}
 		
 		//Inserisco il nome del tecnico
-		String nomeVerificatore = "TECNICO_VERIFICATORE";
-		html = html.replaceAll("\\$\\{TECNICO_VERIFICATORE\\}", nomeVerificatore);
-
+		
+		html = html.replaceAll("\\$\\{TECNICO_VERIFICATORE\\}", "TECNICO_VERIFICATORE");
+		html = html.replaceAll("\\$\\{QUAL_TV\\}", " QUAL. TV");
 		//Inserisco numero verbale
 		String numeroVerbale = "NUMERO_VERBALE";
 		html = html.replaceAll("\\$\\{NUMERO_VERBALE\\}", numeroVerbale);

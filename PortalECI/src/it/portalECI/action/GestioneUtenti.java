@@ -71,6 +71,7 @@ public class GestioneUtenti extends HttpServlet {
 	    	if(action.equals("nuovo")){
 	    		String nome = request.getParameter("nome");
 	    		String codice = request.getParameter("codice");
+	    		String qualifica = request.getParameter("qualifica");
 	    	 	String cognome = request.getParameter("cognome");
 	    	 	String user = request.getParameter("user");
 	    	 	String passw = request.getParameter("passw");
@@ -85,6 +86,7 @@ public class GestioneUtenti extends HttpServlet {
 	    	 			    	 			
 	    	 	UtenteDTO utente = new UtenteDTO();
 	    	 	utente.setCodice(codice);
+	    	 	utente.setQualifica(qualifica);
 	    	 	utente.setNome(nome);
 	    	 	utente.setCognome(cognome.replace("\u2032", "'"));
 	    	 	utente.setUser(user);
@@ -125,6 +127,7 @@ public class GestioneUtenti extends HttpServlet {
 
 	    		String nome = request.getParameter("nome");
 	    		String codice = request.getParameter("codice");
+	    		String qualifica = request.getParameter("qualifica");
 	    		String cognome = request.getParameter("cognome");
 	    		String user = request.getParameter("user");
 	    		String passw = request.getParameter("passw");
@@ -142,6 +145,9 @@ public class GestioneUtenti extends HttpServlet {
 	    		if(nome != null && !nome.equals("")){
 	    			utente.setNome(nome);
 	    		}
+	    		
+	    		utente.setQualifica(qualifica);
+	    		
 	    		if(cognome != null && !cognome.equals("")){
 	    			utente.setCognome(cognome.replace("\u2032", "'"));
 	    		}

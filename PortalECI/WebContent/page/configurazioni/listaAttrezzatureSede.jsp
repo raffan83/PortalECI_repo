@@ -4,12 +4,20 @@
 <%@taglib prefix="t" tagdir="/WEB-INF/tags"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+<%@page import="it.portalECI.DTO.UtenteDTO"%>
 <% pageContext.setAttribute("newLineChar", "\r\n"); %>
 <% pageContext.setAttribute("newLineChar2", "\n"); %>
+<%
+	UtenteDTO user = (UtenteDTO)request.getSession().getAttribute("userObj");
+	request.setAttribute("user",user);
+%>
+
     <div class="row">
 <div class="col-lg-12">
 <!-- <button class="btn btn-primary" onClick="nuovoInterventoFromModal('#modalNuovaAttrezzatura')">Nuova Attrezzatura</button> -->
+<c:if test="${user.checkPermesso('MODIFICA_ATTREZZATURE') }">
 <button class="btn btn-primary" onClick="modalNuovaAttrezzatura()">Nuova Attrezzatura</button>
+</c:if>
 <div id="errorMsg" ></div>
 </div>
 </div><br>
@@ -74,9 +82,13 @@
  	<td>${attrezzatura.settore_impiego }</td>
  	<td>${attrezzatura.note_tecniche }</td> 	
  	<td>${attrezzatura.note_generiche }</td> 
- 	<td><a class="btn btn-warning" onClick="modalModificaAttrezzatura('${attrezzatura.id }','${attrezzatura.matricola_inail }','${attrezzatura.numero_fabbrica }','${attrezzatura.tipo_attivita }','${attrezzatura.descrizione }','${attrezzatura.id_cliente }','${attrezzatura.id_sede }',
+ 	<td>
+ 	<c:if test="${user.checkPermesso('MODIFICA_ATTREZZATURE') }">
+ 	<a class="btn btn-warning" onClick="modalModificaAttrezzatura('${attrezzatura.id }','${attrezzatura.matricola_inail }','${attrezzatura.numero_fabbrica }','${attrezzatura.tipo_attivita }','${attrezzatura.descrizione }','${attrezzatura.id_cliente }','${attrezzatura.id_sede }',
  	'${attrezzatura.data_verifica_funzionamento }','${attrezzatura.data_prossima_verifica_funzionamento }','${attrezzatura.data_verifica_integrita }','${attrezzatura.data_prossima_verifica_integrita }','${attrezzatura.data_verifica_interna }','${attrezzatura.data_prossima_verifica_interna }',
- 	'${attrezzatura.anno_costruzione }','${attrezzatura.fabbricante }','${attrezzatura.modello }','${attrezzatura.settore_impiego }','${fn:replace(fn:replace(attrezzatura.note_tecniche.replace('\'',' ').replace('\\','/'),newLineChar, ' '),newLineChar2, ' ')}','${fn:replace(fn:replace(attrezzatura.note_generiche.replace('\'',' ').replace('\\','/').replace('\\n',' '),newLineChar, ' '),newLineChar2,' ')}','${attrezzatura.obsoleta }')"><i class="fa fa-edit"></i></a></td>
+ 	'${attrezzatura.anno_costruzione }','${attrezzatura.fabbricante }','${attrezzatura.modello }','${attrezzatura.settore_impiego }','${fn:replace(fn:replace(attrezzatura.note_tecniche.replace('\'',' ').replace('\\','/'),newLineChar, ' '),newLineChar2, ' ')}','${fn:replace(fn:replace(attrezzatura.note_generiche.replace('\'',' ').replace('\\','/').replace('\\n',' '),newLineChar, ' '),newLineChar2,' ')}','${attrezzatura.obsoleta }')"><i class="fa fa-edit"></i></a>
+ 	</c:if>
+ 	</td>
  	
  	</tr>
  	</c:forEach>

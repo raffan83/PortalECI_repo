@@ -60,5 +60,9 @@
                 <column name="id_ruolo" not-null="true" />
             </many-to-many>
         </set>
+        
+        <property name="qualifica" type="java.lang.String">
+            <column name="qualifica" />
+        </property>
     </class>
 </hibernate-mapping>
