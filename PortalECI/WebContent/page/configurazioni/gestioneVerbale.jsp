@@ -190,7 +190,8 @@
       				
       			
 								<div class="row">
-									<c:if test ="${(listaCertificati.size()>0 || user.checkRuolo('AM')) && verbale.getStato().getId()>=5 && verbale.getStato().getId()<8}">								  
+								<c:if test="${listaCertificati.size()>0 || user.checkRuolo('AM')}">
+									<c:if test ="${verbale.getStato().getId()>=5 && verbale.getStato().getId()<8}">								  
        								<div class="col-md-6 col-xs-12" id="certificatoBox">
        									<div class="box box-danger box-solid">
 											<div class="box-header with-border">
@@ -218,8 +219,10 @@
 										</div>
 									</div>
 								</c:if>
+								</c:if>
 								
-								<c:if test="${(verbale.getSchedaTecnica().getDocumentiVerbale().size()>0 || user.checkRuolo('AM')) && verbale.getSchedaTecnica().getStato().getId()>=5 && verbale.getSchedaTecnica().getStato().getId()<8 }">
+								<c:if test="${verbale.getSchedaTecnica().getDocumentiVerbale().size()>0 || user.checkRuolo('AM') }">
+								<c:if test="${verbale.getSchedaTecnica().getStato().getId()>=5 && verbale.getSchedaTecnica().getStato().getId()<8 }">
 									<div class="col-md-6 col-xs-12" id="schedaTecnicaBox">
 	     									<div class="box box-danger box-solid">
 											<div class="box-header with-border">
@@ -247,7 +250,7 @@
 										</div>
 									</div>								
 								</c:if>
-
+								</c:if>
 								</div>
 								
 								
