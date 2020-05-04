@@ -117,6 +117,7 @@
           			</ul>          		
           		<% }%>
         	</li>
+        	<% if(user.checkRuolo("AM") || user.checkPermesso("ACCESS_CONFIG")){%>		
          	<li class="treeview">
           		<a href="#">
           			<i class="fa fa-group"></i> 
@@ -125,7 +126,7 @@
               			<i class="fa fa-angle-left pull-right"></i>
             		</span>
           		</a>
-          		<% if(user.checkRuolo("AM") || user.checkPermesso("ACCESS_CONFIG")){%>		
+          		
           			<ul class="treeview-menu">
           				<% if(user.checkPermesso("GESTIONE_UTENTI")){%>          					
 							<li>
@@ -163,9 +164,9 @@
 							</li>
 						<% }%>
           			</ul>          			
-          		<% }%>
+          		
         	</li>
-        	
+        	<% }%>
       	</ul>
       	<!-- /.sidebar-menu -->
     </section>
