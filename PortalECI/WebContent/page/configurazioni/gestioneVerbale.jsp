@@ -891,7 +891,10 @@
 			$(document).ready(function() {			
 				$('.rispVerb').on('ifChanged', function(event) {
 					$('.'+$(this).attr('id')).find('input').val('');
-					$('.'+$(this).attr('id')).find('textarea').val('');
+					//$('.'+$(this).attr('id')).find('textarea').val('');
+					var index = $(this).attr('id').split("_")[1]
+					var textarea = $('.'+$(this).attr('id').split("_")[0]).find('textarea')[index];
+					$('#comment'+textarea.name).val('');
 					$('.'+$(this).attr('id')).find(':checkbox').removeAttr('checked').iCheck('update');
 					$('.'+$(this).attr('id')).find(':radio').removeAttr('checked').iCheck('update');
 				});

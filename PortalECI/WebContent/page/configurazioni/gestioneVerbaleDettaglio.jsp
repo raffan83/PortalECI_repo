@@ -83,10 +83,10 @@
   				<c:set var="domVerbalePage" value="${domVerbale}" scope="page"></c:set>
   				<c:set var="rispostaPage" value="${risposta}" scope="page"></c:set>
     			
-    			<c:forEach items="${opzioni}" var="opzione">	
+    			<c:forEach items="${opzioni}" var="opzione" varStatus ="loop">	
 					<label class="${domVerbalePage.getRisposta().getTipo().equals('RES_CHOICE') && rispostaPage.getRispostaQuestionario().getMultipla()?'checkbox':'radio'}-inline">
 						<input type="${domVerbalePage.getRisposta().getTipo().equals('RES_CHOICE') && rispostaPage.getRispostaQuestionario().getMultipla()?'checkbox':'radio'}"
-  							${opzione.getChecked()?'checked="checked"':''} name="options${rispostaPage.getId()}" value="${opzione.getId()}" id="options${domVerbalePage.getId()}" class="rispVerb" ${domVerbalePage.getDomandaQuestionario().getObbligatoria()?'required':''} > 
+  							${opzione.getChecked()?'checked="checked"':''} name="options${rispostaPage.getId()}" value="${opzione.getId()}" id="options${domVerbalePage.getId()}_${loop.index}" class="rispVerb" ${domVerbalePage.getDomandaQuestionario().getObbligatoria()?'required':''} > 
   							${opzione.getOpzioneQuestionario().getTesto()}
 					</label><br/>
 					<c:if test="${opzione.getDomande().size()>0}">
@@ -143,7 +143,8 @@
   					<p><a class="label label-warning" onclick="detailStorico('${risposta.getId()}')" title="Clicca per vedere lo storico delle modifiche"> Elemento modificato <i class="fa fa-pencil" aria-hidden="true"></i></a></p>
   				</c:if>
   				
-  				<textarea class="form-control rispVerb" rows="5" id="comment" name="${risposta.getId()}" ${domVerbale.getDomandaQuestionario().getObbligatoria()?'required':''} >${risposta.getResponseValue()}</textarea>
+  				<textarea class="form-control rispVerb" rows="5" id="comment${risposta.getId()}" name="${risposta.getId()}" ${domVerbale.getDomandaQuestionario().getObbligatoria()?'required':''} >${risposta.getResponseValue()}</textarea> 
+  				
   			</div>
   		</div>
 	</c:when>
