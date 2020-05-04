@@ -902,14 +902,26 @@
 					}
 					$('.'+$(this).attr('id')).find(':checkbox').removeAttr('checked').iCheck('update');
 					$('.'+$(this).attr('id')).find(':radio').removeAttr('checked').iCheck('update');
+					
 				});
+				
+				
+				$('.rispVerb').on('ifClicked', function (ev) {
+				
+					var id = this.id;
+					if(this.type=='radio' && this.checked && !this.required){
+						
+						$('#'+id).iCheck('uncheck');
+					}
+				})
 				
 				$("#changedForm").val(false);
 				$(":input",this).change(function() {
 					$("#changedForm").val(true);
 				});
 				
-				$('input').on('ifChanged', function (event) { $(event.target).trigger('change'); });
+  				$('input').on('ifChanged', function (event) { 
+					$(event.target).trigger('change'); });  
 				
 				if (!$("#certificatoBox").length) {
 					$("#schedaTecnicaBox").removeClass("col-md-6");
@@ -918,6 +930,9 @@
 				}			
 				
     		});	
+			
+			
+
 			
 			function salvaCambioStato(idverbale, idform, idstato){
 				pleaseWaitDiv = $('#pleaseWaitDialog');
