@@ -91,10 +91,14 @@
  	<td>${attrezzatura.settore_impiego }</td>
  	<td>${attrezzatura.note_tecniche }</td> 	
  	<td>${attrezzatura.note_generiche }</td> 
- 	<td><a class="btn btn-warning" onClick="modalModificaAttrezzatura('${attrezzatura.id }','${attrezzatura.matricola_inail }','${attrezzatura.numero_fabbrica }','${attrezzatura.tipo_attivita }','${attrezzatura.descrizione }','${attrezzatura.id_cliente }','${attrezzatura.id_sede }',
+ 	<td>
+ 	<c:if test="${user.checkPermesso('MODIFICA_ATTREZZATURE') }">
+ 	<a class="btn btn-warning" onClick="modalModificaAttrezzatura('${attrezzatura.id }','${attrezzatura.matricola_inail }','${attrezzatura.numero_fabbrica }','${attrezzatura.tipo_attivita }','${attrezzatura.descrizione }','${attrezzatura.id_cliente }','${attrezzatura.id_sede }',
  	'${attrezzatura.data_verifica_funzionamento }','${attrezzatura.data_prossima_verifica_funzionamento }','${attrezzatura.data_verifica_integrita }','${attrezzatura.data_prossima_verifica_integrita }','${attrezzatura.data_verifica_interna }','${attrezzatura.data_prossima_verifica_interna }',
- 	'${attrezzatura.anno_costruzione }','${attrezzatura.fabbricante }','${attrezzatura.modello }','${attrezzatura.settore_impiego }','${fn:replace(fn:replace(attrezzatura.note_tecniche.replace('\'',' ').replace('\\','/'),newLineChar, ' '),newLineChar2,' ')}','${fn:replace(fn:replace(attrezzatura.note_generiche.replace('\'',' ').replace('\\','/'),newLineChar, ' '),newLineChar2,' ')}','${attrezzatura.obsoleta }')"><i class="fa fa-edit"></i></a></td>
- 	
+ 	'${attrezzatura.anno_costruzione }','${attrezzatura.fabbricante }','${attrezzatura.modello }','${attrezzatura.settore_impiego }','${fn:replace(fn:replace(attrezzatura.note_tecniche.replace('\'',' ').replace('\\','/'),newLineChar, ' '),newLineChar2,' ')}','${fn:replace(fn:replace(attrezzatura.note_generiche.replace('\'',' ').replace('\\','/'),newLineChar, ' '),newLineChar2,' ')}','${attrezzatura.obsoleta }')"><i class="fa fa-edit"></i></a>
+ 	 	</c:if>
+ 	</td>
+
  	</tr>
  	</c:forEach>
  
