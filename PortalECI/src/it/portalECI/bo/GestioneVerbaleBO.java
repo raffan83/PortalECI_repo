@@ -162,6 +162,10 @@ public class GestioneVerbaleBO {
 				schedaTecnica.setDescrizioneVerifica(questionario.getTipo().getCategoria().getDescrizione()+" - "+questionario.getTipo().getDescrizione());
 				schedaTecnica.setStato(GestioneStatoVerbaleDAO.getStatoVerbaleById(StatoVerbaleDTO.CREATO, session));
 				schedaTecnica.setType(VerbaleDTO.SK_TEC);
+				schedaTecnica.setAttrezzatura(attrezzatura);
+				schedaTecnica.setSedeUtilizzatore(sedeUtilizzatore);
+				schedaTecnica.setEsercente(esercente);
+				
 				
 				GestioneVerbaleDAO.save(schedaTecnica, session);
 				verbale.setSchedaTecnica(schedaTecnica);
