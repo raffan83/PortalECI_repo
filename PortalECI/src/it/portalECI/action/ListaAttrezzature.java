@@ -17,6 +17,9 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.hibernate.Session;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
 import it.portalECI.DAO.SessionFacotryDAO;
@@ -24,10 +27,13 @@ import it.portalECI.DTO.AttrezzaturaDTO;
 import it.portalECI.Exception.ECIException;
 import it.portalECI.Util.Utility;
 import it.portalECI.bo.GestioneAttrezzatureBO;
+import it.portalECI.bo.GestioneInterventoBO;
 import it.portalECI.DTO.ClienteDTO;
 import it.portalECI.DTO.CompanyDTO;
 import it.portalECI.DTO.DescrizioneGruppoAttrezzaturaDTO;
+import it.portalECI.DTO.InterventoDTO;
 import it.portalECI.DTO.SedeDTO;
+import it.portalECI.DTO.UtenteDTO;
 import it.portalECI.bo.GestioneAnagraficaRemotaBO;
 
 
@@ -69,6 +75,9 @@ public class ListaAttrezzature extends HttpServlet {
 		JsonObject myObj = new JsonObject();
 		boolean ajax = false;
 		String action = request.getParameter("action");
+		
+		UtenteDTO utente=(UtenteDTO)request.getSession().getAttribute("userObj");
+		
 		try {
 			if(action==null || action.equals("")) {
 				
@@ -76,14 +85,58 @@ public class ListaAttrezzature extends HttpServlet {
 				
 				String idCompany=""+cmp.getId();
 				
-				List<ClienteDTO> listaClientiFull = GestioneAnagraficaRemotaBO.getListaClienti(idCompany);				
-
-				request.getSession().setAttribute("listaClienti",listaClientiFull);
-				
+				List<ClienteDTO> listaClientiFull = GestioneAnagraficaRemotaBO.getListaClienti(idCompany);		
 				List<SedeDTO> listaSediFull = GestioneAnagraficaRemotaBO.getListaSedi();
-
-				request.getSession().setAttribute("listaSedi",listaSediFull);	
 				
+				if(!utente.checkRuolo("AM")) {
+					
+					List<ClienteDTO> listaClienti = new ArrayList<ClienteDTO>();	
+					
+					List<SedeDTO> listaSedi = new ArrayList<SedeDTO>();
+					
+					//ArrayList<Integer> lista_id_clienti = GestioneAttrezzatureBO.getClientiSediTecnico(session, utente.getId(), 0);
+					ArrayList<Object[]> lista_id_clienti_sedi = GestioneAttrezzatureBO.getClientiSediTecnico(session, utente.getId(), 0);
+					ArrayList<Integer> lista_id_clienti = new ArrayList<Integer>();
+					ArrayList<Integer> lista_id_sedi = new ArrayList<Integer>();
+					
+					
+					for (Object[] integers : lista_id_clienti_sedi) {
+						lista_id_clienti.add((Integer)integers[0]);
+						lista_id_sedi.add((Integer)integers[1]);
+					}
+					
+					for (ClienteDTO cliente : listaClientiFull) {						
+						if(lista_id_clienti.contains(cliente.get__id())) {
+							listaClienti.add(cliente);
+						}
+					}
+					
+					for (SedeDTO sede : listaSediFull) {
+						
+						if(lista_id_sedi.contains(sede.get__id())) {
+							listaSedi.add(sede);
+						}
+						
+					}
+					
+					 Gson gson = new Gson(); 
+			
+
+				    JsonElement obj = gson.toJsonTree(lista_id_clienti_sedi);
+					
+				    request.getSession().setAttribute("json",obj);
+					request.getSession().setAttribute("listaClienti",listaClienti);
+					request.getSession().setAttribute("lista_id_clienti",lista_id_clienti);
+					request.getSession().setAttribute("lista_id_sedi",lista_id_sedi);	
+					request.getSession().setAttribute("listaSedi",listaSedi);						
+					
+				}else {
+					
+					request.getSession().setAttribute("listaClienti",listaClientiFull);
+					request.getSession().setAttribute("listaSedi",listaSediFull);	
+				}								
+				
+
 				session.close();
 				RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/page/configurazioni/listaAttrezzature.jsp");
 		     	dispatcher.forward(request,response);
@@ -91,9 +144,42 @@ public class ListaAttrezzature extends HttpServlet {
 			else if(action.equals("cliente_sede")) {
 				
 				String id_cliente = request.getParameter("id_cliente");
-				String id_sede = request.getParameter("id_sede");
+				String id_sede = request.getParameter("id_sede");				
 				
-				ArrayList<AttrezzaturaDTO> lista_attrezzature = GestioneAttrezzatureBO.getlistaAttrezzatureSede(Integer.parseInt(id_cliente), Integer.parseInt(id_sede.split("_")[0]),session);
+				
+				ArrayList<AttrezzaturaDTO> lista_attrezzature = null;
+				
+				if(id_cliente.equals("0")) {
+					
+					ArrayList<AttrezzaturaDTO> lista_attrezzatureTutte = GestioneAttrezzatureBO.getlistaAttrezzature(session);
+					
+					if(!utente.checkRuolo("AM")) {
+						ArrayList<Integer> lista_id_clienti =  (ArrayList<Integer>) request.getSession().getAttribute("lista_id_clienti");	
+						ArrayList<Integer> lista_id_sedi =  (ArrayList<Integer>) request.getSession().getAttribute("lista_id_sedi");	
+						
+						lista_attrezzature = new ArrayList<AttrezzaturaDTO>();
+						
+						if(lista_id_clienti!=null && lista_id_sedi!=null) {
+							for (AttrezzaturaDTO attrezzatura : lista_attrezzatureTutte) {
+								if(lista_id_clienti.contains(attrezzatura.getId_cliente()) && lista_id_sedi.contains(attrezzatura.getId_sede())) {
+									lista_attrezzature.add(attrezzatura);
+								}
+							}
+						}
+						
+					}else {
+						
+						lista_attrezzature = lista_attrezzatureTutte;
+						
+					}
+					
+				}
+				else {
+					
+					lista_attrezzature = GestioneAttrezzatureBO.getlistaAttrezzatureSede(Integer.parseInt(id_cliente), Integer.parseInt(id_sede.split("_")[0]),session);
+					
+				}
+				
 				
 				ArrayList<DescrizioneGruppoAttrezzaturaDTO> lista_descrizioni_gruppi = GestioneAttrezzatureBO.getListaDescrizioniGruppi(session);
 				

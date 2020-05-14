@@ -46,12 +46,15 @@
  															<tr class="active"> 
  																<th>ID Verbale</th>
  																<th>ID Intervento</th>
+ 																<th>ID Commessa</th>
+ 																<th>Numero Verbale</th>
  																<th>Sede Cliente</th>
  																<th>Codice Categoria</th>
  																<th>Codice Verifica</th>
  																<th>Tecnico Verificatore</th>
  																<th>Descrizione Verifica</th>
- 																<th>Stato-Stato S.T.</th>
+ 																<th>Stato</th>
+ 																<th>Stato S.T.</th>
  																<th>Data Creazione</th>
  																<td></td>
  															</tr>
@@ -71,6 +74,14 @@
 																		</a>
 																	</td>
 																	<td>
+																	<a href="#" class="btn customTooltip customlink" title="Click per aprire il dettaglio della Commessa" onclick="callAction('gestioneIntervento.do?idCommessa=${verbale.intervento.idCommessa}');">
+																			${verbale.intervento.idCommessa}
+																		</a>
+																	</td>
+																	<td>
+																		${verbale.numeroVerbale }
+																	</td>
+																	<td>
 																		<c:out value='${verbale.getIntervento().getNome_sede()}'/>
 																	</td>
 																	<td>
@@ -87,13 +98,16 @@
 																	</td>
 																	<td>
 																		<span class="label" style="color:#000000 !important; background-color:${verbale.getStato().getColore(verbale.getStato().getId())} !important;">${verbale.getStato().getDescrizione()}</span>
-																		-
-																		<c:if test="${verbale.getSchedaTecnica()!=null }">
+																		
+																		 																	
+																	</td>
+																	<td>
+																	<c:if test="${verbale.getSchedaTecnica()!=null }">
 																			<span class="label" style="color:#000000 !important; background-color:${verbale.getStato().getColore(verbale.getSchedaTecnica().getStato().getId())} !important;">${verbale.getSchedaTecnica().getStato().getDescrizione()}</span>
 																		</c:if>  											
 																		<c:if test="${verbale.getSchedaTecnica()==null }">
 																			<span class="label" style="color:#000000 !important; background-color:grey !important;">ASSENTE</span>
-																		</c:if>	  																	
+																		</c:if>	 
 																	</td>
         															<td>
 																		<fmt:formatDate pattern="dd/MM/yyyy" value='${verbale.getCreateDate()}' type='date' />

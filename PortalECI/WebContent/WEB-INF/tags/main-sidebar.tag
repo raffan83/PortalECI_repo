@@ -17,6 +17,7 @@
 	        <li class="header">Menu</li>
         
     	     <li class="treeview">
+    	     <% if(user.checkPermesso("GESTIONE_COMMESSA")){%> 
         	 	<a href="#">
         	 		<i class="fa fa-link"></i> 
         	 		<span>Commesse</span>
@@ -24,7 +25,7 @@
               			<i class="fa fa-angle-left pull-right"></i>
             		</span>
           		</a>
-          		<% if(user.checkPermesso("GESTIONE_COMMESSA")){%> 
+          		
           			<ul class="treeview-menu">
             			<li>
             				<a href="gestioneCommessa.do">Gestione Commessa</a>
@@ -99,7 +100,7 @@
         	<li class="treeview">
         	 	<a href="#">
         	 		<i class="fa fa-briefcase"></i>
-        	 		<span>Attrezzature</span>
+        	 		<span>Archivio <br>attrezzature/impianti</span>
             		<span class="pull-right-container">
               			<i class="fa fa-angle-left pull-right"></i>
             		</span>
@@ -107,7 +108,7 @@
           		 <% if(user.checkPermesso("ATTREZZATURE")){%> 
           			<ul class="treeview-menu">
             			<li>
-            				<a href="listaAttrezzature.do">Archivio Attrezzature</a>
+            				<a href="listaAttrezzature.do">Attrezzature di lavoro</a>
             			</li>
             			<% if(user.checkPermesso("SCADENZARIO_ATTREZZATURE")){%>
              				<li>

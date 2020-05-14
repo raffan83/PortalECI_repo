@@ -8,8 +8,11 @@ import it.portalECI.Util.Utility;
 import it.portalECI.bo.GestioneCommesseBO;
 
 import java.io.IOException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -58,25 +61,54 @@ public class GestioneCommessa extends HttpServlet {
 			
 			UtenteDTO user = (UtenteDTO)request.getSession().getAttribute("userObj");
 			
-			String anno=request.getParameter("year");
+			String action = request.getParameter("action");
 			
-			int year=0;
+			if(action == null) {
 			
-			if(anno==null) {
-				year = Calendar.getInstance().get(Calendar.YEAR);
-			}else 
-			{
-				year=Integer.parseInt(anno);
+				String anno=request.getParameter("year");
+				
+				int year=0;
+				
+				if(anno==null) {
+					year = Calendar.getInstance().get(Calendar.YEAR);
+				}else 
+				{
+					year=Integer.parseInt(anno);
+				}
+				
+				ArrayList<CommessaDTO> listaCommesse =GestioneCommesseBO.getListaCommesse(company,user,year);
+				
+				request.getSession().setAttribute("listaCommesse", listaCommesse);
+				request.getSession().setAttribute("current_year", year);
+				request.getSession().setAttribute("yearList", Utility.getYearList());
+				
+				request.getSession().setAttribute("startDate", null);
+				request.getSession().setAttribute("endDate", null);
+				
+				RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/page/configurazioni/gestioneCommessa.jsp");
+		     	dispatcher.forward(request,response);
+		     	
+			}else if(action.equals("date")) {
+				
+				String dateFrom = request.getParameter("dateFrom");
+				String dateTo = request.getParameter("dateTo");				
+				
+				ArrayList<CommessaDTO> listaCommesse = GestioneCommesseBO.getListaCommessePerData(company, user, dateFrom, dateTo);
+				
+				request.getSession().setAttribute("listaCommesse", listaCommesse);
+				
+				DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+				DateFormat df2 = new SimpleDateFormat("dd/MM/yyyy");
+				Date from = df.parse(dateFrom);
+				Date to = df.parse(dateTo);
+				
+				request.getSession().setAttribute("startDate", df2.format(from));
+				request.getSession().setAttribute("endDate", df2.format(to));
+				
+				RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/page/configurazioni/gestioneCommessa.jsp");
+		     	dispatcher.forward(request,response);
+				
 			}
-			
-			ArrayList<CommessaDTO> listaCommesse =GestioneCommesseBO.getListaCommesse(company,user,year);
-			
-			request.getSession().setAttribute("listaCommesse", listaCommesse);
-			request.getSession().setAttribute("current_year", year);
-			request.getSession().setAttribute("yearList", Utility.getYearList());
-			
-			RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/page/configurazioni/gestioneCommessa.jsp");
-	     	dispatcher.forward(request,response);
 			
 		}catch(Exception ex){
    		 	ex.printStackTrace();

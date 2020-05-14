@@ -39,6 +39,7 @@
                   <label>Cliente</label>
                   <select name="select1" id="select1" data-placeholder="Seleziona Cliente..."  class="form-control select2" aria-hidden="true" data-live-search="true" style="width:100%">
                   <option value=""></option>
+                  <option value="0">TUTTI</option>
                       <c:forEach items="${listaClienti}" var="cliente">
                            <option value="${cliente.__id}">${cliente.nome} </option> 
                      </c:forEach>
@@ -249,6 +250,10 @@
 
   <script type="text/javascript">
 
+  var json_obj = '${json}';
+  if(json_obj!= ''){
+	  var json = JSON.parse(json_obj);  
+  }
   
 
     $("#select1").change(function() {
@@ -260,27 +265,50 @@
   	  }
   	  
   	  var id = $(this).val();
-  	 
-  	  var options = $(this).data('options');
-
-  	  var opt=[];
-  	
-  	  opt.push("<option value = 0>Non Associate</option>");
-
-  	   for(var  i=0; i<options.length;i++)
-  	   {
-  		var str=options[i].value; 
-  	
-  		if(str.substring(str.indexOf("_")+1,str.length)==id)
-  		{
-  			opt.push(options[i]);
-  		}   
-  	   }
-  	 $("#select2").prop("disabled", false);
-  	 
-  	  $('#select2').html(opt);
-
+  	  
+  	  if(id == 0){
+  		$('#select2').val("");
+  		$("#select2").prop("disabled", true);
   		$("#select2").change();  
+  	  }else{
+  		  
+  		var options = $(this).data('options');
+  		
+	  	  var opt=[];
+
+	  	 if(json!=null){
+	 	  	var cl = parseInt(id);
+	 	  	
+	  		  for(var i = 0; i<json.length;i++){
+	  			  if(json[i][0] == cl && json[i][1] == 0){
+	  			
+	  				  opt.push("<option value = 0>Non Associate</option>");  
+	  				  break;
+	  			  }
+	  		 } 
+	  		 
+	  	 }else{
+	  		  opt.push("<option value = 0>Non Associate</option>");
+	  	 }
+	  	
+	
+	  	   for(var  i=0; i<options.length;i++)
+	  	   {
+	  		var str=options[i].value; 
+	  	
+	  		if(str.substring(str.indexOf("_")+1,str.length)==id)
+	  		{
+	  			opt.push(options[i]);
+	  		}   
+	  	   }
+	  	 $("#select2").prop("disabled", false);
+	  	 
+	  	  $('#select2').html(opt);
+	
+	  		$("#select2").change();  
+	  		
+  	  }
+	  	  
 
   	
   	});

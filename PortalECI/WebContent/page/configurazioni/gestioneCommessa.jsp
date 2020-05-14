@@ -42,6 +42,28 @@
 													</div>
 												</div>
 												<div class="box-body">
+												<div class="row">
+													<div class="col-xs-6">
+			 <div class="form-group">
+				 <label for="datarange" class="control-label">Ricerca Date:</label>
+					<div class="col-md-10 input-group" >
+						<div class="input-group-addon">
+				             <i class="fa fa-calendar"></i>
+				        </div>				                  	
+						 <input type="text" class="form-control" id="datarange" name="datarange" value=""/> 						    
+							 <span class="input-group-btn">
+				               <button type="button" class="btn btn-info btn-flat" onclick="filtraCommessePerData()">Cerca</button>
+				               <button type="button" style="margin-left:5px" class="btn btn-primary btn-flat" onclick="resetDate()">Reset Date</button>
+				             </span>				                     
+  					</div>  								
+			 </div>	
+			 
+			 
+
+	</div>
+												</div>
+												
+												
 												<div class="row"> 
 <div class="col-xs-2">
  <label>Anno: </label>
@@ -199,13 +221,78 @@
 
 
 	<jsp:attribute name="extra_css">
+
+
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-timepicker/0.5.2/css/bootstrap-timepicker.css">
+	 <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-timepicker/0.5.2/css/bootstrap-timepicker.css"></script> -->
+	<link type="text/css" href="css/bootstrap.min.css" />
+	
+ 	<link rel="stylesheet" type="text/css" href="plugins/daterangepicker/daterangepicker.css" /> 
+
+
 	</jsp:attribute>
 
 	<jsp:attribute name="extra_js_footer">
 
+<script src="plugins/daterangepicker/daterangepicker.js"></script>
+ <script type="text/javascript" src="bootstrap/js/bootstrap.min.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-timepicker/0.5.2/js/bootstrap-timepicker.js"></script> 
+
+   
   		<script type="text/javascript">
    
+  		
+  	  function filtraCommessePerData(){		
+
+  			
+  			var startDatePicker = $("#datarange").data('daterangepicker').startDate;
+  			var endDatePicker = $("#datarange").data('daterangepicker').endDate;
+  			
+  			dataString = "?action=date&dateFrom=" + startDatePicker.format('YYYY-MM-DD') + "&dateTo=" + endDatePicker.format('YYYY-MM-DD');			 	
+  			pleaseWaitDiv = $('#pleaseWaitDialog');
+  			pleaseWaitDiv.modal();
+
+  			callAction("gestioneCommessa.do"+ dataString, false,true);			 
+  	 
+	
+  	}
+  	 
+  	 function resetDate(){
+  			pleaseWaitDiv = $('#pleaseWaitDialog');
+  			pleaseWaitDiv.modal();
+  			callAction('gestioneCommessa.do',null,true);
+
+  		}
+  		
+	 var start = '${startDate}';
+	var end = '${endDate}';
+  		
     		$(document).ready(function() {
+    			
+    			
+   			 $('input[name="datarange"]').daterangepicker({
+				    locale: {
+				      format: 'DD/MM/YYYY'
+				    
+				    }
+				}, 
+				function(start, end, label) {
+
+				});
+   			 
+   			 
+   		
+   			 
+   			 if(start!='' && end!=''){
+   				 
+   				
+   				$('#datarange').data('daterangepicker').setStartDate(start);
+   				$('#datarange').data('daterangepicker').setEndDate(end);
+   				
+   			 }
+    			
+    			
      			table = $('#tabPM').DataTable({
     				language: {
   	        			emptyTable : 	"Nessun dato presente nella tabella",
@@ -238,6 +325,7 @@
     	      		targets: 0,
     	      		responsive: true,
     	      		scrollX: false,
+    	      		"order": [[ 6, "desc" ]],
     	      		columnDefs: [
 						{ responsivePriority: 1, targets: 0 },
     	                { responsivePriority: 3, targets: 2 },

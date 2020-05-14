@@ -11,6 +11,7 @@ import org.hibernate.Session;
 
 import it.portalECI.DTO.AttrezzaturaDTO;
 import it.portalECI.DTO.DescrizioneGruppoAttrezzaturaDTO;
+import it.portalECI.DTO.InterventoDTO;
 
 
 public class GestioneAttrezzatureDAO {
@@ -131,6 +132,39 @@ public class GestioneAttrezzatureDAO {
 		lista= (ArrayList<DescrizioneGruppoAttrezzaturaDTO>)query.list();	
 		
 		return 	lista;
+	}
+
+//	public static ArrayList<Integer> getClientiSediTecnico(Session session, int id_tecnico, int cliente_sede) {		
+//		
+//		ArrayList<Integer> lista =null;
+//		
+//		Query query  = null;
+//		
+//		if(cliente_sede==0) {
+//			query = session.createQuery( " select distinct id_cliente from InterventoDTO WHERE id_tecnico_verificatore= :_id_tecnico_verificatore");	
+//		}else {
+//			query = session.createQuery( " select distinct idSede from InterventoDTO WHERE id_tecnico_verificatore= :_id_tecnico_verificatore");
+//		}		
+//		
+//		query.setParameter("_id_tecnico_verificatore", id_tecnico);
+//		lista=(ArrayList<Integer>)query.list();
+//		
+//		return lista;
+//	}
+	
+	
+	public static ArrayList<Object[]> getClientiSediTecnico(Session session, int id_tecnico, int cliente_sede) {		
+		
+		ArrayList<Object[]> lista =null;
+		
+		Query query  = session.createQuery( " select distinct id_cliente, idSede from InterventoDTO WHERE id_tecnico_verificatore= :_id_tecnico_verificatore");	
+			
+		query.setParameter("_id_tecnico_verificatore", id_tecnico);
+		
+		
+		lista=(ArrayList<Object[]>)query.list();
+		
+		return lista;
 	}
 
 }

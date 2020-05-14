@@ -12,6 +12,11 @@ import it.portalECI.DTO.DescrizioneGruppoAttrezzaturaDTO;
 
 public class GestioneAttrezzatureBO {
 
+	public static ArrayList<AttrezzaturaDTO> getlistaAttrezzature(Session session) {
+		
+		return GestioneAttrezzatureDAO.getlistaAttrezzature(session);
+	}
+	
 	public static ArrayList<AttrezzaturaDTO> getlistaAttrezzatureSede(int id_cliente, int id_sede, Session session) {
 		
 		return GestioneAttrezzatureDAO.getlistaAttrezzatureSede(id_cliente, id_sede, session);
@@ -37,4 +42,13 @@ public class GestioneAttrezzatureBO {
 		return GestioneAttrezzatureDAO.getListaDescrizioniGruppi(session);
 	}
 
+//	public static ArrayList<Integer> getClientiSediTecnico(Session session, int id_tecnico, int cliente_sede) {
+//		
+//		return GestioneAttrezzatureDAO.getClientiSediTecnico(session, id_tecnico, cliente_sede);
+//	}
+
+	public static ArrayList<Object[]> getClientiSediTecnico(Session session, int id_tecnico, int cliente_sede) {
+		
+		return GestioneAttrezzatureDAO.getClientiSediTecnico(session, id_tecnico, cliente_sede);
+	}
 }

@@ -8,6 +8,8 @@ import it.portalECI.DTO.UtenteDTO;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -69,6 +71,28 @@ public class GestioneCommesseDAO {
 										"from BWT_COMMESSA_AVANZ AS a " +
 										"Left join BWT_ANAART AS b ON a.ID_ANAART =b.ID_ANAART " +
 										"where ID_COMMESSA=? AND TB_TIPO_MILE='MILE'";
+	
+
+	private static final String querySqlServerComTrasDate = "SELECT ID_COMMESSA,DT_COMMESSA,FIR_CHIUSURA_DT, B.ID_ANAGEN,b.NOME," +
+			"a.DESCR,a.SYS_STATO,C.K2_ANAGEN_INDIR,C.DESCR,C.INDIR,C.CITTA,C.CODPROV,b.INDIR AS INDIRIZZO_PRINCIPALE,b.CITTA AS CITTAPRINCIPALE, b.CODPROV AS CODICEPROVINCIA,NOTE_GEN,N_ORDINE," +
+			"a.ID_ANAGEN_UTILIZ AS ID_UTIL ,a.K2_ANAGEN_INDIR_UTILIZ AS ID_IND_UTIL, e.nome as NOME_CLIENTE_UTIL, e.INDIR as IND_PRINC_UTIL,e.CITTA AS CITTAPRINCIPALE,e.CODPROV AS COD_PROV_PRINCIPALE,d.DESCR AS DESC_SEDE_UTIL,d.INDIR AS IND_SEDE_UTIL ,d.CITTA AS CITTA_SEDE_UTIL,d.CODPROV AS PROV_SEDE_UTIL "+
+			"FROM BWT_COMMESSA AS a " +
+			"LEFT JOIN BWT_ANAGEN AS b ON  a.ID_ANAGEN=b.ID_ANAGEN " +
+			"LEFT JOIN BWT_ANAGEN_INDIR AS c on a.K2_ANAGEN_INDIR=c.K2_ANAGEN_INDIR AND a.ID_ANAGEN=c.ID_ANAGEN " +
+			"LEFT JOIN [BTOMEN_CRESCO_DATI].[dbo].[BWT_ANAGEN_INDIR] AS d on a.K2_ANAGEN_INDIR_UTILIZ=d.K2_ANAGEN_INDIR AND a.ID_ANAGEN_UTILIZ=d.ID_ANAGEN "+
+			"LEFT JOIN [BTOMEN_CRESCO_DATI].[dbo].[BWT_ANAGEN] AS e on a.ID_ANAGEN_UTILIZ=e.ID_ANAGEN "+			
+			"WHERE ID_ANAGEN_COMM=1703 AND  (TB_CATEG_COM='VIE' OR TB_CATEG_COM='VAL') AND DT_COMMESSA BETWEEN ? AND ?";
+	
+	
+	private static String querySqlServerCommonDate= "SELECT ID_COMMESSA,DT_COMMESSA,FIR_CHIUSURA_DT, B.ID_ANAGEN,b.NOME," +
+			"a.DESCR,a.SYS_STATO,C.K2_ANAGEN_INDIR,C.DESCR,C.INDIR,C.CITTA,C.CODPROV,b.INDIR AS INDIRIZZO_PRINCIPALE,b.CITTA AS CITTAPRINCIPALE, b.CODPROV AS CODICEPROVINCIA,NOTE_GEN,N_ORDINE " +
+			",a.ID_ANAGEN_UTILIZ AS ID_UTIL ,a.K2_ANAGEN_INDIR_UTILIZ AS ID_IND_UTIL, e.nome as NOME_CLIENTE_UTIL, e.INDIR as IND_PRINC_UTIL,e.CITTA AS CITTAPRINCIPALE,e.CODPROV AS COD_PROV_PRINCIPALE,d.DESCR AS DESC_SEDE_UTIL,d.INDIR AS IND_SEDE_UTIL ,d.CITTA AS CITTA_SEDE_UTIL,d.CODPROV AS PROV_SEDE_UTIL "+
+			"FROM BWT_COMMESSA AS a " +
+			"LEFT JOIN BWT_ANAGEN AS b ON  a.ID_ANAGEN=b.ID_ANAGEN " +
+			"LEFT JOIN BWT_ANAGEN_INDIR AS c on a.K2_ANAGEN_INDIR=c.K2_ANAGEN_INDIR AND a.ID_ANAGEN=c.ID_ANAGEN " +
+			"LEFT JOIN [BTOMEN_CRESCO_DATI].[dbo].[BWT_ANAGEN_INDIR] AS d on a.K2_ANAGEN_INDIR_UTILIZ=d.K2_ANAGEN_INDIR AND a.ID_ANAGEN_UTILIZ=d.ID_ANAGEN "+
+			"LEFT JOIN [BTOMEN_CRESCO_DATI].[dbo].[BWT_ANAGEN] AS e on a.ID_ANAGEN_UTILIZ=e.ID_ANAGEN "+
+			"WHERE ID_ANAGEN_COMM=? AND (TB_CATEG_COM='VIE' OR TB_CATEG_COM='VAL')  AND DT_COMMESSA BETWEEN ? AND ?";
 
 	/*public static ArrayList<CommessaDTO> getListaCommesse(CompanyDTO company, String categoria, UtenteDTO user) throws Exception {
 		Connection con=null;
@@ -517,6 +541,111 @@ public class GestioneCommesseDAO {
 			con.close();
 		}
 		return mappaClienti;
+	}
+
+	public static ArrayList<CommessaDTO> getListaCommessePerData(CompanyDTO company, UtenteDTO user, String dateFrom, String dateTo) throws Exception {
+		
+		Connection con=null;
+		PreparedStatement pst=null;
+		PreparedStatement pstA=null;
+		ResultSet rs=null;
+		ResultSet rsA=null;
+		
+		ArrayList<CommessaDTO> listaCommesse = new ArrayList<>();
+		
+		try
+		{
+		
+		con =ManagerSQLServer.getConnectionSQL();
+
+				
+		DateFormat df = new SimpleDateFormat("yyyy-MM-dd");	
+		java.sql.Date from = new java.sql.Date(df.parse(dateFrom).getTime());
+		java.sql.Date to = new java.sql.Date(df.parse(dateTo).getTime());
+		
+		if(user.isTras())
+		{
+			
+		
+			pst=con.prepareStatement(querySqlServerComTrasDate);
+			pst.setDate(1, from);
+			pst.setDate(2, to);
+				
+		}
+		
+		else
+		{
+			
+			pst=con.prepareStatement(querySqlServerCommonDate);
+			pst.setInt(1, company.getId());
+			pst.setDate(2, from);
+			pst.setDate(3, to);
+			
+		}
+
+		rs=pst.executeQuery();
+		
+		CommessaDTO commessa=null;
+		while(rs.next())
+		{
+			commessa= new CommessaDTO();
+			String idCommessa=rs.getString(1);
+			commessa.setID_COMMESSA(idCommessa);
+			commessa.setDT_COMMESSA(rs.getDate(2));
+			commessa.setFIR_CHIUSURA_DT(rs.getDate(3));
+			commessa.setID_ANAGEN(rs.getInt(4));
+			commessa.setID_ANAGEN_NOME(rs.getString(5));
+			commessa.setDESCR(rs.getString(6));
+			commessa.setID_ANAGEN_COMM(company.getId());
+			commessa.setSYS_STATO(rs.getString(7));
+			commessa.setK2_ANAGEN_INDR(rs.getInt(8));
+			commessa.setANAGEN_INDR_DESCR(null);
+			String indirizzoSede=rs.getString(10);
+			
+			if (indirizzoSede!=null)
+			{
+				commessa.setANAGEN_INDR_INDIRIZZO(indirizzoSede+" - "+rs.getString(11)+" ("+rs.getString(12)+")");
+			}
+			else
+			{
+				commessa.setANAGEN_INDR_INDIRIZZO("");
+			}
+		
+			commessa.setINDIRIZZO_PRINCIPALE(rs.getString(13)+" - "+rs.getString(14)+" ("+rs.getString(15)+")");
+			commessa.setNOTE_GEN(rs.getString(16));
+			commessa.setN_ORDINE(rs.getString(17));
+
+			commessa.setID_ANAGEN_UTIL(rs.getInt(18));
+			commessa.setK2_ANAGEN_INDR_UTIL(rs.getInt(19));
+			commessa.setNOME_UTILIZZATORE(rs.getString(20));
+		
+			String sede_util=rs.getString(25);
+			String prov="";
+			if (sede_util!=null)
+			{
+				prov=rs.getString(27);
+				commessa.setINDIRIZZO_UTILIZZATORE(sede_util+" - "+rs.getString(26)+" ("+prov+")");
+				
+			}
+			else
+			{
+				prov=rs.getString(23);
+				commessa.setINDIRIZZO_UTILIZZATORE(rs.getString(21)+" - "+rs.getString(22)+" ("+prov+")");
+			}
+			commessa.setCOD_PROV(prov);
+			
+			listaCommesse.add(commessa);
+			
+		}
+		
+		}catch (Exception e) 
+		{
+		throw e;
+		}
+		if(con!=null) {
+			con.close();
+		}
+		return listaCommesse;
 	}
 	
 }

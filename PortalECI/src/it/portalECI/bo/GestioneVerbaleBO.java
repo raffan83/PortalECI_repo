@@ -373,7 +373,7 @@ public class GestioneVerbaleBO {
         if(vecchioDocumento != null) {
         	String vecchioDocFileName = vecchioDocumento.getFileName();
         	vecchioDocFileName = FilenameUtils.removeExtension(vecchioDocFileName);
-        	newDocument(certificato.getFilePath(), vecchioDocFileName);
+        	newDocument(certificato.getFilePath(), vecchioDocFileName, verbale);
         }
         
         
@@ -434,7 +434,7 @@ public class GestioneVerbaleBO {
         if(vecchioDocumento != null) {
         	String vecchioDocFileName = vecchioDocumento.getFileName();
         	vecchioDocFileName = FilenameUtils.removeExtension(vecchioDocFileName);
-        	newDocument(path+file.getName(), vecchioDocFileName);
+        	newDocument(path+file.getName(), vecchioDocFileName, verbale);
         }
 
 		return file;
@@ -938,7 +938,7 @@ public class GestioneVerbaleBO {
 			File tmpFile = new File(filepath+"tmp");
 	        PdfReader reader = new PdfReader(filepath);
 	        PdfStamper stamper = new PdfStamper(reader, new FileOutputStream(tmpFile));
-	        Font f = new Font(FontFamily.HELVETICA, 15);
+	        Font f = new Font(FontFamily.HELVETICA, 12);
 	        f.setColor(BaseColor.RED);
 	        int pages = reader.getNumberOfPages();
 	        for (int i=0; i<pages; i++) {	        
@@ -948,7 +948,7 @@ public class GestioneVerbaleBO {
 		        PdfGState gs1 = new PdfGState();
 		        gs1.setFillOpacity(0.7f);
 		        over.setGState(gs1);
-		        ColumnText.showTextAligned(over, Element.ALIGN_CENTER, p, 570, 450, 90);
+		        ColumnText.showTextAligned(over, Element.ALIGN_CENTER, p, 580, 450, 90);
 		        over.restoreState();
 	        }
 	        stamper.close();
@@ -969,7 +969,7 @@ public class GestioneVerbaleBO {
 		
 	}
 	
-	public static void newDocument(String path, String newfile) {
+	public static void newDocument(String path, String newfile, VerbaleDTO verbale) {
 
 		try {
 			String filepath = Costanti.PATH_CERTIFICATI+path;
@@ -977,18 +977,20 @@ public class GestioneVerbaleBO {
 	        PdfReader reader = new PdfReader(filepath);
 	        FileOutputStream tmpfos = new FileOutputStream(tmpFile);
 	        PdfStamper stamper = new PdfStamper(reader, tmpfos);
-	        Font f = new Font(FontFamily.HELVETICA, 15);
+	        Font f = new Font(FontFamily.HELVETICA, 12);
 	        //f.setColor(BaseColor.RED);
 	        int pages = reader.getNumberOfPages();
-	        for (int i=0; i<pages; i++) {	        
-		        PdfContentByte over = stamper.getOverContent(i+1);
-		        Phrase p = new Phrase(String.format(Costanti.DOCUMENT_INVALIDS_PHRASE, newfile), f);
-		        over.saveState();
-		        PdfGState gs1 = new PdfGState();
-		        gs1.setFillOpacity(0.7f);
-		        over.setGState(gs1);
-		        ColumnText.showTextAligned(over, Element.ALIGN_CENTER, p, 35, 450, 90);
-		        over.restoreState();
+	        if(verbale.getType().equals(VerbaleDTO.VERBALE)){
+		        for (int i=0; i<pages; i++) {	        
+			        PdfContentByte over = stamper.getOverContent(i+1);
+			        Phrase p = new Phrase(String.format(Costanti.DOCUMENT_INVALIDS_PHRASE, newfile), f);
+			        over.saveState();
+			        PdfGState gs1 = new PdfGState();
+			        gs1.setFillOpacity(0.7f);
+			        over.setGState(gs1);
+			        ColumnText.showTextAligned(over, Element.ALIGN_CENTER, p, 25, 450, 90);
+			        over.restoreState();
+		        }
 	        }
 	        stamper.close();
 	        tmpfos.close();

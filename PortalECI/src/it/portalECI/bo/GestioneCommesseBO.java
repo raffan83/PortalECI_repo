@@ -23,4 +23,9 @@ public class GestioneCommesseBO {
 	public static Map<String,String> getMappaClienti() throws Exception {
 		return GestioneCommesseDAO.getMappaClienti();
 	}
+
+	public static ArrayList<CommessaDTO> getListaCommessePerData(CompanyDTO company, UtenteDTO user, String dateFrom, String dateTo) throws Exception {
+		
+		return GestioneCommesseDAO.getListaCommessePerData(company,user, dateFrom, dateTo);
+	}
 }
