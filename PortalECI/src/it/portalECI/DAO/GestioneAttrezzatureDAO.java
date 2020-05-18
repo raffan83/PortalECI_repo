@@ -25,11 +25,17 @@ public class GestioneAttrezzatureDAO {
 		return lista= (ArrayList<AttrezzaturaDTO>)query.list();
 	}
 	
-	public static ArrayList<AttrezzaturaDTO> getlistaAttrezzatureSede(int id_cliente, int id_sede, Session session) {
+	public static ArrayList<AttrezzaturaDTO> getlistaAttrezzatureSede(int id_cliente, int id_sede, boolean tutte, Session session) {
 	
 		ArrayList<AttrezzaturaDTO> lista =null;
 		
-		Query query = session.createQuery("from AttrezzaturaDTO where id_cliente = :_id_cliente and id_sede =:_id_sede) ");
+		Query query = null;
+		
+		if(tutte) {
+			query = session.createQuery("from AttrezzaturaDTO where id_cliente = :_id_cliente and id_sede =:_id_sede ");
+		}else {
+			query = session.createQuery("from AttrezzaturaDTO where id_cliente = :_id_cliente and id_sede =:_id_sede and obsoleta = 0 ");
+		}
 		query.setParameter("_id_cliente", id_cliente);
 		query.setParameter("_id_sede", id_sede);
 		 

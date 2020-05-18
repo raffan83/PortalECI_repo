@@ -122,7 +122,7 @@ public class GestioneIntervento extends HttpServlet {
 				
 				List<SedeDTO> lista_sedi_cliente = GestioneAnagraficaRemotaBO.getSediFromCliente(listaSedi, comm.getID_ANAGEN_UTIL());
 						
-				ArrayList<AttrezzaturaDTO> listaAttrezzature =GestioneAttrezzatureBO.getlistaAttrezzatureSede(comm.getID_ANAGEN_UTIL(), comm.getK2_ANAGEN_INDR_UTIL(), session);
+				ArrayList<AttrezzaturaDTO> listaAttrezzature =GestioneAttrezzatureBO.getlistaAttrezzatureSede(comm.getID_ANAGEN_UTIL(), comm.getK2_ANAGEN_INDR_UTIL(), false, session);
 				SedeDTO sede = GestioneAnagraficaRemotaBO.getSedeFromId(listaSedi, comm.getK2_ANAGEN_INDR_UTIL(), comm.getID_ANAGEN_UTIL());
 				request.getSession().setAttribute("tipi_verifica", tipi_verifica);
 				request.getSession().setAttribute("categorie_verifica", categorie_verifica);

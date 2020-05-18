@@ -17,9 +17,9 @@ public class GestioneAttrezzatureBO {
 		return GestioneAttrezzatureDAO.getlistaAttrezzature(session);
 	}
 	
-	public static ArrayList<AttrezzaturaDTO> getlistaAttrezzatureSede(int id_cliente, int id_sede, Session session) {
+	public static ArrayList<AttrezzaturaDTO> getlistaAttrezzatureSede(int id_cliente, int id_sede, boolean tutte, Session session) {
 		
-		return GestioneAttrezzatureDAO.getlistaAttrezzatureSede(id_cliente, id_sede, session);
+		return GestioneAttrezzatureDAO.getlistaAttrezzatureSede(id_cliente, id_sede, tutte, session);
 	}
 
 	public static AttrezzaturaDTO getAttrezzaturaFromId(int id_attrezzatura, Session session) {

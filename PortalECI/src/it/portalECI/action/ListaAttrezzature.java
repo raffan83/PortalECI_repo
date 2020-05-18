@@ -176,7 +176,7 @@ public class ListaAttrezzature extends HttpServlet {
 				}
 				else {
 					
-					lista_attrezzature = GestioneAttrezzatureBO.getlistaAttrezzatureSede(Integer.parseInt(id_cliente), Integer.parseInt(id_sede.split("_")[0]),session);
+					lista_attrezzature = GestioneAttrezzatureBO.getlistaAttrezzatureSede(Integer.parseInt(id_cliente), Integer.parseInt(id_sede.split("_")[0]),true,session);
 					
 				}
 				
