@@ -175,7 +175,7 @@
 													</button>
 												</c:if>	   
         										<div class="row" id="cambiostato">    
-        											<c:if test='${verbale.getStato().getId()== 4 && user.checkRuolo("AM")}'>
+        											<c:if test='${verbale.getStato().getId()== 4 && (user.checkRuolo("AM") || user.checkRuolo("RT"))}'>
         												<button class="btn btn-default pull-right" onClick="$('#modalCambioStatoVerbale').modal('show');" style="margin-right:10px">
         													<i class="glyphicon glyphicon-transfer"></i>
         												 	Cambio Stato
@@ -357,7 +357,7 @@
 														</c:if>
 													
 													</c:if>
-													<c:if test='${verbale.getStato().getId()== 4 && user.checkRuolo("AM")}'>					
+													<c:if test='${verbale.getStato().getId()== 4 && (user.checkRuolo("AM") || user.checkRuolo("RT"))}'>					
 														
 														<button type="button" class="btn btn-default ml-1 savebutt" onclick="modificaRisposte(${verbale.getId()},'formVerbale')" style="margin-left: 1em; float: right;">	
 																<span >SALVA MODIFICHE</span>
@@ -444,7 +444,7 @@
 															</button>
 														</c:if>	
 													</c:if>
-													<c:if test='${verbale.getSchedaTecnica().getStato().getId()== 4 && user.checkRuolo("AM")}'>			
+													<c:if test='${verbale.getSchedaTecnica().getStato().getId()== 4 && (user.checkRuolo("AM") || user.checkRuolo("RT"))}'>			
 														<c:if test="${user.checkPermesso('CH_STA_VERBALE')}">
 															<button type="button" class="btn btn-default ml-1 savebutt" onclick="modificaRisposte(${verbale.getSchedaTecnica().getId()},'formScTecnica')" style="margin-left: 1em; float: right;">	
 																<span >SALVA MODIFICHE</span>

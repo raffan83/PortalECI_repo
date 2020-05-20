@@ -88,7 +88,7 @@ public class ListaAttrezzature extends HttpServlet {
 				List<ClienteDTO> listaClientiFull = GestioneAnagraficaRemotaBO.getListaClienti(idCompany);		
 				List<SedeDTO> listaSediFull = GestioneAnagraficaRemotaBO.getListaSedi();
 				
-				if(!utente.checkRuolo("AM")) {
+				if(!utente.checkRuolo("AM") && !utente.checkRuolo("ST") ) {
 					
 					List<ClienteDTO> listaClienti = new ArrayList<ClienteDTO>();	
 					

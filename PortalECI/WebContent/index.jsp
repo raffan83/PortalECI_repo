@@ -13,7 +13,7 @@
   				</div>
   				<!-- /.login-logo -->
   				<div class="login-box-body">
-    				<p class="login-box-msg">Accedi per iniziare la tua sessione </p>
+    				<p class="login-box-msg">Accedi per iniziare la tua sessione</p>
  					<div class="row">
   						<div class="col-xs-12">
        						<div class="form-group has-feedback control-group">
