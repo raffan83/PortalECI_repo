@@ -168,9 +168,9 @@
                 									
         										</ul> 
 
-												<c:if test="${user.checkRuolo('AM') && verbale.getStato().getId()== 5}">										
+												<c:if test='${verbale.getStato().getId()== 5 && (user.checkRuolo("AM") || user.checkRuolo("RT"))}'>										
 													<!-- <button type="button" class="btn btn-sm pull-right" onclick="salvaCambioStato(null,null,'6')" style="color:#000000 !important;"> -->
-													<button type="button" class="btn btn-sm pull-right" onclick="$('#confirmRifiuta').modal('show');" style="color:#000000 !important;">
+													<button type="button" class="btn btn-sm pull-right" onclick="$('#confirmRig').modal('show');" style="color:#000000 !important;">
 														<i class="glyphicon glyphicon-remove"></i>
 														<span>Rifiuta per modifica</span>
 													</button>
