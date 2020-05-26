@@ -2,6 +2,7 @@ package it.portalECI.action;
 
 import it.portalECI.DAO.GestioneAccessoDAO;
 import it.portalECI.DAO.SessionFacotryDAO;
+import it.portalECI.DTO.CategoriaVerificaDTO;
 import it.portalECI.DTO.CompanyDTO;
 import it.portalECI.DTO.PermessoDTO;
 import it.portalECI.DTO.RuoloDTO;
@@ -9,6 +10,7 @@ import it.portalECI.DTO.RuoloDTO;
 import it.portalECI.DTO.UtenteDTO;
 import it.portalECI.Exception.ECIException;
 import it.portalECI.Util.Utility;
+import it.portalECI.bo.GestioneCategorieVerificaBO;
 import it.portalECI.bo.GestionePermessiBO;
 import it.portalECI.bo.GestioneRuoloBO;
 import it.portalECI.bo.GestioneUtenteBO;
@@ -116,6 +118,70 @@ public class GestioneAssociazioniAjax extends HttpServlet {
 					RuoloDTO ruolo = GestioneRuoloBO.getRuoloById(idRuolo, session);
 					
 					utente.getListaRuoli().remove(ruolo);
+					int success = GestioneUtenteBO.saveUtente(utente, "modifica", session);
+					
+    	 			if(success==0){
+    					myObj.addProperty("success", true);
+    					myObj.addProperty("messaggio","Salvato con Successo");
+    					session.getTransaction().commit();
+    					session.close();
+    				
+    				}
+    	 			
+    				if(success==1){
+    					
+    					myObj.addProperty("success", false);
+    					myObj.addProperty("messaggio","Errore Salvataggio");
+    					
+    					session.getTransaction().rollback();
+    			 		session.close();
+    			 		
+    				} 
+															
+					myObj.addProperty("success", true);
+					myObj.addProperty("message", "OK");
+			        out.println(myObj.toString());
+				}
+				if(action.equals("associaCategoria")){
+					String id_categoria = request.getParameter("id_categoria");
+					String idUtente = request.getParameter("idUtente");
+    	 			
+					UtenteDTO utente = GestioneUtenteBO.getUtenteById(idUtente, session);
+					CategoriaVerificaDTO categoria = GestioneCategorieVerificaBO.getCategoriaVerificaById(id_categoria, session);
+					
+					utente.getListaCategorieVerifica().add(categoria);
+					int success = GestioneUtenteBO.saveUtente(utente, "modifica", session);
+					
+    	 			if(success==0){
+    					myObj.addProperty("success", true);
+    					myObj.addProperty("messaggio","Salvato con Successo");
+    					session.getTransaction().commit();
+    					session.close();    				
+    				}
+    				
+    	 			if(success==1){
+    					
+    					myObj.addProperty("success", false);
+    					myObj.addProperty("messaggio","Errore Salvataggio");
+    					
+    					session.getTransaction().rollback();
+    			 		session.close();
+    			 		
+    				} 
+														
+					myObj.addProperty("success", true);
+					myObj.addProperty("message", "OK");
+			        out.println(myObj.toString());
+				}
+				
+				if(action.equals("disassociaCategoria")){
+					String id_categoria = request.getParameter("id_categoria");
+					String idUtente = request.getParameter("idUtente");
+					
+					UtenteDTO utente = GestioneUtenteBO.getUtenteById(idUtente, session);
+					CategoriaVerificaDTO categoria = GestioneCategorieVerificaBO.getCategoriaVerificaById(id_categoria, session);
+					
+					utente.getListaCategorieVerifica().remove(categoria);
 					int success = GestioneUtenteBO.saveUtente(utente, "modifica", session);
 					
     	 			if(success==0){

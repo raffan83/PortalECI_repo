@@ -425,7 +425,9 @@ public class GestioneVerbaleBO {
 				break;
 			}
 		}
-        
+		
+		
+		
 		html = html + template.getTemplate();
 		html = replacePlaceholders(html, verbale,intervento, session);
 		String subheader = replacePlaceholders(template.getSubheader(), verbale,intervento, session);
@@ -436,7 +438,7 @@ public class GestioneVerbaleBO {
         	vecchioDocFileName = FilenameUtils.removeExtension(vecchioDocFileName);
         	newDocument(path+file.getName(), vecchioDocFileName, verbale);
         }
-
+        addBozza(path+file.getName(), "", verbale);
 		return file;
 	}
 	
@@ -698,6 +700,12 @@ public class GestioneVerbaleBO {
 		{
 			html = html.replaceAll("\\$\\{ATT_SETTORE_IMPIEGO\\}", verbale.getAttrezzatura().getSettore_impiego());
 		}
+		
+		if(verbale.getStrumento_verificatore() != null ) 
+		{			
+			html = html.replaceAll("\\$\\{STR_VERIFICATORE\\}", verbale.getStrumento_verificatore().getMarca()+ " - " +verbale.getStrumento_verificatore().getModello() +" - "+verbale.getStrumento_verificatore().getMatricola());
+		}
+		
 		
 		if(verbale.getSedeUtilizzatore() != null ) 
 		{
@@ -1010,6 +1018,51 @@ public class GestioneVerbaleBO {
 		
 		
 	}
+	
+	
+	public static void addBozza(String path, String newfile, VerbaleDTO verbale) {
+
+		try {
+			String filepath = Costanti.PATH_CERTIFICATI+path;
+			File tmpFile = new File(filepath+"tmp");
+	        PdfReader reader = new PdfReader(filepath);
+	        FileOutputStream tmpfos = new FileOutputStream(tmpFile);
+	        PdfStamper stamper = new PdfStamper(reader, tmpfos);
+	        Font f = new Font(FontFamily.HELVETICA, 50);
+	        
+	        //f.setColor(BaseColor.RED);
+	        int pages = reader.getNumberOfPages();
+	        if(verbale.getType().equals(VerbaleDTO.VERBALE)){
+		        for (int i=0; i<pages; i++) {	        
+			        PdfContentByte over = stamper.getOverContent(i+1);
+			        Phrase p = new Phrase(String.format("BOZZA", newfile), f);
+			        over.saveState();
+			        PdfGState gs1 = new PdfGState();
+			        gs1.setFillOpacity(0.2f);			        
+			        over.setGState(gs1);
+			        ColumnText.showTextAligned(over, Element.ALIGN_CENTER, p, 300, 400, 315);
+			        over.restoreState();
+		        }
+	        }
+	        stamper.close();
+	        tmpfos.close();
+	        reader.close();
+	        File fil = new File (filepath);
+	        if(fil.exists()) {
+	        	fil.delete();
+	        }
+			tmpFile.renameTo(new File(filepath));
+		} catch (IOException e) {
+			System.out.println("IOException: " + e);
+			e.printStackTrace();
+		} catch (DocumentException e) {
+			System.out.println("DocumentException: " + e);
+			e.printStackTrace();
+		}
+		
+		
+	}
+	
 	public static void setStatoCompilazioneWeb(InterventoDTO intervento, StatoVerbaleDTO stato, Session session) {	
 		for (VerbaleDTO verbale: intervento.getVerbali()) {
 			if (verbale.getSchedaTecnica()!=null) {

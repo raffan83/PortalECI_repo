@@ -39,6 +39,7 @@ public class VerbaleDTO implements Serializable {
 		
 	private String numeroVerbale;	
 	private String esercente;
+	private StrumentoVerificatoreDTO strumento_verificatore;
 	
 	public int getId() {
 		return id;
@@ -248,6 +249,14 @@ public class VerbaleDTO implements Serializable {
 
 	public void setEsercente(String esercente) {
 		this.esercente = esercente;
+	}
+
+	public StrumentoVerificatoreDTO getStrumento_verificatore() {
+		return strumento_verificatore;
+	}
+
+	public void setStrumento_verificatore(StrumentoVerificatoreDTO strumento_verificatore) {
+		this.strumento_verificatore = strumento_verificatore;
 	}
 
 	

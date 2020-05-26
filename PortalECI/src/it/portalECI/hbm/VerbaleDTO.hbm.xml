@@ -81,5 +81,9 @@
 		<property name="esercente">
 			<column name="esercente" length="256"/>
 		</property>
+		
+			<many-to-one name="strumento_verificatore" class="it.portalECI.DTO.StrumentoVerificatoreDTO" fetch="join" lazy="false">
+            <column name="strumento_verificatore" />
+        </many-to-one>
 	</class>
 </hibernate-mapping> 

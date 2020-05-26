@@ -2279,6 +2279,69 @@ function disassociaRuolo(idRuolo, idUtente){
 	});
 }
   
+
+
+function associaCategoria(id_categoria, idUtente){
+	$.ajax({
+		type: "POST",
+		url: "gestioneAssociazioniAjax.do?action=associaCategoria&id_categoria="+id_categoria+"&idUtente="+idUtente,
+		dataType: "json",
+		success: function( data, textStatus) {
+			pleaseWaitDiv.modal('hide');
+			if(data.success){ 
+				$('#tabCategorieTr_'+id_categoria).addClass("bg-blue color-palette");
+				$('#btnAssociaCategoria_'+id_categoria).attr("disabled",true);
+				$('#btnDisAssociaCategoria_'+id_categoria).attr("disabled",false);    			     		
+			}else{
+				$('#modalErrorDiv').html(data.message);
+				$('#myModalError').removeClass();
+				$('#myModalError').addClass("modal modal-danger");
+				$('#myModalError').modal('show');
+			}	
+		},
+		error: function(jqXHR, textStatus, errorThrown){
+			pleaseWaitDiv.modal('hide');
+			
+			$('#modalErrorDiv').html(errorThrown.message);
+		  	$('#myModalError').removeClass();
+			$('#myModalError').addClass("modal modal-danger");
+			$('#myModalError').modal('show');    
+		}
+	});
+}
+
+function disassociaCategoria(id_categoria, idUtente){
+	$.ajax({
+		type: "POST",
+		url: "gestioneAssociazioniAjax.do?action=disassociaCategoria&id_categoria="+id_categoria+"&idUtente="+idUtente,
+		dataType: "json",
+		success: function( data, textStatus) {
+			pleaseWaitDiv.modal('hide');
+			if(data.success){ 
+				$('#tabCategorieTr_'+id_categoria).removeClass("bg-blue color-palette");
+				$('#btnAssociaCategoria_'+id_categoria).attr("disabled",false);
+				$('#btnDisAssociaCategoria_'+id_categoria).attr("disabled",true);
+				
+			}else{
+				$('#modalErrorDiv').html(data.message);
+				$('#myModalError').removeClass();
+				$('#myModalError').addClass("modal modal-danger");
+				$('#myModalError').modal('show');
+			}
+		},
+		error: function(jqXHR, textStatus, errorThrown){
+			pleaseWaitDiv.modal('hide');
+   
+   			$('#modalErrorDiv').html(errorThrown.message);
+		  	$('#myModalError').removeClass();
+			$('#myModalError').addClass("modal modal-danger");
+			$('#myModalError').modal('show');    
+		}
+	});
+}
+
+
+
 function associaUtente(idUtente,idRuolo){
 	$.ajax({
 		type: "POST",
@@ -3224,56 +3287,6 @@ $.ajax({
           		cal.addEventSource(jsonObj);
           		
 //          		
-//          		var dati = {};
-//          		var date =  [];
-//          		var date_multi =  [];
-//          		var dati_tot = [];
-//          		var num = [];
-//          		for(var i=0; i<jsonObj.length;i++){
-//          			if(!date.includes(jsonObj[i].start)){
-//          				date.push(jsonObj[i].start);          				
-//          			}else{
-//          				date_multi.push(jsonObj[i].start);
-//          			}
-//          		}
-//          			
-//          		
-//          		for(var i=0; i<id;i++){
-//              	var x = document.getElementById("pieChart_"+i+"");
-//              	if(x!=null){
-//              		var ctxP =  document.getElementById("pieChart_"+i+"").getContext('2d');
-//              	
-//    	    	  var myPieChart = new Chart(ctxP, {
-//    	    	    type: 'pie',
-//    	    	    data: {
-//    	    	    labels:["data verifica funzionamento", "data verifica integrita", "data verifica interna"],
-//    	    	      datasets: [{
-//    	    	       label:"data verifica funzionamento",
-//    	    	    	  data: [jsonObj[i].title],
-//    	    	  //      backgroundColor: ["#00a65a", "#9d201d", "#777"],
-//    	    	          backgroundColor: [jsonObj[i].backgroundColor],
-//    	    	        hoverBackgroundColor: ["#00a65a", "#9d201d", "#777"]
-//    	    	      }]
-//    	    	    },
-//    	    	    options: {
-//    	    	      responsive: true, 
-//    	    	      legend: {
-//    	    	    	  display:false
-//    	    	      },
-//    	    	      plugins:{
-//    	    	    	  labels: {
-//      	    	    	    render: 'value',
-//      	    	    	    fontSize: 18,
-//      	    	    	    fontStyle: 'bold',
-//      	    	    	    fontColor: '#ffffff',
-//      	    	    	    fontFamily: '"Lucida Console", Monaco, monospace'
-//      	    	    	  },
-//    	    	      }
-//    	    	    }
-//    	    	  
-//    	    	  });
-//              	}
-//          		}
           		$('#generale_btn').hide();
           	}
          	pleaseWaitDiv.modal('hide');
@@ -3341,3 +3354,226 @@ function rendiAttrezzaturaObsoleta(scadenzario,date, tipo_data){
 	});	  	  	  	  
 	
 }
+
+
+function nuovoStrumentoVerificatore(){
+	
+
+	pleaseWaitDiv = $('#pleaseWaitDialog');
+	pleaseWaitDiv.modal();
+
+		  var form = $('#formNuovoStrumento')[0]; 
+		  var formData = new FormData(form);
+		 
+$.ajax({
+	  type: "POST",
+	  url: "gestioneStrumentiVerificatore.do?action=nuovo",
+	  data: formData,
+	  contentType: false, // NEEDED, DON'T OMIT THIS (requires jQuery 1.6+)
+	  processData: false, // NEEDED, DON'T OMIT THIS
+	  success: function( data, textStatus) {
+		pleaseWaitDiv.modal('hide');
+		  	      		  
+		  if(data.success)
+		  { 
+			$('#report_button').hide();
+				$('#visualizza_report').hide();
+				$('#myModalNuovoStrumento').modal('hide');
+			  $('#myModalErrorContent').html(data.messaggio);
+			  	$('#myModalError').removeClass();
+				$('#myModalError').addClass("modal modal-success");
+				$('#myModalError').modal('show');
+				
+			$('#myModalError').on('hidden.bs.modal', function(){	         			
+				
+				 location.reload()
+			});
+		
+		  }else{
+			  $('#myModalErrorContent').html(data.messaggio);
+			  	$('#myModalError').removeClass();
+				$('#myModalError').addClass("modal modal-danger");
+				$('#report_button').hide();
+				$('#visualizza_report').hide();
+					$('#myModalError').modal('show');	      			 
+		  }
+	  },
+
+	  error: function(jqXHR, textStatus, errorThrown){
+		  pleaseWaitDiv.modal('hide');
+
+		  $('#myModalErrorContent').html("Errore nell'importazione!");
+			  	$('#myModalError').removeClass();
+				$('#myModalError').addClass("modal modal-danger");
+				$('#report_button').show();
+				$('#visualizza_report').show();
+				$('#myModalError').modal('show');
+				
+
+	  }
+});
+	
+	
+}
+
+function modificaStrumentoVerificatore(){
+	
+
+	pleaseWaitDiv = $('#pleaseWaitDialog');
+	pleaseWaitDiv.modal();
+
+		  var form = $('#formModificaStrumento')[0]; 
+		  var formData = new FormData(form);
+		 
+$.ajax({
+	  type: "POST",
+	  url: "gestioneStrumentiVerificatore.do?action=modifica",
+	  data: formData,
+	  contentType: false, // NEEDED, DON'T OMIT THIS (requires jQuery 1.6+)
+	  processData: false, // NEEDED, DON'T OMIT THIS
+	  success: function( data, textStatus) {
+		pleaseWaitDiv.modal('hide');
+		  	      		  
+		  if(data.success)
+		  { 
+			$('#report_button').hide();
+				$('#visualizza_report').hide();
+				$('#myModalModificaStrumento').modal('hide');
+			  $('#myModalErrorContent').html(data.messaggio);
+			  	$('#myModalError').removeClass();
+				$('#myModalError').addClass("modal modal-success");
+				$('#myModalError').modal('show');
+				
+			$('#myModalError').on('hidden.bs.modal', function(){	         			
+				
+				 location.reload()
+			});
+		
+		  }else{
+			  $('#myModalErrorContent').html(data.messaggio);
+			  	$('#myModalError').removeClass();
+				$('#myModalError').addClass("modal modal-danger");
+				$('#report_button').hide();
+				$('#visualizza_report').hide();
+					$('#myModalError').modal('show');	      			 
+		  }
+	  },
+
+	  error: function(jqXHR, textStatus, errorThrown){
+		  pleaseWaitDiv.modal('hide');
+
+		  $('#myModalErrorContent').html("Errore nell'importazione!");
+			  	$('#myModalError').removeClass();
+				$('#myModalError').addClass("modal modal-danger");
+				$('#report_button').show();
+				$('#visualizza_report').show();
+				$('#myModalError').modal('show');
+				
+
+	  }
+});
+	
+	
+}
+
+
+	function dissociaStrumento(id_strumento){
+			
+
+		pleaseWaitDiv = $('#pleaseWaitDialog');
+		pleaseWaitDiv.modal();
+				
+		var dataObj = {};
+		 
+		dataObj.id_strumento = id_strumento;
+
+		$.ajax({
+			type: "POST",
+			url: "gestioneStrumentiVerificatore.do?action=dissocia",
+			data: dataObj,
+			dataType: "json",
+
+			success: function( data, textStatus) {
+				pleaseWaitDiv.modal('hide');
+				if(data.success){
+					$('#report_button').hide();
+					$('#visualizza_report').hide();
+					$('#myModalModificaStrumento').modal('hide');
+				  $('#myModalErrorContent').html(data.messaggio);
+				  	$('#myModalError').removeClass();
+					$('#myModalError').addClass("modal modal-success");
+					$('#myModalError').modal('show');
+					
+				$('#myModalError').on('hidden.bs.modal', function(){	         			
+					
+					 location.reload()
+				});			        		
+					}else{
+						$('#myModalErrorContent').html(data.messaggio);
+						$('#myModalError').removeClass();
+						$('#myModalError').addClass("modal modal-danger");
+						$('#myModalError').modal('show');        			 
+					}
+			},
+
+			error: function(jqXHR, textStatus, errorThrown){	          
+				// $('#empty').html("<h3 class='label label-danger'>"+textStatus+"</h3>");
+				pleaseWaitDiv.modal('hide');
+				$("#myModalErrorContent").html(textStatus);
+				$("#myModalError").modal();
+				
+			}
+		});	  	  	  	  
+		
+		}
+	
+	
+	function eliminaStrumentoVerificatore(id_strumento){
+		
+
+		pleaseWaitDiv = $('#pleaseWaitDialog');
+		pleaseWaitDiv.modal();
+				
+		var dataObj = {};
+		 
+		dataObj.id_strumento = id_strumento;
+
+		$.ajax({
+			type: "POST",
+			url: "gestioneStrumentiVerificatore.do?action=elimina",
+			data: dataObj,
+			dataType: "json",
+
+			success: function( data, textStatus) {
+				pleaseWaitDiv.modal('hide');
+				if(data.success){
+					$('#report_button').hide();
+					$('#visualizza_report').hide();
+					$('#myModalYesOrNo').modal('hide');
+				  $('#myModalErrorContent').html(data.messaggio);
+				  	$('#myModalError').removeClass();
+					$('#myModalError').addClass("modal modal-success");
+					$('#myModalError').modal('show');
+					
+				$('#myModalError').on('hidden.bs.modal', function(){	         			
+					
+					 location.reload()
+				});			        		
+					}else{
+						$('#myModalErrorContent').html(data.messaggio);
+						$('#myModalError').removeClass();
+						$('#myModalError').addClass("modal modal-danger");
+						$('#myModalError').modal('show');        			 
+					}
+			},
+
+			error: function(jqXHR, textStatus, errorThrown){	          
+				// $('#empty').html("<h3 class='label label-danger'>"+textStatus+"</h3>");
+				pleaseWaitDiv.modal('hide');
+				$("#myModalErrorContent").html(textStatus);
+				$("#myModalError").modal();
+				
+			}
+		});	  	  	  	  
+		
+		}

@@ -194,6 +194,8 @@ public class GestioneTemplateQuestionarioBO {
 		html = html.replaceAll("\\$\\{ATT_MODELLO\\}", "MODELLO");
 		html = html.replaceAll("\\$\\{ATT_SETTORE_IMPIEGO\\}", "SETTORE IMPIEGO");
 		
+		html = html.replaceAll("\\$\\{STR_VERIFICATORE\\}", "STRUMENTO VERIFICATORE");
+		
 		html = html.replaceAll("\\$\\{SEDE_VIE\\}", "SEDE VIE");
 		
 		html = html.replaceAll("\\$\\{ESERCENTE\\}", "ESERCENTE");

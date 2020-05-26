@@ -52,6 +52,7 @@ import it.portalECI.DTO.RispostaVerbaleDTO;
 import it.portalECI.DTO.SedeDTO;
 import it.portalECI.DTO.StatoVerbaleDTO;
 import it.portalECI.DTO.StoricoModificheDTO;
+import it.portalECI.DTO.StrumentoVerificatoreDTO;
 import it.portalECI.DTO.UtenteDTO;
 import it.portalECI.DTO.VerbaleDTO;
 import it.portalECI.Exception.ECIException;
@@ -101,6 +102,18 @@ public class GestioneVerbali extends HttpServlet {
 				String paramName = parameterNames.nextElement();
 
 				String id="";
+				
+				if(paramName.equals("strumento_verificatore")) {
+					
+					String id_strumento = request.getParameter("strumento_verificatore");
+					if(id_strumento!=null && !id_strumento.equals("") && !id_strumento.equals("0")) {
+						verbale.setStrumento_verificatore(new StrumentoVerificatoreDTO(Integer.parseInt(id_strumento)));
+						session.update(verbale);
+					}else {
+						verbale.setStrumento_verificatore(null);
+						session.update(verbale);
+					}
+				}
 				
 				// RISPOSTA FORMULA
 				if(paramName.contains("value1") || paramName.contains("value2") || paramName.contains("responseValue")) {				

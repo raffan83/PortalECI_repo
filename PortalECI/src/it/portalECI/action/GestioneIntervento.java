@@ -15,6 +15,8 @@ import javax.servlet.http.HttpServletResponse;
 import org.hibernate.Session;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
 import it.portalECI.DAO.GestioneStatoInterventoDAO;
@@ -121,13 +123,25 @@ public class GestioneIntervento extends HttpServlet {
 				}
 				
 				List<SedeDTO> lista_sedi_cliente = GestioneAnagraficaRemotaBO.getSediFromCliente(listaSedi, comm.getID_ANAGEN_UTIL());
+				
+				Gson g = new Gson();
 						
+		
+				JsonArray jarr = new JsonArray();
+				JsonObject json = new JsonObject();
 				ArrayList<AttrezzaturaDTO> listaAttrezzature =GestioneAttrezzatureBO.getlistaAttrezzatureSede(comm.getID_ANAGEN_UTIL(), comm.getK2_ANAGEN_INDR_UTIL(), false, session);
 				SedeDTO sede = GestioneAnagraficaRemotaBO.getSedeFromId(listaSedi, comm.getK2_ANAGEN_INDR_UTIL(), comm.getID_ANAGEN_UTIL());
 				request.getSession().setAttribute("tipi_verifica", tipi_verifica);
 				request.getSession().setAttribute("categorie_verifica", categorie_verifica);
 				request.getSession().setAttribute("listaInterventi", listaInterventi);
 				request.getSession().setAttribute("tecnici", users);
+				
+				for (UtenteDTO utente : users) {
+					jarr.add(utente.getUtenteJsonObject(false));	
+				}
+				json.add("utenti", jarr);
+				
+				request.getSession().setAttribute("tecnici_json", jarr);
 				request.getSession().setAttribute("listaAttrezzature", listaAttrezzature);			
 				request.getSession().setAttribute("lista_sedi_cliente",lista_sedi_cliente);
 				if(sede!=null && sede.getEsercente()!=null) {
@@ -135,7 +149,9 @@ public class GestioneIntervento extends HttpServlet {
 				}else {
 					request.getSession().setAttribute("esercente","");
 				}
-					
+				
+				
+				
 
 				RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/page/configurazioni/gestioneIntervento.jsp");
 				dispatcher.forward(request,response);

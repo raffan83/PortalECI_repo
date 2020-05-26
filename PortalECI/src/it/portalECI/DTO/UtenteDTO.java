@@ -41,6 +41,8 @@ public class UtenteDTO implements Serializable {
 	private String qualifica = "";
 	
 	private Set<RuoloDTO> listaRuoli = new HashSet<RuoloDTO>(0);
+	private Set<CategoriaVerificaDTO> listaCategorieVerifica = new HashSet<CategoriaVerificaDTO>(0);
+	private Set<StrumentoVerificatoreDTO> listaStrumentiVerificatore = new HashSet<StrumentoVerificatoreDTO>(0);
 	
 	public UtenteDTO() {
 	}
@@ -250,6 +252,20 @@ public class UtenteDTO implements Serializable {
 		   
 		return false;
 	}
+	
+	public boolean checkCategoria(String siglaCategoria){
+		Iterator<CategoriaVerificaDTO> iterator = listaCategorieVerifica.iterator(); 
+	      
+		while (iterator.hasNext()){			  
+			CategoriaVerificaDTO categoria= (CategoriaVerificaDTO) iterator.next(); 
+			
+			if(categoria.getSigla().equals(siglaCategoria)){
+				return true;
+			}
+		}
+		   
+		return false;
+	}
 
 
 	public CompanyDTO getCompany() {
@@ -300,6 +316,17 @@ public class UtenteDTO implements Serializable {
 				
 		}
 		
+		if(!this.getListaCategorieVerifica().isEmpty()) {
+			
+			JsonArray categorieObj = new JsonArray();
+			
+			for(CategoriaVerificaDTO categoria: this.getListaCategorieVerifica()) {
+				categorieObj.add(categoria.getCategoriaVerificaJsonObject());
+			}
+			userjobj.add("categorie", categorieObj);
+			
+	}
+		
 		return userjobj;
 	}
 
@@ -309,5 +336,21 @@ public class UtenteDTO implements Serializable {
 
 	public void setQualifica(String qualifica) {
 		this.qualifica = qualifica;
+	}
+
+	public Set<CategoriaVerificaDTO> getListaCategorieVerifica() {
+		return listaCategorieVerifica;
+	}
+
+	public void setListaCategorieVerifica(Set<CategoriaVerificaDTO> listaCategorieVerifica) {
+		this.listaCategorieVerifica = listaCategorieVerifica;
+	}
+
+	public Set<StrumentoVerificatoreDTO> getListaStrumentiVerificatore() {
+		return listaStrumentiVerificatore;
+	}
+
+	public void setListaStrumentiVerificatore(Set<StrumentoVerificatoreDTO> listaStrumentiVerificatore) {
+		this.listaStrumentiVerificatore = listaStrumentiVerificatore;
 	}
 }

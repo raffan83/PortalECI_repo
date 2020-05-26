@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 15-feb-2017 11.20.27 by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+    <class name="it.portalECI.DTO.StrumentoVerificatoreDTO" table="strumento_verificatore">
+        <id name="id" type="int">
+            <column name="id" />
+            <generator class="increment" />
+        </id>
+         <property name="marca" type="java.lang.String">
+            <column name="marca" />
+        </property>
+         <property name="modello" type="java.lang.String">
+            <column name="modello" />
+        </property>
+        <property name="matricola" type="java.lang.String">
+            <column name="matricola" />
+        </property>        
+          <property name="data_ultima_taratura" type="java.sql.Date">
+            <column name="data_ultima_taratura" />
+        </property>
+          <property name="scadenza" type="java.sql.Date">
+            <column name="scadenza" />
+        </property>
+        <property name="id_verificatore" type="java.lang.Integer">
+            <column name="id_utente" />
+        </property>
+              <property name="nominativo_verificatore" type="java.lang.String">
+            <column name="nominativo_verificatore" />
+        </property>
+    </class>
+</hibernate-mapping>

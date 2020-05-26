@@ -9,7 +9,8 @@
 		<!-- <property name="hibernate.connection.url">jdbc:mysql://212.237.23.231:3306/eci_db</property> -->
   		<property name="hibernate.connection.username">root</property>
   		<property name="hibernate.dialect">org.hibernate.dialect.MySQLInnoDBDialect</property>
-  		<property name="hibernate.hbm2ddl.auto">update</property>
+  		<property name="hibernate.hbm2ddl.auto">update</property> 
+  
   
   		<mapping class="UtenteDTO" package="it.portalECI.DTO" resource="it/portalECI/hbm/UtenteDTO.hbm.xml"/>
   		<mapping class="CompanyDTO" package="it.portalECI.DTO" resource="it/portalECI/hbm/CompanyDTO.hbm.xml"/>
@@ -41,5 +42,9 @@
    		
    		<mapping class="AttrezzaturaDTO" package="it.portalECI.DTO" resource="it/portalECI/hbm/AttrezzaturaDTO.hbm.xml"/>
    		<mapping class="DescrizioneGruppoAttrezzaturaDTO" package="it.portalECI.DTO" resource="it/portalECI/hbm/DescrizioneGruppoAttrezzaturaDTO.hbm.xml"/>
+   		
+   		<mapping class="StrumentoVerificatoreDTO" package="it.portalECI.DTO" resource="it/portalECI/hbm/StrumentoVerificatoreDTO.hbm.xml"/>
+   		
+   		
  	</session-factory>
 </hibernate-configuration>

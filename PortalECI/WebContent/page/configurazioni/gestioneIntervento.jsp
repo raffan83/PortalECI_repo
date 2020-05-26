@@ -196,6 +196,7 @@
 																				 <span class="label label-info">${intervento.statoIntervento.descrizione}</span>
 																			</a>
 																		</c:if>		
+																		
 																		<c:if test="${intervento.statoIntervento.id == 1}">
 																			<a href="#" class="customTooltip" title="Click per chiudere l'Intervento" onClick="chiudiIntervento(${intervento.id},1,'${loop.index}')" id="statoa_${intervento.id}">
 																				<span class="label label-success">${intervento.statoIntervento.descrizione}</span>
@@ -257,23 +258,37 @@
       								</div>
        								<div class="modal-body">             
         								<div class="form-group">
-        									<label>Tecnico Verificatore</label>
-											<select class="form-control" id="tecnici" class="selectpicker">
-												<option value="" disabled selected>Seleziona Tecnico...</option>
-												<c:forEach items="${tecnici}" var="tecnico">
-				  									<option value="${tecnico.id}">${tecnico.nominativo} </option>
-												</c:forEach>
-											</select>
-                						</div>
-              							<div class="row" style="position:relative;">
-            								<div class="form-group col-sm-5">
-	                  							<label>Categoria Verifica</label>
+        									<label>Categoria Verifica</label>
+	                  							<%-- <select name="categorie" id="categorie" data-placeholder="Seleziona Categoria..."  class="form-control select2" aria-hidden="true" data-live-search="true" style="display:none">
+        	          								<option value="" disabled selected>Seleziona Categoria...</option>
+            	          							<c:forEach items="${categorie_verifica}" var="categoria">            	          							         	          							
+                	           							<option value="${categoria.id}_${categoria.sigla}">${categoria.codice}</option> 	
+                    	 							</c:forEach>
+                  								</select>  --%>
     	              							<select name="select1" id="select1" data-placeholder="Seleziona Categoria..."  class="form-control select2" aria-hidden="true" data-live-search="true">
         	          								<option value="" disabled selected>Seleziona Categoria...</option>
             	          							<c:forEach items="${categorie_verifica}" var="categoria">
                 	           							<option value="${categoria.id}">${categoria.codice}</option> 	
-                    	 							</c:forEach>
+                    	 							</c:forEach> 
                   								</select> 
+                						</div>
+              							<div class="row" style="position:relative;">
+            								<div class="form-group col-sm-5">
+            								
+            								<label>Tecnico Verificatore</label>
+											<select class="form-control" id="tecnici" class="selectpicker">
+												
+											</select>
+											
+										 <select name="tecnici_temp" id="tecnici_temp" data-placeholder="Seleziona Categoria..."  class="form-control select2" aria-hidden="true" data-live-search="true" style="display:none">
+        	          								<option value="" disabled selected>Seleziona Tecnico...</option>
+												<c:forEach items="${tecnici}" var="tecnico">
+													
+												<option value="${tecnico.id}">${tecnico.nominativo} </option>	
+												
+				  												  									   
+												</c:forEach>
+                  								</select>  
         									</div>
         
 							    	        <div class="form-group col-sm-5">
@@ -444,6 +459,7 @@
  			}
 		   
  			var attrezzatura_options;
+ 			var tecnici_options;
  			
  			$('#select2').change(function(){
  				var selection = $(this).val();
@@ -466,6 +482,7 @@
 			    $(document).ready(function() {
 			    	
 			    	 attrezzatura_options = $('#attrezzatura_temp option').clone();
+			    	 categoria_options = $('#categorie option').clone();
 			    	
     				table = $('#tabPM').DataTable({
     					language: {
@@ -587,7 +604,51 @@
                 
      			//$body = $("body");     
      			$("#tecnici").change(function(){    	 
-    	 			$("#tecnici option[value='']").remove();
+    	 		/* 	$("#tecnici option[value='']").remove();
+    	 		
+    	 			$('#content_attrezzatura').hide();
+      				$('#content_sede').hide();
+      				$('#content_esercente').hide();
+      				
+      				$('#select2').val('');
+      				$('#select2').change();
+      				$('#select2').attr('disabled', true);
+      				
+    	 			var tecnici = ${tecnici_json};
+    	 			var selection = $(this).val();
+     				if(selection!=null){ 
+    	 				
+    	 				var opt =[];
+    	 				opt.push("<option value=''></option>");		
+    	 				
+    	 				var categorie = [];
+    	 				for(var i = 0;i<tecnici.length;i++){
+    	 					if(selection == tecnici[i].id){
+    	 						categorie = tecnici[i].categorie;
+    	 						break;
+    	 					}
+    	 				} 
+    	 				
+    	 			
+      	 				for(var i = 0;i<categoria_options.length;i++){
+    	 					if( categoria_options[i].value.split("_")[1]!=null && categorie!=null){
+    	 						for(var j = 0; j<categorie.length;j++){
+    	 							if(categorie[j].codice == categoria_options[i].value.split("_")[1]){
+    	 								opt.push(categoria_options[i]);		
+    	 							}
+    	 						}
+    	 						
+    	 						
+    	 					}
+    	 				}
+    	 				
+    	 				 
+    	 				$('#select1').html(opt)
+    	 				document.getElementById("select1").selectedIndex = 0;
+     				} 
+    	 			 */
+    	 			
+    	 			
      			});
 
       			$("#select1").change(function() {   
@@ -596,14 +657,14 @@
       				$('#content_sede').hide();
       				$('#content_esercente').hide();
       				
-    	  			$("#select1 option[value='']").remove();
-    	  			$("#select2 option[value='']").remove(); 
+    	  			//$("#select1 option[value='']").remove();
+    	  			//$("#select2 option[value='']").remove(); 
     	  			if ($(this).data('options') == undefined) {
     	    			/*Taking an array of all options-2 and kind of embedding it on the select1*/
     	    			$(this).data('options', $('#select2 option').clone());
     	  			}
     	  
-    	  			var id = $(this).val();	    	
+    	  			var id = $(this).val().split("_")[0];	    	
     	  			var options = $(this).data('options');	
     	  			var opt=[];    	
 	
@@ -611,7 +672,7 @@
     					var str=options[i].value; 	    	
     		 			
     					/* if(str.substring(str.indexOf("_")+1,str.length)==id){ */     			        		
-    					if(str.split("_")[1]==id){
+    					if(id!=null && str.split("_")[1]==id){
     						opt.push(options[i]);
     		  			}   
     	   			}
@@ -635,6 +696,47 @@
     				}
     				
     				
+    				
+    				var tecnici = ${tecnici_json};
+    	 			var sigla = $(this).val().split("_")[1];
+     			
+    	 				
+    	 				var opt =[];
+    	 				    	 				
+    	 				opt.push("<option value=''></option>");
+    	 				for(var i = 0;i<tecnici.length;i++){    	 					
+    	 					
+    	 					var categorie = tecnici[i].categorie;
+    	 					
+    	 					if(categorie!=null){
+    	 					for(var j = 0; j<categorie.length;j++){
+    	 						if(categorie[j].id==id){
+    	 							
+    	 							//opt.push(tecnici_options_options[i]);	
+    	 							opt.push("<option value='"+tecnici[i].id+"'>"+tecnici[i].nominativo+"</option>");
+    	 							
+    	 							}
+    	 						}
+    	 					}
+    	 					
+    	 					
+    	 				} 
+    	 				
+    	 			
+      	 	/* 			for(var i = 0;i<tecnici_options.length;i++){
+    	 					if( categoria_options[i].value.split("_")[1]!=null && categorie!=null){
+    	 						for(var j = 0; j<categorie.length;j++){
+    	 							if(categorie[j].codice == categoria_options[i].value.split("_")[1]){
+    	 									
+    	 							}
+    	 						}
+    	 						
+    	 						
+    	 					}
+    	 				}
+     			 */
+    				
+    				$('#tecnici').html(opt);
     			});	       
       			
       			

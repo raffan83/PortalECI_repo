@@ -66,6 +66,11 @@
 							    	          				Associazione Ruoli Permessi
 						    	    	      			</a>
 						        	    	  		</li>
+						        	    	  		<li>
+								              			<a href="#verificatoricategoria" data-toggle="tab" aria-expanded="false"   id="verificatoricategoriaTab">
+							    	          				Associazione Verificatore Categoria
+						    	    	      			</a>
+						        	    	  		</li>
 						            			</ul>
 						            			<div class="tab-content">
 							              			<div class="tab-pane active" id="utentiruoli">
@@ -149,7 +154,34 @@
 																</div>
 															</div>
 														</div>								         
-										 			</div>						
+										 			</div>				
+										 			<div class="tab-pane" id="verificatoricategoria">
+		
+														<div class="form-group">
+											           		<label>Verificatori</label>
+											                <select name="selectVerificatore" id="selectVerificatore" data-placeholder="Seleziona Utente..."  class="form-control selectUtente" aria-hidden="true" data-live-search="true">
+											                	<option value=""></option>
+											                    <c:forEach items="${listaUtenti}" var="utente">
+											                    	<option value="${utente.id}">${utente.nominativo}</option> 
+											                    </c:forEach>									
+											                </select>
+											        	</div>
+										    	    	<div class="row">
+															<div class="col-xs-12">												
+														 		<div id="boxLista" class="box box-danger box-solid">
+																	<div class="box-header with-border">
+																 		Lista Categorie
+																		<div class="box-tools pull-right">															
+																			<button data-widget="collapse" class="btn btn-box-tool"><i class="fa fa-minus"></i></button>													
+																		</div>
+																	</div>
+																	<div class="box-body">
+																		<div id="posTabCategorie">LISTA VUOTA</div>
+																	</div>
+																</div>
+															</div>
+														</div>
+						    						</div> 			
 								              		<!-- /.tab-pane -->
 							    	        	</div>
 							        	    	<!-- /.tab-content -->
@@ -225,6 +257,13 @@
         			exploreModal("listaRuoli.do",dataString,"#posTabRuoli",function(data,textStatus){			
         			});        
  	 			});  	
+  				
+  				$("#selectVerificatore").change(function(e){	
+        			var utente = $("#selectVerificatore").val();        
+        			dataString ="action=associazioni&idUtente="+ utente;
+        			exploreModal("listaCategorieVerifica.do",dataString,"#posTabCategorie",function(data,textStatus){			
+        			});        
+ 	 			});  
 			});	   
 		
 	    	$('#myModalError').on('hidden.bs.modal', function (e) {

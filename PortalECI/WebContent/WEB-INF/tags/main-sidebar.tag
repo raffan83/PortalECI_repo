@@ -164,6 +164,11 @@
 								<a href="listaTipiVerifica.do"><i class="fa fa-sitemap"></i>Gestione Tipi Verifica</a>
 							</li>
 						<% }%>
+						<% if(user.checkPermesso("GESTIONE_STRUMENTI_VERIFICATORE")){%>
+							<li>
+								<a href="gestioneStrumentiVerificatore.do"><i class="fa fa-wrench"></i>Gestione Strumenti Verificatore</a>
+							</li>
+						<% }%>
           			</ul>          			
           		
         	</li>
