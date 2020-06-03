@@ -170,7 +170,7 @@
 
 												<c:if test='${verbale.getStato().getId()== 5 && (user.checkRuolo("AM") || user.checkRuolo("RT"))}'>										
 													<!-- <button type="button" class="btn btn-sm pull-right" onclick="salvaCambioStato(null,null,'6')" style="color:#000000 !important;"> -->
-													<button type="button" class="btn btn-sm pull-right" onclick="$('#confirmRig').modal('show');" style="color:#000000 !important;">
+													<button type="button" class="btn btn-sm pull-right" onclick="$('#confirmRifiuta').modal('show');" style="color:#000000 !important;">
 														<i class="glyphicon glyphicon-remove"></i>
 														<span>Rifiuta per modifica</span>
 													</button>
@@ -576,10 +576,10 @@
                   							
                   							<div class="col-sm-12" style="margin:5px ; text-align:center;">
                   								<c:if test="${user.checkPermesso('CH_STA_VERBALE')}">										
-													<button type="button  pull-right" class="btn-sm" onclick="salvaCambioStato(null,null,'8')" style="color:#000000 !important; background-color:${verbale.getStato().getColore(8)} !important;">
+													<a class="btn btn-sm" onclick="salvaCambioStato(null,null,'8')" style="color:#000000 !important; background-color:${verbale.getStato().getColore(8)} !important;">
 														<i class="glyphicon glyphicon glyphicon-ok"></i>
 														<span>CAMBIA STATO</span>
-													</button>
+													</a>
 												</c:if>											      										
 											</div>											
 										</div>
