@@ -194,7 +194,12 @@ public class GestioneTemplateQuestionarioBO {
 		html = html.replaceAll("\\$\\{ATT_MODELLO\\}", "MODELLO");
 		html = html.replaceAll("\\$\\{ATT_SETTORE_IMPIEGO\\}", "SETTORE IMPIEGO");
 		
-		html = html.replaceAll("\\$\\{STR_VERIFICATORE\\}", "STRUMENTO VERIFICATORE");
+		html = html.replaceAll("\\$\\{STR_VERIFICATORE_MARCA\\}", "MARCA");
+		html = html.replaceAll("\\$\\{STR_VERIFICATORE_MODELLO\\}", "MODELLO");
+		html = html.replaceAll("\\$\\{STR_VERIFICATORE_MATRICOLA\\}", "MATRICOLA");
+		html = html.replaceAll("\\$\\{STR_VERIFICATORE_SCADENZA\\}", "SCADENZA TARATURA");
+		html = html.replaceAll("\\$\\{STR_VERIFICATORE_ULTIMA_TAR\\}", "ULTIMA TARATURA");
+		
 		
 		html = html.replaceAll("\\$\\{SEDE_VIE\\}", "SEDE VIE");
 		

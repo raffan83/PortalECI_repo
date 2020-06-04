@@ -3,6 +3,8 @@ package it.portalECI.bo;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -701,9 +703,31 @@ public class GestioneVerbaleBO {
 			html = html.replaceAll("\\$\\{ATT_SETTORE_IMPIEGO\\}", verbale.getAttrezzatura().getSettore_impiego());
 		}
 		
-		if(verbale.getStrumento_verificatore() != null ) 
+		if(verbale.getStrumento_verificatore() != null && verbale.getStrumento_verificatore().getMarca()!=null) 
 		{			
-			html = html.replaceAll("\\$\\{STR_VERIFICATORE\\}", verbale.getStrumento_verificatore().getMarca()+ " - " +verbale.getStrumento_verificatore().getModello() +" - "+verbale.getStrumento_verificatore().getMatricola());
+			html = html.replaceAll("\\$\\{STR_VERIFICATORE_MARCA\\}", verbale.getStrumento_verificatore().getMarca());
+		}
+		
+		if(verbale.getStrumento_verificatore() != null && verbale.getStrumento_verificatore().getModello()!=null) 
+		{			
+			html = html.replaceAll("\\$\\{STR_VERIFICATORE_MODELLO\\}", verbale.getStrumento_verificatore().getModello());
+		}
+		
+		if(verbale.getStrumento_verificatore() != null && verbale.getStrumento_verificatore().getMatricola()!=null) 
+		{			
+			html = html.replaceAll("\\$\\{STR_VERIFICATORE_MATRICOLA\\}", verbale.getStrumento_verificatore().getMatricola());
+		}
+		
+		DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
+		
+		if(verbale.getStrumento_verificatore() != null && verbale.getStrumento_verificatore().getData_ultima_taratura()!=null) 
+		{			
+			html = html.replaceAll("\\$\\{STR_VERIFICATORE_ULTIMA_TAR\\}", df.format(verbale.getStrumento_verificatore().getData_ultima_taratura()));
+		}
+		
+		if(verbale.getStrumento_verificatore() != null && verbale.getStrumento_verificatore().getScadenza()!=null) 
+		{			
+			html = html.replaceAll("\\$\\{STR_VERIFICATORE_SCADENZA\\}", df.format(verbale.getStrumento_verificatore().getScadenza()));
 		}
 		
 		

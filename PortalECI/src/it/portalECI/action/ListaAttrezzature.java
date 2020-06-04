@@ -153,7 +153,7 @@ public class ListaAttrezzature extends HttpServlet {
 					
 					ArrayList<AttrezzaturaDTO> lista_attrezzatureTutte = GestioneAttrezzatureBO.getlistaAttrezzature(session);
 					
-					if(!utente.checkRuolo("AM")) {
+					if(!utente.checkRuolo("AM") && !utente.checkRuolo("ST")) {
 						ArrayList<Integer> lista_id_clienti =  (ArrayList<Integer>) request.getSession().getAttribute("lista_id_clienti");	
 						ArrayList<Integer> lista_id_sedi =  (ArrayList<Integer>) request.getSession().getAttribute("lista_id_sedi");	
 						
