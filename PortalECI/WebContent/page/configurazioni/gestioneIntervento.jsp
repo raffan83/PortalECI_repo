@@ -315,7 +315,7 @@
         									<div id="content_esercente" style="display:none">
 	        									<div class="form-group col-sm-5" >
 	                  								<label>Esercente</label>
-	                  								<input id="esercente" name = "esercente" class="form-control" type="text" value="${esercente }" >                 
+	                  								<input id="esercente" name = "esercente" class="form-control" type="text" value="" >                 
 	        									</div>  
         									</div>
         									<div id="content_attrezzatura" style="display:none" >

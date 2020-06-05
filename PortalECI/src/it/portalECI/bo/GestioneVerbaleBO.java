@@ -705,29 +705,29 @@ public class GestioneVerbaleBO {
 		
 		if(verbale.getStrumento_verificatore() != null && verbale.getStrumento_verificatore().getMarca()!=null) 
 		{			
-			html = html.replaceAll("\\$\\{STR_VERIFICATORE_MARCA\\}", verbale.getStrumento_verificatore().getMarca());
+			html = html.replaceAll("\\$\\{STR_MARCA\\}", verbale.getStrumento_verificatore().getMarca());
 		}
 		
 		if(verbale.getStrumento_verificatore() != null && verbale.getStrumento_verificatore().getModello()!=null) 
 		{			
-			html = html.replaceAll("\\$\\{STR_VERIFICATORE_MODELLO\\}", verbale.getStrumento_verificatore().getModello());
+			html = html.replaceAll("\\$\\{STR_MOD\\}", verbale.getStrumento_verificatore().getModello());
 		}
 		
 		if(verbale.getStrumento_verificatore() != null && verbale.getStrumento_verificatore().getMatricola()!=null) 
 		{			
-			html = html.replaceAll("\\$\\{STR_VERIFICATORE_MATRICOLA\\}", verbale.getStrumento_verificatore().getMatricola());
+			html = html.replaceAll("\\$\\{STR_MATR\\}", verbale.getStrumento_verificatore().getMatricola());
 		}
 		
 		DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
 		
 		if(verbale.getStrumento_verificatore() != null && verbale.getStrumento_verificatore().getData_ultima_taratura()!=null) 
 		{			
-			html = html.replaceAll("\\$\\{STR_VERIFICATORE_ULTIMA_TAR\\}", df.format(verbale.getStrumento_verificatore().getData_ultima_taratura()));
+			html = html.replaceAll("\\$\\{STR_ULT_TAR\\}", df.format(verbale.getStrumento_verificatore().getData_ultima_taratura()));
 		}
 		
 		if(verbale.getStrumento_verificatore() != null && verbale.getStrumento_verificatore().getScadenza()!=null) 
 		{			
-			html = html.replaceAll("\\$\\{STR_VERIFICATORE_SCADENZA\\}", df.format(verbale.getStrumento_verificatore().getScadenza()));
+			html = html.replaceAll("\\$\\{STR_SCADENZA\\}", df.format(verbale.getStrumento_verificatore().getScadenza()));
 		}
 		
 		

@@ -309,7 +309,7 @@
 											</div>
 											<div class="box-body">	
 											<label>Seleziona uno strumento per il verificatore</label>
-        										 	 <select id="strumento_verificatore" name="strumento_verificatore" class="form-contol select2" data-placeholder="Seleziona Strumento Verificatore..."  style="width:100%">
+        										 	 <select id="strumento_verificatore" name="strumento_verificatore" class="form-contol select2" data-placeholder="Seleziona Strumento Verificatore..."  style="width:100%" required>
 														<option value=""></option>
 														<option value="0">Nessuno</option>
 														<c:forEach items="${intervento.getTecnico_verificatore().getListaStrumentiVerificatore()}" var="str" varStatus="loop">
@@ -392,7 +392,8 @@
 															<button type="button" class="btn btn-default ml-1 savebutt" onclick="modificaRisposte(${verbale.getId()},'formVerbale')" style="margin-left: 1em; float: right;">	
 																<span >SALVA MODIFICHE</span>
 															</button>
-																 <button type="button" class="btn btn-default ml-1 changestate formVerbalebox" onclick="salvaRisposteCompWeb(${verbale.getId()},'formVerbale', 'confermaRisposteCompWeb')" style="margin-left: 1em; color:#000000 !important; background-color:${verbale.getStato().getColore(5)} !important; float: right;"> 
+																 <%-- <button type="button" class="btn btn-default ml-1 changestate formVerbalebox" onclick="salvaRisposteCompWeb(${verbale.getId()},'formVerbale', 'confermaRisposteCompWeb')" style="margin-left: 1em; color:#000000 !important; background-color:${verbale.getStato().getColore(5)} !important; float: right;"> --%> 
+																   <button type="button" class="btn btn-default ml-1 changestate formVerbalebox" onclick="$('#confirmConferma').modal('show');" style="margin-left: 1em; color:#000000 !important; background-color:${verbale.getStato().getColore(5)} !important; float: right;"> 
 																
 																
 																
@@ -412,7 +413,9 @@
 																<span >SALVA MODIFICHE</span>
 															</button>
 															
-            	      										<button type="button" class="btn btn-default  ml-1 changestate formVerbalebox" onclick="preCambioStato(${verbale.getId()},'formVerbale','6')" style="margin-left: 1em; color:#000000 !important; background-color:${verbale.getStato().getColore(6)} !important; float: right;">
+            	      										<%-- <button type="button" class="btn btn-default  ml-1 changestate formVerbalebox" onclick="preCambioStato(${verbale.getId()},'formVerbale','6')" style="margin-left: 1em; color:#000000 !important; background-color:${verbale.getStato().getColore(6)} !important; float: right;"> --%>
+            	      										<button type="button" class="btn btn-default  ml-1 changestate formVerbalebox" onclick="$('#confirmRifiutaDaVerificare').modal('show');" style="margin-left: 1em; color:#000000 !important; background-color:${verbale.getStato().getColore(6)} !important; float: right;">
+            	      										
                 	  											<i class="glyphicon glyphicon-remove"></i>
                   												<span >RIFIUTATO</span>
                   											</button>
@@ -673,6 +676,47 @@
   							</div>
 						</div>
 						
+						<div id="confirmRifiutaDaVerificare" class="modal fade" role="dialog" aria-labelledby="myLargeModalLabel">
+    						<div class="modal-dialog" role="document">
+    							<div class="modal-content">
+     								<div class="modal-header">
+        								<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        								<h4 class="modal-title text-center" id="myModalLabel">Attenzione!</h4>
+      								</div>
+       								<div class="modal-body">
+										<h3 class="text-center">Attenzione, stai per annullare un certificato!<br/>
+											Questa operazione non può essere annullata. <br/>
+											Sei sicuro di voler annullare il certificato?</h3>
+  		 							</div>
+      								<div class="modal-footer">
+      									<button type="button" class="btn btn-default" onclick="preCambioStato(${verbale.getId()},'formVerbale','6')" >Rifiuta per modifica</button>     									
+        								<button type="button" class="btn btn-default" data-dismiss="modal">Annulla</button>
+      								</div>
+    							</div>
+  							</div>
+						</div>
+						
+						<div id="confirmConferma" class="modal fade" role="dialog" aria-labelledby="myLargeModalLabel">
+    						<div class="modal-dialog" role="document">
+    							<div class="modal-content">
+     								<div class="modal-header">
+        								<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        								<h4 class="modal-title text-center" id="myModalLabel">Attenzione!</h4>
+      								</div>
+       								<div class="modal-body">
+										<h3 class="text-center">
+										Il verbale sarà inviato in approvazione al RT. <br> Sicuro di voler procedere?
+											
+											</h3>
+  		 							</div>
+      								<div class="modal-footer">
+      									<button type="button" class="btn btn-default" onclick="salvaRisposteCompWeb(${verbale.getId()},'formVerbale', 'confermaRisposteCompWeb')" >Conferma</button>     									
+        								<button type="button" class="btn btn-default" data-dismiss="modal">Annulla</button>
+      								</div>
+    							</div>
+  							</div>
+						</div>
+						
 						<div id="listChange" class="modal fade" role="dialog" aria-labelledby="myLargeModalLabel">
     						<div class="modal-dialog" role="document">
     							<div class="modal-content">
@@ -895,6 +939,21 @@
 		<script src="js/verbale.js" type="text/javascript"></script>
  		<script type="text/javascript">
 		   
+ 		function checkStrumentoVerificatore(){
+ 			
+ 			var strumento = $('#strumento_verificatore').val();
+ 			var ret = true;
+ 			
+ 			
+ 			if(strumento==''){
+ 				ret = false;
+ 			}
+ 			
+ 			return ret;
+ 		}
+ 		
+ 		
+ 		
  		function dettaglioAttrezzatura(id_attrezzatura, matricola_inail, numero_fabbrica, tipo_attivita, descrizione, id_cliente, id_sede,
  				data_verifica_funzionamento, data_prossima_verifica_funzionamento,data_verifica_integrita, data_prossima_verifica_integrita, data_verifica_interna, data_prossima_verifica_interna,
  				anno_costruzione, fabbricante, modello, settore_impiego, note_tecniche, note_generiche, obsoleta){
@@ -1009,46 +1068,51 @@
 
 			
 			function salvaCambioStato(idverbale, idform, idstato){
-				pleaseWaitDiv = $('#pleaseWaitDialog');
-				pleaseWaitDiv.modal();
-				if(idverbale==null){
-					idverbale=${verbale.getId()}+"&all="+true
-				}
-				$.ajax({
-					type: "POST",
-					url: "gestioneVerbale.do?action=cambioStato",
-					data : "idVerbale="+idverbale+"&stato="+idstato,				
-					dataType: "json",
-					success: function( data, textStatus) {
-						if(data.success){	
-							location.reload();
-							/* if(idform==null){
-								location.reload();
-							}else{
-								$("."+idform+"box").css("display", "none");
-								//TODO: modificare logica
-								if(idform=="formVerbale" && ${user.checkPermesso('GENERA_CERTIFICATO')}){									
-									$("#"+idform+"box").append('<button class="btn btn-default pull-right" onClick="$("#confirmCertificato").modal("show");" style="margin-left:5px"><i class="glyphicon glyphicon-edit"></i> Genera Certificato</button>');
-								}else if(idform=="formScTecnica" && ${user.checkPermesso('GENERA_SKTECNICA')}){
-									$("#"+idform+"box").append('<button class="btn btn-default pull-right" onClick="$("#confirmSchedaTecnica").modal("show");" style="margin-left:5px"><i class="glyphicon glyphicon-edit"></i> Genera Scheda Tecnica</button>');
-								}
-							} */
-						}else{							
-							$('#modalErrorDiv').html(data.messaggio);
-							$('#myModalError').removeClass();
-							$('#myModalError').addClass("modal modal-danger");
-							$('#myModalError').modal('show');															
-						}		
-						pleaseWaitDiv.modal('hide');	
-						$("#changedForm").val(false);
-						$('#modalCambioStatoVerbale').modal('hide');
-					},
-					error: function(jqXHR, textStatus, errorThrown){		          
-						$('#errorMsg').html("<h3 class='label label-danger'>"+textStatus+"</h3>");
-						//callAction('logout.do');
-						pleaseWaitDiv.modal('hide');
+				
+				
+					pleaseWaitDiv = $('#pleaseWaitDialog');
+					pleaseWaitDiv.modal();
+					if(idverbale==null){
+						idverbale=${verbale.getId()}+"&all="+true
 					}
-				});
+					$.ajax({
+						type: "POST",
+						url: "gestioneVerbale.do?action=cambioStato",
+						data : "idVerbale="+idverbale+"&stato="+idstato,				
+						dataType: "json",
+						success: function( data, textStatus) {
+							if(data.success){	
+								location.reload();
+								/* if(idform==null){
+									location.reload();
+								}else{
+									$("."+idform+"box").css("display", "none");
+									//TODO: modificare logica
+									if(idform=="formVerbale" && ${user.checkPermesso('GENERA_CERTIFICATO')}){									
+										$("#"+idform+"box").append('<button class="btn btn-default pull-right" onClick="$("#confirmCertificato").modal("show");" style="margin-left:5px"><i class="glyphicon glyphicon-edit"></i> Genera Certificato</button>');
+									}else if(idform=="formScTecnica" && ${user.checkPermesso('GENERA_SKTECNICA')}){
+										$("#"+idform+"box").append('<button class="btn btn-default pull-right" onClick="$("#confirmSchedaTecnica").modal("show");" style="margin-left:5px"><i class="glyphicon glyphicon-edit"></i> Genera Scheda Tecnica</button>');
+									}
+								} */
+							}else{							
+								$('#modalErrorDiv').html(data.messaggio);
+								$('#myModalError').removeClass();
+								$('#myModalError').addClass("modal modal-danger");
+								$('#myModalError').modal('show');															
+							}		
+							pleaseWaitDiv.modal('hide');	
+							$("#changedForm").val(false);
+							$('#modalCambioStatoVerbale').modal('hide');
+						},
+						error: function(jqXHR, textStatus, errorThrown){		          
+							$('#errorMsg').html("<h3 class='label label-danger'>"+textStatus+"</h3>");
+							//callAction('logout.do');
+							pleaseWaitDiv.modal('hide');
+						}
+					});
+				
+				
+				
 			}
 			
 			function generaCertificato(id){
@@ -1113,6 +1177,17 @@
 			
 			function modificaRisposte(idVerb,idform){
 				
+			if(!checkStrumentoVerificatore()){
+					
+					$('#modalErrorDiv').html("Il campo strumento verificatore è obbligatorio");
+					$('#myModalError').removeClass();
+					$('#myModalError').addClass("modal modal-danger");
+					$('#myModalError').modal('show');	
+					
+				}else{
+					
+					
+				
 				pleaseWaitDiv = $('#pleaseWaitDialog');
 				pleaseWaitDiv.modal();
 				
@@ -1141,10 +1216,19 @@
 						pleaseWaitDiv.modal('hide');
 					}
 				});
-								
+			}		
 			}
 			
 			function salvaRisposteCompWeb(idVerb,idform,action){
+				
+			if(!checkStrumentoVerificatore()){
+					
+					$('#modalErrorDiv').html("Il campo strumento verificatore è obbligatorio");
+					$('#myModalError').removeClass();
+					$('#myModalError').addClass("modal modal-danger");
+					$('#myModalError').modal('show');	
+					
+				}else{
 				
 				pleaseWaitDiv = $('#pleaseWaitDialog');
 				pleaseWaitDiv.modal();		
@@ -1176,7 +1260,7 @@
 						pleaseWaitDiv.modal('hide');
 					}
 				});
-								
+				}			
 			}
 			
 			function annullaModifiche(idform){

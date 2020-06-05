@@ -18,7 +18,8 @@ public class GestioneVerbaleDAO {
 		
 		boolean ck_AM=user.checkRuolo("AM");
 		boolean ck_ST=user.checkRuolo("ST");
-		if(ck_ST==false && ck_AM==false) 
+		boolean ck_RT=user.checkRuolo("RT");
+		if(ck_ST==false && ck_AM==false && ck_RT==false) 
 		{
 		 
 		query  = session.createQuery( "from VerbaleDTO WHERE type = :_type AND intervento.tecnico_verificatore.id=:_idUser");
