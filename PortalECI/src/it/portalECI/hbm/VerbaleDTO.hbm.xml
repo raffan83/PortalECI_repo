@@ -85,5 +85,9 @@
 			<many-to-one name="strumento_verificatore" class="it.portalECI.DTO.StrumentoVerificatoreDTO" fetch="join" lazy="false">
             <column name="strumento_verificatore" />
         </many-to-one>
+        
+        <property name="data_verifica" type="java.sql.Date">
+			<column name="data_verifica" />
+		</property> 	
 	</class>
 </hibernate-mapping> 

@@ -47,6 +47,14 @@
                        <th>Fabbricante</th>
                        <th>Modello</th>
                        <th>Settore d'impiego</th>
+                       <th>Tipo Attrezzatura</th>
+                       <th>Tipo Attrezzatura GVR</th>
+                       <th>ID Specifica</th>
+                       <th>Sogg. messa servizio GVR</th>
+                       <th>N. panieri idroestrattori</th>
+                       <th>Marcatura</th>
+                       <th>N. ID ON</th>
+                       <th>Scadenza Ventennale</th>
                        <th>Note tecniche</th>
                        <th>Note generiche</th>       
                        <td style="min-width:100px;">Azioni</td>
@@ -56,7 +64,11 @@
  	<c:forEach items="${lista_attrezzature}" var="attrezzatura" varStatus="loop">
  	<c:choose>
  	<c:when test="${attrezzatura.obsoleta==0}">
- 		<tr>
+ 		<tr  onDblClick="openTab('${attrezzatura.id }','${attrezzatura.matricola_inail }','${attrezzatura.numero_fabbrica }','${attrezzatura.tipo_attivita }','${attrezzatura.descrizione }','${attrezzatura.id_cliente }','${attrezzatura.id_sede }',
+ 	'${attrezzatura.data_verifica_funzionamento }','${attrezzatura.data_prossima_verifica_funzionamento }','${attrezzatura.data_verifica_integrita }','${attrezzatura.data_prossima_verifica_integrita }','${attrezzatura.data_verifica_interna }','${attrezzatura.data_prossima_verifica_interna }',
+ 	'${attrezzatura.anno_costruzione }','${attrezzatura.fabbricante }','${attrezzatura.modello }','${attrezzatura.settore_impiego }','${fn:replace(fn:replace(attrezzatura.note_tecniche.replace('\'',' ').replace('\\','/'),newLineChar, ' '),newLineChar2, ' ')}','${fn:replace(fn:replace(attrezzatura.note_generiche.replace('\'',' ').replace('\\','/').replace('\\n',' '),newLineChar, ' '),newLineChar2,' ')}','${attrezzatura.obsoleta }',
+ 	'${attrezzatura.tipo_attrezzatura }','${attrezzatura.tipo_attrezzatura_GVR }','${attrezzatura.ID_specifica }','${attrezzatura.sogg_messa_serv_GVR }',
+ 	'${attrezzatura.n_panieri_idroestrattori }','${attrezzatura.marcatura }','${attrezzatura.n_id_on }','${attrezzatura.data_scadenza_ventennale }')" >
  	</c:when>
  	<c:otherwise>
  		<tr style="background-color:#ff6666">
@@ -80,13 +92,23 @@
   	<td>${attrezzatura.fabbricante }</td>
  	<td>${attrezzatura.modello }</td>
  	<td>${attrezzatura.settore_impiego }</td>
+ 	<td>${attrezzatura.tipo_attrezzatura }</td>
+ 	<td>${attrezzatura.tipo_attrezzatura_GVR }</td>
+ 	<td>${attrezzatura.ID_specifica }</td>
+ 	<td>${attrezzatura.sogg_messa_serv_GVR }</td>
+ 	<td>${attrezzatura.n_panieri_idroestrattori }</td>
+ 	<td>${attrezzatura.marcatura }</td>
+ 	<td>${attrezzatura.n_id_on }</td>
+ 	<td>${attrezzatura.data_scadenza_ventennale}</td>
  	<td>${attrezzatura.note_tecniche }</td> 	
  	<td>${attrezzatura.note_generiche }</td> 
  	<td>
- 	<c:if test="${user.checkPermesso('MODIFICA_ATTREZZATURE') }">
+ 	<c:if test="${user.checkPermesso('MODIFICA_ATTREZZATURE') }">	
  	<a class="btn btn-warning" onClick="modalModificaAttrezzatura('${attrezzatura.id }','${attrezzatura.matricola_inail }','${attrezzatura.numero_fabbrica }','${attrezzatura.tipo_attivita }','${attrezzatura.descrizione }','${attrezzatura.id_cliente }','${attrezzatura.id_sede }',
  	'${attrezzatura.data_verifica_funzionamento }','${attrezzatura.data_prossima_verifica_funzionamento }','${attrezzatura.data_verifica_integrita }','${attrezzatura.data_prossima_verifica_integrita }','${attrezzatura.data_verifica_interna }','${attrezzatura.data_prossima_verifica_interna }',
- 	'${attrezzatura.anno_costruzione }','${attrezzatura.fabbricante }','${attrezzatura.modello }','${attrezzatura.settore_impiego }','${fn:replace(fn:replace(attrezzatura.note_tecniche.replace('\'',' ').replace('\\','/'),newLineChar, ' '),newLineChar2, ' ')}','${fn:replace(fn:replace(attrezzatura.note_generiche.replace('\'',' ').replace('\\','/').replace('\\n',' '),newLineChar, ' '),newLineChar2,' ')}','${attrezzatura.obsoleta }')"><i class="fa fa-edit"></i></a>
+ 	'${attrezzatura.anno_costruzione }','${attrezzatura.fabbricante }','${attrezzatura.modello }','${attrezzatura.settore_impiego }','${fn:replace(fn:replace(attrezzatura.note_tecniche.replace('\'',' ').replace('\\','/'),newLineChar, ' '),newLineChar2, ' ')}','${fn:replace(fn:replace(attrezzatura.note_generiche.replace('\'',' ').replace('\\','/').replace('\\n',' '),newLineChar, ' '),newLineChar2,' ')}','${attrezzatura.obsoleta }',
+ 	'${attrezzatura.tipo_attrezzatura }','${attrezzatura.tipo_attrezzatura_GVR }','${attrezzatura.ID_specifica }','${attrezzatura.sogg_messa_serv_GVR }',
+ 	'${attrezzatura.n_panieri_idroestrattori }','${attrezzatura.marcatura }','${attrezzatura.n_id_on }','${attrezzatura.data_scadenza_ventennale }')"><i class="fa fa-edit"></i></a>
  	</c:if>
  	</td>
  	
@@ -175,8 +197,8 @@
                      <!--  <input class="form-control" id="descrizione" type="text" name="descrizione" required value=""/> -->
         <select class="form-control select2" disabled id="descrizione" name="descrizione" data-placeholder="Seleziona Descrizione..." style="width:100%">
          <option value=""></option>
-        <c:forEach items="${lista_descrizioni_gruppi }" var="desc">
-        <option value="${desc.gruppo}_${desc.descrizione}">${desc.descrizione }</option>
+        <c:forEach items="${lista_descrizioni_gruppi }" var="desc" varStatus="loop">
+        <option value="${desc.gruppo}_${desc.descrizione}_${desc.id_specifica}">${desc.descrizione }</option>
         
         </c:forEach>
          </select>  
@@ -206,11 +228,95 @@
                      <!--  <input class="form-control" id="settore_impiego" type="text" name="settore_impiego"  value=""/> -->
           <select class="form-control select2" disabled id="settore_impiego" name="settore_impiego" data-placeholder="Seleziona settore d'impiego..." style="width:100%">
 		<option value=""></option>
+	
               
           </select>     
     </div>
     </div>
-   
+    
+    
+        <div class="form-group">
+        <label for="inputName" class="col-sm-4 control-label">Tipo attrezzatura:</label>
+        <div class="col-sm-8">
+                     
+          <select class="form-control select2" disabled id="tipo_attrezzatura" name="tipo_attrezzatura" data-placeholder="Seleziona tipo attrezzatura..." style="width:100%">
+		<option value=""></option>   
+	
+          </select>     
+    </div>
+    </div>
+    
+            <div class="form-group">
+        <label for="inputName" class="col-sm-4 control-label">Tipo attrezzatura GVR:</label>
+        <div class="col-sm-8">
+                     
+          <select class="form-control select2" disabled id="tipo_attrezzatura_gvr" name="tipo_attrezzatura_gvr" data-placeholder="Seleziona tipo attrezzatura GVR..." style="width:100%">
+		<option value=""></option>              		
+
+          </select>     
+    </div>
+    </div>
+    
+  <div class="form-group">
+        <label for="inputName" class="col-sm-4 control-label">ID specifica:</label>
+        <div class="col-sm-8">
+                     
+         
+            <input class="form-control" id="id_specifica" type="text" name="id_specifica" readonly  value=""/>
+		
+    
+    </div>
+    </div>
+    
+    
+     <div class="form-group">
+        <label for="inputName" class="col-sm-4 control-label">Sogg. messa servizio GVR:</label>
+        <div class="col-sm-8">
+                     
+          <select class="form-control select2"  id="sogg_messa_serv_GVR" name="sogg_messa_serv_GVR" data-placeholder="Seleziona Sogg. Messa Servizio GVR..." style="width:100%">
+		<option value=""></option>
+          	<option value="SI">SI</option>
+         <option value="NO">NO</option>    
+          </select>     
+    </div>
+    </div>
+    
+    
+             <div class="form-group">
+        <label for="inputName" class="col-sm-4 control-label">N. panieri idroestrattori:</label>
+        <div class="col-sm-8">
+                      <input class="form-control" id="n_panieri_idroestrattori" type="text" name="n_panieri_idroestrattori"  value=""/>
+    </div>
+       </div> 
+       
+       
+     <div class="form-group">
+        <label for="inputName" class="col-sm-4 control-label">Marcatura:</label>
+        <div class="col-sm-8">
+                     
+          <select class="form-control select2" id="marcatura" name="marcatura" data-placeholder="Seleziona Marcatura..." style="width:100%">
+         <option value=""></option>
+		<option value="SI">SI</option>
+         <option value="NO">NO</option>
+          </select>     
+    </div>
+    </div>
+    
+    
+       <div class="form-group">
+        <label for="inputName" class="col-sm-4 control-label">N. ID ON:</label>
+        <div class="col-sm-8">
+                      <input class="form-control" id="n_id_on" type="text" name="n_id_on"  value=""/>
+    </div>
+       </div> 
+       
+                <div class="form-group">
+        <label for="inputName" class="col-sm-4 control-label">Data scadenza ventennale:</label>
+        <div class="col-sm-8">
+                      <input class="form-control datepicker disabled" id="data_scadenza_ventennale" type="text" name="data_scadenza_ventennale"  value="" data-date-format="dd/mm/yyyy"/>
+    </div>
+       </div> 
+       
 
          <div class="form-group">
         <label for="inputName" class="col-sm-4 control-label">Data verifica funzionamento:</label>
@@ -275,7 +381,313 @@
 </div>
    </form>
 
-  <form class="form-horizontal" id="formModificaAttrezzatura">
+
+
+
+
+<form class="form-horizontal" id="formModificaAttrezzatura">
+<div id="modalModificaAttrezzatura" class="modal fade" role="dialog" aria-labelledby="myLargeModalLabel">
+    <div class="modal-dialog modal-md" role="document">
+    <div class="modal-content">
+     <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Modifica Attrezzatura</h4>
+      </div>
+       <div class="modal-body">
+        <div class="nav-tabs-custom">
+            <ul id="mainTabs" class="nav nav-tabs">
+              <li class="active" id="tab1"><a href="#modifica" data-toggle="tab" aria-expanded="true"   id="standardTab">Modifica</a></li>
+              		<li class="" id="tab2"><a href="#verbali" data-toggle="tab" aria-expanded="false"   id="verbaliTab">Verbali</a></li>
+              	
+              
+            </ul>
+            <div class="tab-content">
+              <div class="tab-pane active" id="modifica">
+              
+              
+              <div class="form-group">
+          <label for="inputEmail" class="col-sm-4 control-label">Cliente:</label>
+
+         <div class="col-sm-8">
+          <select name="cliente_mod" id="cliente_mod" data-placeholder="Seleziona Cliente..."  class="form-control select2" aria-hidden="true" data-live-search="true" style="width:100%">
+                  <option value=""></option>
+                      <c:forEach items="${listaClienti}" var="cliente">
+                           <option value="${cliente.__id}">${cliente.nome} </option> 
+                     </c:forEach>
+                  </select>
+    	</div>
+   </div>
+    <div class="form-group">
+          <label for="inputEmail" class="col-sm-4 control-label">Sede:</label>
+
+         <div class="col-sm-8">
+       <select name="sede_mod" id="sede_mod" data-placeholder="Seleziona Sede..."  disabled class="form-control select2" aria-hidden="true" data-live-search="true" style="width:100%">
+                   <option value=""></option>
+             		<c:forEach items="${listaSedi}" var="sedi">
+                        <option value="${sedi.__id}_${sedi.id__cliente_}">${sedi.descrizione} - ${sedi.indirizzo} - ${sedi.comune} (${sedi.siglaProvincia})</option>              
+                     	</c:forEach>
+                  </select>
+    	</div>
+   </div>
+              
+
+    <div class="form-group">
+          <label for="inputEmail" class="col-sm-4 control-label">Numero matricola INAIL:</label>
+
+         <div class="col-sm-8">
+         <input class="form-control" id="matricola_inail_mod" type="text" name="matricola_inail_mod" required value=""/>
+    	</div>
+   </div>
+	<div class="form-group">
+          <label for="inputEmail" class="col-sm-4 control-label">Numero di fabbrica:</label>
+
+         <div class="col-sm-8">
+         <input class="form-control" id="numero_fabbrica_mod" type="text" name="numero_fabbrica_mod" required value=""/>
+    	</div>
+   </div>
+   
+     <div class="form-group">
+        <label for="inputName" class="col-sm-4 control-label">Gruppo:</label>
+        <div class="col-sm-8">
+                   <!-- <input class="form-control" id="tipo_attivita_mod" type="text" name="tipo_attivita_mod" required value=""/> -->
+                      
+         <select class="form-control select2" required id="tipo_attivita_mod" name="tipo_attivita_mod" data-placeholder="Seleziona Gruppo..." style="width:100%">
+         <option value=""></option>
+         <option value="SP">SP</option>
+         <option value="SC">SC</option>
+         <option value="GVR">GVR</option>
+         </select>   
+    </div>
+    </div>
+
+   <div class="form-group">
+        <label for="inputName" class="col-sm-4 control-label">Descrizione:</label>
+        <div class="col-sm-8">
+                    <!--   <input class="form-control" id="descrizione_mod" type="text" name="descrizione_mod" required value=""/> -->
+          <select class="form-control select2" disabled id="descrizione_mod" name="descrizione_mod" data-placeholder="Seleziona Descrizione..." style="width:100%">
+         <option value=""></option>
+        <c:forEach items="${lista_descrizioni_gruppi }" var="desc">
+        <option value="${desc.gruppo}_${desc.descrizione}_${desc.id_specifica}">${desc.descrizione }</option>
+        
+        </c:forEach>
+         </select>  
+    </div>
+    </div>
+    <div class="form-group">
+        <label for="inputName" class="col-sm-4 control-label">Anno di costruzione:</label>
+        <div class="col-sm-8">
+                      <input class="form-control" id="anno_costruzione_mod" type="number" name="anno_costruzione_mod"  value=""/>
+    </div>
+    </div>
+    <div class="form-group">
+        <label for="inputName" class="col-sm-4 control-label">Fabbricante:</label>
+        <div class="col-sm-8">
+                      <input class="form-control" id="fabbricante_mod" type="text" name="fabbricante_mod"  value=""/>
+    </div>
+    </div>
+    <div class="form-group">
+        <label for="inputName" class="col-sm-4 control-label">Modello:</label>
+        <div class="col-sm-8">
+                      <input class="form-control" id="modello_mod" type="text" name="modello_mod"  value=""/>
+    </div>
+    </div>
+    <div class="form-group">
+        <label for="inputName" class="col-sm-4 control-label">Settore d'impiego:</label>
+        <div class="col-sm-8">
+        <!--               <input class="form-control" id="settore_impiego_mod" type="text" name="settore_impiego_mod"  value=""/> -->
+          <select class="form-control select2" disabled id="settore_impiego_mod" name="settore_impiego_mod" data-placeholder="Seleziona settore d'impiego..." style="width:100%">
+		<option value=""></option>
+              
+          </select>   
+    </div>
+    </div>
+  
+  
+  <div class="form-group">
+        <label for="inputName" class="col-sm-4 control-label">Tipo attrezzatura:</label>
+        <div class="col-sm-8">
+                     
+          <select class="form-control select2" disabled id="tipo_attrezzatura_mod" name="tipo_attrezzatura_mod" data-placeholder="Seleziona tipo attrezzatura..." style="width:100%">
+		<option value=""></option>   
+	
+          </select>     
+    </div>
+    </div>
+    
+            <div class="form-group">
+        <label for="inputName" class="col-sm-4 control-label">Tipo attrezzatura GVR:</label>
+        <div class="col-sm-8">
+                     
+          <select class="form-control select2" disabled id="tipo_attrezzatura_gvr_mod" name="tipo_attrezzatura_gvr_mod" data-placeholder="Seleziona tipo attrezzatura GVR..." style="width:100%">
+		<option value=""></option>              		
+
+          </select>     
+    </div>
+    </div>
+    
+  <div class="form-group">
+        <label for="inputName" class="col-sm-4 control-label">ID specifica:</label>
+        <div class="col-sm-8">
+                     
+         
+            <input class="form-control" id="id_specifica_mod" type="text" name="id_specifica_mod" readonly  value=""/>
+		
+    
+    </div>
+    </div>
+    
+    
+     <div class="form-group">
+        <label for="inputName" class="col-sm-4 control-label">Sogg. messa servizio GVR:</label>
+        <div class="col-sm-8">
+                     
+          <select class="form-control select2"  id="sogg_messa_serv_GVR_mod" name="sogg_messa_serv_GVR_mod" data-placeholder="Seleziona Sogg. Messa Servizio GVR..." style="width:100%">
+		<option value=""></option>
+          	<option value="SI">SI</option>
+         <option value="NO">NO</option>    
+          </select>     
+    </div>
+    </div>
+    
+    
+             <div class="form-group">
+        <label for="inputName" class="col-sm-4 control-label">N. panieri idroestrattori:</label>
+        <div class="col-sm-8">
+                      <input class="form-control" id="n_panieri_idroestrattori_mod" type="text" name="n_panieri_idroestrattori_mod"  value=""/>
+    </div>
+       </div> 
+       
+       
+     <div class="form-group">
+        <label for="inputName" class="col-sm-4 control-label">Marcatura:</label>
+        <div class="col-sm-8">
+                     
+          <select class="form-control select2" id="marcatura_mod" name="marcatura_mod" data-placeholder="Seleziona Marcatura..." style="width:100%">
+         <option value=""></option>
+		<option value="SI">SI</option>
+         <option value="NO">NO</option>
+          </select>     
+    </div>
+    </div>
+    
+    
+       <div class="form-group">
+        <label for="inputName" class="col-sm-4 control-label">N. ID ON:</label>
+        <div class="col-sm-8">
+                      <input class="form-control" id="n_id_on_mod" type="text" name="n_id_on_mod"  value=""/>
+    </div>
+       </div> 
+       
+                <div class="form-group">
+        <label for="inputName" class="col-sm-4 control-label">Data scadenza ventennale:</label>
+        <div class="col-sm-8">
+                      <input class="form-control datepicker disabled" id="data_scadenza_ventennale_mod" type="text" name="data_scadenza_ventennale_mod"  value="" data-date-format="dd/mm/yyyy"/>
+    </div>
+       </div> 
+  
+  
+  
+  
+         <div class="form-group">
+        <label for="inputName" class="col-sm-4 control-label">Data verifica funzionamento:</label>
+        <div class="col-sm-8">
+                      <input class="form-control datepicker" id="data_verifica_funzionamento_mod" type="text" name="data_verifica_funzionamento_mod"  value="" data-date-format="dd/mm/yyyy"/>
+    </div>
+       </div> 
+       
+         <div class="form-group">
+        <label for="inputName" class="col-sm-4 control-label">Data prossima verifica funzionamento:</label>
+        <div class="col-sm-8">
+                      <input class="form-control datepicker" id="data_prossima_verifica_funzionamento_mod" type="text" name="data_prossima_verifica_funzionamento_mod"  value="" data-date-format="dd/mm/yyyy"/>
+    </div>
+       </div> 
+       
+             <div class="form-group">
+        <label for="inputName" class="col-sm-4 control-label">Data verifica integrità:</label>
+        <div class="col-sm-8">
+                      <input class="form-control datepicker" id="data_verifica_integrita_mod" type="text" name="data_verifica_integrita_mod"  value="" data-date-format="dd/mm/yyyy"/>
+    </div>
+       </div> 
+       
+         <div class="form-group">
+        <label for="inputName" class="col-sm-4 control-label">Data prossima verifica integrità:</label>
+        <div class="col-sm-8">
+                      <input class="form-control datepicker" id="data_prossima_verifica_integrita_mod" type="text" name="data_prossima_verifica_integrita_mod"  value="" data-date-format="dd/mm/yyyy"/>
+    </div>
+       </div>
+             <div class="form-group">
+        <label for="inputName" class="col-sm-4 control-label">Data verifica interna:</label>
+        <div class="col-sm-8">
+                      <input class="form-control datepicker" id="data_verifica_interna_mod" type="text" name="data_verifica_interna_mod"  value="" data-date-format="dd/mm/yyyy"/>
+    </div>
+       </div> 
+       
+         <div class="form-group">
+        <label for="inputName" class="col-sm-4 control-label">Data prossima verifica interna:</label>
+        <div class="col-sm-8">
+                      <input class="form-control datepicker" id="data_prossima_verifica_interna_mod" type="text" name="data_prossima_verifica_interna_mod"  value="" data-date-format="dd/mm/yyyy"/>
+    </div>
+       </div>
+ <div class="form-group">
+        <label for="inputName" class="col-sm-4 control-label">Note tecniche:</label>
+        <div class="col-sm-8">
+                      <textarea class="form-control" id="note_tecniche_mod" name="note_tecniche_mod" rows ="3"></textarea>
+    </div>
+    </div>
+    <div class="form-group">
+        <label for="inputName" class="col-sm-4 control-label">Note generiche:</label>
+        <div class="col-sm-8">
+                      <textarea class="form-control" id="note_generiche_mod" name="note_generiche_mod" rows ="3"></textarea>
+    </div>
+    </div>
+    
+    
+    
+    <div class="row">
+    <div class="col-xs-12">
+    
+          <input type="hidden" id="id_attrezzatura" name="id_attrezzatura">
+      <a class="btn pull-left" onClick="rendiAttrezzaturaObsoleta()" id="rendi_obsoleta" style="display:none">Rendi obsoleta</a>
+      <a class="btn pull-left" onClick="rendiAttrezzaturaObsoleta()" id="rendi_non_obsoleta" style="display:none">Rendi non obsoleta</a>
+		<button type="submit" class="btn btn-primary pull-right" >Salva</button>
+    
+    </div>
+    
+    </div>
+    
+  		 </div>
+              
+              
+              
+              
+              
+              
+              <div class="tab-pane table-responsive" id="verbali">
+              
+              <div id="content_verbali"></div>
+              
+              
+              </div>
+              </div>
+              </div>
+      
+        
+         
+<!--       <div class="modal-footer">
+      
+
+      </div> -->
+    </div>
+    </div>
+  </div>
+</div>
+
+ </form>
+
+
+
+
+  <%-- <form class="form-horizontal" id="formModificaAttrezzatura">
 <div id="modalModificaAttrezzatura" class="modal fade" role="dialog" aria-labelledby="myLargeModalLabel">
     <div class="modal-dialog modal-md" role="document">
     <div class="modal-content">
@@ -349,7 +761,7 @@
           <select class="form-control select2" disabled id="descrizione_mod" name="descrizione_mod" data-placeholder="Seleziona Descrizione..." style="width:100%">
          <option value=""></option>
         <c:forEach items="${lista_descrizioni_gruppi }" var="desc">
-        <option value="${desc.gruppo}_${desc.descrizione}">${desc.descrizione }</option>
+        <option value="${desc.gruppo}_${desc.descrizione}_${desc.id_specifica}">${desc.descrizione }</option>
         
         </c:forEach>
          </select>  
@@ -383,6 +795,92 @@
           </select>   
     </div>
     </div>
+  
+  
+  <div class="form-group">
+        <label for="inputName" class="col-sm-4 control-label">Tipo attrezzatura:</label>
+        <div class="col-sm-8">
+                     
+          <select class="form-control select2" disabled id="tipo_attrezzatura_mod" name="tipo_attrezzatura_mod" data-placeholder="Seleziona tipo attrezzatura..." style="width:100%">
+		<option value=""></option>   
+	
+          </select>     
+    </div>
+    </div>
+    
+            <div class="form-group">
+        <label for="inputName" class="col-sm-4 control-label">Tipo attrezzatura GVR:</label>
+        <div class="col-sm-8">
+                     
+          <select class="form-control select2" disabled id="tipo_attrezzatura_gvr_mod" name="tipo_attrezzatura_gvr_mod" data-placeholder="Seleziona tipo attrezzatura GVR..." style="width:100%">
+		<option value=""></option>              		
+
+          </select>     
+    </div>
+    </div>
+    
+  <div class="form-group">
+        <label for="inputName" class="col-sm-4 control-label">ID specifica:</label>
+        <div class="col-sm-8">
+                     
+         
+            <input class="form-control" id="id_specifica_mod" type="text" name="id_specifica_mod" readonly  value=""/>
+		
+    
+    </div>
+    </div>
+    
+    
+     <div class="form-group">
+        <label for="inputName" class="col-sm-4 control-label">Sogg. messa servizio GVR:</label>
+        <div class="col-sm-8">
+                     
+          <select class="form-control select2"  id="sogg_messa_serv_GVR_mod" name="sogg_messa_serv_GVR_mod" data-placeholder="Seleziona Sogg. Messa Servizio GVR..." style="width:100%">
+		<option value=""></option>
+          	<option value="SI">SI</option>
+         <option value="NO">NO</option>    
+          </select>     
+    </div>
+    </div>
+    
+    
+             <div class="form-group">
+        <label for="inputName" class="col-sm-4 control-label">N. panieri idroestrattori:</label>
+        <div class="col-sm-8">
+                      <input class="form-control" id="n_panieri_idroestrattori_mod" type="text" name="n_panieri_idroestrattori_mod"  value=""/>
+    </div>
+       </div> 
+       
+       
+     <div class="form-group">
+        <label for="inputName" class="col-sm-4 control-label">Marcatura:</label>
+        <div class="col-sm-8">
+                     
+          <select class="form-control select2" id="marcatura_mod" name="marcatura_mod" data-placeholder="Seleziona Marcatura..." style="width:100%">
+         <option value=""></option>
+		<option value="SI">SI</option>
+         <option value="NO">NO</option>
+          </select>     
+    </div>
+    </div>
+    
+    
+       <div class="form-group">
+        <label for="inputName" class="col-sm-4 control-label">N. ID ON:</label>
+        <div class="col-sm-8">
+                      <input class="form-control" id="n_id_on_mod" type="text" name="n_id_on_mod"  value=""/>
+    </div>
+       </div> 
+       
+                <div class="form-group">
+        <label for="inputName" class="col-sm-4 control-label">Data scadenza ventennale:</label>
+        <div class="col-sm-8">
+                      <input class="form-control datepicker disabled" id="data_scadenza_ventennale_mod" type="text" name="data_scadenza_ventennale_mod"  value="" data-date-format="dd/mm/yyyy"/>
+    </div>
+       </div> 
+  
+  
+  
   
          <div class="form-group">
         <label for="inputName" class="col-sm-4 control-label">Data verifica funzionamento:</label>
@@ -447,10 +945,126 @@
     </div>
   </div>
 </div>
- </form>
+ </form> --%>
 
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/datejs/1.0/date.min.js"></script>
 <script type="text/javascript">
+
+
+ $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
+
+
+	var  contentID = e.target.id;
+
+	
+	if(contentID == "verbaliTab"){
+		
+		exploreModal("listaAttrezzature.do","action=verbali_attrezzatura&id_attrezzatura="+$('#id_attrezzatura').val(),"#verbali");
+	}
+
+	
+	
+	}); 
+
+
+
+
+
+function openTab(id_attrezzatura, matricola_inail, numero_fabbrica, tipo_attivita, descrizione, id_cliente, id_sede,
+		data_verifica_funzionamento, data_prossima_verifica_funzionamento,data_verifica_integrita, data_prossima_verifica_integrita, data_verifica_interna, data_prossima_verifica_interna,
+		anno_costruzione, fabbricante, modello, settore_impiego, note_tecniche, note_generiche, obsoleta, tipo_attrezzatura, tipo_attrezzatura_gvr,
+		id_specifica, sogg_messa_serv_GVR, n_panieri_idroestrattori, marcatura, n_id_on, data_scadenza_ventennale){
+	
+	
+	
+	$('#id_attrezzatura').val(id_attrezzatura);
+	$('#matricola_inail_mod').val(matricola_inail);
+	$('#numero_fabbrica_mod').val(numero_fabbrica);
+	$('#tipo_attivita_mod').val(tipo_attivita);
+	$('#tipo_attivita_mod').change();
+	$('#descrizione_mod').val(tipo_attivita+"_"+descrizione+"_"+id_specifica);
+	//$('#descrizione_mod').change();
+	$('#cliente_mod').val(id_cliente);
+	$('#cliente_mod').change();
+	if(id_sede!=0){
+		$('#sede_mod').val(id_sede+"_"+id_cliente);	
+	}else{
+		$('#sede_mod').val(0);
+	}
+	
+	$('#sede_mod').change();
+	$('#anno_costruzione_mod').val(anno_costruzione);
+	$('#fabbricante_mod').val(fabbricante);
+	$('#modello_mod').val(modello);
+	$('#settore_impiego_mod').val(settore_impiego);
+	$('#settore_impiego_mod').change();
+	$('#note_tecniche_mod').val(note_tecniche);
+	$('#note_generiche_mod').val(note_generiche);	
+	
+	if(data_verifica_funzionamento!=null && data_verifica_funzionamento!= ''){
+		$('#data_verifica_funzionamento_mod').val(Date.parse(data_verifica_funzionamento).toString("dd/MM/yyyy"));	
+	}
+	if(data_prossima_verifica_funzionamento!=null && data_prossima_verifica_funzionamento!= ''){
+		$('#data_prossima_verifica_funzionamento_mod').val(Date.parse(data_prossima_verifica_funzionamento).toString("dd/MM/yyyy"));	
+	}
+	if(data_verifica_integrita!=null && data_verifica_integrita!= ''){
+		$('#data_verifica_integrita_mod').val(Date.parse(data_verifica_integrita).toString("dd/MM/yyyy"));	
+	}
+	if(data_prossima_verifica_integrita!=null && data_prossima_verifica_integrita!= ''){
+		$('#data_prossima_verifica_integrita_mod').val(Date.parse(data_prossima_verifica_integrita).toString("dd/MM/yyyy"));	
+	}
+	if(data_verifica_interna!=null && data_verifica_interna!= ''){
+		$('#data_verifica_interna_mod').val(Date.parse(data_verifica_interna).toString("dd/MM/yyyy"));	
+	}
+	if(data_prossima_verifica_interna!=null && data_prossima_verifica_interna!= ''){
+		$('#data_prossima_verifica_interna_mod').val(Date.parse(data_prossima_verifica_interna).toString("dd/MM/yyyy"));	
+	}
+	
+	if(data_scadenza_ventennale!=null && data_scadenza_ventennale!= ''){
+		$('#data_scadenza_ventennale_mod').val(Date.parse(data_scadenza_ventennale).toString("dd/MM/yyyy"));	
+	}
+	
+	$('#id_attrezzatura').val(id_attrezzatura);	
+	
+	$('#data_prossima_verifica_funzionamento_mod').datepicker({
+			format: "dd/MM/yyyy"
+	});
+	
+
+	$('#tipo_attrezzatura_mod').val(tipo_attrezzatura);
+	$('#tipo_attrezzatura_mod').change();
+
+	$('#tipo_attrezzatura_gvr_mod').val(tipo_attrezzatura_gvr);
+	$('#tipo_attrezzatura_gvr_mod').change();
+	
+	$('#sogg_messa_serv_GVR_mod').val(sogg_messa_serv_GVR);
+	$('#sogg_messa_serv_GVR_mod').change();
+	
+	$('#n_panieri_idroestrattori_mod').val(n_panieri_idroestrattori);
+	
+	$('#marcatura_mod').val(marcatura);
+	$('#marcatura_mod').change();
+
+	$('#n_id_on_mod').val(n_id_on);
+	
+	if(obsoleta==0){
+		$('#rendi_obsoleta').addClass("btn-danger");
+		$('#rendi_obsoleta').show();
+		$('#rendi_non_obsoleta').hide();
+	}else{
+		$('#rendi_non_obsoleta').addClass("btn-success");
+		$('#rendi_obsoleta').hide();
+		$('#rendi_non_obsoleta').show();
+	}
+	
+	
+
+	$('#modalModificaAttrezzatura').modal();
+	
+	
+}
+		
+
 
 
 var columsDatatables = [];
@@ -501,15 +1115,17 @@ function modalNuovaAttrezzatura(){
 
 function modalModificaAttrezzatura(id_attrezzatura, matricola_inail, numero_fabbrica, tipo_attivita, descrizione, id_cliente, id_sede,
 		data_verifica_funzionamento, data_prossima_verifica_funzionamento,data_verifica_integrita, data_prossima_verifica_integrita, data_verifica_interna, data_prossima_verifica_interna,
-		anno_costruzione, fabbricante, modello, settore_impiego, note_tecniche, note_generiche, obsoleta){
+		anno_costruzione, fabbricante, modello, settore_impiego, note_tecniche, note_generiche, obsoleta, tipo_attrezzatura, tipo_attrezzatura_gvr,
+		id_specifica, sogg_messa_serv_GVR, n_panieri_idroestrattori, marcatura, n_id_on, data_scadenza_ventennale){
 	
+
 	$('#id_attrezzatura').val(id_attrezzatura);
 	$('#matricola_inail_mod').val(matricola_inail);
 	$('#numero_fabbrica_mod').val(numero_fabbrica);
 	$('#tipo_attivita_mod').val(tipo_attivita);
 	$('#tipo_attivita_mod').change();
-	$('#descrizione_mod').val(tipo_attivita+"_"+descrizione);
-	$('#descrizione_mod').change();
+	$('#descrizione_mod').val(tipo_attivita+"_"+descrizione+"_"+id_specifica);
+	//$('#descrizione_mod').change();
 	$('#cliente_mod').val(id_cliente);
 	$('#cliente_mod').change();
 	if(id_sede!=0){
@@ -546,11 +1162,32 @@ function modalModificaAttrezzatura(id_attrezzatura, matricola_inail, numero_fabb
 		$('#data_prossima_verifica_interna_mod').val(Date.parse(data_prossima_verifica_interna).toString("dd/MM/yyyy"));	
 	}
 	
+	if(data_scadenza_ventennale!=null && data_scadenza_ventennale!= ''){
+		$('#data_scadenza_ventennale_mod').val(Date.parse(data_scadenza_ventennale).toString("dd/MM/yyyy"));	
+	}
+	
 	$('#id_attrezzatura').val(id_attrezzatura);	
 	
 	$('#data_prossima_verifica_funzionamento_mod').datepicker({
 			format: "dd/MM/yyyy"
 	});
+	
+
+	$('#tipo_attrezzatura_mod').val(tipo_attrezzatura);
+	$('#tipo_attrezzatura_mod').change();
+
+	$('#tipo_attrezzatura_gvr_mod').val(tipo_attrezzatura_gvr);
+	$('#tipo_attrezzatura_gvr_mod').change();
+	
+	$('#sogg_messa_serv_GVR_mod').val(sogg_messa_serv_GVR);
+	$('#sogg_messa_serv_GVR_mod').change();
+	
+	$('#n_panieri_idroestrattori_mod').val(n_panieri_idroestrattori);
+	
+	$('#marcatura_mod').val(marcatura);
+	$('#marcatura_mod').change();
+
+	$('#n_id_on_mod').val(n_id_on);
 	
 	if(obsoleta==0){
 		$('#rendi_obsoleta').addClass("btn-danger");
@@ -624,7 +1261,7 @@ $(document).ready(function() {
 	      columnDefs: [
 					 
 	                   { responsivePriority: 1, targets: 0 },	                  
-	                   { responsivePriority: 2, targets: 19 }
+	                   { responsivePriority: 2, targets: 27 }
 	              
 	                  /*  { orderable: false, targets: 6 }, */
 	               ],
@@ -753,7 +1390,12 @@ $("#cliente_mod").change(function() {
 		
 
 $("#tipo_attivita").change(function() {
-    
+	
+	$('#tipo_attrezzatura_gvr').attr("disabled", true);
+	$('#sogg_messa_serv_GVR').attr("disabled", true);
+	$('#data_scadenza_ventennale').addClass("disabled");
+	
+	
 	  if ($(this).data('options') == undefined) 
 	  {
 	    /*Taking an array of all options-2 and kind of embedding it on the select1*/
@@ -788,13 +1430,25 @@ $("#tipo_attivita").change(function() {
 		
 				
 		if(gruppo == "SP" || gruppo == "GVR"){
-			settore_opt.push('<option value="N.A.">N.A.</option>');
+			settore_opt.push('<option value="N.A.">N.A.</option>');			
+			
+			if(gruppo == 'GVR'){
+				$('#tipo_attrezzatura_gvr').attr("disabled", false);
+				$('#sogg_messa_serv_GVR').attr("disabled", false);	
+			}else{
+				$('#data_scadenza_ventennale').removeClass("disabled");
+			}
+			
+						
+			
 		}else if(gruppo == "SC"){
 			settore_opt.push('<option value="regolare">Regolare</option>');
 			settore_opt.push('<option value="costruzioni">Costruzioni</option>');
 			settore_opt.push('<option value="siderurgico">Siderurgico</option>');
 			settore_opt.push('<option value="estrattivo">Estrattivo</option>');
-			settore_opt.push('<option value="porturale">Portuale</option>');			
+			settore_opt.push('<option value="porturale">Portuale</option>');		
+			
+			$('#data_scadenza_ventennale').removeClass("disabled");
 		}
 		 $("#settore_impiego").prop("disabled", false);
 		  $('#settore_impiego').html(settore_opt);
@@ -851,6 +1505,363 @@ $("#tipo_attivita_mod").change(function() {
 			$("#settore_impiego_mod").change();  
 	});
   
+
+
+
+$("#descrizione").change(function() {
+    
+	$('#n_panieri_idroestrattori').attr("disabled",true);
+	$("#tipo_attrezzatura_gvr").prop("disabled", true);
+
+	  var gruppo = $(this).val().split('_')[0];
+	 
+	  var descrizione = $(this).val().split("_")[1];
+	  var id_spec = $(this).val().split("_")[2];
+
+	  var opt_tipo_attr =[];
+	  var opt_tipo_attr_gvr =[];	
+	  
+	  
+	  if(descrizione.startsWith('Idroestrattor')){
+		  $('#n_panieri_idroestrattori').attr("disabled",false);
+	  }
+	  	
+	  $('#id_specifica').val(id_spec);
+	  
+	  
+		if(gruppo == "GVR"){
+			
+			if(descrizione.startsWith("Recipienti")){
+				opt_tipo_attr.push('<option value="a1">a1</option>');
+				opt_tipo_attr.push('<option value="a2">a2</option>');
+				opt_tipo_attr.push('<option value="a5">a5</option>');
+				opt_tipo_attr.push('<option value="b1">b1</option>');
+				opt_tipo_attr.push('<option value="b2">b2</option>');
+				
+				opt_tipo_attr_gvr.push('<option value="a1">a1</option>');
+
+			}
+			else if(descrizione.startsWith("Generatori") || descrizione.startsWith("GV")){
+				opt_tipo_attr.push('<option value="b3">b3</option>');
+				
+				if(descrizione.startsWith("Generatori acqua")){
+					
+					opt_tipo_attr_gvr.push('<option value="a3">a3</option>');
+
+				}else{
+					
+					opt_tipo_attr_gvr.push('<option value="a2">a2</option>');
+				}
+				
+			}			
+			else if(descrizione.startsWith("Forni")){
+				opt_tipo_attr.push('<option value="a1">a1</option>');
+				
+				opt_tipo_attr_gvr.push('<option value="a6">a6</option>');
+			
+
+			}
+			else if(descrizione.startsWith("Tubazioni")){
+				opt_tipo_attr.push('<option value="a3">a3</option>');				
+				opt_tipo_attr.opt_tipo_attr('<option value="a4">a4</option>');
+				opt_tipo_attr.push('<option value="b4">b4</option>');
+				opt_tipo_attr.push('<option value="b5">b5</option>');
+				
+				opt_tipo_attr_gvr.push('<option value="a4">a4</option>');
+			}
+			else if(descrizione.startsWith("Insieme")){
+				
+				opt_tipo_attr.push('<option value="a1">a1</option>');
+				opt_tipo_attr.push('<option value="a2">a2</option>');
+				opt_tipo_attr.push('<option value="a5">a5</option>');
+				opt_tipo_attr.push('<option value="b1">b1</option>');
+				opt_tipo_attr.push('<option value="b2">b2</option>');
+				
+				opt_tipo_attr_gvr.push('<option value="b">b</option>');
+			}
+			
+			else{
+				opt_tipo_attr.push('<option value=""></option>');
+				
+				opt_tipo_attr_gvr.push('<option value="a5">a5</option>');
+			}
+			$("#tipo_attrezzatura_gvr").prop("disabled", false);
+		}
+		
+		else if(gruppo == "SP"){
+			
+			if(descrizione.startsWith("Scale")){
+				opt_tipo_attr.push('<option value="a">a</option>');
+
+			//	opt_tipo_attr_gvr.push('<option value=""></option>');				
+
+
+				
+			}
+			else if(descrizione.startsWith("Ponti mobili")){
+				
+				if(descrizione.startsWith("Ponti mobili sviluppabili ad azionamento")){
+					
+					opt_tipo_attr.push('<option value="b">b</option>');
+
+				}else{
+					opt_tipo_attr.push('<option value="c">c</option>');
+				}
+				
+
+			}			
+			else if(descrizione.startsWith("Carri") || descrizione.startsWith("Ponti sospesi")){
+				
+				opt_tipo_attr.push('<option value="d">d</option>');				
+			
+				
+			}
+			else if(descrizione.startsWith("Piattaforme")){
+				opt_tipo_attr.push('<option value="e">e</option>');				
+
+			}			
+			else{
+				opt_tipo_attr.push('<option value="f">f</option>');				
+			}
+
+		}
+
+		else if(gruppo == "SC"){
+					
+			
+			if(descrizione.startsWith("Carrelli")){
+				opt_tipo_attr.push('<option value="c">c</option>');
+				
+		//		opt_tipo_attr_gvr.push('<option value="a1">a1</option>');
+				
+		
+				
+			}
+			else if(descrizione.startsWith("Idroestrattori")){
+				
+			
+				opt_tipo_attr.push('<option value="d1">d1</option>');
+			
+			}			
+			else if(descrizione.startsWith("Gru")){
+				
+				if(descrizione.startsWith("Gru a portale")){
+					opt_tipo_attr.push('<option value="b1">b1</option>');
+					opt_tipo_attr.push('<option value="b2">b2</option>');
+					opt_tipo_attr.push('<option value="b3">b3</option>');				
+					
+				}else{
+					opt_tipo_attr.push('<option value="a1">a1</option>');
+					opt_tipo_attr.push('<option value="a2">a2</option>');
+					opt_tipo_attr.push('<option value="a3">a3</option>');
+					opt_tipo_attr.push('<option value="a4">a4</option>');
+				}
+				
+			}
+
+
+			
+			else{
+				opt_tipo_attr.push('<option value="b1">b1</option>');
+				opt_tipo_attr.push('<option value="b2">b2</option>');
+				opt_tipo_attr.push('<option value="b3">b3</option>');	
+
+			}
+			
+			
+			
+			
+			
+		}
+		 $("#tipo_attrezzatura").prop("disabled", false);
+		  $('#tipo_attrezzatura').html(opt_tipo_attr);
+			$("#tipo_attrezzatura").change();  
+			
+			 $("#tipo_attrezzatura_gvr").prop("disabled", false);
+			  $('#tipo_attrezzatura_gvr').html(opt_tipo_attr_gvr);
+				$("#tipo_attrezzatura_gvr").change();  
+	});
+
+
+
+$("#descrizione_mod").change(function() {
+    
+	$('#n_panieri_idroestrattori_mod').attr("disabled",true);
+	$("#tipo_attrezzatura_gvr_mod").prop("disabled", true);
+
+	  var gruppo = $(this).val().split('_')[0];
+	 
+	  var descrizione = $(this).val().split("_")[1];
+	  var id_spec = $(this).val().split("_")[2];
+
+	  var opt_tipo_attr =[];
+	  var opt_tipo_attr_gvr =[];	
+	  
+	  
+	  if(descrizione.startsWith('Idroestrattor')){
+		  $('#n_panieri_idroestrattori_mod').attr("disabled",false);
+	  }
+	  	
+	  $('#id_specifica_mod').val(id_spec);
+	  
+	  
+		if(gruppo == "GVR"){
+			
+			if(descrizione.startsWith("Recipienti")){
+				opt_tipo_attr.push('<option value="a1">a1</option>');
+				opt_tipo_attr.push('<option value="a2">a2</option>');
+				opt_tipo_attr.push('<option value="a5">a5</option>');
+				opt_tipo_attr.push('<option value="b1">b1</option>');
+				opt_tipo_attr.push('<option value="b2">b2</option>');
+				
+				opt_tipo_attr_gvr.push('<option value="a1">a1</option>');
+
+			}
+			else if(descrizione.startsWith("Generatori") || descrizione.startsWith("GV")){
+				opt_tipo_attr.push('<option value="b3">b3</option>');
+				
+				if(descrizione.startsWith("Generatori acqua")){
+					
+					
+					opt_tipo_attr_gvr.push('<option value="a3">a3</option>');
+
+				}else{
+					opt_tipo_attr_gvr.push('<option value="a2">a2</option>');
+				}
+				
+
+				
+				
+			}			
+			else if(descrizione.startsWith("Forni")){
+				opt_tipo_attr.push('<option value="a1">a1</option>');
+				
+				opt_tipo_attr_gvr.push('<option value="a6">a6</option>');
+			
+
+			}
+			else if(descrizione.startsWith("Tubazioni")){
+				opt_tipo_attr.push('<option value="a3">a3</option>');				
+				opt_tipo_attr.opt_tipo_attr('<option value="a4">a4</option>');
+				opt_tipo_attr.push('<option value="b4">b4</option>');
+				opt_tipo_attr.push('<option value="b5">b5</option>');
+				
+				opt_tipo_attr_gvr.push('<option value="a4">a4</option>');
+			}
+			else if(descrizione.startsWith("Insieme")){
+				
+				opt_tipo_attr.push('<option value="a1">a1</option>');
+				opt_tipo_attr.push('<option value="a2">a2</option>');
+				opt_tipo_attr.push('<option value="a5">a5</option>');
+				opt_tipo_attr.push('<option value="b1">b1</option>');
+				opt_tipo_attr.push('<option value="b2">b2</option>');
+				
+				opt_tipo_attr_gvr.push('<option value="b">b</option>');
+			}
+			
+			else{
+				opt_tipo_attr.push('<option value=""></option>');
+				
+				opt_tipo_attr_gvr.push('<option value="a5">a5</option>');
+			}
+
+			$("#tipo_attrezzatura_gvr_mod").prop("disabled", false);
+		}
+		
+		else if(gruppo == "SP"){
+			
+			if(descrizione.startsWith("Scale")){
+				opt_tipo_attr.push('<option value="a">a</option>');
+
+			//	opt_tipo_attr_gvr.push('<option value=""></option>');				
+
+
+				
+			}
+			else if(descrizione.startsWith("Ponti mobili")){
+				
+				if(descrizione.startsWith("Ponti mobili sviluppabili ad azionamento")){
+					
+					opt_tipo_attr.push('<option value="b">b</option>');
+
+				}else{
+					opt_tipo_attr.push('<option value="c">c</option>');
+				}
+				
+
+			}			
+			else if(descrizione.startsWith("Carri") || descrizione.startsWith("Ponti sospesi")){
+				
+				opt_tipo_attr.push('<option value="d">d</option>');				
+			
+				
+			}
+			else if(descrizione.startsWith("Piattaforme")){
+				opt_tipo_attr.push('<option value="e">e</option>');				
+
+			}			
+			else{
+				opt_tipo_attr.push('<option value="f">f</option>');				
+			}
+
+		}
+
+		else if(gruppo == "SC"){
+					
+			
+			if(descrizione.startsWith("Carrelli")){
+				opt_tipo_attr.push('<option value="c">c</option>');
+				
+		//		opt_tipo_attr_gvr.push('<option value="a1">a1</option>');
+				
+		
+				
+			}
+			else if(descrizione.startsWith("Idroestrattori")){
+				
+			
+				opt_tipo_attr.push('<option value="d1">d1</option>');
+			
+			}			
+			else if(descrizione.startsWith("Gru")){
+				
+				if(descrizione.startsWith("Gru a portale")){
+					opt_tipo_attr.push('<option value="b1">b1</option>');
+					opt_tipo_attr.push('<option value="b2">b2</option>');
+					opt_tipo_attr.push('<option value="b3">b3</option>');				
+					
+				}else{
+					opt_tipo_attr.push('<option value="a1">a1</option>');
+					opt_tipo_attr.push('<option value="a2">a2</option>');
+					opt_tipo_attr.push('<option value="a3">a3</option>');
+					opt_tipo_attr.push('<option value="a4">a4</option>');
+				}
+				
+			}
+
+
+			
+			else{
+				opt_tipo_attr.push('<option value="b1">b1</option>');
+				opt_tipo_attr.push('<option value="b2">b2</option>');
+				opt_tipo_attr.push('<option value="b3">b3</option>');	
+
+			}
+			
+			
+			
+			
+			
+		}
+		 $("#tipo_attrezzatura_mod").prop("disabled", false);
+		  $('#tipo_attrezzatura_mod').html(opt_tipo_attr);
+			$("#tipo_attrezzatura_mod").change();  
+			
+			 
+			  $('#tipo_attrezzatura_gvr_mod').html(opt_tipo_attr_gvr);
+				$("#tipo_attrezzatura_gvr_mod").change();  
+	});
+
 
 
 </script>

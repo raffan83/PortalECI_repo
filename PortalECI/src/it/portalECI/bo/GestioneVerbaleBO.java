@@ -731,6 +731,11 @@ public class GestioneVerbaleBO {
 		}
 		
 		
+		if(verbale.getData_verifica() != null) 
+		{			
+			html = html.replaceAll("\\$\\{DATA_VERIFICA\\}", df.format(verbale.getData_verifica()));
+		}
+		
 		if(verbale.getSedeUtilizzatore() != null ) 
 		{
 			html = html.replaceAll("\\$\\{SEDE_VIE\\}", verbale.getSedeUtilizzatore());
@@ -1134,5 +1139,17 @@ public class GestioneVerbaleBO {
 
 		}
 	}
+
+	public static List<VerbaleDTO> getListaVerbaliDate(Session session, UtenteDTO user, String dateFrom,String dateTo) throws Exception {
+		
+		return GestioneVerbaleDAO.getListaVerbaliDate(session, user, dateFrom, dateTo);
+	}
+
+	public static ArrayList<VerbaleDTO> getListaVerbaliFromAttrezzatura(int id_attrezzatura,UtenteDTO user, Session session) {
+		
+		return GestioneVerbaleDAO.getListaVerbaliFromAttrezzatura(id_attrezzatura, user,session);
+	}
+
+	
 
 }

@@ -22,6 +22,8 @@
         				<small>Fai click per entrare nel dettaglio del Verbale</small>
       				</h1>
     			</section>
+    			
+
 
 			    <!-- Main content -->
     			<section class="content">
@@ -30,6 +32,35 @@
         				<div class="col-xs-12">
           					<div class="box">
             					<div class="box-body">
+            					
+            		<div class="row">
+        				
+        				
+        					<div class="col-xs-5">
+			 <div class="form-group">
+				 <label for="datarange" class="control-label">Filtra Data Verifica:</label>
+					<div class="col-md-10 input-group" >
+						<div class="input-group-addon">
+				             <i class="fa fa-calendar"></i>
+				        </div>				                  	
+						 <input type="text" class="form-control" id="datarange" name="datarange" value=""/> 						    
+							 <span class="input-group-btn">
+				               <button type="button" class="btn btn-info btn-flat" onclick="filtraDate()">Cerca</button>
+				               <button type="button" style="margin-left:5px" class="btn btn-primary btn-flat" onclick="resetDate()">Reset Date</button>
+				             </span>				                     
+  					</div>  								
+			 </div>	
+			 
+			 
+        				</div>
+        				<div class="col-xs-7">
+        				
+        				<a class="btn btn-primary pull-right" id="scadenzario_btn" style="margin-top:25px" onClick="callAction('gestioneListaVerbali.do?action=scadenzario_inail&dateFrom=${dateFrom}&dateTo=${dateTo }')">Scadenzario INAIL</a>
+        				</div>
+        				
+        				</div>
+            					
+            					
               						<div class="row">
         								<div class="col-xs-12">
  											<div class="box box-danger box-solid">
@@ -48,6 +79,7 @@
  																<th>ID Intervento</th>
  																<th>ID Commessa</th>
  																<th>Numero Verbale</th>
+ 																<th>Matricola Attrezzatura</th>
  																<th>Sede Cliente</th>
  																<th>Codice Categoria</th>
  																<th>Codice Verifica</th>
@@ -81,6 +113,15 @@
 																	<td>
 																		${verbale.numeroVerbale }
 																	</td>
+																	
+																	<td>
+																	<c:if test="${verbale.attrezzatura!=null}">
+																	${verbale.attrezzatura.matricola_inail }
+																	</c:if>
+																	
+																	
+																	</td>
+																	
 																	<td>
 																		<c:out value='${verbale.getIntervento().getNome_sede()}'/>
 																	</td>
@@ -148,13 +189,85 @@
 
 
 	<jsp:attribute name="extra_css">
+		<link type="text/css" href="css/bootstrap.min.css" />
+	<link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/bootstrap.daterangepicker/2/daterangepicker.css" />
 	</jsp:attribute>
 
 	<jsp:attribute name="extra_js_footer">
-
+<script type="text/javascript" src="plugins/datepicker/locales/bootstrap-datepicker.it.js"></script> 
+<script type="text/javascript" src="//cdn.jsdelivr.net/bootstrap.daterangepicker/2/daterangepicker.js"></script>
+<script type="text/javascript" src="plugins/datejs/date.js"></script>
   		<script type="text/javascript">
+  		
+  		function filtraDate(){
+  			
+  			var startDatePicker = $("#datarange").data('daterangepicker').startDate;
+  		 	var endDatePicker = $("#datarange").data('daterangepicker').endDate;
+  		 	dataString = "?action=filtra_date&dateFrom=" + startDatePicker.format('YYYY-MM-DD') + "&dateTo=" + 
+  		 			endDatePicker.format('YYYY-MM-DD');
+  		 	
+  		 	 pleaseWaitDiv = $('#pleaseWaitDialog');
+  			  pleaseWaitDiv.modal();
+
+  		 	callAction("gestioneListaVerbali.do"+ dataString, false,true);
+
+  		 	//exploreModal("gestioneListaVerbali.do", dataString, '#content_consuntivo');
+  	}
+
+
+
+
+  	function resetDate(){
+  		pleaseWaitDiv = $('#pleaseWaitDialog');
+  			  pleaseWaitDiv.modal();
+  		callAction("gestioneListaVerbali.do");
+
+  	}
+
+	
+  	function formatDate(data){
+  		
+  		   var mydate =  Date.parse(data);
+  		   
+  		   if(!isNaN(mydate.getTime())){
+  		   
+  			var   str = mydate.toString("dd/MM/yyyy");
+  		   }			   
+  		   return str;	 		
+  	}
+
    
     		$(document).ready(function() {
+    			
+    			
+    			
+    		     var start = "${dateFrom}";
+    		   	var end = "${dateTo}";
+
+    		   	if(start !='' && end !=''){
+    		   		$('#scadenzario_btn').attr("disabled", false);
+    		   	}else{
+    		   		$('#scadenzario_btn').attr("disabled", true);
+    		   	}
+    		   	
+    		   	$('input[name="datarange"]').daterangepicker({
+    		  	    locale: {
+    		  	      format: 'DD/MM/YYYY'
+    		  	    
+    		  	    }
+    		  	}, 
+    		  	function(start, end, label) {
+
+    		  	});
+    		   	
+    		   	if(start!=null && start!=""){
+    		  	 	$('#datarange').data('daterangepicker').setStartDate(formatDate(start));
+    		  	 	$('#datarange').data('daterangepicker').setEndDate(formatDate(end));
+    		  	
+    		  	 }
+
+    			
+    			
      			table = $('#tabPM').DataTable({
     				language: {
   	        			emptyTable : 	"Nessun dato presente nella tabella",

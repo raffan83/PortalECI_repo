@@ -200,6 +200,8 @@ public class GestioneTemplateQuestionarioBO {
 		html = html.replaceAll("\\$\\{STR_SCADENZA\\}", "SCADENZA TARATURA");
 		html = html.replaceAll("\\$\\{STR_ULT_TAR\\}", "ULTIMA TARATURA");
 		
+		html = html.replaceAll("\\$\\{DATA_VERIFICA\\}", "DATA VERIFICA");
+		
 		
 		html = html.replaceAll("\\$\\{SEDE_VIE\\}", "SEDE VIE");
 		

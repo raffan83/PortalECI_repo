@@ -28,12 +28,14 @@ import it.portalECI.Exception.ECIException;
 import it.portalECI.Util.Utility;
 import it.portalECI.bo.GestioneAttrezzatureBO;
 import it.portalECI.bo.GestioneInterventoBO;
+import it.portalECI.bo.GestioneVerbaleBO;
 import it.portalECI.DTO.ClienteDTO;
 import it.portalECI.DTO.CompanyDTO;
 import it.portalECI.DTO.DescrizioneGruppoAttrezzaturaDTO;
 import it.portalECI.DTO.InterventoDTO;
 import it.portalECI.DTO.SedeDTO;
 import it.portalECI.DTO.UtenteDTO;
+import it.portalECI.DTO.VerbaleDTO;
 import it.portalECI.bo.GestioneAnagraficaRemotaBO;
 
 
@@ -213,6 +215,18 @@ public class ListaAttrezzature extends HttpServlet {
 				String note_tecniche = request.getParameter("note_tecniche");
 				String note_generiche = request.getParameter("note_generiche");
 				
+				
+				String tipo_attrezzatura = request.getParameter("tipo_attrezzatura");
+				String tipo_attrezzatura_gvr = request.getParameter("tipo_attrezzatura_gvr");
+				String id_specifica = request.getParameter("id_specifica");
+				String sogg_messa_servizio_gvr = request.getParameter("sogg_messa_serv_GVR");
+				String n_panieri_idroestrattori = request.getParameter("n_panieri_idroestrattori");
+				String marcatura = request.getParameter("marcatura");
+				String n_id_on = request.getParameter("n_id_on");
+				String data_scadenza_ventennale = request.getParameter("data_scadenza_ventennale");
+				
+				
+				
 				List<SedeDTO> listaSedi = (List<SedeDTO>) request.getSession().getAttribute("listaSedi");
 				SedeDTO sede = null;
 				if(!id_sede.equals("0")) {
@@ -235,6 +249,18 @@ public class ListaAttrezzature extends HttpServlet {
 					attrezzatura.setDescrizione(descrizione.split("_")[1]);	
 				}				
 				attrezzatura.setTipo_attivita(tipo_attivita);
+				attrezzatura.setTipo_attrezzatura(tipo_attrezzatura);
+				attrezzatura.setTipo_attrezzatura_GVR(tipo_attrezzatura_gvr);
+				attrezzatura.setID_specifica(id_specifica);
+				attrezzatura.setSogg_messa_serv_GVR(sogg_messa_servizio_gvr);
+				attrezzatura.setNome_sede(n_panieri_idroestrattori);
+				attrezzatura.setMarcatura(marcatura);
+				attrezzatura.setN_id_on(n_id_on);
+				
+				
+				if(data_scadenza_ventennale!=null && !data_scadenza_ventennale.equals("")) {
+					attrezzatura.setData_scadenza_ventennale(format.parse(data_scadenza_ventennale));
+				}
 				if(data_ver_funz!=null && !data_ver_funz.equals("")) {
 					attrezzatura.setData_verifica_funzionamento(format.parse(data_ver_funz));
 				}
@@ -297,6 +323,15 @@ public class ListaAttrezzature extends HttpServlet {
 				String note_tecniche = request.getParameter("note_tecniche");
 				String note_generiche = request.getParameter("note_generiche");
 				
+				String tipo_attrezzatura = request.getParameter("tipo_attrezzatura");
+				String tipo_attrezzatura_gvr = request.getParameter("tipo_attrezzatura_gvr");
+				String id_specifica = request.getParameter("id_specifica");
+				String sogg_messa_servizio_gvr = request.getParameter("sogg_messa_serv_GVR");
+				String n_panieri_idroestrattori = request.getParameter("n_panieri_idroestrattori");
+				String marcatura = request.getParameter("marcatura");
+				String n_id_on = request.getParameter("n_id_on");
+				String data_scadenza_ventennale = request.getParameter("data_scadenza_ventennale");
+				
 				
 				List<SedeDTO> listaSedi = (List<SedeDTO>) request.getSession().getAttribute("listaSedi");
 				SedeDTO sede = null;
@@ -320,6 +355,20 @@ public class ListaAttrezzature extends HttpServlet {
 					attrezzatura.setDescrizione(descrizione.split("_")[1]);	
 				}	
 				attrezzatura.setTipo_attivita(tipo_attivita);
+				
+				attrezzatura.setTipo_attrezzatura(tipo_attrezzatura);
+				attrezzatura.setTipo_attrezzatura_GVR(tipo_attrezzatura_gvr);
+				attrezzatura.setID_specifica(id_specifica);
+				attrezzatura.setSogg_messa_serv_GVR(sogg_messa_servizio_gvr);
+				attrezzatura.setNome_sede(n_panieri_idroestrattori);
+				attrezzatura.setMarcatura(marcatura);
+				attrezzatura.setN_id_on(n_id_on);
+				
+				
+				if(data_scadenza_ventennale!=null && !data_scadenza_ventennale.equals("")) {
+					attrezzatura.setData_scadenza_ventennale(format.parse(data_scadenza_ventennale));
+				}
+				
 				if(data_ver_funz!=null && !data_ver_funz.equals("")) {
 					attrezzatura.setData_verifica_funzionamento(format.parse(data_ver_funz));
 				}
@@ -419,6 +468,20 @@ public class ListaAttrezzature extends HttpServlet {
 				myObj.addProperty("success", true);
 				myObj.addProperty("messaggio", "Modifica effettuata con successo!");
 				out.print(myObj);
+			}
+			else if(action.equals("verbali_attrezzatura")) {
+				
+				String id_attrezzatura = request.getParameter("id_attrezzatura");				
+				
+				ArrayList<VerbaleDTO> listaVerbali = GestioneVerbaleBO.getListaVerbaliFromAttrezzatura(Integer.parseInt(id_attrezzatura), utente,session);
+				
+				request.getSession().setAttribute("listaVerbali",listaVerbali);
+				 
+				session.close();
+				 
+				RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/page/configurazioni/listaVerbaliAttrezzatura.jsp");
+				dispatcher.forward(request,response);
+				
 			}
 
 		}

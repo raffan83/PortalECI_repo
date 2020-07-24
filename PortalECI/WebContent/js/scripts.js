@@ -2975,7 +2975,17 @@ function nuovaAttrezzatura(){
 	var settore_impiego = $('#settore_impiego').val();
 	var note_tecniche = $('#note_tecniche').val();
 	var note_generiche = $('#note_generiche').val();	
-	
+	var tipo_attivita = $('#tipo_attivita').val();
+	var tipo_attrezzatura = $('#tipo_attrezzatura').val();
+	var tipo_attrezzatura_gvr = $('#tipo_attrezzatura_gvr').val();
+	var id_specifica = $('#id_specifica').val();
+	var sogg_messa_serv_GVR = $('#sogg_messa_serv_GVR').val();
+	var n_panieri_idroestrattori = $('#n_panieri_idroestrattori').val();
+	var marcatura = $('#marcatura').val();
+	var n_id_on = $('#n_id_on').val();
+	var data_scadenza_ventennale = $('#data_scadenza_ventennale').val();
+
+
 	var dataObj = {};
 	          
 	dataObj.id_cliente = id_cliente;
@@ -2996,6 +3006,15 @@ function nuovaAttrezzatura(){
 	dataObj.settore_impiego = settore_impiego;
 	dataObj.note_tecniche = note_tecniche;
 	dataObj.note_generiche = note_generiche;
+	dataObj.tipo_attrezzatura = tipo_attrezzatura;
+	dataObj.tipo_attrezzatura_gvr = tipo_attrezzatura_gvr;
+	dataObj.id_specifica = id_specifica;
+	dataObj.sogg_messa_serv_GVR = sogg_messa_serv_GVR;
+	dataObj.n_panieri_idroestrattori = n_panieri_idroestrattori;
+	dataObj.marcatura = marcatura;
+	dataObj.n_id_on = n_id_on;
+	dataObj.data_scadenza_ventennale = data_scadenza_ventennale;
+	
 
 	$.ajax({
 		type: "POST",
@@ -3058,6 +3077,15 @@ function modificaAttrezzatura(scadenzario, date, tipo_data){
 	var settore_impiego = $('#settore_impiego_mod').val();
 	var note_tecniche = $('#note_tecniche_mod').val();
 	var note_generiche = $('#note_generiche_mod').val();	
+	var tipo_attrezzatura = $('#tipo_attrezzatura_mod').val();
+	var tipo_attrezzatura_gvr = $('#tipo_attrezzatura_gvr_mod').val();
+	var id_specifica = $('#id_specifica_mod').val();
+	var sogg_messa_servizio_gvr = $('#sogg_messa_serv_GVR_mod').val();
+	var n_panieri_idroestrattori = $('#n_panieri_idroestrattori_mod').val();
+	var marcatura = $('#marcatura_mod').val();
+	var n_id_on = $('#n_id_on_mod').val();
+	var data_scadenza_ventennale = $('#data_scadenza_ventennale_mod').val();
+	
 	  		
 	var dataObj = {};
 	 
@@ -3080,7 +3108,14 @@ function modificaAttrezzatura(scadenzario, date, tipo_data){
 	dataObj.settore_impiego = settore_impiego;
 	dataObj.note_tecniche = note_tecniche;
 	dataObj.note_generiche = note_generiche;
-
+	dataObj.tipo_attrezzatura = tipo_attrezzatura;
+	dataObj.tipo_attrezzatura_gvr = tipo_attrezzatura_gvr;
+	dataObj.id_specifica = id_specifica;
+	dataObj.sogg_messa_serv_GVR = sogg_messa_servizio_gvr;
+	dataObj.n_panieri_idroestrattori = n_panieri_idroestrattori;
+	dataObj.marcatura = marcatura;
+	dataObj.n_id_on = n_id_on;
+	dataObj.data_scadenza_ventennale = data_scadenza_ventennale;
 
 	$.ajax({
 		type: "POST",

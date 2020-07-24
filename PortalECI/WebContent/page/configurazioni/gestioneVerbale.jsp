@@ -335,6 +335,43 @@
              					
              					
              					<c:if test="${verbale.getStato().getId()>=3 }">
+             					
+             					<div class="row">         
+        								<div class="col-xs-12">
+											<div class="box box-danger box-solid">
+												<div class="box-header with-border">
+													Data Verifica
+													<div class="box-tools pull-right">		
+														<button data-widget="collapse" class="btn btn-box-tool"><i class="fa fa-minus"></i></button>
+													</div>
+												</div>
+												<div class="box-body">
+												<div class="row">
+												<div class="col-xs-4">
+												  <div class='input-group date datepicker' id='datepicker_data_inizio'>
+												  <fmt:formatDate value="${verbale.data_verifica }" pattern="dd/MM/yyyy" var="myDate" />
+												               <input type='text' class="form-control input-small" id="data_verifica" name="data_verifica" value="${myDate }">
+												                <span class="input-group-addon">
+												                    <span class="fa fa-calendar" >
+												                    </span>
+												                </span>
+												        </div> 	
+												
+												</div>
+												</div>
+												       													
+												</div>
+             					</div>
+             					
+             					</div>
+             				</div>
+             					
+             					
+             					
+             					
+             					
+             					
+             					
         							<div class="row">         
         								<div class="col-xs-12">
 											<div class="box box-danger box-solid">
@@ -937,6 +974,8 @@
 	<jsp:attribute name="extra_js_footer">
 	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/datejs/1.0/date.min.js"></script>
 		<script src="js/verbale.js" type="text/javascript"></script>
+		<script type="text/javascript" src="plugins/datepicker/locales/bootstrap-datepicker.it.js"></script> 
+<!-- <script type="text/javascript" src="plugins/datejs/date.js"></script> -->
  		<script type="text/javascript">
 		   
  		function checkStrumentoVerificatore(){
@@ -951,7 +990,9 @@
  			
  			return ret;
  		}
- 		
+ 	     $('.datepicker').datepicker({
+ 			 format: "dd/mm/yyyy"
+ 		 });    
  		
  		
  		function dettaglioAttrezzatura(id_attrezzatura, matricola_inail, numero_fabbrica, tipo_attivita, descrizione, id_cliente, id_sede,
@@ -1223,12 +1264,21 @@
 				
 			if(!checkStrumentoVerificatore()){
 					
-					$('#modalErrorDiv').html("Il campo strumento verificatore è obbligatorio");
-					$('#myModalError').removeClass();
-					$('#myModalError').addClass("modal modal-danger");
-					$('#myModalError').modal('show');	
+				$('#modalErrorDiv').html("Il campo strumento verificatore è obbligatorio");
+				$('#myModalError').removeClass();
+				$('#myModalError').addClass("modal modal-danger");
+				$('#myModalError').modal('show');	
 					
-				}else{
+			}
+			else if($('#data_verifica').val()==''){
+				
+				$('#modalErrorDiv').html("Il campo data verifica è obbligatorio");
+				$('#myModalError').removeClass();
+				$('#myModalError').addClass("modal modal-danger");
+				$('#myModalError').modal('show');	
+			}
+			
+			else{
 				
 				pleaseWaitDiv = $('#pleaseWaitDialog');
 				pleaseWaitDiv.modal();		

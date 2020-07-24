@@ -41,6 +41,8 @@ public class VerbaleDTO implements Serializable {
 	private String esercente;
 	private StrumentoVerificatoreDTO strumento_verificatore;
 	
+	private Date data_verifica;
+	
 	public int getId() {
 		return id;
 	}
@@ -257,6 +259,14 @@ public class VerbaleDTO implements Serializable {
 
 	public void setStrumento_verificatore(StrumentoVerificatoreDTO strumento_verificatore) {
 		this.strumento_verificatore = strumento_verificatore;
+	}
+
+	public Date getData_verifica() {
+		return data_verifica;
+	}
+
+	public void setData_verifica(Date data_verifica) {
+		this.data_verifica = data_verifica;
 	}
 
 	

@@ -5,6 +5,8 @@ public class DescrizioneGruppoAttrezzaturaDTO {
 	private int id;
 	private String gruppo;
 	private String descrizione;
+	private String id_specifica;
+	
 	public int getId() {
 		return id;
 	}
@@ -22,6 +24,12 @@ public class DescrizioneGruppoAttrezzaturaDTO {
 	}
 	public void setDescrizione(String descrizione) {
 		this.descrizione = descrizione;
+	}
+	public String getId_specifica() {
+		return id_specifica;
+	}
+	public void setId_specifica(String id_specifica) {
+		this.id_specifica = id_specifica;
 	}
 	
 	

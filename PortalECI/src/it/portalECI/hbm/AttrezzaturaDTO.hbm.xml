@@ -71,7 +71,30 @@
         <property name="obsoleta" type="int">
             <column name="obsoleta" />
         </property>
-
+	        <property name="tipo_attrezzatura" type="java.lang.String">
+            <column name="tipo_attrezzatura" />
+        </property>
+                <property name="tipo_attrezzatura_GVR" type="java.lang.String">
+            <column name="tipo_attrezzatura_GVR" />
+        </property>
+                <property name="ID_specifica" type="java.lang.String">
+            <column name="ID_specifica" />
+        </property>
+                <property name="n_panieri_idroestrattori" type="java.lang.Integer">
+            <column name="n_panieri_idroestrattori" />
+        </property>
+                <property name="marcatura" type="java.lang.String">
+            <column name="marcatura" />
+        </property>
+                <property name="n_id_on" type="java.lang.String">
+            <column name="n_id_on" />
+        </property>
+                <property name="data_scadenza_ventennale" type="java.sql.Date">
+            <column name="data_scadenza_ventennale" />
+        </property>
+                <property name="sogg_messa_serv_GVR" type="java.lang.String">
+            <column name="sogg_messa_serv_GVR" />
+        </property>
         
     </class>
 </hibernate-mapping>

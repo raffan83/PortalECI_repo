@@ -26,6 +26,17 @@ public class AttrezzaturaDTO {
 	private String note_tecniche;
 	private String note_generiche;
 	private int obsoleta;
+	
+	
+	private String tipo_attrezzatura;
+	private String tipo_attrezzatura_GVR;
+	private String ID_specifica;
+	private String sogg_messa_serv_GVR;
+	private Integer n_panieri_idroestrattori;
+	private String marcatura;
+	private String n_id_on;
+	private Date data_scadenza_ventennale;
+	
 		
 	public int getAnno_costruzione() {
 		return anno_costruzione;
@@ -158,6 +169,54 @@ public class AttrezzaturaDTO {
 	}
 	public void setObsoleta(int obsoleta) {
 		this.obsoleta = obsoleta;
+	}
+	public String getTipo_attrezzatura() {
+		return tipo_attrezzatura;
+	}
+	public void setTipo_attrezzatura(String tipo_attrezzatura) {
+		this.tipo_attrezzatura = tipo_attrezzatura;
+	}
+	public String getTipo_attrezzatura_GVR() {
+		return tipo_attrezzatura_GVR;
+	}
+	public void setTipo_attrezzatura_GVR(String tipo_attrezzatura_GVR) {
+		this.tipo_attrezzatura_GVR = tipo_attrezzatura_GVR;
+	}
+	public String getID_specifica() {
+		return ID_specifica;
+	}
+	public void setID_specifica(String iD_specifica) {
+		ID_specifica = iD_specifica;
+	}
+	public String getSogg_messa_serv_GVR() {
+		return sogg_messa_serv_GVR;
+	}
+	public void setSogg_messa_serv_GVR(String sogg_messa_serv_GVR) {
+		this.sogg_messa_serv_GVR = sogg_messa_serv_GVR;
+	}
+	public Integer getN_panieri_idroestrattori() {
+		return n_panieri_idroestrattori;
+	}
+	public void setN_panieri_idroestrattori(Integer n_panieri_idroestrattori) {
+		this.n_panieri_idroestrattori = n_panieri_idroestrattori;
+	}
+	public String getMarcatura() {
+		return marcatura;
+	}
+	public void setMarcatura(String marcatura) {
+		this.marcatura = marcatura;
+	}
+	public String getN_id_on() {
+		return n_id_on;
+	}
+	public void setN_id_on(String n_id_on) {
+		this.n_id_on = n_id_on;
+	}
+	public Date getData_scadenza_ventennale() {
+		return data_scadenza_ventennale;
+	}
+	public void setData_scadenza_ventennale(Date data_scadenza_ventennale) {
+		this.data_scadenza_ventennale = data_scadenza_ventennale;
 	}
 	
 	

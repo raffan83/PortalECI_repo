@@ -1,7 +1,11 @@
 package it.portalECI.DAO;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.List;
 
+import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.Session;
 
@@ -102,6 +106,68 @@ public class GestioneVerbaleDAO {
 		progressivo.incrementaProgressivo();
 		session.saveOrUpdate(progressivo);
 		return progressivo;
+	}
+	
+	
+	public static List<VerbaleDTO> getListaVerbaliDate(Session session, UtenteDTO user, String dateFrom, String dateTo) throws Exception{
+		Query query=null;
+		
+		boolean ck_AM=user.checkRuolo("AM");
+		boolean ck_ST=user.checkRuolo("ST");
+		boolean ck_RT=user.checkRuolo("RT");
+		
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		
+		if(ck_ST==false && ck_AM==false && ck_RT==false) 
+		{
+		 
+		query  = session.createQuery( "from VerbaleDTO WHERE type = :_type AND intervento.tecnico_verificatore.id=:_idUser and data_verifica between :_dateFrom and :_dateTo");
+		query.setParameter("_type",VerbaleDTO.VERBALE);
+		query.setParameter("_idUser",user.getId());
+		query.setParameter("_dateFrom", sdf.parse(dateFrom));
+		query.setParameter("_dateTo", sdf.parse(dateTo));
+		}
+		else 
+		{
+			 query  = session.createQuery( "from VerbaleDTO WHERE type = :_type and data_verifica between :_dateFrom and :_dateTo");
+			query.setParameter("_type",VerbaleDTO.VERBALE);
+			query.setParameter("_dateFrom", sdf.parse(dateFrom));
+			query.setParameter("_dateTo", sdf.parse(dateTo));
+		}
+		List<VerbaleDTO> result = query.list();
+		return result;
+	}
+
+	public static ArrayList<VerbaleDTO> getListaVerbaliFromAttrezzatura(int id_attrezzatura, UtenteDTO user, Session session) {
+
+		Query query=null;
+		
+		boolean ck_AM=user.checkRuolo("AM");
+		boolean ck_ST=user.checkRuolo("ST");
+		boolean ck_RT=user.checkRuolo("RT");
+		
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		
+		if(ck_ST==false && ck_AM==false && ck_RT==false) 
+		{
+		 
+		query  = session.createQuery( "from VerbaleDTO WHERE type = :_type AND intervento.tecnico_verificatore.id=:_idUser and attrezzatura.id = :_id_attrezzatura");
+		query.setParameter("_type",VerbaleDTO.VERBALE);
+		query.setParameter("_idUser",user.getId());
+		query.setParameter("_id_attrezzatura",id_attrezzatura);
+	
+		}
+		else 
+		{
+			 query  = session.createQuery( "from VerbaleDTO WHERE type = :_type and attrezzatura.id = :_id_attrezzatura");
+			query.setParameter("_type",VerbaleDTO.VERBALE);
+			query.setParameter("_id_attrezzatura",id_attrezzatura);
+			
+		}
+		ArrayList<VerbaleDTO> result = (ArrayList<VerbaleDTO>) query.list();
+		
+		return result;
+		
 	}
 	
 }

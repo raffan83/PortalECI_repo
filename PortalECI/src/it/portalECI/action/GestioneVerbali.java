@@ -5,6 +5,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintWriter;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -114,6 +115,18 @@ public class GestioneVerbali extends HttpServlet {
 						session.update(verbale);
 					}
 				}
+				
+				if(paramName.equals("data_verifica")) {
+					
+					String data_verifica = request.getParameter("data_verifica");
+				
+					SimpleDateFormat df = new SimpleDateFormat("dd/MM/yyyy");
+					
+					verbale.setData_verifica(df.parse(data_verifica));
+					session.update(verbale);
+					
+				}
+				
 				
 				// RISPOSTA FORMULA
 				if(paramName.contains("value1") || paramName.contains("value2") || paramName.contains("responseValue")) {				
