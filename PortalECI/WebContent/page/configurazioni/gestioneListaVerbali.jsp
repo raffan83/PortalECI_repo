@@ -79,6 +79,7 @@
  																<th>ID Intervento</th>
  																<th>ID Commessa</th>
  																<th>Numero Verbale</th>
+ 																<th>Data verifica</th>
  																<th>Matricola Attrezzatura</th>
  																<th>Sede Cliente</th>
  																<th>Codice Categoria</th>
@@ -113,7 +114,7 @@
 																	<td>
 																		${verbale.numeroVerbale }
 																	</td>
-																	
+																	<td><fmt:formatDate pattern="dd/MM/yyyy" value='${verbale.data_verifica}' type='date' /></td>
 																	<td>
 																	<c:if test="${verbale.attrezzatura!=null}">
 																	${verbale.attrezzatura.matricola_inail }
@@ -307,6 +308,7 @@
     	                { responsivePriority: 4, targets: 3 },
     	                { responsivePriority: 2, targets: 6 },
     	                { responsivePriority: 2, targets: 8, type:"date-eu" },
+    	                { responsivePriority: 5, targets: 11 },
     	                { orderable: false, targets: 6 },
     	            ],
     	            buttons: [ {
