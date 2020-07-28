@@ -467,7 +467,12 @@
           <select class="form-control select2" disabled id="descrizione_mod" name="descrizione_mod" data-placeholder="Seleziona Descrizione..." style="width:100%">
          <option value=""></option>
         <c:forEach items="${lista_descrizioni_gruppi }" var="desc">
+        <c:if test="${desc.id_specifica!=null && desc.id_specifica!=''}">
         <option value="${desc.gruppo}_${desc.descrizione}_${desc.id_specifica}">${desc.descrizione }</option>
+        </c:if>
+        <c:if test="${desc.id_specifica==null || desc.id_specifica==''}">
+        <option value="${desc.gruppo}_${desc.descrizione}">${desc.descrizione }</option>
+        </c:if>
         
         </c:forEach>
          </select>  
@@ -982,7 +987,12 @@ function openTab(id_attrezzatura, matricola_inail, numero_fabbrica, tipo_attivit
 	$('#numero_fabbrica_mod').val(numero_fabbrica);
 	$('#tipo_attivita_mod').val(tipo_attivita);
 	$('#tipo_attivita_mod').change();
-	$('#descrizione_mod').val(tipo_attivita+"_"+descrizione+"_"+id_specifica);
+	if(id_specifica!=null && id_specifica!=''){
+		$('#descrizione_mod').val(tipo_attivita+"_"+descrizione+"_"+id_specifica);
+	}else{
+		$('#descrizione_mod').val(tipo_attivita+"_"+descrizione);	
+	}
+	
 	//$('#descrizione_mod').change();
 	$('#cliente_mod').val(id_cliente);
 	$('#cliente_mod').change();
@@ -1125,6 +1135,11 @@ function modalModificaAttrezzatura(id_attrezzatura, matricola_inail, numero_fabb
 	$('#tipo_attivita_mod').val(tipo_attivita);
 	$('#tipo_attivita_mod').change();
 	$('#descrizione_mod').val(tipo_attivita+"_"+descrizione+"_"+id_specifica);
+	if(id_specifica!=null && id_specifica!=''){
+		$('#descrizione_mod').val(tipo_attivita+"_"+descrizione+"_"+id_specifica);
+	}else{
+		$('#descrizione_mod').val(tipo_attivita+"_"+descrizione);	
+	}
 	//$('#descrizione_mod').change();
 	$('#cliente_mod').val(id_cliente);
 	$('#cliente_mod').change();
@@ -1457,6 +1472,11 @@ $("#tipo_attivita").change(function() {
 	
 	
 $("#tipo_attivita_mod").change(function() {
+	
+	
+	$('#tipo_attrezzatura_gvr_mod').attr("disabled", true);
+	$('#sogg_messa_serv_GVR_mod').attr("disabled", true);
+	$('#data_scadenza_ventennale_mod').addClass("disabled");
     
 	  if ($(this).data('options') == undefined) 
 	  {
@@ -1493,12 +1513,22 @@ $("#tipo_attivita_mod").change(function() {
 				
 		if(gruppo == "SP" || gruppo == "GVR"){
 			settore_opt.push('<option value="N.A.">N.A.</option>');
+			
+			if(gruppo == 'GVR'){
+				$('#tipo_attrezzatura_gvr_mod').attr("disabled", false);
+				$('#sogg_messa_serv_GVR_mod').attr("disabled", false);	
+			}else{
+				$('#data_scadenza_ventennale_mod').removeClass("disabled");
+			}
+			
 		}else if(gruppo == "SC"){
 			settore_opt.push('<option value="regolare">Regolare</option>');
 			settore_opt.push('<option value="costruzioni">Costruzioni</option>');
 			settore_opt.push('<option value="siderurgico">Siderurgico</option>');
 			settore_opt.push('<option value="estrattivo">Estrattivo</option>');
-			settore_opt.push('<option value="rorturale">Portuale</option>');			
+			settore_opt.push('<option value="rorturale">Portuale</option>');		
+			
+			$('#data_scadenza_ventennale_mod').removeClass("disabled");
 		}
 		 $("#settore_impiego_mod").prop("disabled", false);
 		  $('#settore_impiego_mod').html(settore_opt);
@@ -1512,6 +1542,7 @@ $("#descrizione").change(function() {
     
 	$('#n_panieri_idroestrattori').attr("disabled",true);
 	$("#tipo_attrezzatura_gvr").prop("disabled", true);
+
 
 	  var gruppo = $(this).val().split('_')[0];
 	 
