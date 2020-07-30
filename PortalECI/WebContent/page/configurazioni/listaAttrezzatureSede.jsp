@@ -690,268 +690,6 @@
  </form>
 
 
-
-
-  <%-- <form class="form-horizontal" id="formModificaAttrezzatura">
-<div id="modalModificaAttrezzatura" class="modal fade" role="dialog" aria-labelledby="myLargeModalLabel">
-    <div class="modal-dialog modal-md" role="document">
-    <div class="modal-content">
-     <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="myModalLabel">Modifica Attrezzatura</h4>
-      </div>
-       <div class="modal-body">
-
-      
-        
-         <div class="form-group">
-          <label for="inputEmail" class="col-sm-4 control-label">Cliente:</label>
-
-         <div class="col-sm-8">
-          <select name="cliente_mod" id="cliente_mod" data-placeholder="Seleziona Cliente..."  class="form-control select2" aria-hidden="true" data-live-search="true" style="width:100%">
-                  <option value=""></option>
-                      <c:forEach items="${listaClienti}" var="cliente">
-                           <option value="${cliente.__id}">${cliente.nome} </option> 
-                     </c:forEach>
-                  </select>
-    	</div>
-   </div>
-    <div class="form-group">
-          <label for="inputEmail" class="col-sm-4 control-label">Sede:</label>
-
-         <div class="col-sm-8">
-       <select name="sede_mod" id="sede_mod" data-placeholder="Seleziona Sede..."  disabled class="form-control select2" aria-hidden="true" data-live-search="true" style="width:100%">
-                   <option value=""></option>
-             		<c:forEach items="${listaSedi}" var="sedi">
-                        <option value="${sedi.__id}_${sedi.id__cliente_}">${sedi.descrizione} - ${sedi.indirizzo} - ${sedi.comune} (${sedi.siglaProvincia})</option>              
-                     	</c:forEach>
-                  </select>
-    	</div>
-   </div>
-              
-
-    <div class="form-group">
-          <label for="inputEmail" class="col-sm-4 control-label">Numero matricola INAIL:</label>
-
-         <div class="col-sm-8">
-         <input class="form-control" id="matricola_inail_mod" type="text" name="matricola_inail_mod" required value=""/>
-    	</div>
-   </div>
-	<div class="form-group">
-          <label for="inputEmail" class="col-sm-4 control-label">Numero di fabbrica:</label>
-
-         <div class="col-sm-8">
-         <input class="form-control" id="numero_fabbrica_mod" type="text" name="numero_fabbrica_mod" required value=""/>
-    	</div>
-   </div>
-   
-     <div class="form-group">
-        <label for="inputName" class="col-sm-4 control-label">Gruppo:</label>
-        <div class="col-sm-8">
-                   <!-- <input class="form-control" id="tipo_attivita_mod" type="text" name="tipo_attivita_mod" required value=""/> -->
-                      
-         <select class="form-control select2" required id="tipo_attivita_mod" name="tipo_attivita_mod" data-placeholder="Seleziona Gruppo..." style="width:100%">
-         <option value=""></option>
-         <option value="SP">SP</option>
-         <option value="SC">SC</option>
-         <option value="GVR">GVR</option>
-         </select>   
-    </div>
-    </div>
-
-   <div class="form-group">
-        <label for="inputName" class="col-sm-4 control-label">Descrizione:</label>
-        <div class="col-sm-8">
-                    <!--   <input class="form-control" id="descrizione_mod" type="text" name="descrizione_mod" required value=""/> -->
-          <select class="form-control select2" disabled id="descrizione_mod" name="descrizione_mod" data-placeholder="Seleziona Descrizione..." style="width:100%">
-         <option value=""></option>
-        <c:forEach items="${lista_descrizioni_gruppi }" var="desc">
-        <option value="${desc.gruppo}_${desc.descrizione}_${desc.id_specifica}">${desc.descrizione }</option>
-        
-        </c:forEach>
-         </select>  
-    </div>
-    </div>
-    <div class="form-group">
-        <label for="inputName" class="col-sm-4 control-label">Anno di costruzione:</label>
-        <div class="col-sm-8">
-                      <input class="form-control" id="anno_costruzione_mod" type="number" name="anno_costruzione_mod"  value=""/>
-    </div>
-    </div>
-    <div class="form-group">
-        <label for="inputName" class="col-sm-4 control-label">Fabbricante:</label>
-        <div class="col-sm-8">
-                      <input class="form-control" id="fabbricante_mod" type="text" name="fabbricante_mod"  value=""/>
-    </div>
-    </div>
-    <div class="form-group">
-        <label for="inputName" class="col-sm-4 control-label">Modello:</label>
-        <div class="col-sm-8">
-                      <input class="form-control" id="modello_mod" type="text" name="modello_mod"  value=""/>
-    </div>
-    </div>
-    <div class="form-group">
-        <label for="inputName" class="col-sm-4 control-label">Settore d'impiego:</label>
-        <div class="col-sm-8">
-        <!--               <input class="form-control" id="settore_impiego_mod" type="text" name="settore_impiego_mod"  value=""/> -->
-          <select class="form-control select2" disabled id="settore_impiego_mod" name="settore_impiego_mod" data-placeholder="Seleziona settore d'impiego..." style="width:100%">
-		<option value=""></option>
-              
-          </select>   
-    </div>
-    </div>
-  
-  
-  <div class="form-group">
-        <label for="inputName" class="col-sm-4 control-label">Tipo attrezzatura:</label>
-        <div class="col-sm-8">
-                     
-          <select class="form-control select2" disabled id="tipo_attrezzatura_mod" name="tipo_attrezzatura_mod" data-placeholder="Seleziona tipo attrezzatura..." style="width:100%">
-		<option value=""></option>   
-	
-          </select>     
-    </div>
-    </div>
-    
-            <div class="form-group">
-        <label for="inputName" class="col-sm-4 control-label">Tipo attrezzatura GVR:</label>
-        <div class="col-sm-8">
-                     
-          <select class="form-control select2" disabled id="tipo_attrezzatura_gvr_mod" name="tipo_attrezzatura_gvr_mod" data-placeholder="Seleziona tipo attrezzatura GVR..." style="width:100%">
-		<option value=""></option>              		
-
-          </select>     
-    </div>
-    </div>
-    
-  <div class="form-group">
-        <label for="inputName" class="col-sm-4 control-label">ID specifica:</label>
-        <div class="col-sm-8">
-                     
-         
-            <input class="form-control" id="id_specifica_mod" type="text" name="id_specifica_mod" readonly  value=""/>
-		
-    
-    </div>
-    </div>
-    
-    
-     <div class="form-group">
-        <label for="inputName" class="col-sm-4 control-label">Sogg. messa servizio GVR:</label>
-        <div class="col-sm-8">
-                     
-          <select class="form-control select2"  id="sogg_messa_serv_GVR_mod" name="sogg_messa_serv_GVR_mod" data-placeholder="Seleziona Sogg. Messa Servizio GVR..." style="width:100%">
-		<option value=""></option>
-          	<option value="SI">SI</option>
-         <option value="NO">NO</option>    
-          </select>     
-    </div>
-    </div>
-    
-    
-             <div class="form-group">
-        <label for="inputName" class="col-sm-4 control-label">N. panieri idroestrattori:</label>
-        <div class="col-sm-8">
-                      <input class="form-control" id="n_panieri_idroestrattori_mod" type="text" name="n_panieri_idroestrattori_mod"  value=""/>
-    </div>
-       </div> 
-       
-       
-     <div class="form-group">
-        <label for="inputName" class="col-sm-4 control-label">Marcatura:</label>
-        <div class="col-sm-8">
-                     
-          <select class="form-control select2" id="marcatura_mod" name="marcatura_mod" data-placeholder="Seleziona Marcatura..." style="width:100%">
-         <option value=""></option>
-		<option value="SI">SI</option>
-         <option value="NO">NO</option>
-          </select>     
-    </div>
-    </div>
-    
-    
-       <div class="form-group">
-        <label for="inputName" class="col-sm-4 control-label">N. ID ON:</label>
-        <div class="col-sm-8">
-                      <input class="form-control" id="n_id_on_mod" type="text" name="n_id_on_mod"  value=""/>
-    </div>
-       </div> 
-       
-                <div class="form-group">
-        <label for="inputName" class="col-sm-4 control-label">Data scadenza ventennale:</label>
-        <div class="col-sm-8">
-                      <input class="form-control datepicker disabled" id="data_scadenza_ventennale_mod" type="text" name="data_scadenza_ventennale_mod"  value="" data-date-format="dd/mm/yyyy"/>
-    </div>
-       </div> 
-  
-  
-  
-  
-         <div class="form-group">
-        <label for="inputName" class="col-sm-4 control-label">Data verifica funzionamento:</label>
-        <div class="col-sm-8">
-                      <input class="form-control datepicker" id="data_verifica_funzionamento_mod" type="text" name="data_verifica_funzionamento_mod"  value="" data-date-format="dd/mm/yyyy"/>
-    </div>
-       </div> 
-       
-         <div class="form-group">
-        <label for="inputName" class="col-sm-4 control-label">Data prossima verifica funzionamento:</label>
-        <div class="col-sm-8">
-                      <input class="form-control datepicker" id="data_prossima_verifica_funzionamento_mod" type="text" name="data_prossima_verifica_funzionamento_mod"  value="" data-date-format="dd/mm/yyyy"/>
-    </div>
-       </div> 
-       
-             <div class="form-group">
-        <label for="inputName" class="col-sm-4 control-label">Data verifica integrità:</label>
-        <div class="col-sm-8">
-                      <input class="form-control datepicker" id="data_verifica_integrita_mod" type="text" name="data_verifica_integrita_mod"  value="" data-date-format="dd/mm/yyyy"/>
-    </div>
-       </div> 
-       
-         <div class="form-group">
-        <label for="inputName" class="col-sm-4 control-label">Data prossima verifica integrità:</label>
-        <div class="col-sm-8">
-                      <input class="form-control datepicker" id="data_prossima_verifica_integrita_mod" type="text" name="data_prossima_verifica_integrita_mod"  value="" data-date-format="dd/mm/yyyy"/>
-    </div>
-       </div>
-             <div class="form-group">
-        <label for="inputName" class="col-sm-4 control-label">Data verifica interna:</label>
-        <div class="col-sm-8">
-                      <input class="form-control datepicker" id="data_verifica_interna_mod" type="text" name="data_verifica_interna_mod"  value="" data-date-format="dd/mm/yyyy"/>
-    </div>
-       </div> 
-       
-         <div class="form-group">
-        <label for="inputName" class="col-sm-4 control-label">Data prossima verifica interna:</label>
-        <div class="col-sm-8">
-                      <input class="form-control datepicker" id="data_prossima_verifica_interna_mod" type="text" name="data_prossima_verifica_interna_mod"  value="" data-date-format="dd/mm/yyyy"/>
-    </div>
-       </div>
- <div class="form-group">
-        <label for="inputName" class="col-sm-4 control-label">Note tecniche:</label>
-        <div class="col-sm-8">
-                      <textarea class="form-control" id="note_tecniche_mod" name="note_tecniche_mod" rows ="3"></textarea>
-    </div>
-    </div>
-    <div class="form-group">
-        <label for="inputName" class="col-sm-4 control-label">Note generiche:</label>
-        <div class="col-sm-8">
-                      <textarea class="form-control" id="note_generiche_mod" name="note_generiche_mod" rows ="3"></textarea>
-    </div>
-    </div>
-  		 </div>
-      <div class="modal-footer">
-      
-      <input type="hidden" id="id_attrezzatura" name="id_attrezzatura">
-      <a class="btn pull-left" onClick="rendiAttrezzaturaObsoleta()" id="rendi_obsoleta" style="display:none">Rendi obsoleta</a>
-      <a class="btn pull-left" onClick="rendiAttrezzaturaObsoleta()" id="rendi_non_obsoleta" style="display:none">Rendi non obsoleta</a>
-		<button type="submit" class="btn btn-primary pull-right" >Salva</button>
-      </div>
-    </div>
-  </div>
-</div>
- </form> --%>
-
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/datejs/1.0/date.min.js"></script>
 <script type="text/javascript">
 
@@ -1233,6 +971,9 @@ $('#modalModificaAttrezzatura').on('hidden.bs.modal', function(){
 });
 
 
+var tipo_attrezzatura_options = [];
+
+
 $(document).ready(function() {
 	console.log("test");
 	$('.datepicker').datepicker();
@@ -1465,6 +1206,12 @@ $("#tipo_attivita").change(function() {
 			
 			$('#data_scadenza_ventennale').removeClass("disabled");
 		}
+		
+		
+		
+		
+		
+		
 		 $("#settore_impiego").prop("disabled", false);
 		  $('#settore_impiego').html(settore_opt);
 			$("#settore_impiego").change();  
@@ -1572,7 +1319,7 @@ $("#descrizione").change(function() {
 				opt_tipo_attr_gvr.push('<option value="a1">a1</option>');
 
 			}
-			else if(descrizione.startsWith("Generatori") || descrizione.startsWith("GV")){
+			else if(descrizione.startsWith("Generatori")){
 				opt_tipo_attr.push('<option value="b3">b3</option>');
 				
 				if(descrizione.startsWith("Generatori acqua")){
@@ -1631,7 +1378,7 @@ $("#descrizione").change(function() {
 			}
 			else if(descrizione.startsWith("Ponti mobili")){
 				
-				if(descrizione.startsWith("Ponti mobili sviluppabili ad azionamento")){
+				if(descrizione.includes("azionamento")){
 					
 					opt_tipo_attr.push('<option value="b">b</option>');
 
@@ -1672,11 +1419,13 @@ $("#descrizione").change(function() {
 				
 			
 				opt_tipo_attr.push('<option value="d1">d1</option>');
+				opt_tipo_attr.push('<option value="d2">d2</option>');
+				opt_tipo_attr.push('<option value="d3">d3</option>');
 			
 			}			
 			else if(descrizione.startsWith("Gru")){
 				
-				if(descrizione.startsWith("Gru a portale")){
+				if(descrizione.includes("braccio")||descrizione.includes("trasferibile")||descrizione.includes("torre")||descrizione.includes("Derrick")){
 					opt_tipo_attr.push('<option value="b1">b1</option>');
 					opt_tipo_attr.push('<option value="b2">b2</option>');
 					opt_tipo_attr.push('<option value="b3">b3</option>');				
@@ -1708,9 +1457,11 @@ $("#descrizione").change(function() {
 		  $('#tipo_attrezzatura').html(opt_tipo_attr);
 			$("#tipo_attrezzatura").change();  
 			
-			 $("#tipo_attrezzatura_gvr").prop("disabled", false);
+			 //$("#tipo_attrezzatura_gvr").prop("disabled", false);
 			  $('#tipo_attrezzatura_gvr').html(opt_tipo_attr_gvr);
 				$("#tipo_attrezzatura_gvr").change();  
+				
+				select_settore_impiego("");
 	});
 
 
@@ -1748,7 +1499,7 @@ $("#descrizione_mod").change(function() {
 				opt_tipo_attr_gvr.push('<option value="a1">a1</option>');
 
 			}
-			else if(descrizione.startsWith("Generatori") || descrizione.startsWith("GV")){
+			else if(descrizione.startsWith("Generatori")){
 				opt_tipo_attr.push('<option value="b3">b3</option>');
 				
 				if(descrizione.startsWith("Generatori acqua")){
@@ -1811,7 +1562,7 @@ $("#descrizione_mod").change(function() {
 			}
 			else if(descrizione.startsWith("Ponti mobili")){
 				
-				if(descrizione.startsWith("Ponti mobili sviluppabili ad azionamento")){
+				if(descrizione.includes("azionamento")){
 					
 					opt_tipo_attr.push('<option value="b">b</option>');
 
@@ -1852,11 +1603,13 @@ $("#descrizione_mod").change(function() {
 				
 			
 				opt_tipo_attr.push('<option value="d1">d1</option>');
+				opt_tipo_attr.push('<option value="d2">d2</option>');
+				opt_tipo_attr.push('<option value="d3">d3</option>');
 			
 			}			
 			else if(descrizione.startsWith("Gru")){
 				
-				if(descrizione.startsWith("Gru a portale")){
+				if(descrizione.includes("braccio")||descrizione.includes("trasferibile")||descrizione.includes("torre")||descrizione.includes("Derrick")){
 					opt_tipo_attr.push('<option value="b1">b1</option>');
 					opt_tipo_attr.push('<option value="b2">b2</option>');
 					opt_tipo_attr.push('<option value="b3">b3</option>');				
@@ -1891,8 +1644,78 @@ $("#descrizione_mod").change(function() {
 			 
 			  $('#tipo_attrezzatura_gvr_mod').html(opt_tipo_attr_gvr);
 				$("#tipo_attrezzatura_gvr_mod").change();  
+				
+				
+				
+				
+				select_settore_impiego("_mod");
+	});
+
+$('#settore_impiego_mod').change(function(){
+select_settore_impiego("_mod");
+	
+	
+});
+
+$('#settore_impiego').change(function(){
+	select_settore_impiego("");
+		
+		
 	});
 
 
+function select_settore_impiego(mod){
+	
+
+	var opt = [];
+	
+	var selection = $('#settore_impiego'+mod).val();
+	var gruppo = $('#tipo_attivita'+mod).val();
+	var descrizione = "";//$('#descrizione'+mod).val().split("_")[1];
+	
+	if(gruppo == 'SC' && !descrizione.startsWith("Carrelli") && !descrizione.startsWith("Idroestrattori")){
+		
+		if(descrizione.startsWith("Gru")){
+			if(descrizione.includes("braccio")||descrizione.includes("trasferibile")||descrizione.includes("torre")||descrizione.includes("Derrick")){
+				if(selection == 'regolare'){
+					opt.push('<option value="b2">b2</option>');
+					opt.push('<option value="b3">b3</option>');
+				}else{
+					opt.push('<option value="b1">b1</option>');
+					
+				}
+				
+				
+			}else{
+				if(selection == 'regolare'){
+					opt.push('<option value="a3">a3</option>');
+					opt.push('<option value="a4">a4</option>');
+				}else{
+					opt.push('<option value="a1">a1</option>');
+					opt.push('<option value="a2">a2</option>');
+					
+				}
+			}
+			
+			
+		}else{
+			if(selection == 'regolare'){
+				opt.push('<option value="b2">b2</option>');
+				opt.push('<option value="b3">b3</option>');
+			}else{
+				opt.push('<option value="b1">b1</option>');
+				
+			}
+		}
+		
+		
+		$('#tipo_attrezzatura'+mod).html(opt);
+	}
+
+	
+	
+	
+
+}
 
 </script>

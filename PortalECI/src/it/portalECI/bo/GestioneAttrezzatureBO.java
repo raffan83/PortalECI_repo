@@ -51,4 +51,9 @@ public class GestioneAttrezzatureBO {
 		
 		return GestioneAttrezzatureDAO.getClientiSediTecnico(session, id_tecnico, cliente_sede);
 	}
+
+	public static AttrezzaturaDTO getAttrezzaturaFromMatricola(String matricola, Session session) {
+		// TODO Auto-generated method stub
+		return GestioneAttrezzatureDAO.getAttrezzaturaFromMatricola(matricola, session);
+	}
 }

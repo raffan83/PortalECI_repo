@@ -1,11 +1,14 @@
 package it.portalECI.action;
 
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 
 import javax.servlet.RequestDispatcher;
@@ -15,6 +18,11 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.fileupload.FileItem;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.xssf.usermodel.XSSFSheet;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.hibernate.Session;
 
 import com.google.gson.Gson;
@@ -29,6 +37,7 @@ import it.portalECI.Util.Utility;
 import it.portalECI.bo.GestioneAttrezzatureBO;
 import it.portalECI.bo.GestioneInterventoBO;
 import it.portalECI.bo.GestioneVerbaleBO;
+
 import it.portalECI.DTO.ClienteDTO;
 import it.portalECI.DTO.CompanyDTO;
 import it.portalECI.DTO.DescrizioneGruppoAttrezzaturaDTO;
@@ -138,7 +147,261 @@ public class ListaAttrezzature extends HttpServlet {
 					request.getSession().setAttribute("listaSedi",listaSediFull);	
 				}								
 				
+//				
+//								
+//
+//					File file = new File("C:\\Users\\antonio.dicivita\\Desktop\\ELENCO ATTREZZATURE_x Raffaele.xlsm");
+//					
+//					FileInputStream fis = new FileInputStream(file);   //obtaining bytes from the file  
+//					//creating Workbook instance that refers to .xlsx file  
+//					XSSFWorkbook wb = new XSSFWorkbook(fis);   
+//					XSSFSheet sheet = wb.getSheetAt(0);     //creating a Sheet object to retrieve object  
+//					Iterator<Row> itr = sheet.iterator();    //iterating over excel file  
+//					
+//					List<SedeDTO> lista_sedi = GestioneAnagraficaRemotaBO.getListaSedi();
+//
+//					while (itr.hasNext())                 
+//					{  
+//						Row row = itr.next();  
+//						Iterator<Cell> cellIterator = row.cellIterator();   //iterating over each column  
+//						
+//						if(row.getRowNum()>=2) {
+//							
+//	
+//							
+//							String matricola = row.getCell(0).getStringCellValue();
+//										AttrezzaturaDTO attrezzatura =  GestioneAttrezzatureBO.getAttrezzaturaFromMatricola(matricola, session);
+//										
+//										
+//										String n_fabbrica ="";
+//										if(row.getCell(1).getCellType()==Cell.CELL_TYPE_STRING)
+//										{
+//											n_fabbrica = row.getCell(1).getStringCellValue();
+//										}else {
+//											n_fabbrica = (int)row.getCell(1).getNumericCellValue() +"";
+//										}
+//												
+//										String gruppo = row.getCell(2).getStringCellValue();
+//										String descrizione = row.getCell(3).getStringCellValue();
+//										
+//										
+//										int id_cliente = 0;
+//										int id_sede = 0;
+//										
+//										if(row.getCell(5).getCellType()==Cell.CELL_TYPE_STRING)
+//										{
+//											id_cliente = Integer.parseInt(row.getCell(5).getStringCellValue());
+//										}else {
+//											id_cliente = (int) row.getCell(5).getNumericCellValue();
+//										}
+//										
+//										if(row.getCell(6).getCellType()==Cell.CELL_TYPE_STRING)
+//										{
+//											id_sede = Integer.parseInt(row.getCell(6).getStringCellValue());
+//										}else {
+//											id_sede = (int) row.getCell(6).getNumericCellValue();
+//										}
+//										
+//										int anno_costruzione = 0;
+//										if(row.getCell(7).getCellType()==Cell.CELL_TYPE_STRING)
+//										{
+//											if(!row.getCell(7).getStringCellValue().equals("N.D.")) {
+//											anno_costruzione = Integer.parseInt(row.getCell(7).getStringCellValue());
+//											}
+//										}else {
+//											anno_costruzione = (int) row.getCell(7).getNumericCellValue();
+//										}
+//										
+//										
+//										String fabbricante = row.getCell(8).getStringCellValue();
+//										String modello ="";
+//										
+//										if(row.getCell(9).getCellType()==Cell.CELL_TYPE_STRING)
+//										{
+//											modello = row.getCell(9).getStringCellValue();
+//										}else {
+//											modello = ""+row.getCell(9).getNumericCellValue();
+//										}
+//										
+//										
+//										String settore_impiego = row.getCell(10).getStringCellValue();
+//										String tipo_attr = row.getCell(11).getStringCellValue();
+//										String tipo_attr_gvr = row.getCell(12).getStringCellValue();
+//										int id_specifica = (int) row.getCell(13).getNumericCellValue();
+//										String sogg_messa_servizio_gvr = row.getCell(14).getStringCellValue();
+//										String marcatura = row.getCell(16).getStringCellValue();
+//										String n_id_on  = row.getCell(17).getStringCellValue();
+//										String data_ventennale  = row.getCell(20).getStringCellValue();
+//										String note_tecniche = row.getCell(18).getStringCellValue();
+//										String note_generiche = row.getCell(19).getStringCellValue();
+//										
+//										Date data_verifica_funz = null;
+//										Date data_pros_verifica_funz = null;
+//										Date data_verifica_integrita = null;
+//										Date data_pros_verifica_integrita = null;
+//										Date data_verifica_interna = null;
+//										Date data_pros_verifica_interna = null;
+//										SimpleDateFormat df = new SimpleDateFormat("dd/MM/yyyy");
+//										if(row.getCell(24).getCellType()==Cell.CELL_TYPE_STRING)
+//										{
+//											if(row.getCell(24).getStringCellValue().length()==10) {
+//												data_verifica_funz = df.parse(row.getCell(24).getStringCellValue());
+//											}
+//											 
+//										}else if(row.getCell(24).getCellType()!=Cell.CELL_TYPE_ERROR){											
+//											 data_verifica_funz = row.getCell(24).getDateCellValue();
+//										}
+//										 
+//										  
+//
+//										 
+//										 if(row.getCell(25).getCellType()==Cell.CELL_TYPE_STRING)
+//											{
+//												if(row.getCell(25).getStringCellValue().length()==10) {
+//													data_pros_verifica_funz = df.parse(row.getCell(25).getStringCellValue());
+//												}
+//												 
+//											}else if(row.getCell(25).getCellType()!=Cell.CELL_TYPE_ERROR){	
+//												data_pros_verifica_funz = row.getCell(25).getDateCellValue();
+//											}
+//										 
+//										 
+//										
+//										 if(row.getCell(29).getCellType()==Cell.CELL_TYPE_STRING)
+//											{
+//												if(row.getCell(29).getStringCellValue().length()==10) {
+//													data_verifica_integrita = df.parse(row.getCell(29).getStringCellValue());
+//												}
+//												 
+//											}else if(row.getCell(29).getCellType()!=Cell.CELL_TYPE_ERROR){	
+//												data_verifica_integrita = row.getCell(29).getDateCellValue();
+//											}
+//										 
+//																			 
+//										 
+//										 if(row.getCell(30).getCellType()==Cell.CELL_TYPE_STRING)
+//											{
+//												if(row.getCell(30).getStringCellValue().length()==10) {
+//													data_pros_verifica_integrita = df.parse(row.getCell(30).getStringCellValue());
+//												}
+//												 
+//											}else if(row.getCell(30).getCellType()!=Cell.CELL_TYPE_ERROR){	
+//												data_pros_verifica_integrita = row.getCell(30).getDateCellValue();
+//											}
+//										
+//																		 
+//										 
+//										 if(row.getCell(34).getCellType()==Cell.CELL_TYPE_STRING)
+//											{
+//												if(row.getCell(34).getStringCellValue().length()==10) {
+//													data_verifica_interna = df.parse(row.getCell(34).getStringCellValue());
+//												}
+//												 
+//											}else if(row.getCell(34).getCellType()!=Cell.CELL_TYPE_ERROR){	
+//												data_verifica_interna = row.getCell(34).getDateCellValue();
+//											}
+//										 
+//										 						
+//										 
+//										 if(row.getCell(35).getCellType()==Cell.CELL_TYPE_STRING)
+//											{
+//												if(row.getCell(35).getStringCellValue().length()==10) {
+//													data_pros_verifica_interna = df.parse(row.getCell(35).getStringCellValue());
+//												}
+//												 
+//											}else if(row.getCell(35).getCellType()!=Cell.CELL_TYPE_ERROR){	
+//												data_pros_verifica_interna = row.getCell(35).getDateCellValue();
+//											}
+//										
+//										attrezzatura.setMatricola_inail(matricola);
+//										attrezzatura.setNumero_fabbrica(n_fabbrica);
+//										attrezzatura.setTipo_attivita(gruppo);
+//										attrezzatura.setDescrizione(descrizione);
+//										
+//										attrezzatura.setId_cliente(id_cliente);
+//										attrezzatura.setId_sede(id_sede);
+//										
+//										ClienteDTO cl = GestioneAnagraficaRemotaBO.getClienteById(""+id_cliente);
+//										
+//										attrezzatura.setNome_cliente(cl.getNome());
+//										
+//									
+//										if(id_sede!=0) {
+//											SedeDTO sd = GestioneAnagraficaRemotaBO.getSedeFromId(lista_sedi, id_sede, id_cliente);
+//											attrezzatura.setNome_sede(sd.getDescrizione()+" - "+sd.getIndirizzo()+" - "+sd.getComune()+"("+sd.getSiglaProvincia()+")");
+//										}
+//										
+//										attrezzatura.setAnno_costruzione(anno_costruzione);
+//										attrezzatura.setFabbricante(fabbricante);
+//										attrezzatura.setSettore_impiego(settore_impiego);
+//										attrezzatura.setModello(modello);
+//										attrezzatura.setNote_tecniche(note_tecniche);
+//										attrezzatura.setNote_generiche(note_generiche);
+//										attrezzatura.setData_verifica_funzionamento(data_verifica_funz);
+//										attrezzatura.setData_prossima_verifica_funzionamento(data_pros_verifica_funz);
+//										attrezzatura.setData_verifica_integrita(data_verifica_integrita);
+//										attrezzatura.setData_prossima_verifica_integrita(data_pros_verifica_integrita);
+//										attrezzatura.setData_verifica_interna(data_verifica_interna);
+//										attrezzatura.setData_prossima_verifica_interna(data_pros_verifica_interna);
+//										
+//											
+//											attrezzatura.setTipo_attrezzatura(tipo_attr);
+//											if(!tipo_attr_gvr.equals("")) {
+//												attrezzatura.setTipo_attrezzatura_GVR(tipo_attr_gvr);
+//											}
+//											
+//											attrezzatura.setID_specifica(id_specifica+"");
+//											
+//											if(!sogg_messa_servizio_gvr.equals("")) {
+//												attrezzatura.setSogg_messa_serv_GVR(sogg_messa_servizio_gvr);
+//											}
+//											if(!marcatura.equals("N.A.")) {
+//												attrezzatura.setMarcatura(marcatura);
+//											}
+//											if(!n_id_on.equals("N.A.")) {
+//												attrezzatura.setN_id_on(n_id_on);
+//											}
+//											if(!data_ventennale.equals("")&&!data_ventennale.equals("N.A.")&& data_ventennale.length()==10) {
+//												
+//												Date d = df.parse(data_ventennale);
+//												if(d!=null) {
+//													attrezzatura.setData_scadenza_ventennale(d);
+//												}
+//												
+//											}
+//											
+//											
+//											session.update(attrezzatura);
+//										//	System.out.println("riga "+row.getRowNum()+" - attrezzatura: "+matricola +" - n_id_on: "+n_id_on+" - data_ver funz: "+data_verifica_funz);
+//										
+//										
+//
+//									//}
+//							//}
+//						}else if(row.getRowNum()==931) {
+//							break;
+//						}
+//					}
+									
+									
 
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+					session.getTransaction().commit();
 				session.close();
 				RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/page/configurazioni/listaAttrezzature.jsp");
 		     	dispatcher.forward(request,response);

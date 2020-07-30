@@ -173,4 +173,19 @@ public class GestioneAttrezzatureDAO {
 		return lista;
 	}
 
+	public static AttrezzaturaDTO getAttrezzaturaFromMatricola(String matricola, Session session) {
+		
+		ArrayList<AttrezzaturaDTO> lista =null;
+		AttrezzaturaDTO result = null;
+		Query query = session.createQuery("from AttrezzaturaDTO where matricola_inail = :_matricola");
+		query.setParameter("_matricola", matricola);
+		
+		lista= (ArrayList<AttrezzaturaDTO>)query.list();
+		
+		if(lista!=null && lista.size()>0) {
+			result = lista.get(0);
+		}
+		return result;
+	}
+
 }
