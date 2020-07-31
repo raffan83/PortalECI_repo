@@ -1671,7 +1671,7 @@ function select_settore_impiego(mod){
 	
 	var selection = $('#settore_impiego'+mod).val();
 	var gruppo = $('#tipo_attivita'+mod).val();
-	var descrizione = "";//$('#descrizione'+mod).val().split("_")[1];
+	var descrizione = $('#descrizione'+mod).val().split("_")[1];
 	
 	if(gruppo == 'SC' && !descrizione.startsWith("Carrelli") && !descrizione.startsWith("Idroestrattori")){
 		
