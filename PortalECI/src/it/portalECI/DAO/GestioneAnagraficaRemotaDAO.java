@@ -9,9 +9,12 @@ import java.util.HashMap;
 import java.util.List;
 
 import org.hibernate.HibernateException;
-
+import org.hibernate.Query;
+import org.hibernate.Session;
 
 import it.portalECI.DTO.ClienteDTO;
+import it.portalECI.DTO.ComuneDTO;
+import it.portalECI.DTO.ProvinciaDTO;
 import it.portalECI.DTO.SedeDTO;
 import it.portalECI.DAO.ManagerSQLServer;
 
@@ -357,8 +360,70 @@ public class GestioneAnagraficaRemotaDAO {
 				con.close();
 			}
 			return listaSedi;
+		}
+
+		public static ArrayList<ComuneDTO> getListaComuni(Session session) {
+			
+			ArrayList<ComuneDTO> lista = null;
+			
+			Query query = session.createQuery("from ComuneDTO");
+			lista = (ArrayList<ComuneDTO>) query.list();
+			return lista;
 		}	
 		
+		public static ArrayList<ProvinciaDTO> getListaprovince(Session session) {
+			
+			ArrayList<ProvinciaDTO> lista = null;
+			
+			Query query = session.createQuery("from ProvinciaDTO");
+			lista = (ArrayList<ProvinciaDTO>) query.list();
+			return lista;
+		}
+
+		public static ArrayList<ComuneDTO> getListaComuniFromCAP(String cap, Session session) {
+			ArrayList<ComuneDTO> lista = null;
+
+			
+			Query query = session.createQuery("from ComuneDTO where cap = :_cap");
+			query.setParameter("_cap", cap);
+			lista = (ArrayList<ComuneDTO>) query.list();
+			
+
+			return lista;
+		}
+
+		public static ComuneDTO getComuneFromId(int comune, Session session) {
+
+			ArrayList<ComuneDTO> lista = null;
+			ComuneDTO result = null;
+
+			
+			Query query = session.createQuery("from ComuneDTO where id = :_id");
+			query.setParameter("_id", comune);
+			lista = (ArrayList<ComuneDTO>) query.list();
+			
+			if(lista.size()>0) {
+				result = lista.get(0);
+			}
+
+			return result;
+		}
+
+		public static String getRegioneFromProvincia(String siglaProvincia, Session session) {
+
+			ArrayList<String> lista = null;
+			String result = null;
+			
+			Query query = session.createQuery("select regione from ComuneDTO where provincia = :_siglaProvincia");
+			query.setParameter("_siglaProvincia", siglaProvincia);
+			lista = (ArrayList<String>) query.list();
+			
+			if(lista.size()>0) {
+				result = lista.get(0);
+			}
+
+			return result;
+		}	
 
 
 }

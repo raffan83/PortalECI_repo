@@ -188,4 +188,21 @@ public class GestioneAttrezzatureDAO {
 		return result;
 	}
 
+	public static String getArticoloFromDescrizione(String descrizione, int tipo_verifica, Session session) {
+		
+		ArrayList<String> lista =null;
+		String result = null;
+		String indice_verifica = "indice_verifica_"+tipo_verifica;
+		Query query = session.createQuery("select " +indice_verifica +" from DescrizioneGruppoAttrezzaturaDTO where descrizione = :_descrizione");
+		query.setParameter("_descrizione", descrizione);
+		
+		lista= (ArrayList<String>)query.list();
+		
+		if(lista!=null && lista.size()>0) {
+			result = lista.get(0);
+		}
+		return result;
+	
+	}
+
 }

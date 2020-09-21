@@ -95,6 +95,39 @@
                 <property name="sogg_messa_serv_GVR" type="java.lang.String">
             <column name="sogg_messa_serv_GVR" />
         </property>
-        
+
+		  <property name="indirizzo" type="java.lang.String">
+            <column name="indirizzo" />
+        </property>
+       <property name="comune" type="java.lang.String">
+            <column name="comune" />
+        </property>
+        <property name="cap" type="java.lang.String">
+            <column name="cap" />
+        </property>
+        <property name="provincia" type="java.lang.String">
+            <column name="provincia" />
+        </property>
+        <property name="regione" type="java.lang.String">
+            <column name="regione" />
+        </property>
+	
+	  <property name="indirizzo_div" type="java.lang.String">
+            <column name="indirizzo_div" />
+        </property>
+       <property name="comune_div" type="java.lang.String">
+            <column name="comune_div" />
+        </property>
+        <property name="cap_div" type="java.lang.String">
+            <column name="cap_div" />
+        </property>
+        <property name="provincia_div" type="java.lang.String">
+            <column name="provincia_div" />
+        </property>
+        <property name="regione_div" type="java.lang.String">
+            <column name="regione_div" />
+        </property>
+	
+	
     </class>
 </hibernate-mapping>

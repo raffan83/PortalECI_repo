@@ -167,6 +167,9 @@ public class GestioneIntervento extends HttpServlet {
 				String[] listaSedi =request.getParameterValues("sedi");
 				String[] listaAttrezzature =request.getParameterValues("attrezzature");
 				String[] listaEsercenti =request.getParameterValues("esercenti");
+				String[] listaEffVer =request.getParameterValues("effettuazione_verifica");
+				String[] listaTipoVer =request.getParameterValues("tipo_verifica");
+				
 
 				CommessaDTO comm=(CommessaDTO)request.getSession().getAttribute("commessa");
 				
@@ -195,7 +198,7 @@ public class GestioneIntervento extends HttpServlet {
 							attrezzatura = GestioneAttrezzatureBO.getAttrezzaturaFromId(Integer.parseInt(listaAttrezzature[i]), session);
 					}
 						
-					VerbaleDTO verbale =GestioneVerbaleBO.buildVerbale(tipoVerificaDTO.getCodice(), session, createSkTec,listaNote[i],attrezzatura,listaSedi[i], listaEsercenti[i]);
+					VerbaleDTO verbale =GestioneVerbaleBO.buildVerbale(tipoVerificaDTO.getCodice(), session, createSkTec,listaNote[i],attrezzatura,listaSedi[i], listaEsercenti[i], listaEffVer[i], listaTipoVer[i]);
 					if(verbale !=null) {
 						verbali.add(verbale);
 					}else {
@@ -362,7 +365,7 @@ public class GestioneIntervento extends HttpServlet {
 						}
 					}
 											
-					verbaleTarget =GestioneVerbaleBO.buildVerbale(tipoVerificaDTO.getCodice(), session, createSkTec,"",null,"","");
+					verbaleTarget =GestioneVerbaleBO.buildVerbale(tipoVerificaDTO.getCodice(), session, createSkTec,"",null,"","",null, null);
 						
 					if(verbaleTarget ==null) {														
 						myObj.addProperty("success", false);
@@ -371,7 +374,7 @@ public class GestioneIntervento extends HttpServlet {
 						out.print(myObj);
 						return;
 					}
-											
+										
 					verbali.add(verbaleTarget);
 					
 				}

@@ -37,6 +37,17 @@ public class AttrezzaturaDTO {
 	private String n_id_on;
 	private Date data_scadenza_ventennale;
 	
+	private String indirizzo;
+	private String comune;
+	private String cap;
+	private String provincia;
+	private String regione;
+	
+	private String indirizzo_div;
+	private String comune_div;
+	private String cap_div;
+	private String provincia_div;
+	private String regione_div;
 		
 	public int getAnno_costruzione() {
 		return anno_costruzione;
@@ -217,6 +228,66 @@ public class AttrezzaturaDTO {
 	}
 	public void setData_scadenza_ventennale(Date data_scadenza_ventennale) {
 		this.data_scadenza_ventennale = data_scadenza_ventennale;
+	}
+	public String getIndirizzo() {
+		return indirizzo;
+	}
+	public void setIndirizzo(String indirizzo) {
+		this.indirizzo = indirizzo;
+	}
+	public String getComune() {
+		return comune;
+	}
+	public void setComune(String comune) {
+		this.comune = comune;
+	}
+	public String getCap() {
+		return cap;
+	}
+	public void setCap(String cap) {
+		this.cap = cap;
+	}
+	public String getProvincia() {
+		return provincia;
+	}
+	public void setProvincia(String provincia) {
+		this.provincia = provincia;
+	}
+	public String getRegione() {
+		return regione;
+	}
+	public void setRegione(String regione) {
+		this.regione = regione;
+	}
+	public String getIndirizzo_div() {
+		return indirizzo_div;
+	}
+	public void setIndirizzo_div(String indirizzo_div) {
+		this.indirizzo_div = indirizzo_div;
+	}
+	public String getComune_div() {
+		return comune_div;
+	}
+	public void setComune_div(String comune_div) {
+		this.comune_div = comune_div;
+	}
+	public String getCap_div() {
+		return cap_div;
+	}
+	public void setCap_div(String cap_div) {
+		this.cap_div = cap_div;
+	}
+	public String getProvincia_div() {
+		return provincia_div;
+	}
+	public void setProvincia_div(String provincia_div) {
+		this.provincia_div = provincia_div;
+	}
+	public String getRegione_div() {
+		return regione_div;
+	}
+	public void setRegione_div(String regione_div) {
+		this.regione_div = regione_div;
 	}
 	
 	

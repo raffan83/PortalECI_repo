@@ -29,6 +29,8 @@ import org.apache.tomcat.util.codec.binary.Base64;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
 import it.portalECI.DAO.GestioneDocumentoDAO;
@@ -37,9 +39,11 @@ import it.portalECI.DAO.GestioneRispostaVerbaleDAO;
 import it.portalECI.DAO.GestioneStatoVerbaleDAO;
 import it.portalECI.DAO.GestioneStoricoModificheDAO;
 import it.portalECI.DAO.SessionFacotryDAO;
+import it.portalECI.DTO.AttrezzaturaDTO;
 import it.portalECI.DTO.ClienteDTO;
 import it.portalECI.DTO.ColonnaTabellaVerbaleDTO;
 import it.portalECI.DTO.CompanyDTO;
+import it.portalECI.DTO.ComuneDTO;
 import it.portalECI.DTO.DocumentoDTO;
 import it.portalECI.DTO.DomandaVerbaleDTO;
 import it.portalECI.DTO.InterventoDTO;
@@ -123,10 +127,138 @@ public class GestioneVerbali extends HttpServlet {
 					SimpleDateFormat df = new SimpleDateFormat("dd/MM/yyyy");
 					
 					verbale.setData_verifica(df.parse(data_verifica));
+					verbale.getAttrezzatura().setData_verifica_funzionamento(df.parse(data_verifica));
 					session.update(verbale);
+					session.update(verbale.getAttrezzatura());
 					
 				}
 				
+				if(paramName.equals("data_prossima_verifica_verb")) {
+					
+					String data_prossima_verifica = request.getParameter("data_prossima_verifica_verb");
+				
+					SimpleDateFormat df = new SimpleDateFormat("dd/MM/yyyy");
+					
+					verbale.setData_prossima_verifica(df.parse(data_prossima_verifica));
+					verbale.getAttrezzatura().setData_prossima_verifica_funzionamento(df.parse(data_prossima_verifica));
+					session.update(verbale);
+					session.update(verbale.getAttrezzatura());
+					
+				}
+				if(verbale.getAttrezzatura().getTipo_attivita().equals("GVR") && paramName.equals("data_verifica_integrita_verb")) {
+					
+					String data_verifica_integrita = request.getParameter("data_verifica_integrita_verb");
+				
+					SimpleDateFormat df = new SimpleDateFormat("dd/MM/yyyy");
+					
+					verbale.setData_verifica_integrita(df.parse(data_verifica_integrita));
+					verbale.getAttrezzatura().setData_verifica_integrita(df.parse(data_verifica_integrita));
+					session.update(verbale);
+					session.update(verbale.getAttrezzatura());
+					
+				}
+				if(verbale.getAttrezzatura().getTipo_attivita().equals("GVR") && paramName.equals("data_prossima_verifica_integrita_verb")) {
+					
+					String data_prossima_verifica_integrita = request.getParameter("data_prossima_verifica_integrita_verb");
+				
+					SimpleDateFormat df = new SimpleDateFormat("dd/MM/yyyy");
+					
+					verbale.setData_prossima_verifica_integrita(df.parse(data_prossima_verifica_integrita));
+					verbale.getAttrezzatura().setData_prossima_verifica_integrita(df.parse(data_prossima_verifica_integrita));
+					session.update(verbale);
+					session.update(verbale.getAttrezzatura());
+					
+				}
+				if(verbale.getAttrezzatura().getTipo_attivita().equals("GVR") && paramName.equals("data_verifica_interna_verb")) {
+					
+					String data_verifica_interna = request.getParameter("data_verifica_interna_verb");
+				
+					SimpleDateFormat df = new SimpleDateFormat("dd/MM/yyyy");
+					
+					verbale.setData_verifica_interna(df.parse(data_verifica_interna));
+					verbale.getAttrezzatura().setData_verifica_interna(df.parse(data_verifica_interna));
+					session.update(verbale);
+					session.update(verbale.getAttrezzatura());
+					
+				}
+				if(verbale.getAttrezzatura().getTipo_attivita().equals("GVR") && paramName.equals("data_prossima_verifica_interna_verb")) {
+					
+					String data_prossima_verifica_interna = request.getParameter("data_prossima_verifica_interna_verb");
+				
+					SimpleDateFormat df = new SimpleDateFormat("dd/MM/yyyy");
+					
+					verbale.setData_prossima_verifica_interna(df.parse(data_prossima_verifica_interna));
+					verbale.getAttrezzatura().setData_prossima_verifica_interna(df.parse(data_prossima_verifica_interna));
+					session.update(verbale);
+					session.update(verbale.getAttrezzatura());
+					
+				}
+				
+				if(verbale.getAttrezzatura().getTipo_attivita().equals("GVR") && paramName.equals("tipo_verifica_gvr")) {
+					
+					String tipo_verifica_gvr = request.getParameter("tipo_verifica_gvr");
+			
+					verbale.setTipo_verifica_gvr(Integer.parseInt(tipo_verifica_gvr));
+					session.update(verbale);
+					
+					
+				}				
+
+
+				if(paramName.equals("check_sede")) {					
+
+					String check_sede = request.getParameter("check_sede");
+					
+					AttrezzaturaDTO attrezzatura = verbale.getAttrezzatura();	
+					
+					if(check_sede!=null && check_sede.equals("1")) {
+						String comune = request.getParameter("comune");
+						String indirizzo = request.getParameter("indirizzo");
+						String cap = request.getParameter("cap");
+						String provincia = request.getParameter("provincia");
+						String regione = request.getParameter("regione");
+							
+						attrezzatura.setIndirizzo_div(indirizzo);
+						attrezzatura.setComune_div(comune);
+						attrezzatura.setCap_div(cap);
+						attrezzatura.setProvincia_div(provincia);
+						attrezzatura.setRegione_div(regione);					
+					}else {
+						attrezzatura.setIndirizzo_div(null);
+						attrezzatura.setComune_div(null);
+						attrezzatura.setCap_div(null);
+						attrezzatura.setProvincia_div(null);
+						attrezzatura.setRegione_div(null);	
+					}
+					session.update(attrezzatura);
+										
+				}
+				
+				if(paramName.equals("esito")) {
+					
+					 String esito = request.getParameter("esito");
+					 String descrizione_sospensione = request.getParameter("descrizione_sospensione");
+					 
+					 verbale.setEsito(esito);
+					 	
+										 
+					 
+					if(!esito.equals("S")) {
+						verbale.setDescrizione_sospensione(null);
+						session.update(verbale);	
+					}else {
+						verbale.setDescrizione_sospensione(descrizione_sospensione);
+						session.update(verbale);	
+						myObj.addProperty("success", true);
+						myObj.addProperty("messaggio", "Stato modificato con successo");
+			
+						out.print(myObj);
+						return;
+					}
+				
+									
+				}
+
 				
 				// RISPOSTA FORMULA
 				if(paramName.contains("value1") || paramName.contains("value2") || paramName.contains("responseValue")) {				
@@ -483,7 +615,28 @@ public class GestioneVerbali extends HttpServlet {
 				myObj.addProperty("messaggio", "Non &egrave; stato possibile trovare il documento. Generare di nuovo il Pdf.");						
 			}
 			out.print(myObj);
-		} else {
+		} 
+		
+		else if(action !=null && action.equals("comuni")) {
+			
+			String cap = request.getParameter("cap");
+			
+			ArrayList<ComuneDTO> lista_comuni = GestioneAnagraficaRemotaBO.getListaComuniFromCAP(cap, session);
+			
+			Gson g = new Gson();
+			if(lista_comuni!=null) {
+			JsonElement jelem = g.toJsonTree(lista_comuni);
+			
+			myObj.addProperty("success", true);
+			myObj.add("comuni", jelem);
+			
+			}else {
+				myObj.addProperty("success", false);
+			}
+			
+			out.print(myObj);
+		}
+		else {
 			//caso genericoc della ricerca del verbale per aprire gestioneVerbali					
 			List<DomandaVerbaleDTO> domandeVerbale=new ArrayList<DomandaVerbaleDTO>();
 			domandeVerbale.addAll(verbale.getDomandeVerbale());

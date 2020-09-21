@@ -17,5 +17,18 @@
          <property name="id_specifica" type="java.lang.String">
             <column name="id_specifica" />
         </property>
+        
+        <property name="indice_verifica_1" type="java.lang.String">
+            <column name="indice_verifica_1" />
+        </property>
+        <property name="indice_verifica_2" type="java.lang.String">
+            <column name="indice_verifica_2" />
+        </property>
+        <property name="indice_verifica_3" type="java.lang.String">
+            <column name="indice_verifica_3" />
+        </property>
+        <property name="indice_verifica_4" type="java.lang.String">
+            <column name="indice_verifica_4" />
+        </property>
     </class>
 </hibernate-mapping>

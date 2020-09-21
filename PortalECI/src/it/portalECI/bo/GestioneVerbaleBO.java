@@ -138,7 +138,7 @@ public class GestioneVerbaleBO {
 		session.update(intervento);
 	}
 	
-	public static VerbaleDTO buildVerbale(String codiceVerifica, Session session, Boolean creaSchedaTecnica,String note, AttrezzaturaDTO attrezzatura, String sedeUtilizzatore, String esercente) {
+	public static VerbaleDTO buildVerbale(String codiceVerifica, Session session, Boolean creaSchedaTecnica,String note, AttrezzaturaDTO attrezzatura, String sedeUtilizzatore, String esercente, String effettuazione_verbale, String tipo_verifica) {
 		VerbaleDTO result=null;
 		QuestionarioDTO questionario= GestioneQuestionarioDAO.getQuestionarioForVerbaleInstance(codiceVerifica, session);
 		if(questionario!=null) {
@@ -152,6 +152,13 @@ public class GestioneVerbaleBO {
 			verbale.setAttrezzatura(attrezzatura);
 			verbale.setSedeUtilizzatore(sedeUtilizzatore);
 			verbale.setType(VerbaleDTO.VERBALE);
+			if(effettuazione_verbale!=null) {
+				verbale.setEffettuazione_verifica(Integer.parseInt(effettuazione_verbale));	
+			}
+			if(tipo_verifica!=null) {
+				verbale.setTipo_verifica(Integer.parseInt(tipo_verifica));	
+			}
+						
 			if(esercente!=null) {
 				verbale.setEsercente(esercente);	
 			}			
@@ -734,6 +741,28 @@ public class GestioneVerbaleBO {
 		if(verbale.getData_verifica() != null) 
 		{			
 			html = html.replaceAll("\\$\\{DATA_VERIFICA\\}", df.format(verbale.getData_verifica()));
+		}
+
+		
+		if(verbale.getData_prossima_verifica() != null) 
+		{			
+			html = html.replaceAll("\\$\\{DATA_PROSS_VERIFICA\\}", df.format(verbale.getData_prossima_verifica()));
+		}
+		if(verbale.getData_verifica_integrita() != null) 
+		{			
+			html = html.replaceAll("\\$\\{DATA_VER_INTEGRITA\\}", df.format(verbale.getData_verifica_integrita()));
+		}
+		if(verbale.getData_prossima_verifica_integrita() != null) 
+		{			
+			html = html.replaceAll("\\$\\{DATA_PROSS_VER_INTEGRITA\\}", df.format(verbale.getData_prossima_verifica_integrita()));
+		}
+		if(verbale.getData_verifica_interna() != null) 
+		{			
+			html = html.replaceAll("\\$\\{DATA_VER_INTERNA\\}", df.format(verbale.getData_verifica_interna()));
+		}
+		if(verbale.getData_prossima_verifica_interna() != null) 
+		{			
+			html = html.replaceAll("\\$\\{DATA_PROSS_VER_INTERNA\\}", df.format(verbale.getData_prossima_verifica_interna()));
 		}
 		
 		if(verbale.getSedeUtilizzatore() != null ) 

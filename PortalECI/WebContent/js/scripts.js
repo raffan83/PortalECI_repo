@@ -344,6 +344,8 @@ function nuovoInterventoFromModal(divID){
 function saveInterventoFromModal(){
 
 	var str1=$('#tecnici').val();
+
+	
 	//var str2="&note="+$('#noteVerbale').val();
 	//var str3=$('#select2').val();
 	var listCatVer='';
@@ -364,6 +366,10 @@ function saveInterventoFromModal(){
 	
 	var esercenti = '';
 	
+	var eff_ver = '';
+	
+	var tipo_ver = '';
+	
 	if(listCatVer==""){
 		$('#empty').html("Devi inserire almeno un 'Tipo Verifica' per poter creare l'intervento!"); 
 	}else if(str1!= null){
@@ -372,12 +378,15 @@ function saveInterventoFromModal(){
 		
 		var data = table.rows().data();
 		data.each(function (value, index) {
-			noteVerb+="&note="+value[7];
+			noteVerb+="&note="+value[9];
 			sedi+= "&sedi="+value[5];
 			attrezzature+='&attrezzature='+value[4];
 			esercenti+='&esercenti='+value[6];
+			eff_ver+='&effettuazione_verifica='+value[7];
+			tipo_ver+='&tipo_verifica='+value[8];
 		 });
 	            
+		
 		pleaseWaitDiv = $('#pleaseWaitDialog');
 		pleaseWaitDiv.modal();
 	    
@@ -386,7 +395,7 @@ function saveInterventoFromModal(){
 			url: "gestioneIntervento.do?action=new",
 			//data: "dataIn="+JSON.stringify(dataArr),
 			//data: "dataIn="+str1,
-			data : "tecnico="+str1 +listCatVer+skTecObb+noteVerb+attrezzature+sedi+esercenti,
+			data : "tecnico="+str1 +listCatVer+skTecObb+noteVerb+attrezzature+sedi+esercenti+eff_ver+tipo_ver,
 			//	'id='+ encodeURIComponent(id) + '&name='+ encodeURIComponent(name)
 			dataType: "json",
 			success: function( data, textStatus) {
@@ -1135,6 +1144,7 @@ function nuovoUtente(){
 		var email=$('#email').val();
 		var telefono=$('#telefono').val();
 		var company=$('#company').val();
+		var cf = $('#cf').val();
 		var dataObj = {};
 		
 		dataObj.codice = codice;
@@ -1149,6 +1159,7 @@ function nuovoUtente(){
 		dataObj.email = email;
 		dataObj.telefono = telefono;
 		dataObj.company = company;
+		dataObj.cf = cf;
 
 		var sList = "";
 
@@ -1216,6 +1227,7 @@ function modificaUtente(){
 	var email=$('#modemail').val();
 	var telefono=$('#modtelefono').val();
 	var company=$('#modcompany').val();
+	var cf = $('#modcf').val();
 	var dataObj = {};
 	dataObj.id = id;
 	dataObj.codice = codice;
@@ -1230,6 +1242,7 @@ function modificaUtente(){
 	dataObj.email = email;
 	dataObj.telefono = telefono;
 	dataObj.company = company;
+	dataObj.cf = cf;
 
 	$.ajax({
 		type: "POST",
@@ -1313,7 +1326,7 @@ function eliminaUtente(){
 	});
 }
 
-function modalModificaUtente(id,codice,user,nome,cognome,indirizzo,comune,cap,email,telefono,company, qualifica){
+function modalModificaUtente(id,codice,user,nome,cognome,indirizzo,comune,cap,email,telefono,company, qualifica, cf){
 	
 	$('#modid').val(id);
 	$('#modcodice').val(codice)
@@ -1327,7 +1340,7 @@ function modalModificaUtente(id,codice,user,nome,cognome,indirizzo,comune,cap,em
 	$('#modtelefono').val(telefono);
 	$('#modcompany').val(company);
 	$('#modqualifica').val(qualifica);
-	
+	$('#modcf').val(cf);
 	  	  
 	$('#modalModificaUtente').modal();
 	  

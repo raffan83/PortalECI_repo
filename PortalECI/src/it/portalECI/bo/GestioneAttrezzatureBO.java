@@ -53,7 +53,12 @@ public class GestioneAttrezzatureBO {
 	}
 
 	public static AttrezzaturaDTO getAttrezzaturaFromMatricola(String matricola, Session session) {
-		// TODO Auto-generated method stub
+		
 		return GestioneAttrezzatureDAO.getAttrezzaturaFromMatricola(matricola, session);
+	}
+
+	public static String getArticoloFromDescrizione(String descrizione, int tipo_verifica, Session session) {
+
+		return GestioneAttrezzatureDAO.getArticoloFromDescrizione(descrizione, tipo_verifica,session);
 	}
 }

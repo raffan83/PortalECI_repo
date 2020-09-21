@@ -89,5 +89,44 @@
         <property name="data_verifica" type="java.sql.Date">
 			<column name="data_verifica" />
 		</property> 	
+		
+		 <property name="data_prossima_verifica" type="java.sql.Date">
+			<column name="data_prossima_verifica" />
+		</property> 	
+		
+		 <property name="data_verifica_integrita" type="java.sql.Date">
+			<column name="data_verifica_integrita" />
+		</property> 	
+		
+		 <property name="data_prossima_verifica_integrita" type="java.sql.Date">
+			<column name="data_prossima_verifica_integrita" />
+		</property> 	
+		
+		 <property name="data_verifica_interna" type="java.sql.Date">
+			<column name="data_verifica_interna" />
+		</property> 	
+		
+		 <property name="data_prossima_verifica_interna" type="java.sql.Date">
+			<column name="data_prossima_verifica_interna" />
+		</property> 	
+		
+		 <property name="effettuazione_verifica" type="int">
+			<column name="effettuazione_verifica" />
+		</property>
+		
+		<property name="esito" type="java.lang.String">
+			<column name="esito" />
+		</property>  
+		
+		<property name="tipo_verifica" type="int">
+			<column name="tipo_verifica" />
+		</property>
+		<property name="tipo_verifica_gvr" type="int">
+			<column name="tipo_verifica_gvr" />
+		</property>
+		
+			<property name="descrizione_sospensione" type="java.lang.String">
+			<column name="descrizione_sospensione" />
+		</property>  	
 	</class>
 </hibernate-mapping> 

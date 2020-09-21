@@ -292,9 +292,9 @@
         									</div>
         
 							    	        <div class="form-group col-sm-5">
-                  								<label>Tipo Verifica</label>
+                  								<label>Tipo Gruppo</label>
                   								<select name="select2" id="select2" data-placeholder="Seleziona Tipo"  disabled class="form-control select2" aria-hidden="true" data-live-search="true">
-                									<option value="" disabled selected>Seleziona Tipo...</option>
+                									<option value="" disabled selected>Seleziona Tipo Gruppo...</option>
                 									<c:forEach items="${tipi_verifica}" var="tipo">                		
 	                        							<option value="${tipo.id}_${tipo.categoria.id}_${tipo.sigla}">${tipo.codice}</option>     	                            
     	                 							</c:forEach>
@@ -333,18 +333,25 @@
 	        	         							</select>    
 	        									</div>  
         									</div>
-        									<%-- <div id="content_attrezzatura" style="display:none" >
-	        									<div class="form-group col-sm-5">
-	                  								<label>Attrezzatura</label>
-	                  								<select name="attrezzatura" id="attrezzatura" data-placeholder="Seleziona Attrezzatura"  class="form-control select2" aria-hidden="true" data-live-search="true">
-	                									<option value="" disabled selected>Seleziona Tipo...</option>
-	                									<option value="0">Nessuna</option>
-	                									<c:forEach items="${listaAttrezzature}" var="attrezzatura">                		
-		                        							<option value="${attrezzatura.id}_${attrezzatura.matricola_inail}">${attrezzatura.matricola_inail}</option>     	                            
-	    	                 							</c:forEach>
-	        	         							</select>                  
+        								<div class="form-group col-sm-5">
+	                  								<label>Effettuazione verifica</label>
+	                  								 <select name="effettuazione_verifica" id="effettuazione_verifica" data-placeholder="Seleziona Effettuazione Verifica..."  class="form-control select2" aria-hidden="true" data-live-search="true">
+	                								<option value=""></option>
+	                								<option value="1">Affidamento da parte del titolare della funzione</option>
+	                								<option value="2">Affidamento diretto da parte del datore di lavoro</option>
+	        	         							</select>          
+
 	        									</div>  
-        									</div> --%>
+	        										<div class="form-group col-sm-5">
+	                  								<label>Tipo Verifica</label>
+	                  								
+	                  								 <select name="tipo_verifica" id="tipo_verifica" data-placeholder="Seleziona Effettuazione Verifica..."  class="form-control select2" aria-hidden="true" data-live-search="true">
+	                							<!-- 	<option value=""></option>
+	                								<option value="1">Prima periodica</option>
+	                								<option value="2">Periodica successiva</option> -->
+	        	         							</select>          
+
+	        									</div>  
         									<div class="form-group col-sm-2 text-center" style="position: absolute;	bottom: 0; right: 0;">        									
                   								<button class="btn-sm" id="addrow" onclick="addRow()"><i class="fa fa-plus"></i></button>              
         									</div> 
@@ -362,12 +369,14 @@
  													<thead>
  														<tr class="active">
  															<th>Categoria Verifica</th>
- 															<th>Tipo Verifica</th>
+ 															<th>Tipo Gruppo</th>
  															<th>ST obbligatoria</th>
  															<th>Attrezzatura</th>
  															<th style="display:none"></th>
  															<th>Sede</th>
  															<th>Esercente</th>
+ 															<th>Effettuazione verifica</th>
+ 															<th>Tipo verifica</th>
  															<th>Note</th>		 														
  															<td></td>
 														</tr>
@@ -604,49 +613,7 @@
                 
      			//$body = $("body");     
      			$("#tecnici").change(function(){    	 
-    	 		/* 	$("#tecnici option[value='']").remove();
     	 		
-    	 			$('#content_attrezzatura').hide();
-      				$('#content_sede').hide();
-      				$('#content_esercente').hide();
-      				
-      				$('#select2').val('');
-      				$('#select2').change();
-      				$('#select2').attr('disabled', true);
-      				
-    	 			var tecnici = ${tecnici_json};
-    	 			var selection = $(this).val();
-     				if(selection!=null){ 
-    	 				
-    	 				var opt =[];
-    	 				opt.push("<option value=''></option>");		
-    	 				
-    	 				var categorie = [];
-    	 				for(var i = 0;i<tecnici.length;i++){
-    	 					if(selection == tecnici[i].id){
-    	 						categorie = tecnici[i].categorie;
-    	 						break;
-    	 					}
-    	 				} 
-    	 				
-    	 			
-      	 				for(var i = 0;i<categoria_options.length;i++){
-    	 					if( categoria_options[i].value.split("_")[1]!=null && categorie!=null){
-    	 						for(var j = 0; j<categorie.length;j++){
-    	 							if(categorie[j].codice == categoria_options[i].value.split("_")[1]){
-    	 								opt.push(categoria_options[i]);		
-    	 							}
-    	 						}
-    	 						
-    	 						
-    	 					}
-    	 				}
-    	 				
-    	 				 
-    	 				$('#select1').html(opt)
-    	 				document.getElementById("select1").selectedIndex = 0;
-     				} 
-    	 			 */
     	 			
     	 			
      			});
@@ -740,6 +707,32 @@
     			});	       
       			
       			
+      			
+      			$('#select2').change(function(){
+      				
+      				var val = $(this).val();
+      				var opt = [];
+      				if(val!=''){
+      					
+      					var gruppo = val.split("_")[2];
+      					
+      					if(gruppo=="GVR"){
+      						opt.push("<option value='1'>Prima verifica periodica attr. e attr. di insiemi soggetti a verifica (art.4)</option>");
+      						opt.push("<option value='2'>Prima verifica periodica attr. di insiemi NON soggetti a verifica (art.5)</option>");
+      						opt.push("<option value='3'>Verifica successiva alla prima (funzionamento e/o interna)</option>");
+      						opt.push("<option value='4'>Verifica successiva alla prima (funzionamento e/o interna e integrità)</option>");
+      					}else{
+      						opt.push("<option value='1'>Prima periodica</option>");
+      						opt.push("<option value='2'>Periodica successiva</option>");
+      					}
+      					
+      					
+      					$('#tipo_verifica').html(opt);
+      				}
+      				
+      			});
+      			
+      			
       			$('#sede').change(function(){
       				
       				var value = $(this).val();
@@ -756,13 +749,15 @@
 					var categorie_verifica=$('#select1').val();
 					var tipi_verifica=$('#select2').val();		
 					var attrezzatura = "";
+					var eff_ver = $('#effettuazione_verifica').val();
+					var tipo_ver =$('#tipo_verifica').val();
 					
 					if(categorie_verifica == "10" && $('#attrezzatura').val()!='0'){
 						attrezzatura = $('#attrezzatura').val();	
 					}
 					
 					
-					if(categorie_verifica!=null && tipi_verifica!=null){
+					if(categorie_verifica!=null && tipi_verifica!=null && eff_ver!=null && eff_ver!=''&& tipo_ver!=null && tipo_ver!=''){
 						//if($("#" +tipi_verifica).length == 0) {						 										
 							
 							var id_tipo=tipi_verifica.substring(0, tipi_verifica.indexOf("_"));
@@ -807,17 +802,18 @@
 									}else{
 										objectdata+="<td></td>";
 									}
-									
+									objectdata+='<td>'+eff_ver+'</td>'+
+									'<td>'+tipo_ver+'</td>';	
 									objectdata+='<td>'+$("#noteVerbale").val()+'</td>'+    
 										'<td><a class="btn customTooltip" title="Click per eliminare la riga" onclick="removeRow(\''+tipi_verifica+'\')"><i class="fa fa-minus"></i></a></td></tr>';
 									
-										
+								
 									if($("#bodytabVerifica").find("tr").size()>0){
 										$('#tabVerifica').DataTable().destroy();	
 									}
 									$("#bodytabVerifica").append(objectdata);	
 										 
-									 var table = $('#tabVerifica').DataTable({language : lang, responsive: true, ordering: false,columnDefs: [{ responsivePriority: 1, targets: 8 }]});
+									 var table = $('#tabVerifica').DataTable({language : lang, responsive: true, ordering: false,columnDefs: [{ responsivePriority: 1, targets: 10 }]});
 									var column =  table.column(4 );
 									column.visible(!column.visible());
 									$('#str_attrezzature').val(str_attrezzature)
@@ -842,7 +838,7 @@
 							$('#empty').html("La coppia Categoria Verifica/Tipo Verifica selezionata è già stata inserita!");
 						}*/
 					}else{						
-						$('#empty').html("Scegli la categoria di verifica e il tipo verifica per procedere!");
+						$('#empty').html("Scegli la categoria di verifica, il tipo gruppo e l'effettuazione verifica per procedere!");
 					}
 				}
       			

@@ -499,12 +499,26 @@ public class ListaAttrezzature extends HttpServlet {
 				
 				AttrezzaturaDTO attrezzatura = new AttrezzaturaDTO();
 				attrezzatura.setId_cliente(Integer.parseInt(id_cliente));				
-				attrezzatura.setId_sede(Integer.parseInt(id_sede.split("_")[0]));							
-				attrezzatura.setNome_cliente(GestioneAnagraficaRemotaBO.getClienteById(id_cliente).getNome());	
+				attrezzatura.setId_sede(Integer.parseInt(id_sede.split("_")[0]));			
+				
+				ClienteDTO cliente = GestioneAnagraficaRemotaBO.getClienteById(id_cliente);
+				
+				attrezzatura.setNome_cliente(cliente.getNome());	
 				if(!id_sede.equals("0")) {
 					attrezzatura.setNome_sede(sede.getDescrizione() +" - "+sede.getIndirizzo()+" - "+sede.getComune()+ "("+sede.getSiglaProvincia()+")");
+					attrezzatura.setIndirizzo(sede.getIndirizzo());
+					attrezzatura.setComune(sede.getComune());
+					attrezzatura.setProvincia(sede.getSiglaProvincia());
+					attrezzatura.setCap(sede.getCap());
+					attrezzatura.setRegione(GestioneAnagraficaRemotaBO.getRegioneFromProvincia(sede.getSiglaProvincia(),session));
 				}else {
 					attrezzatura.setNome_sede("");
+					
+					attrezzatura.setIndirizzo(cliente.getIndirizzo());
+					attrezzatura.setComune(cliente.getCitta());
+					attrezzatura.setProvincia(cliente.getProvincia());
+					attrezzatura.setCap(cliente.getCap());
+					attrezzatura.setRegione(GestioneAnagraficaRemotaBO.getRegioneFromProvincia(cliente.getProvincia(),session));
 				}				
 				attrezzatura.setMatricola_inail(matricola_inail);
 				attrezzatura.setNumero_fabbrica(numero_fabbrica);
@@ -605,12 +619,25 @@ public class ListaAttrezzature extends HttpServlet {
 				
 				AttrezzaturaDTO attrezzatura = GestioneAttrezzatureBO.getAttrezzaturaFromId(Integer.parseInt(id_attrezzatura), session);
 				attrezzatura.setId_cliente(Integer.parseInt(id_cliente));				
-				attrezzatura.setId_sede(Integer.parseInt(id_sede.split("_")[0]));							
-				attrezzatura.setNome_cliente(GestioneAnagraficaRemotaBO.getClienteById(id_cliente).getNome());	
+				attrezzatura.setId_sede(Integer.parseInt(id_sede.split("_")[0]));		
+				
+				ClienteDTO cliente = GestioneAnagraficaRemotaBO.getClienteById(id_cliente);
+				
+				attrezzatura.setNome_cliente(cliente.getNome());	
 				if(!id_sede.equals("0")) {
 					attrezzatura.setNome_sede(sede.getDescrizione() +" - "+sede.getIndirizzo()+" - "+sede.getComune()+ "("+sede.getSiglaProvincia()+")");
+					attrezzatura.setIndirizzo(sede.getIndirizzo());
+					attrezzatura.setComune(sede.getComune());
+					attrezzatura.setProvincia(sede.getSiglaProvincia());
+					attrezzatura.setCap(sede.getCap());
+					attrezzatura.setRegione(GestioneAnagraficaRemotaBO.getRegioneFromProvincia(sede.getSiglaProvincia(),session));
 				}else {
 					attrezzatura.setNome_sede("");
+					attrezzatura.setIndirizzo(cliente.getIndirizzo());
+					attrezzatura.setComune(cliente.getCitta());
+					attrezzatura.setProvincia(cliente.getProvincia());
+					attrezzatura.setCap(cliente.getCap());
+					attrezzatura.setRegione(GestioneAnagraficaRemotaBO.getRegioneFromProvincia(cliente.getProvincia(),session));
 				}				
 				attrezzatura.setMatricola_inail(matricola_inail);
 				attrezzatura.setNumero_fabbrica(numero_fabbrica);
@@ -630,29 +657,45 @@ public class ListaAttrezzature extends HttpServlet {
 				
 				if(data_scadenza_ventennale!=null && !data_scadenza_ventennale.equals("")) {
 					attrezzatura.setData_scadenza_ventennale(format.parse(data_scadenza_ventennale));
+				}else {
+					attrezzatura.setData_scadenza_ventennale(null);
 				}
 				
 				if(data_ver_funz!=null && !data_ver_funz.equals("")) {
 					attrezzatura.setData_verifica_funzionamento(format.parse(data_ver_funz));
+				}else {
+					attrezzatura.setData_verifica_funzionamento(null);
 				}
 				if(data_pross_ver_funz!=null && !data_pross_ver_funz.equals("")) {
 					attrezzatura.setData_prossima_verifica_funzionamento(format.parse(data_pross_ver_funz));	
+				}else {
+					attrezzatura.setData_prossima_verifica_funzionamento(null);
 				}
 				if(data_ver_integrita!=null && !data_ver_integrita.equals("")) {
 					attrezzatura.setData_verifica_integrita(format.parse(data_ver_integrita));	
+				}else {
+					attrezzatura.setData_verifica_integrita(null);
 				}
 				if(data_pross_ver_integrita!=null && !data_pross_ver_integrita.equals("")) {
 					attrezzatura.setData_prossima_verifica_integrita(format.parse(data_pross_ver_integrita));	
+				}else {
+					attrezzatura.setData_prossima_verifica_integrita(null);
 				}
 				if(data_ver_interna!=null && !data_ver_interna.equals("")) {
 					attrezzatura.setData_verifica_interna(format.parse(data_ver_interna));	
+				}else {
+					attrezzatura.setData_verifica_interna(null);
 				}
 				if(data_pross_ver_interna!=null && !data_pross_ver_interna.equals("")) {
 					attrezzatura.setData_prossima_verifica_interna(format.parse(data_pross_ver_interna));	
+				}else {
+					attrezzatura.setData_prossima_verifica_interna(null);
 				}				
 				if(anno_costruzione!=null && !anno_costruzione.equals("")) {
 					attrezzatura.setAnno_costruzione(Integer.parseInt(anno_costruzione));	
-				}				
+				}else {
+					attrezzatura.setAnno_costruzione(1900);
+				}
 				attrezzatura.setFabbricante(fabbricante);
 				attrezzatura.setModello(modello);
 				attrezzatura.setSettore_impiego(settore_impiego);

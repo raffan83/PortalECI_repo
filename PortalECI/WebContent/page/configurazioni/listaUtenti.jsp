@@ -84,6 +84,7 @@
  																		<th>Nominativo</th>
  																		<th>Nome</th>
  																		<th>Cognome</th>
+ 																		<th>Codice Fiscale</th>
  																		<th>Indirizzo</th>
  																		<th>Comune</th>
  																		<th>Cap</th>
@@ -106,6 +107,7 @@
 																			<td>${utente.nominativo}</td>
 																			<td>${utente.nome}</td>
 																			<td>${utente.cognome}</td>
+																			<td>${utente.cf }</td>
 																			<td>${utente.indirizzo}</td>
 																			<td>${utente.comune}</td>
 																			<td>${utente.cap}</td>
@@ -115,7 +117,7 @@
 																			<td>
 																				<c:if test="${user.checkPermesso('UPD_UTENTE')}">
 																					 <%-- <a href="#" onClick="modalModificaUtente('${utente.id}','${utente.codice}','${utente.user}','${utente.nome}','<c:out value="${fn:escapeXml(utente.cognome)}" />','${utente.indirizzo}','${utente.comune}','${utente.cap}','${utente.EMail}','${utente.telefono}','${utente.company.id}')" class="btn btn-warning "><i class="fa fa-edit"></i></a> --%> 
-																					 <a href="#" onClick="modalModificaUtente('${utente.id}','${utente.codice}','${utente.user}','${utente.nome}','${utente.cognome.replace('\'', '&prime;') }','${utente.indirizzo.replace('\'', '&prime;')}','${utente.comune.replace('\'', '&prime;')}','${utente.cap}','${utente.EMail}','${utente.telefono}','${utente.company.id}','${utente.qualifica }')" class="btn btn-warning "><i class="fa fa-edit"></i></a>
+																					 <a href="#" onClick="modalModificaUtente('${utente.id}','${utente.codice}','${utente.user}','${utente.nome}','${utente.cognome.replace('\'', '&prime;') }','${utente.indirizzo.replace('\'', '&prime;')}','${utente.comune.replace('\'', '&prime;')}','${utente.cap}','${utente.EMail}','${utente.telefono}','${utente.company.id}','${utente.qualifica }','${utente.cf }')" class="btn btn-warning "><i class="fa fa-edit"></i></a>
 																					
 																					
 																				</c:if> 
@@ -196,6 +198,13 @@
     															</div>
     														</div>
     
+    														<div class="form-group">
+        														<label for="modcf" class="col-sm-2 control-label">Codice Fiscale:</label>
+        														<div class="col-sm-10">
+            	          											<input class="form-control required" id="cf" type="text" name="cf"  value="" />
+    															</div>
+    														</div>
+    														
     														<div class="form-group">
         														<label for="indirizzo" class="col-sm-2 control-label">Indirizzo:</label>
         														<div class="col-sm-10">
@@ -315,6 +324,13 @@
         														<label for="modcognome" class="col-sm-2 control-label">Cognome:</label>
         														<div class="col-sm-10">
             	          											<input class="form-control required" id="modcognome" type="text" name="modcognome"  value="" />
+    															</div>
+    														</div>
+    														
+    														<div class="form-group">
+        														<label for="modcf" class="col-sm-2 control-label">Codice Fiscale:</label>
+        														<div class="col-sm-10">
+            	          											<input class="form-control required" id="modcf" type="text" name="modcf"  value="" />
     															</div>
     														</div>
 	    

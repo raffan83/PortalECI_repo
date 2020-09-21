@@ -1,16 +1,20 @@
 package it.portalECI.bo;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.FileReader;
 import java.io.InputStream;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 import org.apache.poi.ss.usermodel.BorderStyle;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellStyle;
+import org.apache.poi.ss.usermodel.CellType;
 import org.apache.poi.ss.usermodel.FillPatternType;
 import org.apache.poi.ss.usermodel.Font;
 import org.apache.poi.ss.usermodel.HorizontalAlignment;
@@ -24,11 +28,16 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.hibernate.Session;
 
 import TemplateReport.PivotTemplate;
+import it.portalECI.DAO.GestioneCommesseDAO;
 import it.portalECI.DAO.SessionFacotryDAO;
+import it.portalECI.DTO.AttivitaMilestoneDTO;
 import it.portalECI.DTO.ClienteDTO;
+import it.portalECI.DTO.CommessaDTO;
+import it.portalECI.DTO.DescrizioneGruppoAttrezzaturaDTO;
 import it.portalECI.DTO.UtenteDTO;
 import it.portalECI.DTO.VerbaleDTO;
 import it.portalECI.Util.Costanti;
+import it.portalECI.Util.Utility;
 public class CreateScadenzarioInail {
 	
 	public CreateScadenzarioInail(List<VerbaleDTO> listaVerbali,String dateFom, String dateTo, Session session) throws Exception  {
@@ -39,13 +48,12 @@ public class CreateScadenzarioInail {
 
 	
 	private void build(List<VerbaleDTO> listaVerbali,String dateFom, String dateTo, Session session) throws Exception {
-		
+
 		
 		 InputStream file = PivotTemplate.class.getResourceAsStream("template_scadenzario_inail.xlsx");
 
 
-         XSSFWorkbook workbook = new XSSFWorkbook(file);
-         
+         XSSFWorkbook workbook = new XSSFWorkbook(file);         
             
 		 XSSFSheet sheet0 = workbook.createSheet("Dati");
 		 
@@ -62,8 +70,6 @@ public class CreateScadenzarioInail {
 		 sheet0.setMargin(Sheet.BottomMargin, 0.39);
 		 sheet0.setMargin(Sheet.HeaderMargin, 0.157);
 		 sheet0.setMargin(Sheet.FooterMargin, 0.39);		
-		// sheet0.getPrintSetup().setPaperSize(PrintSetup.A4_PAPERSIZE);
-		 //sheet0.getPrintSetup().setScale((short)85);
 		 Font headerFont = workbook.createFont();
 	     headerFont.setBold(true);
 	     headerFont.setFontHeightInPoints((short) 12);
@@ -144,6 +150,7 @@ public class CreateScadenzarioInail {
 		 sheet0.getRow(0).getCell(9).setCellValue("Dati sempre obbligatori");		 
 		 
 		 sheet0.addMergedRegion(CellRangeAddress.valueOf("V1:X1"));
+		 
 		 sheet0.getRow(0).getCell(21).setCellValue("Dati obbligatori per attrezzature GVR vedi anche (Informazioni)");		 
 		 
 		 sheet0.getRow(0).getCell(24).setCellValue("Dato obbligatorio");
@@ -152,17 +159,13 @@ public class CreateScadenzarioInail {
 		 
 		 sheet0.addMergedRegion(CellRangeAddress.valueOf("AA1:AC1"));
 		 
-		 sheet0.getRow(0).getCell(26).setCellValue("Dati obbligatori");
-		 
+		 sheet0.getRow(0).getCell(26).setCellValue("Dati obbligatori");		 
 		 
 		 sheet0.getRow(0).getCell(29).setCellValue("Dato opzionale");		 
 		 
 		 sheet0.getRow(0).getCell(30).setCellValue("Dati obbligatori");
 		 
-		 sheet0.addMergedRegion(CellRangeAddress.valueOf("AE1:AT1"));
-		 
-		 
-		 
+		 sheet0.addMergedRegion(CellRangeAddress.valueOf("AE1:AT1"));		 
 		 
 		 sheet0.getRow(0).getCell(46).setCellValue("Dato obbligatorio");
 		 
@@ -221,47 +224,72 @@ public class CreateScadenzarioInail {
 			 rowTitle.getCell(j).setCellStyle(titleStyle);
 		 }
 	     	        
-	     	        
+	     int row_index = 0;	        
 	     for (int i = 0; i<listaVerbali.size();i++) {
 	    	 
 	    	 if(listaVerbali.get(i).getAttrezzatura()!=null) {
 	    		 
-	    		 Row row = sheet0.createRow(2+i);
+	    		 
+	    		 
+	    		 Row row = sheet0.createRow(2+row_index);
 	    		 
 	    		 int col = 0;
 	    		 
 	    		 Cell cell = row.createCell(col);
 	    		 
-	    		 cell.setCellValue("");
-	    		 col++;
-	    		 cell = row.createCell(col);
-	    		 if(listaVerbali.get(i).getAttrezzatura()!=null && listaVerbali.get(i).getAttrezzatura().getMatricola_inail().split("/").length>0) {
-						cell.setCellValue(listaVerbali.get(i).getAttrezzatura().getMatricola_inail().split("/")[0]);
+	    		 if(listaVerbali.get(i).getEffettuazione_verifica()!=0) {
+	    			 cell.setCellValue(listaVerbali.get(i).getEffettuazione_verifica());
 	    		 }else {
-						cell.setCellValue("");
+	    			 cell.setCellValue("");	 
 	    		 }
 	    		 
 	    		 col++;
 	    		 cell = row.createCell(col);
+	    		 
+	    		 
+	    		 String matr_anno ="";
+	    		 String matr_cod_att = "";
+	    		 String matr_numero = "";
+	    		 String matr_prov ="";
+	    		 
+	    		 
+	    		 if(listaVerbali.get(i).getAttrezzatura()!=null && listaVerbali.get(i).getAttrezzatura().getMatricola_inail().split("/").length>0) {
+												
+						matr_anno = listaVerbali.get(i).getAttrezzatura().getMatricola_inail().split("/")[0];
+	    		 }
+				
+	    		 cell.setCellValue(matr_anno);
+	    		
+	    		 
+	    		 col++;
+	    		 cell = row.createCell(col);
 	    		 if(listaVerbali.get(i).getAttrezzatura()!=null && listaVerbali.get(i).getAttrezzatura().getMatricola_inail().split("/").length>1) {
-						cell.setCellValue(listaVerbali.get(i).getAttrezzatura().getMatricola_inail().split("/")[1]);
-					}else {
-						cell.setCellValue("");
+	    			 
+						matr_cod_att = listaVerbali.get(i).getAttrezzatura().getMatricola_inail().split("/")[1];
+						
 					}
+	    		 
+	    		 cell.setCellValue(matr_cod_att);
+	    		 
 	    		 col++;
 	    		 cell = row.createCell(col);	
 					if(listaVerbali.get(i).getAttrezzatura()!=null && listaVerbali.get(i).getAttrezzatura().getMatricola_inail().split("/").length>2) {
-						cell.setCellValue(listaVerbali.get(i).getAttrezzatura().getMatricola_inail().split("/")[2]);
-					}else {
-						cell.setCellValue("");
+						
+						matr_numero = listaVerbali.get(i).getAttrezzatura().getMatricola_inail().split("/")[2];
+						
 					}
+					
+					cell.setCellValue(matr_numero);
+					
 					 col++;
 		    		 cell = row.createCell(col);	
 					if(listaVerbali.get(i).getAttrezzatura()!=null && listaVerbali.get(i).getAttrezzatura().getMatricola_inail().split("/").length>3) {
-						cell.setCellValue(listaVerbali.get(i).getAttrezzatura().getMatricola_inail().split("/")[3]);
-					}else {
-						cell.setCellValue("");
+						
+						matr_prov = listaVerbali.get(i).getAttrezzatura().getMatricola_inail().split("/")[3];
+						
 					}
+					
+					cell.setCellValue(matr_prov);
 					
 					 col++;
 		    		 cell = row.createCell(col);
@@ -272,19 +300,113 @@ public class CreateScadenzarioInail {
 					}
 					 col++;
 		    		 cell = row.createCell(col);
-					cell.setCellValue(""); //ESITO VERIFICA
+		    		 
+		    		 String esito ="";
+		    		 String sospensione = "";
+		    		 
+		    		 if(listaVerbali.get(i).getEsito()!=null && listaVerbali.get(i).getEsito().equals("P")) {
+		    			 esito = "Positivo";
+		    		 }else if(listaVerbali.get(i).getEsito()!=null && listaVerbali.get(i).getEsito().equals("N")) {
+		    			 esito = "Negativo";
+		    		 }else if(listaVerbali.get(i).getEsito()!=null && listaVerbali.get(i).getEsito().equals("S")) {
+		    			 esito = "Sospeso";
+		    			 sospensione = listaVerbali.get(i).getDescrizione_sospensione();
+		    		 }
+		    		 
+					cell.setCellValue(esito); //ESITO VERIFICA
 					 col++;
 		    		 cell = row.createCell(col);
-					cell.setCellValue(""); //TIPO VERIFICA
+		    		 
+		    		 String tipo_verifica = "";
+		    		 
+		    		 if(listaVerbali.get(i).getTipo_verifica()!=0) {
+		    			 
+		    			 if(listaVerbali.get(i).getAttrezzatura().getTipo_attivita().equals("GVR")) {
+		    				 
+		    				 if(listaVerbali.get(i).getTipo_verifica()<3) {
+		    					 
+		    					 tipo_verifica = "1";
+		    				 }else {
+		    					 tipo_verifica = "2"; //TIPO VERIFICA
+		    				 }		    				 
+		    				 
+		    			 }else {
+		    				 
+		    				 tipo_verifica = ""+listaVerbali.get(i).getTipo_verifica();
+		    				 
+		    			 }
+		    		 }
+					
+		    		 cell.setCellValue(tipo_verifica); //TIPO VERIFICA	 
+		    		 
+		    		 
 					 col++;
 		    		 cell = row.createCell(col);
-					cell.setCellValue(""); //SOSPENSIONE
+					cell.setCellValue(sospensione); //SOSPENSIONE
 					 col++;
 		    		 cell = row.createCell(col);
-					cell.setCellValue(""); //DATA RILASCIO
+		    		 
+		    		 Date data_rilascio;
+		    		 Date data_pvp;
+		    		 
+		    		 ArrayList<Date> lista_date = new ArrayList<Date>();
+		    		 ArrayList<Date> lista_date_pvp = new ArrayList<Date>();
+		    		 
+		    		 
+		    		 if(listaVerbali.get(i).getData_verifica()!=null) {
+		    			 lista_date.add(listaVerbali.get(i).getData_verifica());
+		    		 }
+		    		 if(listaVerbali.get(i).getData_verifica_integrita()!=null) {
+		    			 lista_date.add(listaVerbali.get(i).getData_verifica_integrita());
+		    		 }
+		    		 if(listaVerbali.get(i).getData_verifica_interna()!=null) {
+		    			 lista_date.add(listaVerbali.get(i).getData_verifica_interna());
+		    		 }
+		    		 
+		    		 
+		    		 if(listaVerbali.get(i).getData_prossima_verifica()!=null) {
+		    			 lista_date_pvp.add(listaVerbali.get(i).getData_prossima_verifica());
+		    		 }
+		    		 if(listaVerbali.get(i).getData_prossima_verifica_integrita()!=null) {
+		    			 lista_date_pvp.add(listaVerbali.get(i).getData_prossima_verifica_integrita());
+		    		 }
+		    		 if(listaVerbali.get(i).getData_prossima_verifica_interna()!=null) {
+		    			 lista_date_pvp.add(listaVerbali.get(i).getData_prossima_verifica_interna());
+		    		 }
+		    		 
+		    		 data_rilascio = Utility.getMostRecentDate(lista_date);
+		    		 data_pvp = Utility.getMostRecentDate(lista_date_pvp);
+		    		 
+		    		 SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");		    		 
+		    	
+		    		 Date date =null; 
+		    				 
+		    		 if(data_rilascio!=null) {
+		    			 date = df.parse(df.format(data_rilascio));
+			    		 
+			    		 df.applyPattern("dd/MM/yyyy");		    		
+			    		 
+						 cell.setCellValue(""+df.format(date)); //DATA RILASCIO
+		    		 }else {
+		    			 cell.setCellValue("");
+		    		 }
+		    				 
 					 col++;
 		    		 cell = row.createCell(col);
-					cell.setCellValue(""); //DATA PROSSIMA VERIFICA PERIODICA
+		    		 
+		    		 
+		    		 if(data_pvp!=null) {
+		    			 df.applyPattern("yyyy-MM-dd");	
+			    		 
+			    		 date = df.parse(df.format(data_pvp)); 
+			    		 
+			    		 df.applyPattern("dd/MM/yyyy");		
+			    		 
+						 cell.setCellValue(""+df.format(date)); //DATA PROSSIMA VERIFICA PERIODICA
+		    		 }else {
+		    			 cell.setCellValue("");
+		    		 }
+		    		 
 					 col++;
 		    		 cell = row.createCell(col);
 					
@@ -327,7 +449,12 @@ public class CreateScadenzarioInail {
 					}
 					 col++;
 		    		 cell = row.createCell(col);
-					cell.setCellValue(""); //DL REGIONE
+		    		 if(cliente!=null && cliente.getProvincia()!=null) {	
+		    			 cell.setCellValue(GestioneAnagraficaRemotaBO.getRegioneFromProvincia(cliente.getProvincia(), session)); //DL REGIONE	 
+		    		 }else {
+		    			 cell.setCellValue("");
+		    		 }
+					
 					 col++;
 		    		 cell = row.createCell(col);
 					if(cliente!=null && cliente.getCf()!=null) {						
@@ -366,7 +493,17 @@ public class CreateScadenzarioInail {
 					 col++;
 		    		 cell = row.createCell(col);
 				
-					cell.setCellValue(""); //TIPO VERIFICA GVR
+		    		 
+		    		 String tipo_ver_gvr="";
+		    		 
+		    		 if(listaVerbali.get(i).getTipo_verifica_gvr()==1) {
+		    			 tipo_ver_gvr = "Verifica di funzionamento";
+		    		 }else if(listaVerbali.get(i).getTipo_verifica_gvr()==2) {
+		    			 tipo_ver_gvr = "Verifica di integrità";
+		    		 }else if(listaVerbali.get(i).getTipo_verifica_gvr()==3) {
+		    			 tipo_ver_gvr = "Verifica interna";
+		    		 }
+					cell.setCellValue(tipo_ver_gvr); //TIPO VERIFICA GVR
 					
 					 col++;
 		    		 cell = row.createCell(col);				
@@ -431,51 +568,139 @@ public class CreateScadenzarioInail {
 					
 					 col++;
 		    		 cell = row.createCell(col);
-					cell.setCellValue(""); //CF VERIFICATORE
+		    		 
+		    		 String cf = "";
+		    		 
+		    		 if(listaVerbali.get(i).getIntervento().getTecnico_verificatore().getCf()!=null) {
+		    			 cf = listaVerbali.get(i).getIntervento().getTecnico_verificatore().getCf(); 
+		    		 }
+		    		 
+					cell.setCellValue(cf); //CF VERIFICATORE
 					
 					 col++;
-		    		 cell = row.createCell(col);
-					cell.setCellValue(""); //TARIFFA
-					 col++;
-		    		 cell = row.createCell(col);
-					cell.setCellValue(""); //TARIFFA REGOLARE
-					 col++;
-		    		 cell = row.createCell(col);
-					cell.setCellValue(""); //CONTRIBUTO
-					 col++;
-		    		 cell = row.createCell(col);
-					cell.setCellValue(""); // ATTR INDIRIZZO
-					 col++;
-		    		 cell = row.createCell(col);
-					cell.setCellValue(""); // ATTR COMUNE
-					 col++;
-		    		 cell = row.createCell(col);
-					cell.setCellValue(""); // ATTR CAP
-					 col++;
-		    		 cell = row.createCell(col);
-					cell.setCellValue(""); // ATTR pROVINCIA
-					 col++;
-		    		 cell = row.createCell(col);
-					cell.setCellValue(""); // ATTR REGIONE
-					 col++;
-		    		 cell = row.createCell(col);
-					cell.setCellValue(""); // FATTURA
-					 col++;
-		    		 cell = row.createCell(col);
-					cell.setCellValue(""); //VERBALE
+		    		 cell = row.createCell(col);		    		 
+		    		 
+		    		 if(listaVerbali.get(i).getTipo_verifica()!=0) {
+		    			 
+		    		 String articolo = GestioneAttrezzatureBO.getArticoloFromDescrizione(listaVerbali.get(i).getAttrezzatura().getDescrizione(), listaVerbali.get(i).getTipo_verifica(), session);
+		    		 	    		 		    		 
+		    		 String tariffe = GestioneCommesseDAO.getTariffeFromArticolo(articolo, listaVerbali.get(i).getIntervento().getIdCommessa());
+		    		 
+		    		 if(!tariffe.equals("") && tariffe.split(";").length>1) {
+		    			 
+			    		 String tariffa_app = tariffe.split(";")[0];
+			    		 String tariffa_regolare = tariffe.split(";")[1];
+			    		 
+			    		 cell.setCellValue(new Double(tariffa_app)); //TARIFFA
+						 col++;
+			    		 cell = row.createCell(col);
+						cell.setCellValue(new Double(tariffa_regolare)); //TARIFFA REGOLARE
+						
+						 col++;
+			    		 cell = row.createCell(col);
+			    		 
+			    		 Double contributo = 0.0;
+			    		 
+			    		 if(listaVerbali.get(i).getEffettuazione_verifica()==1) {
+			    			 
+			    			 contributo = new Double(tariffa_regolare)*0.15;
+			    			 
+			    		 }else if(listaVerbali.get(i).getEffettuazione_verifica()==2){
+			    			 contributo = new Double(tariffa_regolare)*0.5;
+			    		 }
+			    		 
+						cell.setCellValue(contributo); //CONTRIBUTO
+		    		 
+		    		 }else {
+		    			 cell.setCellValue(""); //TARIFFA
+						 col++;
+			    		 cell = row.createCell(col);
+						cell.setCellValue(""); //TARIFFA REGOLARE
+						 col++;
+			    		 cell = row.createCell(col);
+						cell.setCellValue(""); //CONTRIBUTO
+		    		 }
+		    		
+		    		 
+		    		 }else {
+		    			 
+		    			 cell.setCellValue(""); //TARIFFA
+						 col++;
+			    		 cell = row.createCell(col);
+						cell.setCellValue(""); //TARIFFA REGOLARE
+						 col++;
+			    		 cell = row.createCell(col);
+						cell.setCellValue(""); //CONTRIBUTO
+		    			 
+		    		 }
+					
 					 col++;
 		    		 cell = row.createCell(col);
 		    		 
+		    		 if(listaVerbali.get(i).getAttrezzatura().getComune_div()!=null) {
+		    			 cell.setCellValue(listaVerbali.get(i).getAttrezzatura().getIndirizzo_div()); // ATTR INDIRIZZO
+						 col++;
+			    		 cell = row.createCell(col);
+						cell.setCellValue(listaVerbali.get(i).getAttrezzatura().getComune_div()); // ATTR COMUNE
+						 col++;
+			    		 cell = row.createCell(col);
+						cell.setCellValue(listaVerbali.get(i).getAttrezzatura().getCap_div()); // ATTR CAP
+						 col++;
+			    		 cell = row.createCell(col);
+						cell.setCellValue(listaVerbali.get(i).getAttrezzatura().getProvincia_div()); // ATTR PROVINCIA
+						 col++;
+			    		 cell = row.createCell(col);
+						cell.setCellValue(listaVerbali.get(i).getAttrezzatura().getRegione_div()); // ATTR REGIONE 
+		    		 }else {
+		    			 cell.setCellValue(listaVerbali.get(i).getAttrezzatura().getIndirizzo()); // ATTR INDIRIZZO
+						 col++;
+			    		 cell = row.createCell(col);
+						cell.setCellValue(listaVerbali.get(i).getAttrezzatura().getComune()); // ATTR COMUNE
+						 col++;
+			    		 cell = row.createCell(col);
+						cell.setCellValue(listaVerbali.get(i).getAttrezzatura().getCap()); // ATTR CAP
+						 col++;
+			    		 cell = row.createCell(col);
+						cell.setCellValue(listaVerbali.get(i).getAttrezzatura().getProvincia()); // ATTR PROVINCIA
+						 col++;
+			    		 cell = row.createCell(col);
+						cell.setCellValue(listaVerbali.get(i).getAttrezzatura().getRegione()); // ATTR REGIONE 
+		    		 }
 					
-					cell.setCellValue(""); //SCHEDA TECNICA
+		    		 
+		    		 df.applyPattern("yyyy-MM-dd");	
+		    		 
+		    		 date = df.parse(df.format(data_pvp)); 
+		    		 
+		    		 df.applyPattern("ddMMyyyy");		
+		    		 
+					 col++;
+		    		 cell = row.createCell(col);
+					cell.setCellValue("fattura "+matr_anno+matr_cod_att+matr_numero+matr_prov+tipo_verifica+df.format(date)); // FATTURA
+					 col++;
+		    		 cell = row.createCell(col);		    		 
+		    				  	    		 
+		    		 
+					cell.setCellValue("verbale "+matr_anno+matr_cod_att+matr_numero+matr_prov+tipo_verifica+df.format(date)); //VERBALE
+					 col++;
+		    		 cell = row.createCell(col);
+		    		 
+					if(listaVerbali.get(i).getSchedaTecnica()!=null) {
+						cell.setCellValue("scheda tecnica "+matr_anno+matr_cod_att+matr_numero+matr_prov+tipo_verifica+df.format(date)); //SCHEDA TECNICA
+					}else {
+						cell.setCellValue("scheda tecnica non rilasciata"); //SCHEDA TECNICA	
+					}
+					
 					
 					 col++;
 		    		 cell = row.createCell(col);
-					cell.setCellValue(""); // USER INSERIMENTO
+					cell.setCellValue("ecientespa027"); // USER INSERIMENTO
 					
 					 col++;
 		    		 cell = row.createCell(col);
-					cell.setCellValue(""); // COSTRUTTORE RAG SOCIALE
+					cell.setCellValue(listaVerbali.get(i).getAttrezzatura().getFabbricante()); // COSTRUTTORE RAG SOCIALE
+					
+					row_index++;
 	    	 }
 	    		 
 		}
@@ -522,8 +747,8 @@ public class CreateScadenzarioInail {
 		
 		UtenteDTO user = GestioneUtenteBO.getUtenteById(""+11, session);
 		
-		String dateFrom = "2020-07-01";
-		String dateTo = "2020-07-23";		
+		String dateFrom = "2020-09-01";
+		String dateTo = "2020-09-23";		
 		
 		
 		

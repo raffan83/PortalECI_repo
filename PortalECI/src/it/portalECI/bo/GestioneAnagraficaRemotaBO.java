@@ -6,9 +6,11 @@ import java.util.HashMap;
 import java.util.List;
 
 import org.hibernate.HibernateException;
+import org.hibernate.Session;
 
 import it.portalECI.DAO.GestioneAnagraficaRemotaDAO;
 import it.portalECI.DTO.ClienteDTO;
+import it.portalECI.DTO.ComuneDTO;
 import it.portalECI.DTO.SedeDTO;
 
 public class GestioneAnagraficaRemotaBO {
@@ -92,6 +94,30 @@ public class GestioneAnagraficaRemotaBO {
 	public static HashMap<Integer, String> getListaClientiAll() throws Exception
 	{
 		return GestioneAnagraficaRemotaDAO.getListaClientiAll();
+	}
+
+
+	public static ArrayList<ComuneDTO> getListaComuni(Session session) {
+		
+		return GestioneAnagraficaRemotaDAO.getListaComuni(session);
+	}
+
+
+	public static ArrayList<ComuneDTO> getListaComuniFromCAP(String cap, Session session) {
+		
+		return GestioneAnagraficaRemotaDAO.getListaComuniFromCAP(cap, session);
+	}
+
+
+	public static ComuneDTO getComuneFromId(int comune, Session session) {
+	
+		return GestioneAnagraficaRemotaDAO.getComuneFromId(comune, session);
+	}
+
+
+	public static String getRegioneFromProvincia(String siglaProvincia, Session session) {
+
+		return GestioneAnagraficaRemotaDAO.getRegioneFromProvincia(siglaProvincia,session);
 	}
 	
 

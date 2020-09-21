@@ -872,13 +872,8 @@ function modalModificaAttrezzatura(id_attrezzatura, matricola_inail, numero_fabb
 	$('#numero_fabbrica_mod').val(numero_fabbrica);
 	$('#tipo_attivita_mod').val(tipo_attivita);
 	$('#tipo_attivita_mod').change();
-	$('#descrizione_mod').val(tipo_attivita+"_"+descrizione+"_"+id_specifica);
-	if(id_specifica!=null && id_specifica!=''){
-		$('#descrizione_mod').val(tipo_attivita+"_"+descrizione+"_"+id_specifica);
-	}else{
-		$('#descrizione_mod').val(tipo_attivita+"_"+descrizione);	
-	}
-	//$('#descrizione_mod').change();
+	//$('#descrizione_mod').val(tipo_attivita+"_"+descrizione+"_"+id_specifica);
+
 	$('#cliente_mod').val(id_cliente);
 	$('#cliente_mod').change();
 	if(id_sede!=0){
@@ -926,14 +921,7 @@ function modalModificaAttrezzatura(id_attrezzatura, matricola_inail, numero_fabb
 	});
 	
 
-	$('#tipo_attrezzatura_mod').val(tipo_attrezzatura);
-	$('#tipo_attrezzatura_mod').change();
 
-	$('#tipo_attrezzatura_gvr_mod').val(tipo_attrezzatura_gvr);
-	$('#tipo_attrezzatura_gvr_mod').change();
-	
-	$('#sogg_messa_serv_GVR_mod').val(sogg_messa_serv_GVR);
-	$('#sogg_messa_serv_GVR_mod').change();
 	
 	$('#n_panieri_idroestrattori_mod').val(n_panieri_idroestrattori);
 	
@@ -951,6 +939,25 @@ function modalModificaAttrezzatura(id_attrezzatura, matricola_inail, numero_fabb
 		$('#rendi_obsoleta').hide();
 		$('#rendi_non_obsoleta').show();
 	}
+	
+	if(id_specifica!=null && id_specifica!=''){
+		$('#descrizione_mod').val(tipo_attivita+"_"+descrizione+"_"+id_specifica);
+	}else{
+		$('#descrizione_mod').val(tipo_attivita+"_"+descrizione);	
+	}
+	$('#descrizione_mod').change();
+	
+	
+	$('#tipo_attrezzatura_mod').val(tipo_attrezzatura);
+	$('#tipo_attrezzatura_mod').change();
+
+	$('#tipo_attrezzatura_gvr_mod').val(tipo_attrezzatura_gvr);
+	$('#tipo_attrezzatura_gvr_mod').change();
+	
+	$('#sogg_messa_serv_GVR_mod').val(sogg_messa_serv_GVR);
+	$('#sogg_messa_serv_GVR_mod').change();
+	
+	$('#id_specifica_mod').val(id_specifica);
 	
 	$('#modalModificaAttrezzatura').modal();
 	
@@ -1253,7 +1260,7 @@ $("#tipo_attivita_mod").change(function() {
 	 
 	  $('#descrizione_mod').html(opt);
 
-		$("#descrizione_mod").change();  
+		$('#descrizione_mod').change();  
 		
 		var settore_opt = [];
 		

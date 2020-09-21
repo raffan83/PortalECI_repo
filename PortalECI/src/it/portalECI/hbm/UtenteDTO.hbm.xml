@@ -82,5 +82,9 @@
         <property name="qualifica" type="java.lang.String">
             <column name="qualifica" />
         </property>
+        
+        <property name="cf" type="java.lang.String">
+            <column name="cf" />
+        </property>
     </class>
 </hibernate-mapping>

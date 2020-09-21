@@ -45,6 +45,7 @@
    		
    		<mapping class="StrumentoVerificatoreDTO" package="it.portalECI.DTO" resource="it/portalECI/hbm/StrumentoVerificatoreDTO.hbm.xml"/>
    		
-   		
+   		<mapping class="ComuneDTO" package="it.portalECI.DTO" resource="it/portalECI/hbm/ComuneDTO.hbm.xml"/>
+   		<mapping class="ProvinciaDTO" package="it.portalECI.DTO" resource="it/portalECI/hbm/ProvinciaDTO.hbm.xml"/>
  	</session-factory>
 </hibernate-configuration>

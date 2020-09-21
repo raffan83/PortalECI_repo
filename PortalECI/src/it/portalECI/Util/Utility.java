@@ -152,4 +152,28 @@ public class Utility extends HttpServlet {
 		return date;
 	}
 	
+	public static Date getMostRecentDate(ArrayList<Date> lista_date) {
+		
+		Date today = new Date();
+		Date ret = null;
+		long min = 0;
+		if(lista_date.size()>0) {
+		 min = Math.abs(today.getTime()-lista_date.get(0).getTime());
+		 ret = lista_date.get(0);
+		}
+		for (int i = 1; i<lista_date.size();i++) {
+			long diff =  Math.abs(today.getTime()-lista_date.get(i).getTime());
+			
+			if(diff<min) {
+				min = diff;
+				ret = lista_date.get(i);
+			}
+		}
+
+		
+		return ret;
+		
+		
+	}
+	
 }

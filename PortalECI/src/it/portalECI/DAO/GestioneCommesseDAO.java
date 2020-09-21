@@ -93,6 +93,15 @@ public class GestioneCommesseDAO {
 			"LEFT JOIN [BTOMEN_CRESCO_DATI].[dbo].[BWT_ANAGEN_INDIR] AS d on a.K2_ANAGEN_INDIR_UTILIZ=d.K2_ANAGEN_INDIR AND a.ID_ANAGEN_UTILIZ=d.ID_ANAGEN "+
 			"LEFT JOIN [BTOMEN_CRESCO_DATI].[dbo].[BWT_ANAGEN] AS e on a.ID_ANAGEN_UTILIZ=e.ID_ANAGEN "+
 			"WHERE ID_ANAGEN_COMM=? AND (TB_CATEG_COM='VIE' OR TB_CATEG_COM='VAL')  AND DT_COMMESSA BETWEEN ? AND ?";
+	
+	private static String queryTariffe = "SELECT a.[IMPORTO_UNIT],b.PREZZO " + 
+			"  FROM [BTOMEN_CRESCO_DATI].[dbo].[BWT_COMMESSA_AVANZ] a JOIN " + 
+			"  (SELECT ID_ANAART, [PREZZO]" + 
+			"      ,DT_INIZIO_VAL" + 
+			"  FROM [BTOMEN_CRESCO_DATI].[dbo].[PJT_LISTINO_CLIFOR] " + 
+			"  where DT_INIZIO_VAL=( select max(DT_INIZIO_VAL) from [BTOMEN_CRESCO_DATI].[dbo].[PJT_LISTINO_CLIFOR] where ID_ANAART=?)" + 
+			"  AND ID_ANAART=?) b on a.ID_ANAART=b.ID_ANAART" + 
+			"  where tb_tipo_mile='MILE' AND ID_COMMESSA= ? and a.ID_ANAART = ?";
 
 	/*public static ArrayList<CommessaDTO> getListaCommesse(CompanyDTO company, String categoria, UtenteDTO user) throws Exception {
 		Connection con=null;
@@ -647,5 +656,40 @@ public class GestioneCommesseDAO {
 		}
 		return listaCommesse;
 	}
+	
+	
+	
+	public static String getTariffeFromArticolo(String articolo, String commessa) throws Exception {
+		
+		Connection con=null;
+		
+		String result="";
+		try {
+			
+			con =ManagerSQLServer.getConnectionSQL();
+			
+			
+				
+				PreparedStatement pst= con.prepareStatement(queryTariffe);
+				pst.setString(1, articolo);
+				pst.setString(2, articolo);
+				pst.setString(3, commessa);
+				pst.setString(4, articolo);
+				
+				ResultSet rs =pst.executeQuery();
+				
+								
+				while(rs.next()){
+					result = rs.getString(1)+";"+rs.getString(2);
+					
+				}				
+			
+		} catch (Exception e) {
+			throw e;
+		}
+		return result;
+	}
+	
+	
 	
 }

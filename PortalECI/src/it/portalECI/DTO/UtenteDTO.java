@@ -39,6 +39,7 @@ public class UtenteDTO implements Serializable {
 	private int trasversale = 0;
 	private String resetToken = "";
 	private String qualifica = "";
+	private String cf="";
 	
 	private Set<RuoloDTO> listaRuoli = new HashSet<RuoloDTO>(0);
 	private Set<CategoriaVerificaDTO> listaCategorieVerifica = new HashSet<CategoriaVerificaDTO>(0);
@@ -352,5 +353,13 @@ public class UtenteDTO implements Serializable {
 
 	public void setListaStrumentiVerificatore(Set<StrumentoVerificatoreDTO> listaStrumentiVerificatore) {
 		this.listaStrumentiVerificatore = listaStrumentiVerificatore;
+	}
+
+	public String getCf() {
+		return cf;
+	}
+
+	public void setCf(String cf) {
+		this.cf = cf;
 	}
 }

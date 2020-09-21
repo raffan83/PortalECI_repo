@@ -81,6 +81,7 @@ public class GestioneUtenti extends HttpServlet {
 	    	 	String email = request.getParameter("email");
 	    	 	String telefono = request.getParameter("telefono");
 	    	 	String companyId = request.getParameter("company");
+	    	 	String cf = request.getParameter("cf");
 
 	    	 	CompanyDTO company = GestioneCompanyBO.getCompanyById(companyId, session);
 	    	 			    	 			
@@ -99,6 +100,7 @@ public class GestioneUtenti extends HttpServlet {
 	    	 	utente.setCompany(company);
 	    	 	utente.setNominativo(nome+" "+cognome.replace("\u2032", "'"));
 	    	 	utente.setTipoutente("2");
+	    	 	utente.setCf(cf);
 	    	 	//GestioneUtenteBO.save(utente,session);
 
 	    	 	int success = GestioneUtenteBO.saveUtente(utente, action, session);
@@ -137,6 +139,7 @@ public class GestioneUtenti extends HttpServlet {
 	    		String EMail = request.getParameter("email");
 	    		String telefono = request.getParameter("telefono");
 	    		String companyId = request.getParameter("company");
+	    		String cf = request.getParameter("cf");
 	    	 				
 	    	 			
 	    		UtenteDTO utente = GestioneUtenteBO.getUtenteById(id, session);
@@ -178,7 +181,8 @@ public class GestioneUtenti extends HttpServlet {
 	    		}
 	    			
 	    		utente.setNominativo(utente.getNome()+" "+utente.getCognome());
-	    	 			
+	    	 	
+	    		utente.setCf(cf);
 	    		if(companyId != null && !companyId.equals("")){
 	    			CompanyDTO company = GestioneCompanyBO.getCompanyById(companyId, session);
 	    			utente.setCompany(company);

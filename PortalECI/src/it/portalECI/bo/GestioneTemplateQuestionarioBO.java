@@ -200,7 +200,13 @@ public class GestioneTemplateQuestionarioBO {
 		html = html.replaceAll("\\$\\{STR_SCADENZA\\}", "SCADENZA TARATURA");
 		html = html.replaceAll("\\$\\{STR_ULT_TAR\\}", "ULTIMA TARATURA");
 		
+			
 		html = html.replaceAll("\\$\\{DATA_VERIFICA\\}", "DATA VERIFICA");
+		html = html.replaceAll("\\$\\{DATA_PROSS_VERIFICA\\}", "DATA PROSSIMA VERIFICA");
+		html = html.replaceAll("\\$\\{DATA_VER_INTEGRITA\\}", "DATA VERIFICA INTEGRITÀ");
+		html = html.replaceAll("\\$\\{DATA_PROSS_VER_INTEGRITA\\}", "DATA PROSSIMA VERIFICA INTEGRITÀ");
+		html = html.replaceAll("\\$\\{DATA_VER_INTERNA\\}", "DATA VERIFICA INTERNA");
+		html = html.replaceAll("\\$\\{DATA_PROSS_VER_INTERNA\\}", "DATA PROSSIMA VERIFICA INTERNA");
 		
 		
 		html = html.replaceAll("\\$\\{SEDE_VIE\\}", "SEDE VIE");

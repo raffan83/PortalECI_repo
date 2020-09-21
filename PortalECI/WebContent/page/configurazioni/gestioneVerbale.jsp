@@ -336,38 +336,7 @@
              					
              					
              					
-             					<c:if test="${verbale.getStato().getId()>=3 }">
-             					
-             					<div class="row">         
-        								<div class="col-xs-12">
-											<div class="box box-danger box-solid">
-												<div class="box-header with-border">
-													Data Verifica
-													<div class="box-tools pull-right">		
-														<button data-widget="collapse" class="btn btn-box-tool"><i class="fa fa-minus"></i></button>
-													</div>
-												</div>
-												<div class="box-body">
-												<div class="row">
-												<div class="col-xs-4">
-												  <div class='input-group date datepicker' id='datepicker_data_inizio'>
-												  <fmt:formatDate value="${verbale.data_verifica }" pattern="dd/MM/yyyy" var="myDate" />
-												               <input type='text' class="form-control input-small" id="data_verifica" name="data_verifica" value="${myDate }">
-												                <span class="input-group-addon">
-												                    <span class="fa fa-calendar" >
-												                    </span>
-												                </span>
-												        </div> 	
-												
-												</div>
-												</div>
-												       													
-												</div>
-             					</div>
-             					
-             					</div>
-             				</div>
-             					
+
              					
              					
              					
@@ -401,7 +370,7 @@
 																<jsp:include page="gestioneVerbaleDettaglio.jsp"></jsp:include>        													
         													</div>
 														</c:forEach>
-													</form>
+													<!-- </form> -->
 												</div>
 												
 												<div class="box-footer" id="formVerbalebox">
@@ -475,7 +444,232 @@
 											</div>
 										</div>
 									</div>
-								</c:if>
+								<%-- </c:if> --%>
+								
+								
+								
+								
+								<c:if test="${verbale.getStato().getId()>=3 }">
+             					
+             					<div class="row">         
+        								<div class="col-xs-12">
+											<div class="box box-danger box-solid">
+												<div class="box-header with-border">
+													Data Verifica
+													<div class="box-tools pull-right">		
+														<button data-widget="collapse" class="btn btn-box-tool"><i class="fa fa-minus"></i></button>
+													</div>
+												</div>
+												<div class="box-body">
+												 <div class="row"> 
+												
+												<div class="col-xs-6">
+												<label>Data Verifica</label>
+												  <div class='input-group date datepicker' id='datepicker_data_inizio'>
+												  <fmt:formatDate value="${verbale.data_verifica }" pattern="dd/MM/yyyy" var="myDate" />
+												               <input type='text' class="form-control input-small" id="data_verifica" name="data_verifica" value="${myDate }">
+												                <span class="input-group-addon">
+												                    <span class="fa fa-calendar" >
+												                    </span>
+												                </span>
+												        </div> 	
+												
+												</div>
+												<!-- <div class="col-xs-4"></div> -->
+												
+												<div class="col-xs-6">
+												<label>Data Prossima Verifica</label>
+												  <div class='input-group date datepicker'>
+												  <fmt:formatDate value="${verbale.data_prossima_verifica }" pattern="dd/MM/yyyy" var="myDate" />
+												               <input type='text' class="form-control input-small" id="data_prossima_verifica_verb" name="data_prossima_verifica_verb" value="${myDate }">
+												                <span class="input-group-addon">
+												                    <span class="fa fa-calendar" >
+												                    </span>
+												                </span>
+												        </div> 	
+												
+												<!-- </div> -->
+												
+												</div>
+												       		
+												<c:if test="${verbale.getAttrezzatura().getTipo_attivita().equals('GVR') }">      		
+												<c:set var = "isGvr" value="1"></c:set>
+												 <!-- <div class="row"> -->
+												
+												<div class="col-xs-6">
+												<label>Data Verifica Integrità</label>
+												  <div class='input-group date datepicker' id='datepicker_data_inizio'>
+												  <fmt:formatDate value="${verbale.data_verifica_integrita }" pattern="dd/MM/yyyy" var="myDate" />
+												               <input type='text' class="form-control input-small" id="data_verifica_integrita_verb" name="data_verifica_integrita_verb" value="${myDate }">
+												                <span class="input-group-addon">
+												                    <span class="fa fa-calendar" >
+												                    </span>
+												                </span>
+												        </div> 	
+												
+												</div>
+												<!-- <div class="col-xs-4"></div> -->
+												
+												<div class="col-xs-6">
+												<label>Data Prossima Verifica Integrità</label>
+												  <div class='input-group date datepicker'>
+												  <fmt:formatDate value="${verbale.data_prossima_verifica_integrita }" pattern="dd/MM/yyyy" var="myDate" />
+												               <input type='text' class="form-control input-small" id="data_prossima_verifica_integrita_verb" name="data_prossima_verifica_integrita_verb" value="${myDate }">
+												                <span class="input-group-addon">
+												                    <span class="fa fa-calendar" >
+												                    </span>
+												                </span>
+												        </div> 	
+												
+												</div>
+												
+												<!-- </div>    -->   	
+												
+												<!-- <div class="row"> -->
+												
+												<div class="col-xs-6">
+												<label>Data Verifica Interna</label>
+												  <div class='input-group date datepicker' id='datepicker_data_inizio'>
+												  <fmt:formatDate value="${verbale.data_verifica_interna }" pattern="dd/MM/yyyy" var="myDate" />
+												               <input type='text' class="form-control input-small" id="data_verifica_interna_verb" name="data_verifica_interna_verb" value="${myDate }">
+												                <span class="input-group-addon">
+												                    <span class="fa fa-calendar" >
+												                    </span>
+												                </span>
+												        </div> 	
+												
+												</div>
+																								<!-- <div class="col-xs-4"></div> -->
+												
+												<div class="col-xs-6">
+												<label>Data Prossima Verifica Interna</label>
+												  <div class='input-group date datepicker'>
+												  <fmt:formatDate value="${verbale.data_prossima_verifica_interna }" pattern="dd/MM/yyyy" var="myDate" />
+												               <input type='text' class="form-control input-small" id="data_prossima_verifica_interna_verb" name="data_prossima_verifica_interna_verb" value="${myDate }">
+												                <span class="input-group-addon">
+												                    <span class="fa fa-calendar" >
+												                    </span>
+												                </span>
+												        </div> 	
+												
+												</div>
+												
+											<!-- 	</div> -->	
+												<!-- <div class="row"> -->
+													<div class="col-xs-6">
+													<c:set var="tipo_ver_gvr" value="${verbale.tipo_verifica_gvr }"></c:set>
+												<label>Tipo Verifica GVR</label>
+												   <select id="tipo_verifica_gvr" name="tipo_verifica_gvr" class="form-control select2" data-placeholder="Seleziona Tipo Verifica GVR" style="width:100%">
+												 <option value=""></option>
+												 <option value="1">Funzionamento</option>
+												 <option value="2">Integrità</option>
+												 <option value="3">Interna</option>
+												 </select>	
+												
+												<!-- </div> -->
+											</div>
+												
+												</c:if>		
+												
+												<!-- <div class="row"> -->
+													
+												
+												<div class="col-xs-6">
+												<label>Esito Verifica</label>
+												
+												<c:set var="esito_verbale" value="${verbale.esito }"></c:set>
+												 <select id="esito" name="esito" class="form-control select2" data-placeholder="Seleziona Esito..." style="width:100%">
+												 <option value=""></option>
+												 <option value="P">Positivo</option>
+												 <option value="N">Negativo</option>
+												 <option value="S">Sospeso</option>
+												 </select>
+												               
+												     
+												</div>
+												
+												<div class="col-xs-6">
+												<div id="motivo_sospensione" style="display:none">
+												<label>Motivo Sospensione</label>
+												
+												<textarea rows="3" style="width:100%" class="form-control" id="descrizione_sospensione" name="descrizione_sospensione">${verbale.descrizione_sospensione }</textarea>
+												
+												               
+												     </div>
+												</div>
+												
+												</div>
+												<br>
+												<div class="row">
+												<div class="col-xs-6">
+												
+												
+												
+												<input type="checkbox" id="check_sede_diversa" name="check_sede_diversa">
+												<label>Sede Diversa da sede Attrezzatura</label>
+												               
+												    
+												</div>
+												</div>
+												
+												<div id="sede_diversa" style="display:none">
+												
+												<br>
+												<div class="row">
+												<div class="col-xs-3">
+												<label>Indirizzo</label>
+												<input type="text" id="indirizzo" name="indirizzo" class="form-control" value="${verbale.attrezzatura.indirizzo_div }">
+												
+												</div>
+												
+												<div class="col-xs-3">
+												<label>CAP</label>
+												<input type="text" id="cap" name="cap" class="form-control" value="${verbale.attrezzatura.cap_div }">
+												
+												</div>
+										       <div class="col-xs-3">
+												<label>Comune</label>
+												<select id="comune" name="comune" class="form-control select2" disabled></select>
+												
+												</div>
+												<div class="col-xs-3">
+												<label>Provincia</label>
+												<input type="text" name="provincia" id="provincia" class="form-control" readonly value="${verbale.attrezzatura.provincia_div }">
+												
+												</div>
+												<div class="col-xs-3">
+												<label>Regione</label>
+												<input type="text" name="regione" id="regione" class="form-control" readonly  value="${verbale.attrezzatura.regione_div }">
+												
+												</div>
+												</div>
+												
+												</div>
+												
+												
+											<c:if test="${verbale.attrezzatura.comune_div!=null &&  verbale.attrezzatura.comune_div!=''}">
+												<input type="hidden" id="check_sede" name="check_sede" value="1">
+											</c:if>
+											
+												
+											<c:if test="${verbale.attrezzatura.comune_div==null ||  verbale.attrezzatura.comune_div==''}">
+												<input type="hidden" id="check_sede" name="check_sede" value="0">
+											</c:if>	
+												
+												<!-- </div>	 -->										
+												</div>
+             					</div>
+             					
+             					</div>
+             				</div>
+             					</c:if>
+								</form>
+								
+								
+								
+								
+								
+								
 								
 								<c:if test="${verbale.getSchedaTecnica()!=null && verbale.getSchedaTecnica().getStato().getId()>=3 }">
         							<div class="row">         
@@ -960,41 +1154,41 @@
          <div class="form-group">
         <label for="inputName" class="col-sm-4 control-label">Data verifica funzionamento:</label>
         <div class="col-sm-8">
-                      <input class="form-control datepicker" id="data_verifica_funzionamento" type="text" name="data_verifica_funzionamento"  value="" data-date-format="dd/mm/yyyy" readonly/>
+                      <input class="form-control " id="data_verifica_funzionamento" type="text" name="data_verifica_funzionamento"  value="" data-date-format="dd/mm/yyyy" readonly/>
     </div>
        </div> 
        
          <div class="form-group">
         <label for="inputName" class="col-sm-4 control-label">Data prossima verifica funzionamento:</label>
         <div class="col-sm-8">
-                      <input class="form-control datepicker" id="data_prossima_verifica_funzionamento" type="text" name="data_prossima_verifica_funzionamento"  value="" data-date-format="dd/mm/yyyy" readonly/>
+                      <input class="form-control " id="data_prossima_verifica_funzionamento" type="text" name="data_prossima_verifica_funzionamento"  value="" data-date-format="dd/mm/yyyy" readonly/>
     </div>
        </div> 
        
              <div class="form-group">
         <label for="inputName" class="col-sm-4 control-label">Data verifica integrità:</label>
         <div class="col-sm-8">
-                      <input class="form-control datepicker" id="data_verifica_integrita" type="text" name="data_verifica_integrita"  value="" data-date-format="dd/mm/yyyy" readonly/>
+                      <input class="form-control " id="data_verifica_integrita" type="text" name="data_verifica_integrita"  value="" data-date-format="dd/mm/yyyy" readonly/>
     </div>
        </div> 
        
          <div class="form-group">
         <label for="inputName" class="col-sm-4 control-label">Data prossima verifica integrità:</label>
         <div class="col-sm-8">
-                      <input class="form-control datepicker" id="data_prossima_verifica_integrita" type="text" name="data_prossima_verifica_integrita"  value="" data-date-format="dd/mm/yyyy" readonly/>
+                      <input class="form-control " id="data_prossima_verifica_integrita" type="text" name="data_prossima_verifica_integrita"  value="" data-date-format="dd/mm/yyyy" readonly/>
     </div>
        </div>
              <div class="form-group">
         <label for="inputName" class="col-sm-4 control-label">Data verifica interna:</label>
         <div class="col-sm-8">
-                      <input class="form-control datepicker" id="data_verifica_interna" type="text" name="data_verifica_interna"  value="" data-date-format="dd/mm/yyyy" readonly/>
+                      <input class="form-control " id="data_verifica_interna" type="text" name="data_verifica_interna"  value="" data-date-format="dd/mm/yyyy" readonly/>
     </div>
        </div> 
        
          <div class="form-group">
         <label for="inputName" class="col-sm-4 control-label">Data prossima verifica interna:</label>
         <div class="col-sm-8">
-                      <input class="form-control datepicker" id="data_prossima_verifica_interna" type="text" name="data_prossima_verifica_interna"  value="" data-date-format="dd/mm/yyyy" readonly/>
+                      <input class="form-control " id="data_prossima_verifica_interna" type="text" name="data_prossima_verifica_interna"  value="" data-date-format="dd/mm/yyyy" readonly/>
     </div>
        </div>
  <div class="form-group">
@@ -1116,9 +1310,9 @@
  			
  		//	$('#id_attrezzatura').val(id_attrezzatura);	
  			
- 			$('#data_prossima_verifica_funzionamento').datepicker({
+ 			/* $('#data_prossima_verifica_funzionamento').datepicker({
  					format: "dd/MM/yyyy"
- 			});
+ 			}); */
  			
  			if(obsoleta==0){
  				$('#rendi_obsoleta').addClass("btn-danger");
@@ -1149,8 +1343,50 @@
  			$('#modalDettaglioAttrezzatura').modal();
  		}
  		
+ 		$('#esito').change(function(){
  		
-			$(document).ready(function() {			
+ 			$('#motivo_sospensione').hide();
+ 			
+ 			if($(this).val()=="S"){
+ 				
+ 				$('#motivo_sospensione').show();
+ 			}else{
+ 				$('#descrizione_sospensione').val(null);
+ 			}
+ 			
+ 		});
+ 		
+ 		
+		$('#check_sede_diversa').on('ifChecked', function(event) {
+			
+			$('#sede_diversa').show();
+			
+			$('#check_sede').val("1");
+			if(sede_div!=''){
+				$('#cap').focusout();
+				$('#check_sede_diversa').iCheck('check');
+			
+				
+			}
+			
+		});
+ 		
+	$('#check_sede_diversa').on('ifUnchecked', function(event) {
+			
+			$('#sede_diversa').hide();
+			$('#check_sede').val("0");
+			$('#indirizzo').val("");
+			$('#cap').val("");
+			$('#comune').attr('disabled', true);
+			$('#provincia').val("");
+			$('#regione').val("");
+			
+		});
+	
+	var sede_div = "${verbale.attrezzatura.comune_div }";
+	
+			$(document).ready(function() {
+				
 				$('.rispVerb').on('ifChanged', function(event) {
 					$('.'+$(this).attr('id')).find('input').val('');
 					//$('.'+$(this).attr('id')).find('textarea').val('');
@@ -1167,6 +1403,30 @@
 					
 				});
 				
+				var esito_verbale = "${esito_verbale}";
+				var tipo_ver_gvr = "${tipo_ver_gvr}";
+				
+			
+				
+				if(sede_div!=''){
+					$('#cap').focusout();
+					$('#check_sede_diversa').iCheck('check');
+				
+					
+				}
+				
+				$('#esito').select2();
+				$('#tipo_verifica_gvr').select2();
+				
+								
+				if(esito_verbale!=''){
+					$('#esito').val(esito_verbale);
+					$('#esito').change();
+				}
+				if(tipo_ver_gvr!='0'){
+					$('#tipo_verifica_gvr').val(tipo_ver_gvr);
+					$('#tipo_verifica_gvr').change();
+				}
 				
 				$('#strumento_verificatore').select2();
 				
@@ -1192,6 +1452,9 @@
 				} else if (!$("#schedaTecnicaBox").length){
 					$("#certificatoBox").removeClass("col-md-6");
 				}			
+				
+				
+				
 				
     		});	
 			
@@ -1352,6 +1615,8 @@
 			
 			function salvaRisposteCompWeb(idVerb,idform,action){
 				
+				var gvr = "${isGvr}";
+				
 			if(!checkStrumentoVerificatore()){
 					
 				$('#modalErrorDiv').html("Il campo strumento verificatore è obbligatorio");
@@ -1363,6 +1628,80 @@
 			else if($('#data_verifica').val()==''){
 				
 				$('#modalErrorDiv').html("Il campo data verifica è obbligatorio");
+				$('#myModalError').removeClass();
+				$('#myModalError').addClass("modal modal-danger");
+				$('#myModalError').modal('show');	
+			}
+			else if($('#data_prossima_verifica_verb').val()==''){
+				
+				$('#modalErrorDiv').html("Il campo data prossima verifica è obbligatorio");
+				$('#myModalError').removeClass();
+				$('#myModalError').addClass("modal modal-danger");
+				$('#myModalError').modal('show');	
+			}
+			else if(gvr !='' && gvr=='1' &&$('#data_verifica_integrita_verb').val()==''){
+				
+				$('#modalErrorDiv').html("Il campo data verifica integrità è obbligatorio");
+				$('#myModalError').removeClass();
+				$('#myModalError').addClass("modal modal-danger");
+				$('#myModalError').modal('show');	
+			}
+			else if(gvr !='' && gvr=='1' &&$('#data_prossima_verifica_integrita_verb').val()==''){
+				
+				$('#modalErrorDiv').html("Il campo data prossima verifica integrità è obbligatorio");
+				$('#myModalError').removeClass();
+				$('#myModalError').addClass("modal modal-danger");
+				$('#myModalError').modal('show');	
+			}
+			else if(gvr !='' && gvr=='1' &&$('#data_verifica_interna_verb').val()==''){
+				
+				$('#modalErrorDiv').html("Il campo data prossima verifica interna è obbligatorio");
+				$('#myModalError').removeClass();
+				$('#myModalError').addClass("modal modal-danger");
+				$('#myModalError').modal('show');	
+			}
+			else if(gvr !='' && gvr=='1' &&$('#data_prossima_verifica_interna_verb').val()==''){
+				
+				$('#modalErrorDiv').html("Il campo data prossima verifica interna è obbligatorio");
+				$('#myModalError').removeClass();
+				$('#myModalError').addClass("modal modal-danger");
+				$('#myModalError').modal('show');	
+			}
+			
+			else if($('#esito').val()==''){
+				
+				$('#modalErrorDiv').html("Il campo Esito verifica è obbligatorio");
+				$('#myModalError').removeClass();
+				$('#myModalError').addClass("modal modal-danger");
+				$('#myModalError').modal('show');	
+			}
+			else if($('#esito').val()=='S' && $('#descrizione_sospensione').val()==''){
+				
+				$('#modalErrorDiv').html("Il campo Motivo sospensione è obbligatorio");
+				$('#myModalError').removeClass();
+				$('#myModalError').addClass("modal modal-danger");
+				$('#myModalError').modal('show');	
+			}
+			
+			else if(gvr !='' && gvr=='1' &&$('#tipo_verifica_gvr').val()==''){
+				
+				$('#modalErrorDiv').html("Il campo Tipo verifica GVR è obbligatorio");
+				$('#myModalError').removeClass();
+				$('#myModalError').addClass("modal modal-danger");
+				$('#myModalError').modal('show');	
+			}
+			
+			else if($('#check_sede_diversa').is(':checked')  && $('#indirizzo').val()==''){
+				
+				$('#modalErrorDiv').html("Il campo indirizzo è obbligatorio");
+				$('#myModalError').removeClass();
+				$('#myModalError').addClass("modal modal-danger");
+				$('#myModalError').modal('show');	
+			}
+			
+			else if($('#check_sede_diversa').is(':checked') && $('#cap').val()==''){
+				
+				$('#modalErrorDiv').html("Il campo cap è obbligatorio");
 				$('#myModalError').removeClass();
 				$('#myModalError').addClass("modal modal-danger");
 				$('#myModalError').modal('show');	
@@ -1448,7 +1787,8 @@
 					},
 				});
 			}
-					
+
+			
 			function detailStorico(idrisp){
 				$.ajax({
 					type: "GET",
@@ -1472,6 +1812,56 @@
 					}
 				});
 			}
+			
+			
+			$('#cap').focusout(function(){
+				
+				var value = $(this).val();
+				
+				$.ajax({
+					type: "POST",
+					url: "gestioneVerbale.do?action=comuni&cap="+value,	
+					dataType: "json",
+					success: function( data, textStatus) {
+
+						if(data.success){
+							
+							var lista_comuni = data.comuni;
+							
+							var opt = [];
+							var comune;
+							lista_comuni.forEach(function(item){
+								comune = item;
+								opt.push("<option value=\""+item.descrizione+"\">"+item.descrizione+"</option>")
+								
+							});
+							
+							$('#comune').attr("disabled", false);
+							$('#comune').html(opt);
+							$('#comune').select2();
+							$('#comune').val(sede_div);
+							$('#comune').change();
+							if(comune!=null){
+								$('#provincia').val(comune.provincia);
+								$('#regione').val(comune.regione);
+							}else{
+								$('#comune').attr("disabled", true);
+								$('#provincia').val("");
+								$('#regione').val("");
+							}
+							
+						}
+						
+					},
+
+					error: function(jqXHR, textStatus, errorThrown){
+						$('#errorMsg').html("<h3 class='label label-danger'>"+textStatus+"</h3>");
+						//callAction('logout.do');
+						pleaseWaitDiv.modal('hide');
+					}
+				});
+				
+			});
 			
   		</script>	  
 	</jsp:attribute> 
