@@ -984,8 +984,14 @@ var tipo_attrezzatura_options = [];
 $(document).ready(function() {
 	console.log("test");
 	$('.datepicker').datepicker();
-	$('.select2').select2();
-	
+
+	$("select.select2").each(function (index, element) {
+        
+		if(element.id!="cliente_appoggio" && element.id!="select2"){
+			$(element).select2();
+		}
+       
+    });
 	
 	table = $('#tabPM').DataTable({
 		 language: {

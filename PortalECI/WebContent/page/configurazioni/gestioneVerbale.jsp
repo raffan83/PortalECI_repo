@@ -412,6 +412,15 @@
 															<a class="btn btn-default pull-right" href="anteprimaCertificato.do?idVerbale=${verbale.getId()}" style="margin-left:5px"><i class="glyphicon glyphicon-eye-open"></i> Anteprima Certificato</a>
 														</c:if>
 														
+														
+														<c:if test="${verbale.getStato().getId()== 9 && userObj.checkRuolo('AM')}">
+														
+														<a class="btn btn-sm pull-right" onclick="salvaCambioStato(null,null,'8')" style="color:#000000 !important; background-color:${verbale.getStato().getColore(8)} !important;">
+														<i class="glyphicon glyphicon glyphicon-ok"></i>
+														<span>RIMETTI IN COMPILAZIONE</span>
+													</a>
+			
+														</c:if>
 													
 													
 													</c:if>
@@ -467,7 +476,7 @@
 												<label>Data Verifica</label>
 												  <div class='input-group date datepicker' id='datepicker_data_inizio'>
 												  <fmt:formatDate value="${verbale.data_verifica }" pattern="dd/MM/yyyy" var="myDate" />
-												               <input type='text' class="form-control input-small" id="data_verifica" name="data_verifica" value="${myDate }">
+												               <input type='text' class="form-control input-small" id="data_verifica" name="data_verifica" value="${myDate }" >
 												                <span class="input-group-addon">
 												                    <span class="fa fa-calendar" >
 												                    </span>
@@ -564,6 +573,9 @@
 												 <option value="1">Funzionamento</option>
 												 <option value="2">Integrità</option>
 												 <option value="3">Interna</option>
+												 <option value="4">Funzionamento + Integrità</option>
+												 <option value="5">Funzionamento + Integrità + Interna</option>
+												 <option value="6">Interna + Integrità</option>
 												 </select>	
 												
 												<!-- </div> -->
@@ -1262,6 +1274,41 @@
  		 });    
  		
  		
+ 	     
+ 	     $('#tipo_verifica_gvr').change(function(){
+ 	    	
+ 	    	 var value = $(this).val();
+ 	    	 
+ 	    	 
+ 	    	$('#data_verifica').prop("disabled", true);
+	    	$('#data_prossima_verifica_verb').prop("disabled", true);
+	    	$('#data_verifica_integrita_verb').attr("disabled", true);
+ 	    	$('#data_prossima_verifica_integrita_verb').attr("disabled", true);
+ 	    	$('#data_verifica_interna_verb').attr("disabled", true);
+ 	    	$('#data_prossima_verifica_interna_verb').attr("disabled", true);
+ 	    
+ 	    	 
+ 	    	 if(value == 1 || value == 4 || value == 5){
+ 	    		$('#data_verifica').prop("disabled", false);
+ 	    		$('#data_prossima_verifica_verb').prop("disabled", false);
+ 	    		  
+ 	    	 }
+ 	    	if(value == 2 || value == 4 || value == 5 || value == 6){
+ 	    		$('#data_verifica_integrita_verb').prop("disabled", false);
+ 	    		$('#data_prossima_verifica_integrita_verb').prop("disabled", false);
+ 	    	 }
+ 	    	
+ 	    	if(value == 3 || value == 5 || value == 6){
+ 	    		$('#data_verifica_interna_verb').prop("disabled", false);
+ 	    		$('#data_prossima_verifica_interna_verb').prop("disabled", false);
+ 	    	 }
+ 	    	 
+ 	    	 
+ 	     });
+ 	     
+ 	     
+ 	     
+ 	     
  		function dettaglioAttrezzatura(id_attrezzatura, matricola_inail, numero_fabbrica, tipo_attivita, descrizione, id_cliente, id_sede,
  				data_verifica_funzionamento, data_prossima_verifica_funzionamento,data_verifica_integrita, data_prossima_verifica_integrita, data_verifica_interna, data_prossima_verifica_interna,
  				anno_costruzione, fabbricante, modello, settore_impiego, note_tecniche, note_generiche, obsoleta, tipo_attrezzatura, tipo_attrezzatura_gvr,id_specifica, sogg_messa_serv_gvr, n_panieri_idroestrattori, marcatura,
@@ -1627,40 +1674,40 @@
 			}
 			else if($('#data_verifica').val()==''){
 				
-				$('#modalErrorDiv').html("Il campo data verifica è obbligatorio");
+				$('#modalErrorDiv').html("Il campo data verifica è obbligatorio" && $('#esito').val()!='S');
 				$('#myModalError').removeClass();
 				$('#myModalError').addClass("modal modal-danger");
 				$('#myModalError').modal('show');	
 			}
-			else if($('#data_prossima_verifica_verb').val()==''){
+			else if($('#data_prossima_verifica_verb').val()=='' && $('#esito').val()!='S'){
 				
 				$('#modalErrorDiv').html("Il campo data prossima verifica è obbligatorio");
 				$('#myModalError').removeClass();
 				$('#myModalError').addClass("modal modal-danger");
 				$('#myModalError').modal('show');	
 			}
-			else if(gvr !='' && gvr=='1' &&$('#data_verifica_integrita_verb').val()==''){
+			else if(gvr !='' && gvr=='1' &&$('#data_verifica_integrita_verb').val()=='' && $('#esito').val()!='S'){
 				
 				$('#modalErrorDiv').html("Il campo data verifica integrità è obbligatorio");
 				$('#myModalError').removeClass();
 				$('#myModalError').addClass("modal modal-danger");
 				$('#myModalError').modal('show');	
 			}
-			else if(gvr !='' && gvr=='1' &&$('#data_prossima_verifica_integrita_verb').val()==''){
+			else if(gvr !='' && gvr=='1' &&$('#data_prossima_verifica_integrita_verb').val()=='' && $('#esito').val()!='S'){
 				
 				$('#modalErrorDiv').html("Il campo data prossima verifica integrità è obbligatorio");
 				$('#myModalError').removeClass();
 				$('#myModalError').addClass("modal modal-danger");
 				$('#myModalError').modal('show');	
 			}
-			else if(gvr !='' && gvr=='1' &&$('#data_verifica_interna_verb').val()==''){
+			else if(gvr !='' && gvr=='1' && $('#data_verifica_interna_verb').val()=='' && $('#esito').val()!='S'){
 				
 				$('#modalErrorDiv').html("Il campo data prossima verifica interna è obbligatorio");
 				$('#myModalError').removeClass();
 				$('#myModalError').addClass("modal modal-danger");
 				$('#myModalError').modal('show');	
 			}
-			else if(gvr !='' && gvr=='1' &&$('#data_prossima_verifica_interna_verb').val()==''){
+			else if(gvr !='' && gvr=='1' &&$('#data_prossima_verifica_interna_verb').val()=='' && $('#esito').val()!='S' ){
 				
 				$('#modalErrorDiv').html("Il campo data prossima verifica interna è obbligatorio");
 				$('#myModalError').removeClass();

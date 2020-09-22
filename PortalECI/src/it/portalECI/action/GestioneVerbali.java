@@ -126,10 +126,12 @@ public class GestioneVerbali extends HttpServlet {
 				
 					SimpleDateFormat df = new SimpleDateFormat("dd/MM/yyyy");
 					
-					verbale.setData_verifica(df.parse(data_verifica));
-					verbale.getAttrezzatura().setData_verifica_funzionamento(df.parse(data_verifica));
-					session.update(verbale);
-					session.update(verbale.getAttrezzatura());
+					if(data_verifica!=null && !data_verifica.equals("")) {
+						verbale.setData_verifica(df.parse(data_verifica));
+						verbale.getAttrezzatura().setData_verifica_funzionamento(df.parse(data_verifica));
+						session.update(verbale);
+						session.update(verbale.getAttrezzatura());
+					}
 					
 				}
 				
@@ -138,11 +140,12 @@ public class GestioneVerbali extends HttpServlet {
 					String data_prossima_verifica = request.getParameter("data_prossima_verifica_verb");
 				
 					SimpleDateFormat df = new SimpleDateFormat("dd/MM/yyyy");
-					
-					verbale.setData_prossima_verifica(df.parse(data_prossima_verifica));
-					verbale.getAttrezzatura().setData_prossima_verifica_funzionamento(df.parse(data_prossima_verifica));
-					session.update(verbale);
-					session.update(verbale.getAttrezzatura());
+					if(data_prossima_verifica!=null && !data_prossima_verifica.equals("")) {
+						verbale.setData_prossima_verifica(df.parse(data_prossima_verifica));
+						verbale.getAttrezzatura().setData_prossima_verifica_funzionamento(df.parse(data_prossima_verifica));
+						session.update(verbale);
+						session.update(verbale.getAttrezzatura());
+					}
 					
 				}
 				if(verbale.getAttrezzatura().getTipo_attivita().equals("GVR") && paramName.equals("data_verifica_integrita_verb")) {
@@ -151,10 +154,12 @@ public class GestioneVerbali extends HttpServlet {
 				
 					SimpleDateFormat df = new SimpleDateFormat("dd/MM/yyyy");
 					
-					verbale.setData_verifica_integrita(df.parse(data_verifica_integrita));
-					verbale.getAttrezzatura().setData_verifica_integrita(df.parse(data_verifica_integrita));
-					session.update(verbale);
-					session.update(verbale.getAttrezzatura());
+					if(data_verifica_integrita!=null && !data_verifica_integrita.equals("")) {
+						verbale.setData_verifica_integrita(df.parse(data_verifica_integrita));
+						verbale.getAttrezzatura().setData_verifica_integrita(df.parse(data_verifica_integrita));
+						session.update(verbale);
+						session.update(verbale.getAttrezzatura());
+					}
 					
 				}
 				if(verbale.getAttrezzatura().getTipo_attivita().equals("GVR") && paramName.equals("data_prossima_verifica_integrita_verb")) {
@@ -162,11 +167,12 @@ public class GestioneVerbali extends HttpServlet {
 					String data_prossima_verifica_integrita = request.getParameter("data_prossima_verifica_integrita_verb");
 				
 					SimpleDateFormat df = new SimpleDateFormat("dd/MM/yyyy");
-					
-					verbale.setData_prossima_verifica_integrita(df.parse(data_prossima_verifica_integrita));
-					verbale.getAttrezzatura().setData_prossima_verifica_integrita(df.parse(data_prossima_verifica_integrita));
-					session.update(verbale);
-					session.update(verbale.getAttrezzatura());
+					if(data_prossima_verifica_integrita!=null && !data_prossima_verifica_integrita.equals("")) {
+						verbale.setData_prossima_verifica_integrita(df.parse(data_prossima_verifica_integrita));
+						verbale.getAttrezzatura().setData_prossima_verifica_integrita(df.parse(data_prossima_verifica_integrita));
+						session.update(verbale);
+						session.update(verbale.getAttrezzatura());
+					}
 					
 				}
 				if(verbale.getAttrezzatura().getTipo_attivita().equals("GVR") && paramName.equals("data_verifica_interna_verb")) {
@@ -174,11 +180,13 @@ public class GestioneVerbali extends HttpServlet {
 					String data_verifica_interna = request.getParameter("data_verifica_interna_verb");
 				
 					SimpleDateFormat df = new SimpleDateFormat("dd/MM/yyyy");
+					if(data_verifica_interna!=null && !data_verifica_interna.equals("")) {
+						verbale.setData_verifica_interna(df.parse(data_verifica_interna));
+						verbale.getAttrezzatura().setData_verifica_interna(df.parse(data_verifica_interna));
+						session.update(verbale);
+						session.update(verbale.getAttrezzatura());	
+					}
 					
-					verbale.setData_verifica_interna(df.parse(data_verifica_interna));
-					verbale.getAttrezzatura().setData_verifica_interna(df.parse(data_verifica_interna));
-					session.update(verbale);
-					session.update(verbale.getAttrezzatura());
 					
 				}
 				if(verbale.getAttrezzatura().getTipo_attivita().equals("GVR") && paramName.equals("data_prossima_verifica_interna_verb")) {
@@ -186,11 +194,12 @@ public class GestioneVerbali extends HttpServlet {
 					String data_prossima_verifica_interna = request.getParameter("data_prossima_verifica_interna_verb");
 				
 					SimpleDateFormat df = new SimpleDateFormat("dd/MM/yyyy");
-					
-					verbale.setData_prossima_verifica_interna(df.parse(data_prossima_verifica_interna));
-					verbale.getAttrezzatura().setData_prossima_verifica_interna(df.parse(data_prossima_verifica_interna));
-					session.update(verbale);
-					session.update(verbale.getAttrezzatura());
+					if(data_prossima_verifica_interna!=null && !data_prossima_verifica_interna.equals("")) {
+						verbale.setData_prossima_verifica_interna(df.parse(data_prossima_verifica_interna));
+						verbale.getAttrezzatura().setData_prossima_verifica_interna(df.parse(data_prossima_verifica_interna));
+						session.update(verbale);
+						session.update(verbale.getAttrezzatura());
+					}
 					
 				}
 				
@@ -239,14 +248,16 @@ public class GestioneVerbali extends HttpServlet {
 					 String esito = request.getParameter("esito");
 					 String descrizione_sospensione = request.getParameter("descrizione_sospensione");
 					 
-					 verbale.setEsito(esito);
-					 	
+					 
+					 verbale.setEsito(esito);					 	
 										 
 					 
 					if(!esito.equals("S")) {
 						verbale.setDescrizione_sospensione(null);
 						session.update(verbale);	
 					}else {
+						
+						GestioneVerbaleBO.cambioStato( verbale, GestioneStatoVerbaleDAO.getStatoVerbaleById( StatoVerbaleDTO.SOSPESO, session) , session);
 						verbale.setDescrizione_sospensione(descrizione_sospensione);
 						session.update(verbale);	
 						myObj.addProperty("success", true);

@@ -346,36 +346,49 @@ public class CreateScadenzarioInail {
 					 col++;
 		    		 cell = row.createCell(col);
 		    		 
-		    		 Date data_rilascio;
-		    		 Date data_pvp;
+		    		 Date data_rilascio = null;
+		    		 Date data_pvp = null;
 		    		 
-		    		 ArrayList<Date> lista_date = new ArrayList<Date>();
-		    		 ArrayList<Date> lista_date_pvp = new ArrayList<Date>();
+//		    		 ArrayList<Date> lista_date = new ArrayList<Date>();
+//		    		 ArrayList<Date> lista_date_pvp = new ArrayList<Date>();
+//		    		 
+//		    		 
+//		    		 if(listaVerbali.get(i).getData_verifica()!=null) {
+//		    			 lista_date.add(listaVerbali.get(i).getData_verifica());
+//		    		 }
+//		    		 if(listaVerbali.get(i).getData_verifica_integrita()!=null) {
+//		    			 lista_date.add(listaVerbali.get(i).getData_verifica_integrita());
+//		    		 }
+//		    		 if(listaVerbali.get(i).getData_verifica_interna()!=null) {
+//		    			 lista_date.add(listaVerbali.get(i).getData_verifica_interna());
+//		    		 }
+//		    		 
+//		    		 
+//		    		 if(listaVerbali.get(i).getData_prossima_verifica()!=null) {
+//		    			 lista_date_pvp.add(listaVerbali.get(i).getData_prossima_verifica());
+//		    		 }
+//		    		 if(listaVerbali.get(i).getData_prossima_verifica_integrita()!=null) {
+//		    			 lista_date_pvp.add(listaVerbali.get(i).getData_prossima_verifica_integrita());
+//		    		 }
+//		    		 if(listaVerbali.get(i).getData_prossima_verifica_interna()!=null) {
+//		    			 lista_date_pvp.add(listaVerbali.get(i).getData_prossima_verifica_interna());
+//		    		 }
 		    		 
-		    		 
-		    		 if(listaVerbali.get(i).getData_verifica()!=null) {
-		    			 lista_date.add(listaVerbali.get(i).getData_verifica());
+		    		 if(listaVerbali.get(i).getStato().getId()!=9 && listaVerbali.get(i).getTipo_verifica_gvr()==0 || listaVerbali.get(i).getTipo_verifica_gvr()==1 || listaVerbali.get(i).getTipo_verifica_gvr()==4 || listaVerbali.get(i).getTipo_verifica_gvr()==5) {
+		    			 data_rilascio = listaVerbali.get(i).getData_verifica();
+		    			 data_pvp = listaVerbali.get(i).getData_prossima_verifica();
 		    		 }
-		    		 if(listaVerbali.get(i).getData_verifica_integrita()!=null) {
-		    			 lista_date.add(listaVerbali.get(i).getData_verifica_integrita());
+		    		 else if(listaVerbali.get(i).getStato().getId()!=9 && listaVerbali.get(i).getTipo_verifica_gvr()!=0 && (listaVerbali.get(i).getTipo_verifica_gvr()==3 || listaVerbali.get(i).getTipo_verifica_gvr()==6)) {
+		    			 data_rilascio = listaVerbali.get(i).getData_verifica_interna();
+		    			 data_pvp = listaVerbali.get(i).getData_prossima_verifica_interna();
 		    		 }
-		    		 if(listaVerbali.get(i).getData_verifica_interna()!=null) {
-		    			 lista_date.add(listaVerbali.get(i).getData_verifica_interna());
-		    		 }
-		    		 
-		    		 
-		    		 if(listaVerbali.get(i).getData_prossima_verifica()!=null) {
-		    			 lista_date_pvp.add(listaVerbali.get(i).getData_prossima_verifica());
-		    		 }
-		    		 if(listaVerbali.get(i).getData_prossima_verifica_integrita()!=null) {
-		    			 lista_date_pvp.add(listaVerbali.get(i).getData_prossima_verifica_integrita());
-		    		 }
-		    		 if(listaVerbali.get(i).getData_prossima_verifica_interna()!=null) {
-		    			 lista_date_pvp.add(listaVerbali.get(i).getData_prossima_verifica_interna());
+		    		 else if(listaVerbali.get(i).getStato().getId()!=9 && listaVerbali.get(i).getTipo_verifica_gvr()!=0 && listaVerbali.get(i).getTipo_verifica_gvr()==2) {
+		    			 data_rilascio = listaVerbali.get(i).getData_verifica_integrita();
+		    			 data_pvp = listaVerbali.get(i).getData_prossima_verifica_integrita();
 		    		 }
 		    		 
-		    		 data_rilascio = Utility.getMostRecentDate(lista_date);
-		    		 data_pvp = Utility.getMostRecentDate(lista_date_pvp);
+		    		 //data_rilascio = Utility.getMostRecentDate(lista_date);
+		    		// data_pvp = Utility.getMostRecentDate(lista_date_pvp);
 		    		 
 		    		 SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");		    		 
 		    	
@@ -496,11 +509,11 @@ public class CreateScadenzarioInail {
 		    		 
 		    		 String tipo_ver_gvr="";
 		    		 
-		    		 if(listaVerbali.get(i).getTipo_verifica_gvr()==1) {
+		    		 if(listaVerbali.get(i).getTipo_verifica_gvr()==1 || listaVerbali.get(i).getTipo_verifica_gvr()==4 || listaVerbali.get(i).getTipo_verifica_gvr()==5) {
 		    			 tipo_ver_gvr = "Verifica di funzionamento";
 		    		 }else if(listaVerbali.get(i).getTipo_verifica_gvr()==2) {
 		    			 tipo_ver_gvr = "Verifica di integrità";
-		    		 }else if(listaVerbali.get(i).getTipo_verifica_gvr()==3) {
+		    		 }else if(listaVerbali.get(i).getTipo_verifica_gvr()==3 || listaVerbali.get(i).getTipo_verifica_gvr()==6) {
 		    			 tipo_ver_gvr = "Verifica interna";
 		    		 }
 					cell.setCellValue(tipo_ver_gvr); //TIPO VERIFICA GVR
@@ -606,7 +619,7 @@ public class CreateScadenzarioInail {
 			    			 contributo = new Double(tariffa_regolare)*0.15;
 			    			 
 			    		 }else if(listaVerbali.get(i).getEffettuazione_verifica()==2){
-			    			 contributo = new Double(tariffa_regolare)*0.5;
+			    			 contributo = new Double(tariffa_regolare)*0.05;
 			    		 }
 			    		 
 						cell.setCellValue(contributo); //CONTRIBUTO
@@ -669,27 +682,45 @@ public class CreateScadenzarioInail {
 					
 		    		 
 		    		 df.applyPattern("yyyy-MM-dd");	
+		    		 if(data_pvp!=null) {
+		    			 date = df.parse(df.format(data_pvp)); 
+			    		 
+			    		 df.applyPattern("ddMMyyyy");		
+			    		 
+						 col++;
+			    		 cell = row.createCell(col);
+						cell.setCellValue("fattura "+matr_anno+matr_cod_att+matr_numero+matr_prov+tipo_verifica+df.format(date)); // FATTURA
+						 col++;
+			    		 cell = row.createCell(col);		    		 
+			    				  	    		 
+			    		 
+						cell.setCellValue("verbale "+matr_anno+matr_cod_att+matr_numero+matr_prov+tipo_verifica+df.format(date)); //VERBALE
+						 col++;
+			    		 cell = row.createCell(col);
+			    		 
+						if(listaVerbali.get(i).getSchedaTecnica()!=null) {
+							cell.setCellValue("scheda tecnica "+matr_anno+matr_cod_att+matr_numero+matr_prov+tipo_verifica+df.format(date)); //SCHEDA TECNICA
+						}else {
+							cell.setCellValue("scheda tecnica non rilasciata"); //SCHEDA TECNICA	
+						} 
+		    		 }else {
+		    			 
+		    			 col++;
+			    		 cell = row.createCell(col);
+						cell.setCellValue(""); // FATTURA
+						 col++;
+			    		 cell = row.createCell(col);		    		 
+			    				  	    		 
+			    		 
+						cell.setCellValue(""); //VERBALE
+						 col++;
+			    		 cell = row.createCell(col);
+			    		 
+				
+						cell.setCellValue(""); //SCHEDA TECNICA
+						
+		    		 }
 		    		 
-		    		 date = df.parse(df.format(data_pvp)); 
-		    		 
-		    		 df.applyPattern("ddMMyyyy");		
-		    		 
-					 col++;
-		    		 cell = row.createCell(col);
-					cell.setCellValue("fattura "+matr_anno+matr_cod_att+matr_numero+matr_prov+tipo_verifica+df.format(date)); // FATTURA
-					 col++;
-		    		 cell = row.createCell(col);		    		 
-		    				  	    		 
-		    		 
-					cell.setCellValue("verbale "+matr_anno+matr_cod_att+matr_numero+matr_prov+tipo_verifica+df.format(date)); //VERBALE
-					 col++;
-		    		 cell = row.createCell(col);
-		    		 
-					if(listaVerbali.get(i).getSchedaTecnica()!=null) {
-						cell.setCellValue("scheda tecnica "+matr_anno+matr_cod_att+matr_numero+matr_prov+tipo_verifica+df.format(date)); //SCHEDA TECNICA
-					}else {
-						cell.setCellValue("scheda tecnica non rilasciata"); //SCHEDA TECNICA	
-					}
 					
 					
 					 col++;

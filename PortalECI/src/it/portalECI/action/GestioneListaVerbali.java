@@ -121,8 +121,20 @@ public class GestioneListaVerbali extends HttpServlet {
 				Date to = df.parse(dateTo);
 				
 				List<VerbaleDTO> listaVerbali = (List<VerbaleDTO>) request.getSession().getAttribute("listaVerbali");
+
+				List<VerbaleDTO> listaVerbaliValidi = new ArrayList<VerbaleDTO>();
 				
-				new CreateScadenzarioInail(listaVerbali, dateFrom, dateTo, session);
+				
+				for (VerbaleDTO verbaleDTO : listaVerbali) {
+					
+					if(verbaleDTO.getStato().getId()==5 || verbaleDTO.getStato().getId()==9) {
+						listaVerbaliValidi.add(verbaleDTO);
+					}
+					
+				}
+				
+				
+				new CreateScadenzarioInail(listaVerbaliValidi, dateFrom, dateTo, session);
 				
 				DateFormat sdf = new SimpleDateFormat("ddMMyyyy");
 				

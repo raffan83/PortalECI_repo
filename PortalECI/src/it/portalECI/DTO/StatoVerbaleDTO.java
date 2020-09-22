@@ -20,6 +20,7 @@ public class StatoVerbaleDTO  implements Serializable{
 	public static int RIFIUTATO			= 6;
 	public static int CHIUSO			= 7;
 	public static int COMPILAZIONE_WEB	= 8;
+	public static int SOSPESO			= 9;
 	
 	
 	private final static HashMap StatoColore = new HashMap();

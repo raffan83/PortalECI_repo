@@ -303,7 +303,7 @@
         									<div id="content_sede" style="display:none">
 	        									<div class="form-group col-sm-5" >
 	                  								<label>Sede</label>
-	                  								<select name="sede" id="sede" data-placeholder="Seleziona Sede"  class="form-control select2" aria-hidden="true" data-live-search="true">
+	                  								<select name="sede" id="sede" data-placeholder="Seleziona Sede"  class="form-control select2" aria-hidden="true" data-live-search="true" style="width:100%">
 	                									<option value="" disabled selected>Seleziona Sede...</option>
 	                									<option value="0">Default</option>
 	                									<c:forEach items="${lista_sedi_cliente}" var="sd">                		
@@ -321,7 +321,7 @@
         									<div id="content_attrezzatura" style="display:none" >
 	        									<div class="form-group col-sm-5">
 	                  								<label>Attrezzatura</label>
-	                  								 <select name="attrezzatura" id="attrezzatura" data-placeholder="Seleziona Attrezzatura"  class="form-control select2" aria-hidden="true" data-live-search="true">
+	                  								 <select name="attrezzatura" id="attrezzatura" data-placeholder="Seleziona Attrezzatura"  class="form-control select2" aria-hidden="true" data-live-search="true" style="width:100%">
 	                									     
 	        	         							</select>          
 	        	         							<select name="attrezzatura_temp" id="attrezzatura_temp" data-placeholder="Seleziona Attrezzatura"  class="form-control select2" aria-hidden="true" data-live-search="true" style="display:none">
@@ -489,10 +489,26 @@
  			});
  			
 			    $(document).ready(function() {
+			    			    	
+			    	
 			    	
 			    	 attrezzatura_options = $('#attrezzatura_temp option').clone();
 			    	 categoria_options = $('#categorie option').clone();
 			    	
+			    	 
+			    	 
+				    	var commessa = "${commessa.ID_COMMESSA}";
+				    	
+				    	if(commessa.split("_")[1]=='VAL'){
+				    		$("#select1").val("10");
+				    		$("#select1").change();
+				    	}else if(commessa.split("_")[1]=='VIE'){
+				    		$("#select1").val("1");
+				    		$("#select1").change();
+				    	}
+				    	
+			    	 
+			    	 
     				table = $('#tabPM').DataTable({
     					language: {
   	        				emptyTable : 	"Nessun dato presente nella tabella",
@@ -593,7 +609,7 @@
    	  					$('#noteApp').val("");
    	 					$('#empty').html("");
    	 					
-   	 					$("#select1").val("").trigger("change");
+   	 					//$("#select1").val("").trigger("change");
    	 					$("#tecnici").val("").trigger("change");
    						$("#select2").val("").trigger("change");
    						
@@ -712,7 +728,7 @@
       				
       				var val = $(this).val();
       				var opt = [];
-      				if(val!=''){
+      				if(val!=null && val!=''){
       					
       					var gruppo = val.split("_")[2];
       					
@@ -778,7 +794,13 @@
 									if(!dataResp.schedaTecnicaPresente){							
 										objectdata+='<i class="fa fa-ban" title="Template Scheda Tecnica non esiste per questo Tipo Verifica"></i>';
 									}else{
-										objectdata+='<input type="checkbox" class="skTecObb" />';
+										
+										if($('#tipo_verifica').val()==1|| ($('#select2').val().split("_")[2]== 'GVR' && $('#tipo_verifica').val()==2)){
+											objectdata+='<input type="checkbox" class="skTecObb" checked/>';
+										}else{
+											objectdata+='<input type="checkbox" class="skTecObb" />';	
+										}
+										
 									}
 									objectdata+='</td>';
 									if(attrezzatura !=null && attrezzatura!=""){

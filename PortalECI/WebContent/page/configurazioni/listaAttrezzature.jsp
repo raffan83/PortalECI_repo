@@ -36,14 +36,28 @@
 
 
     <div class="form-group">
+    
+
+    
                   <label>Cliente</label>
-                  <select name="select1" id="select1" data-placeholder="Seleziona Cliente..."  class="form-control select2" aria-hidden="true" data-live-search="true" style="width:100%">
+                 <%--  <select name="select1" id="select1" data-placeholder="Seleziona Cliente..."  class="form-control select2" aria-hidden="true" data-live-search="true" style="width:100%">
                   <option value=""></option>
                   <option value="0">TUTTI</option>
                       <c:forEach items="${listaClienti}" var="cliente">
                            <option value="${cliente.__id}">${cliente.nome} </option> 
                      </c:forEach>
-                  </select>
+                  </select> --%>
+                  
+                  <select name="cliente_appoggio" id="cliente_appoggio" class="form-control select2" aria-hidden="true" data-live-search="true" style="width:100%;display:none" required>
+                
+                      <c:forEach items="${listaClienti}" var="cliente">
+                     
+                           <option value="${cliente.__id}">${cliente.nome}</option> 
+                         
+                     </c:forEach>
+
+                  </select> 
+                  <input id="select1" name="select1" class="form-control" style="width:100%">
         </div>
 
   </div>
@@ -247,13 +261,15 @@
 
 <jsp:attribute name="extra_js_footer">
 
-
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/lodash@4.17.11/lodash.min.js"></script> 
   <script type="text/javascript">
 
   var json_obj = '${json}';
   if(json_obj!= ''){
 	  var json = JSON.parse(json_obj);  
   }
+  
+  
   
 
     $("#select1").change(function() {
@@ -315,9 +331,9 @@
     
     $(document).ready(function() {
     
-
-    	$(".select2").select2();
     	
+    	$("#select2").select2();
+    	initSelect2('#select1');
       	 
    
     });
@@ -363,6 +379,51 @@
           
     });
     
+    
+    var options =  $('#cliente_appoggio option').clone();
+    function mockData() {
+    	  return _.map(options, function(i) {		  
+    	    return {
+    	      id: i.value,
+    	      text: i.text,
+    	    };
+    	  });
+    	}
+    	
+
+
+    function initSelect2(id_input, placeholder) {
+
+   	 if(placeholder==null){
+  		  placeholder = "Seleziona Cliente...";
+  	  }
+    	$(id_input).select2({
+    	    data: mockData(),
+    	    placeholder: placeholder,
+    	    multiple: false,
+    	    // query with pagination
+    	    query: function(q) {
+    	      var pageSize,
+    	        results,
+    	        that = this;
+    	      pageSize = 20; // or whatever pagesize
+    	      results = [];
+    	      if (q.term && q.term !== '') {
+    	        // HEADS UP; for the _.filter function i use underscore (actually lo-dash) here
+    	        results = _.filter(x, function(e) {
+    	        	
+    	          return e.text.toUpperCase().indexOf(q.term.toUpperCase()) >= 0;
+    	        });
+    	      } else if (q.term === '') {
+    	        results = that.data;
+    	      }
+    	      q.callback({
+    	        results: results.slice((q.page - 1) * pageSize, q.page * pageSize),
+    	        more: results.length >= q.page * pageSize,
+    	      });
+    	    },
+    	  });
+    }
     
   </script>
 </jsp:attribute> 
