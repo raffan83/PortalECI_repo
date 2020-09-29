@@ -460,11 +460,14 @@
 								
 								<c:if test="${verbale.getStato().getId()>=3 }">
              					
+             					
+             					
+             					<c:if test="${verbale.codiceCategoria == 'VAL' }">
              					<div class="row">         
         								<div class="col-xs-12">
 											<div class="box box-danger box-solid">
 												<div class="box-header with-border">
-													Data Verifica
+													Dati Verbale
 													<div class="box-tools pull-right">		
 														<button data-widget="collapse" class="btn btn-box-tool"><i class="fa fa-minus"></i></button>
 													</div>
@@ -667,14 +670,170 @@
 											<c:if test="${verbale.attrezzatura.comune_div==null ||  verbale.attrezzatura.comune_div==''}">
 												<input type="hidden" id="check_sede" name="check_sede" value="0">
 											</c:if>	
-												
-												<!-- </div>	 -->										
+											
+																			
 												</div>
              					</div>
              					
              					</div>
              				</div>
-             					</c:if>
+             				</c:if>
+             				
+             				
+             				
+             				<c:if test="${verbale.codiceCategoria=='VIE' }">
+             				
+             				           <div class="row">         
+        								<div class="col-xs-12">
+											<div class="box box-danger box-solid">
+												<div class="box-header with-border">
+													Dati Verbale
+													<div class="box-tools pull-right">		
+														<button data-widget="collapse" class="btn btn-box-tool"><i class="fa fa-minus"></i></button>
+													</div>
+												</div>
+												<div class="box-body">
+												 <div class="row"> 
+												
+												<div class="col-xs-6">
+												<label>Data Verifica</label>
+												  <div class='input-group date datepicker' id='datepicker_data_inizio'>
+												  <fmt:formatDate value="${verbale.data_verifica }" pattern="dd/MM/yyyy" var="myDate" />
+												               <input type='text' class="form-control input-small" id="data_verifica" name="data_verifica" value="${myDate }" >
+												                <span class="input-group-addon">
+												                    <span class="fa fa-calendar" >
+												                    </span>
+												                </span>
+												        </div> 	
+												
+												</div>
+												
+												
+												
+												<div class="col-xs-6">
+												<label>Data Fine Verifica</label>
+												  <div class='input-group date datepicker'>
+												  <fmt:formatDate value="${verbale.data_fine_verifica }" pattern="dd/MM/yyyy" var="myDate" />
+												               <input type='text' class="form-control input-small" id="data_fine_verifica" name="data_fine_verifica" value="${myDate }">
+												                <span class="input-group-addon">
+												                    <span class="fa fa-calendar" >
+												                    </span>
+												                </span>
+												        </div> 	
+												
+												
+												</div>
+												
+												<div class="col-xs-6">
+												<label>Frequenza (anni)</label>
+												<c:if test="${verbale.frequenza>0 }">
+												<input type="number" class="form-control" min="0" step="1" id="frequenza" name="frequenza" value="${verbale.frequenza }">
+												</c:if>
+												
+												<c:if test="${verbale.frequenza==0 }">
+												<input type="number" class="form-control" min="0" step="1" id="frequenza" name="frequenza" >
+												</c:if>
+												
+												</div>
+												
+												<div class="col-xs-3">
+												<label>Tipo verifica</label>
+												<select id="tipo_verifica_vie" name="tipo_verifica_vie" class="form-control select2" data-placeholder="Seleziona tipologia verifica..." style="width:100%">
+												   <option value=""></option>
+												   <option value="1">Verifica periodica</option>
+													  <option value="2">Verifica straordinaria</option>
+													 
+											 
+											</select>	
+
+
+												 </div>
+												 <div id="check_motivo_content" style="display:none">
+												 <div class="col-xs-3">
+												 <label>Motivo</label><br>
+												 <input type="checkbox" class="form-control"  id="motivo_1" name="motivo_1"><label> Verifica periodica con esito negativo</label><br>
+												 <input type="checkbox" class="form-control"  id="motivo_2" name="motivo_2"><label> Modifiche sostanziali all'impianto</label><br>
+												 <input type="checkbox" class="form-control"  id="motivo_3" name="motivo_3"><label> Richiesta del datore di lavoro</label><br>
+												 </div>
+												</div>
+												       		
+												<c:if test="${verbale.codiceVerifica == 'VT' }">      		
+												<div class="col-xs-6">
+												<label>Tipologia verifica</label>
+												<select id="tipologia_verifica" name="tipologia_verifica" class="form-control select2" data-placeholder="Seleziona tipologia verifica..." style="width:100%">
+												 <option value=""></option>												 
+												 <option value="2">Impianti di terra fino a 1000 V</option>
+												 <option value="3">Impianti di terra oltre 1000 V</option>
+											 
+											</select>	
+
+
+												 </div>
+
+												</c:if>
+												
+												
+												<div class="col-xs-6">
+												<label>Ore/Uomo</label><br>
+												<div class ="row">
+													<div class="col-xs-4">
+													<c:if test="${verbale.ore_uomo!=null }">
+													<input type="number" class="form-control" min="0" step="1" id="ore" name="ore" value="${verbale.ore_uomo.split('h')[0] }">
+													</c:if>
+													<c:if test="${verbale.ore_uomo==null }">
+													<input type="number" class="form-control" min="0" step="1" id="ore" name="ore" >
+													</c:if>
+													</div>
+													<div class="col-xs-1">
+													<label>Ore</label>
+													
+													</div>
+													
+														<div class="col-xs-4">
+														<c:if test="${verbale.ore_uomo!=null }">
+														<input type="number" class="form-control" min="0" step="1" max="59" id="minuti" name="minuti" value="${verbale.ore_uomo.split('-')[1].replace('mm','') }">
+													
+													</c:if>
+													<c:if test="${verbale.ore_uomo==null }">
+													<input type="number" class="form-control" min="0" step="1" max="59" id="minuti" name="minuti">
+													</c:if>
+													
+											
+													</div>
+															<div class="col-xs-1">
+													<label>Minuti</label>
+													
+													</div>
+
+												 </div>
+												 </div>
+												
+												
+												
+												<div class="col-xs-6">
+												<label>Matricola</label><br>
+											
+													<input type="text" class="form-control" id="matricola_vie" name="matricola_vie" value="${verbale.matricola_vie }">
+									
+
+												 </div>
+											
+												
+																			
+												</div>
+             					</div>
+             					
+             					</div>
+             				</div>
+             				
+             				</div>
+            				
+           				</c:if>
+				</c:if>
+				
+												<input type="hidden" id="check_motivo" name="check_motivo" value="">
+												<input type="hidden" id="ore_uomo" name="ore_uomo" value="">
+											
 								</form>
 								
 								
@@ -690,14 +849,14 @@
 												<div class="box-header with-border">
 													<c:if test="${verbale.getStato().getId()==8 }">
 														Compila Scheda Tecnica
-													</c:if>
+										</c:if>
 													<c:if test="${verbale.getStato().getId()!=8 }">
 	 													Controllo Scheda Tecnica
 	 												</c:if>
 													<div class="box-tools pull-right">		
 														<button data-widget="collapse" class="btn btn-box-tool"><i class="fa fa-minus"></i></button>
 													</div>
-												</div>
+								 			</div>
 												<div class="box-body">	
 													<form id="formScTecnica" >
 														<c:forEach items="${domandeVerbaleSchedaTecnica}" var="domVerbale" varStatus="loop">	
@@ -706,9 +865,9 @@
         												
     	    													<c:set var="domVerbale" value="${domVerbale}" scope="request"></c:set>
     	    													<c:set var="storicoModificheVerb" value="${storicoModificheVerb}" scope="request"></c:set>        	
-    	    													<c:set var="storicoModificheSkTec" value="${storicoModificheSkTec}" scope="request"></c:set>    
+    	  	 													<c:set var="storicoModificheSkTec" value="${storicoModificheSkTec}" scope="request"></c:set>    
     	    													<c:set var="type" value="SchedaTecnica" scope="request"></c:set>    	      	    													
-																<jsp:include page="gestioneVerbaleDettaglio.jsp"></jsp:include>        													
+																<jsp:include page="gestioneVerbaleDettaglio.jsp"></jsp:include>        												
 
         													</div>
 														</c:forEach>
@@ -716,15 +875,7 @@
 												</div>
 												<div class="box-footer" id="formScTecnicabox">																										
 													<c:if test="${user.checkPermesso('UPD_VERBALE')}">
-													<%-- 	<c:if test='${verbale.getSchedaTecnica().getStato().getId()!= 8}'>
-															<button type="button" class="btn btn-default ml-1 savebutt" onclick="modificaRisposte(${verbale.getSchedaTecnica().getId()},'formScTecnica')" style="margin-left: 1em; float: right;">	
-																<span >SALVA MODIFICHE</span>
-															</button>	
-													
-															<button type="button" class="btn btn-default ml-1 savebutt" onclick="annullaModifiche('formScTecnica')" style="margin-left: 1em; float: right;">	
-																<span >ANNULLA MODIFICHE</span>
-															</button>
-														</c:if> --%>
+												
 														<c:if test='${verbale.getSchedaTecnica().getStato().getId()== 8}'>
 															<button type="button" class="btn btn-default ml-1 savebutt" onclick="salvaRisposteCompWeb(${verbale.getSchedaTecnica().getId()},'formScTecnica', 'salvaRisposteCompWeb')" style="margin-left: 1em; float: right;">	
 																<span >SALVA MODIFICHE</span>
@@ -1246,7 +1397,9 @@
 
 
 	<jsp:attribute name="extra_css">
-
+<style>.l2 {
+  padding-left: 1em;
+}</style>
 
 	</jsp:attribute>
 
@@ -1417,6 +1570,8 @@
 			}
 			
 		});
+		
+
  		
 	$('#check_sede_diversa').on('ifUnchecked', function(event) {
 			
@@ -1429,6 +1584,67 @@
 			$('#regione').val("");
 			
 		});
+	
+	
+	$('#motivo_1').on('ifChecked', function(event) {
+		$('#motivo_2').iCheck('uncheck');
+		$('#motivo_3').iCheck('uncheck');
+		
+		$('#check_motivo').val("2");
+	});
+	$('#motivo_2').on('ifChecked', function(event) {
+		$('#motivo_1').iCheck('uncheck');
+		$('#motivo_3').iCheck('uncheck');
+		$('#check_motivo').val("3");
+	});
+	$('#motivo_3').on('ifChecked', function(event) {
+		$('#motivo_2').iCheck('uncheck');
+		$('#motivo_1').iCheck('uncheck');
+		$('#check_motivo').val("4");
+	});
+	
+	$('#data_verifica').change(function(){
+		
+		var value = $('#data_verifica').val();
+		
+		$('#data_fine_verifica').val(value);
+		
+	});
+	
+	$('#ore').change(function(){
+		
+		var ore = $(this).val();
+		var minuti = $('#minuti').val();
+		
+		$('#ore_uomo').val(ore+"h-"+minuti+"mm");
+	});
+	
+	
+$('#minuti').change(function(){
+		
+		var minuti = $(this).val();
+		var ore = $('#ore').val();
+		
+		$('#ore_uomo').val(ore+"h-"+minuti+"mm");
+	});
+	
+	$('#tipo_verifica_vie').change(function(){
+		
+		var value=$(this).val();
+
+		if(value=="2"){
+			$('#motivo_1').iCheck('check');	
+			$('#check_motivo_content').show();
+			$('#frequenza').attr("disabled", true);
+		}else{
+			$('#check_motivo_content').hide();
+			$('#motivo_1').iCheck('check');		
+			$('#motivo_2').iCheck('uncheck');
+			$('#motivo_3').iCheck('uncheck');
+			$('#check_motivo').val("1");
+			$('#frequenza').attr("disabled", false);
+		}
+	});
 	
 	var sede_div = "${verbale.attrezzatura.comune_div }";
 	
@@ -1452,9 +1668,14 @@
 				
 				var esito_verbale = "${esito_verbale}";
 				var tipo_ver_gvr = "${tipo_ver_gvr}";
+				var motivo_verifica = "${verbale.motivo_verifica}";
+				var tipologia_verifica = "${verbale.tipologia_verifica}";
 				
+				
+			$('#tipologia_verifica').select2();
+			$('#tipo_verifica_vie').select2();
 			
-				
+	
 				if(sede_div!=''){
 					$('#cap').focusout();
 					$('#check_sede_diversa').iCheck('check');
@@ -1473,6 +1694,25 @@
 				if(tipo_ver_gvr!='0'){
 					$('#tipo_verifica_gvr').val(tipo_ver_gvr);
 					$('#tipo_verifica_gvr').change();
+				}
+				
+				if(tipologia_verifica!='0'){
+					$('#tipologia_verifica').val(tipologia_verifica);
+					$('#tipologia_verifica').change();
+				}
+				if(motivo_verifica!='0'){
+					
+					if(motivo_verifica == '1'){
+						$('#tipo_verifica_vie').val(motivo_verifica);
+						$('#tipo_verifica_vie').change();
+					}else{
+						$('#tipo_verifica_vie').val("2");
+						$('#tipo_verifica_vie').change();
+						
+						$('#motivo_'+(motivo_verifica-1)).iCheck('check');
+					}
+					
+					
 				}
 				
 				$('#strumento_verificatore').select2();
@@ -1753,7 +1993,37 @@
 				$('#myModalError').addClass("modal modal-danger");
 				$('#myModalError').modal('show');	
 			}
+			else if($('#frequenza').val()=='' && $('#check_motivo').val()=='1'){
+				$('#modalErrorDiv').html("Il campo frequenza è obbligatorio");
+				$('#myModalError').removeClass();
+				$('#myModalError').addClass("modal modal-danger");
+				$('#myModalError').modal('show');	
+			}
+			else if($('#check_motivo').val()==''){
+				$('#modalErrorDiv').html("Il campo tipo verifica è obbligatorio");
+				$('#myModalError').removeClass();
+				$('#myModalError').addClass("modal modal-danger");
+				$('#myModalError').modal('show');	
+			}
+			else if($('#tipologia_verifica').val()==''){
+				$('#modalErrorDiv').html("Il campo tipologia verifica è obbligatorio");
+				$('#myModalError').removeClass();
+				$('#myModalError').addClass("modal modal-danger");
+				$('#myModalError').modal('show');	
+			}
 			
+			else if($('#ore').val()=='' || $('#minuti').val()==''){
+				$('#modalErrorDiv').html("Il campo ore/uomo è obbligatorio");
+				$('#myModalError').removeClass();
+				$('#myModalError').addClass("modal modal-danger");
+				$('#myModalError').modal('show');	
+			}
+			else if($('#matricola_vie').val()==''){
+				$('#modalErrorDiv').html("Il campo matricola è obbligatorio");
+				$('#myModalError').removeClass();
+				$('#myModalError').addClass("modal modal-danger");
+				$('#myModalError').modal('show');	
+			}
 			else{
 				
 				pleaseWaitDiv = $('#pleaseWaitDialog');

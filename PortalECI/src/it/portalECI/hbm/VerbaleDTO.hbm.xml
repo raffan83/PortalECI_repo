@@ -127,6 +127,25 @@
 		
 			<property name="descrizione_sospensione" type="java.lang.String">
 			<column name="descrizione_sospensione" />
-		</property>  	
+		</property>  
+		
+			<property name="frequenza" type="int">
+			<column name="frequenza" />
+		</property>
+			<property name="motivo_verifica" type="int">
+			<column name="motivo_verifica" />
+		</property>
+			<property name="tipologia_verifica" type="int">
+			<column name="tipologia_verifica" />
+		</property>
+			<property name="ore_uomo" type="java.lang.String">
+			<column name="ore_uomo" />
+		</property>
+			<property name="matricola_vie" type="java.lang.String">
+			<column name="matricola_vie" />
+		</property>
+			 <property name="data_fine_verifica" type="java.sql.Date">
+			<column name="data_fine_verifica" />
+		</property> 
 	</class>
 </hibernate-mapping> 

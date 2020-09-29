@@ -152,10 +152,10 @@ public class GestioneVerbaleBO {
 			verbale.setAttrezzatura(attrezzatura);
 			verbale.setSedeUtilizzatore(sedeUtilizzatore);
 			verbale.setType(VerbaleDTO.VERBALE);
-			if(effettuazione_verbale!=null) {
+			if(effettuazione_verbale!=null && !effettuazione_verbale.equals("")) {
 				verbale.setEffettuazione_verifica(Integer.parseInt(effettuazione_verbale));	
 			}
-			if(tipo_verifica!=null) {
+			if(tipo_verifica!=null && !tipo_verifica.equals("")) {
 				verbale.setTipo_verifica(Integer.parseInt(tipo_verifica));	
 			}
 						
@@ -163,6 +163,13 @@ public class GestioneVerbaleBO {
 				verbale.setEsercente(esercente);	
 			}			
 	
+			if(codiceVerifica.equals("VS")) {
+				verbale.setTipologia_verifica(1);
+			}
+			else if(codiceVerifica.equals("VE")) {
+				verbale.setTipologia_verifica(4);
+			}
+			
 			if(questionario.getDomandeSchedaTecnica().size()>0 && creaSchedaTecnica) {
 				VerbaleDTO schedaTecnica = new VerbaleDTO();
 				schedaTecnica.setQuestionarioID(questionario.getId());
@@ -773,6 +780,45 @@ public class GestioneVerbaleBO {
 		if(verbale.getEsercente() != null ) 
 		{
 			html = html.replaceAll("\\$\\{ESERCENTE\\}", verbale.getEsercente());
+		}
+		
+		if(verbale.getOre_uomo() != null ) 
+		{
+			html = html.replaceAll("\\$\\{ORE_UOMO\\}", verbale.getOre_uomo());
+		}
+		
+		if(verbale.getData_fine_verifica() != null ) 
+		{
+			html = html.replaceAll("\\$\\{DATA_FINE_VERIFICA\\}", df.format(verbale.getData_fine_verifica()));
+		}
+		
+		if(verbale.getMatricola_vie() != null ) 
+		{
+			html = html.replaceAll("\\$\\{MATRICOLA_VIE\\}", verbale.getMatricola_vie());
+		}
+		
+		if(verbale.getMotivo_verifica() == 1 ) 
+		{
+			
+			html = html.replaceAll("\\$\\{TIPO_VERIFICA_VIE\\}", "verifica periodica");
+			
+		}
+		
+		if(verbale.getMotivo_verifica() >= 2) {
+			
+			
+			html = html.replaceAll("\\$\\{TIPO_VERIFICA_VIE\\}", "verifica straordinaria");
+			
+			String motivo = "";
+			if(verbale.getMotivo_verifica()==2) {
+				motivo = "verifica periodica con esito negativo";
+			}else if(verbale.getMotivo_verifica()==3) {
+				motivo = "modifiche sostanziali all'impianto";
+			}else if(verbale.getMotivo_verifica()==4) {
+				motivo = "richiesta del datore di lavoro";
+			}
+			
+			html = html.replaceAll("\\$\\{MOTIVO_VERIFICA_STRAORDINARIA\\}", motivo);
 		}
 
 		// Elimino i placeholder non utilizzati

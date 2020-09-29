@@ -32,7 +32,8 @@ import it.portalECI.DTO.UtenteDTO;
 import it.portalECI.DTO.VerbaleDTO;
 import it.portalECI.Exception.ECIException;
 import it.portalECI.Util.Utility;
-import it.portalECI.bo.CreateScadenzarioInail;
+import it.portalECI.bo.CreateScadenzarioVAL;
+import it.portalECI.bo.CreateScadenzarioVIE;
 import it.portalECI.bo.GestioneInterventoBO;
 import it.portalECI.bo.GestioneVerbaleBO;
 import it.portalECI.Util.Costanti;
@@ -110,7 +111,7 @@ public class GestioneListaVerbali extends HttpServlet {
 				session.close();
 			}
 			
-			else if(action.equals("scadenzario_inail")) {
+			else if(action.equals("scadenzario_val")) {
 				
 				String dateFrom = request.getParameter("dateFrom");
 				String dateTo = request.getParameter("dateTo");	
@@ -127,19 +128,19 @@ public class GestioneListaVerbali extends HttpServlet {
 				
 				for (VerbaleDTO verbaleDTO : listaVerbali) {
 					
-					if(verbaleDTO.getStato().getId()==5 || verbaleDTO.getStato().getId()==9) {
+					if((verbaleDTO.getStato().getId()==5 || verbaleDTO.getStato().getId()==9) && verbaleDTO.getCodiceCategoria().equals("VAL")) {
 						listaVerbaliValidi.add(verbaleDTO);
 					}
 					
 				}
 				
 				
-				new CreateScadenzarioInail(listaVerbaliValidi, dateFrom, dateTo, session);
+				new CreateScadenzarioVAL(listaVerbaliValidi, dateFrom, dateTo, session);
 				
 				DateFormat sdf = new SimpleDateFormat("ddMMyyyy");
 				
 
-				String path = Costanti.PATH_ROOT + "ScadenzarioINAIL\\SCAD"+sdf.format(from)+ sdf.format(to)+".xlsx";
+				String path = Costanti.PATH_ROOT + "ScadenzarioVAL\\SCADVAL"+sdf.format(from)+ sdf.format(to)+".xlsx";
 				
 				 File file = new File(path);
 					
@@ -147,7 +148,61 @@ public class GestioneListaVerbali extends HttpServlet {
 
 					ServletOutputStream outp = response.getOutputStream();
 					response.setContentType("application/octet-stream");
-					response.setHeader("Content-Disposition","attachment;filename=SCAD"+ sdf.format(from)+sdf.format(to)+".xlsx");
+					response.setHeader("Content-Disposition","attachment;filename=SCADVAL"+ sdf.format(from)+sdf.format(to)+".xlsx");
+			
+					    byte[] outputByte = new byte[1];
+					    
+					    while(fileIn.read(outputByte, 0, 1) != -1)
+					    {
+					    	outp.write(outputByte, 0, 1);
+					    }
+					    				    
+					 
+					    fileIn.close();
+					    outp.flush();
+					    outp.close();
+				
+				session.close();
+				
+			}
+			else if(action.equals("scadenzario_vie")) {
+				
+				String dateFrom = request.getParameter("dateFrom");
+				String dateTo = request.getParameter("dateTo");	
+				
+				DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+				
+				Date from = df.parse(dateFrom);
+				Date to = df.parse(dateTo);
+				
+				List<VerbaleDTO> listaVerbali = (List<VerbaleDTO>) request.getSession().getAttribute("listaVerbali");
+
+				List<VerbaleDTO> listaVerbaliValidi = new ArrayList<VerbaleDTO>();
+				
+				
+				for (VerbaleDTO verbaleDTO : listaVerbali) {
+					
+					if(verbaleDTO.getStato().getId()==5 && verbaleDTO.getCodiceCategoria().equals("VIE")) {
+						listaVerbaliValidi.add(verbaleDTO);
+					}
+					
+				}
+				
+				
+				new CreateScadenzarioVIE(listaVerbaliValidi, dateFrom, dateTo, session);
+				
+				DateFormat sdf = new SimpleDateFormat("ddMMyyyy");
+				
+
+				String path = Costanti.PATH_ROOT + "ScadenzarioVIE\\SCADVIE"+sdf.format(from)+ sdf.format(to)+".xlsx";
+				
+				 File file = new File(path);
+					
+					FileInputStream fileIn = new FileInputStream(file);
+
+					ServletOutputStream outp = response.getOutputStream();
+					response.setContentType("application/octet-stream");
+					response.setHeader("Content-Disposition","attachment;filename=SCADVIE"+ sdf.format(from)+sdf.format(to)+".xlsx");
 			
 					    byte[] outputByte = new byte[1];
 					    

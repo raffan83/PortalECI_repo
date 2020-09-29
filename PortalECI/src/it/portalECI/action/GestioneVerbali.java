@@ -128,9 +128,11 @@ public class GestioneVerbali extends HttpServlet {
 					
 					if(data_verifica!=null && !data_verifica.equals("")) {
 						verbale.setData_verifica(df.parse(data_verifica));
-						verbale.getAttrezzatura().setData_verifica_funzionamento(df.parse(data_verifica));
 						session.update(verbale);
-						session.update(verbale.getAttrezzatura());
+						if(verbale.getAttrezzatura()!=null) {
+							verbale.getAttrezzatura().setData_verifica_funzionamento(df.parse(data_verifica));						
+							session.update(verbale.getAttrezzatura());
+						}
 					}
 					
 				}
@@ -148,7 +150,7 @@ public class GestioneVerbali extends HttpServlet {
 					}
 					
 				}
-				if(verbale.getAttrezzatura().getTipo_attivita().equals("GVR") && paramName.equals("data_verifica_integrita_verb")) {
+				if(verbale.getAttrezzatura()!=null && verbale.getAttrezzatura().getTipo_attivita().equals("GVR") && paramName.equals("data_verifica_integrita_verb")) {
 					
 					String data_verifica_integrita = request.getParameter("data_verifica_integrita_verb");
 				
@@ -162,7 +164,7 @@ public class GestioneVerbali extends HttpServlet {
 					}
 					
 				}
-				if(verbale.getAttrezzatura().getTipo_attivita().equals("GVR") && paramName.equals("data_prossima_verifica_integrita_verb")) {
+				if(verbale.getAttrezzatura()!=null && verbale.getAttrezzatura().getTipo_attivita().equals("GVR") && paramName.equals("data_prossima_verifica_integrita_verb")) {
 					
 					String data_prossima_verifica_integrita = request.getParameter("data_prossima_verifica_integrita_verb");
 				
@@ -175,7 +177,7 @@ public class GestioneVerbali extends HttpServlet {
 					}
 					
 				}
-				if(verbale.getAttrezzatura().getTipo_attivita().equals("GVR") && paramName.equals("data_verifica_interna_verb")) {
+				if(verbale.getAttrezzatura()!=null && verbale.getAttrezzatura().getTipo_attivita().equals("GVR") && paramName.equals("data_verifica_interna_verb")) {
 					
 					String data_verifica_interna = request.getParameter("data_verifica_interna_verb");
 				
@@ -189,7 +191,7 @@ public class GestioneVerbali extends HttpServlet {
 					
 					
 				}
-				if(verbale.getAttrezzatura().getTipo_attivita().equals("GVR") && paramName.equals("data_prossima_verifica_interna_verb")) {
+				if(verbale.getAttrezzatura()!=null && verbale.getAttrezzatura().getTipo_attivita().equals("GVR") && paramName.equals("data_prossima_verifica_interna_verb")) {
 					
 					String data_prossima_verifica_interna = request.getParameter("data_prossima_verifica_interna_verb");
 				
@@ -203,7 +205,7 @@ public class GestioneVerbali extends HttpServlet {
 					
 				}
 				
-				if(verbale.getAttrezzatura().getTipo_attivita().equals("GVR") && paramName.equals("tipo_verifica_gvr")) {
+				if(verbale.getAttrezzatura()!=null && verbale.getAttrezzatura().getTipo_attivita().equals("GVR") && paramName.equals("tipo_verifica_gvr")) {
 					
 					String tipo_verifica_gvr = request.getParameter("tipo_verifica_gvr");
 			
@@ -269,8 +271,74 @@ public class GestioneVerbali extends HttpServlet {
 				
 									
 				}
-
+				if(paramName.equals("frequenza")) {
+					
+					String frequenza = request.getParameter("frequenza");
+					
+					if(frequenza!=null && !frequenza.equals("")) {
+						verbale.setFrequenza(Integer.parseInt(frequenza));
+						session.save(verbale);
+					}
+					
+				}
+				if(paramName.equals("check_motivo")) {
+					
+					String motivo = request.getParameter("check_motivo");
+					
+					if(motivo!=null && !motivo.equals("")) {
+						verbale.setMotivo_verifica(Integer.parseInt(motivo));						
+						
+						if(Integer.parseInt(motivo)>1) {
+							verbale.setFrequenza(0);
+						}
+						session.save(verbale);
+					}
+					
+				}
+				if(paramName.equals("tipologia_verifica")) {
+					
+					String tipologia_verifica = request.getParameter("tipologia_verifica");
+					
+					if(tipologia_verifica!=null && !tipologia_verifica.equals("")) {
+						verbale.setTipologia_verifica(Integer.parseInt(tipologia_verifica));
+						session.save(verbale);
+					}
+					
+				}
+				if(paramName.equals("ore_uomo")) {
+					
+					String ore_uomo = request.getParameter("ore_uomo");
+					
+					if(ore_uomo!=null && !ore_uomo.equals("")) {
+						verbale.setOre_uomo(ore_uomo);
+						session.save(verbale);
+					}
+					
+				}
+				if(paramName.equals("matricola_vie")) {
+					
+					String matricola_vie = request.getParameter("matricola_vie");
+					
+					if(matricola_vie!=null && !matricola_vie.equals("")) {
+						verbale.setMatricola_vie(matricola_vie);
+						session.save(verbale);
+					}
+					
+				}
 				
+
+				if(paramName.equals("data_fine_verifica")) {
+					
+					String data_fine_verifica = request.getParameter("data_fine_verifica");
+				
+					SimpleDateFormat df = new SimpleDateFormat("dd/MM/yyyy");
+					
+					if(data_fine_verifica!=null && !data_fine_verifica.equals("")) {
+						verbale.setData_fine_verifica(df.parse(data_fine_verifica));					
+						session.update(verbale);					
+					}
+					
+				}
 				// RISPOSTA FORMULA
 				if(paramName.contains("value1") || paramName.contains("value2") || paramName.contains("responseValue")) {				
 					id=paramName.replaceAll("value1", "").replaceAll("value2", "").replaceAll("responseValue", "");

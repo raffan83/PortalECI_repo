@@ -52,8 +52,14 @@ public class VerbaleDTO implements Serializable {
 	private String esito;	
 	private String descrizione_sospensione;
 	private int tipo_verifica;
-	private int tipo_verifica_gvr;
+	private int tipo_verifica_gvr;	
 	
+	private int frequenza;
+	private int motivo_verifica;
+	private int tipologia_verifica;
+	private String ore_uomo;
+	private String matricola_vie;
+	private Date data_fine_verifica;
 	
 	public int getId() {
 		return id;
@@ -359,6 +365,55 @@ public class VerbaleDTO implements Serializable {
 
 	public void setTipo_verifica_gvr(int tipo_verifica_gvr) {
 		this.tipo_verifica_gvr = tipo_verifica_gvr;
+	}
+
+	public int getFrequenza() {
+		return frequenza;
+	}
+
+	public void setFrequenza(int frequenza) {
+		this.frequenza = frequenza;
+	}
+
+	public int getMotivo_verifica() {
+		return motivo_verifica;
+	}
+
+	public void setMotivo_verifica(int motivo_verifica) {
+		this.motivo_verifica = motivo_verifica;
+	}
+
+	public int getTipologia_verifica() {
+		return tipologia_verifica;
+	}
+
+	public void setTipologia_verifica(int tipologia_verifica) {
+		this.tipologia_verifica = tipologia_verifica;
+	}
+
+	public String getOre_uomo() {
+		return ore_uomo;
+	}
+
+	public void setOre_uomo(String ore_uomo) {
+		this.ore_uomo = ore_uomo;
+	}
+
+
+	public Date getData_fine_verifica() {
+		return data_fine_verifica;
+	}
+
+	public void setData_fine_verifica(Date data_fine_verifica) {
+		this.data_fine_verifica = data_fine_verifica;
+	}
+
+	public String getMatricola_vie() {
+		return matricola_vie;
+	}
+
+	public void setMatricola_vie(String matricola_vie) {
+		this.matricola_vie = matricola_vie;
 	}
 
 	

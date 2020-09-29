@@ -333,6 +333,8 @@
 	        	         							</select>    
 	        									</div>  
         									</div>
+        									
+        									<div style="display:none" id="content_val">
         								<div class="form-group col-sm-5">
 	                  								<label>Effettuazione verifica</label>
 	                  								 <select name="effettuazione_verifica" id="effettuazione_verifica" data-placeholder="Seleziona Effettuazione Verifica..."  class="form-control select2" aria-hidden="true" data-live-search="true">
@@ -346,12 +348,12 @@
 	                  								<label>Tipo Verifica</label>
 	                  								
 	                  								 <select name="tipo_verifica" id="tipo_verifica" data-placeholder="Seleziona Effettuazione Verifica..."  class="form-control select2" aria-hidden="true" data-live-search="true">
-	                							<!-- 	<option value=""></option>
-	                								<option value="1">Prima periodica</option>
-	                								<option value="2">Periodica successiva</option> -->
+
 	        	         							</select>          
 
 	        									</div>  
+	        									
+	        							</div>		
         									<div class="form-group col-sm-2 text-center" style="position: absolute;	bottom: 0; right: 0;">        									
                   								<button class="btn-sm" id="addrow" onclick="addRow()"><i class="fa fa-plus"></i></button>              
         									</div> 
@@ -374,7 +376,7 @@
  															<th>Attrezzatura</th>
  															<th style="display:none"></th>
  															<th>Sede</th>
- 															<th>Esercente</th>
+ 															<th>Esercente</th> 															
  															<th>Effettuazione verifica</th>
  															<th>Tipo verifica</th>
  															<th>Note</th>		 														
@@ -502,9 +504,12 @@
 				    	if(commessa.split("_")[1]=='VAL'){
 				    		$("#select1").val("10");
 				    		$("#select1").change();
+				    		$('#select1').attr("disabled", true);
+				    		$('#content_val').show();
 				    	}else if(commessa.split("_")[1]=='VIE'){
 				    		$("#select1").val("1");
 				    		$("#select1").change();
+				    		$('#select1').attr("disabled", true);
 				    	}
 				    	
 			    	 
@@ -614,7 +619,7 @@
    						$("#select2").val("").trigger("change");
    						
    						
-   						$("#select2").prop("disabled", true); 
+   					//	$("#select2").prop("disabled", true); 
    					
    						$(".categoriaTipiRow").remove();
    						
@@ -768,12 +773,16 @@
 					var eff_ver = $('#effettuazione_verifica').val();
 					var tipo_ver =$('#tipo_verifica').val();
 					
+					var is_vie = false;
 					if(categorie_verifica == "10" && $('#attrezzatura').val()!='0'){
 						attrezzatura = $('#attrezzatura').val();	
+					}else{
+						is_vie = true;
 					}
 					
 					
-					if(categorie_verifica!=null && tipi_verifica!=null && eff_ver!=null && eff_ver!=''&& tipo_ver!=null && tipo_ver!=''){
+					
+					if(categorie_verifica!=null && tipi_verifica!=null && !is_vie && eff_ver!=null && eff_ver!=''&& tipo_ver!=null && tipo_ver!=''){
 						//if($("#" +tipi_verifica).length == 0) {						 										
 							
 							var id_tipo=tipi_verifica.substring(0, tipi_verifica.indexOf("_"));
@@ -854,12 +863,92 @@
 									$("#addrow").prop('disabled', false);
 								}
 							});
-							/*$('#select1').find('[value='+categorie_verifica+']').remove();
-							$('#select2').find('[value='+tipi_verifica+']').remove();*/
-						/*}else{							
-							$('#empty').html("La coppia Categoria Verifica/Tipo Verifica selezionata è già stata inserita!");
-						}*/
-					}else{						
+
+					}
+					else if(categorie_verifica!=null && tipi_verifica!=null && is_vie){
+						var id_tipo=tipi_verifica.substring(0, tipi_verifica.indexOf("_"));
+						
+						$.ajax({
+							type: "GET",
+							url: "gestioneTipiVerifica.do?action=checkSchedaTecnica&idVerifica="+id_tipo,
+							dataType: "json",
+							beforeSend: function(xhr){
+								$("#addrow").html('<i class="fa fa-spinner fa-spin" style="font-size:24px"></i>');
+								 $("#addrow").prop('disabled', true);
+							},
+							success: function(  dataResp, textStatus) {
+								var objectdata='<tr class="categoriaTipiRow" id="'+tipi_verifica+'" role="row" >'+
+								'<td >'+$('#select1').find('[value='+categorie_verifica+']').text()+'</td>'+
+								'<td >'+$('#select2').find('[value='+tipi_verifica+']').text()+'</td>'+	
+								'<td >';
+								if(!dataResp.schedaTecnicaPresente){							
+									objectdata+='<i class="fa fa-ban" title="Template Scheda Tecnica non esiste per questo Tipo Verifica"></i>';
+								}else{
+									
+									if($('#tipo_verifica').val()==1|| ($('#select2').val().split("_")[2]== 'GVR' && $('#tipo_verifica').val()==2)){
+										objectdata+='<input type="checkbox" class="skTecObb" checked/ disabled>';
+									}else{
+										objectdata+='<input type="checkbox" class="skTecObb" disabled/>';	
+									}
+									
+								}
+								objectdata+='</td>';
+								if(attrezzatura !=null && attrezzatura!=""){
+									objectdata+='<td>'+attrezzatura.split("_")[1]+'</td>';
+									objectdata+='<td style="display:none">' +attrezzatura.split("_")[0]+'</td>';
+								}else{
+									objectdata+='<td></td>';
+									objectdata+='<td style="display:none"></td>';
+									//str_attrezzature +=  "_";
+								}	
+								
+								var sede = $('#sede').val();
+								if(sede!= null && sede!= "" && sede !="0"){
+									objectdata+="<td>"+	sede.split("_")[0]+"</td>";	
+								}else{
+									objectdata+="<td>${commessa.INDIRIZZO_UTILIZZATORE}</td>";
+								}
+								var esercente = $('#esercente').val();
+								if(esercente !=null && esercente !=''){
+									objectdata+="<td>"+esercente+"</td>";	
+								}else{
+									objectdata+="<td></td>";
+								}
+								objectdata+='<td></td>'+
+								'<td></td>';	
+								objectdata+='<td>'+$("#noteVerbale").val()+'</td>'+    
+									'<td><a class="btn customTooltip" title="Click per eliminare la riga" onclick="removeRow(\''+tipi_verifica+'\')"><i class="fa fa-minus"></i></a></td></tr>';
+								
+							
+								if($("#bodytabVerifica").find("tr").size()>0){
+									$('#tabVerifica').DataTable().destroy();	
+								}
+								$("#bodytabVerifica").append(objectdata);	
+									 
+								 var table = $('#tabVerifica').DataTable({language : lang, responsive: true, ordering: false,columnDefs: [{ responsivePriority: 1, targets: 10 }]});
+								var column =  table.column(4 );
+								column.visible(!column.visible());
+								$('#str_attrezzature').val(str_attrezzature)
+								$('.skTecObb').iCheck({
+						      		checkboxClass: 'icheckbox_square-blue',
+						      		radioClass: 'iradio_square-blue',
+						      		increaseArea: '20%' // optional
+						    	});
+							},
+							error: function( data, textStatus) {
+
+							
+							},
+							complete: function(data, textStatus){
+								$("#addrow").html('<i class="fa fa-plus"></i>');
+								$("#addrow").prop('disabled', false);
+							}
+						});
+
+				
+					}
+					
+					else{						
 						$('#empty').html("Scegli la categoria di verifica, il tipo gruppo e l'effettuazione verifica per procedere!");
 					}
 				}

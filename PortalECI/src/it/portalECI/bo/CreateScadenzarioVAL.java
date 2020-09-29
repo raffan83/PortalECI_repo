@@ -38,9 +38,9 @@ import it.portalECI.DTO.UtenteDTO;
 import it.portalECI.DTO.VerbaleDTO;
 import it.portalECI.Util.Costanti;
 import it.portalECI.Util.Utility;
-public class CreateScadenzarioInail {
+public class CreateScadenzarioVAL {
 	
-	public CreateScadenzarioInail(List<VerbaleDTO> listaVerbali,String dateFom, String dateTo, Session session) throws Exception  {
+	public CreateScadenzarioVAL(List<VerbaleDTO> listaVerbali,String dateFom, String dateTo, Session session) throws Exception  {
 
 		build(listaVerbali,dateFom, dateTo, session);
 		
@@ -750,7 +750,7 @@ public class CreateScadenzarioInail {
 			Date to = df.parse(dateTo);
 	     
 	 		//String path = "C:\\Users\\antonio.dicivita\\Desktop\\";
-	 		String path = Costanti.PATH_ROOT + "ScadenzarioINAIL\\";
+	 		String path = Costanti.PATH_ROOT + "ScadenzarioVAL\\";
 	 		
 			df = new SimpleDateFormat("ddMMyyyy");
 		
@@ -758,7 +758,7 @@ public class CreateScadenzarioInail {
 	 		if(!new File(path).exists()) {
 	 			new File(path).mkdirs();
 	 		}
-	        FileOutputStream fileOut = new FileOutputStream(path +"SCAD"+df.format(from)+ df.format(to)+".xlsx");
+	        FileOutputStream fileOut = new FileOutputStream(path +"SCADVAL"+df.format(from)+ df.format(to)+".xlsx");
 	        workbook.write(fileOut);
 	        fileOut.close();
 
@@ -785,7 +785,7 @@ public class CreateScadenzarioInail {
 		
 		List<VerbaleDTO> listaVerbali =GestioneVerbaleBO.getListaVerbaliDate(session,user, dateFrom, dateTo);
 		
-		new CreateScadenzarioInail(listaVerbali, dateFrom, dateTo, session);
+		new CreateScadenzarioVAL(listaVerbali, dateFrom, dateTo, session);
 		
 		session.close();
 		System.out.println("END");
