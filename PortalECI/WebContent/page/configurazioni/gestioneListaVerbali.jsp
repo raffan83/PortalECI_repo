@@ -55,8 +55,8 @@
         				</div>
         				<div class="col-xs-7">
         				
-        				<a class="btn btn-primary pull-right" id="scadenzario_btn" style="margin-top:25px" onClick="callAction('gestioneListaVerbali.do?action=scadenzario_val&dateFrom=${dateFrom}&dateTo=${dateTo }')">Scadenzario VAL</a>
-        				<a class="btn btn-primary pull-right" id="scadenzario_vie_btn" style="margin-top:25px;margin-right:5px" onClick="callAction('gestioneListaVerbali.do?action=scadenzario_vie&dateFrom=${dateFrom}&dateTo=${dateTo }')">Scadenzario VIE</a>
+        				<a class="btn btn-primary disabled pull-right" id="scadenzario_btn" style="margin-top:25px" onClick="callAction('gestioneListaVerbali.do?action=scadenzario_val&dateFrom=${dateFrom}&dateTo=${dateTo }')">Scadenzario VAL</a>
+        				<a class="btn btn-primary disabled pull-right" id="scadenzario_vie_btn" style="margin-top:25px;margin-right:5px" onClick="callAction('gestioneListaVerbali.do?action=scadenzario_vie&dateFrom=${dateFrom}&dateTo=${dateTo }')">Scadenzario VIE</a>
         				</div>
         				
         				</div>
@@ -247,11 +247,11 @@
     		   	var end = "${dateTo}";
 
     		   	if(start !='' && end !=''){
-    		   		$('#scadenzario_btn').attr("disabled", false);
-    		   		$('#scadenzario_vie_btn').attr("disabled", false);
+    		   		$('#scadenzario_btn').removeClass("disabled");
+    		   		$('#scadenzario_vie_btn').removeClass("disabled");
     		   	}else{
-    		   		$('#scadenzario_btn').attr("disabled", true);
-    		   		$('#scadenzario_vie_btn').attr("disabled", true);
+    		   		$('#scadenzario_btn').addClass("disabled");
+    		   		$('#scadenzario_vie_btn').addClass("disabled");
     		   	}
     		   	
     		   	$('input[name="datarange"]').daterangepicker({
