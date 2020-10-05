@@ -12,6 +12,7 @@ public class StrumentoVerificatoreDTO {
 	private Date scadenza;
 	private Integer id_verificatore;
 	private String nominativo_verificatore;
+	private int disabilitato;
 	
 	
 	public StrumentoVerificatoreDTO(int id) {
@@ -70,6 +71,14 @@ public class StrumentoVerificatoreDTO {
 	}
 	public void setNominativo_verificatore(String nominativo_verificatore) {
 		this.nominativo_verificatore = nominativo_verificatore;
+	}
+
+	public int getDisabilitato() {
+		return disabilitato;
+	}
+
+	public void setDisabilitato(int disabilitato) {
+		this.disabilitato = disabilitato;
 	}
 	
 

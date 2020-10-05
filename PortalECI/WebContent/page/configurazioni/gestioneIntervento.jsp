@@ -778,9 +778,7 @@
 						attrezzatura = $('#attrezzatura').val();	
 					}else{
 						is_vie = true;
-					}
-					
-					
+					}					
 					
 					if(categorie_verifica!=null && tipi_verifica!=null && !is_vie && eff_ver!=null && eff_ver!=''&& tipo_ver!=null && tipo_ver!=''){
 						//if($("#" +tipi_verifica).length == 0) {						 										
@@ -805,9 +803,9 @@
 									}else{
 										
 										if($('#tipo_verifica').val()==1|| ($('#select2').val().split("_")[2]== 'GVR' && $('#tipo_verifica').val()==2)){
-											objectdata+='<input type="checkbox" class="skTecObb" checked/>';
+											objectdata+='<input type="checkbox" class="skTecObb" checked disabled/>';
 										}else{
-											objectdata+='<input type="checkbox" class="skTecObb" />';	
+											objectdata+='<input type="checkbox" class="skTecObb" disabled/>';	
 										}
 										
 									}
@@ -838,7 +836,6 @@
 									objectdata+='<td>'+$("#noteVerbale").val()+'</td>'+    
 										'<td><a class="btn customTooltip" title="Click per eliminare la riga" onclick="removeRow(\''+tipi_verifica+'\')"><i class="fa fa-minus"></i></a></td></tr>';
 									
-								
 									if($("#bodytabVerifica").find("tr").size()>0){
 										$('#tabVerifica').DataTable().destroy();	
 									}

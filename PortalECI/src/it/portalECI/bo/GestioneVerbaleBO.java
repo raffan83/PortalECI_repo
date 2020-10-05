@@ -747,7 +747,12 @@ public class GestioneVerbaleBO {
 		
 		if(verbale.getData_verifica() != null) 
 		{			
-			html = html.replaceAll("\\$\\{DATA_VERIFICA\\}", df.format(verbale.getData_verifica()));
+			if(verbale.getData_fine_verifica()!=null && verbale.getData_verifica()!=verbale.getData_fine_verifica()) {
+				html = html.replaceAll("\\$\\{DATA_VERIFICA\\}", df.format(verbale.getData_verifica()+" - "+df.format(verbale.getData_fine_verifica())));
+			}else {
+				html = html.replaceAll("\\$\\{DATA_VERIFICA\\}", df.format(verbale.getData_verifica()));	
+			}
+			
 		}
 
 		
@@ -787,11 +792,7 @@ public class GestioneVerbaleBO {
 			html = html.replaceAll("\\$\\{ORE_UOMO\\}", verbale.getOre_uomo());
 		}
 		
-		if(verbale.getData_fine_verifica() != null ) 
-		{
-			html = html.replaceAll("\\$\\{DATA_FINE_VERIFICA\\}", df.format(verbale.getData_fine_verifica()));
-		}
-		
+				
 		if(verbale.getMatricola_vie() != null ) 
 		{
 			html = html.replaceAll("\\$\\{MATRICOLA_VIE\\}", verbale.getMatricola_vie());

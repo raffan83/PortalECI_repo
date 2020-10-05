@@ -214,7 +214,7 @@ public class GestioneTemplateQuestionarioBO {
 		html = html.replaceAll("\\$\\{ESERCENTE\\}", "ESERCENTE");
 		
 		html = html.replaceAll("\\$\\{ORE_UOMO\\}", "ORE UOMO");
-		html = html.replaceAll("\\$\\{DATA_FINE_VERIFICA\\}", "DATA FINE VERIFICA");
+		
 		html = html.replaceAll("\\$\\{MATRICOLA_VIE\\}", "MATRICOLA VIE");
 		html = html.replaceAll("\\$\\{TIPO_VERIFICA_VIE\\}", "TIPO VERIFICA VIE");
 		html = html.replaceAll("\\$\\{MOTIVO_VERIFICA_STRAORDINARIA\\}", "MOTIVO VERIFICA STRAORDINARIA");

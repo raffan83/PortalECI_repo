@@ -726,13 +726,14 @@
 												
 												<div class="col-xs-6">
 												<label>Frequenza (anni)</label>
-												<c:if test="${verbale.frequenza>0 }">
-												<input type="number" class="form-control" min="0" step="1" id="frequenza" name="frequenza" value="${verbale.frequenza }">
-												</c:if>
 												
-												<c:if test="${verbale.frequenza==0 }">
-												<input type="number" class="form-control" min="0" step="1" id="frequenza" name="frequenza" >
-												</c:if>
+													<select id="frequenza" name="frequenza" class="form-control select2" data-placeholder="Seleziona Frequenza" style="width:100%">
+												   <option value=""></option>
+												   <option value="2">2</option>
+													 <option value="5">5</option>
+													 
+											</select>	
+											
 												
 												</div>
 												
@@ -776,7 +777,10 @@
 												<div class="col-xs-6">
 												<label>Ore/Uomo</label><br>
 												<div class ="row">
-													<div class="col-xs-4">
+												<div class="col-xs-1">
+													<label>Ore</label>													
+													</div>
+													<div class="col-xs-2">
 													<c:if test="${verbale.ore_uomo!=null }">
 													<input type="number" class="form-control" min="0" step="1" id="ore" name="ore" value="${verbale.ore_uomo.split('h')[0] }">
 													</c:if>
@@ -784,12 +788,12 @@
 													<input type="number" class="form-control" min="0" step="1" id="ore" name="ore" >
 													</c:if>
 													</div>
+													
 													<div class="col-xs-1">
-													<label>Ore</label>
+													<label>Minuti</label>
 													
 													</div>
-													
-														<div class="col-xs-4">
+														<div class="col-xs-2">
 														<c:if test="${verbale.ore_uomo!=null }">
 														<input type="number" class="form-control" min="0" step="1" max="59" id="minuti" name="minuti" value="${verbale.ore_uomo.split('-')[1].replace('mm','') }">
 													
@@ -800,10 +804,7 @@
 													
 											
 													</div>
-															<div class="col-xs-1">
-													<label>Minuti</label>
-													
-													</div>
+															
 
 												 </div>
 												 </div>
@@ -828,11 +829,15 @@
              				
              				</div>
             				
-           				</c:if>
+            				
+            				<input type="hidden" id="check_motivo" name="check_motivo" value="">
+												<input type="hidden" id="ore_uomo" name="ore_uomo" value="">
+            				           				
+            				           				
+            				           				</c:if>
 				</c:if>
 				
-												<input type="hidden" id="check_motivo" name="check_motivo" value="">
-												<input type="hidden" id="ore_uomo" name="ore_uomo" value="">
+												
 											
 								</form>
 								
@@ -1616,7 +1621,7 @@
 		var ore = $(this).val();
 		var minuti = $('#minuti').val();
 		
-		$('#ore_uomo').val(ore+"h-"+minuti+"mm");
+		$('#ore_uomo').val(ore+"h-"+minuti+"min");
 	});
 	
 	
@@ -1625,7 +1630,13 @@ $('#minuti').change(function(){
 		var minuti = $(this).val();
 		var ore = $('#ore').val();
 		
-		$('#ore_uomo').val(ore+"h-"+minuti+"mm");
+		if(minuti>59){
+			minuti = 59;
+			$(this).val(59);
+			
+		}
+		
+		$('#ore_uomo').val(ore+"h-"+minuti+"min");
 	});
 	
 	$('#tipo_verifica_vie').change(function(){
@@ -1670,12 +1681,19 @@ $('#minuti').change(function(){
 				var tipo_ver_gvr = "${tipo_ver_gvr}";
 				var motivo_verifica = "${verbale.motivo_verifica}";
 				var tipologia_verifica = "${verbale.tipologia_verifica}";
+				var frequenza = "${verbale.frequenza}";
 				
 				
 			$('#tipologia_verifica').select2();
 			$('#tipo_verifica_vie').select2();
+			$('#frequenza').select2();
 			
 	
+			if(frequenza!=''){
+				$('#frequenza').val(frequenza);
+				$('#frequenza').change();
+			}
+			
 				if(sede_div!=''){
 					$('#cap').focusout();
 					$('#check_sede_diversa').iCheck('check');
@@ -1926,28 +1944,28 @@ $('#minuti').change(function(){
 				$('#myModalError').addClass("modal modal-danger");
 				$('#myModalError').modal('show');	
 			}
-			else if(gvr !='' && gvr=='1' &&$('#data_verifica_integrita_verb').val()=='' && $('#esito').val()!='S'){
+			else if(gvr !='' && gvr=='1'&& !$('#data_verifica_integrita_verb').attr("disabled")  &&$('#data_verifica_integrita_verb').val()=='' && $('#esito').val()!='S'){
 				
 				$('#modalErrorDiv').html("Il campo data verifica integrità è obbligatorio");
 				$('#myModalError').removeClass();
 				$('#myModalError').addClass("modal modal-danger");
 				$('#myModalError').modal('show');	
 			}
-			else if(gvr !='' && gvr=='1' &&$('#data_prossima_verifica_integrita_verb').val()=='' && $('#esito').val()!='S'){
+			else if(gvr !='' && gvr=='1'&& !$('#data_prossima_verifica_integrita_verb').attr("disabled")  &&$('#data_prossima_verifica_integrita_verb').val()=='' && $('#esito').val()!='S'){
 				
 				$('#modalErrorDiv').html("Il campo data prossima verifica integrità è obbligatorio");
 				$('#myModalError').removeClass();
 				$('#myModalError').addClass("modal modal-danger");
 				$('#myModalError').modal('show');	
 			}
-			else if(gvr !='' && gvr=='1' && $('#data_verifica_interna_verb').val()=='' && $('#esito').val()!='S'){
+			else if(gvr !='' && gvr=='1' && !$('#data_verifica_interna_verb').attr("disabled") && $('#data_verifica_interna_verb').val()=='' && $('#esito').val()!='S'){
 				
-				$('#modalErrorDiv').html("Il campo data prossima verifica interna è obbligatorio");
+				$('#modalErrorDiv').html("Il campo data verifica interna è obbligatorio");
 				$('#myModalError').removeClass();
 				$('#myModalError').addClass("modal modal-danger");
 				$('#myModalError').modal('show');	
 			}
-			else if(gvr !='' && gvr=='1' &&$('#data_prossima_verifica_interna_verb').val()=='' && $('#esito').val()!='S' ){
+			else if(gvr !='' && gvr=='1' && !$('#data_prossima_verifica_interna_verb').attr("disabled") &&$('#data_prossima_verifica_interna_verb').val()=='' && $('#esito').val()!='S' ){
 				
 				$('#modalErrorDiv').html("Il campo data prossima verifica interna è obbligatorio");
 				$('#myModalError').removeClass();
@@ -1999,12 +2017,12 @@ $('#minuti').change(function(){
 				$('#myModalError').addClass("modal modal-danger");
 				$('#myModalError').modal('show');	
 			}
-			else if($('#check_motivo').val()==''){
+ 			else if($('#check_motivo').val()==''){
 				$('#modalErrorDiv').html("Il campo tipo verifica è obbligatorio");
 				$('#myModalError').removeClass();
 				$('#myModalError').addClass("modal modal-danger");
 				$('#myModalError').modal('show');	
-			}
+			} 
 			else if($('#tipologia_verifica').val()==''){
 				$('#modalErrorDiv').html("Il campo tipologia verifica è obbligatorio");
 				$('#myModalError').removeClass();

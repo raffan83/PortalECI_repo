@@ -29,5 +29,8 @@
               <property name="nominativo_verificatore" type="java.lang.String">
             <column name="nominativo_verificatore" />
         </property>
+        <property name="disabilitato" type="int">
+            <column name="disabilitato" />
+        </property>
     </class>
 </hibernate-mapping>

@@ -13,7 +13,7 @@ public class GestioneStrumentiVerificatoreDAO {
 		
 		ArrayList<StrumentoVerificatoreDTO> lista = null;
 		
-		Query query = session.createQuery("from StrumentoVerificatoreDTO");
+		Query query = session.createQuery("from StrumentoVerificatoreDTO where disabilitato = 0");
 		
 		lista = (ArrayList<StrumentoVerificatoreDTO>) query.list();
 

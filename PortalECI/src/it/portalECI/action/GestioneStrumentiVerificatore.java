@@ -254,8 +254,9 @@ if(Utility.validateSession(request,response,getServletContext()))return;
 				String id_strumento = request.getParameter("id_strumento");
 				
 				StrumentoVerificatoreDTO strumento = GestioneStrumentiVerificatoreBO.getStrumentoFromId(Integer.parseInt(id_strumento), session);
+				strumento.setDisabilitato(1);
 				
-				session.delete(strumento);
+				session.update(strumento);
 				
 				myObj = new JsonObject();
 				PrintWriter  out = response.getWriter();

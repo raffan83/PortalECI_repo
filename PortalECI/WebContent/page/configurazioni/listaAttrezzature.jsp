@@ -49,7 +49,7 @@
                   </select> --%>
                   
                   <select name="cliente_appoggio" id="cliente_appoggio" class="form-control select2" aria-hidden="true" data-live-search="true" style="width:100%;display:none" required>
-                
+                <option value="0">TUTTI</option>
                       <c:forEach items="${listaClienti}" var="cliente">
                      
                            <option value="${cliente.__id}">${cliente.nome}</option> 

@@ -322,8 +322,9 @@ public class CreateScadenzarioVIE {
 		 	 Date data_prossima_verifica = null;
 		 	 SimpleDateFormat df = new SimpleDateFormat("dd/MM/yyyy");
 		 	 
-   		 	 if(verbale.getMotivo_verifica()<2 && verbale.getData_verifica()!=null) {
-   		 		cell.setCellValue(df.format(verbale.getData_verifica())+""); 
+		 	cell.setCellValue(df.format(verbale.getData_verifica())+""); 		 
+		 	
+   		 	 if(verbale.getMotivo_verifica()<2 && verbale.getData_verifica()!=null) {   		 		
    		 		
    		 		if(verbale.getFrequenza()!=0) {
    		 			

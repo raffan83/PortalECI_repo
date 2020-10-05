@@ -100,7 +100,7 @@
         	<li class="treeview">
         	 	<a href="#">
         	 		<i class="fa fa-briefcase"></i>
-        	 		<span>Archivio <br>attrezzature/impianti</span>
+        	 		<span>Archivio attrezzature</span>
             		<span class="pull-right-container">
               			<i class="fa fa-angle-left pull-right"></i>
             		</span>
@@ -154,11 +154,11 @@
 								<a href="gestioneAssociazioni.do"><i class="fa fa-hand-peace-o"></i>Gestione Associazioni</a>
 							</li>
 						<% }%>
-						<% if(user.checkPermesso("GESTIONE_CATEGORIE_VERIFICA")){%>
+						<%-- <% if(user.checkPermesso("GESTIONE_CATEGORIE_VERIFICA")){%>
 							<li>
 								<a href="listaCategorieVerifica.do"><i class="fa fa-archive"></i>Gestione Categorie Verifica</a>
 							</li>
-						<% }%>
+						<% }%> --%>
 						<% if(user.checkPermesso("GESTIONE_TIPI_VERIFICA")){%>
 							<li>
 								<a href="listaTipiVerifica.do"><i class="fa fa-sitemap"></i>Gestione Tipi Verifica</a>
