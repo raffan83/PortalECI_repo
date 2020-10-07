@@ -55,6 +55,7 @@ import it.portalECI.DTO.RispostaTabellaVerbaleDTO;
 import it.portalECI.DTO.RispostaTestoVerbaleDTO;
 import it.portalECI.DTO.RispostaVerbaleDTO;
 import it.portalECI.DTO.SedeDTO;
+import it.portalECI.DTO.StatoInterventoDTO;
 import it.portalECI.DTO.StatoVerbaleDTO;
 import it.portalECI.DTO.StoricoModificheDTO;
 import it.portalECI.DTO.StrumentoVerificatoreDTO;
@@ -64,6 +65,7 @@ import it.portalECI.Exception.ECIException;
 import it.portalECI.Util.Costanti;
 import it.portalECI.Util.Utility;
 import it.portalECI.bo.GestioneAnagraficaRemotaBO;
+import it.portalECI.bo.GestioneInterventoBO;
 import it.portalECI.bo.GestioneQuestionarioBO;
 import it.portalECI.bo.GestioneVerbaleBO;
 
@@ -144,9 +146,11 @@ public class GestioneVerbali extends HttpServlet {
 					SimpleDateFormat df = new SimpleDateFormat("dd/MM/yyyy");
 					if(data_prossima_verifica!=null && !data_prossima_verifica.equals("")) {
 						verbale.setData_prossima_verifica(df.parse(data_prossima_verifica));
-						verbale.getAttrezzatura().setData_prossima_verifica_funzionamento(df.parse(data_prossima_verifica));
-						session.update(verbale);
-						session.update(verbale.getAttrezzatura());
+						if(verbale.getAttrezzatura()!=null) {
+							verbale.getAttrezzatura().setData_prossima_verifica_funzionamento(df.parse(data_prossima_verifica));
+							session.update(verbale.getAttrezzatura());
+						}						
+						session.update(verbale);						
 					}
 					
 				}
@@ -158,9 +162,12 @@ public class GestioneVerbali extends HttpServlet {
 					
 					if(data_verifica_integrita!=null && !data_verifica_integrita.equals("")) {
 						verbale.setData_verifica_integrita(df.parse(data_verifica_integrita));
-						verbale.getAttrezzatura().setData_verifica_integrita(df.parse(data_verifica_integrita));
+						if(verbale.getAttrezzatura()!=null) {
+							verbale.getAttrezzatura().setData_verifica_integrita(df.parse(data_verifica_integrita));
+							session.update(verbale.getAttrezzatura());
+						}
 						session.update(verbale);
-						session.update(verbale.getAttrezzatura());
+						
 					}
 					
 				}
@@ -171,9 +178,13 @@ public class GestioneVerbali extends HttpServlet {
 					SimpleDateFormat df = new SimpleDateFormat("dd/MM/yyyy");
 					if(data_prossima_verifica_integrita!=null && !data_prossima_verifica_integrita.equals("")) {
 						verbale.setData_prossima_verifica_integrita(df.parse(data_prossima_verifica_integrita));
-						verbale.getAttrezzatura().setData_prossima_verifica_integrita(df.parse(data_prossima_verifica_integrita));
+						
+						if(verbale.getAttrezzatura()!=null) {
+							verbale.getAttrezzatura().setData_prossima_verifica_integrita(df.parse(data_prossima_verifica_integrita));
+							session.update(verbale.getAttrezzatura());
+						}
 						session.update(verbale);
-						session.update(verbale.getAttrezzatura());
+						
 					}
 					
 				}
@@ -184,9 +195,13 @@ public class GestioneVerbali extends HttpServlet {
 					SimpleDateFormat df = new SimpleDateFormat("dd/MM/yyyy");
 					if(data_verifica_interna!=null && !data_verifica_interna.equals("")) {
 						verbale.setData_verifica_interna(df.parse(data_verifica_interna));
-						verbale.getAttrezzatura().setData_verifica_interna(df.parse(data_verifica_interna));
+						if(verbale.getAttrezzatura()!=null) {
+							verbale.getAttrezzatura().setData_verifica_interna(df.parse(data_verifica_interna));
+							session.update(verbale.getAttrezzatura());	
+						}
+						
 						session.update(verbale);
-						session.update(verbale.getAttrezzatura());	
+						
 					}
 					
 					
@@ -198,9 +213,12 @@ public class GestioneVerbali extends HttpServlet {
 					SimpleDateFormat df = new SimpleDateFormat("dd/MM/yyyy");
 					if(data_prossima_verifica_interna!=null && !data_prossima_verifica_interna.equals("")) {
 						verbale.setData_prossima_verifica_interna(df.parse(data_prossima_verifica_interna));
-						verbale.getAttrezzatura().setData_prossima_verifica_interna(df.parse(data_prossima_verifica_interna));
+						if(verbale.getAttrezzatura()!=null) {
+							verbale.getAttrezzatura().setData_prossima_verifica_interna(df.parse(data_prossima_verifica_interna));
+							session.update(verbale.getAttrezzatura());
+						}
 						session.update(verbale);
-						session.update(verbale.getAttrezzatura());
+						
 					}
 					
 				}
@@ -222,26 +240,32 @@ public class GestioneVerbali extends HttpServlet {
 					
 					AttrezzaturaDTO attrezzatura = verbale.getAttrezzatura();	
 					
-					if(check_sede!=null && check_sede.equals("1")) {
-						String comune = request.getParameter("comune");
-						String indirizzo = request.getParameter("indirizzo");
-						String cap = request.getParameter("cap");
-						String provincia = request.getParameter("provincia");
-						String regione = request.getParameter("regione");
+					if(attrezzatura!=null) {
+						if(check_sede!=null && check_sede.equals("1")) {
 							
-						attrezzatura.setIndirizzo_div(indirizzo);
-						attrezzatura.setComune_div(comune);
-						attrezzatura.setCap_div(cap);
-						attrezzatura.setProvincia_div(provincia);
-						attrezzatura.setRegione_div(regione);					
-					}else {
-						attrezzatura.setIndirizzo_div(null);
-						attrezzatura.setComune_div(null);
-						attrezzatura.setCap_div(null);
-						attrezzatura.setProvincia_div(null);
-						attrezzatura.setRegione_div(null);	
+							String presso = request.getParameter("presso");
+							String comune = request.getParameter("comune");
+							String indirizzo = request.getParameter("indirizzo");
+							String cap = request.getParameter("cap");
+							String provincia = request.getParameter("provincia");
+							String regione = request.getParameter("regione");
+							
+							attrezzatura.setPresso_div(presso);
+							attrezzatura.setIndirizzo_div(indirizzo);
+							attrezzatura.setComune_div(comune);
+							attrezzatura.setCap_div(cap);
+							attrezzatura.setProvincia_div(provincia);
+							attrezzatura.setRegione_div(regione);					
+						}else {
+							attrezzatura.setIndirizzo_div(null);
+							attrezzatura.setComune_div(null);
+							attrezzatura.setCap_div(null);
+							attrezzatura.setProvincia_div(null);
+							attrezzatura.setRegione_div(null);	
+						}
+						session.update(attrezzatura);
 					}
-					session.update(attrezzatura);
+					
 										
 				}
 				

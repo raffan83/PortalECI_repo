@@ -40,6 +40,8 @@ public class CommessaDTO implements Serializable{
 	private String NOME_UTILIZZATORE="";
 	private String INDIRIZZO_UTILIZZATORE="";
 	
+	private String OGGETTO;
+	
 	private ArrayList<AttivitaMilestoneDTO> listaAttivita= new ArrayList<AttivitaMilestoneDTO>();
 	
 	public int getID_ANAGEN_UTIL() {
@@ -196,6 +198,12 @@ public class CommessaDTO implements Serializable{
 	}
 	public void setCOD_PROV(String cOD_PROV) {
 		COD_PROV = cOD_PROV;
+	}
+	public String getOGGETTO() {
+		return OGGETTO;
+	}
+	public void setOGGETTO(String oGGETTO) {
+		OGGETTO = oGGETTO;
 	}
 	
 }

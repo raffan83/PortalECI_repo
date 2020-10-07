@@ -95,6 +95,10 @@
                 <property name="sogg_messa_serv_GVR" type="java.lang.String">
             <column name="sogg_messa_serv_GVR" />
         </property>
+        
+        		  <property name="presso_div" type="java.lang.String">
+            <column name="presso_div" />
+        </property>
 
 		  <property name="indirizzo" type="java.lang.String">
             <column name="indirizzo" />

@@ -43,6 +43,7 @@ public class AttrezzaturaDTO {
 	private String provincia;
 	private String regione;
 	
+	private String presso_div;
 	private String indirizzo_div;
 	private String comune_div;
 	private String cap_div;
@@ -288,6 +289,12 @@ public class AttrezzaturaDTO {
 	}
 	public void setRegione_div(String regione_div) {
 		this.regione_div = regione_div;
+	}
+	public String getPresso_div() {
+		return presso_div;
+	}
+	public void setPresso_div(String presso_div) {
+		this.presso_div = presso_div;
 	}
 	
 	

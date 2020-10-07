@@ -26,7 +26,9 @@ import com.itextpdf.text.DocumentException;
 import com.itextpdf.text.Element;
 import com.itextpdf.text.Font;
 import com.itextpdf.text.Font.FontFamily;
+import com.itextpdf.text.Paragraph;
 import com.itextpdf.text.Phrase;
+import com.itextpdf.text.Rectangle;
 import com.itextpdf.text.pdf.ColumnText;
 import com.itextpdf.text.pdf.PdfContentByte;
 import com.itextpdf.text.pdf.PdfGState;
@@ -71,6 +73,7 @@ import it.portalECI.DTO.TipoVerificaDTO;
 import it.portalECI.DTO.UtenteDTO;
 import it.portalECI.DTO.VerbaleDTO;
 import it.portalECI.Util.Costanti;
+
 
 import org.apache.commons.codec.binary.Base64;
 
@@ -661,13 +664,39 @@ public class GestioneVerbaleBO {
 		//Inserisco Nome Utilizzatore
 		CommessaDTO clienteUtilizzatore = GestioneCommesseBO.getCommessaById(intervento.getIdCommessa());
 		
-		if(clienteUtilizzatore != null && clienteUtilizzatore.getNOME_UTILIZZATORE()!=null) {
-			html = html.replaceAll("\\$\\{CLIENTE_UTILIZZATORE\\}", clienteUtilizzatore.getNOME_UTILIZZATORE());
-		}
+//		if(clienteUtilizzatore != null && clienteUtilizzatore.getNOME_UTILIZZATORE()!=null) {
+//			html = html.replaceAll("\\$\\{CLIENTE_UTILIZZATORE\\}", clienteUtilizzatore.getNOME_UTILIZZATORE());
+//		}
 		//Inserisco Indirizzo Utilizzatore
 
-		if(clienteUtilizzatore != null && clienteUtilizzatore.getINDIRIZZO_UTILIZZATORE()!=null) {
-			html = html.replaceAll("\\$\\{INDIRIZZO_CLIENTE_UTILIZZATORE\\}", clienteUtilizzatore.getINDIRIZZO_UTILIZZATORE());
+//		if(clienteUtilizzatore != null && clienteUtilizzatore.getINDIRIZZO_UTILIZZATORE()!=null) {
+//			html = html.replaceAll("\\$\\{INDIRIZZO_CLIENTE_UTILIZZATORE\\}", clienteUtilizzatore.getINDIRIZZO_UTILIZZATORE());
+//		}
+		String indirizzo_utilizzatore ="";
+		if(verbale.getAttrezzatura()!=null) {
+			
+			if(verbale.getAttrezzatura().getIndirizzo_div()!=null) {
+				indirizzo_utilizzatore = verbale.getAttrezzatura().getPresso_div()+" - "+ verbale.getAttrezzatura().getIndirizzo_div() + " - "+verbale.getAttrezzatura().getCap_div()+" - "+verbale.getAttrezzatura().getComune_div()+" ("+verbale.getAttrezzatura().getProvincia_div()+")";
+			}else {
+				indirizzo_utilizzatore = verbale.getAttrezzatura().getIndirizzo() + " - "+verbale.getAttrezzatura().getCap()+" - "+verbale.getAttrezzatura().getComune()+" ("+verbale.getAttrezzatura().getProvincia()+")";	
+			}
+			if(verbale.getAttrezzatura().getId_sede()==0) {
+				html = html.replaceAll("\\$\\{CLIENTE_UTILIZZATORE\\}", verbale.getAttrezzatura().getNome_cliente());
+			}else {
+				html = html.replaceAll("\\$\\{CLIENTE_UTILIZZATORE\\}", verbale.getAttrezzatura().getNome_sede());
+			}
+			
+			
+			html = html.replaceAll("\\$\\{INDIRIZZO_CLIENTE_UTILIZZATORE\\}", indirizzo_utilizzatore);
+		}else {
+			
+			if(clienteUtilizzatore != null && clienteUtilizzatore.getNOME_UTILIZZATORE()!=null) {
+				html = html.replaceAll("\\$\\{CLIENTE_UTILIZZATORE\\}", clienteUtilizzatore.getNOME_UTILIZZATORE());
+			}
+			
+			if(clienteUtilizzatore != null && clienteUtilizzatore.getINDIRIZZO_UTILIZZATORE()!=null) {
+				html = html.replaceAll("\\$\\{INDIRIZZO_CLIENTE_UTILIZZATORE\\}", clienteUtilizzatore.getINDIRIZZO_UTILIZZATORE());
+			}
 		}
 		
 		// Inserisco Cliente
@@ -743,18 +772,15 @@ public class GestioneVerbaleBO {
 		{			
 			html = html.replaceAll("\\$\\{STR_SCADENZA\\}", df.format(verbale.getStrumento_verificatore().getScadenza()));
 		}
-		
-		
+				
 		if(verbale.getData_verifica() != null) 
 		{			
-			if(verbale.getData_fine_verifica()!=null && verbale.getData_verifica()!=verbale.getData_fine_verifica()) {
-				html = html.replaceAll("\\$\\{DATA_VERIFICA\\}", df.format(verbale.getData_verifica()+" - "+df.format(verbale.getData_fine_verifica())));
+			if(verbale.getData_fine_verifica()!=null && verbale.getData_verifica().getTime() != verbale.getData_fine_verifica().getTime()) {
+				html = html.replaceAll("\\$\\{DATA_VERIFICA\\}", df.format(verbale.getData_verifica())+" - "+df.format(verbale.getData_fine_verifica()));
 			}else {
 				html = html.replaceAll("\\$\\{DATA_VERIFICA\\}", df.format(verbale.getData_verifica()));	
-			}
-			
+			}			
 		}
-
 		
 		if(verbale.getData_prossima_verifica() != null) 
 		{			
@@ -798,29 +824,109 @@ public class GestioneVerbaleBO {
 			html = html.replaceAll("\\$\\{MATRICOLA_VIE\\}", verbale.getMatricola_vie());
 		}
 		
+		String tipo_verifica_val ="";
+				
+		String check1="";
+		String check2="";
+		String check3="";
+		String check4="";
+		String check5="";
+				
+		if(verbale.getAttrezzatura()!=null) {			
+			
+			if(verbale.getCodiceVerifica().startsWith("GVR")) {
+				
+				if(verbale.getTipo_verifica()==1 || verbale.getTipo_verifica()==2) {
+					check1 = "checked";
+					check2 = "unchecked";
+					check3 = "unchecked";
+					check4 = "unchecked";
+				}
+
+				else if(verbale.getTipo_verifica()==3 || verbale.getTipo_verifica()==4) {
+					if(verbale.getTipo_verifica_gvr()==1 || verbale.getTipo_verifica_gvr()==3) {
+						check1 = "unchecked";
+						check2 = "unchecked";
+						check3 = "checked";
+						check4 = "unchecked";
+					}else{
+						check1 = "unchecked";
+						check2 = "unchecked";
+						check3 = "unchecked";
+						check4 = "checked";
+					}		
+				}
+								
+				tipo_verifica_val = tipo_verifica_val + "<img src=\"" + Costanti.PATH_FONT_IMAGE + check1+"-"+"radio"+".png" + "\" style=\"height:12px;\" />&nbsp;" + "Prima periodica attr. e attr. di insiemi soggetti a verifica (art. 4)"+"<br/>";					
+				tipo_verifica_val = tipo_verifica_val + "<img src=\"" + Costanti.PATH_FONT_IMAGE + check2+"-"+"radio"+".png" + "\" style=\"height:12px;\" />&nbsp;" + "Prima periodica attr. di insiemi NON soggetti a verifica (art. 5)"+"<br/>";						
+				tipo_verifica_val = tipo_verifica_val + "<img src=\"" + Costanti.PATH_FONT_IMAGE + check3+"-"+"radio"+".png" + "\" style=\"height:12px;\" />&nbsp;" + "Verifica successiva alla prima (funzionamento e/o interna)"+"<br/>";					
+				tipo_verifica_val = tipo_verifica_val + "<img src=\"" + Costanti.PATH_FONT_IMAGE + check4+"-"+"radio"+".png" + "\" style=\"height:12px;\" />&nbsp;" + "Verifica successiva alla prima (funzionamento e/o interna e integrità)"+"<br/>";
+			
+			}else {
+				
+				if(verbale.getTipo_verifica()==1) {
+					check1 = "checked";
+					check2 = "unchecked";
+
+				}else {
+					check1 = "unchecked";
+					check2 = "checked";
+
+				}
+				
+				tipo_verifica_val = tipo_verifica_val + "<img src=\"" + Costanti.PATH_FONT_IMAGE + check1+"-"+"radio"+".png" + "\" style=\"height:12px;\" />&nbsp;" + "Prima periodica"+"<br/>";				
+				tipo_verifica_val = tipo_verifica_val + "<img src=\"" + Costanti.PATH_FONT_IMAGE + check2+"-"+"radio"+".png" + "\" style=\"height:12px;\" />&nbsp;" + "Periodica successiva"+"<br/>";		
+			}
+		}
+		
+		
+		html = html.replaceAll("\\$\\{TIPO_VERIFICA_VAL\\}", tipo_verifica_val);
+		
+
 		if(verbale.getMotivo_verifica() == 1 ) 
 		{
+		
+			check1 = "checked";
+			check2 = "unchecked";
+			check3 = "unchecked";
+			check4 = "unchecked";
+			check5 = "unchecked";
 			
-			html = html.replaceAll("\\$\\{TIPO_VERIFICA_VIE\\}", "verifica periodica");
+		} else if(verbale.getMotivo_verifica() == 2) {
+			
+			check1 = "unchecked";
+			check2 = "checked";
+			check3 = "checked";
+			check4 = "unchecked";
+			check5 = "unchecked";
+			
+		}else if(verbale.getMotivo_verifica() == 3) {
+			
+			check1 = "unchecked";
+			check2 = "checked";
+			check3 = "unchecked";
+			check4 = "checked";
+			check5 = "unchecked";
+			
+		}else if(verbale.getMotivo_verifica() == 4) {
+			
+			check1 = "unchecked";
+			check2 = "checked";
+			check3 = "unchecked";
+			check4 = "unchecked";
+			check5 = "checked";
 			
 		}
 		
-		if(verbale.getMotivo_verifica() >= 2) {
-			
-			
-			html = html.replaceAll("\\$\\{TIPO_VERIFICA_VIE\\}", "verifica straordinaria");
-			
-			String motivo = "";
-			if(verbale.getMotivo_verifica()==2) {
-				motivo = "verifica periodica con esito negativo";
-			}else if(verbale.getMotivo_verifica()==3) {
-				motivo = "modifiche sostanziali all'impianto";
-			}else if(verbale.getMotivo_verifica()==4) {
-				motivo = "richiesta del datore di lavoro";
-			}
-			
-			html = html.replaceAll("\\$\\{MOTIVO_VERIFICA_STRAORDINARIA\\}", motivo);
-		}
+		String tipo_verifica_vie = "<img src=\"" + Costanti.PATH_FONT_IMAGE + check1+"-"+"checkbox"+".png" + "\" style=\"height:12px;\" />&nbsp;" + "Verifica periodica"+"<br/>";		
+		tipo_verifica_vie = tipo_verifica_vie+"<img src=\"" + Costanti.PATH_FONT_IMAGE + check2+"-"+"checkbox"+".png" + "\" style=\"height:12px;\" />&nbsp;" + "Verifica straordinaria"+"<br/>";
+		tipo_verifica_vie = tipo_verifica_vie+"&nbsp;&nbsp;&nbsp;  <img src=\"" + Costanti.PATH_FONT_IMAGE + check3+"-"+"checkbox"+".png" + "\" style=\"margin-left:25px;height:12px;\" />&nbsp;" + "Verifica periodica con esito negativo"+"<br/>";
+		tipo_verifica_vie = tipo_verifica_vie+"&nbsp;&nbsp;&nbsp;  <img src=\"" + Costanti.PATH_FONT_IMAGE + check4+"-"+"checkbox"+".png" + "\" style=\"margin-left:25px;height:12px;\" />&nbsp;" + "Modifiche sostanziali all'impianto"+"<br/>";
+		tipo_verifica_vie = tipo_verifica_vie+"&nbsp;&nbsp;&nbsp;  <img src=\"" + Costanti.PATH_FONT_IMAGE + check5+"-"+"checkbox"+".png" + "\" style=\"margin-left:15px;height:12px;\" />&nbsp;" + "Richiesta del datore di lavoro"+"<br/>";
+		
+
+		html = html.replaceAll("\\$\\{TIPO_VERIFICA_VIE\\}", tipo_verifica_vie);
+		
 
 		// Elimino i placeholder non utilizzati
 		html = html.replaceAll("\\$\\{(.*?)\\}", "");
@@ -1135,17 +1241,24 @@ public class GestioneVerbaleBO {
 	        PdfStamper stamper = new PdfStamper(reader, tmpfos);
 	        Font f = new Font(FontFamily.HELVETICA, 50);
 	        
+	        String bozza = "BOZZA";
+	        for(int i = 0; i<5;i++) {
+	        	bozza=bozza+" - BOZZA";
+	        }
+	        
 	        //f.setColor(BaseColor.RED);
 	        int pages = reader.getNumberOfPages();
 	        if(verbale.getType().equals(VerbaleDTO.VERBALE)){
 		        for (int i=0; i<pages; i++) {	        
 			        PdfContentByte over = stamper.getOverContent(i+1);
-			        Phrase p = new Phrase(String.format("BOZZA", newfile), f);
+			        Phrase p = new Phrase(String.format(bozza, newfile), f);
 			        over.saveState();
 			        PdfGState gs1 = new PdfGState();
-			        gs1.setFillOpacity(0.2f);			        
+			        gs1.setFillOpacity(0.08f);			        
 			        over.setGState(gs1);
-			        ColumnText.showTextAligned(over, Element.ALIGN_CENTER, p, 300, 400, 315);
+			        for(int j = 0; j<13; j++) {
+			        	ColumnText.showTextAligned(over, Element.ALIGN_CENTER, p, 300, (1000-(100*j)), 315);	
+			        }
 			        over.restoreState();
 		        }
 	        }

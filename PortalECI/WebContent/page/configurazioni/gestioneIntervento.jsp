@@ -93,7 +93,11 @@
 	 															</c:otherwise>
 															</c:choose>  
 														</a>
-                									</li>                
+                									</li>     
+                									<li class="list-group-item">
+                  										<b>Oggetto:</b> 
+                  										<a class="pull-right">${commessa.DESCR}</a>
+                									</li>           
                 									<li class="list-group-item">
                   										<b>Note:</b> 
                   										<spanclass="pull-right">${commessa.NOTE_GEN}</span>

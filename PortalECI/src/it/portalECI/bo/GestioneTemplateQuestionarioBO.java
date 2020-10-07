@@ -216,13 +216,39 @@ public class GestioneTemplateQuestionarioBO {
 		html = html.replaceAll("\\$\\{ORE_UOMO\\}", "ORE UOMO");
 		
 		html = html.replaceAll("\\$\\{MATRICOLA_VIE\\}", "MATRICOLA VIE");
-		html = html.replaceAll("\\$\\{TIPO_VERIFICA_VIE\\}", "TIPO VERIFICA VIE");
-		html = html.replaceAll("\\$\\{MOTIVO_VERIFICA_STRAORDINARIA\\}", "MOTIVO VERIFICA STRAORDINARIA");
+
 		
-	
+//		private static String getTemplateOpzione(OpzioneRispostaQuestionarioDTO opzione) {
+//			String typeInput = opzione.getRisposta().getMultipla()?"checkbox":"radio";
+//			String checked = "unchecked";
+//			String optionName = opzione.getTesto();
+//			String template = "<img src=\"" + Costanti.PATH_FONT_IMAGE + checked+"-"+typeInput+".png" + "\" style=\"height:12px;\" />&nbsp;" + optionName;
+//			return template;
+//		}
 		
-				
+		String tipo_verifica_val = "<img src=\"" + Costanti.PATH_FONT_IMAGE + "unchecked"+"-"+"radio"+".png" + "\" style=\"height:12px;\" />&nbsp;" + "Prima periodica"+"<br/>";
 		
+		tipo_verifica_val = tipo_verifica_val+"<img src=\"" + Costanti.PATH_FONT_IMAGE + "unchecked"+"-"+"radio"+".png" + "\" style=\"height:12px;\" />&nbsp;" + "Periodica successiva"+"<br/>";
+		
+		html = html.replaceAll("\\$\\{TIPO_VERIFICA_VAL\\}", tipo_verifica_val);
+		
+		String tipo_verifica_val_gvr = "<img src=\"" + Costanti.PATH_FONT_IMAGE + "unchecked"+"-"+"radio"+".png" + "\" style=\"height:12px;\" />&nbsp;" + " Prima periodica attr. e attr. di insiemi soggetti a verifica (art. 4)"+"<br/>";		
+		tipo_verifica_val_gvr = tipo_verifica_val_gvr+"<img src=\"" + Costanti.PATH_FONT_IMAGE + "unchecked"+"-"+"radio"+".png" + "\" style=\"height:12px;\" />&nbsp;" + " Prima periodica attr. di insiemi NON soggetti a verifica (art. 5)"+"<br/>";
+		tipo_verifica_val_gvr = tipo_verifica_val_gvr+"<img src=\"" + Costanti.PATH_FONT_IMAGE + "unchecked"+"-"+"radio"+".png" + "\" style=\"height:12px;\" />&nbsp;" + " Verifica successiva alla prima (funzionamento e/o interna)"+"<br/>";
+		tipo_verifica_val_gvr = tipo_verifica_val_gvr+"<img src=\"" + Costanti.PATH_FONT_IMAGE + "unchecked"+"-"+"radio"+".png" + "\" style=\"height:12px;\" />&nbsp;" + "  Verifica successiva alla prima (funzionamento e/o interna e integrità)<br/>";
+		
+		html = html.replaceAll("\\$\\{TIPO_VERIFICA_VAL_GVR\\}", tipo_verifica_val_gvr);
+		
+		
+		String tipo_verifica_vie = "<img src=\"" + Costanti.PATH_FONT_IMAGE + "unchecked"+"-"+"checkbox"+".png" + "\" style=\"height:12px;\" />&nbsp;" + "Verifica periodica"+"<br/>";
+		
+		tipo_verifica_vie = tipo_verifica_vie+"<img src=\"" + Costanti.PATH_FONT_IMAGE + "unchecked"+"-"+"checkbox"+".png" + "\" style=\"height:12px;\" />&nbsp;" + "Verifica straordinaria"+"<br/>";
+		tipo_verifica_vie = tipo_verifica_vie+"&nbsp;&nbsp;&nbsp;  <img src=\"" + Costanti.PATH_FONT_IMAGE + "unchecked"+"-"+"checkbox"+".png" + "\" style=\"margin-left:25px;height:12px;\" />&nbsp;" + "Verifica periodica con esito negativo"+"<br/>";
+		tipo_verifica_vie = tipo_verifica_vie+"&nbsp;&nbsp;&nbsp;  <img src=\"" + Costanti.PATH_FONT_IMAGE + "unchecked"+"-"+"checkbox"+".png" + "\" style=\"margin-left:25px;height:12px;\" />&nbsp;" + "Modifiche sostanziali all'impianto"+"<br/>";
+		tipo_verifica_vie = tipo_verifica_vie+"&nbsp;&nbsp;&nbsp;  <img src=\"" + Costanti.PATH_FONT_IMAGE + "unchecked"+"-"+"checkbox"+".png" + "\" style=\"margin-left:15px;height:12px;\" />&nbsp;" + "Richiesta del datore di lavoro"+"<br/>";
+		
+
+		html = html.replaceAll("\\$\\{TIPO_VERIFICA_VIE\\}", tipo_verifica_vie);
 		// Elimino i placeholder non utilizzati
 		html = html.replaceAll("\\$\\{(.*?)\\}", "");
 		return html;

@@ -632,6 +632,12 @@
 												<br>
 												<div class="row">
 												<div class="col-xs-3">
+												<label>Presso</label>
+												<input type="text" id="presso" name="presso" class="form-control" value="${verbale.attrezzatura.presso_div }">
+												
+												</div>
+												
+												<div class="col-xs-3">
 												<label>Indirizzo</label>
 												<input type="text" id="indirizzo" name="indirizzo" class="form-control" value="${verbale.attrezzatura.indirizzo_div }">
 												
@@ -795,7 +801,7 @@
 													</div>
 														<div class="col-xs-2">
 														<c:if test="${verbale.ore_uomo!=null }">
-														<input type="number" class="form-control" min="0" step="1" max="59" id="minuti" name="minuti" value="${verbale.ore_uomo.split('-')[1].replace('mm','') }">
+														<input type="number" class="form-control" min="0" step="1" max="59" id="minuti" name="minuti" value="${verbale.ore_uomo.split('-')[1].replace('min','') }">
 													
 													</c:if>
 													<c:if test="${verbale.ore_uomo==null }">
@@ -1645,6 +1651,7 @@ $('#minuti').change(function(){
 
 		if(value=="2"){
 			$('#motivo_1').iCheck('check');	
+			$('#check_motivo').val("2");
 			$('#check_motivo_content').show();
 			$('#frequenza').attr("disabled", true);
 		}else{
@@ -1930,9 +1937,9 @@ $('#minuti').change(function(){
 				$('#myModalError').modal('show');	
 					
 			}
-			else if($('#data_verifica').val()==''){
+			else if($('#data_verifica').val()=='' && $('#esito').val()!='S'){
 				
-				$('#modalErrorDiv').html("Il campo data verifica è obbligatorio" && $('#esito').val()!='S');
+				$('#modalErrorDiv').html("Il campo data verifica è obbligatorio");
 				$('#myModalError').removeClass();
 				$('#myModalError').addClass("modal modal-danger");
 				$('#myModalError').modal('show');	
@@ -1991,6 +1998,14 @@ $('#minuti').change(function(){
 			else if(gvr !='' && gvr=='1' &&$('#tipo_verifica_gvr').val()==''){
 				
 				$('#modalErrorDiv').html("Il campo Tipo verifica GVR è obbligatorio");
+				$('#myModalError').removeClass();
+				$('#myModalError').addClass("modal modal-danger");
+				$('#myModalError').modal('show');	
+			}
+			
+			else if($('#check_sede_diversa').is(':checked')  && $('#presso').val()==''){
+				
+				$('#modalErrorDiv').html("Il campo presso è obbligatorio");
 				$('#myModalError').removeClass();
 				$('#myModalError').addClass("modal modal-danger");
 				$('#myModalError').modal('show');	

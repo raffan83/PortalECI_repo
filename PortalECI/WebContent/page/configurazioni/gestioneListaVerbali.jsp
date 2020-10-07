@@ -54,9 +54,12 @@
 			 
         				</div>
         				<div class="col-xs-7">
-        				
+        				<c:if test="${userObj.checkRuolo('AM') || userObj.checkCategoria('VAL') }">
         				<a class="btn btn-primary disabled pull-right" id="scadenzario_btn" style="margin-top:25px" onClick="callAction('gestioneListaVerbali.do?action=scadenzario_val&dateFrom=${dateFrom}&dateTo=${dateTo }')">Scadenzario VAL</a>
+        				</c:if>
+        				<c:if test="${userObj.checkRuolo('AM') || userObj.checkCategoria('VIE') }">
         				<a class="btn btn-primary disabled pull-right" id="scadenzario_vie_btn" style="margin-top:25px;margin-right:5px" onClick="callAction('gestioneListaVerbali.do?action=scadenzario_vie&dateFrom=${dateFrom}&dateTo=${dateTo }')">Scadenzario VIE</a>
+        				</c:if>
         				</div>
         				
         				</div>
