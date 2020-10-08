@@ -97,6 +97,7 @@
 					<li><a href="downloadCalver.do"><i class="fa fa-link"></i>Calver Desktop</a></li>
           		</ul>
         	</li> -->
+         <% if(user.checkRuolo("AM") ||(user.checkPermesso("ATTREZZATURE") && user.checkCategoria("VAL"))){%> 
         	<li class="treeview">
         	 	<a href="#">
         	 		<i class="fa fa-briefcase"></i>
@@ -105,7 +106,7 @@
               			<i class="fa fa-angle-left pull-right"></i>
             		</span>
           		</a>
-          		 <% if(user.checkPermesso("ATTREZZATURE")){%> 
+          		
           			<ul class="treeview-menu">
             			<li>
             				<a href="listaAttrezzature.do">Attrezzature di lavoro</a>
@@ -116,8 +117,9 @@
             				</li>
             			<% }%>		
           			</ul>          		
-          		<% }%>
+          	
         	</li>
+        	<% }%>
         	<% if(user.checkRuolo("AM") || user.checkPermesso("ACCESS_CONFIG")){%>		
          	<li class="treeview">
           		<a href="#">
