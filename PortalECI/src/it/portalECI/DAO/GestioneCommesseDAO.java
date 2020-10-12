@@ -67,7 +67,7 @@ public class GestioneCommesseDAO {
 
 	
 	
-	private static String querySqlAttivitaCom="SELECT a.descr as DESC_ATT,a.note AS NOTE_ATT,b.DESCR as DESC_ART,a.QTA AS QUANTITA ,a.K2_RIGA AS RIGA , a.ID_ANAART as CODICEARTICOLO, a.NOTE_AGGREG_COD as CODAGG " +
+	private static String querySqlAttivitaCom="SELECT a.descr as DESC_ATT,a.note AS NOTE_ATT,b.DESCR as DESC_ART,a.QTA AS QUANTITA ,a.K2_RIGA AS RIGA , a.ID_ANAART as CODICEARTICOLO, a.NOTE_AGGREG_COD as CODAGG, b.H_LAVORATIVE as ORE_UOMO " +
 										"from BWT_COMMESSA_AVANZ AS a " +
 										"Left join BWT_ANAART AS b ON a.ID_ANAART =b.ID_ANAART " +
 										"where ID_COMMESSA=? AND TB_TIPO_MILE='MILE'";
@@ -450,7 +450,7 @@ public class GestioneCommesseDAO {
 				attivita.setDescrizioneArticolo(rsA.getString("DESC_ART"));
 				attivita.setQuantita(rsA.getString("QUANTITA"));
 				attivita.setCodiceArticolo(rsA.getString("CODICEARTICOLO"));
-				
+				attivita.setOreUomo(rsA.getDouble("ORE_UOMO"));
 				String codAggreg=rsA.getString("CODAGG");
 				
 				if(codAggreg!=null)

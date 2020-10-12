@@ -13,7 +13,16 @@ public class AttivitaMilestoneDTO implements Serializable {
 	private String quantita="";
 	private String codiceArticolo="";
 	private String codiceAggregatore="";
+	private double oreUomo;
 	
+	public double getOreUomo() {
+		return oreUomo;
+	}
+
+	public void setOreUomo(double oreUomo) {
+		this.oreUomo = oreUomo;
+	}
+
 	public int getId_riga() {
 		return id_riga;
 	}
