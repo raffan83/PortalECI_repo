@@ -839,7 +839,7 @@
             				<input type="hidden" id="check_motivo" name="check_motivo" value="">
 												<input type="hidden" id="ore_uomo" name="ore_uomo" value="">
             				           				
-            				           				
+            				           				<input type="hidden" id="data_prossima_verifica_verb" name="data_prossima_verifica_verb" value="">
             				           				</c:if>
 				</c:if>
 				
@@ -1665,6 +1665,39 @@ $('#minuti').change(function(){
 	});
 	
 	var sede_div = "${verbale.attrezzatura.comune_div }";
+	
+	
+	$('#frequenza').change(function(){
+		
+		var val = $(this).val();
+		
+		var date = $('#data_verifica').val();
+		var d = moment(date, "DD-MM-YYYY");
+		if(date!='' && d._isValid){
+			
+			   var year = d._pf.parsedDateParts[0];
+			   var month = d._pf.parsedDateParts[1];
+			   var day = d._pf.parsedDateParts[2];
+			   var c = new Date(year + parseInt(val), month, day);
+			    $('#data_prossima_verifica_verb').val(formatDate(c));
+			
+		}
+
+		
+	});
+	
+	
+	function formatDate(data){
+		
+		   var mydate = new Date(data);
+		   
+		   if(!isNaN(mydate.getTime())){
+		   
+			   str = mydate.toString("dd/MM/yyyy");
+		   }			   
+		   return str;	 		
+	}
+	
 	
 			$(document).ready(function() {
 				

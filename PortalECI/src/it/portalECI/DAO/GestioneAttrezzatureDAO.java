@@ -163,7 +163,7 @@ public class GestioneAttrezzatureDAO {
 		
 		ArrayList<Object[]> lista =null;
 		
-		Query query  = session.createQuery( " select distinct id_cliente, idSede from InterventoDTO WHERE id_tecnico_verificatore= :_id_tecnico_verificatore");	
+		Query query  = session.createQuery( " select distinct id_cliente, idSede from InterventoDTO WHERE id_tecnico_verificatore= :_id_tecnico_verificatore and idCommessa like '%VAL%'");	
 			
 		query.setParameter("_id_tecnico_verificatore", id_tecnico);
 		

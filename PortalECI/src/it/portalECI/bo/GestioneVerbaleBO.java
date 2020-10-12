@@ -673,20 +673,22 @@ public class GestioneVerbaleBO {
 //			html = html.replaceAll("\\$\\{INDIRIZZO_CLIENTE_UTILIZZATORE\\}", clienteUtilizzatore.getINDIRIZZO_UTILIZZATORE());
 //		}
 		String indirizzo_utilizzatore ="";
+		String cliente_utilizzatore = "";
 		if(verbale.getAttrezzatura()!=null) {
 			
 			if(verbale.getAttrezzatura().getIndirizzo_div()!=null) {
-				indirizzo_utilizzatore = verbale.getAttrezzatura().getPresso_div()+" - "+ verbale.getAttrezzatura().getIndirizzo_div() + " - "+verbale.getAttrezzatura().getCap_div()+" - "+verbale.getAttrezzatura().getComune_div()+" ("+verbale.getAttrezzatura().getProvincia_div()+")";
+				cliente_utilizzatore = verbale.getAttrezzatura().getPresso_div();
+				indirizzo_utilizzatore = verbale.getAttrezzatura().getIndirizzo_div() + " - "+verbale.getAttrezzatura().getCap_div()+" - "+verbale.getAttrezzatura().getComune_div()+" ("+verbale.getAttrezzatura().getProvincia_div()+")";
 			}else {
+				if(verbale.getAttrezzatura().getId_sede()==0) {
+					cliente_utilizzatore = verbale.getAttrezzatura().getNome_cliente();
+				}else {
+					cliente_utilizzatore = verbale.getAttrezzatura().getNome_sede();
+				}
 				indirizzo_utilizzatore = verbale.getAttrezzatura().getIndirizzo() + " - "+verbale.getAttrezzatura().getCap()+" - "+verbale.getAttrezzatura().getComune()+" ("+verbale.getAttrezzatura().getProvincia()+")";	
 			}
-			if(verbale.getAttrezzatura().getId_sede()==0) {
-				html = html.replaceAll("\\$\\{CLIENTE_UTILIZZATORE\\}", verbale.getAttrezzatura().getNome_cliente());
-			}else {
-				html = html.replaceAll("\\$\\{CLIENTE_UTILIZZATORE\\}", verbale.getAttrezzatura().getNome_sede());
-			}
-			
-			
+
+			html = html.replaceAll("\\$\\{CLIENTE_UTILIZZATORE\\}", cliente_utilizzatore);
 			html = html.replaceAll("\\$\\{INDIRIZZO_CLIENTE_UTILIZZATORE\\}", indirizzo_utilizzatore);
 		}else {
 			
@@ -857,10 +859,10 @@ public class GestioneVerbaleBO {
 					}		
 				}
 								
-				tipo_verifica_val = tipo_verifica_val + "<img src=\"" + Costanti.PATH_FONT_IMAGE + check1+"-"+"radio"+".png" + "\" style=\"height:12px;\" />&nbsp;" + "Prima periodica attr. e attr. di insiemi soggetti a verifica (art. 4)"+"<br/>";					
-				tipo_verifica_val = tipo_verifica_val + "<img src=\"" + Costanti.PATH_FONT_IMAGE + check2+"-"+"radio"+".png" + "\" style=\"height:12px;\" />&nbsp;" + "Prima periodica attr. di insiemi NON soggetti a verifica (art. 5)"+"<br/>";						
-				tipo_verifica_val = tipo_verifica_val + "<img src=\"" + Costanti.PATH_FONT_IMAGE + check3+"-"+"radio"+".png" + "\" style=\"height:12px;\" />&nbsp;" + "Verifica successiva alla prima (funzionamento e/o interna)"+"<br/>";					
-				tipo_verifica_val = tipo_verifica_val + "<img src=\"" + Costanti.PATH_FONT_IMAGE + check4+"-"+"radio"+".png" + "\" style=\"height:12px;\" />&nbsp;" + "Verifica successiva alla prima (funzionamento e/o interna e integrità)"+"<br/>";
+				tipo_verifica_val = tipo_verifica_val + "<img src=\"" + Costanti.PATH_FONT_IMAGE + check1+"-"+"radio"+".png" + "\" style=\"height:12px;\" />&nbsp;" + "Prima delle verifiche periodiche"+"<br/>";					
+				tipo_verifica_val = tipo_verifica_val + "<img src=\"" + Costanti.PATH_FONT_IMAGE + check2+"-"+"radio"+".png" + "\" style=\"height:12px;\" />&nbsp;" + "Verifica di funzionamento"+"<br/>";						
+				tipo_verifica_val = tipo_verifica_val + "<img src=\"" + Costanti.PATH_FONT_IMAGE + check3+"-"+"radio"+".png" + "\" style=\"height:12px;\" />&nbsp;" + "Verifica di visita interna per generatori di vapore/acqua surriscaldata"+"<br/>";					
+				tipo_verifica_val = tipo_verifica_val + "<img src=\"" + Costanti.PATH_FONT_IMAGE + check4+"-"+"radio"+".png" + "\" style=\"height:12px;\" />&nbsp;" + "Verifica di integrità"+"<br/>";
 			
 			}else {
 				
@@ -874,8 +876,8 @@ public class GestioneVerbaleBO {
 
 				}
 				
-				tipo_verifica_val = tipo_verifica_val + "<img src=\"" + Costanti.PATH_FONT_IMAGE + check1+"-"+"radio"+".png" + "\" style=\"height:12px;\" />&nbsp;" + "Prima periodica"+"<br/>";				
-				tipo_verifica_val = tipo_verifica_val + "<img src=\"" + Costanti.PATH_FONT_IMAGE + check2+"-"+"radio"+".png" + "\" style=\"height:12px;\" />&nbsp;" + "Periodica successiva"+"<br/>";		
+				tipo_verifica_val = tipo_verifica_val + "<img src=\"" + Costanti.PATH_FONT_IMAGE + check1+"-"+"radio"+".png" + "\" style=\"height:12px;\" />&nbsp;" + "Prima verifica periodica"+"<br/>";				
+				tipo_verifica_val = tipo_verifica_val + "<img src=\"" + Costanti.PATH_FONT_IMAGE + check2+"-"+"radio"+".png" + "\" style=\"height:12px;\" />&nbsp;" + "Verifica periodica (successiva alla prima)"+"<br/>";		
 			}
 		}
 		

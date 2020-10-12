@@ -226,16 +226,16 @@ public class GestioneTemplateQuestionarioBO {
 //			return template;
 //		}
 		
-		String tipo_verifica_val = "<img src=\"" + Costanti.PATH_FONT_IMAGE + "unchecked"+"-"+"radio"+".png" + "\" style=\"height:12px;\" />&nbsp;" + "Prima periodica"+"<br/>";
+		String tipo_verifica_val = "<img src=\"" + Costanti.PATH_FONT_IMAGE + "unchecked"+"-"+"radio"+".png" + "\" style=\"height:12px;\" />&nbsp;" + "Prima verifica periodica"+"<br/>";
 		
-		tipo_verifica_val = tipo_verifica_val+"<img src=\"" + Costanti.PATH_FONT_IMAGE + "unchecked"+"-"+"radio"+".png" + "\" style=\"height:12px;\" />&nbsp;" + "Periodica successiva"+"<br/>";
+		tipo_verifica_val = tipo_verifica_val+"<img src=\"" + Costanti.PATH_FONT_IMAGE + "unchecked"+"-"+"radio"+".png" + "\" style=\"height:12px;\" />&nbsp;" + "Verifica periodica (successiva alla prima)"+"<br/>";
 		
 		html = html.replaceAll("\\$\\{TIPO_VERIFICA_VAL\\}", tipo_verifica_val);
 		
-		String tipo_verifica_val_gvr = "<img src=\"" + Costanti.PATH_FONT_IMAGE + "unchecked"+"-"+"radio"+".png" + "\" style=\"height:12px;\" />&nbsp;" + " Prima periodica attr. e attr. di insiemi soggetti a verifica (art. 4)"+"<br/>";		
-		tipo_verifica_val_gvr = tipo_verifica_val_gvr+"<img src=\"" + Costanti.PATH_FONT_IMAGE + "unchecked"+"-"+"radio"+".png" + "\" style=\"height:12px;\" />&nbsp;" + " Prima periodica attr. di insiemi NON soggetti a verifica (art. 5)"+"<br/>";
-		tipo_verifica_val_gvr = tipo_verifica_val_gvr+"<img src=\"" + Costanti.PATH_FONT_IMAGE + "unchecked"+"-"+"radio"+".png" + "\" style=\"height:12px;\" />&nbsp;" + " Verifica successiva alla prima (funzionamento e/o interna)"+"<br/>";
-		tipo_verifica_val_gvr = tipo_verifica_val_gvr+"<img src=\"" + Costanti.PATH_FONT_IMAGE + "unchecked"+"-"+"radio"+".png" + "\" style=\"height:12px;\" />&nbsp;" + "  Verifica successiva alla prima (funzionamento e/o interna e integrità)<br/>";
+		String tipo_verifica_val_gvr = "<img src=\"" + Costanti.PATH_FONT_IMAGE + "unchecked"+"-"+"radio"+".png" + "\" style=\"height:12px;\" />&nbsp;" + " Prima delle verifiche periodiche"+"<br/>";		
+		tipo_verifica_val_gvr = tipo_verifica_val_gvr+"<img src=\"" + Costanti.PATH_FONT_IMAGE + "unchecked"+"-"+"radio"+".png" + "\" style=\"height:12px;\" />&nbsp;" + " Verifica di funzionamento"+"<br/>";
+		tipo_verifica_val_gvr = tipo_verifica_val_gvr+"<img src=\"" + Costanti.PATH_FONT_IMAGE + "unchecked"+"-"+"radio"+".png" + "\" style=\"height:12px;\" />&nbsp;" + " Verifica di visita interna per generatori di vapore/acqua surriscaldata"+"<br/>";
+		tipo_verifica_val_gvr = tipo_verifica_val_gvr+"<img src=\"" + Costanti.PATH_FONT_IMAGE + "unchecked"+"-"+"radio"+".png" + "\" style=\"height:12px;\" />&nbsp;" + " Verifica di integrità<br/>";
 		
 		html = html.replaceAll("\\$\\{TIPO_VERIFICA_VAL_GVR\\}", tipo_verifica_val_gvr);
 		

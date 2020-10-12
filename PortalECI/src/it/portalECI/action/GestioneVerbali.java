@@ -301,7 +301,7 @@ public class GestioneVerbali extends HttpServlet {
 					
 					if(frequenza!=null && !frequenza.equals("")) {
 						verbale.setFrequenza(Integer.parseInt(frequenza));
-						session.save(verbale);
+						session.update(verbale);
 					}
 					
 				}
