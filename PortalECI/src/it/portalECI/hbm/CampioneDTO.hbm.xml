@@ -1,0 +1,131 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 17-feb-2017 16.24.17 by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+    <class name="it.portalECI.DTO.CampioneDTO" table="CAMPIONE">
+       
+        <id name="id" type="int">
+            <column name="__ID" />
+            <generator class="native" />
+        </id>
+        <property name="codice" type="java.lang.String">
+            <column name="CODICE" />
+        </property>
+        <property name="costruttore" type="java.lang.String">
+            <column name="COSTRUTTORE" />
+        </property>
+        <property name="dataScadenza" type="java.util.Date">
+            <column name="DATA_SCADENZA" />
+        </property>
+        <property name="dataVerifica" type="java.util.Date">
+            <column name="DATA_VERIFICA" />
+        </property>
+        <property name="descrizione" type="java.lang.String">
+            <column name="DESCRIZIONE" />
+        </property>
+        <property name="filenameCertificato" type="java.lang.String">
+            <column name="FILENAME_CERTIFICATO" />
+        </property>
+        <property name="freqTaraturaMesi" type="int">
+            <column name="FREQ_TARATURA_MESI" />
+        </property>
+       <many-to-one name="company" class="it.portalECI.DTO.CompanyDTO" fetch="join" lazy="false">
+            <column name="id_company" />
+        </many-to-one>
+         <many-to-one name="tipo_campione" class="it.portalECI.DTO.TipoCampioneDTO" fetch="join" lazy="false">
+            <column name="id_tipo_campione" />
+        </many-to-one>
+
+        <property name="matricola" type="java.lang.String">
+            <column name="MATRICOLA" />
+        </property>
+        <property name="modello" type="java.lang.String">
+            <column name="MODELLO" />
+        </property>
+        <property name="nome" type="java.lang.String">
+            <column name="NOME" />
+        </property>
+        <property name="numeroCertificato" type="java.lang.String">
+            <column name="NUMERO_CERTIFICATO" />
+        </property>
+        <property name="statoCampione" type="java.lang.String">
+            <column name="STATO_CAMPIONE" />
+        </property>
+        <property name="tipo_Verifica" type="java.lang.String">
+            <column name="TIPO_VERIFICA" />
+        </property>
+          <many-to-one name="company_utilizzatore" class="it.portalECI.DTO.CompanyDTO" fetch="join" lazy="false">
+            <column name="id_company_utilizzatore" />
+        </many-to-one>
+         <property name="dataInizioPrenotazione" type="java.util.Date">
+            <column name="DATAINIZIOPRENOTAZIONE" />
+        </property>
+         <property name="dataFinePrenotazione" type="java.util.Date">
+            <column name="DATAFINEPRENOTAZIONE" />
+        </property>
+          <property name="note" type="java.lang.String">
+            <column name="NOTE" />
+        </property>
+        <property name="distributore" type="java.lang.String">
+            <column name="distributore" />
+        </property>
+        <property name="data_acquisto" type="java.util.Date">
+            <column name="data_acquisto" />
+        </property>
+        <property name="campo_accettabilita" type="java.lang.String">
+            <column name="campo_accettabilita" />
+        </property>
+        <property name="attivita_di_taratura" type="java.lang.String">
+            <column name="attivita_di_taratura" />
+        </property>
+     	<property name="prenotabile" type="java.lang.String">
+            <column name="prenotabile" />
+        </property>
+        <property name="campo_misura" type="java.lang.String">
+            <column name="campo_misura" />
+        </property>
+        <property name="unita_formato" type="java.lang.String">
+            <column name="unita_formato" />
+        </property>
+        <property name="note_attivita" type="java.lang.String">
+            <column name="note_attivita_taratura" />
+        </property>
+        <property name="ubicazione" type="java.lang.String">
+            <column name="ubicazione" />
+        </property>
+        <property name="frequenza_manutenzione" type="int">
+            <column name="freq_manutenzione" />
+        </property>
+
+		<property name="id_strumento" type="int">
+            <column name="id_strumento" />
+        </property>
+        <property name="descrizione_manutenzione" type="java.lang.String">
+            <column name="descrizione_manutenzione" />
+        </property>
+
+        <property name="settore" type="int">
+            <column name="settore" />
+        </property>
+		<property name="data_messa_in_servizio" type="java.util.Date">
+            <column name="data_messa_in_servizio" />
+        </property>
+        
+    <set name="listaCertificatiCampione" table="certificato_campione"
+				inverse="true" lazy="false" fetch="select" >
+            <key>
+                <column name="id_campione" not-null="true" />
+            </key>
+            <one-to-many class="it.portalECI.DTO.CertificatoCampioneDTO" />
+   </set>
+   
+<!--             <set name="listaDocumentiEsterni" table="documenti_esterni_campione"
+				inverse="true" lazy="false" fetch="select" >
+            <key>
+                <column name="id_campione" not-null="true" />
+            </key>
+            <one-to-many class="it.portalECI.DTO.DocumentoCampioneDTO" />
+   </set> -->
+    </class>
+</hibernate-mapping>
