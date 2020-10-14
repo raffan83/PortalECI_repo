@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -674,18 +675,21 @@ public class GestioneVerbaleBO {
 //		}
 		String indirizzo_utilizzatore ="";
 		String cliente_utilizzatore = "";
+		String com_prov = "";
 		if(verbale.getAttrezzatura()!=null) {
 			
 			if(verbale.getAttrezzatura().getIndirizzo_div()!=null) {
 				cliente_utilizzatore = verbale.getAttrezzatura().getPresso_div();
 				indirizzo_utilizzatore = verbale.getAttrezzatura().getIndirizzo_div() + " - "+verbale.getAttrezzatura().getCap_div()+" - "+verbale.getAttrezzatura().getComune_div()+" ("+verbale.getAttrezzatura().getProvincia_div()+")";
+				com_prov = verbale.getAttrezzatura().getComune_div()+" ("+verbale.getAttrezzatura().getProvincia_div()+")";
 			}else {
 				if(verbale.getAttrezzatura().getId_sede()==0) {
 					cliente_utilizzatore = verbale.getAttrezzatura().getNome_cliente();
 				}else {
 					cliente_utilizzatore = verbale.getAttrezzatura().getNome_sede();
 				}
-				indirizzo_utilizzatore = verbale.getAttrezzatura().getIndirizzo() + " - "+verbale.getAttrezzatura().getCap()+" - "+verbale.getAttrezzatura().getComune()+" ("+verbale.getAttrezzatura().getProvincia()+")";	
+				indirizzo_utilizzatore = verbale.getAttrezzatura().getIndirizzo() + " - "+verbale.getAttrezzatura().getCap()+" - "+verbale.getAttrezzatura().getComune()+" ("+verbale.getAttrezzatura().getProvincia()+")";
+				com_prov = verbale.getAttrezzatura().getComune()+" ("+verbale.getAttrezzatura().getProvincia()+")";
 			}
 
 			html = html.replaceAll("\\$\\{CLIENTE_UTILIZZATORE\\}", cliente_utilizzatore);
@@ -698,6 +702,9 @@ public class GestioneVerbaleBO {
 			
 			if(clienteUtilizzatore != null && clienteUtilizzatore.getINDIRIZZO_UTILIZZATORE()!=null) {
 				html = html.replaceAll("\\$\\{INDIRIZZO_CLIENTE_UTILIZZATORE\\}", clienteUtilizzatore.getINDIRIZZO_UTILIZZATORE());
+				if( clienteUtilizzatore.getINDIRIZZO_UTILIZZATORE().split("-").length>1) {
+					com_prov = clienteUtilizzatore.getINDIRIZZO_UTILIZZATORE().split("-")[1];	
+				}				
 			}
 		}
 		
@@ -788,26 +795,36 @@ public class GestioneVerbaleBO {
 		{			
 			html = html.replaceAll("\\$\\{DATA_PROSS_VERIFICA\\}", df.format(verbale.getData_prossima_verifica()));
 		}
-		if(verbale.getData_verifica_integrita() != null) 
+		if(verbale.getAttrezzatura()!=null && verbale.getAttrezzatura().getData_verifica_integrita() != null) 
 		{			
-			html = html.replaceAll("\\$\\{DATA_VER_INTEGRITA\\}", df.format(verbale.getData_verifica_integrita()));
+			html = html.replaceAll("\\$\\{DATA_VER_INTEGRITA\\}", df.format(verbale.getAttrezzatura().getData_verifica_integrita()));
 		}
-		if(verbale.getData_prossima_verifica_integrita() != null) 
+		if(verbale.getAttrezzatura()!=null && verbale.getData_prossima_verifica_integrita() != null) 
 		{			
-			html = html.replaceAll("\\$\\{DATA_PROSS_VER_INTEGRITA\\}", df.format(verbale.getData_prossima_verifica_integrita()));
+			html = html.replaceAll("\\$\\{DATA_PROSS_VER_INTEGRITA\\}", df.format(verbale.getAttrezzatura().getData_prossima_verifica_integrita()));
 		}
-		if(verbale.getData_verifica_interna() != null) 
+		if(verbale.getAttrezzatura()!=null && verbale.getData_verifica_interna() != null) 
 		{			
-			html = html.replaceAll("\\$\\{DATA_VER_INTERNA\\}", df.format(verbale.getData_verifica_interna()));
+			html = html.replaceAll("\\$\\{DATA_VER_INTERNA\\}", df.format(verbale.getAttrezzatura().getData_verifica_interna()));
 		}
-		if(verbale.getData_prossima_verifica_interna() != null) 
+		if(verbale.getAttrezzatura()!=null && verbale.getData_prossima_verifica_interna() != null) 
 		{			
-			html = html.replaceAll("\\$\\{DATA_PROSS_VER_INTERNA\\}", df.format(verbale.getData_prossima_verifica_interna()));
+			html = html.replaceAll("\\$\\{DATA_PROSS_VER_INTERNA\\}", df.format(verbale.getAttrezzatura().getData_prossima_verifica_interna()));
+		}
+		
+		if(verbale.getAttrezzatura()!=null && verbale.getAttrezzatura().getNumero_certificato()!=null) {
+			html = html.replaceAll("\\$\\{ATT_NUMERO_CERT\\}", verbale.getAttrezzatura().getNumero_certificato());
 		}
 		
 		if(verbale.getSedeUtilizzatore() != null ) 
 		{
-			html = html.replaceAll("\\$\\{SEDE_VIE\\}", verbale.getSedeUtilizzatore());
+			html = html.replaceAll("\\$\\{INDIRIZZO_UTILIZZATORE_VIE\\}", verbale.getSedeUtilizzatore());
+			
+			if(verbale.getSedeUtilizzatore().split("-").length>2) {
+				com_prov = verbale.getSedeUtilizzatore().split("-")[2];	
+			}
+			
+			
 		}
 		
 		if(verbale.getEsercente() != null ) 
@@ -820,6 +837,8 @@ public class GestioneVerbaleBO {
 			html = html.replaceAll("\\$\\{ORE_UOMO\\}", verbale.getOre_uomo());
 		}
 		
+		
+		html = html.replaceAll("\\$\\{COM_PROV\\}", com_prov);
 				
 		if(verbale.getMatricola_vie() != null ) 
 		{
@@ -1339,6 +1358,11 @@ public class GestioneVerbaleBO {
 	public static ArrayList<VerbaleDTO> getListaVerbaliFromAttrezzatura(int id_attrezzatura,UtenteDTO user, Session session) {
 		
 		return GestioneVerbaleDAO.getListaVerbaliFromAttrezzatura(id_attrezzatura, user,session);
+	}
+
+	public static List<DocumentoDTO> getVerbaliPDFAll(Session session, String dateFrom, String dateTo) throws ParseException, Exception {
+		
+		return GestioneVerbaleDAO.getVerbaliPDFAll(session, dateFrom, dateTo);
 	}
 
 	

@@ -15,12 +15,14 @@ import org.hibernate.Session;
 
 import it.portalECI.DAO.SessionFacotryDAO;
 import it.portalECI.DTO.CategoriaVerificaDTO;
+import it.portalECI.DTO.CommessaDTO;
 import it.portalECI.DTO.InterventoDTO;
 import it.portalECI.DTO.QuestionarioDTO;
 import it.portalECI.DTO.TipoVerificaDTO;
 import it.portalECI.DTO.UtenteDTO;
 import it.portalECI.DTO.VerbaleDTO;
 import it.portalECI.Util.Utility;
+import it.portalECI.bo.GestioneCommesseBO;
 import it.portalECI.bo.GestioneInterventoBO;
 import it.portalECI.bo.GestioneQuestionarioBO;
 import it.portalECI.bo.GestioneTipiVerificaBO;
@@ -73,7 +75,8 @@ public class GestioneInterventoDati extends HttpServlet {
 		request.getSession().setAttribute("tipi_verifica", tipi_verifica);
 		request.getSession().setAttribute("categorie_verifica", categorie_verifica);
 		request.getSession().setAttribute("tecnici", users);
-
+		
+		
 		List<Integer> listIdCodiciCategoria = new ArrayList<Integer>();
 		List<String> listCodiciCategoria = new ArrayList<String>();
 		List<Integer> listIdCodiciTipo = new ArrayList<Integer>();
@@ -132,6 +135,18 @@ public class GestioneInterventoDati extends HttpServlet {
 		request.getSession().setAttribute("listCodiciTipo", listCodiciTipo);
 		request.getSession().setAttribute("listEsisteTemplateScTec", listEsisteTemplateScTec);
 		request.getSession().setAttribute("listEsisteScTec", listEsisteScTec);
+		
+
+		CommessaDTO commessa;
+		try {
+			commessa = GestioneCommesseBO.getCommessaById(intervento.getIdCommessa());
+			request.getSession().setAttribute("commessa", commessa);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+	
 		
 		RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/page/configurazioni/gestioneInterventoDati.jsp");
 		dispatcher.forward(request,response);

@@ -70,6 +70,14 @@
 								              			<a href="#verificatoricategoria" data-toggle="tab" aria-expanded="false"   id="verificatoricategoriaTab">
 							    	          				Associazione Verificatore Categoria
 						    	    	      			</a>
+						    	    	      			
+						    	    	      			
+						        	    	  		</li>
+						        	    	  		
+						        	    	  		<li>
+								              			<a href="#utentiComunicazioni" data-toggle="tab" aria-expanded="false"   id="utentiComunicazioneTab">
+							    	          				Associazione Utente Tipo Comunicazione
+						    	    	      			</a>
 						        	    	  		</li>
 						            			</ul>
 						            			<div class="tab-content">
@@ -183,6 +191,35 @@
 														</div>
 						    						</div> 			
 								              		<!-- /.tab-pane -->
+								              		
+								              		
+								              		<div class="tab-pane" id="utentiComunicazioni">
+		
+														<div class="form-group">
+											           		<label>Utenti</label>
+											                <select name="selectUtenteCom" id="selectUtenteCom" data-placeholder="Seleziona Utente..."  class="form-control selectUtenteCom" aria-hidden="true" data-live-search="true">
+											                	<option value=""></option>
+											                    <c:forEach items="${listaUtenti}" var="utente">
+											                    	<option value="${utente.id}">${utente.nominativo}</option> 
+											                    </c:forEach>									
+											                </select>
+											        	</div>
+										    	    	<div class="row">
+															<div class="col-xs-12">												
+														 		<div id="boxLista" class="box box-danger box-solid">
+																	<div class="box-header with-border">
+																 		Tipo Comunicazione
+																		<div class="box-tools pull-right">															
+																			<button data-widget="collapse" class="btn btn-box-tool"><i class="fa fa-minus"></i></button>													
+																		</div>
+																	</div>
+																	<div class="box-body">
+																		 <div id="posTabComunicazioni">LISTA VUOTA</div>
+																	</div>
+																</div>
+															</div>
+														</div>
+						    						</div> 	
 							    	        	</div>
 							        	    	<!-- /.tab-content -->
 							          		</div>       						
@@ -263,7 +300,16 @@
         			dataString ="action=associazioni&idUtente="+ utente;
         			exploreModal("listaCategorieVerifica.do",dataString,"#posTabCategorie",function(data,textStatus){			
         			});        
- 	 			});  
+ 	 			});    		
+  				
+  				$("#selectUtenteCom").change(function(e){	
+        			var utente = $("#selectUtenteCom").val();        
+        			dataString ="action=comunicazioni&idUtente="+ utente;
+        			exploreModal("listaCategorieVerifica.do",dataString,"#posTabComunicazioni",function(data,textStatus){			
+        			});        
+ 	 			});
+  				
+  				
 			});	   
 		
 	    	$('#myModalError').on('hidden.bs.modal', function (e) {

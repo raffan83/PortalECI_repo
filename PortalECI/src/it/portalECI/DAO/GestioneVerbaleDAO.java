@@ -9,6 +9,7 @@ import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.Session;
 
+import it.portalECI.DTO.DocumentoDTO;
 import it.portalECI.DTO.ProgressivoVerbaleDTO;
 import it.portalECI.DTO.StatoVerbaleDTO;
 import it.portalECI.DTO.TipoVerificaDTO;
@@ -168,6 +169,28 @@ public class GestioneVerbaleDAO {
 		
 		return result;
 		
+	}
+
+	public static List<DocumentoDTO> getVerbaliPDFAll(Session session, String dateFrom, String dateTo) throws Exception, ParseException {
+		
+		List<DocumentoDTO> lista = null;
+		
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		
+		Query query  = null;
+		
+		if(dateFrom==null) {
+			query = session.createQuery( "from DocumentoDTO WHERE type = 'CERTIFICATO'");
+		
+		}else {
+			query = session.createQuery( "from DocumentoDTO WHERE type = 'CERTIFICATO' AND createDate between :_dateFrom and :_dateTo");
+			query.setParameter("_dateFrom", sdf.parse(dateFrom));
+			query.setParameter("_dateTo", sdf.parse(dateTo));
+		}
+		
+		lista = query.list();		
+		
+		return lista;
 	}
 	
 }

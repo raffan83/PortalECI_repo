@@ -409,6 +409,7 @@ public class GestioneIntervento extends HttpServlet {
 					idStato=StatoInterventoDTO.CHIUSO;
 				}else if(stato.equals("ANNULLATO")) {
 					idStato=StatoInterventoDTO.ANNULLATO;
+					
 				}else if (stato.equals("COMPILAZIONE_WEB")){
 					idStato=StatoInterventoDTO.COMPILAZIONE_WEB;
 				}else {
@@ -427,6 +428,17 @@ public class GestioneIntervento extends HttpServlet {
 						//GestioneInterventoBO.setStatoCompilazioneWeb(intervento, session);
 					}				
 					intervento.cambioStatoIntervento(GestioneStatoInterventoDAO.getStatoInterventoById(idStato, session));
+					
+					if(idStato== StatoInterventoDTO.ANNULLATO) {
+						List<VerbaleDTO> listaVerbali = intervento.getVerbali();
+						StatoVerbaleDTO statoVerb = new StatoVerbaleDTO();
+						statoVerb.setId(10);
+						for (VerbaleDTO verbaleDTO : listaVerbali) {
+							verbaleDTO.setStato(statoVerb);
+						}
+					}
+					
+					
 					
 				}catch(IllegalStateException e) {
 					myObj.addProperty("success", false);

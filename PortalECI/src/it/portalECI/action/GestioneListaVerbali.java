@@ -26,6 +26,7 @@ import org.hibernate.Session;
 import it.portalECI.DAO.SessionFacotryDAO;
 import it.portalECI.DTO.CategoriaVerificaDTO;
 import it.portalECI.DTO.CompanyDTO;
+import it.portalECI.DTO.DocumentoDTO;
 import it.portalECI.DTO.InterventoDTO;
 import it.portalECI.DTO.TipoVerificaDTO;
 import it.portalECI.DTO.UtenteDTO;
@@ -109,6 +110,23 @@ public class GestioneListaVerbali extends HttpServlet {
 		     	
 		     	session.getTransaction().commit();
 				session.close();
+			}
+			
+			else if(action.equals("lista_file")) {
+				
+				String dateFrom = request.getParameter("dateFrom");
+				String dateTo = request.getParameter("dateTo");		
+			
+				
+				List<DocumentoDTO> listaVerbali = GestioneVerbaleBO.getVerbaliPDFAll(session,dateFrom, dateTo);
+				
+				request.getSession().setAttribute("listaVerbali", listaVerbali);
+				request.getSession().setAttribute("dateFrom", dateFrom);
+				request.getSession().setAttribute("dateTo", dateTo);
+
+				RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/page/configurazioni/gestioneListaVerbaliPDF.jsp");
+		     	dispatcher.forward(request,response);
+				
 			}
 			
 			else if(action.equals("scadenzario_val")) {

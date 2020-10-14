@@ -60,8 +60,26 @@ public class GestioneListaQuestionari extends HttpServlet {
 			
 			Session session=SessionFacotryDAO.get().openSession();
 			session.beginTransaction();
-					
-			ArrayList<QuestionarioDTO> listaQuestionari =(ArrayList<QuestionarioDTO>) GestioneQuestionarioBO.getListaQuestionari(session);
+			String action = request.getParameter("action");
+			
+			ArrayList<QuestionarioDTO> listaQuestionari = null;
+			
+			ArrayList<QuestionarioDTO> listaQuestionariTutti = (ArrayList<QuestionarioDTO>) GestioneQuestionarioBO.getListaQuestionari(session);
+			
+			if(action == null) {
+				listaQuestionari = new ArrayList<QuestionarioDTO>();
+				
+				for (QuestionarioDTO questionarioDTO : listaQuestionariTutti) {
+					if(!questionarioDTO.getIsObsoleto()) {
+						listaQuestionari.add(questionarioDTO);
+					}
+				}
+				request.getSession().setAttribute("tutti", "0");
+			}else if(action!=null && action.equals("tutti")) {
+				listaQuestionari = listaQuestionariTutti;
+				request.getSession().setAttribute("tutti", "1");
+			}			
+			
 			
 			request.getSession().setAttribute("listaQuestionari", listaQuestionari);
 			

@@ -79,6 +79,16 @@
              <one-to-many class="it.portalECI.DTO.StrumentoVerificatoreDTO" />
         </set>
         
+           <set name="listaComunicazioni" table="comunicazione_utente"
+        	inverse="false" lazy="false" fetch="select" cascade="all" >
+            <key>
+                <column name="id_utente" not-null="true" />
+            </key>
+            <many-to-many entity-name="it.portalECI.DTO.TipoComunicazioneUtenteDTO">
+                <column name="tipo_comunicazione" not-null="true" />
+            </many-to-many>
+        </set>
+        
         <property name="qualifica" type="java.lang.String">
             <column name="qualifica" />
         </property>

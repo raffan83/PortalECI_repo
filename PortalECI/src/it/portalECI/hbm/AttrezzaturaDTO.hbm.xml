@@ -132,6 +132,8 @@
             <column name="regione_div" />
         </property>
 	
-	
+	   <property name="numero_certificato" type="java.lang.String">
+            <column name="numero_certificato" />
+        </property>
     </class>
 </hibernate-mapping>

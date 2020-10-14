@@ -350,7 +350,7 @@ function saveInterventoFromModal(){
 	//var str3=$('#select2').val();
 	var listCatVer='';
 	$('.categoriaTipiRow').each(function(index, item){
-		listCatVer+="&categoriaTipo="+item.id;
+		listCatVer+="&categoriaTipo="+item.attributes[2].value;
 	});
 	var skTecObb='';
 	$('.skTecObb').each(function(index, item){
@@ -1010,120 +1010,6 @@ function toggleFuoriServizio(idStrumento,idSede,idCliente){
 	});
 }
 
-function nuovoCampione(){
-	  
-	var valid=true;
-	var count = $('#tblAppendGrid').appendGrid('getRowCount'), index = '';
-	for (var z = 0; z < count; z++) {
-
-		var elem1 = $('#tblAppendGrid').appendGrid('getCellCtrl', 'incertezza_assoluta', z);
-		var elem2 = $('#tblAppendGrid').appendGrid('getCellCtrl', 'incertezza_relativa', z);
-		if(elem1.value=="" && elem2.value==""){
-			valid = false;
-		}
-	}
-//      corrispondenze = 0;
-//      $('#tblAppendGrid tbody tr').each(function(){
-//			var td = $(this).find('td').eq(1);
-//			attr = td.attr('id');
-//		    valore = $("#" + attr  + " input").val();
-//		    
-//		    $('#tblAppendGrid tbody tr').each(function(){
-//				var td2 = $(this).find('td').eq(1);
-//				attr2 = td2.attr('id');
-//			    valore2 = $("#" + attr2  + " input").val();
-//
-//			    if(valore == valore2){
-//			    	corrispondenze++;
-//			    }
-//			    	
-//			});
-//
-//		});
-//      validCorr = true;
-//	  if(corrispondenze >0 && $('#interpolato').val()==0){
-//		  validCorr = false;
-//	  }
-	  
-	var jsonMap = {};
-	$('#tblAppendGrid tbody tr').each(function(){
-		var td = $(this).find('td').eq(1);
-		attr = td.attr('id');
-		valore = $("#" + attr  + " input").val();
-
-		if(jsonMap[valore]){
-			jsonMap[valore] ++;
-		}else{
-			jsonMap[valore]=1;
-		}
-
-
-	});
-	validCorr = true;
-	validCorr2 = true;
-	$.each(jsonMap, function() {
-		if(this<2 && $('#interpolato').val()==1){
-			validCorr2 = false;
-		}
-		if(this>1 && $('#interpolato').val()==0){
-			validCorr = false;
-		}	
-	});
-	  	  
-	if($("#formNuovoCampione").valid() && valid && validCorr2 && validCorr){
-	  
-		var form = $('#formNuovoCampione')[0]; 
-		var formData = new FormData(form);
-		formData.append("datagrid",$( "#formNuovoCampione" ).serialize());
-		$.ajax({
-			type: "POST",
-			url: "gestioneCampione.do?action=nuovo",
-			data: formData,
-			//dataType: "json",
-			contentType: false, // NEEDED, DON'T OMIT THIS (requires jQuery 1.6+)
-			processData: false, // NEEDED, DON'T OMIT THIS
-			//enctype: 'multipart/form-data',
-			success: function( data, textStatus) {
-
-				if(data.success){ 
-					// $('#modalNuovoCampione').modal('hide');
-        			
-					//dataString ="";
-  
-					$('#myModalErrorContent').html(data.messaggio);
-					$('#myModalError').removeClass();
-					$('#myModalError').addClass("modal modal-success");
-					$('#myModalError').modal('show');
-        			  	
-        		
-				}else{
-					$('#myModalErrorContent').html(data.messaggio);
-					$('#myModalError').removeClass();
-					$('#myModalError').addClass("modal modal-danger");
-					$('#myModalError').modal('show');
-        			 
-				}
-			},
-			error: function(jqXHR, textStatus, errorThrown){
-        	
-				$('#errorModifica').html("<h3 class='label label-danger'>"+textStatus+"</h3>");
-				//callAction('logout.do');
-        
-			}
-		});
-	}else{
-		$("#ulError").html("<span class='label label-danger'>Compilare tutti i campi obbligatori</span>");
-		if(!valid){
-			$("#ulError").html("<span class='label label-danger'>Compilare tutti i campi obbligatori. Insereire Incertezza Assoluta o Incertezza Relativa</span>");
-		}
-		if(!validCorr){
-			$("#ulError").html("<span class='label label-danger'>I parametri di taratura devono essere univoci.</span>");
-		}
-		if(!validCorr2){
-			$("#ulError").html("<span class='label label-danger'>Lo stesso parametro di taratura deve essere presente almeno 2 volte.</span>");
-		}
-	}
-}
 
 //Gestione Utente
 function nuovoUtente(){
@@ -2355,6 +2241,66 @@ function disassociaCategoria(id_categoria, idUtente){
 
 
 
+function associaComunicazione(id_comunicazione, idUtente){
+	$.ajax({
+		type: "POST",
+		url: "gestioneAssociazioniAjax.do?action=associaComunicazione&id_comunicazione="+id_comunicazione+"&idUtente="+idUtente,
+		dataType: "json",
+		success: function( data, textStatus) {
+			pleaseWaitDiv.modal('hide');
+			if(data.success){ 
+				$('#tabComunicazioniTr_'+id_comunicazione).addClass("bg-blue color-palette");
+				$('#btnAssociaComunicazione_'+id_comunicazione).attr("disabled",true);
+				$('#btnDisAssociaComunicazione_'+id_comunicazione).attr("disabled",false);    			     		
+			}else{
+				$('#modalErrorDiv').html(data.message);
+				$('#myModalError').removeClass();
+				$('#myModalError').addClass("modal modal-danger");
+				$('#myModalError').modal('show');
+			}	
+		},
+		error: function(jqXHR, textStatus, errorThrown){
+			pleaseWaitDiv.modal('hide');
+			
+			$('#modalErrorDiv').html(errorThrown.message);
+		  	$('#myModalError').removeClass();
+			$('#myModalError').addClass("modal modal-danger");
+			$('#myModalError').modal('show');    
+		}
+	});
+}
+
+function disassociaComunicazione(id_comunicazione, idUtente){
+	$.ajax({
+		type: "POST",
+		url: "gestioneAssociazioniAjax.do?action=disassociaComunicazione&id_comunicazione="+id_comunicazione+"&idUtente="+idUtente,
+		dataType: "json",
+		success: function( data, textStatus) {
+			pleaseWaitDiv.modal('hide');
+			if(data.success){ 
+				$('#tabComunicazioniTr_'+id_comunicazione).removeClass("bg-blue color-palette");
+				$('#btnAssociaComunicazione_'+id_comunicazione).attr("disabled",false);
+				$('#btnDisAssociaComunicazione_'+id_comunicazione).attr("disabled",true);
+				
+			}else{
+				$('#modalErrorDiv').html(data.message);
+				$('#myModalError').removeClass();
+				$('#myModalError').addClass("modal modal-danger");
+				$('#myModalError').modal('show');
+			}
+		},
+		error: function(jqXHR, textStatus, errorThrown){
+			pleaseWaitDiv.modal('hide');
+   
+   			$('#modalErrorDiv').html(errorThrown.message);
+		  	$('#myModalError').removeClass();
+			$('#myModalError').addClass("modal modal-danger");
+			$('#myModalError').modal('show');    
+		}
+	});
+}
+
+
 function associaUtente(idUtente,idRuolo){
 	$.ajax({
 		type: "POST",
@@ -3098,6 +3044,7 @@ function modificaAttrezzatura(scadenzario, date, tipo_data){
 	var marcatura = $('#marcatura_mod').val();
 	var n_id_on = $('#n_id_on_mod').val();
 	var data_scadenza_ventennale = $('#data_scadenza_ventennale_mod').val();
+	var numero_certificato = $('#numero_certificato_mod').val();
 	
 	  		
 	var dataObj = {};
@@ -3129,6 +3076,7 @@ function modificaAttrezzatura(scadenzario, date, tipo_data){
 	dataObj.marcatura = marcatura;
 	dataObj.n_id_on = n_id_on;
 	dataObj.data_scadenza_ventennale = data_scadenza_ventennale;
+	dataObj.numero_certificato = numero_certificato;
 
 	$.ajax({
 		type: "POST",
@@ -3625,3 +3573,72 @@ $.ajax({
 		});	  	  	  	  
 		
 		}
+	
+	
+	function nuovoCampione(){
+		 
+
+		//  if($("#formNuovoCampione").valid()){
+		  
+		  var form = $('#formNuovoCampione')[0]; 
+		  var formData = new FormData(form);
+		 
+	          $.ajax({
+	        	  type: "POST",
+	        	  url: "gestioneCampione.do?action=nuovo",
+	        	  data: formData,
+	        	  //dataType: "json",
+	        	  contentType: false, // NEEDED, DON'T OMIT THIS (requires jQuery 1.6+)
+	        	  processData: false, // NEEDED, DON'T OMIT THIS
+	        	  //enctype: 'multipart/form-data',
+	        	  success: function( data, textStatus) {
+
+	        		  if(data.success)
+	        		  { 
+	        			 // $('#modalNuovoCampione').modal('hide');
+	        			
+	        			  //dataString ="";
+
+	        			  $('#report_button').hide();
+	        				$('#visualizza_report').hide();
+	        			  $('#myModalErrorContent').html(data.messaggio);
+	        			  	$('#myModalError').removeClass();
+	        				$('#myModalError').addClass("modal modal-success");
+	        				$('#myModalError').modal('show');
+	        			  	
+	        		
+	        		  }else{
+	        			  $('#myModalErrorContent').html(data.messaggio);
+	        			  	$('#myModalError').removeClass();
+	        				$('#myModalError').addClass("modal modal-danger");
+	        				
+	        				$('#report_button').show();
+	          				$('#visualizza_report').show();
+							$('#myModalError').modal('show');
+			
+	        			 
+	        		  }
+	        	  },
+
+	        	  error: function(jqXHR, textStatus, errorThrown){
+	        	
+
+	        		 $('#errorModifica').html("<h3 class='label label-danger'>"+textStatus+"</h3>");
+	        		  //callAction('logout.do');
+	        
+	        	  }
+	          });
+//		  }else{
+//			  $("#ulError").html("<span class='label label-danger'>Compilare tutti i campi obbligatori</span>");
+//			  if(!valid){
+//				  $("#ulError").html("<span class='label label-danger'>Compilare tutti i campi obbligatori. Insereire Incertezza Assoluta o Incertezza Relativa</span>");
+//			  }
+//			  if(!validCorr){
+//				  $("#ulError").html("<span class='label label-danger'>I parametri di taratura devono essere univoci.</span>");
+//			  }
+//			  if(!validCorr2){
+//				  $("#ulError").html("<span class='label label-danger'>Lo stesso parametro di taratura deve essere presente almeno 2 volte.</span>");
+//			  }
+//		  }
+	  }
+	

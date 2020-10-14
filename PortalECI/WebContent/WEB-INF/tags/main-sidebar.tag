@@ -61,6 +61,9 @@
           			<ul class="treeview-menu">
             			<li>
 	            			<a href="gestioneListaVerbali.do">Gestione Verbali</a>
+	            			<% if(user.checkRuolo("AM")){%>
+	            			<a href="#" onClick="callAction('gestioneListaVerbali.do?action=lista_file')">Lista Verbali PDF</a>
+	            		<% }%>
     	        		</li>
         	  		</ul>
         	  	<% }%>
@@ -120,6 +123,9 @@
           	
         	</li>
         	<% }%>
+        	
+			<li><a  href="#" onclick="callAction('gestioneCampione.do?action=lista',null,true);" >Campioni  Personali</a></li>
+			
         	<% if(user.checkRuolo("AM") || user.checkPermesso("ACCESS_CONFIG")){%>		
          	<li class="treeview">
           		<a href="#">

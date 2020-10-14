@@ -110,7 +110,7 @@
 								</div>
              					<div class="row">
         							<div class="col-xs-12">
-										<div class="box box-danger box-solid collapsed-box">
+										<div class="box box-danger box-solid">
 											<div class="box-header with-border">
 	 											Lista Attivit&agrave;
 												<div class="box-tools pull-right">		
@@ -124,6 +124,7 @@
  															<th>Descrizione Attivita</th>
  															<th>Note</th>
  															<th>Descrizione Articolo</th>
+ 															<th>Ore uomo</th>
  															<th>Quantit&agrave;</th>
  														</tr>
  													</thead>
@@ -139,6 +140,9 @@
 																<td>
   																	${attivita.descrizioneArticolo}
 																</td>	
+																<td>
+																	${attivita.oreUomo }
+																</td>
 																<td>
   																	${attivita.quantita}
 																</td>
@@ -494,6 +498,8 @@
  				}
  			});
  			
+ 			var id_row_intervento = 0;
+ 			
 			    $(document).ready(function() {
 			    			    	
 			    	
@@ -798,7 +804,7 @@
 									 $("#addrow").prop('disabled', true);
 								},
 								success: function(  dataResp, textStatus) {
-									var objectdata='<tr class="categoriaTipiRow" id="'+tipi_verifica+'" role="row" >'+
+									var objectdata='<tr class="categoriaTipiRow" id="row_'+id_row_intervento+'" name="'+tipi_verifica+'" role="row" >'+
 									'<td >'+$('#select1').find('[value='+categorie_verifica+']').text()+'</td>'+
 									'<td >'+$('#select2').find('[value='+tipi_verifica+']').text()+'</td>'+	
 									'<td >';
@@ -838,7 +844,7 @@
 									objectdata+='<td>'+eff_ver+'</td>'+
 									'<td>'+tipo_ver+'</td>';	
 									objectdata+='<td>'+$("#noteVerbale").val()+'</td>'+    
-										'<td><a class="btn customTooltip" title="Click per eliminare la riga" onclick="removeRow(\''+tipi_verifica+'\')"><i class="fa fa-minus"></i></a></td></tr>';
+										'<td><a class="btn customTooltip" title="Click per eliminare la riga" onclick="removeRow(\'row_'+id_row_intervento+'\')"><i class="fa fa-minus"></i></a></td></tr>';
 									
 									if($("#bodytabVerifica").find("tr").size()>0){
 										$('#tabVerifica').DataTable().destroy();	
@@ -854,6 +860,8 @@
 							      		radioClass: 'iradio_square-blue',
 							      		increaseArea: '20%' // optional
 							    	});
+									
+									id_row_intervento++;
 								},
 								error: function( data, textStatus) {
 
@@ -878,7 +886,7 @@
 								 $("#addrow").prop('disabled', true);
 							},
 							success: function(  dataResp, textStatus) {
-								var objectdata='<tr class="categoriaTipiRow" id="'+tipi_verifica+'" role="row" >'+
+								var objectdata='<tr class="categoriaTipiRow" id="row_'+id_row_intervento+'" name="'+tipi_verifica+'" role="row" >'+
 								'<td >'+$('#select1').find('[value='+categorie_verifica+']').text()+'</td>'+
 								'<td >'+$('#select2').find('[value='+tipi_verifica+']').text()+'</td>'+	
 								'<td >';
@@ -918,7 +926,7 @@
 								objectdata+='<td></td>'+
 								'<td></td>';	
 								objectdata+='<td>'+$("#noteVerbale").val()+'</td>'+    
-									'<td><a class="btn customTooltip" title="Click per eliminare la riga" onclick="removeRow(\''+tipi_verifica+'\')"><i class="fa fa-minus"></i></a></td></tr>';
+									'<td><a class="btn customTooltip" title="Click per eliminare la riga" onclick="removeRow(\'row_'+id_row_intervento+'\')"><i class="fa fa-minus"></i></a></td></tr>';
 								
 							
 								if($("#bodytabVerifica").find("tr").size()>0){
@@ -935,6 +943,7 @@
 						      		radioClass: 'iradio_square-blue',
 						      		increaseArea: '20%' // optional
 						    	});
+								id_row_intervento++;
 							},
 							error: function( data, textStatus) {
 
@@ -956,6 +965,11 @@
       			
       			function removeRow(tipi_verifica){
       				$("#"+tipi_verifica).remove();
+      				var table = $('#tabVerifica').DataTable();
+
+      				var index = tipi_verifica.split("_")[1];
+      				table.row(index).remove();
+      				
       				if($("#bodytabVerifica").find("tr").size()==0){
       					$("#bodytabVerifica").html("");
       					$('#tabVerifica').DataTable().clear().destroy();

@@ -50,6 +50,8 @@ public class AttrezzaturaDTO {
 	private String provincia_div;
 	private String regione_div;
 		
+	private String numero_certificato;
+	
 	public int getAnno_costruzione() {
 		return anno_costruzione;
 	}
@@ -295,6 +297,12 @@ public class AttrezzaturaDTO {
 	}
 	public void setPresso_div(String presso_div) {
 		this.presso_div = presso_div;
+	}
+	public String getNumero_certificato() {
+		return numero_certificato;
+	}
+	public void setNumero_certificato(String numero_certificato) {
+		this.numero_certificato = numero_certificato;
 	}
 	
 	

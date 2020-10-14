@@ -6,11 +6,12 @@ import it.portalECI.DTO.CategoriaVerificaDTO;
 import it.portalECI.DTO.CompanyDTO;
 import it.portalECI.DTO.PermessoDTO;
 import it.portalECI.DTO.RuoloDTO;
-
+import it.portalECI.DTO.TipoComunicazioneUtenteDTO;
 import it.portalECI.DTO.UtenteDTO;
 import it.portalECI.Exception.ECIException;
 import it.portalECI.Util.Utility;
 import it.portalECI.bo.GestioneCategorieVerificaBO;
+import it.portalECI.bo.GestioneComunicazioniBO;
 import it.portalECI.bo.GestionePermessiBO;
 import it.portalECI.bo.GestioneRuoloBO;
 import it.portalECI.bo.GestioneUtenteBO;
@@ -182,6 +183,71 @@ public class GestioneAssociazioniAjax extends HttpServlet {
 					CategoriaVerificaDTO categoria = GestioneCategorieVerificaBO.getCategoriaVerificaById(id_categoria, session);
 					
 					utente.getListaCategorieVerifica().remove(categoria);
+					int success = GestioneUtenteBO.saveUtente(utente, "modifica", session);
+					
+    	 			if(success==0){
+    					myObj.addProperty("success", true);
+    					myObj.addProperty("messaggio","Salvato con Successo");
+    					session.getTransaction().commit();
+    					session.close();
+    				
+    				}
+    	 			
+    				if(success==1){
+    					
+    					myObj.addProperty("success", false);
+    					myObj.addProperty("messaggio","Errore Salvataggio");
+    					
+    					session.getTransaction().rollback();
+    			 		session.close();
+    			 		
+    				} 
+															
+					myObj.addProperty("success", true);
+					myObj.addProperty("message", "OK");
+			        out.println(myObj.toString());
+				}
+				
+				if(action.equals("associaComunicazione")){
+					String id_comunicazione = request.getParameter("id_comunicazione");
+					String idUtente = request.getParameter("idUtente");
+    	 			
+					UtenteDTO utente = GestioneUtenteBO.getUtenteById(idUtente, session);
+					TipoComunicazioneUtenteDTO comunicazione = GestioneComunicazioniBO.getComunicazioneFromId(Integer.parseInt(id_comunicazione), session);
+					
+					utente.getListaComunicazioni().add(comunicazione);
+					int success = GestioneUtenteBO.saveUtente(utente, "modifica", session);
+					
+    	 			if(success==0){
+    					myObj.addProperty("success", true);
+    					myObj.addProperty("messaggio","Salvato con Successo");
+    					session.getTransaction().commit();
+    					session.close();    				
+    				}
+    				
+    	 			if(success==1){
+    					
+    					myObj.addProperty("success", false);
+    					myObj.addProperty("messaggio","Errore Salvataggio");
+    					
+    					session.getTransaction().rollback();
+    			 		session.close();
+    			 		
+    				} 
+														
+					myObj.addProperty("success", true);
+					myObj.addProperty("message", "OK");
+			        out.println(myObj.toString());
+				}
+				
+				if(action.equals("disassociaComunicazione")){
+					String id_comunicazione = request.getParameter("id_comunicazione");
+					String idUtente = request.getParameter("idUtente");
+					
+					UtenteDTO utente = GestioneUtenteBO.getUtenteById(idUtente, session);
+					TipoComunicazioneUtenteDTO comunicazione = GestioneComunicazioniBO.getComunicazioneFromId(Integer.parseInt(id_comunicazione), session);				
+										
+					utente.getListaComunicazioni().remove(comunicazione);
 					int success = GestioneUtenteBO.saveUtente(utente, "modifica", session);
 					
     	 			if(success==0){

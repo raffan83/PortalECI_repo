@@ -236,7 +236,7 @@ public class InterventoDTO implements Serializable{
 				return true;
 			}
 		}else if(this.statoIntervento!=null && this.statoIntervento.id==StatoInterventoDTO.COMPILAZIONE_WEB) {
-			if(newStato.getId()==StatoInterventoDTO.CHIUSO) {				
+			if(newStato.getId()==StatoInterventoDTO.CHIUSO || newStato.getId()==StatoInterventoDTO.ANNULLATO) {				
 				
 			}else if(newStato.getId()!= StatoInterventoDTO.COMPILAZIONE_WEB){
 				throw new IllegalStateException("Passaggio di Stato non consentito!");	

@@ -118,6 +118,62 @@
 										</div>
 									</div>
 								</div>
+								
+								
+								
+								<div class="row">
+        							<div class="col-xs-12">
+										<div class="box box-danger box-solid">
+											<div class="box-header with-border">
+	 											Lista Attivit&agrave;
+												<div class="box-tools pull-right">		
+													<button data-widget="collapse" class="btn btn-box-tool"><i class="fa fa-plus"></i></button>
+												</div>
+											</div>
+											<div class="box-body">
+              									<table id="tabAttivita" class="table table-bordered table-hover dataTable table-striped" role="grid" width="100%">
+ 													<thead>
+ 														<tr class="active"> 
+ 															<th>Descrizione Attivita</th>
+ 															<th>Note</th>
+ 															<th>Descrizione Articolo</th>
+ 															<th>Ore uomo</th>
+ 															<th>Quantit&agrave;</th>
+ 														</tr>
+ 													</thead>
+ 													<tbody>
+ 														<c:forEach items="${commessa.listaAttivita}" var="attivita"> 
+ 															<tr role="row">
+																<td>
+  																	${attivita.descrizioneAttivita}
+																</td>
+																<td>
+  																	${attivita.noteAttivita}
+																</td>	
+																<td>
+  																	${attivita.descrizioneArticolo}
+																</td>	
+																<td>
+																	${attivita.oreUomo }
+																</td>
+																<td>
+  																	${attivita.quantita}
+																</td>
+															</tr>	 
+														</c:forEach>
+ 													</tbody>
+ 												</table>  
+											</div>
+										</div>
+            							<!-- /.box-body -->
+          							</div>
+          							<!-- /.box -->
+        						</div>                       
+								
+								
+								
+								
+								
              					<div class="row">
         							<div class="col-xs-12">
 										<div class="box box-danger box-solid">
@@ -136,7 +192,9 @@
  															<th>Data Creazione</th>
  															<th>Descrizione Verifica</th>
  															<th>Stato</th>
+ 															<th>Numero Certificato</th>
  															<th>Certificato</th>
+ 															
  															<th width="150px">Sc. Tecnica</th>
  															<th>Attrezzatura</th>
  															<th>Note</th>
@@ -161,6 +219,10 @@
 																<td>
 																	<span class="label" style="color:#000000 !important; background-color:${verbale.getStato().getColore(verbale.getStato().getId())} !important;">${verbale.getStato().getDescrizione()}</span>  																	
 																</td>
+																<td>
+																	${verbale.numeroVerbale }
+																</td>
+																
 																<td>
   																	<c:if test="${verbale.getDocumentiVerbale().size()>0 && user.checkPermesso('DOWNLOAD_CERTIFICATO')}">
       																	<c:forEach items="${verbale.getDocumentiVerbale()}" var="docum">	

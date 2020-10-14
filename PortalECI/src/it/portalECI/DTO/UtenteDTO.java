@@ -44,6 +44,9 @@ public class UtenteDTO implements Serializable {
 	private Set<RuoloDTO> listaRuoli = new HashSet<RuoloDTO>(0);
 	private Set<CategoriaVerificaDTO> listaCategorieVerifica = new HashSet<CategoriaVerificaDTO>(0);
 	private Set<StrumentoVerificatoreDTO> listaStrumentiVerificatore = new HashSet<StrumentoVerificatoreDTO>(0);
+	private Set<TipoComunicazioneUtenteDTO> listaComunicazioni = new HashSet<TipoComunicazioneUtenteDTO>(0);
+	
+	
 	
 	public UtenteDTO() {
 	}
@@ -268,7 +271,19 @@ public class UtenteDTO implements Serializable {
 		return false;
 	}
 
-
+	public boolean checkComunicazione(int id_comunicazione){
+		Iterator<TipoComunicazioneUtenteDTO> iterator = listaComunicazioni.iterator(); 
+	      
+		while (iterator.hasNext()){			  
+			TipoComunicazioneUtenteDTO comunicazone= (TipoComunicazioneUtenteDTO) iterator.next(); 
+			
+			if(comunicazone.getId()==id_comunicazione){
+				return true;
+			}
+		}
+		   
+		return false;
+	}
 	public CompanyDTO getCompany() {
 		return company;
 	}
@@ -361,5 +376,13 @@ public class UtenteDTO implements Serializable {
 
 	public void setCf(String cf) {
 		this.cf = cf;
+	}
+
+	public Set<TipoComunicazioneUtenteDTO> getListaComunicazioni() {
+		return listaComunicazioni;
+	}
+
+	public void setListaComunicazioni(Set<TipoComunicazioneUtenteDTO> listaComunicazioni) {
+		this.listaComunicazioni = listaComunicazioni;
 	}
 }

@@ -116,7 +116,7 @@ public class CreateScadenzarioVIE {
 		 Row rowHeader = sheet0.createRow(0);
 		 
 		// rowHeader.setHeight((short)1000);
-		 for(int j = 0; j<18; j++) {
+		 for(int j = 0; j<19; j++) {
 			 rowHeader.createCell(j);
 			 
 			 rowHeader.getCell(j).setCellStyle(greenStyle);
@@ -158,6 +158,8 @@ public class CreateScadenzarioVIE {
 		 sheet0.getRow(0).getCell(16).setCellValue("Prossima verifica");
 		 
 		 sheet0.getRow(0).getCell(17).setCellValue("Ore uomo");
+		 
+		 sheet0.getRow(0).getCell(18).setCellValue("Esito");
 		 
   
 	     int row_index = 0;	        
@@ -363,6 +365,19 @@ public class CreateScadenzarioVIE {
 		 	 
 		 	 if(verbale.getOre_uomo()!=null) {
 		 		cell.setCellValue(verbale.getOre_uomo()); 
+		 	 }else {
+		 		cell.setCellValue("");
+		 	 }
+		 	col++;
+		 	 cell = row.createCell(col); 
+		 	 
+		 	if(verbale.getEsito()!=null && !verbale.getEsito().equals("")) {
+		 		if(verbale.getEsito().equals("P")) {
+		 			cell.setCellValue("Positivo");
+		 		}else {
+		 			cell.setCellValue("Negativo");	
+		 		}
+		 		 
 		 	 }else {
 		 		cell.setCellValue("");
 		 	 }

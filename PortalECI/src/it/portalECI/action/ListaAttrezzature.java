@@ -477,6 +477,7 @@ public class ListaAttrezzature extends HttpServlet {
 				String settore_impiego = request.getParameter("settore_impiego");
 				String note_tecniche = request.getParameter("note_tecniche");
 				String note_generiche = request.getParameter("note_generiche");
+				String numero_certificato = request.getParameter("numero_certificato");
 				
 				
 				String tipo_attrezzatura = request.getParameter("tipo_attrezzatura");
@@ -533,7 +534,7 @@ public class ListaAttrezzature extends HttpServlet {
 				attrezzatura.setNome_sede(n_panieri_idroestrattori);
 				attrezzatura.setMarcatura(marcatura);
 				attrezzatura.setN_id_on(n_id_on);
-				
+				attrezzatura.setNumero_certificato(numero_certificato);
 				
 				if(data_scadenza_ventennale!=null && !data_scadenza_ventennale.equals("")) {
 					attrezzatura.setData_scadenza_ventennale(format.parse(data_scadenza_ventennale));
@@ -599,6 +600,7 @@ public class ListaAttrezzature extends HttpServlet {
 				String settore_impiego = request.getParameter("settore_impiego");
 				String note_tecniche = request.getParameter("note_tecniche");
 				String note_generiche = request.getParameter("note_generiche");
+				String numero_certificato = request.getParameter("numero_certificato");
 				
 				String tipo_attrezzatura = request.getParameter("tipo_attrezzatura");
 				String tipo_attrezzatura_gvr = request.getParameter("tipo_attrezzatura_gvr");
@@ -653,7 +655,7 @@ public class ListaAttrezzature extends HttpServlet {
 				attrezzatura.setNome_sede(n_panieri_idroestrattori);
 				attrezzatura.setMarcatura(marcatura);
 				attrezzatura.setN_id_on(n_id_on);
-				
+				attrezzatura.setNumero_certificato(numero_certificato);
 				
 				if(data_scadenza_ventennale!=null && !data_scadenza_ventennale.equals("")) {
 					attrezzatura.setData_scadenza_ventennale(format.parse(data_scadenza_ventennale));

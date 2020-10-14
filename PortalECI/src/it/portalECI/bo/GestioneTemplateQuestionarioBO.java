@@ -193,6 +193,7 @@ public class GestioneTemplateQuestionarioBO {
 		html = html.replaceAll("\\$\\{ATT_FABBRICANTE\\}", "FABBRICANTE");
 		html = html.replaceAll("\\$\\{ATT_MODELLO\\}", "MODELLO");
 		html = html.replaceAll("\\$\\{ATT_SETTORE_IMPIEGO\\}", "SETTORE IMPIEGO");
+		html = html.replaceAll("\\$\\{ATT_NUMERO_CERT\\}", "NUMERO CERTIFICATO ATTREZZATURA");
 		
 		html = html.replaceAll("\\$\\{STR_MARCA\\}", "MARCA");
 		html = html.replaceAll("\\$\\{STR_MOD\\}", "MODELLO");
@@ -209,13 +210,19 @@ public class GestioneTemplateQuestionarioBO {
 		html = html.replaceAll("\\$\\{DATA_PROSS_VER_INTERNA\\}", "DATA PROSSIMA VERIFICA INTERNA");
 		
 		
-		html = html.replaceAll("\\$\\{SEDE_VIE\\}", "SEDE VIE");
+		html = html.replaceAll("\\$\\{INDIRIZZO_UTILIZZATORE_VIE\\}", "INDIRIZZO UTILIZZATORE VIE");
+	
+		
 		
 		html = html.replaceAll("\\$\\{ESERCENTE\\}", "ESERCENTE");
 		
 		html = html.replaceAll("\\$\\{ORE_UOMO\\}", "ORE UOMO");
 		
 		html = html.replaceAll("\\$\\{MATRICOLA_VIE\\}", "MATRICOLA VIE");
+		
+		html = html.replaceAll("\\$\\{COM_PROV\\}", "COMUNE (PROVINCIA)");
+		
+		
 
 		
 //		private static String getTemplateOpzione(OpzioneRispostaQuestionarioDTO opzione) {

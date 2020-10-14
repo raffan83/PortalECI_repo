@@ -50,6 +50,11 @@
 													</div>
 												</div>
 												<div class="box-body">
+												
+												<a class="btn btn-primary pull-right" id = "btn_tutti" onClick="callAction('gestioneListaQuestionari.do?action=tutti')">Tutti</a>
+												<a class="btn btn-primary pull-right disabled" id="btn_in_corso" style="margin-right:5px" onClick="callAction('gestioneListaQuestionari.do')">In Corso</a>
+												<br><br>
+												
               										<table id="tabellaQuestionari" class="table table-bordered table-sm dataTable" role="grid" width="100%">
  														<thead>
  															<tr class="active"> 
@@ -162,6 +167,19 @@
   		<script type="text/javascript">
    
     		$(document).ready(function() {
+    			
+    			var tutti = "${tutti}";
+    			
+    			if(tutti == "1"){
+    				
+    				$('#btn_in_corso').removeClass("disabled");
+    				$('#btn_tutti').addClass("disabled")
+    				
+    			}else{
+    				$('#btn_tutti').removeClass("disabled");
+    				$('#btn_in_corso').addClass("disabled")
+    			}
+    			
      			table = $('#tabellaQuestionari').DataTable({
     				language: {
   	        			emptyTable : 	"Nessun dato presente nella tabella",

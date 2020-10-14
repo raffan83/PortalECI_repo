@@ -3,9 +3,13 @@ package it.portalECI.action;
 import it.portalECI.DAO.GestioneAccessoDAO;
 import it.portalECI.DAO.SessionFacotryDAO;
 import it.portalECI.DTO.CategoriaVerificaDTO;
+import it.portalECI.DTO.ComunicazioneUtenteDTO;
+import it.portalECI.DTO.TipoComunicazioneUtenteDTO;
 import it.portalECI.DTO.UtenteDTO;
 import it.portalECI.Exception.ECIException;
 import it.portalECI.Util.Utility;
+import it.portalECI.bo.GestioneCategorieVerificaBO;
+import it.portalECI.bo.GestioneComunicazioniBO;
 import it.portalECI.bo.GestioneUtenteBO;
 
 import java.io.IOException;
@@ -86,6 +90,22 @@ public class ListaCategorieVerifica extends HttpServlet {
 		        request.getSession().setAttribute("idVerificatore",id_utente);
 
 				RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/page/configurazioni/listaCategorieVerificaAssociazioni.jsp");
+		     	dispatcher.forward(request,response);
+		     	session.close();
+			}
+			else if(action.equals("comunicazioni")){
+				
+				String id_utente = request.getParameter("idUtente");
+				
+				UtenteDTO utente = GestioneUtenteBO.getUtenteById(id_utente, session);
+				
+				ArrayList<TipoComunicazioneUtenteDTO> listaComunicazioni =  (ArrayList<TipoComunicazioneUtenteDTO>) GestioneComunicazioniBO.getListaTipoComunicazione(session);
+				 
+		        request.getSession().setAttribute("listaComunicazioni",listaComunicazioni);
+		        request.getSession().setAttribute("utente",utente);
+		        request.getSession().setAttribute("id_utente",id_utente);
+
+				RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/page/configurazioni/listaComunicazioniAssociazioni.jsp");
 		     	dispatcher.forward(request,response);
 		     	session.close();
 			}

@@ -42,6 +42,7 @@ import it.portalECI.DAO.SessionFacotryDAO;
 import it.portalECI.DTO.AttrezzaturaDTO;
 import it.portalECI.DTO.ClienteDTO;
 import it.portalECI.DTO.ColonnaTabellaVerbaleDTO;
+import it.portalECI.DTO.CommessaDTO;
 import it.portalECI.DTO.CompanyDTO;
 import it.portalECI.DTO.ComuneDTO;
 import it.portalECI.DTO.DocumentoDTO;
@@ -65,6 +66,9 @@ import it.portalECI.Exception.ECIException;
 import it.portalECI.Util.Costanti;
 import it.portalECI.Util.Utility;
 import it.portalECI.bo.GestioneAnagraficaRemotaBO;
+import it.portalECI.bo.GestioneAttrezzatureBO;
+import it.portalECI.bo.GestioneCommesseBO;
+import it.portalECI.bo.GestioneComunicazioniBO;
 import it.portalECI.bo.GestioneInterventoBO;
 import it.portalECI.bo.GestioneQuestionarioBO;
 import it.portalECI.bo.GestioneVerbaleBO;
@@ -585,8 +589,20 @@ public class GestioneVerbali extends HttpServlet {
 				}
 			}
 			
+			
 			if (action != null && action.equals("confermaRisposteCompWeb")) {
 				GestioneVerbaleBO.cambioStato( verbale, GestioneStatoVerbaleDAO.getStatoVerbaleById( StatoVerbaleDTO.DA_VERIFICARE, session) , session);
+				
+				if(verbale.getIntervento().getTecnico_verificatore().getEMail()!=null) {
+					ArrayList<UtenteDTO> lista_utenti = GestioneComunicazioniBO.getListaUtentiComunicazione(verbale.getCodiceCategoria(), session);
+					String destinatari = "";
+					for (UtenteDTO utenteDTO : lista_utenti) {
+						destinatari = destinatari+utenteDTO.getEMail()+";";
+					}				
+										
+					GestioneComunicazioniBO.sendEmailVerbale(verbale, destinatari, verbale.getIntervento().getTecnico_verificatore().getEMail(), StatoVerbaleDTO.DA_VERIFICARE);
+				}
+				
 			}
 			
 			myObj.addProperty("success", true);
@@ -617,7 +633,7 @@ public class GestioneVerbali extends HttpServlet {
 		
 		Session session=SessionFacotryDAO.get().openSession();
 		session.beginTransaction();
-		
+		UtenteDTO user = (UtenteDTO)request.getSession().getAttribute("userObj");
 		String idVerbale=request.getParameter("idVerbale");
 		VerbaleDTO verbale = null;
 		if(request.getParameter("idVerbale") != null && (String)request.getParameter("idVerbale")!="" ) {
@@ -634,8 +650,20 @@ public class GestioneVerbali extends HttpServlet {
 			if(Boolean.parseBoolean(request.getParameter("all"))) {
 				if(verbale.getSchedaTecnica()!=null && Integer.parseInt(stato) != StatoVerbaleDTO.COMPILAZIONE_WEB)
 					GestioneVerbaleBO.cambioStato( verbale.getSchedaTecnica(), GestioneStatoVerbaleDAO.getStatoVerbaleById( Integer.parseInt(stato), session) , session);
+				
 			}
+			
 			GestioneVerbaleBO.cambioStato( verbale, GestioneStatoVerbaleDAO.getStatoVerbaleById( Integer.parseInt(stato), session) , session);	
+			if(stato.equals("6")) {
+				try {
+					if(verbale.getIntervento().getTecnico_verificatore().getEMail()!=null && user.getEMail()!=null) {
+						GestioneComunicazioniBO.sendEmailVerbale(verbale, verbale.getIntervento().getTecnico_verificatore().getEMail(), user.getEMail(), 6);
+					}
+				}catch (Exception e) {
+					myObj.addProperty("success", false);
+					myObj.addProperty("messaggio", "Errore nell'invio dell'e-mail");
+				}
+			}
 			
 			myObj.addProperty("success", true);
 			myObj.addProperty("messaggio", "Stato modificato con successo");
@@ -653,9 +681,15 @@ public class GestioneVerbali extends HttpServlet {
 					} else {
 						byte[] encoded = Base64.encodeBase64(pdfArray);
 						String pdfBytes = new String(encoded);
+						
+						if(verbale.getIntervento().getTecnico_verificatore().getEMail()!=null && user.getEMail()!=null) {
+							GestioneComunicazioniBO.sendEmailVerbale(verbale, verbale.getIntervento().getTecnico_verificatore().getEMail(), user.getEMail(), 5);
+						}
+						
 						myObj.addProperty("pdfString", pdfBytes);
 						myObj.addProperty("success", true);
 						myObj.addProperty("messaggio","Certificato creato con successo!");
+						
 					}
 				} else {
 					myObj.addProperty("success", false);
@@ -739,6 +773,42 @@ public class GestioneVerbali extends HttpServlet {
 			
 			out.print(myObj);
 		}
+		else if(action!=null && action.equals("modifica_esercente")) {
+		
+			
+			String esercente = request.getParameter("esercente_mod");
+			verbale.setEsercente(esercente);
+			session.update(verbale);
+			
+			myObj.addProperty("success", true);
+			myObj.addProperty("messaggio", "Esercente modificato con successo!");
+
+			out.print(myObj);
+			
+		}
+		
+		else if(action!=null && action.equals("modifica_attrezzatura")) {
+		
+			
+			String id_attrezzatura = request.getParameter("attrezzatura");
+			
+			if(id_attrezzatura!=null && !id_attrezzatura.equals("0")) {
+				AttrezzaturaDTO attrezzatura = GestioneAttrezzatureBO.getAttrezzaturaFromId(Integer.parseInt(id_attrezzatura), session);			
+				verbale.setAttrezzatura(attrezzatura);
+			}else {
+							
+				verbale.setAttrezzatura(null);	
+			}
+			
+			session.update(verbale);
+			
+			myObj.addProperty("success", true);
+			myObj.addProperty("messaggio", "Attrezzatura modificata con successo!");
+
+			out.print(myObj);
+			
+		}
+		
 		else {
 			//caso genericoc della ricerca del verbale per aprire gestioneVerbali					
 			List<DomandaVerbaleDTO> domandeVerbale=new ArrayList<DomandaVerbaleDTO>();
@@ -808,7 +878,16 @@ public class GestioneVerbali extends HttpServlet {
 			
 			List<ClienteDTO> listaClientiFull =(List<ClienteDTO>) request.getSession().getAttribute("listaClienti");
 			List<SedeDTO> listaSedi = (List<SedeDTO>) request.getSession().getAttribute("listaSedi");
+			
+			ArrayList<AttrezzaturaDTO> listaAttrezzature = (ArrayList<AttrezzaturaDTO>) request.getSession().getAttribute("listaAttrezzature");
+			
+			
 			try {
+				
+				if(listaAttrezzature==null || listaAttrezzature.size()==0) {
+					CommessaDTO commessa = GestioneCommesseBO.getCommessaById(verbale.getIntervento().getIdCommessa());
+					listaAttrezzature =GestioneAttrezzatureBO.getlistaAttrezzatureSede(commessa.getID_ANAGEN_UTIL(), commessa.getK2_ANAGEN_INDR_UTIL(), false, session);	
+				}
 			
 				if(listaClientiFull==null) {
 					listaClientiFull = GestioneAnagraficaRemotaBO.getListaClienti(idCompany);	
@@ -835,6 +914,7 @@ public class GestioneVerbali extends HttpServlet {
 			request.getSession().setAttribute("listaAllegati", listaAllegati);
 			request.getSession().setAttribute("listaCertificati", listaCertificati);
 			request.getSession().setAttribute("listaSchedeTecniche", listaSchedeTecniche);
+			request.getSession().setAttribute("listaAttrezzature", listaAttrezzature);
 			
 			RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/page/configurazioni/gestioneVerbale.jsp");
 			dispatcher.forward(request,response);

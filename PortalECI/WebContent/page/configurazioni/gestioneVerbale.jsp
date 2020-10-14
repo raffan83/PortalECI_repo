@@ -140,16 +140,21 @@
                 									<li class="list-group-item">
                   										<b>Attrezzatura</b>
                   										<c:if test="${verbale.attrezzatura!=null }">
+                  											<c:if test="${verbale.getStato().getId()== 1 }">
+                  										<a class="pull-right btn"><i class="fa fa-edit" onclick="modalAttrezzatura()" title="Modifica attrezzatura"></i></a>
+                  										</c:if>
                   										<a class="pull-right btn customTooltip customlink"   onClick="dettaglioAttrezzatura('${verbale.attrezzatura.id }','${verbale.attrezzatura.matricola_inail }','${verbale.attrezzatura.numero_fabbrica }','${verbale.attrezzatura.tipo_attivita }','${verbale.attrezzatura.descrizione }','${verbale.attrezzatura.id_cliente }','${verbale.attrezzatura.id_sede }',
  																'${verbale.attrezzatura.data_verifica_funzionamento }','${verbale.attrezzatura.data_prossima_verifica_funzionamento }','${verbale.attrezzatura.data_verifica_integrita }','${verbale.attrezzatura.data_prossima_verifica_integrita }','${verbale.attrezzatura.data_verifica_interna }','${verbale.attrezzatura.data_prossima_verifica_interna }',
  																'${verbale.attrezzatura.anno_costruzione }','${verbale.attrezzatura.fabbricante }','${verbale.attrezzatura.modello }','${verbale.attrezzatura.settore_impiego }','${fn:replace(fn:replace(verbale.attrezzatura.note_tecniche.replace('\'',' ').replace('\\','/'),newLineChar, ' '),newLineChar2, ' ')}','${fn:replace(fn:replace(verbale.attrezzatura.note_generiche.replace('\'',' ').replace('\\','/').replace('\\n',' '),newLineChar, ' '),newLineChar2,' ')}','${verbale.attrezzatura.obsoleta }',
- 																'${verbale.attrezzatura.tipo_attrezzatura }','${verbale.attrezzatura.tipo_attrezzatura_GVR }','${verbale.attrezzatura.ID_specifica }','${verbale.attrezzatura.sogg_messa_serv_GVR }','${verbale.attrezzatura.n_panieri_idroestrattori }','${verbale.attrezzatura.marcatura }','${verbale.attrezzatura.n_id_on }','${verbale.attrezzatura.data_scadenza_ventennale }')">
+ 																'${verbale.attrezzatura.tipo_attrezzatura }','${verbale.attrezzatura.tipo_attrezzatura_GVR }','${verbale.attrezzatura.ID_specifica }','${verbale.attrezzatura.sogg_messa_serv_GVR }','${verbale.attrezzatura.n_panieri_idroestrattori }','${verbale.attrezzatura.marcatura }','${verbale.attrezzatura.n_id_on }','${verbale.attrezzatura.data_scadenza_ventennale }', '${verbale.attrezzatura.numero_certificato }')">
  																
  																
 		 												${verbale.getAttrezzatura().getMatricola_inail()}
+		 												 
                   										</a>
+                  									
                   									 </c:if>
-                  									 
+                  									
                   									       										
                 									</li>
                 									<li class="list-group-item">
@@ -162,7 +167,7 @@
                 									</li>
                 									<li class="list-group-item">
                   										<b>Esercente</b>
-                  										<a class="pull-right b"  >${verbale.esercente}
+                  										<a class="pull-right b"  >${verbale.esercente}   <i class="fa fa-edit" onclick="modalEsercente()" title="Modifica esercente"></i>
                   										</a>
                   								
                   									       										
@@ -178,17 +183,18 @@
 													</button>
 												</c:if>	   
         										<div class="row" id="cambiostato">    
-        											<c:if test='${verbale.getStato().getId()== 4 && (user.checkRuolo("AM") || user.checkRuolo("RT"))}'>
+        											<%-- <c:if test='${verbale.getStato().getId()== 4 && (user.checkRuolo("AM") || user.checkRuolo("RT"))}'>
         												<button class="btn btn-default pull-right" onClick="$('#modalCambioStatoVerbale').modal('show');" style="margin-right:10px">
         													<i class="glyphicon glyphicon-transfer"></i>
         												 	Cambio Stato
         												</button>
-        											</c:if>
+        											</c:if> --%>
         											<c:if test='${verbale.getStato().getId()== 1 && user.checkPermesso("CH_STA_VERBALE")}'>
-        												<button class="btn btn-default pull-right" onClick="$('#modalCambioStatoVerbaleCompWeb').modal('show');" style="margin-right:10px">
+        											<a class="btn btn-default pull-right" onclick="salvaCambioStato(null,null,'8')" style="margin-right:10px;color:#000000 !important; background-color:${verbale.getStato().getColore(8)} !important;">
+        												<!-- <button class="btn btn-default pull-right" onClick="$('#modalCambioStatoVerbaleCompWeb').modal('show');" style="margin-right:10px"> -->
         													<i class="glyphicon glyphicon-transfer"></i>
-        												 	Compilazione Web
-        												</button>
+        												 	Compila
+        												<!-- </button> --></a>
         											</c:if>           											      											
         										</div>   									
 												<input id="changedForm" style="display:none;" disabled="disabled">
@@ -311,7 +317,11 @@
 											</div>
 											<div class="box-body">	
 											<label>Seleziona uno strumento per il verificatore</label>
-        										 	 <select id="strumento_verificatore" name="strumento_verificatore" class="form-contol select2" data-placeholder="Seleziona Strumento Verificatore..."  style="width:100%" required>
+											<c:choose>
+											
+											
+											<c:when test="${verbale.getStato().getId() == 8 ||  verbale.getStato().getId() == 6}">
+											 <select id="strumento_verificatore" name="strumento_verificatore" class="form-contol select2" data-placeholder="Seleziona Strumento Verificatore..."  style="width:100%" required >
 														<option value=""></option>
 														<option value="0">Nessuno</option>
 														<c:forEach items="${intervento.getTecnico_verificatore().getListaStrumentiVerificatore()}" var="str" varStatus="loop">
@@ -327,6 +337,26 @@
 														
 														
 														</select>
+											</c:when>
+											<c:otherwise>
+        										 	 <select id="strumento_verificatore" name="strumento_verificatore" class="form-contol select2" data-placeholder="Seleziona Strumento Verificatore..."  style="width:100%" disabled >
+														<option value=""></option>
+														<option value="0">Nessuno</option>
+														<c:forEach items="${intervento.getTecnico_verificatore().getListaStrumentiVerificatore()}" var="str" varStatus="loop">
+														<c:if test="${str.id == verbale.strumento_verificatore.id }">
+															<option value="${str.id}" selected>${str.marca } - ${str.modello } - ${str.matricola }</option>
+														</c:if>
+														<c:if test="${str.id != verbale.strumento_verificatore.id }">
+															<option value="${str.id}">${str.marca } - ${str.modello } - ${str.matricola }</option>
+														</c:if>
+														
+														
+														</c:forEach>
+														
+														
+														</select>
+      										</c:otherwise>
+      											</c:choose>
       			
 											</div>
 										</div>
@@ -388,7 +418,9 @@
 															<button type="button" class="btn btn-default ml-1 savebutt" onclick="salvaRisposteCompWeb(${verbale.getId()},'formVerbale', 'salvaRisposteCompWeb')" style="margin-left: 1em; float: right;">	
 																<span >SALVA MODIFICHE</span>
 															</button>
-																<button type="button" class="btn btn-default ml-1 changestate formVerbalebox" onclick="salvaRisposteCompWeb(${verbale.getId()},'formVerbale', 'confermaRisposteCompWeb')" style="margin-left: 1em; color:#000000 !important; background-color:${verbale.getStato().getColore(5)} !important; float: right;"> 
+																<%-- <button type="button" class="btn btn-default ml-1 changestate formVerbalebox" onclick="salvaRisposteCompWeb(${verbale.getId()},'formVerbale', 'confermaRisposteCompWeb')" style="margin-left: 1em; color:#000000 !important; background-color:${verbale.getStato().getColore(5)} !important; float: right;"> --%> 
+																<button type="button" class="btn btn-default ml-1 changestate formVerbalebox" onclick="$('#confirmConferma').modal('show')" style="margin-left: 1em; color:#000000 !important; background-color:${verbale.getStato().getColore(5)} !important; float: right;">
+																
 																<%-- <button type="button" class="btn btn-default ml-1 changestate formVerbalebox" onclick="$('#confirmCertificato').modal('show');" style="margin-left: 1em; color:#000000 !important; background-color:${verbale.getStato().getColore(5)} !important; float: right;"> --%>
 																<i class="glyphicon glyphicon glyphicon-ok"></i>
 																<span >CONFERMA</span>
@@ -779,7 +811,28 @@
 
 												</c:if>
 												
+												<div class="col-xs-6">
+												<label>Matricola</label><br>
+											
+													<input type="text" class="form-control" id="matricola_vie" name="matricola_vie" value="${verbale.matricola_vie }">
+									
+
+												 </div>
+										
 												
+													<div class="col-xs-6">
+												<label>Esito Verifica</label>
+												
+												<c:set var="esito_verbale" value="${verbale.esito }"></c:set>
+												 <select id="esito" name="esito" class="form-control select2" data-placeholder="Seleziona Esito..." style="width:100%">
+												 <option value=""></option>
+												 <option value="P">Positivo</option>
+												 <option value="N">Negativo</option>
+												 
+												 </select>
+												               
+												     
+												</div>
 												<div class="col-xs-6">
 												<label>Ore/Uomo</label><br>
 												<div class ="row">
@@ -817,14 +870,7 @@
 												
 												
 												
-												<div class="col-xs-6">
-												<label>Matricola</label><br>
-											
-													<input type="text" class="form-control" id="matricola_vie" name="matricola_vie" value="${verbale.matricola_vie }">
-									
-
-												 </div>
-											
+												
 												
 																			
 												</div>
@@ -895,6 +941,8 @@
 																<i class="glyphicon glyphicon glyphicon-ok"></i>
 																<span >CONFERMA</span>
 															</button>
+															
+															<a class="btn btn-default pull-right" href="anteprimaCertificato.do?idVerbale=${verbale.getSchedaTecnica().getId()}" style="margin-left:5px"><i class="glyphicon glyphicon-eye-open"></i> Anteprima Scheda tecnica</a>
 														</c:if>	
 														<c:if test='${verbale.getSchedaTecnica().getStato().getId()== 6}'>
 															<button type="button" class="btn btn-default ml-1 savebutt" onclick="modificaRisposte(${verbale.getSchedaTecnica().getId()},'formScTecnica')" style="margin-left: 1em; float: right;">	
@@ -904,7 +952,11 @@
 																<i class="glyphicon glyphicon glyphicon-ok"></i>
 																<span >CONFERMA</span>
 															</button>
+															
+															<a class="btn btn-default pull-right" href="anteprimaCertificato.do?idVerbale=${verbale.getSchedaTecnica().getId()}" style="margin-left:5px"><i class="glyphicon glyphicon-eye-open"></i> Anteprima Scheda tecnica</a>
 														</c:if>	
+														
+														
 													</c:if>
 													<c:if test='${verbale.getSchedaTecnica().getStato().getId()== 4 && (user.checkRuolo("AM") || user.checkRuolo("RT"))}'>			
 														<c:if test="${user.checkPermesso('CH_STA_VERBALE')}">
@@ -921,6 +973,8 @@
 																<i class="glyphicon glyphicon glyphicon-ok"></i>
 																<span >ACCETTATO</span>
 															</button>
+															
+															<a class="btn btn-default pull-right" href="anteprimaCertificato.do?idVerbale=${verbale.getSchedaTecnica().getId()}" style="margin-left:5px"><i class="glyphicon glyphicon-eye-open"></i> Anteprima Scheda tecnica</a>
 														</c:if>
 													</c:if>		
 												</div>
@@ -933,6 +987,76 @@
  							</div>
 						</div>
 						  		
+						
+						
+							<div id="myModalModificaEsercente" class="modal fade" role="dialog" aria-labelledby="modalCambioStatoVerbale">
+   							<div class="modal-dialog modal-lg" role="document">
+    							<div class="modal-content">
+     								<div class="modal-header">
+        								<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        									<span aria-hidden="true">&times;</span>
+        								</button>
+        								<h4 class="modal-title" id="myModalLabel">Modifica esercente</h4>
+      								</div>
+      									
+       								<div class="modal-body" >
+       									<div class="row">
+											<label class="col-sm-3" >Esercente </label>
+                  							
+                  							<div class="col-sm-9">
+                  							<input class="form-control" type="text" id="esercente_mod" name="esercente_mod" value="${verbale.esercente }">							      										
+											</div>											
+										</div>
+    								</div>
+    								<div class="modal-footer">
+										<button onclick="modificaEsercente()" class="btn btn-danger" >Salva</button>
+	      							</div>
+  								</div>
+							</div>
+						</div>
+						
+						
+						
+						<div id="myModalModificaAttrezzatura" class="modal fade" role="dialog" aria-labelledby="modalCambioStatoVerbale">
+   							<div class="modal-dialog modal-md" role="document">
+    							<div class="modal-content">
+     								<div class="modal-header">
+        								<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        									<span aria-hidden="true">&times;</span>
+        								</button>
+        								<h4 class="modal-title" id="myModalLabel">Modifica attrezzatura</h4>
+      								</div>
+      									
+       								<div class="modal-body" >
+       									<div class="row">
+											
+                  							
+                  							<div class="col-sm-9">
+                  							<label>Attrezzatura</label>
+	                  								 <select name="attrezzatura" id="attrezzatura" data-placeholder="Seleziona Attrezzatura"  class="form-control select2" aria-hidden="true" data-live-search="true" style="width:100%">
+	                									     
+	        	         							</select>          
+	        	         							<select name="attrezzatura_temp" id="attrezzatura_temp" data-placeholder="Seleziona Attrezzatura"  class="form-control select2" aria-hidden="true" data-live-search="true" style="display:none">
+	                									<option value="" disabled selected>Seleziona Tipo...</option>
+	                									<option value="0">Nessuna</option>
+	                									<c:forEach items="${listaAttrezzature}" var="attrezzatura">                		
+		                        							<option value="${attrezzatura.id}_${attrezzatura.matricola_inail}_${attrezzatura.tipo_attivita}">${attrezzatura.matricola_inail}</option>     	                            
+	    	                 							</c:forEach>
+	        	         							</select>  							      										
+											</div>											
+										</div>
+    								</div>
+    								<div class="modal-footer">
+										<button onclick="modificaAttrezzatura()" class="btn btn-danger" >Salva</button>
+	      							</div>
+  								</div>
+							</div>
+						</div>	
+						
+						
+						
+						
+						
 						
 						<div id="modalCambioStatoVerbale" class="modal fade" role="dialog" aria-labelledby="modalCambioStatoVerbale">
    							<div class="modal-dialog modal-lg" role="document">
@@ -1323,7 +1447,12 @@
        </div> 
 
 
-
+                <div class="form-group">
+        <label for="inputName" class="col-sm-4 control-label">Data scadenza ventennale:</label>
+        <div class="col-sm-8">
+                      <input class="form-control" id="data_scadenza_ventennale" type="text" name="data_scadenza_ventennale"  value="" readonly data-date-format="dd/mm/yyyy"/>
+    </div>
+       </div> 
 
          <div class="form-group">
         <label for="inputName" class="col-sm-4 control-label">Data verifica funzionamento:</label>
@@ -1365,6 +1494,15 @@
                       <input class="form-control " id="data_prossima_verifica_interna" type="text" name="data_prossima_verifica_interna"  value="" data-date-format="dd/mm/yyyy" readonly/>
     </div>
        </div>
+       
+       
+                 <div class="form-group">
+        <label for="inputName" class="col-sm-4 control-label">Numero certificato:</label>
+        <div class="col-sm-8">
+                      <input class="form-control" id="numero_certificato" type="text" name="numero_certificato"  value="" readonly/>
+    </div>
+       </div>
+       
  <div class="form-group">
         <label for="inputName" class="col-sm-4 control-label">Note tecniche:</label>
         <div class="col-sm-8">
@@ -1476,7 +1614,7 @@
  		function dettaglioAttrezzatura(id_attrezzatura, matricola_inail, numero_fabbrica, tipo_attivita, descrizione, id_cliente, id_sede,
  				data_verifica_funzionamento, data_prossima_verifica_funzionamento,data_verifica_integrita, data_prossima_verifica_integrita, data_verifica_interna, data_prossima_verifica_interna,
  				anno_costruzione, fabbricante, modello, settore_impiego, note_tecniche, note_generiche, obsoleta, tipo_attrezzatura, tipo_attrezzatura_gvr,id_specifica, sogg_messa_serv_gvr, n_panieri_idroestrattori, marcatura,
- 				n_id_on, data_scadenza_ventennale){
+ 				n_id_on, data_scadenza_ventennale, numero_certificato){
  			
  			
  			$('#id_attrezzatura').val(id_attrezzatura);
@@ -1498,7 +1636,8 @@
  			$('#modello').val(modello);
  			$('#settore_impiego').val(settore_impiego);
  			$('#note_tecniche').val(note_tecniche);
- 			$('#note_generiche').val(note_generiche);	
+ 			$('#note_generiche').val(note_generiche);
+ 			$('#numero_certificato').val(numero_certificato);	
  			
  			if(data_verifica_funzionamento!=null && data_verifica_funzionamento!= ''){
  				$('#data_verifica_funzionamento').val(Date.parse(data_verifica_funzionamento).toString("dd/MM/yyyy"));	
@@ -1698,6 +1837,105 @@ $('#minuti').change(function(){
 		   return str;	 		
 	}
 	
+	function modalEsercente(){
+		
+		$('#myModalModificaEsercente').modal();
+		
+	}
+	
+	function modalAttrezzatura(){
+		
+		 var attrezzatura_options = $('#attrezzatura_temp option').clone();
+		 var opt =[];
+		 var sigla = "${verbale.codiceVerifica}"
+			opt.push("<option value='0'>Nessuna</option>")
+			for(var i = 0;i<attrezzatura_options.length;i++){
+				if( attrezzatura_options[i].value.split("_")[2]!=null && sigla.split("_")[0] == attrezzatura_options[i].value.split("_")[2]){
+					opt.push(attrezzatura_options[i]);		
+				}
+			}
+			
+			$('#attrezzatura').html(opt)
+			$('#attrezzatura').select2();
+			document.getElementById("attrezzatura").selectedIndex = 0;
+		
+		$('#myModalModificaAttrezzatura').modal();
+		
+	}
+	
+	function modificaEsercente(){
+		
+		$("#myModalModificaEsercente").modal('hide');
+		pleaseWaitDiv = $('#pleaseWaitDialog');
+		pleaseWaitDiv.modal();
+		
+		var id ="${verbale.id}";
+		var esercente = $('#esercente_mod').val();
+		
+		$.ajax({
+			type: "POST",
+			url: "gestioneVerbale.do?action=modifica_esercente",
+			data : "idVerbale="+id+"&esercente_mod="+esercente,				
+			dataType: "json",
+			success: function( data, textStatus) {
+				
+				pleaseWaitDiv.modal('hide');
+				$('#modalErrorDiv').html(data.messaggio);
+				$('#myModalError').removeClass();
+				$('#myModalError').addClass("modal modal-success");
+				$('#myModalError').modal('show');		
+				$('#myModalError').on('hidden.bs.modal', function(){
+					location.reload()
+				});
+				
+			},
+			error: function(jqXHR, textStatus, errorThrown){
+				pleaseWaitDiv.modal('hide');
+				$('#modalErrorDiv').html(jqXHR.responseText);
+				$('#myModalError').removeClass();
+				$('#myModalError').addClass("modal modal-danger");
+				$('#myModalError').modal('show');															
+			}
+		});
+		
+	}
+	
+	function modificaAttrezzatura(){
+		
+		$("#myModalModificaAttrezzatura").modal('hide');
+		pleaseWaitDiv = $('#pleaseWaitDialog');
+		pleaseWaitDiv.modal();
+		
+		var id ="${verbale.id}";
+		var attrezzatura = $('#attrezzatura').val().split("_")[0];
+		
+		$.ajax({
+			type: "POST",
+			url: "gestioneVerbale.do?action=modifica_attrezzatura",
+			data : "idVerbale="+id+"&attrezzatura="+attrezzatura,				
+			dataType: "json",
+			success: function( data, textStatus) {
+				
+				pleaseWaitDiv.modal('hide');
+				$('#modalErrorDiv').html(data.messaggio);
+				$('#myModalError').removeClass();
+				$('#myModalError').addClass("modal modal-success");
+				$('#myModalError').modal('show');		
+				$('#myModalError').on('hidden.bs.modal', function(){
+					location.reload()
+				});
+				
+			},
+			error: function(jqXHR, textStatus, errorThrown){
+				pleaseWaitDiv.modal('hide');
+				$('#modalErrorDiv').html(jqXHR.responseText);
+				$('#myModalError').removeClass();
+				$('#myModalError').addClass("modal modal-danger");
+				$('#myModalError').modal('show');															
+			}
+		});
+		
+	}
 	
 			$(document).ready(function() {
 				
@@ -1722,6 +1960,7 @@ $('#minuti').change(function(){
 				var motivo_verifica = "${verbale.motivo_verifica}";
 				var tipologia_verifica = "${verbale.tipologia_verifica}";
 				var frequenza = "${verbale.frequenza}";
+				
 				
 				
 			$('#tipologia_verifica').select2();

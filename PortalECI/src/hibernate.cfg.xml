@@ -47,5 +47,13 @@
    		
    		<mapping class="ComuneDTO" package="it.portalECI.DTO" resource="it/portalECI/hbm/ComuneDTO.hbm.xml"/>
    		<mapping class="ProvinciaDTO" package="it.portalECI.DTO" resource="it/portalECI/hbm/ProvinciaDTO.hbm.xml"/>
+   		
+   		<mapping class="CampioneDTO" package="it.portalECI.DTO" resource="it/portalECI/hbm/CampioneDTO.hbm.xml"/>
+   		<mapping class="TipoCampioneDTO" package="it.portalECI.DTO" resource="it/portalECI/hbm/TipoCampioneDTO.hbm.xml"/>
+   		<mapping class="CertificatoCampioneDTO" package="it.portalECI.DTO" resource="it/portalECI/hbm/CertificatoCampioneDTO.hbm.xml"/>
+   		
+   		<mapping class="TipoComunicazioneUtenteDTO" package="it.portalECI.DTO" resource="it/portalECI/hbm/TipoComunicazioneUtenteDTO.hbm.xml"/>
+   		<mapping class="ComunicazioneUtenteDTO" package="it.portalECI.DTO" resource="it/portalECI/hbm/ComunicazioneUtenteDTO.hbm.xml"/>
+   		
  	</session-factory>
 </hibernate-configuration>
