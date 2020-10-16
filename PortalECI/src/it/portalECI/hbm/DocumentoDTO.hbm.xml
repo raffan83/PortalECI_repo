@@ -30,5 +30,8 @@
 		<many-to-one name="verbale" class="it.portalECI.DTO.VerbaleDTO">
             <column name="verbale_id" not-null="false" />
         </many-to-one>
+        <many-to-one name="campione" class="it.portalECI.DTO.CampioneDTO">
+            <column name="id_campione" not-null="false" />
+        </many-to-one>
 	</class>
 </hibernate-mapping> 

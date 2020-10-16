@@ -73,7 +73,7 @@
  																<th>ID Verbale</th>
  																<th>ID Intervento</th>
  																<th>ID Commessa</th>
- 																<th>Nome File</th>
+ 																<th>Numero Verbale</th>
  																<th>Data verifica</th>
  																<th>Matricola Attrezzatura</th>
  																<th>Sede Cliente</th>
@@ -110,7 +110,7 @@
 																		</a>
 																	</td>
 																	<td>
-																	<a class="btn customTooltip customlink" href="gestioneDocumento.do?idDocumento=${documento.getId()}">${documento.getFileName() }</a>
+																	<a class="btn customTooltip customlink" href="gestioneDocumento.do?idDocumento=${documento.getId()}">${documento.getFileName().split('.pdf')[0] }</a>
 																		
 																	</td>
 																	<td><fmt:formatDate pattern="dd/MM/yyyy" value='${documento.verbale.data_verifica}' type='date' /></td>

@@ -956,8 +956,7 @@ function modificaCampione(idCamampione){
 
 			if(data.success){ 
 				$('#myModal').modal('hide');
-				callAction("listaCampioni.do");
-				dataString ="";
+				location.reload();
 			}else{
 				$('#errorModifica').html("<h3 class='label label-danger' style=\"color:green\">Errore Salvataggio Campione</h3>");			
 			}
@@ -1772,43 +1771,7 @@ function modalEliminaPermessoy(id,descrizione){
 	$('#modalEliminaPermesso').modal();  	  
 }            
   
-function checkCodiceCampione(codice){
-	  
-	var form = $('#formNuovoCampione')[0]; 
-	var formData = new FormData(form);
-	  
-	$.ajax({
-		type: "POST",
-		url: "gestioneCampione.do?action=controllaCodice&codice="+codice,
 
-		//dataType: "json",
-		contentType: false, // NEEDED, DON'T OMIT THIS (requires jQuery 1.6+)
-		processData: false, // NEEDED, DON'T OMIT THIS
-		data: formData,
-		//enctype: 'multipart/form-data',
-		success: function( data, textStatus) {
-
-			if(!data.success){ 				
-//    			$('#myModalErrorContent').html(data.messaggio);
-//      	  	$('#myModalError').removeClass();
-//  			$('#myModalError').addClass("modal modal-danger");
-//  			$('#myModalError').modal('show');
-
-				$("#codiceError").html("* Codice: "+codice+" gi&agrave; utilizzato.");
-				$("#codice").val("");
-			}else{
-				$("#codiceError").html("");
-			}
-		},
-		error: function(jqXHR, textStatus, errorThrown){			    	
-			$('#myModalErrorContent').html(textStatus);
-			$('#myModalError').removeClass();
-			$('#myModalError').addClass("modal modal-danger");
-			$('#myModalError').modal('show');		    
-		}
-	});
-}  
-  
 function createLDTable(data){	 	  
 	var dataSet = [];
 	  
@@ -3574,71 +3537,492 @@ $.ajax({
 		
 		}
 	
-	
 	function nuovoCampione(){
-		 
+		
 
-		//  if($("#formNuovoCampione").valid()){
-		  
-		  var form = $('#formNuovoCampione')[0]; 
-		  var formData = new FormData(form);
-		 
-	          $.ajax({
-	        	  type: "POST",
-	        	  url: "gestioneCampione.do?action=nuovo",
-	        	  data: formData,
-	        	  //dataType: "json",
-	        	  contentType: false, // NEEDED, DON'T OMIT THIS (requires jQuery 1.6+)
-	        	  processData: false, // NEEDED, DON'T OMIT THIS
-	        	  //enctype: 'multipart/form-data',
-	        	  success: function( data, textStatus) {
+		pleaseWaitDiv = $('#pleaseWaitDialog');
+		pleaseWaitDiv.modal();
 
-	        		  if(data.success)
-	        		  { 
-	        			 // $('#modalNuovoCampione').modal('hide');
-	        			
-	        			  //dataString ="";
-
-	        			  $('#report_button').hide();
-	        				$('#visualizza_report').hide();
-	        			  $('#myModalErrorContent').html(data.messaggio);
-	        			  	$('#myModalError').removeClass();
-	        				$('#myModalError').addClass("modal modal-success");
-	        				$('#myModalError').modal('show');
-	        			  	
-	        		
-	        		  }else{
-	        			  $('#myModalErrorContent').html(data.messaggio);
-	        			  	$('#myModalError').removeClass();
-	        				$('#myModalError').addClass("modal modal-danger");
-	        				
-	        				$('#report_button').show();
-	          				$('#visualizza_report').show();
-							$('#myModalError').modal('show');
+			  var form = $('#formNuovoCampione')[0]; 
+			  var formData = new FormData(form);
+			 
+	$.ajax({
+		  type: "POST",
+		  url: "gestioneCampione.do?action=nuovo",
+		  data: formData,
+		  contentType: false, // NEEDED, DON'T OMIT THIS (requires jQuery 1.6+)
+		  processData: false, // NEEDED, DON'T OMIT THIS
+		  success: function( data, textStatus) {
+			pleaseWaitDiv.modal('hide');
+			  	      		  
+			  if(data.success)
+			  { 
+				  $('#modalNuovoCampione').modal('hide');
+				  $('#report_button').hide();
+					$('#visualizza_report').hide();
+					
+				  $('#myModalErrorContent').html(data.messaggio);
+				  	$('#myModalError').removeClass();
+					$('#myModalError').addClass("modal modal-success");
+					$('#myModalError').modal('show');
+					
+				$('#myModalError').on('hidden.bs.modal', function(){	         			
+					
+					 location.reload()
+				});
 			
-	        			 
-	        		  }
-	        	  },
+			  }else{
+				  $('#myModalErrorContent').html(data.messaggio);
+				  	$('#myModalError').removeClass();
+					$('#myModalError').addClass("modal modal-danger");
+					$('#report_button').hide();
+					$('#visualizza_report').hide();
+						$('#myModalError').modal('show');	      			 
+			  }
+		  },
 
-	        	  error: function(jqXHR, textStatus, errorThrown){
+		  error: function(jqXHR, textStatus, errorThrown){
+			  pleaseWaitDiv.modal('hide');
+
+			  $('#myModalErrorContent').html("Errore nell'importazione!");
+				  	$('#myModalError').removeClass();
+					$('#myModalError').addClass("modal modal-danger");
+					$('#report_button').show();
+					$('#visualizza_report').show();
+					$('#myModalError').modal('show');
+					
+
+		  }
+	});
+		
+		
+	}
+	
+	
+	function nuovaAttivitaCampione(id_campione){
+		 
+		  var form = $('#formNuovaAttivita')[0]; 
+		  var formData = new FormData(form);
+
+	        $.ajax({
+	      	  type: "POST",
+	      	  url: "gestioneAttivitaCampioni.do?action=nuova&idCamp="+id_campione,
+	      	  data: formData,
+	      	  //dataType: "json",
+	      	  contentType: false, // NEEDED, DON'T OMIT THIS (requires jQuery 1.6+)
+	      	  processData: false, // NEEDED, DON'T OMIT THIS
+	      	  //enctype: 'multipart/form-data',
+	      	  success: function( data, textStatus) {
+
+	      		  if(data.success)
+	      		  { 
+	      			  $('#report_button').hide();
+							$('#visualizza_report').hide();
+	      			  $('#myModalErrorContent').html(data.messaggio);
+	      			  	$('#myModalError').removeClass();
+	      				$('#myModalError').addClass("modal modal-success");
+	      				$('#myModalError').modal('show');
+	      				
+
+	      		  }else{
+	      			  $('#myModalErrorContent').html("Errore nell'inserimento dell'attivit&agrave;!");
+	      			  	$('#myModalError').removeClass();
+	      				$('#myModalError').addClass("modal modal-danger");	  
+	      				$('#report_button').show();
+							$('#visualizza_report').show();
+							$('#myModalError').modal('show');
+							
+
+	      		  }
+	      	  },
+
+	      	  error: function(jqXHR, textStatus, errorThrown){
+	      	
+	      		  $('#myModalErrorContent').html(data.messaggio);
+					$('#myModalError').removeClass();
+					$('#myModalError').addClass("modal modal-danger");
+					$('#report_button').show();
+					$('#visualizza_report').show();
+					$('#myModalError').modal('show');
+					
+				
+	      	  }
+	        });
+		 
+	}	  
+
+	function modificaAttivitaCampione(id_campione){
+		 
+		  var form = $('#formModificaAttivita')[0]; 
+		  var formData = new FormData(form);
+
+	      $.ajax({
+	    	  type: "POST",
+	    	  url: "gestioneAttivitaCampioni.do?action=modifica&idCamp="+id_campione,
+	    	  data: formData,
+	    	  //dataType: "json",
+	    	  contentType: false, // NEEDED, DON'T OMIT THIS (requires jQuery 1.6+)
+	    	  processData: false, // NEEDED, DON'T OMIT THIS
+	    	  //enctype: 'multipart/form-data',
+	    	  success: function( data, textStatus) {
+
+	    		  if(data.success)
+	    		  { 
+	    			  $('#report_button').hide();
+							$('#visualizza_report').hide();
+	    			  $('#myModalErrorContent').html(data.messaggio);
+	    			  	$('#myModalError').removeClass();
+	    				$('#myModalError').addClass("modal modal-success");
+	    				$('#myModalError').modal('show');
+	    				
+
+	    		  }else{
+	    			  $('#myModalErrorContent').html("Errore nella modifica dell'attivit&agrave;!");
+	    			  	$('#myModalError').removeClass();
+	    				$('#myModalError').addClass("modal modal-danger");	  
+	    				$('#report_button').show();
+							$('#visualizza_report').show();
+							$('#myModalError').modal('show');
+							
+
+	    		  }
+	    	  },
+
+	    	  error: function(jqXHR, textStatus, errorThrown){
+	    	
+	    		  $('#myModalErrorContent').html(data.messaggio);
+					$('#myModalError').removeClass();
+					$('#myModalError').addClass("modal modal-danger");
+					$('#report_button').show();
+					$('#visualizza_report').show();
+					$('#myModalError').modal('show');
+					
+				
+	    	  }
+	      });
+		 
+	}	  
+	
+	
+	function modalEliminaDocumentoEsternoCampione(id){
+		  
+		  $('#idElimina').val(id);
+		  $('#modalEliminaDocumentoEsternoCampione').modal();
+		  
+	}
+
+	function eliminaDocumentoEsternoCampione(){
+				  
+				  $("#modalEliminaDocumentoEsternoCampione").modal("hide");
+
+		  pleaseWaitDiv = $('#pleaseWaitDialog');
+		  pleaseWaitDiv.modal();
+
+		  var id=$('#idElimina').val();
+		  var dataObj = {};
+		  dataObj.idDoc = id;
+
+
+	$.ajax({
+		  type: "POST",
+		  url: "documentiEsterni.do?action=eliminaDocumento",
+		  data: dataObj,
+		  dataType: "json",
+		  success: function( data, textStatus) {
+			  
+			  pleaseWaitDiv.modal('hide');
+			  
+			  if(data.success)
+			  { 
+				
+				  $('#report_button').hide();
+		  			$('#visualizza_report').hide();		
+				  $('#myModalErrorContent').html(data.messaggio);
+				  	$('#myModalError').removeClass();
+					$('#myModalError').addClass("modal modal-success");
+					$('#myModalError').modal('show');
+					
+			
+			  }else{
+				  $('#myModalErrorContent').html(data.messaggio);
+				  	$('#myModalError').removeClass();
+					$('#myModalError').addClass("modal modal-danger");
+					$('#report_button').show();
+		  			$('#visualizza_report').show();		
+					$('#myModalError').modal('show');
+				 
+			  }
+		  },
+
+		  error: function(jqXHR, textStatus, errorThrown){
+			  pleaseWaitDiv.modal('hide');
+
+			  $('#myModalErrorContent').html(textStatus);
+			  	$('#myModalError').removeClass();
+				$('#myModalError').addClass("modal modal-danger");
+				$('#report_button').show();
+				$('#visualizza_report').show();		
+				$('#myModalError').modal('show');
+				
+
+		  }
+	});
+				  
+	}
+
+	
+	
+	function addCalendarAttivitaCampione(tipo_data, id_campione, registro_eventi){ 
+		   
+		   pleaseWaitDiv = $('#pleaseWaitDialog');
+		   pleaseWaitDiv.modal();
+		   
+		   if(id_campione!=null){
+			   var url = "scadenzario.do?action=create_scadenzario&id_campione="+id_campione;
+		   }else{
+			   var url= "scadenzario.do?action=create_scadenzario";
+		   }
+		   
+	$.ajax({
+	    type: "POST",
+	    url: url,
+	    data: "",
+	    dataType: "json",
+	    
+	    //if received a response from the server
+	    success: function( data, textStatus) {
+	    	console.log("test");
+	    	var id = 0;
+	       	if(data.success)
+	        	{
+	       		
+	       		 jsonObj = [];
+	       		
+	       		 if(tipo_data==0 || tipo_data==1){
+		             		for(var i=0 ; i<data.obj_manutenzione.length;i++)
+		                    {
+		             			var str =data.obj_manutenzione[i].split(";");
+		             			item = {};
+		             			item ["id"] = id;
+		             	        item ["title"] = str[1];
+		             	        item ["start"] = str[0];
+		             	        item ["allDay"] = true;
+		             	       item ["backgroundColor"] = "#00a65a";
+		             	      item ["borderColor"] = "#00a65a";
+		             	      item ["className"]
+		             	        jsonObj.push(item);
+		             	      id++;
+		              		}
+	       		 }
+	       		if(tipo_data==0 || tipo_data==2){
+		             		for(var i=0 ; i<data.obj_verifica.length;i++)
+		                    {
+		             			var str =data.obj_verifica[i].split(";");
+		             			item = {};
+		             			item ["id"] = id;
+		             	        item ["title"] = str[1];
+		             	        item ["start"] = str[0];
+		             	        item ["allDay"] = true;
+		             	       item ["backgroundColor"] = "#9d201d";
+		             	      item ["borderColor"] = "#9d201d";
+		             	        jsonObj.push(item);
+		             	       id++;
+		              		}
+	       		}
+	       		if(tipo_data==0 || tipo_data==3){
+		             		for(var i=0 ; i<data.obj_taratura.length;i++)
+		                    {
+		             			var str =data.obj_taratura[i].split(";");
+		             			item = {};
+		             			item ["id"] = id;
+		             	        item ["title"] = str[1];
+		             	        item ["start"] = str[0];
+		             	        item ["allDay"] = true;
+		             	       item ["backgroundColor"] = "#777";
+		             	      item ["borderColor"] = "#777";
+		             	        jsonObj.push(item);
+		             	       id++;
+		              		}
+	       		}
+	       		 var calendario;
+	       		if(tipo_data==0){
+	       			 calendario= $('#calendario');
+	       		}else{
+	       			 calendario = $('#calendario2');
+	       		}
+	  
+	       		
+	  $('#calendario').fullCalendar({
+		 
+			header: {
+		        left: 'prev,next today',
+		        center: 'title',     
+		        right: 'listYear,year,month,agendaWeek,agendaDay'
+		      },	
+		     
+		      
+//		      views: {
+//		    	    timeGridFourDay: {
+//		    	      type: 'timeGrid',
+//		    	      duration: { days: 4 },
+//		    	      buttonText: '4 day'
+//		    	    }
+//		    	  },
+		      
+			  viewRender: function (view, element)
+			    {
+			        intervalStart = view.intervalStart;
+			        intervalEnd = view.intervalEnd;
+			        
+			        $('#data_start').val(moment(intervalStart).format());
+			        $('#data_end').val(moment(intervalEnd).format());
+			     
+			    },
+		     
+			  eventRender: function(event, element, view) {
+				  
+				 
+				  if(event.backgroundColor=="#00a65a"){
+					  return $('<span class=\"badge bg-green bigText\"">' 
+					             + event.title + 
+					             '</button>'); 
+				  }else if(event.backgroundColor=="#777"){
+					  return $('<span class=\"badge bg-red bigText\"">' 
+					             + event.title + 
+					             '</span>');
+				  }
+				  else{
+					  return $('<span class=\"badge bg-grey bigText\"">' 
+					             + event.title + 
+					             '</span>');
+				  }
+				  
+		         },	 
+		         
+		  events:jsonObj,
+		  
+
+		  
+		           eventClick: function(calEvent, jsEvent, view) {
+		        	var tipo_data;
+		        
+		        	   if(calEvent.backgroundColor=="#00a65a"){
+		        		   tipo_data = "1";	        		  
+		        	   }else if(calEvent.backgroundColor=="#777"){
+		        		   tipo_data = "3";
+		        	   }else if(calEvent.backgroundColor=="#9d201d"){
+		        		   tipo_data = "2";
+		        	   }
+		        	   
+		        //	callAction('listaAttrezzature.do?action=scadenzario&data='+moment(calEvent.start).format()+'&tipo_data='+tipo_data);
+		        	   callAction('scadenzario.do?action=campioni_scadenza&date='+moment(calEvent.start).format()+'&tipo_data_lat='+tipo_data);
+		        	
+		               $(this).css('border-color', '#228B22');
+		           },
+		     	 
+//		         editable: true,
+		       drop: function (date, allDay) { // this function is called when something is dropped
+
+		         // retrieve the dropped element's stored Event Object
+		         var originalEventObject = $(this).data('eventObject');
+
+		         // we need to copy it, so that multiple events don't have a reference to the same object
+		         var copiedEventObject = $.extend({}, originalEventObject);
+
+		         // assign it the date that was reported
+		         copiedEventObject.start = date;
+		         copiedEventObject.allDay = allDay;
+		         copiedEventObject.backgroundColor = $(this).css("background-color");
+		         copiedEventObject.borderColor = $(this).css("border-color");
+
+		         // render the event on the calendar
+		         // the last `true` argument determines if the event "sticks" (http://arshaw.com/fullcalendar/docs/event_rendering/renderEvent/)
+		         $('#calendar').fullCalendar('renderEvent', copiedEventObject, true);
+
+		         // is the "remove after drop" checkbox checked?
+		         if ($('#drop-remove').is(':checked')) {
+		           // if so, remove the element from the "Draggable Events" list
+		           $(this).remove();
+		         }
+
+		       }
+	}); 
+	        	}
 	        	
 
-	        		 $('#errorModifica').html("<h3 class='label label-danger'>"+textStatus+"</h3>");
-	        		  //callAction('logout.do');
-	        
-	        	  }
-	          });
-//		  }else{
-//			  $("#ulError").html("<span class='label label-danger'>Compilare tutti i campi obbligatori</span>");
-//			  if(!valid){
-//				  $("#ulError").html("<span class='label label-danger'>Compilare tutti i campi obbligatori. Insereire Incertezza Assoluta o Incertezza Relativa</span>");
-//			  }
-//			  if(!validCorr){
-//				  $("#ulError").html("<span class='label label-danger'>I parametri di taratura devono essere univoci.</span>");
-//			  }
-//			  if(!validCorr2){
-//				  $("#ulError").html("<span class='label label-danger'>Lo stesso parametro di taratura deve essere presente almeno 2 volte.</span>");
-//			  }
-//		  }
-	  }
-	
+	       	if(tipo_data!=0){
+	       	var	cal = $('#calendario').fullCalendar('getCalendar');
+	       	cal.removeEvents();
+	       	cal.addEventSource(jsonObj);
+	       
+	          $('#generale_btn').show();
+	       	}else{
+	       		var	cal = $('#calendario').fullCalendar('getCalendar');
+	       		cal.removeEvents();
+	       		cal.addEventSource(jsonObj);
+	       		
+
+	       		$('#generale_btn').hide();
+	       	}
+	      	pleaseWaitDiv.modal('hide');
+		          }
+		         });
+	}
+
+
+	function esportaCampioniScadenzario(tipo){	
+		
+		pleaseWaitDiv = $('#pleaseWaitDialog');
+		pleaseWaitDiv.modal();
+		
+		var start = $('#data_start').val();
+		var end = $('#data_end').val();	
+		
+		
+		
+		var dataObj = {};
+		
+		dataObj.data_start = start;
+		dataObj.data_end = end;
+		dataObj.tipo = tipo;
+		
+			$.ajax({
+		type: "POST",
+		url: "listaCampioni.do?action=campioni_scadenza",
+		data: dataObj,
+		dataType: "json",
+		//if received a response from the server
+		success: function( data, textStatus) {
+			  if(data.success)
+			  {  
+				  pleaseWaitDiv.modal('hide');
+				 
+				   callAction("listaCampioni.do?action=download_scadenzario");
+				
+			  }else{
+				  
+				pleaseWaitDiv.modal('hide');
+				$('#myModalErrorContent').html(data.messaggio);
+				$('#myModalError').removeClass();	
+				$('#myModalError').addClass("modal modal-danger");	  
+				$('#report_button').hide();
+				$('#visualizza_report').hide();		
+				$('#myModalError').modal('show');			
+			
+			  }
+		},
+
+		error: function( data, textStatus) {
+			
+			pleaseWaitDiv.modal('hide');
+			  	$('#myModalError').removeClass();
+				$('#myModalError').addClass("modal modal-danger");	  
+				$('#report_button').show();
+				$('#visualizza_report').show();
+					$('#myModalError').modal('show');
+
+		}
+		});
+		   
+		
+	}

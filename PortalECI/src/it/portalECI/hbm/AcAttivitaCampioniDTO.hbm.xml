@@ -1,0 +1,59 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 17-feb-2017 16.24.17 by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+    <class name="it.portalECI.DTO.AcAttivitaCampioneDTO" table="ac_attivita_campioni">
+       
+        <id name="id" type="int">
+            <column name="id" />
+            <generator class="native" />
+        </id>
+        <property name="descrizione_attivita" type="java.lang.String">
+            <column name="descrizione_attivita" />
+        </property>
+        <property name="data" type="java.util.Date">
+            <column name="data" />
+        </property>
+       <many-to-one name="tipo_attivita" class="it.portalECI.DTO.AcTipoAttivitaCampioniDTO" fetch="join" lazy="false">
+            <column name="id_tipo_attivita" />
+        </many-to-one>
+         <many-to-one name="campione" class="it.portalECI.DTO.CampioneDTO" fetch="join" lazy="false">
+            <column name="id_campione" />
+        </many-to-one>
+<!--           <many-to-one name="certificato" class="it.portalECI.DTO.CertificatoDTO" fetch="join" lazy="false">
+            <column name="id_certificato" />
+        </many-to-one> -->
+       <property name="tipo_manutenzione" type="int">
+            <column name="tipo_manutenzione" />
+        </property>
+        <property name="data_scadenza" type="java.util.Date">
+            <column name="data_scadenza" />
+        </property>
+         <property name="ente" type="java.lang.String">
+            <column name="ente" />
+        </property>
+        <property name="etichettatura" type="java.lang.String">
+            <column name="etichettatura" />
+        </property>
+         <many-to-one name="operatore" class="it.portalECI.DTO.UtenteDTO" fetch="join" lazy="false">
+            <column name="operatore" />
+        </many-to-one>       
+         <property name="stato" type="java.lang.String">
+            <column name="stato" />
+        </property>
+         <property name="campo_sospesi" type="java.lang.String">
+            <column name="campo_sospesi" />
+        </property>
+        <property name="allegato" type="java.lang.String">
+            <column name="allegato" />
+        </property>
+        <property name="obsoleta" type="java.lang.String">
+            <column name="obsoleta" />
+        </property>
+        
+         <property name="certificato" type="java.lang.String">
+            <column name="certificato" />
+        </property>
+    </class>
+</hibernate-mapping>

@@ -33,6 +33,8 @@ public class StatoVerbaleDTO  implements Serializable{
 		StatoColore.put(6, "#CE3018");//rosso
 		StatoColore.put(7, "#D2D2D2");// grigio chiaro
 		StatoColore.put(8, "#c8b5da"); //viola chiaro
+		StatoColore.put(2, "#ffff00");//giallo
+		StatoColore.put(10, "#CE3018");//rosso
 	}
 		    
 	int id=1;

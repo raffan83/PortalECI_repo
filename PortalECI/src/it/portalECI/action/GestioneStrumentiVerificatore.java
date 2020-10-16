@@ -121,6 +121,7 @@ if(Utility.validateSession(request,response,getServletContext()))return;
 				String data_ultima_taratura = ret.get("data_ultima_taratura");
 				String scadenza = ret.get("scadenza");
 				String id_verificatore = ret.get("verificatore");
+				String numero_certificato = ret.get("numero_certificato");
 
 				StrumentoVerificatoreDTO strumento = new StrumentoVerificatoreDTO();
 				
@@ -139,7 +140,8 @@ if(Utility.validateSession(request,response,getServletContext()))return;
 					strumento.setId_verificatore(Integer.parseInt(id_verificatore));
 					strumento.setNominativo_verificatore(GestioneUtenteBO.getUtenteById(id_verificatore, session).getNominativo());
 				}
-
+				strumento.setNumero_certificato(numero_certificato);
+				
 				session.save(strumento);				
 				
 				myObj = new JsonObject();
@@ -187,6 +189,7 @@ if(Utility.validateSession(request,response,getServletContext()))return;
 				String scadenza = ret.get("scadenza_mod");
 				String id_strumento = ret.get("id_strumento");
 				String id_verificatore = ret.get("verificatore_mod");
+				String numero_certificato = ret.get("numero_certificato_mod");
 
 				StrumentoVerificatoreDTO strumento = GestioneStrumentiVerificatoreBO.getStrumentoFromId(Integer.parseInt(id_strumento), session);
 				
@@ -215,7 +218,8 @@ if(Utility.validateSession(request,response,getServletContext()))return;
 						strumento.setNominativo_verificatore(GestioneUtenteBO.getUtenteById(id_verificatore, session).getNominativo());
 					}
 				}
-
+				strumento.setNumero_certificato(numero_certificato);
+				
 				session.update(strumento);				
 				
 				myObj = new JsonObject();

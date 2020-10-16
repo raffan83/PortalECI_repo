@@ -13,6 +13,7 @@ public class StrumentoVerificatoreDTO {
 	private Integer id_verificatore;
 	private String nominativo_verificatore;
 	private int disabilitato;
+	private String numero_certificato;
 	
 	
 	public StrumentoVerificatoreDTO(int id) {
@@ -79,6 +80,14 @@ public class StrumentoVerificatoreDTO {
 
 	public void setDisabilitato(int disabilitato) {
 		this.disabilitato = disabilitato;
+	}
+
+	public String getNumero_certificato() {
+		return numero_certificato;
+	}
+
+	public void setNumero_certificato(String numero_certificato) {
+		this.numero_certificato = numero_certificato;
 	}
 	
 

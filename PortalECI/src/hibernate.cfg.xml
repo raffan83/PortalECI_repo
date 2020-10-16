@@ -55,5 +55,7 @@
    		<mapping class="TipoComunicazioneUtenteDTO" package="it.portalECI.DTO" resource="it/portalECI/hbm/TipoComunicazioneUtenteDTO.hbm.xml"/>
    		<mapping class="ComunicazioneUtenteDTO" package="it.portalECI.DTO" resource="it/portalECI/hbm/ComunicazioneUtenteDTO.hbm.xml"/>
    		
+   		<mapping class="AcAttivitaCampioniDTO" package="it.portalECI.DTO" resource="it/portalECI/hbm/AcAttivitaCampioniDTO.hbm.xml"/>
+ 		<mapping class="AcTipoAttivitaCampioniDTO" package="it.portalECI.DTO" resource="it/portalECI/hbm/AcTipoAttivitaCampioniDTO.hbm.xml"/>
  	</session-factory>
 </hibernate-configuration>

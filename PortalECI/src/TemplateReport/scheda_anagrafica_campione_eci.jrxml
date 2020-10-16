@@ -1,0 +1,332 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.5.1.final utlizzo versione della libreria JasperReports6.5.1  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="scheda_apparecchiatura_evento" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="e7e45779-797b-43bf-8beb-64a5d024b407">
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="One Empty Record"/>
+	<queryString>
+		<![CDATA[]]>
+	</queryString>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="79" splitType="Stretch">
+			<rectangle>
+				<reportElement x="6" y="10" width="181" height="51" uuid="318bef9b-3878-4b82-b137-6cf7d0d38bb3"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="187" y="10" width="181" height="51" uuid="7ca724c2-f055-4d02-b700-ff272c7849b0"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="368" y="10" width="181" height="51" uuid="2bc45bd7-353c-4f80-b7cf-e42b77580e37"/>
+			</rectangle>
+			<staticText>
+				<reportElement x="198" y="20" width="151" height="31" uuid="73d0d00d-ed8a-4fca-80e5-d2be3b2ad62e"/>
+				<textElement textAlignment="Center">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[SCHEDA ANAGRAFICA APPARECCHIATURA]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="372" y="20" width="151" height="31" uuid="57b15d38-689d-4be9-809f-28a059c0170b"/>
+				<textElement textAlignment="Left">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[SAA:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="390" y="39" width="151" height="31" uuid="0099f68b-be87-4a33-a4d4-43fd99f9e545"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[Codice interno]]></text>
+			</staticText>
+			<line>
+				<reportElement x="406" y="37" width="119" height="1" uuid="ef58f5cd-e86a-4a4c-9849-32b7797e9922"/>
+			</line>
+			<textField>
+				<reportElement x="400" y="20" width="141" height="21" uuid="36c46d81-e521-4fdc-a0b6-e98ece53799a"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$P{codice_interno}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="20" y="13" width="159" height="45" uuid="586f6fc4-614e-431f-8357-40a92d84f167"/>
+				<textElement textAlignment="Center">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[ECI Srl Ente di Certificazione & Ispezione]]></text>
+			</staticText>
+		</band>
+	</title>
+	<detail>
+		<band height="630" splitType="Stretch">
+			<textField>
+				<reportElement x="166" y="264" width="196" height="21" uuid="ed772745-cfad-4bbb-971c-8313ce5d08c1"/>
+				<textElement textAlignment="Left">
+					<font size="1"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{matricola}]]></textFieldExpression>
+			</textField>
+			<rectangle>
+				<reportElement x="2" y="237" width="549" height="91" uuid="1e467cc9-af00-4d57-af87-f95b41019400"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="2" y="236" width="370" height="21" uuid="313c2338-eae1-4b23-847f-5db90efc0e0b"/>
+			</rectangle>
+			<staticText>
+				<reportElement x="0" y="1" width="187" height="21" uuid="8be7d072-38b7-4b91-8cbd-c8e1fef619c9"/>
+				<text><![CDATA[Denominazione apparecchiatura: ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="24" width="121" height="21" uuid="9940f4bf-26a0-459e-99b6-791a669d1a6b"/>
+				<text><![CDATA[Modello:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="50" width="121" height="21" uuid="7ea15239-4489-4800-af3a-8cf53a7638dc"/>
+				<text><![CDATA[Costruttore:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="73" width="121" height="21" uuid="890d5df2-5c9a-4c8b-bb8b-742201f7ffac"/>
+				<text><![CDATA[Distributore:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="97" width="121" height="19" uuid="533c3f88-4e4f-43b3-9024-f093855d7b7b"/>
+				<text><![CDATA[Classificazione:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="280" y="73" width="121" height="21" uuid="e5853f6f-3e65-426a-9857-c89053b20562"/>
+				<text><![CDATA[Data d'acquisto:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="279" y="50" width="121" height="21" uuid="d9b4c644-e7cd-4973-bdd9-780b8fa93a92"/>
+				<text><![CDATA[Matricola:]]></text>
+			</staticText>
+			<line>
+				<reportElement x="171" y="10" width="370" height="1" uuid="29ef8fcd-8632-40c2-b4f5-fcd93c86dd6e"/>
+			</line>
+			<line>
+				<reportElement x="45" y="34" width="496" height="1" uuid="ed3a30f2-51d4-48e4-b373-a034705fd84e"/>
+			</line>
+			<line>
+				<reportElement x="62" y="60" width="200" height="1" uuid="220e3bda-2667-469b-bcd3-126aced66082"/>
+			</line>
+			<line>
+				<reportElement x="342" y="61" width="199" height="1" uuid="9bd92a01-0cda-4540-8822-d1bf663c79db"/>
+			</line>
+			<line>
+				<reportElement x="359" y="85" width="182" height="1" uuid="0974c980-651a-4a58-91e9-960d56c9eec1"/>
+			</line>
+			<line>
+				<reportElement x="62" y="85" width="200" height="1" uuid="ef122b69-5b39-4fbb-9da2-f2f744bccee5"/>
+			</line>
+			<textField>
+				<reportElement x="198" y="-2" width="341" height="21" uuid="484b64b0-b1db-4977-b7f8-1a1a18ef889b"/>
+				<textElement textAlignment="Left"/>
+				<textFieldExpression><![CDATA[$P{denominazione}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="62" y="22" width="478" height="21" uuid="d724a45f-f708-47e6-bef2-3ac5006a6629"/>
+				<textElement textAlignment="Left"/>
+				<textFieldExpression><![CDATA[$P{modello}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="70" y="48" width="196" height="21" uuid="d84ee40b-a3eb-47b6-99f3-898bf90f3fa4"/>
+				<textElement textAlignment="Left"/>
+				<textFieldExpression><![CDATA[$P{costruttore}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="69" y="72" width="196" height="21" uuid="11d8241b-3e21-4f91-936c-189b5baf84d9"/>
+				<textElement textAlignment="Left"/>
+				<textFieldExpression><![CDATA[$P{distributore}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="364" y="72" width="176" height="21" uuid="8b55b38f-aa5e-45c4-8e5c-185a7e2f86ba"/>
+				<textElement textAlignment="Left"/>
+				<textFieldExpression><![CDATA[$P{data_acquisto}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="87" y="95" width="452" height="21" uuid="ac9ef4b2-473d-4a20-99a0-4e57c633d0f8"/>
+				<textElement textAlignment="Left"/>
+				<textFieldExpression><![CDATA[$P{classificazione}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="80" y="107" width="461" height="1" uuid="0d1c7239-b197-4cf5-8341-85fffd1a373b"/>
+			</line>
+			<rectangle>
+				<reportElement x="372" y="236" width="179" height="92" uuid="d45bb12f-2d21-402f-ae7c-101bafc39032"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="372" y="236" width="179" height="21" uuid="66bb152d-3115-48ab-9fe4-719a77cca32e"/>
+			</rectangle>
+			<staticText>
+				<reportElement x="2" y="241" width="370" height="20" uuid="32b2d4df-3d69-415e-9914-dc1a590e7f61"/>
+				<textElement textAlignment="Center">
+					<font size="12"/>
+				</textElement>
+				<text><![CDATA[Attività di taratura]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="370" y="241" width="181" height="21" uuid="99c4a180-0a11-49fe-af10-da7e2f303d77"/>
+				<textElement textAlignment="Center">
+					<font size="12"/>
+				</textElement>
+				<text><![CDATA[Frequenza]]></text>
+			</staticText>
+			<line>
+				<reportElement x="15" y="273" width="301" height="1" uuid="8ae15503-5703-4ccf-a16d-e64cc56460d5"/>
+			</line>
+			<textField>
+				<reportElement x="356" y="47" width="185" height="21" uuid="ba047ec4-5eb3-46d5-8c3f-fc67a3f7c6e5"/>
+				<textFieldExpression><![CDATA[$P{matricola}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="24" y="261" width="344" height="21" uuid="4cdf403f-aec7-44fc-98e3-fdaefd7b65d0"/>
+				<textElement textAlignment="Left"/>
+				<textFieldExpression><![CDATA[$P{attivita_taratura}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="432" y="286" width="124" height="21" uuid="ec75b5e6-521d-4844-990d-fa33deaf37ae"/>
+				<textElement textAlignment="Left"/>
+				<textFieldExpression><![CDATA[$P{frequenza}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="455" y="285" width="100" height="30" uuid="ebf90b7b-22be-42ff-8623-16eeb7247a40"/>
+				<text><![CDATA[Mesi]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="167" y="378" width="196" height="21" uuid="0ea25708-daf8-49c7-b7f1-772cbdb3f275"/>
+				<textElement textAlignment="Left">
+					<font size="1"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{matricola}]]></textFieldExpression>
+			</textField>
+			<rectangle>
+				<reportElement x="3" y="351" width="549" height="258" uuid="cd7c70e8-59b0-4c44-86f1-f10cd8adea79"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="3" y="350" width="403" height="21" uuid="de9f303f-35b0-4768-8676-904659703b60"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="406" y="350" width="146" height="259" uuid="c513d071-93b7-4f03-a2c6-ae79b549abed"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="406" y="350" width="146" height="21" uuid="9d796579-bda9-4c3a-bfaa-15ff8008116b"/>
+			</rectangle>
+			<staticText>
+				<reportElement x="7" y="355" width="257" height="20" uuid="beebdf0d-7a0f-43b9-ab4c-21b882168ca9"/>
+				<textElement textAlignment="Left">
+					<font size="12" isBold="false" isItalic="false"/>
+				</textElement>
+				<text><![CDATA[Attività di manutenzione preventiva]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="406" y="355" width="146" height="21" uuid="d345f520-fdd8-4868-ad2c-5afa73e3eeeb"/>
+				<textElement textAlignment="Center">
+					<font size="12"/>
+				</textElement>
+				<text><![CDATA[Frequenza]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="453" y="478" width="36" height="21" uuid="3e28d45e-1036-46ab-9160-f71b1c0a9f2b"/>
+				<textElement textAlignment="Left"/>
+				<textFieldExpression><![CDATA[$P{frequenza_manutenzione}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="472" y="478" width="56" height="30" uuid="82573557-e7f7-45da-8c17-0447861146ac"/>
+				<text><![CDATA[Mesi]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="6" y="380" width="394" height="224" uuid="97432fc5-e104-4ff2-8e4b-51c12a8f8b2b"/>
+				<textElement textAlignment="Left"/>
+				<textFieldExpression><![CDATA[$P{attivita_manutenzione}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="121" width="121" height="17" uuid="56e6399b-dc2a-4fba-a90f-d22e871f5b3d"/>
+				<text><![CDATA[Data di registrazione:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="109" y="121" width="146" height="17" uuid="e5dbbf7c-5c97-429d-a321-65c165bd89ef"/>
+				<textElement textAlignment="Left"/>
+				<textFieldExpression><![CDATA[$P{data_registrazione}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="104" y="134" width="157" height="1" uuid="74dd8dda-9dc7-405e-adc1-129b9b2d6427"/>
+			</line>
+			<staticText>
+				<reportElement x="280" y="120" width="61" height="17" uuid="f2e6194b-e74d-4d25-a8a5-b7dc8581504a"/>
+				<text><![CDATA[Ubicazione:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="359" y="120" width="182" height="17" uuid="cd76f916-dd57-4d26-ab1f-0e6cbc8e8b79"/>
+				<textElement textAlignment="Left"/>
+				<textFieldExpression><![CDATA[$P{ubicazione}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="356" y="134" width="185" height="1" uuid="40e26770-1df0-4155-a9d5-1532cb0cb07f"/>
+			</line>
+			<line>
+				<reportElement x="87" y="157" width="454" height="1" uuid="3b5ecce5-2877-4592-b7f2-69ae4724bf1e"/>
+			</line>
+			<textField>
+				<reportElement x="90" y="144" width="450" height="21" uuid="614ac529-4068-4e2d-af60-5a4fc8e2d1a6"/>
+				<textElement textAlignment="Left"/>
+				<textFieldExpression><![CDATA[$P{campi_misura}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="1" y="144" width="101" height="19" uuid="27e92f96-bf96-430a-b0a7-e7c74fde8107"/>
+				<text><![CDATA[Campi di misura:]]></text>
+			</staticText>
+			<line>
+				<reportElement x="116" y="210" width="425" height="1" uuid="856a25dd-d7f2-4b85-ae4c-70170c765654"/>
+			</line>
+			<textField>
+				<reportElement x="121" y="196" width="422" height="21" uuid="1cbea55f-b4a7-46a3-a156-93fc05c39aa1"/>
+				<textElement textAlignment="Left"/>
+				<textFieldExpression><![CDATA[$P{campo_accettabilita}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="1" y="197" width="112" height="19" uuid="c88ba06e-19bf-4032-bf23-1bd155561bbe"/>
+				<text><![CDATA[Campo di accettabilità:]]></text>
+			</staticText>
+			<line>
+				<reportElement x="98" y="180" width="443" height="1" uuid="44177d89-a97b-440e-8ea9-d9931bc44bcf"/>
+			</line>
+			<textField>
+				<reportElement x="103" y="168" width="422" height="21" uuid="6150e3b0-0b58-4600-a702-19b2267fe54b"/>
+				<textElement textAlignment="Left"/>
+				<textFieldExpression><![CDATA[$P{unita_formato}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="1" y="170" width="84" height="19" uuid="b873bf80-676d-4d1a-9fab-82ed8b73bc7f"/>
+				<text><![CDATA[Unità di formato:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="24" y="285" width="343" height="43" uuid="77d2048a-9582-438e-b360-1611de16392a"/>
+				<textElement textAlignment="Left"/>
+				<textFieldExpression><![CDATA[$P{descrizione_attivita_taratura}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<pageFooter>
+		<band height="91" splitType="Stretch">
+			<line>
+				<reportElement x="341" y="41" width="200" height="1" uuid="373a5e67-4edb-4560-bb19-3ea43aa894a0"/>
+			</line>
+			<staticText>
+				<reportElement x="357" y="7" width="171" height="31" uuid="7db95db7-8a2f-4538-81b2-3c1a1b49c8b4"/>
+				<text><![CDATA[Firma Responsabile di competenza]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="74" width="100" height="16" uuid="b39dea4e-3b24-469d-bb6d-0a20ad689974"/>
+				<textElement verticalAlignment="Bottom">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[MOD-PG007-02]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="456" y="74" width="100" height="16" uuid="e4def4fa-f86a-4047-bf24-b8eb261bf86b"/>
+				<textElement textAlignment="Right" verticalAlignment="Bottom">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Rev. A del 24/03/2020]]></text>
+			</staticText>
+		</band>
+	</pageFooter>
+</jasperReport>

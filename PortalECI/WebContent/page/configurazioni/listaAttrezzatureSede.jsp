@@ -55,7 +55,6 @@
                        <th>Marcatura</th>
                        <th>N. ID ON</th>
                        <th>Scadenza Ventennale</th>
-                       <th>Numero certificato</th>
                        <th>Note tecniche</th>
                        <th>Note generiche</th>       
                        <td style="min-width:100px;">Azioni</td>
@@ -69,7 +68,7 @@
  	'${attrezzatura.data_verifica_funzionamento }','${attrezzatura.data_prossima_verifica_funzionamento }','${attrezzatura.data_verifica_integrita }','${attrezzatura.data_prossima_verifica_integrita }','${attrezzatura.data_verifica_interna }','${attrezzatura.data_prossima_verifica_interna }',
  	'${attrezzatura.anno_costruzione }','${attrezzatura.fabbricante }','${attrezzatura.modello }','${attrezzatura.settore_impiego }','${fn:replace(fn:replace(attrezzatura.note_tecniche.replace('\'',' ').replace('\\','/'),newLineChar, ' '),newLineChar2, ' ')}','${fn:replace(fn:replace(attrezzatura.note_generiche.replace('\'',' ').replace('\\','/').replace('\\n',' '),newLineChar, ' '),newLineChar2,' ')}','${attrezzatura.obsoleta }',
  	'${attrezzatura.tipo_attrezzatura }','${attrezzatura.tipo_attrezzatura_GVR }','${attrezzatura.ID_specifica }','${attrezzatura.sogg_messa_serv_GVR }',
- 	'${attrezzatura.n_panieri_idroestrattori }','${attrezzatura.marcatura }','${attrezzatura.n_id_on }','${attrezzatura.data_scadenza_ventennale }', '${attrezzatura.numero_certificato}')" >
+ 	'${attrezzatura.n_panieri_idroestrattori }','${attrezzatura.marcatura }','${attrezzatura.n_id_on }','${attrezzatura.data_scadenza_ventennale }'" >
  	</c:when>
  	<c:otherwise>
  		<tr style="background-color:#ff6666">
@@ -101,7 +100,6 @@
  	<td>${attrezzatura.marcatura }</td>
  	<td>${attrezzatura.n_id_on }</td>
  	<td>${attrezzatura.data_scadenza_ventennale}</td>
- 	<td>${attrezzatura.numero_certificato }</td>
  	<td>${attrezzatura.note_tecniche }</td> 	
  	<td>${attrezzatura.note_generiche }</td> 
  	<td>
@@ -110,7 +108,7 @@
  	'${attrezzatura.data_verifica_funzionamento }','${attrezzatura.data_prossima_verifica_funzionamento }','${attrezzatura.data_verifica_integrita }','${attrezzatura.data_prossima_verifica_integrita }','${attrezzatura.data_verifica_interna }','${attrezzatura.data_prossima_verifica_interna }',
  	'${attrezzatura.anno_costruzione }','${attrezzatura.fabbricante }','${attrezzatura.modello }','${attrezzatura.settore_impiego }','${fn:replace(fn:replace(attrezzatura.note_tecniche.replace('\'',' ').replace('\\','/'),newLineChar, ' '),newLineChar2, ' ')}','${fn:replace(fn:replace(attrezzatura.note_generiche.replace('\'',' ').replace('\\','/').replace('\\n',' '),newLineChar, ' '),newLineChar2,' ')}','${attrezzatura.obsoleta }',
  	'${attrezzatura.tipo_attrezzatura }','${attrezzatura.tipo_attrezzatura_GVR }','${attrezzatura.ID_specifica }','${attrezzatura.sogg_messa_serv_GVR }',
- 	'${attrezzatura.n_panieri_idroestrattori }','${attrezzatura.marcatura }','${attrezzatura.n_id_on }','${attrezzatura.data_scadenza_ventennale }', '${attrezzatura.numero_certificato}')"><i class="fa fa-edit"></i></a>
+ 	'${attrezzatura.n_panieri_idroestrattori }','${attrezzatura.marcatura }','${attrezzatura.n_id_on }','${attrezzatura.data_scadenza_ventennale }'"><i class="fa fa-edit"></i></a>
  	</c:if>
  	</td>
  	
@@ -361,13 +359,7 @@
     </div>
        </div>
        
-                <div class="form-group">
-        <label for="inputName" class="col-sm-4 control-label">Numero certificato:</label>
-        <div class="col-sm-8">
-                      <input class="form-control" id="numero_certificato" type="text" name="numero_certificato"  value="" />
-    </div>
-       </div>
-       
+
  <div class="form-group">
         <label for="inputName" class="col-sm-4 control-label">Note tecniche:</label>
         <div class="col-sm-8">
@@ -645,12 +637,6 @@
        </div>
        
        
-          <div class="form-group">
-        <label for="inputName" class="col-sm-4 control-label">Numero certificato:</label>
-        <div class="col-sm-8">
-                      <input class="form-control" id="numero_certificato_mod" type="text" name="numero_certificato_mod"  value="" />
-    </div>
-       </div>
        
  <div class="form-group">
         <label for="inputName" class="col-sm-4 control-label">Note tecniche:</label>
@@ -735,7 +721,7 @@
 function openTab(id_attrezzatura, matricola_inail, numero_fabbrica, tipo_attivita, descrizione, id_cliente, id_sede,
 		data_verifica_funzionamento, data_prossima_verifica_funzionamento,data_verifica_integrita, data_prossima_verifica_integrita, data_verifica_interna, data_prossima_verifica_interna,
 		anno_costruzione, fabbricante, modello, settore_impiego, note_tecniche, note_generiche, obsoleta, tipo_attrezzatura, tipo_attrezzatura_gvr,
-		id_specifica, sogg_messa_serv_GVR, n_panieri_idroestrattori, marcatura, n_id_on, data_scadenza_ventennale, numero_certificato){
+		id_specifica, sogg_messa_serv_GVR, n_panieri_idroestrattori, marcatura, n_id_on, data_scadenza_ventennale){
 	
 	
 	
@@ -766,8 +752,7 @@ function openTab(id_attrezzatura, matricola_inail, numero_fabbrica, tipo_attivit
 	$('#settore_impiego_mod').val(settore_impiego);
 	$('#settore_impiego_mod').change();
 	$('#note_tecniche_mod').val(note_tecniche);
-	$('#note_generiche_mod').val(note_generiche);
-	$('#numero_certificato_mod').val(numero_certificato);	
+	$('#note_generiche_mod').val(note_generiche);	
 	
 	if(data_verifica_funzionamento!=null && data_verifica_funzionamento!= ''){
 		$('#data_verifica_funzionamento_mod').val(Date.parse(data_verifica_funzionamento).toString("dd/MM/yyyy"));	
@@ -884,7 +869,7 @@ function modalNuovaAttrezzatura(){
 function modalModificaAttrezzatura(id_attrezzatura, matricola_inail, numero_fabbrica, tipo_attivita, descrizione, id_cliente, id_sede,
 		data_verifica_funzionamento, data_prossima_verifica_funzionamento,data_verifica_integrita, data_prossima_verifica_integrita, data_verifica_interna, data_prossima_verifica_interna,
 		anno_costruzione, fabbricante, modello, settore_impiego, note_tecniche, note_generiche, obsoleta, tipo_attrezzatura, tipo_attrezzatura_gvr,
-		id_specifica, sogg_messa_serv_GVR, n_panieri_idroestrattori, marcatura, n_id_on, data_scadenza_ventennale, numero_certificato){
+		id_specifica, sogg_messa_serv_GVR, n_panieri_idroestrattori, marcatura, n_id_on, data_scadenza_ventennale){
 	
 
 	$('#id_attrezzatura').val(id_attrezzatura);
@@ -910,7 +895,6 @@ function modalModificaAttrezzatura(id_attrezzatura, matricola_inail, numero_fabb
 	$('#settore_impiego_mod').change();
 	$('#note_tecniche_mod').val(note_tecniche);
 	$('#note_generiche_mod').val(note_generiche);	
-	$('#numero_certificato_mod').val(numero_certificato);
 	
 	if(data_verifica_funzionamento!=null && data_verifica_funzionamento!= ''){
 		$('#data_verifica_funzionamento_mod').val(Date.parse(data_verifica_funzionamento).toString("dd/MM/yyyy"));	

@@ -64,6 +64,7 @@
                        <th>Matricola</th>
                        <th>Data ultima taratura</th>
                        <th>Scadenza</th>
+                       <th>Numero Certificato</th>
                        <th>Associato a</th>
                        <td style="min-width:100px;">Azioni</td>
  </tr></thead>
@@ -77,10 +78,11 @@
  	<td>${strumento.matricola }</td>
  	<td><fmt:formatDate pattern = "dd/MM/yyyy" value = "${strumento.data_ultima_taratura }" /></td>
  	<td><fmt:formatDate pattern = "dd/MM/yyyy" value = "${strumento.scadenza }" /></td>
+ 	<td>${strumento.numero_certificato }</td>
  	<td>${strumento.nominativo_verificatore }</td>
  	<td>
  	
- 	<a class="btn btn-warning customTooltip" title="Modifica e associa strumento" onClick="modalModificaStrumento('${strumento.id }','${strumento.marca }','${strumento.matricola }','${strumento.modello }','${strumento.data_ultima_taratura }','${strumento.scadenza }','${strumento.id_verificatore }')"><i class="fa fa-edit"></i></a>
+ 	<a class="btn btn-warning customTooltip" title="Modifica e associa strumento" onClick="modalModificaStrumento('${strumento.id }','${strumento.marca }','${strumento.matricola }','${strumento.modello }','${strumento.data_ultima_taratura }','${strumento.scadenza }','${strumento.id_verificatore }', '${strumento.numero_certificato }')"><i class="fa fa-edit"></i></a>
  	<c:if test="${strumento.id_verificatore!=null }">
  	<a class="btn btn-info customTooltip" title="Dissocia strumento" onClick="dissociaStrumento('${strumento.id}')"><i  class="fa fa-times"></i></a>
  	
@@ -102,77 +104,7 @@
 </div>
        									
        									
-       										<%-- <div class="nav-tabs-custom">
-						        	    		<ul id="mainTabs" class="nav nav-tabs">
-						            	  			<li class="active">
-						              					<a href="#strumenti" data-toggle="tab" aria-expanded="true"   id="strumentiTab">
-						              						Gestione Strumenti
-						              					</a>
-		
-							              			</li>
-							              			<li>
-								              			<a href="#associazione" data-toggle="tab" aria-expanded="false"   id="associazioneTab">
-								              				Associazione Strumenti Verificatore
-								              			</a>
-								              		</li>
-								              		
-						            			</ul>
-						            			<div class="tab-content">
-							              			<div class="tab-pane active" id="strumenti">
-		
-														
-						    						</div> 		
-						    						
-						    						
-						    										
-<div class="tab-pane table-responsive" id="associazione">
-
-<div class="row">
-<div class="col-xs-12" >
-<select id="verificatori" name="verificatori" class="form-contol select2" data-placeholder="Seleziona Tecnico Verificatore..." style="width:100%">
-<option value=""></option>
-<c:forEach items="${lista_verificatori }" var="verificatore" varStatus="loop">
-<option value="${verificatore.id}">${verificatore.nominativo }</option>
-
-</c:forEach>
-
-
-</select>
-
-
-  </div>
-  
-  
-  
-  
-</div>
-<br>
-
-<div class="row">
-			<div class="col-xs-12">												
-		<div id="boxLista" class="box box-danger box-solid">
-			<div class="box-header with-border">
-			Lista Strumenti Verificatore
-					<div class="box-tools pull-right">															
-				<button data-widget="collapse" class="btn btn-box-tool"><i class="fa fa-minus"></i></button>													
-							</div>
-						</div>
-					<div class="box-body">
-			<div id="posTabStrumentiVerificatore">LISTA VUOTA</div>
-				</div>
-				</div>
-				</div>
-			</div>
-
-
-							            	    							         
-	</div>
-							
-										 				
-								              		<!-- /.tab-pane -->
-							    	        	</div>
-							        	    	<!-- /.tab-content -->
-							          		</div>       						 --%>
+       		
        									</div>
 	        						</div>
     	    					</div>
@@ -255,6 +187,14 @@
     </div>
        </div> 
        
+          	<div class="form-group">
+          <label for="" class="col-sm-4 control-label">Numero Certificato:</label>
+
+         <div class="col-sm-8">
+         <input class="form-control" id="numero_certificato" type="text" name="numero_certificato" required value=""/>
+    	</div>
+   </div>
+       
        
                 <div class="form-group">
         <label for="inputName" class="col-sm-4 control-label">Associa a:</label>
@@ -336,6 +276,16 @@
                       <input class="form-control datepicker" id="scadenza_mod" type="text" name="scadenza_mod"  value="" required data-date-format="dd/mm/yyyy"/>
     </div>
        </div> 
+       
+       
+              
+          	<div class="form-group">
+          <label for="" class="col-sm-4 control-label">Numero Certificato:</label>
+
+         <div class="col-sm-8">
+         <input class="form-control" id="numero_certificato_mod" type="text" name="numero_certificato_mod" required value=""/>
+    	</div>
+   </div>
        
                        <div class="form-group">
         <label for="inputName" class="col-sm-4 control-label">Associa a:</label>
@@ -477,7 +427,7 @@
   		
   		
 
-  		function modalModificaStrumento(id_strumento, marca, matricola, modello, data_taratura, scadenza, id_verificatore){
+  		function modalModificaStrumento(id_strumento, marca, matricola, modello, data_taratura, scadenza, id_verificatore, numero_certificato){
   			
 
   			$('#id_strumento').val(id_strumento);
@@ -487,6 +437,7 @@
   			$('#modello_mod').val(modello);
   			$('#verificatore_mod').val(id_verificatore);
   			$('#verificatore_mod').change();
+  			$('#numero_certificato_mod').val(numero_certificato);
 
   			if(data_taratura!=null && data_taratura!=""){
   				  $('#data_ultima_taratura_mod').val(Date.parse(data_taratura).toString("dd/MM/yyyy"));
@@ -653,43 +604,7 @@
     		} );
     		} );  
     		table.columns.adjust().draw();
-    			
-
-  				/* $("#selectRuolo").change(function(e){
-        			//get the form data using another method 
-        			var ruolo = $("#selectRuolo").val();    
-
-		        	dataString ="idRuolo="+ ruolo;
-        			exploreModal("listaPermessi.do",dataString,"#posTabPermessi",function(data,textStatus){
-        			});     
- 	 			});
-			
-  				$("#selectRuoloUtente").change(function(e){		
-        			var ruolo = $("#selectRuoloUtente").val();
-        			dataString ="idRuolo="+ ruolo;
-        			exploreModal("listaUtenti.do",dataString,"#posTabUtenti",function(data,textStatus){
-        			});       
- 	 			});
-				
-  				$("#selectUtente").change(function(e){	
-        			var utente = $("#selectUtente").val();        
-        			dataString ="idUtente="+ utente;
-        			exploreModal("listaRuoli.do",dataString,"#posTabRuoli",function(data,textStatus){			
-        			});        
- 	 			});  	
-  				
-  				$("#selectVerificatore").change(function(e){	
-        			var utente = $("#selectVerificatore").val();        
-        			dataString ="action=associazioni&idUtente="+ utente;
-        			exploreModal("listaCategorieVerifica.do",dataString,"#posTabCategorie",function(data,textStatus){			
-        			});        
- 	 			});  
-			});	   
-		
-	    	$('#myModalError').on('hidden.bs.modal', function (e) {
-				if($( "#myModalError" ).hasClass( "modal-success" )){
-					callAction("listaUtenti.do");
-				}*/ 		
+    		
   			}); 
   		</script>
 	</jsp:attribute> 

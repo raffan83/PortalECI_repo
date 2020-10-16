@@ -32,5 +32,9 @@
         <property name="disabilitato" type="int">
             <column name="disabilitato" />
         </property>
+        
+          <property name="numero_certificato" type="java.lang.String">
+            <column name="numero_certificato" />
+        </property>
     </class>
 </hibernate-mapping>

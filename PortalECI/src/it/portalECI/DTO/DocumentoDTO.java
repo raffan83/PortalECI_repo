@@ -18,6 +18,7 @@ public class DocumentoDTO implements Serializable {
 	private Date updateDate;
 	private VerbaleDTO verbale;
 	private Boolean invalid = false;
+	private CampioneDTO campione;
 	
 	public Date getCreateDate() {
 		return createDate;
@@ -64,6 +65,12 @@ public class DocumentoDTO implements Serializable {
 	}
 	public void setInvalid(Boolean invalid) {
 		this.invalid = invalid;
+	}
+	public CampioneDTO getCampione() {
+		return campione;
+	}
+	public void setCampione(CampioneDTO campione) {
+		this.campione = campione;
 	}
 	
 }

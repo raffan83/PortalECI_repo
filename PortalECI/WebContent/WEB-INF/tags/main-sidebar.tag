@@ -124,7 +124,24 @@
         	</li>
         	<% }%>
         	
-			<li><a  href="#" onclick="callAction('gestioneCampione.do?action=lista',null,true);" >Campioni  Personali</a></li>
+			<li class="treeview">
+			<a href="#">
+			<i class="fa fa-eyedropper"></i>
+			
+        	 		<span>Campioni</span>
+            		<span class="pull-right-container">
+              			<i class="fa fa-angle-left pull-right"></i>
+            		</span>
+            		</a>
+			<ul class="treeview-menu">
+			<li>
+			<a  href="#" onclick="callAction('gestioneCampione.do?action=lista',null,true);" >Gestione Campioni</a>
+			</li>
+			<li>
+			<a href="#" onclick="callAction('scadenzario.do')">Scadenzario</a>
+			</li>
+			</ul>
+			</li>
 			
         	<% if(user.checkRuolo("AM") || user.checkPermesso("ACCESS_CONFIG")){%>		
          	<li class="treeview">

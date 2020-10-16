@@ -795,25 +795,29 @@ public class GestioneVerbaleBO {
 		{			
 			html = html.replaceAll("\\$\\{DATA_PROSS_VERIFICA\\}", df.format(verbale.getData_prossima_verifica()));
 		}
+		if(verbale.getAttrezzatura()!=null && verbale.getAttrezzatura().getData_prossima_verifica_funzionamento() != null) 
+		{			
+			html = html.replaceAll("\\$\\{DATA_PROSS_VERIFICA\\}", df.format(verbale.getAttrezzatura().getData_prossima_verifica_funzionamento()));
+		}
 		if(verbale.getAttrezzatura()!=null && verbale.getAttrezzatura().getData_verifica_integrita() != null) 
 		{			
 			html = html.replaceAll("\\$\\{DATA_VER_INTEGRITA\\}", df.format(verbale.getAttrezzatura().getData_verifica_integrita()));
 		}
-		if(verbale.getAttrezzatura()!=null && verbale.getData_prossima_verifica_integrita() != null) 
+		if(verbale.getAttrezzatura()!=null && verbale.getAttrezzatura().getData_prossima_verifica_integrita() != null) 
 		{			
 			html = html.replaceAll("\\$\\{DATA_PROSS_VER_INTEGRITA\\}", df.format(verbale.getAttrezzatura().getData_prossima_verifica_integrita()));
 		}
-		if(verbale.getAttrezzatura()!=null && verbale.getData_verifica_interna() != null) 
+		if(verbale.getAttrezzatura()!=null && verbale.getAttrezzatura().getData_verifica_interna() != null) 
 		{			
 			html = html.replaceAll("\\$\\{DATA_VER_INTERNA\\}", df.format(verbale.getAttrezzatura().getData_verifica_interna()));
 		}
-		if(verbale.getAttrezzatura()!=null && verbale.getData_prossima_verifica_interna() != null) 
+		if(verbale.getAttrezzatura()!=null && verbale.getAttrezzatura().getData_prossima_verifica_interna() != null) 
 		{			
 			html = html.replaceAll("\\$\\{DATA_PROSS_VER_INTERNA\\}", df.format(verbale.getAttrezzatura().getData_prossima_verifica_interna()));
 		}
 		
-		if(verbale.getAttrezzatura()!=null && verbale.getAttrezzatura().getNumero_certificato()!=null) {
-			html = html.replaceAll("\\$\\{ATT_NUMERO_CERT\\}", verbale.getAttrezzatura().getNumero_certificato());
+		if(verbale.getStrumento_verificatore()!=null && verbale.getStrumento_verificatore().getNumero_certificato()!=null) {
+			html = html.replaceAll("\\$\\{STR_NUMERO_CERT\\}", verbale.getStrumento_verificatore().getNumero_certificato());
 		}
 		
 		if(verbale.getSedeUtilizzatore() != null ) 
@@ -865,23 +869,53 @@ public class GestioneVerbaleBO {
 				}
 
 				else if(verbale.getTipo_verifica()==3 || verbale.getTipo_verifica()==4) {
-					if(verbale.getTipo_verifica_gvr()==1 || verbale.getTipo_verifica_gvr()==3) {
+					if(verbale.getTipo_verifica_gvr()==1) {
 						check1 = "unchecked";
-						check2 = "unchecked";
-						check3 = "checked";
+						check2 = "checked";
+						check3 = "unchecked";
 						check4 = "unchecked";
-					}else{
+					}
+					if(verbale.getTipo_verifica_gvr()==2) {
 						check1 = "unchecked";
 						check2 = "unchecked";
 						check3 = "unchecked";
 						check4 = "checked";
-					}		
+					}
+					if(verbale.getTipo_verifica_gvr()==3) {
+						check1 = "unchecked";
+						check2 = "unchecked";
+						check3 = "checked";
+						check4 = "unchecked";
+					}
+					if(verbale.getTipo_verifica_gvr()==4) {
+						check1 = "unchecked";
+						check2 = "checked";
+						check3 = "unchecked";
+						check4 = "checked";
+					}
+					if(verbale.getTipo_verifica_gvr()==5) {
+						check1 = "unchecked";
+						check2 = "checked";
+						check3 = "checked";
+						check4 = "checked";
+					}
+					if(verbale.getTipo_verifica_gvr()==6) {
+						check1 = "unchecked";
+						check2 = "unchecked";
+						check3 = "checked";
+						check4 = "checked";
+					}
+					
+						
 				}
 								
 				tipo_verifica_val = tipo_verifica_val + "<img src=\"" + Costanti.PATH_FONT_IMAGE + check1+"-"+"radio"+".png" + "\" style=\"height:12px;\" />&nbsp;" + "Prima delle verifiche periodiche"+"<br/>";					
 				tipo_verifica_val = tipo_verifica_val + "<img src=\"" + Costanti.PATH_FONT_IMAGE + check2+"-"+"radio"+".png" + "\" style=\"height:12px;\" />&nbsp;" + "Verifica di funzionamento"+"<br/>";						
 				tipo_verifica_val = tipo_verifica_val + "<img src=\"" + Costanti.PATH_FONT_IMAGE + check3+"-"+"radio"+".png" + "\" style=\"height:12px;\" />&nbsp;" + "Verifica di visita interna per generatori di vapore/acqua surriscaldata"+"<br/>";					
 				tipo_verifica_val = tipo_verifica_val + "<img src=\"" + Costanti.PATH_FONT_IMAGE + check4+"-"+"radio"+".png" + "\" style=\"height:12px;\" />&nbsp;" + "Verifica di integrità"+"<br/>";
+				
+
+				html = html.replaceAll("\\$\\{TIPO_VERIFICA_VAL_GVR\\}", tipo_verifica_val);
 			
 			}else {
 				
@@ -948,6 +982,8 @@ public class GestioneVerbaleBO {
 
 		html = html.replaceAll("\\$\\{TIPO_VERIFICA_VIE\\}", tipo_verifica_vie);
 		
+		
+
 
 		// Elimino i placeholder non utilizzati
 		html = html.replaceAll("\\$\\{(.*?)\\}", "");
@@ -1269,7 +1305,7 @@ public class GestioneVerbaleBO {
 	        
 	        //f.setColor(BaseColor.RED);
 	        int pages = reader.getNumberOfPages();
-	        if(verbale.getType().equals(VerbaleDTO.VERBALE)){
+	        
 		        for (int i=0; i<pages; i++) {	        
 			        PdfContentByte over = stamper.getOverContent(i+1);
 			        Phrase p = new Phrase(String.format(bozza, newfile), f);
@@ -1282,7 +1318,7 @@ public class GestioneVerbaleBO {
 			        }
 			        over.restoreState();
 		        }
-	        }
+	        
 	        stamper.close();
 	        tmpfos.close();
 	        reader.close();
