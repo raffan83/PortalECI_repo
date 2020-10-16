@@ -58,7 +58,7 @@ public static void sendEmailVerbale(VerbaleDTO verbale, String mailTo, String fr
 			
 			  email.setSubject("Richiesta di approvazione verbale ID n. "+verbale.getId()+" - Cliente: "+commessa.getID_ANAGEN_NOME());
 			  
-			  email.setHtmlMsg("<html>Si richiede l'apporvazione di verifica in oggetto effettuata ai sensi del DPR 462/01. <br />  <br /><br /> "
+			  email.setHtmlMsg("<html>Si richiede l'apporvazione di verifica in oggetto. <br />  <br /><br /> "
 			  		+ "<em><b style='color:#9d201d' >ECI Ente di Certificazione & Ispezione Srl</em></b><br><br><span style='color:#204d74'>Via Tofaro 42, B - 03039 Sora (FR)<br>  " + 
 			  		"			  		<em>Tel + 39 0776.18151 - Fax+ 39 0776.814169 <br> " + 
 			  		"			  		Mail: </em>info@ecisrl.it<br> \r\n" + 
@@ -73,7 +73,7 @@ public static void sendEmailVerbale(VerbaleDTO verbale, String mailTo, String fr
 			  
 			  email.setSubject("Approvazione verbale n. "+verbale.getNumeroVerbale()+" - Cliente: "+commessa.getID_ANAGEN_NOME());
 			  
-			  email.setHtmlMsg("<html>Si comunica che, a seguito dell'avvenuto riesame della documentazione prodotta durante l'ispezione effettuata ai sensi del DPR 462/01, si approva il verbale di verifica in oggetto. <br />  <br /><br /> "
+			  email.setHtmlMsg("<html>Si comunica che, a seguito dell'avvenuto riesame della documentazione prodotta durante l'ispezione effettuata, si approva il verbale di verifica in oggetto. <br />  <br /><br /> "
 			  		+ "<em><b style='color:#9d201d' >ECI Ente di Certificazione & Ispezione Srl</em></b><br><br><span style='color:#204d74'>Via Tofaro 42, B - 03039 Sora (FR)<br>  " + 
 			  		"			  		<em>Tel + 39 0776.18151 - Fax+ 39 0776.814169 <br> " + 
 			  		"			  		Mail: </em>info@ecisrl.it<br> \r\n" + 
@@ -86,7 +86,7 @@ public static void sendEmailVerbale(VerbaleDTO verbale, String mailTo, String fr
 		  }else if(stato == 6) {
 			  email.setSubject("Rifiuto verbale ID n. "+verbale.getId()+" - Cliente: "+commessa.getID_ANAGEN_NOME());
 			  
-			  email.setHtmlMsg("<html>Si comunica l'esito negativo del riesame della documentazione prodotta durante l'ispezione effettuata ai sensi del DPR 462/01; il verbale di verifica in oggetto viene rifiutato. <br />  <br /><br /> "
+			  email.setHtmlMsg("<html>Si comunica l'esito negativo del riesame della documentazione prodotta durante l'ispezione effettuata; il verbale di verifica in oggetto viene rifiutato. <br />  <br /><br /> "
 			  		+ "<em><b style='color:#9d201d' >ECI Ente di Certificazione & Ispezione Srl</em></b><br><br><span style='color:#204d74'>Via Tofaro 42, B - 03039 Sora (FR)<br>  " + 
 			  		"			  		<em>Tel + 39 0776.18151 - Fax+ 39 0776.814169 <br> " + 
 			  		"			  		Mail: </em>info@ecisrl.it<br> \r\n" + 

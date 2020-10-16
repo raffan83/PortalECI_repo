@@ -3988,7 +3988,7 @@ $.ajax({
 		
 			$.ajax({
 		type: "POST",
-		url: "listaCampioni.do?action=campioni_scadenza",
+		url: "scadenzario.do?action=esporta_campioni_scadenza",
 		data: dataObj,
 		dataType: "json",
 		//if received a response from the server
@@ -3997,7 +3997,7 @@ $.ajax({
 			  {  
 				  pleaseWaitDiv.modal('hide');
 				 
-				   callAction("listaCampioni.do?action=download_scadenzario");
+				   callAction("scadenzario.do?action=download_scadenzario");
 				
 			  }else{
 				  

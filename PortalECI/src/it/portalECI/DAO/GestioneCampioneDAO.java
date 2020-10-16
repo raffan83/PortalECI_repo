@@ -1,6 +1,7 @@
 package it.portalECI.DAO;
 
 
+import it.portalECI.DTO.AcAttivitaCampioneDTO;
 import it.portalECI.DTO.CampioneDTO;
 import it.portalECI.DTO.CertificatoCampioneDTO;
 import it.portalECI.DTO.DocumentoDTO;
@@ -253,6 +254,85 @@ public class GestioneCampioneDAO {
 	}
 
 
+	
+	public static JsonArray getCampioniScadenzaDate(String data_start, String data_end,  int id_company) throws Exception {
+
+		DateFormat df = new SimpleDateFormat("yyyy-MM-dd");		
+		Session session = SessionFacotryDAO.get().openSession();
+		    
+		session.beginTransaction();
+
+		ArrayList<AcAttivitaCampioneDTO> attivita = null;
+			
+		ArrayList<CampioneDTO> lista = new ArrayList<CampioneDTO>();			
+		ArrayList<Integer> lista_tipo = new ArrayList<Integer>();
+		ArrayList<String> lista_date = new ArrayList<String>();
+		JsonArray list = new JsonArray();
+			
+		Query query = null;
+			
+			
+			query = session.createQuery("from CampioneDTO WHERE data_scadenza between :_date_start and :_date_end and id_Company=:_id_company and statoCampione != 'F'");
+			query.setParameter("_date_start", df.parse(data_start));
+			query.setParameter("_date_end", df.parse(data_end));
+			query.setParameter("_id_company", id_company);	
+			
+			lista = (ArrayList<CampioneDTO>) query.list();				
+			
+			for (CampioneDTO campioneDTO : lista) {
+				lista_tipo.add(3);
+				lista_date.add(df.format(campioneDTO.getDataScadenza()));
+			}
+
+				
+			query = session.createQuery("from AcAttivitaCampioneDTO where (data_scadenza=null or data_scadenza between :_date_start and :_date_end) and obsoleta='N'");	
+			query.setParameter("_date_start", df.parse(data_start));
+			query.setParameter("_date_end", df.parse(data_end));
+				
+			attivita = (ArrayList<AcAttivitaCampioneDTO>) query.list();
+				
+			if(attivita!=null) {
+				for (AcAttivitaCampioneDTO a : attivita) {
+					if(a.getTipo_attivita().getId()==2) {
+						lista.add(a.getCampione());	
+						lista_tipo.add(a.getTipo_attivita().getId());
+						lista_date.add(df.format(a.getData_scadenza()));
+							
+					}else {
+						if(a.getCampione().getFrequenza_manutenzione()!=0) {	
+						Calendar calendar = Calendar.getInstance();
+						calendar.setTime(a.getData());
+						calendar.add(Calendar.MONTH, a.getCampione().getFrequenza_manutenzione());
+							
+						Date date = calendar.getTime();
+						if(date.after(df.parse(data_start)) && date.before(df.parse(data_end))) {
+							lista.add(a.getCampione());
+							lista_tipo.add(1);
+							lista_date.add(df.format(date));
+						}
+							
+					}
+				}
+						
+				}
+			}
+			
+
+			
+			
+		Gson gson = new Gson(); 
+		      
+		JsonElement obj = gson.toJsonTree(lista);
+		JsonElement obj_tipo = gson.toJsonTree(lista_tipo);
+		JsonElement obj_date = gson.toJsonTree(lista_date);
+			
+		list.add(obj);
+		list.add(obj_tipo);
+		list.add(obj_date);
+		session.close();
+			
+		return list;		
+	}
 
 
 	
@@ -394,30 +474,18 @@ public static void updateCampioneScheduler() {
 		}
 	}
 	
-	query = session.createQuery("select a.campione, a.data_evento from RegistroEventiDTO a where a.campione.tipo_campione.id = 3 and a.tipo_evento.id = 1 and a.campione.statoCampione!='F'  and a.obsoleta!='S'");
-	
-	
-	result = (List<Object[]>)query.list();
 
-  
-	if(result.size()>0 ) {		
-	
-		for (Object[] object : result) {
-			CampioneDTO campione =  (CampioneDTO) object[0];
-			Date data = (Date) object[1];
-			Calendar calendar = Calendar.getInstance();
-			calendar.setTime(data);
-			calendar.add(Calendar.MONTH, campione.getFrequenza_manutenzione());
-
-			Date date = calendar.getTime();
-			
-			if(date.before(new Date())) {
-				campione.setStatoCampione("N");
-				session.update(campione);
-			}
-			
-		}
-	}
+	 query = session.createQuery("from CampioneDTO where stato_campione!='F' and tipo_campione.id!=3 and (data_scadenza<now() or data_scadenza is null)");
+	 
+	 List<CampioneDTO> result_campione = (List<CampioneDTO>)query.list();
+	 
+	 if(result_campione.size()>0 ) {	
+		 for ( CampioneDTO campione : result_campione) {
+		
+		 campione.setStatoCampione("N");
+		 session.update(campione);
+		 }
+	 }
 
 	session.getTransaction().commit();
 	session.close();

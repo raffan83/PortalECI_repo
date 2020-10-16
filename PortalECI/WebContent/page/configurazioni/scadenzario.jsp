@@ -17,8 +17,7 @@
 <!-- Content Header (Page header) -->
     <section class="content-header">
        <h1 class="pull-left">
-        Scadenzaario
-        <small>Fai click per prenotare</small>
+        Scadenzario Campioni
       </h1>
        <a class="btn btn-default pull-right" href="/AccPoint"><i class="fa fa-dashboard"></i> Home</a>
     </section>
@@ -60,6 +59,24 @@
 		<input type="hidden" id="data_start">
 	<input type="hidden" id="data_end">
 </div>
+
+							<div id="myModalError" class="modal fade" role="dialog" aria-labelledby="myLargeModalLabel">
+    							<div class="modal-dialog modal-sm" role="document">
+        							<div class="modal-content">
+	    
+    									<div class="modal-header">
+        									<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        									<h4 class="modal-title" id="myModalLabel"></h4>
+      									</div>
+    									<div class="modal-content">
+       										<div class="modal-body" id="myModalErrorContent"></div>      
+    									</div>
+     									<div class="modal-footer">
+    										<button type="button" class="btn btn-outline" data-dismiss="modal">Chiudi</button>
+    									</div>
+  									</div>
+    							</div>
+							</div>
 
 <div class="row">
 	<div class="col-xs-12">

@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.5.1.final utlizzo versione della libreria JasperReports6.5.1  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="scadenzario_campioni" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="d1c3ac8f-af1e-4aa9-bb54-d45441469598">
+	<queryString>
+		<![CDATA[]]>
+	</queryString>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="148" splitType="Stretch">
+			<staticText>
+				<reportElement mode="Transparent" x="10" y="80" width="280" height="60" uuid="54aa1d17-71b8-439a-97fc-c791662b03e1"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="10" isBold="false"/>
+				</textElement>
+				<text><![CDATA[ELENCO CAMPIONI IN SCADENZA ]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="290" y="80" width="271" height="60" uuid="c8fb9373-08a4-4878-a8ef-3b6718c6fd44"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$P{mese}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="10" y="10" width="535" height="51" uuid="261cfeab-68a0-4262-b5dd-1f6454af2fef"/>
+				<textElement textAlignment="Center">
+					<font size="22"/>
+				</textElement>
+				<text><![CDATA[ECI Srl Ente di Certificazione & Ispezione]]></text>
+			</staticText>
+		</band>
+	</title>
+</jasperReport>

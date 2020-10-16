@@ -16,6 +16,8 @@ import java.util.Date;
 import org.apache.commons.fileupload.FileItem;
 import org.hibernate.Session;
 
+import com.google.gson.JsonArray;
+
 public class GestioneCampioneBO {
 
 
@@ -114,6 +116,12 @@ public class GestioneCampioneBO {
 	public static ArrayList<DocumentoDTO> getListaDocumentiEsterni(int id_campione, Session session) {
 		
 		return GestioneCampioneDAO.getListaDocumentiEsterni(id_campione, session);
+	}
+
+
+	public static JsonArray getCampioniScadenzaDate(String data_start, String data_end, Integer id_company) throws Exception {
+		// TODO Auto-generated method stub
+		return GestioneCampioneDAO.getCampioniScadenzaDate(data_start, data_end, id_company);
 	}
 
 

@@ -1,7 +1,10 @@
 package it.portalECI.action;
 
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.lang.reflect.Type;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -14,6 +17,7 @@ import java.util.Map;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
+import javax.servlet.ServletOutputStream;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -25,7 +29,9 @@ import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import com.google.gson.reflect.TypeToken;
 
+import it.portalECI.Util.Costanti;
 import it.portalECI.Util.Utility;
 import it.portalECI.DAO.GestioneCampioneDAO;
 import it.portalECI.DTO.AcAttivitaCampioneDTO;
@@ -39,6 +45,8 @@ import it.portalECI.bo.GestioneCampioneBO;
 import it.portalECI.DTO.TipoCampioneDTO;
 
 import it.portalECI.bo.GestioneCompanyBO;
+
+import it.portalECI.bo.CreateSchedaScadenzarioCampioni;
 import it.portalECI.DAO.SessionFacotryDAO;
 
 /**
@@ -72,8 +80,13 @@ public class Scadenzario extends HttpServlet {
 		
 		Session session = SessionFacotryDAO.get().openSession();
 		session.beginTransaction();
-		
+		boolean ajax = false;
 		String action = request.getParameter("action");
+		
+		
+		JsonObject myObj = new JsonObject();
+		CompanyDTO cmp=(CompanyDTO)request.getSession().getAttribute("usrCompany");
+		
 		try {	
 		if(action == null) {
 			RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/page/configurazioni/scadenzario.jsp");
@@ -85,7 +98,6 @@ public class Scadenzario extends HttpServlet {
 
 				String id_campione = request.getParameter("id_campione");
 
-				JsonObject myObj = new JsonObject();
 
 				
 					ArrayList<HashMap<String,Integer>> listaScadenze = null;
@@ -126,7 +138,7 @@ public class Scadenzario extends HttpServlet {
 					        it_taratura.remove(); 
 					    }
 				
-				PrintWriter out = response.getWriter();
+
 				
 				 Gson gson = new Gson(); 
 			        
@@ -143,6 +155,8 @@ public class Scadenzario extends HttpServlet {
 			        myObj.add("obj_manutenzione", obj_manutenzione);
 			        myObj.add("obj_verifica", obj_verifica); 
 			        myObj.add("obj_taratura", obj_taratura); 
+			        
+			        PrintWriter out = response.getWriter();
 			        
 			        out.println(myObj.toString());
 
@@ -199,17 +213,92 @@ public class Scadenzario extends HttpServlet {
 	
 		}
 		
+		else if(action!=null && action.equals("esporta_campioni_scadenza")) {
+			
+			ajax = true;
+			
+			String data_start = request.getParameter("data_start");
+			String data_end = request.getParameter("data_end");
+
+						
+			JsonArray listaCampioni = GestioneCampioneBO.getCampioniScadenzaDate(data_start, data_end, cmp.getId());
 		
+			JsonArray campioni = (JsonArray) listaCampioni.get(0);
+			JsonArray descrizioni = (JsonArray)listaCampioni.get(1);
+			JsonArray date = (JsonArray)listaCampioni.get(2);
+			
+			PrintWriter out = response.getWriter();
+			if(campioni.size()>0) {
+				Type listType = new TypeToken<ArrayList<CampioneDTO>>(){}.getType();
+				ArrayList<CampioneDTO> listaCamp = new Gson().fromJson(campioni, listType);
+				
+				listType = new TypeToken<ArrayList<Integer>>(){}.getType();
+				ArrayList<Integer> listaDesc = new Gson().fromJson(descrizioni, listType);
+				
+				listType = new TypeToken<ArrayList<String>>(){}.getType();
+				ArrayList<String> listaDate = new Gson().fromJson(date, listType);				
+				
+				new CreateSchedaScadenzarioCampioni(listaCamp, listaDesc, listaDate, data_start, data_end);
+				
+				
+				
+				myObj.addProperty("success", true);
+				out.print(myObj);
+				
+			}else {
+				
+				myObj.addProperty("success", false);
+				myObj.addProperty("messaggio", "Nessun campione in scadenza nel periodo selezionato!");
+				out.print(myObj);
+			}
+		}
+		else if(action.equals("download_scadenzario")) {
+			
+			File file = new File(Costanti.PATH_ROOT+"//ScadenzarioCampioni//SchedaListacampioni.pdf");
+			
+			FileInputStream fileIn = new FileInputStream(file);
+			
+			response.setContentType("application/octet-stream");				
+			  
+			 response.setHeader("Content-Disposition","attachment;filename="+ file.getName());
+			 
+			 ServletOutputStream outp = response.getOutputStream();
+			     
+			    byte[] outputByte = new byte[1];
+			    
+			    while(fileIn.read(outputByte, 0, 1) != -1)
+			    {
+			    	outp.write(outputByte, 0, 1);
+			    }
+			    
+			    fileIn.close();
+			    outp.flush();
+			    outp.close();
+			
+		}
 		
 		
 		}
 		catch(Exception ex)
     	{
-    		 ex.printStackTrace();
-    	     request.setAttribute("error",ECIException.callException(ex));
-       	     request.getSession().setAttribute("exception", ex);
-    		 RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/page/error.jsp");
-    	     dispatcher.forward(request,response);	
+			PrintWriter out = response.getWriter();
+			if(ajax) {
+				ex.printStackTrace();
+	        	session.getTransaction().rollback();
+	        	session.close();
+	        	request.getSession().setAttribute("exception", ex);
+	        	//myObj.addProperty("success", false);
+	        	//myObj.addProperty("messaggio", STIException.callException(ex).toString());
+	        	myObj = ECIException.callExceptionJsonObject(ex);
+	        	out.println(myObj.toString());
+	        	  	
+			}else {
+	    		 ex.printStackTrace();
+	    	     request.setAttribute("error",ECIException.callException(ex));
+	       	     request.getSession().setAttribute("exception", ex);
+	    		 RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/page/error.jsp");
+	    	     dispatcher.forward(request,response);
+			}
     	} 
 	}
 }
