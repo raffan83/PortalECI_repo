@@ -146,6 +146,10 @@
 		</property>
 			 <property name="data_fine_verifica" type="java.sql.Date">
 			<column name="data_fine_verifica" />
-		</property> 
+		</property>
+		<property name="descrizione_sede_utilizzatore" type="java.lang.String">
+			<column name="descrizione_sede_utilizzatore" />
+		</property>
+		 
 	</class>
 </hibernate-mapping> 

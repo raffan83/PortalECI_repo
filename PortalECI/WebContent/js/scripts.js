@@ -370,6 +370,8 @@ function saveInterventoFromModal(){
 	
 	var tipo_ver = '';
 	
+	var descrizione_util = '';
+	
 	if(listCatVer==""){
 		$('#empty').html("Devi inserire almeno un 'Tipo Verifica' per poter creare l'intervento!"); 
 	}else if(str1!= null){
@@ -382,8 +384,9 @@ function saveInterventoFromModal(){
 			sedi+= "&sedi="+value[5];
 			attrezzature+='&attrezzature='+value[4];
 			esercenti+='&esercenti='+value[6];
-			eff_ver+='&effettuazione_verifica='+value[7];
-			tipo_ver+='&tipo_verifica='+value[8];
+			descrizione_util+='&descrizione_util='+value[7];
+			eff_ver+='&effettuazione_verifica='+value[8];
+			tipo_ver+='&tipo_verifica='+value[9];
 		 });
 	            
 		
@@ -395,7 +398,7 @@ function saveInterventoFromModal(){
 			url: "gestioneIntervento.do?action=new",
 			//data: "dataIn="+JSON.stringify(dataArr),
 			//data: "dataIn="+str1,
-			data : "tecnico="+str1 +listCatVer+skTecObb+noteVerb+attrezzature+sedi+esercenti+eff_ver+tipo_ver,
+			data : "tecnico="+str1 +listCatVer+skTecObb+noteVerb+attrezzature+sedi+esercenti+eff_ver+tipo_ver+descrizione_util,
 			//	'id='+ encodeURIComponent(id) + '&name='+ encodeURIComponent(name)
 			dataType: "json",
 			success: function( data, textStatus) {

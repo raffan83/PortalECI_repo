@@ -315,16 +315,29 @@
 	                									<option value="" disabled selected>Seleziona Sede...</option>
 	                									<option value="0">Default</option>
 	                									<c:forEach items="${lista_sedi_cliente}" var="sd">                		
-		                        							<option value="${sd.indirizzo} - ${sd.comune } (${sd.siglaProvincia })_${sd.esercente }">${sd.indirizzo} - ${sd.comune } (${sd.siglaProvincia })</option>     	                            
+		                        							<option value="${sd.indirizzo} - ${sd.comune } (${sd.siglaProvincia })_${sd.esercente }_${sd.descrizione}">${sd.indirizzo} - ${sd.comune } (${sd.siglaProvincia })</option>     	                            
 	    	                 							</c:forEach>
-	        	         							</select>                  
+	        	         							</select>
+	        	         							<br><br>
+	        	         							<label>Utilizzatore da descrizione</label>
+	        	         							<input id="check_descrizione" name = "check_descrizione" class="form-control" type="checkbox"  >                  
 	        									</div>  
+	        									    
+	        										
+	        									
         									</div>
         									<div id="content_esercente" style="display:none">
 	        									<div class="form-group col-sm-5" >
 	                  								<label>Esercente</label>
 	                  								<input id="esercente" name = "esercente" class="form-control" type="text" value="" >                 
 	        									</div>  
+	        									
+	        									<div id="content_descrizione_utilizzatore" style="display:none">
+	        									<div class="form-group col-sm-5" >
+	                  								<label>Descrizione Sede Utilizzatore</label>
+	                  								<input id="descrizione_sede_util" name = "descrizione_sede_util" class="form-control" type="text"  >                 
+	        									</div>  
+	        									</div>
         									</div>
         									<div id="content_attrezzatura" style="display:none" >
 	        									<div class="form-group col-sm-5">
@@ -384,7 +397,8 @@
  															<th>Attrezzatura</th>
  															<th style="display:none"></th>
  															<th>Sede</th>
- 															<th>Esercente</th> 															
+ 															<th>Esercente</th> 	
+ 															<th>Descrizione Utilizzatore</th>														
  															<th>Effettuazione verifica</th>
  															<th>Tipo verifica</th>
  															<th>Note</th>		 														
@@ -496,6 +510,30 @@
 	 				$('#attrezzatura').html(opt)
 	 				document.getElementById("attrezzatura").selectedIndex = 0;
  				}
+ 			});
+ 			
+ 			
+
+ 			
+ 			$('#check_descrizione').on('ifChecked', function(event) {
+ 				
+ 				if($('#sede').val()!=''){
+ 					$('#sede').change();	
+ 				}
+ 				
+ 				$('#content_descrizione_utilizzatore').show();
+ 				
+ 				
+ 				
+ 			});
+ 			
+
+ 	 		
+ 		$('#check_descrizione').on('ifUnchecked', function(event) {
+ 				
+ 			$('#content_descrizione_utilizzatore').hide();
+ 			$('#descrizione_sede_util').val('');
+ 				
  			});
  			
  			var id_row_intervento = 0;
@@ -768,11 +806,13 @@
       				
       				var value = $(this).val();
       				
-      				if(value!='' && value!="0"){
+      				if(value !=null && value!='' && value!="0"){
       					$('#esercente').val(value.split("_")[1]);
+      					$('#descrizione_sede_util').val(value.split("_")[2]);
       				}else if(value=="0"){
       					$('#esercente').val("${esercente}");
       				}
+      				
       				
       			});
       			
@@ -782,6 +822,8 @@
 					var attrezzatura = "";
 					var eff_ver = $('#effettuazione_verifica').val();
 					var tipo_ver =$('#tipo_verifica').val();
+					
+					var descrizione_util = $('#descrizione_sede_util').val();
 					
 					var is_vie = false;
 					if(categorie_verifica == "10" && $('#attrezzatura').val()!='0'){
@@ -841,6 +883,8 @@
 									}else{
 										objectdata+="<td></td>";
 									}
+									objectdata+="<td></td>";
+									
 									objectdata+='<td>'+eff_ver+'</td>'+
 									'<td>'+tipo_ver+'</td>';	
 									objectdata+='<td>'+$("#noteVerbale").val()+'</td>'+    
@@ -920,6 +964,12 @@
 								var esercente = $('#esercente').val();
 								if(esercente !=null && esercente !=''){
 									objectdata+="<td>"+esercente+"</td>";	
+								}else{
+									objectdata+="<td></td>";
+								}
+							
+								if(descrizione_util !=null && descrizione_util !=''){
+									objectdata+="<td>"+descrizione_util+"</td>";	
 								}else{
 									objectdata+="<td></td>";
 								}

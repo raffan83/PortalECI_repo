@@ -60,6 +60,8 @@ public class VerbaleDTO implements Serializable {
 	private String ore_uomo;
 	private String matricola_vie;
 	private Date data_fine_verifica;
+	private String descrizione_sede_utilizzatore;
+	
 	
 	public int getId() {
 		return id;
@@ -414,6 +416,14 @@ public class VerbaleDTO implements Serializable {
 
 	public void setMatricola_vie(String matricola_vie) {
 		this.matricola_vie = matricola_vie;
+	}
+
+	public String getDescrizione_sede_utilizzatore() {
+		return descrizione_sede_utilizzatore;
+	}
+
+	public void setDescrizione_sede_utilizzatore(String descrizione_sede_utilizzatore) {
+		this.descrizione_sede_utilizzatore = descrizione_sede_utilizzatore;
 	}
 
 	

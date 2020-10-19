@@ -142,7 +142,7 @@ public class GestioneVerbaleBO {
 		session.update(intervento);
 	}
 	
-	public static VerbaleDTO buildVerbale(String codiceVerifica, Session session, Boolean creaSchedaTecnica,String note, AttrezzaturaDTO attrezzatura, String sedeUtilizzatore, String esercente, String effettuazione_verbale, String tipo_verifica) {
+	public static VerbaleDTO buildVerbale(String codiceVerifica, Session session, Boolean creaSchedaTecnica,String note, AttrezzaturaDTO attrezzatura, String sedeUtilizzatore, String esercente, String effettuazione_verbale, String tipo_verifica, String descrizione_utilizzatore) {
 		VerbaleDTO result=null;
 		QuestionarioDTO questionario= GestioneQuestionarioDAO.getQuestionarioForVerbaleInstance(codiceVerifica, session);
 		if(questionario!=null) {
@@ -156,6 +156,7 @@ public class GestioneVerbaleBO {
 			verbale.setAttrezzatura(attrezzatura);
 			verbale.setSedeUtilizzatore(sedeUtilizzatore);
 			verbale.setType(VerbaleDTO.VERBALE);
+			verbale.setDescrizione_sede_utilizzatore(descrizione_utilizzatore);
 			if(effettuazione_verbale!=null && !effettuazione_verbale.equals("")) {
 				verbale.setEffettuazione_verifica(Integer.parseInt(effettuazione_verbale));	
 			}
@@ -696,9 +697,15 @@ public class GestioneVerbaleBO {
 			html = html.replaceAll("\\$\\{INDIRIZZO_CLIENTE_UTILIZZATORE\\}", indirizzo_utilizzatore);
 		}else {
 			
-			if(clienteUtilizzatore != null && clienteUtilizzatore.getNOME_UTILIZZATORE()!=null) {
-				html = html.replaceAll("\\$\\{CLIENTE_UTILIZZATORE\\}", clienteUtilizzatore.getNOME_UTILIZZATORE());
+			
+			if(verbale.getDescrizione_sede_utilizzatore()!=null && !verbale.getDescrizione_sede_utilizzatore().equals("")) {
+				html = html.replaceAll("\\$\\{CLIENTE_UTILIZZATORE\\}", verbale.getDescrizione_sede_utilizzatore());
+			}else {
+				if(clienteUtilizzatore != null && clienteUtilizzatore.getNOME_UTILIZZATORE()!=null) {
+					html = html.replaceAll("\\$\\{CLIENTE_UTILIZZATORE\\}", clienteUtilizzatore.getNOME_UTILIZZATORE());
+				}
 			}
+			
 			
 			if(clienteUtilizzatore != null && clienteUtilizzatore.getINDIRIZZO_UTILIZZATORE()!=null) {
 				html = html.replaceAll("\\$\\{INDIRIZZO_CLIENTE_UTILIZZATORE\\}", clienteUtilizzatore.getINDIRIZZO_UTILIZZATORE());
