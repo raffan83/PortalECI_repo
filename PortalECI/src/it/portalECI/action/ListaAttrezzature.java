@@ -531,7 +531,9 @@ public class ListaAttrezzature extends HttpServlet {
 				attrezzatura.setTipo_attrezzatura_GVR(tipo_attrezzatura_gvr);
 				attrezzatura.setID_specifica(id_specifica);
 				attrezzatura.setSogg_messa_serv_GVR(sogg_messa_servizio_gvr);
-				attrezzatura.setNome_sede(n_panieri_idroestrattori);
+				if(n_panieri_idroestrattori!=null && !n_panieri_idroestrattori.equals("")) {
+					attrezzatura.setN_panieri_idroestrattori(Integer.parseInt(n_panieri_idroestrattori));	
+				}
 				attrezzatura.setMarcatura(marcatura);
 				attrezzatura.setN_id_on(n_id_on);
 				
@@ -650,7 +652,9 @@ public class ListaAttrezzature extends HttpServlet {
 				attrezzatura.setTipo_attrezzatura_GVR(tipo_attrezzatura_gvr);
 				attrezzatura.setID_specifica(id_specifica);
 				attrezzatura.setSogg_messa_serv_GVR(sogg_messa_servizio_gvr);
-				attrezzatura.setNome_sede(n_panieri_idroestrattori);
+				if(n_panieri_idroestrattori!=null && !n_panieri_idroestrattori.equals("")) {
+					attrezzatura.setN_panieri_idroestrattori(Integer.parseInt(n_panieri_idroestrattori));	
+				}				
 				attrezzatura.setMarcatura(marcatura);
 				attrezzatura.setN_id_on(n_id_on);
 				

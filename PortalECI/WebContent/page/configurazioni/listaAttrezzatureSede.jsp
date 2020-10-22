@@ -69,6 +69,10 @@
  	'${attrezzatura.anno_costruzione }','${attrezzatura.fabbricante }','${attrezzatura.modello }','${attrezzatura.settore_impiego }','${fn:replace(fn:replace(attrezzatura.note_tecniche.replace('\'',' ').replace('\\','/'),newLineChar, ' '),newLineChar2, ' ')}','${fn:replace(fn:replace(attrezzatura.note_generiche.replace('\'',' ').replace('\\','/').replace('\\n',' '),newLineChar, ' '),newLineChar2,' ')}','${attrezzatura.obsoleta }',
  	'${attrezzatura.tipo_attrezzatura }','${attrezzatura.tipo_attrezzatura_GVR }','${attrezzatura.ID_specifica }','${attrezzatura.sogg_messa_serv_GVR }',
  	'${attrezzatura.n_panieri_idroestrattori }','${attrezzatura.marcatura }','${attrezzatura.n_id_on }','${attrezzatura.data_scadenza_ventennale }')" >
+ 	
+ 	
+ 	
+ 	
  	</c:when>
  	<c:otherwise>
  		<tr style="background-color:#ff6666">
@@ -722,8 +726,7 @@ function openTab(id_attrezzatura, matricola_inail, numero_fabbrica, tipo_attivit
 		data_verifica_funzionamento, data_prossima_verifica_funzionamento,data_verifica_integrita, data_prossima_verifica_integrita, data_verifica_interna, data_prossima_verifica_interna,
 		anno_costruzione, fabbricante, modello, settore_impiego, note_tecniche, note_generiche, obsoleta, tipo_attrezzatura, tipo_attrezzatura_gvr,
 		id_specifica, sogg_messa_serv_GVR, n_panieri_idroestrattori, marcatura, n_id_on, data_scadenza_ventennale){
-	
-	
+
 	
 	$('#id_attrezzatura').val(id_attrezzatura);
 	$('#matricola_inail_mod').val(matricola_inail);
@@ -736,7 +739,7 @@ function openTab(id_attrezzatura, matricola_inail, numero_fabbrica, tipo_attivit
 		$('#descrizione_mod').val(tipo_attivita+"_"+descrizione);	
 	}
 	
-	//$('#descrizione_mod').change();
+	$('#descrizione_mod').change();
 	$('#cliente_mod').val(id_cliente);
 	$('#cliente_mod').change();
 	if(id_sede!=0){
@@ -777,7 +780,7 @@ function openTab(id_attrezzatura, matricola_inail, numero_fabbrica, tipo_attivit
 		$('#data_scadenza_ventennale_mod').val(Date.parse(data_scadenza_ventennale).toString("dd/MM/yyyy"));	
 	}
 	
-	$('#id_attrezzatura').val(id_attrezzatura);	
+	$('#id_specifica_mod').val(id_specifica);	
 	
 	$('#data_prossima_verifica_funzionamento_mod').datepicker({
 			format: "dd/MM/yyyy"
@@ -870,15 +873,21 @@ function modalModificaAttrezzatura(id_attrezzatura, matricola_inail, numero_fabb
 		data_verifica_funzionamento, data_prossima_verifica_funzionamento,data_verifica_integrita, data_prossima_verifica_integrita, data_verifica_interna, data_prossima_verifica_interna,
 		anno_costruzione, fabbricante, modello, settore_impiego, note_tecniche, note_generiche, obsoleta, tipo_attrezzatura, tipo_attrezzatura_gvr,
 		id_specifica, sogg_messa_serv_GVR, n_panieri_idroestrattori, marcatura, n_id_on, data_scadenza_ventennale){
-	
 
+	
+	
 	$('#id_attrezzatura').val(id_attrezzatura);
 	$('#matricola_inail_mod').val(matricola_inail);
 	$('#numero_fabbrica_mod').val(numero_fabbrica);
 	$('#tipo_attivita_mod').val(tipo_attivita);
 	$('#tipo_attivita_mod').change();
-	//$('#descrizione_mod').val(tipo_attivita+"_"+descrizione+"_"+id_specifica);
-
+	if(id_specifica!=null && id_specifica!=''){
+		$('#descrizione_mod').val(tipo_attivita+"_"+descrizione+"_"+id_specifica);
+	}else{
+		$('#descrizione_mod').val(tipo_attivita+"_"+descrizione);	
+	}
+	
+	$('#descrizione_mod').change();
 	$('#cliente_mod').val(id_cliente);
 	$('#cliente_mod').change();
 	if(id_sede!=0){
@@ -919,14 +928,21 @@ function modalModificaAttrezzatura(id_attrezzatura, matricola_inail, numero_fabb
 		$('#data_scadenza_ventennale_mod').val(Date.parse(data_scadenza_ventennale).toString("dd/MM/yyyy"));	
 	}
 	
-	$('#id_attrezzatura').val(id_attrezzatura);	
+	$('#id_specifica_mod').val(id_specifica);	
 	
 	$('#data_prossima_verifica_funzionamento_mod').datepicker({
 			format: "dd/MM/yyyy"
 	});
 	
 
+	$('#tipo_attrezzatura_mod').val(tipo_attrezzatura);
+	$('#tipo_attrezzatura_mod').change();
 
+	$('#tipo_attrezzatura_gvr_mod').val(tipo_attrezzatura_gvr);
+	$('#tipo_attrezzatura_gvr_mod').change();
+	
+	$('#sogg_messa_serv_GVR_mod').val(sogg_messa_serv_GVR);
+	$('#sogg_messa_serv_GVR_mod').change();
 	
 	$('#n_panieri_idroestrattori_mod').val(n_panieri_idroestrattori);
 	
@@ -945,25 +961,8 @@ function modalModificaAttrezzatura(id_attrezzatura, matricola_inail, numero_fabb
 		$('#rendi_non_obsoleta').show();
 	}
 	
-	if(id_specifica!=null && id_specifica!=''){
-		$('#descrizione_mod').val(tipo_attivita+"_"+descrizione+"_"+id_specifica);
-	}else{
-		$('#descrizione_mod').val(tipo_attivita+"_"+descrizione);	
-	}
-	$('#descrizione_mod').change();
 	
-	
-	$('#tipo_attrezzatura_mod').val(tipo_attrezzatura);
-	$('#tipo_attrezzatura_mod').change();
 
-	$('#tipo_attrezzatura_gvr_mod').val(tipo_attrezzatura_gvr);
-	$('#tipo_attrezzatura_gvr_mod').change();
-	
-	$('#sogg_messa_serv_GVR_mod').val(sogg_messa_serv_GVR);
-	$('#sogg_messa_serv_GVR_mod').change();
-	
-	$('#id_specifica_mod').val(id_specifica);
-	
 	$('#modalModificaAttrezzatura').modal();
 	
 }
