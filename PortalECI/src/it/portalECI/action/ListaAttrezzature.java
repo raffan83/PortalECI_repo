@@ -506,7 +506,7 @@ public class ListaAttrezzature extends HttpServlet {
 				
 				attrezzatura.setNome_cliente(cliente.getNome());	
 				if(!id_sede.equals("0")) {
-					attrezzatura.setNome_sede(sede.getDescrizione() +" - "+sede.getIndirizzo()+" - "+sede.getComune()+ "("+sede.getSiglaProvincia()+")");
+					attrezzatura.setNome_sede(sede.getDescrizione());
 					attrezzatura.setIndirizzo(sede.getIndirizzo());
 					attrezzatura.setComune(sede.getComune());
 					attrezzatura.setProvincia(sede.getSiglaProvincia());
@@ -627,7 +627,7 @@ public class ListaAttrezzature extends HttpServlet {
 				
 				attrezzatura.setNome_cliente(cliente.getNome());	
 				if(!id_sede.equals("0")) {
-					attrezzatura.setNome_sede(sede.getDescrizione() +" - "+sede.getIndirizzo()+" - "+sede.getComune()+ "("+sede.getSiglaProvincia()+")");
+					attrezzatura.setNome_sede(sede.getDescrizione());
 					attrezzatura.setIndirizzo(sede.getIndirizzo());
 					attrezzatura.setComune(sede.getComune());
 					attrezzatura.setProvincia(sede.getSiglaProvincia());

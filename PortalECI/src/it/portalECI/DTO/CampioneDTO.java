@@ -40,8 +40,6 @@ public class CampioneDTO implements Serializable {
 
 	private String modello="";
 
-	private String nome="";
-
 	private String numeroCertificato="";
 
 	private String statoCampione="";
@@ -229,13 +227,6 @@ public class CampioneDTO implements Serializable {
 		this.modello = modello;
 	}
 
-	public String getNome() {
-		return this.nome;
-	}
-
-	public void setNome(String nome) {
-		this.nome = nome;
-	}
 
 	public String getNumeroCertificato() {
 		return this.numeroCertificato;

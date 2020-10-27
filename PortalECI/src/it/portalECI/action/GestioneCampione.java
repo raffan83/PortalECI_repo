@@ -130,8 +130,9 @@ public class GestioneCampione extends HttpServlet {
         	            	
         	            }
         			        
-        			  String nome = (String) ret.get("nome");
+        			 // String nome = (String) ret.get("nome");
         	
+        		      String settore = (String) ret.get("settore");
         			  String descrizione = (String) ret.get("descrizione");
         			  String costruttore = (String) ret.get("costruttore");
         			  String modello = (String) ret.get("modello");        			
@@ -164,7 +165,7 @@ public class GestioneCampione extends HttpServlet {
         			  String attivita_di_taratura = (String) ret.get("attivita_di_taratura_text");
         				 
         			 
-        				campione.setNome(nome);
+        				//campione.setNome(nome);
         				campione.setMatricola(matricola);
         	 			campione.setDescrizione(descrizione);
         				campione.setCostruttore(costruttore);
@@ -175,6 +176,10 @@ public class GestioneCampione extends HttpServlet {
         				}
         				
         				campione.setStatoCampione(statoCampione);
+        				
+        				if(settore!=null && !settore.equals("")) {
+        					campione.setSettore(Integer.parseInt(settore));
+        				}
         				
         		 
         				campione.setAttivita_di_taratura(attivita_di_taratura);
@@ -320,39 +325,34 @@ public class GestioneCampione extends HttpServlet {
         	            
         	            }
         			        
-        			  String nome = (String) ret.get("nome_mod");
+        			 // String nome = (String) ret.get("nome_mod");
         	
+        		      String settore = (String) ret.get("settore_mod");
         			  String descrizione = (String) ret.get("descrizione_mod");
         			  String costruttore = (String) ret.get("costruttore_mod");
         			  String modello = (String) ret.get("modello_mod");
-        			  String interpolazione = (String) ret.get("interpolazione_mod");
         			  String freqTaratura = (String) ret.get("freqTaratura_mod");
         			  String statoCampione = (String) ret.get("statoCampione_mod");
         			  String dataVerifica = (String) ret.get("dataVerifica_mod");
-        			  String numeroCerificato  = (String) ret.get("numeroCerificato_mod");
-        			  		  
-        			  String matricola = (String) ret.get("matricola_mod");			 
-        			  
+        			  String numeroCerificato  = (String) ret.get("numeroCerificato_mod");        			  		  
+        			  String matricola = (String) ret.get("matricola_mod");			         			  
         			  String distributore = (String) ret.get("distributore_mod");
         			  String data_acquisto = (String) ret.get("data_acquisto_mod");
         			  String data_messa_in_servizio = (String) ret.get("data_messa_in_servizio_mod");
         			  String campo_accettabilita = (String)ret.get("campo_accettabilita_mod");
-        			  String ente_certificatore = (String)ret.get("ente_certificatore_mod");			  
-        			  
+        			  String ente_certificatore = (String)ret.get("ente_certificatore_mod");		
         			  String campo_misura = (String)ret.get("campo_misura_mod");
         			  String unita_formato = (String)ret.get("unita_formato_mod");
         			  String frequenza_manutenzione = (String)ret.get("frequenza_manutenzione_mod");
-        			  String frequenza_verifica_intermedia = (String)ret.get("frequenza_verifica_intermedia_mod");
         			  String note_attivita_taratura = (String)ret.get("note_attivita_taratura_mod");
         			  String ubicazione = (String)ret.get("ubicazione_mod");
         			  String id_strumento = (String)ret.get("strumento");
         			  String descrizione_manutenzione = (String)ret.get("descrizione_manutenzione_mod");
-        			  String descrizione_verifica_intermedia = (String)ret.get("descrizione_verifica_intermedia_mod");
         			  String attivita_di_taratura = (String) ret.get("attivita_taratura_text_mod");
         			  String tipo_campione = (String) ret.get("tipoCampione_mod");
         			  
         			 
-        				campione.setNome(nome);
+        				//campione.setNome(nome);
         				campione.setMatricola(matricola);
         	 			campione.setDescrizione(descrizione);
         				campione.setCostruttore(costruttore);
@@ -363,6 +363,10 @@ public class GestioneCampione extends HttpServlet {
         					campione.setFreqTaraturaMesi(Integer.parseInt(freqTaratura));	
         				}else {
         					campione.setFreqTaraturaMesi(0);
+        				}
+        				
+        				if(settore!=null && !settore.equals("")) {
+        					campione.setSettore(Integer.parseInt(settore));
         				}
         				
         				campione.setStatoCampione(statoCampione);

@@ -54,21 +54,21 @@ public class CreateSchedaManutenzioniCampione {
 //		}
 		report.addParameter("titolo", "SCHEDA DI MANUTENZIONE APPARECCHIATURA (SMA)");
 		report.addParameter("tipo_scheda", "SMA:");
-		if(campione.getNome()!=null) {
-			report.addParameter("denominazione", campione.getNome());
-		}else {
-			report.addParameter("denominazione", "");
-		}
+//		if(campione.getNome()!=null) {
+//			report.addParameter("denominazione", campione.getNome());
+//		}else {
+//			report.addParameter("denominazione", "");
+//		}
 		if(campione.getCodice()!=null) {
 			report.addParameter("codice_interno", campione.getCodice());
 		}else {
 			report.addParameter("codice_interno", "");
 		}
-		if(campione.getMatricola()!=null) {
-			report.addParameter("matricola", campione.getMatricola());
-		}else {
-			report.addParameter("matricola", "");
-		}
+//		if(campione.getMatricola()!=null) {
+//			report.addParameter("matricola", campione.getMatricola());
+//		}else {
+//			report.addParameter("matricola", "");
+//		}
 		
 		SubreportBuilder subreport =	cmp.subreport(getTableReport(lista_manutenzioni)); 
 		

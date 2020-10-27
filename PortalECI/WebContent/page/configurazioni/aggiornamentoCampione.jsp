@@ -24,6 +24,26 @@ SimpleDateFormat sdf= new SimpleDateFormat("dd/MM/yyyy");
  <c:set var="tipo_camp" value="<%=campione.getTipo_campione().getId() %>"></c:set>
  <form class="form-horizontal" id="formAggiornamentoCampione">
  
+        <div class="form-group">
+          <label for="inputEmail" class="col-sm-3 control-label">Settore:</label>
+
+         <div class="col-sm-9">
+         <select class="form-control select2" id="settore_mod" name="settore_mod" required>
+         <option value=""></option>
+        <%if(campione.getSettore()==0){ %>
+         <option value="0" selected>Organismo di ispezione</option>
+         <option value="1" >Soggetto abilitato</option>
+         <%}else{ %>
+         <option value="0" >Organismo di ispezione</option>
+         <option value="1" selected>Soggetto abilitato</option>
+         <%} %>
+         </select>
+			
+     	</div>
+   </div>
+   
+ 
+ 
            <div class="form-group">
         <label for="inputName" class="col-sm-3 control-label">Tipo Campione:</label>
         <div class="col-sm-9">
@@ -52,13 +72,13 @@ SimpleDateFormat sdf= new SimpleDateFormat("dd/MM/yyyy");
      </div>
 
 
-   <div class="form-group">
+<%--    <div class="form-group">
         <label for="inputName" class="col-sm-3 control-label">Nome:</label>
         <div class="col-sm-9">
                       <input class="form-control" id="nome_mod" type="text" name="nome_mod" required value="<%=campione.getNome() %>"/>
     </div>
      </div>
-     
+      --%>
             <div class="form-group">
         <label for="inputName" class="col-sm-3 control-label">Descrizione:</label>
         <div class="col-sm-9">
@@ -382,10 +402,10 @@ $(document).ready(function(){
 	
 	var tipo_camp = ${tipo_camp};
 	
+	$('#tipoCampione_mod').select2();
+	$('#settore_mod').select2();	
 	
-
 	
-	$('#tipoCampione_mod').select2();	
 	
 	var selection = $('#attivita_taratura_text_mod').val();
 	

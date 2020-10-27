@@ -43,9 +43,6 @@
         <property name="modello" type="java.lang.String">
             <column name="MODELLO" />
         </property>
-        <property name="nome" type="java.lang.String">
-            <column name="NOME" />
-        </property>
         <property name="numeroCertificato" type="java.lang.String">
             <column name="NUMERO_CERTIFICATO" />
         </property>

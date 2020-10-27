@@ -22,6 +22,7 @@ import it.portalECI.DTO.TipoVerificaDTO;
 import it.portalECI.DTO.UtenteDTO;
 import it.portalECI.DTO.VerbaleDTO;
 import it.portalECI.Util.Utility;
+import it.portalECI.bo.GestioneAnagraficaRemotaBO;
 import it.portalECI.bo.GestioneCommesseBO;
 import it.portalECI.bo.GestioneInterventoBO;
 import it.portalECI.bo.GestioneQuestionarioBO;
@@ -129,6 +130,8 @@ public class GestioneInterventoDati extends HttpServlet {
 			}
 		}
 	
+		
+		
 		request.getSession().setAttribute("listIdCodiciCategoria", listIdCodiciCategoria);
 		request.getSession().setAttribute("listCodiciCategoria", listCodiciCategoria);
 		request.getSession().setAttribute("listIdCodiciTipo", listIdCodiciTipo);
@@ -140,7 +143,11 @@ public class GestioneInterventoDati extends HttpServlet {
 		CommessaDTO commessa;
 		try {
 			commessa = GestioneCommesseBO.getCommessaById(intervento.getIdCommessa());
+			
+			String nome_cliente = GestioneAnagraficaRemotaBO.getClienteById(intervento.getId_cliente()+"").getNome();
+			
 			request.getSession().setAttribute("commessa", commessa);
+			request.getSession().setAttribute("nome_cliente", nome_cliente);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

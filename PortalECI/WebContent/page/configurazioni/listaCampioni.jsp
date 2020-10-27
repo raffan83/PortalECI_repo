@@ -100,8 +100,7 @@
  <thead><tr class="active">
  <th>ID</th>
  <th>Proprietario</th>
- <th>Utilizzatore</th>
- <th>Nome</th>
+ <th>Utilizzatore</th> 
  <th>Tipo Campione</th>
  <th>Codice</th>
  <th>Costruttore</th>
@@ -124,7 +123,7 @@
 	<td>${campione.id}</td>
 	<td>${campione.company.denominazione}</td>
 	<td>${campione.company_utilizzatore.denominazione}</td>
-	<td>${campione.nome}</td>
+	
 	<td>${campione.tipo_campione.nome}</td>
 	<td>${campione.codice}</td>
 	<td>${campione.costruttore}</td>
@@ -400,6 +399,19 @@ req
      	</div>
    </div>
   
+            <div class="form-group">
+        <label for="inputName" class="col-sm-2 control-label">Settore:</label>
+        <div class="col-sm-10">
+                     
+					   <select class="form-control  select2" id="settore" data-placeholder="Seleziona settore..." name="settore"    style="width:100%" required>
+                       					<option value=""></option>
+                       					<option value="0" >Organismo di ispezione</option>
+                       					<option value="1" >Soggetto abilitato</option>
+
+                      </select>
+                      
+    </div>
+     </div>
 
    
           <div class="form-group">
@@ -431,13 +443,13 @@ req
 
      </div>
 
-   <div class="form-group">
+<!--    <div class="form-group">
         <label for="inputName" class="col-sm-2 control-label">Nome:</label>
         <div class="col-sm-10">
                       <input class="form-control  " id="nome" type="text" name="nome"  value=""  required/>
     </div>
      </div>
-     
+      -->
      
             <div class="form-group">
         <label for="inputName" class="col-sm-2 control-label">Descrizione:</label>

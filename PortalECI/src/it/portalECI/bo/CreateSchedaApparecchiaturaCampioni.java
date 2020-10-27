@@ -37,7 +37,7 @@ public class CreateSchedaApparecchiaturaCampioni {
 			report.setTemplate(Templates.reportTemplate);
 			
 			report.addParameter("codice_interno", campione.getCodice());
-			report.addParameter("denominazione", campione.getNome() +" "+campione.getDescrizione());
+			report.addParameter("denominazione", campione.getDescrizione());
 			report.addParameter("modello", campione.getModello());
 			report.addParameter("costruttore", campione.getCostruttore());
 			report.addParameter("matricola", campione.getMatricola());

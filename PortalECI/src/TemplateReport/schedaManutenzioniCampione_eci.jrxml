@@ -9,46 +9,7 @@
 		<band splitType="Stretch"/>
 	</background>
 	<title>
-		<band height="174" splitType="Stretch">
-			<staticText>
-				<reportElement x="0" y="80" width="160" height="20" uuid="c9e79221-6e3e-4e56-a166-89211a5fb946"/>
-				<text><![CDATA[Denominazione apparecchiatura: ]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="0" y="116" width="80" height="20" uuid="f0f35da3-bb6e-489c-8f7f-2759ec3c5161"/>
-				<text><![CDATA[Codice interno:]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="242" y="116" width="108" height="20" uuid="5e3642e7-022b-4107-9bd7-98d249da2027"/>
-				<text><![CDATA[N. serie o matricola: ]]></text>
-			</staticText>
-			<line>
-				<reportElement x="350" y="128" width="208" height="1" uuid="5d7c821c-da81-4f6a-97e3-7225307db39d"/>
-			</line>
-			<line>
-				<reportElement x="350" y="151" width="208" height="1" uuid="6b4361e9-a9d9-45a5-9084-c5e0318ab23c"/>
-			</line>
-			<line>
-				<reportElement x="170" y="90" width="388" height="1" uuid="8cdc8b41-d861-41a3-ae33-7911a8d531ec"/>
-			</line>
-			<line>
-				<reportElement x="80" y="128" width="140" height="1" uuid="76119338-a05a-4bea-9e08-8dd805e1d57f"/>
-			</line>
-			<textField>
-				<reportElement x="180" y="70" width="370" height="20" uuid="4a1771d0-79d5-4ec2-8e78-53228f31d0b8"/>
-				<textElement verticalAlignment="Bottom"/>
-				<textFieldExpression><![CDATA[$P{denominazione}]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement x="80" y="108" width="150" height="20" uuid="dc83f759-2f1c-4fc7-8c70-b0fb9f4ad778"/>
-				<textElement verticalAlignment="Bottom"/>
-				<textFieldExpression><![CDATA[$P{codice_interno}]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement x="357" y="115" width="200" height="36" uuid="8e8fece1-9f60-4d73-8988-7eb4b8025da9"/>
-				<textElement verticalAlignment="Top"/>
-				<textFieldExpression><![CDATA[$P{matricola}]]></textFieldExpression>
-			</textField>
+		<band height="103" splitType="Stretch">
 			<rectangle>
 				<reportElement x="6" y="10" width="181" height="51" uuid="e8763a01-da31-4c7b-a20c-c656e591ee0e"/>
 			</rectangle>

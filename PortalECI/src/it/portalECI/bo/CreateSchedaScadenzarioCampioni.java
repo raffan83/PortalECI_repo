@@ -119,7 +119,7 @@ public class CreateSchedaScadenzarioCampioni {
 			report.setColumnStyle(textStyle); 
 			
  	 		report.addColumn(col.column("Codice Interno", "codInterno", type.stringType()));
-	 		report.addColumn(col.column("Denominazione", "denominazione", type.stringType()));
+	 		report.addColumn(col.column("Descrizione", "descrizione", type.stringType()));
 	 		report.addColumn(col.column("Matricola", "matricola", type.stringType()));
 	 		report.addColumn(col.column("Tipo scadenza", "tipo", type.stringType()));
 	 		report.addColumn(col.column("Data scadenza", "data", type.stringType()));
@@ -144,7 +144,7 @@ public class CreateSchedaScadenzarioCampioni {
 		String[] listaCodici = new String[6];
 		
 		listaCodici[0]="codInterno";
-		listaCodici[1]="denominazione";
+		listaCodici[1]="descrizione";
 		listaCodici[2]="matricola";
 		listaCodici[3]="tipo";
 		listaCodici[4]="data";
@@ -162,7 +162,7 @@ public class CreateSchedaScadenzarioCampioni {
 					if(campione.getDataScadenza()!=null && !campione.getCodice().equals("NA")) 
 					{
 	 				arrayPs.add(campione.getCodice());
-	 				arrayPs.add(campione.getNome());
+	 				arrayPs.add(campione.getDescrizione());
 	 				arrayPs.add(campione.getMatricola());
 	 				if(descrizioni!=null && descrizioni.get(i)!=null && descrizioni.get(i)==1) {
 	 					tipo = "Manutenzione";

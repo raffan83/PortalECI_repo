@@ -38,9 +38,9 @@ SimpleDateFormat sdf= new SimpleDateFormat("dd/MM/yyyy");
          <select class="form-control select2" id="" name="settore" disabled>
          <option value=""></option>
         <%if(campione.getSettore()==0){ %>
-         <option value="0" selected>Laboratorio metrologico</option>
+         <option value="0" selected>Organismo di ispezione</option>
          <%}else{ %>
-         <option value="1" selected>Centro di taratura LAT</option>
+         <option value="1" selected>Soggetto abilitato</option>
          <%} %>
          </select>
 			
@@ -82,12 +82,12 @@ SimpleDateFormat sdf= new SimpleDateFormat("dd/MM/yyyy");
     </div>
      </div>
 
-   <div class="form-group">
+<%--    <div class="form-group">
         <label for="inputName" class="col-sm-3 control-label">Nome:</label>
         <div class="col-sm-9">
                       <input class="form-control" id="" type="text" name="nome" disabled="disabled"  value="<%=campione.getNome() %>"/>
     </div>
-     </div>
+     </div> --%>
      
             <div class="form-group">
         <label for="inputName" class="col-sm-3 control-label">Descrizione:</label>

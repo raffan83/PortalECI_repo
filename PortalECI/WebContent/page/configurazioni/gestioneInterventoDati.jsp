@@ -63,7 +63,7 @@
                 									</li>
                 									<li class="list-group-item">
                   										<b>Cliente</b> 
-                  										<a class="pull-right">${intervento.getId_cliente()}</a>
+                  										<a class="pull-right">${nome_cliente}</a>
                 									</li>
                 									<li class="list-group-item">
                   										<b>Sede</b> 

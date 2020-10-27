@@ -59,21 +59,21 @@ private void build(ArrayList<AcAttivitaCampioneDTO> lista_tar_ver,  CampioneDTO 
 		
 		report.addParameter("titolo", "SCHEDA TARATURA APPARECCHIATURA (STA)");
 		report.addParameter("tipo_scheda", "STA:");
-		if(campione.getNome()!=null) {
-			report.addParameter("denominazione", campione.getNome());
-		}else {
-			report.addParameter("denominazione", "");
-		}
+//		if(campione.getNome()!=null) {
+//			report.addParameter("denominazione", campione.getNome());
+//		}else {
+//			report.addParameter("denominazione", "");
+//		}
 		if(campione.getCodice()!=null) {
 			report.addParameter("codice_interno", campione.getCodice());
 		}else {
 			report.addParameter("codice_interno", "");
 		}
-		if(campione.getMatricola()!=null) {
-			report.addParameter("matricola", campione.getMatricola());
-		}else {
-			report.addParameter("matricola", "");
-		}
+//		if(campione.getMatricola()!=null) {
+//			report.addParameter("matricola", campione.getMatricola());
+//		}else {
+//			report.addParameter("matricola", "");
+//		}
 		
 		SubreportBuilder subreport = cmp.subreport(getTableReport(lista_tar_ver));	
 		
@@ -114,15 +114,16 @@ private void build(ArrayList<AcAttivitaCampioneDTO> lista_tar_ver,  CampioneDTO 
 
 		report.setColumnStyle((Templates.boldCenteredStyle).setBackgroundColor(Color.WHITE).setFontSize(9));
 		//report.addColumn(col.column("Data","data", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setFixedWidth(60));	
-		report.addColumn(col.column("Tipo Attività", "tipo", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER));
-		report.addColumn(col.column("Ente", "ente", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER));
-		report.addColumn(col.column("Data", "data", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER));
+		//report.addColumn(col.column("Tipo Attività", "tipo", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER));
+		//report.addColumn(col.column("Ente", "ente", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER));
+		report.addColumn(col.column("Data taratura", "data", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER));
+	 	
+	 	report.addColumn(col.column("Periodo prossima taratura","data_scadenza", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER));
+	 	
+	 	report.addColumn(col.column("Centro LAT","centro_lat", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER));
 	 	report.addColumn(col.column("Certificato di taratura","certificato", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER));
-	 	report.addColumn(col.column("Data scadenza","data_scadenza", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER));
-	 	report.addColumn(col.column("Etichettatura di conferma","etichettatura", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER));
-	 	report.addColumn(col.column("Stato","stato", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER));
-	 	report.addColumn(col.column("Note","campo_sospesi", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER));
-	 	report.addColumn(col.column("Operatore","operatore", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER));
+	 	report.addColumn(col.column("Sigla OT","sigla_ot", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER));
+	
 	 	
 		report.setColumnTitleStyle((Templates.boldCenteredStyle).setBackgroundColor(Color.WHITE).setFontSize(9).setBorder(stl.penThin()));
 		
@@ -139,15 +140,13 @@ private void build(ArrayList<AcAttivitaCampioneDTO> lista_tar_ver,  CampioneDTO 
 			
 			listaCodici = new String[9];
 					
-			listaCodici[0]="tipo";
-			listaCodici[1]="ente";
-			listaCodici[2]="data";
+			listaCodici[0]="data";
+			listaCodici[1]="data_scadenza";
+			listaCodici[2]="centro_lat";
 			listaCodici[3]="certificato";
-			listaCodici[4]="data_scadenza";
-			listaCodici[5]="etichettatura";
-			listaCodici[6]="stato";
-			listaCodici[7]="campo_sospesi";
-			listaCodici[8]="operatore";
+			listaCodici[4]="sigla_ot";
+			
+			
 			
 			dataSource = new DRDataSource(listaCodici);
 			
@@ -157,22 +156,22 @@ private void build(ArrayList<AcAttivitaCampioneDTO> lista_tar_ver,  CampioneDTO 
 					if(attivita!=null){
 						ArrayList<String> arrayPs = new ArrayList<String>();
 						
-						arrayPs.add(attivita.getTipo_attivita().getDescrizione());
+						arrayPs.add(dt.format(attivita.getData()));
+						
+						arrayPs.add(dt.format(attivita.getData_scadenza()));						
+					
 						if(attivita.getEnte()!=null) {
 							arrayPs.add(attivita.getEnte());	
 						}else {
 							arrayPs.add("");
 						}											
-						arrayPs.add(dt.format(attivita.getData()));
+						
 						if(attivita.getCertificato()!=null) {
 							arrayPs.add(attivita.getCertificato());	
 						}else {
 							arrayPs.add("");
 						}
-						arrayPs.add(dt.format(attivita.getData_scadenza()));
-						arrayPs.add(attivita.getEtichettatura());
-						arrayPs.add(attivita.getStato());
-						arrayPs.add(attivita.getCampo_sospesi());
+
 						
 						if(attivita.getOperatore()!=null) {
 							arrayPs.add(attivita.getOperatore().getNominativo());	
@@ -186,7 +185,7 @@ private void build(ArrayList<AcAttivitaCampioneDTO> lista_tar_ver,  CampioneDTO 
 					}				
 				}
 			}else {
-				dataSource.add("","","","","","","","","");
+				dataSource.add("","","","","");
 			}
 				
 		 		    return dataSource;
