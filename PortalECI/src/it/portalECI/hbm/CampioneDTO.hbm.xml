@@ -124,5 +124,9 @@
             </key>
             <one-to-many class="it.portalECI.DTO.DocumentoCampioneDTO" />
    </set> -->
+   
+           <property name="proprietario" type="java.lang.String">
+            <column name="proprietario" />
+        </property>
     </class>
 </hibernate-mapping>

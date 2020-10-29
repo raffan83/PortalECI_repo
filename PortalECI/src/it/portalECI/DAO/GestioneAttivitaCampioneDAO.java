@@ -276,86 +276,6 @@ public static ArrayList<HashMap<String, Integer>> getListaAttivitaScadenziario(S
 
 
 
-//public static ArrayList<CampioneDTO> getListaCampioniPerData(String data, String tipo_data_lat) throws Exception, ParseException {
-//	DateFormat df = new SimpleDateFormat("yyyy-MM-dd");		
-//	Session session = SessionFacotryDAO.get().openSession();
-//    
-//	session.beginTransaction();
-//	ArrayList<AcAttivitaCampioneDTO> attivita = null;
-//	ArrayList<RegistroEventiDTO> registro = null;
-//	ArrayList<CampioneDTO> lista = new ArrayList<CampioneDTO>();
-//	Query query = null;
-//	
-//	if(tipo_data_lat!=null) {
-//		
-//		if(tipo_data_lat.equals("1")) {
-//			query = session.createQuery("from AcAttivitaCampioneDTO where tipo_attivita.id = 1 and (obsoleta = null or obsoleta = 'N')");	
-//						
-//			attivita = (ArrayList<AcAttivitaCampioneDTO>) query.list();
-//			
-//			for (AcAttivitaCampioneDTO a : attivita) {
-//				
-//
-//				Calendar calendar = Calendar.getInstance();
-//				calendar.setTime(a.getData());
-//				calendar.add(Calendar.MONTH, a.getCampione().getFrequenza_manutenzione());
-//				
-//				Date date = calendar.getTime();
-//				if(df.format(date).equals(data) && !lista.contains(a.getCampione())) {
-//					lista.add(a.getCampione());	
-//				}
-//				
-//			}
-//		}
-//		else if(tipo_data_lat.equals("2")) {
-//			query = session.createQuery("from AcAttivitaCampioneDTO where data_scadenza = :_date and tipo_attivita.id = 2 and (obsoleta = null or obsoleta = 'N')");	
-//			query.setParameter("_date", df.parse(data));
-//			
-//			attivita = (ArrayList<AcAttivitaCampioneDTO>) query.list();
-//			
-//			for (AcAttivitaCampioneDTO a : attivita) {
-//				
-//					lista.add(a.getCampione());	
-//				
-//			}
-//			
-//		}
-//		else if(tipo_data_lat.equals("3")) {
-//			query = session.createQuery("from CampioneDTO where data_scadenza = :_date and stato_campione != 'F'");	
-//			query.setParameter("_date", df.parse(data));
-//			
-//			lista = (ArrayList<CampioneDTO>) query.list();
-//		}
-//	
-//	
-//
-//	
-//	}else {
-//		query= session.createQuery("from RegistroEventiDTO where tipo_evento.id = 1 and campione.statoCampione!='F' and (obsoleta = null or obsoleta = 'N')");
-//		
-//		registro = (ArrayList<RegistroEventiDTO>) query.list();
-//		
-//		if(registro!=null) {
-//			for (RegistroEventiDTO r : registro) {
-//				if(r.getCampione().getFrequenza_manutenzione()!=0) {
-//									
-//					Calendar calendar = Calendar.getInstance();
-//					calendar.setTime(r.getData_evento());
-//					calendar.add(Calendar.MONTH, r.getCampione().getFrequenza_manutenzione());
-//					
-//					Date date = calendar.getTime();
-//					if(df.format(date).equals(data) && !lista.contains(r.getCampione())) {
-//						lista.add(r.getCampione());	
-//					}
-//				}
-//			}
-//		}
-//	}	
-//	session.close();
-//	return lista;
-//}
-
-
 public static void updateObsolete(String idC, int tipo_attivita, Session session) {
 	
 	Query query = null;
@@ -383,19 +303,13 @@ public static ArrayList<CampioneDTO> getListaCampioniPerData(String data, String
 	
 
 		if(tipo_data_lat.equals("1")) {
-			query = session.createQuery("from AcAttivitaCampioneDTO where tipo_attivita.id = 1 and (obsoleta = null or obsoleta = 'N')");	
+			query = session.createQuery("from AcAttivitaCampioneDTO where data_scadenza = :_date and tipo_attivita.id = 1 and (obsoleta = null or obsoleta = 'N')");	
 						
 			attivita = (ArrayList<AcAttivitaCampioneDTO>) query.list();
 			
 			for (AcAttivitaCampioneDTO a : attivita) {
 				
-
-				Calendar calendar = Calendar.getInstance();
-				calendar.setTime(a.getData());
-				calendar.add(Calendar.MONTH, a.getCampione().getFrequenza_manutenzione());
-				
-				Date date = calendar.getTime();
-				if(df.format(date).equals(data) && !lista.contains(a.getCampione())) {
+				if(!lista.contains(a.getCampione())) {
 					lista.add(a.getCampione());	
 				}
 				

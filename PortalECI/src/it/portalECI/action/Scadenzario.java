@@ -198,7 +198,7 @@ public class Scadenzario extends HttpServlet {
 				}
 
 			
-		        request.getSession().setAttribute("lista_company", lista_company);
+		   request.getSession().setAttribute("lista_company", lista_company);
 
 
 			SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
@@ -208,7 +208,7 @@ public class Scadenzario extends HttpServlet {
 			
 		
 			RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/page/configurazioni/listaCampioni.jsp");
-		     dispatcher.forward(request,response);
+		    dispatcher.forward(request,response);
 			
 	
 		}

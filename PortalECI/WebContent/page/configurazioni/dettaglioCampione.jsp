@@ -23,13 +23,12 @@ SimpleDateFormat sdf= new SimpleDateFormat("dd/MM/yyyy");
  <form class="form-horizontal">
               
 
-    <div class="form-group">
-          <label for="inputEmail" class="col-sm-3 control-label">Proprietario:</label>
-
-         <div class="col-sm-9">
-			<input class="form-control" id="proprietario" type="text" name="proprietario" disabled="disabled" value="<%=campione.getCompany().getDenominazione() %>" />
-     	</div>
-   </div>
+      	            <div class="form-group">
+        <label for="inputName" class="col-sm-3 control-label">Proprietario:</label>
+        <div class="col-sm-9">
+                      <input class="form-control  " id="" type="text" name="proprietario"  value="<%if(campione.getProprietario()!=null){out.println(campione.getProprietario());}%>" disabled />
+    </div>
+     </div>    
    
        <div class="form-group">
           <label for="inputEmail" class="col-sm-3 control-label">Settore:</label>
@@ -283,13 +282,7 @@ SimpleDateFormat sdf= new SimpleDateFormat("dd/MM/yyyy");
                                             	}
                                             %> 
                        	            	 	<option <%=def1%> value="S">In Servizio</option>
- 											<%
- 											String def2 = "";
-                                            	if(campione.getStatoCampione().equals("N")){
-                                            		def2 = "selected";
-                                            	}
-                                            %> 
-                            	          	<option <%=def2%> value="N">Scaduto</option>
+ 											
                             	          	<%
  											String def3 = "";
                                             	if(campione.getStatoCampione().equals("F")){

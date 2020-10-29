@@ -81,6 +81,7 @@ public class CampioneDTO implements Serializable {
 
 	private int settore;
 	private Date data_messa_in_servizio;
+	private String proprietario;
 	
 	
 	
@@ -410,6 +411,14 @@ public class CampioneDTO implements Serializable {
 
 	public void setTipo_campione(TipoCampioneDTO tipo_campione) {
 		this.tipo_campione = tipo_campione;
+	}
+
+	public String getProprietario() {
+		return proprietario;
+	}
+
+	public void setProprietario(String proprietario) {
+		this.proprietario = proprietario;
 	}
 
 }

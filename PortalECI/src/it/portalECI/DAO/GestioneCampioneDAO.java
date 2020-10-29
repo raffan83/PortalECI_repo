@@ -9,29 +9,17 @@ import it.portalECI.DAO.SessionFacotryDAO;
 import it.portalECI.DTO.TipoCampioneDTO;
 
 
-import java.io.File;
-import java.math.BigDecimal;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
 import java.text.DateFormat;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 
-import org.apache.commons.fileupload.FileItem;
-import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.Session;
-import org.hibernate.criterion.Restrictions;
-
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
 
 
 
@@ -267,58 +255,23 @@ public class GestioneCampioneDAO {
 		ArrayList<CampioneDTO> lista = new ArrayList<CampioneDTO>();			
 		ArrayList<Integer> lista_tipo = new ArrayList<Integer>();
 		ArrayList<String> lista_date = new ArrayList<String>();
-		JsonArray list = new JsonArray();
-			
-		Query query = null;
-			
-			
-			query = session.createQuery("from CampioneDTO WHERE data_scadenza between :_date_start and :_date_end and id_Company=:_id_company and statoCampione != 'F'");
-			query.setParameter("_date_start", df.parse(data_start));
-			query.setParameter("_date_end", df.parse(data_end));
-			query.setParameter("_id_company", id_company);	
-			
-			lista = (ArrayList<CampioneDTO>) query.list();				
-			
-			for (CampioneDTO campioneDTO : lista) {
-				lista_tipo.add(3);
-				lista_date.add(df.format(campioneDTO.getDataScadenza()));
-			}
-
+		JsonArray list = new JsonArray();			
+	
+		Query query = session.createQuery("from AcAttivitaCampioneDTO where  data_scadenza between :_date_start and :_date_end and obsoleta='N'");	
+		query.setParameter("_date_start", df.parse(data_start));
+		query.setParameter("_date_end", df.parse(data_end));
 				
-			query = session.createQuery("from AcAttivitaCampioneDTO where (data_scadenza=null or data_scadenza between :_date_start and :_date_end) and obsoleta='N'");	
-			query.setParameter("_date_start", df.parse(data_start));
-			query.setParameter("_date_end", df.parse(data_end));
+		attivita = (ArrayList<AcAttivitaCampioneDTO>) query.list();
 				
-			attivita = (ArrayList<AcAttivitaCampioneDTO>) query.list();
-				
-			if(attivita!=null) {
-				for (AcAttivitaCampioneDTO a : attivita) {
-					if(a.getTipo_attivita().getId()==2) {
-						lista.add(a.getCampione());	
-						lista_tipo.add(a.getTipo_attivita().getId());
-						lista_date.add(df.format(a.getData_scadenza()));
-							
-					}else {
-						if(a.getCampione().getFrequenza_manutenzione()!=0) {	
-						Calendar calendar = Calendar.getInstance();
-						calendar.setTime(a.getData());
-						calendar.add(Calendar.MONTH, a.getCampione().getFrequenza_manutenzione());
-							
-						Date date = calendar.getTime();
-						if(date.after(df.parse(data_start)) && date.before(df.parse(data_end))) {
-							lista.add(a.getCampione());
-							lista_tipo.add(1);
-							lista_date.add(df.format(date));
-						}
-							
-					}
-				}
-						
+		if(attivita!=null) {
+			for (AcAttivitaCampioneDTO a : attivita) {
+				if(a.getData_scadenza().after(df.parse(data_start)) && a.getData_scadenza().before(df.parse(data_end))) {
+					lista.add(a.getCampione());
+					lista_tipo.add(a.getTipo_attivita().getId());
+					lista_date.add(df.format(a.getData_scadenza()));
 				}
 			}
-			
-
-			
+		}
 			
 		Gson gson = new Gson(); 
 		      
@@ -444,54 +397,6 @@ public static ArrayList<CampioneDTO> getListaCampioniInServizio() {
 }
 
 
-
-public static void updateCampioneScheduler() {
-	
-	Session session = SessionFacotryDAO.get().openSession();
-    
-	session.beginTransaction();
-	
-	Query query = session.createQuery("select a.campione, a.data from AcAttivitaCampioneDTO a where a.campione.tipo_campione.id = 3 and a.tipo_attivita.id = 1 and a.campione.statoCampione!='F' and a.obsoleta!='S'");	
-
-	List<Object[]> result = (List<Object[]>)query.list();
-
-	if(result.size()>0 ) {		
-	
-		for (Object[] object : result) {
-			CampioneDTO campione =  (CampioneDTO) object[0];
-			Date data = (Date) object[1];
-			Calendar calendar = Calendar.getInstance();
-			calendar.setTime(data);
-			calendar.add(Calendar.MONTH, campione.getFrequenza_manutenzione());
-
-			Date date = calendar.getTime();
-			
-			if(date.before(new Date())) {
-				campione.setStatoCampione("N");
-				session.update(campione);
-			}
-			
-		}
-	}
-	
-
-	 query = session.createQuery("from CampioneDTO where stato_campione!='F' and tipo_campione.id!=3 and (data_scadenza<now() or data_scadenza is null)");
-	 
-	 List<CampioneDTO> result_campione = (List<CampioneDTO>)query.list();
-	 
-	 if(result_campione.size()>0 ) {	
-		 for ( CampioneDTO campione : result_campione) {
-		
-		 campione.setStatoCampione("N");
-		 session.update(campione);
-		 }
-	 }
-
-	session.getTransaction().commit();
-	session.close();
-			
-
-}
 
 public static ArrayList<TipoCampioneDTO> getListaTipoCampione() {
 	Query query=null;

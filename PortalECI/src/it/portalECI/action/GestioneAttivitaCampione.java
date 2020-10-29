@@ -7,6 +7,7 @@ import java.io.PrintWriter;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Hashtable;
 import java.util.List;
@@ -166,7 +167,15 @@ public class GestioneAttivitaCampione extends HttpServlet {
 					attivita.setEtichettatura(etichettatura);
 					attivita.setStato(stato);
 					attivita.setCampo_sospesi(campo_sospesi);
-				}		
+				}else {
+					
+					Calendar calendar = Calendar.getInstance();
+					calendar.setTime(date);
+					calendar.add(Calendar.MONTH, campione.getFrequenza_manutenzione());
+
+					Date data_scadenza_man = calendar.getTime();
+					attivita.setData_scadenza(data_scadenza_man);
+				}
 				
 				if(fileItemCertificato!=null && !filenameCertificato.equals("")) {
 
@@ -259,7 +268,16 @@ public class GestioneAttivitaCampione extends HttpServlet {
 					attivita.setEtichettatura(etichettatura);
 					attivita.setStato(stato);
 					attivita.setCampo_sospesi(campo_sospesi);
+				}else {
+					
+					Calendar calendar = Calendar.getInstance();
+					calendar.setTime(date);
+					calendar.add(Calendar.MONTH, attivita.getCampione().getFrequenza_manutenzione());
+
+					Date data_scadenza_man = calendar.getTime();
+					attivita.setData_scadenza(data_scadenza_man);
 				}
+				
 				
 				if(fileItemCertificato!=null && !filenameCertificato.equals("")) {
 

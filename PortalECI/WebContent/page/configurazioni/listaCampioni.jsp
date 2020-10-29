@@ -41,7 +41,7 @@
         Lista Campioni
         <small>Fai doppio click per entrare nel dettaglio</small>
       </h1>
-       <a class="btn btn-default pull-right" href="/AccPoint"><i class="fa fa-dashboard"></i> Home</a>
+      
     </section>
     <div style="clear: both;"></div>  
     <!-- Main content -->
@@ -121,9 +121,8 @@
 	 <tr role="row" id="${campione.codice}-${loop.index}" class="customTooltip" title="Doppio Click per aprire il dettaglio del Campione">
 
 	<td>${campione.id}</td>
-	<td>${campione.company.denominazione}</td>
-	<td>${campione.company_utilizzatore.denominazione}</td>
-	
+	<td>${campione.proprietario}</td>
+	<td>${campione.company_utilizzatore.denominazione}</td>	
 	<td>${campione.tipo_campione.nome}</td>
 	<td>${campione.codice}</td>
 	<td>${campione.costruttore}</td>
@@ -140,9 +139,7 @@
          value="${campione.dataScadenza}" />
 </c:if></td>
 <td align="center"> 
-			<c:if test="${campione.statoCampione == 'N'}">
-				<span class="label  label-warning">SCADUTO</span> 
-			</c:if>
+
 			<c:if test="${campione.statoCampione == 'S'}">
 				<span class="label  label-success">IN SERVIZIO</span>  
 			</c:if>
@@ -351,10 +348,8 @@ req
         
               
 
-    <div class="form-group">
-          <label for="inputEmail" class="col-sm-2 control-label">Proprietario:</label>
 
-         <div class="col-sm-10">
+<%--          <div class="col-sm-10">
          <select id="proprietario" name="proprietario" class="form-control select2" style="width:100%">
          <c:forEach items="${lista_company }" var="company">
          <c:if test="${company.id == usrCompany.id}">
@@ -370,12 +365,19 @@ req
          
          </select>
          
-         			<%-- <input class="form-control" id="proprietario" type="text" name="proprietario" disabled="disabled" value="${usrCompany.denominazione}" /> --%>
+         			<input class="form-control" id="proprietario" type="text" name="proprietario" disabled="disabled" value="${usrCompany.denominazione}" />
          			<input class="form-control" id="id_proprietario" type="hidden" name="id_proprietario"  value="${usrCompany.id}" />
          
 			
-     	</div>
-   </div>
+     	</div> --%>
+     	
+     	            <div class="form-group">
+        <label for="inputName" class="col-sm-2 control-label">Proprietario:</label>
+        <div class="col-sm-10">
+                      <input class="form-control  " id="proprietario" type="text" name="proprietario"  value="" required />
+    </div>
+     </div>    
+  
    
        <div class="form-group">
           <label for="inputEmail" class="col-sm-2 control-label">Utilizzatore:</label>
@@ -646,7 +648,7 @@ req
                         <select class="form-control  " id="statoCampione" name="statoCampione"  >
                       					<option value="">Selezionare Stato</option>
 	                                    <option value="S" selected>In Servizio</option>
-	                                    <option value="N">Scaduto</option>
+	                             
 	 									<option value="F">Fuori Servizio</option>
                             	          
                       </select>
@@ -980,7 +982,7 @@ var listaStrumenti = ${listaCampioniJson};
     	$('#select_manutenzione').select2();
     	$('#settore').select2();
     	$('#tipoCampione').select2();
-    	$('#proprietario').select2();
+    	//$('#proprietario').select2();
     	$('#utilizzatore').select2();
     	
 /*     	var permesso_prop_util = ${userObj.checkPermesso('PROPRIETARIO_UTILIZZATORE_CAMPIONI')}

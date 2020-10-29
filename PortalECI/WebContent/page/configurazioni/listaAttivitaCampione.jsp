@@ -71,7 +71,7 @@ SimpleDateFormat sdf= new SimpleDateFormat("dd/MM/yyyy");
 <button class="btn customTooltip btn-info" onClick="dettaglioManutenzione('${fn:replace(fn:replace(attivita.descrizione_attivita.replace('\'',' ').replace('\\','/'),newLineChar, ' '),newLineChar2, ' ')}','${attivita.tipo_manutenzione }','${attivita.data }','${attivita.operatore.nominativo }')" title="Click per visualizzare l'attività di manutenzione"><i class="fa fa-arrow-right"></i></button>
 </c:if>
 <c:if test="${attivita.tipo_attivita.id==3}">
-<button class="btn customTooltip btn-info" onClick="dettaglioVerificaTaratura('${attivita.tipo_attivita.descrizione }','${attivita.data}','${attivita.ente }','${attivita.data_scadenza }','${attivita.etichettatura }','${attivita.stato }','${attivita.campo_sospesi }','${attivita.operatore.nominativo }','','','')" title="Click per visualizzare l'attività di verifica intermedia"><i class="fa fa-arrow-right"></i></button>
+<button class="btn customTooltip btn-info" onClick="dettaglioVerificaTaratura('${attivita.tipo_attivita.descrizione }','${attivita.data}','${attivita.ente }','${attivita.data_scadenza }','${attivita.etichettatura }','${attivita.stato }','${attivita.campo_sospesi }','${attivita.operatore.nominativo.replace('\'','&prime;')}','','','')" title="Click per visualizzare l'attività di taratura"><i class="fa fa-arrow-right"></i></button>
 </c:if>
 <button class="btn customTooltip btn-warning" onClick="modificaAttivita('${attivita.id}','${attivita.tipo_attivita.id }','${fn:replace(fn:replace(attivita.descrizione_attivita.replace('\'',' ').replace('\\','/'),newLineChar, ' '),newLineChar2, ' ')}','${attivita.data}','${attivita.tipo_manutenzione }','${attivita.ente }','${attivita.data_scadenza }','${attivita.campo_sospesi }','${attivita.operatore.id }','${attivita.etichettatura }','${attivita.stato }','' )" title="Click per modificare l'attività"><i class="fa fa-edit"></i></button>
  <c:if test="${attivita.allegato!=null && !attivita.allegato.equals('') }">
@@ -347,18 +347,18 @@ SimpleDateFormat sdf= new SimpleDateFormat("dd/MM/yyyy");
         <label >Operatore:</label>
              <input id="operatore_dtl" class="form-control" readonly>
         </div>
-        <div class="col-sm-6">
+<!--         <div class="col-sm-6">
         <label >Numero Certificato:</label>
              <input id="certificato_dtl" class="form-control  pull-right" readonly>
-        </div>
-        <div class="col-sm-3">
+        </div> -->
+<!--         <div class="col-sm-3">
         <label >ID misura:</label>
              <input id="misura_dtl" class="form-control  pull-right" readonly>
              <input id="misura_enc" type="hidden">
-        </div>
-        <div class="col-sm-3">       
+        </div> -->
+<!--         <div class="col-sm-3">       
              <a class="btn btn-info customTooltip" style="margin-top:25px"title="Click per aprire il dettaglio della misura" id="btn_dtl" onClick="dettaglioMisura()"><i class="fa fa-tachometer"></i></a>
-        </div>
+        </div> -->
        
     </div>    
         

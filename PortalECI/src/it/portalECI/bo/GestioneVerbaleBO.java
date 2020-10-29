@@ -45,6 +45,7 @@ import it.portalECI.DAO.GestioneStatoInterventoDAO;
 import it.portalECI.DAO.GestioneStatoVerbaleDAO;
 import it.portalECI.DAO.GestioneVerbaleDAO;
 import it.portalECI.DTO.AttrezzaturaDTO;
+import it.portalECI.DTO.ClienteDTO;
 import it.portalECI.DTO.ColonnaTabellaQuestionarioDTO;
 import it.portalECI.DTO.ColonnaTabellaVerbaleDTO;
 import it.portalECI.DTO.CommessaDTO;
@@ -67,6 +68,7 @@ import it.portalECI.DTO.RispostaTabellaVerbaleDTO;
 import it.portalECI.DTO.RispostaTestoQuestionarioDTO;
 import it.portalECI.DTO.RispostaTestoVerbaleDTO;
 import it.portalECI.DTO.RispostaVerbaleDTO;
+import it.portalECI.DTO.SedeDTO;
 import it.portalECI.DTO.StatoInterventoDTO;
 import it.portalECI.DTO.StatoVerbaleDTO;
 import it.portalECI.DTO.TemplateQuestionarioDTO;
@@ -335,7 +337,7 @@ public class GestioneVerbaleBO {
 		if(verbale.getType().equals(VerbaleDTO.VERBALE)) {
 			intervento = verbale.getIntervento();
 			template = questionario.getTemplateVerbale();
-			nomefile = generaNumeroVerbale(questionario.getTipo(), intervento, session);
+			nomefile = generaNumeroVerbale(verbale,questionario.getTipo(), intervento, session);
 			
 			verbale.setNumeroVerbale(nomefile);
 		}else {
@@ -616,20 +618,26 @@ public class GestioneVerbaleBO {
 		}
 	}
 	
-	public static String generaNumeroVerbale(TipoVerificaDTO tipo, InterventoDTO intervento, Session session) throws Exception {
+	public static String generaNumeroVerbale(VerbaleDTO verbale, TipoVerificaDTO tipo, InterventoDTO intervento, Session session) throws Exception {
 		String numeroVerbale = new String();
 		UtenteDTO utente = intervento.getTecnico_verificatore();
 		ProgressivoVerbaleDTO progressivo = GestioneVerbaleDAO.getProgressivoVerbale(utente, tipo, session);
 		String codUtente = utente.getCodice() == null ? "" : utente.getCodice();
 		String sigla = tipo.getSigla() == null ? "" : tipo.getSigla();
 		int prog = progressivo.getProgressivo();
-		CommessaDTO comm=GestioneCommesseBO.getCommessaById(intervento.getIdCommessa());
+		
 		
 		String codProv="";
-		if(comm!=null && comm.getCOD_PROV()!=null ) 
-		{
-			codProv=comm.getCOD_PROV();
+		if(verbale.getSedeUtilizzatore()!=null) {
+			codProv = verbale.getSedeUtilizzatore().split("\\(")[1].replace(")","");
+		}else {
+			CommessaDTO comm=GestioneCommesseBO.getCommessaById(intervento.getIdCommessa());
+			if(comm!=null && comm.getCOD_PROV()!=null ) 
+			{
+				codProv=comm.getCOD_PROV();
+			}
 		}
+		
 		
 	//	String codProv = intervento.getCodiceProvincia() == null ? " " : intervento.getCodiceProvincia();
 		numeroVerbale = String.format("%s-%s-%03d-%s", codUtente, sigla, prog, codProv);
@@ -676,7 +684,9 @@ public class GestioneVerbaleBO {
 //		}
 		String indirizzo_utilizzatore ="";
 		String cliente_utilizzatore = "";
-		String com_prov = "";
+		String com_prov = "";		
+		String cap = "";
+		
 		if(verbale.getAttrezzatura()!=null) {
 			
 			if(verbale.getAttrezzatura().getIndirizzo_div()!=null) {
@@ -697,9 +707,11 @@ public class GestioneVerbaleBO {
 			html = html.replaceAll("\\$\\{INDIRIZZO_CLIENTE_UTILIZZATORE\\}", indirizzo_utilizzatore);
 		}else {
 			
+			List<SedeDTO> listaSedi = GestioneAnagraficaRemotaBO.getListaSedi();
 			
 			if(verbale.getDescrizione_sede_utilizzatore()!=null && !verbale.getDescrizione_sede_utilizzatore().equals("")) {
-				html = html.replaceAll("\\$\\{CLIENTE_UTILIZZATORE\\}", verbale.getDescrizione_sede_utilizzatore());
+				html = html.replaceAll("\\$\\{CLIENTE_UTILIZZATORE\\}", verbale.getDescrizione_sede_utilizzatore());				
+			
 			}else {
 				if(clienteUtilizzatore != null && clienteUtilizzatore.getNOME_UTILIZZATORE()!=null) {
 					html = html.replaceAll("\\$\\{CLIENTE_UTILIZZATORE\\}", clienteUtilizzatore.getNOME_UTILIZZATORE());
@@ -708,9 +720,10 @@ public class GestioneVerbaleBO {
 			
 			
 			if(clienteUtilizzatore != null && clienteUtilizzatore.getINDIRIZZO_UTILIZZATORE()!=null) {
+
 				html = html.replaceAll("\\$\\{INDIRIZZO_CLIENTE_UTILIZZATORE\\}", clienteUtilizzatore.getINDIRIZZO_UTILIZZATORE());
-				if( clienteUtilizzatore.getINDIRIZZO_UTILIZZATORE().split("-").length>1) {
-					com_prov = clienteUtilizzatore.getINDIRIZZO_UTILIZZATORE().split("-")[1];	
+				if( clienteUtilizzatore.getINDIRIZZO_UTILIZZATORE().split("-").length>2) {
+					com_prov = clienteUtilizzatore.getINDIRIZZO_UTILIZZATORE().split("-")[2];	
 				}				
 			}
 		}
@@ -835,6 +848,9 @@ public class GestioneVerbaleBO {
 				com_prov = verbale.getSedeUtilizzatore().split("-")[2];	
 			}
 			
+			else if(verbale.getSedeUtilizzatore().split("-").length>1) {
+				com_prov = verbale.getSedeUtilizzatore().split("-")[1];	
+			}
 			
 		}
 		

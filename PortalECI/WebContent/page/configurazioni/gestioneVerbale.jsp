@@ -173,6 +173,16 @@
                   									       										
                 									</li>
                 									
+                									<c:if test="${verbale.getDescrizione_sede_utilizzatore()!=null }">
+                									<li class="list-group-item">
+                  										<b>Descrizione Utilizzatore</b>
+                  										<a class="pull-right b"  >${verbale.getDescrizione_sede_utilizzatore()}   <i class="fa fa-edit" onclick="modalDescrUtilizzatore()" title="Modifica descrizione utilizzatore"></i>
+                  										</a>
+                  								
+                  									       										
+                									</li>
+                									</c:if>
+                									
         										</ul> 
 
 												<c:if test='${verbale.getStato().getId()== 5 && (user.checkRuolo("AM") || user.checkRuolo("RT"))}'>										
@@ -1015,6 +1025,33 @@
 							</div>
 						</div>
 						
+							<div id="myModalModificaDescrUtilizzatore" class="modal fade" role="dialog" aria-labelledby="modalCambioStatoVerbale">
+   							<div class="modal-dialog modal-lg" role="document">
+    							<div class="modal-content">
+     								<div class="modal-header">
+        								<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        									<span aria-hidden="true">&times;</span>
+        								</button>
+        								<h4 class="modal-title" id="myModalLabel">Modifica descrizione utilizzatore</h4>
+      								</div>
+      									
+       								<div class="modal-body" >
+       									<div class="row">
+											<label class="col-sm-3" >Descrizione Utilizzatore </label>
+                  							
+                  							<div class="col-sm-9">
+                  							<input class="form-control" type="text" id="descr_util_mod" name="descr_util_mod" value="${verbale.getDescrizione_sede_utilizzatore() }">							      										
+											</div>											
+										</div>
+    								</div>
+    								<div class="modal-footer">
+										<button onclick="modificaDescrizioneUtilizzatore()" class="btn btn-danger" >Salva</button>
+	      							</div>
+  								</div>
+							</div>
+						</div>
+						
+						
 						
 						
 						<div id="myModalModificaAttrezzatura" class="modal fade" role="dialog" aria-labelledby="modalCambioStatoVerbale">
@@ -1838,6 +1875,13 @@ $('#minuti').change(function(){
 		
 	}
 	
+	
+	function modalDescrUtilizzatore(){
+		
+		$('#myModalModificaDescrUtilizzatore').modal();
+		
+	}
+	
 	function modalAttrezzatura(){
 		
 		 var attrezzatura_options = $('#attrezzatura_temp option').clone();
@@ -1871,6 +1915,44 @@ $('#minuti').change(function(){
 			type: "POST",
 			url: "gestioneVerbale.do?action=modifica_esercente",
 			data : "idVerbale="+id+"&esercente_mod="+esercente,				
+			dataType: "json",
+			success: function( data, textStatus) {
+				
+				pleaseWaitDiv.modal('hide');
+				$('#modalErrorDiv').html(data.messaggio);
+				$('#myModalError').removeClass();
+				$('#myModalError').addClass("modal modal-success");
+				$('#myModalError').modal('show');		
+				$('#myModalError').on('hidden.bs.modal', function(){
+					location.reload()
+				});
+				
+			},
+			error: function(jqXHR, textStatus, errorThrown){
+				pleaseWaitDiv.modal('hide');
+				$('#modalErrorDiv').html(jqXHR.responseText);
+				$('#myModalError').removeClass();
+				$('#myModalError').addClass("modal modal-danger");
+				$('#myModalError').modal('show');															
+			}
+		});
+		
+	}
+	
+	
+function modificaDescrizioneUtilizzatore(){
+		
+		$("#myModalModificaDescrUtilizzatore").modal('hide');
+		pleaseWaitDiv = $('#pleaseWaitDialog');
+		pleaseWaitDiv.modal();
+		
+		var id ="${verbale.id}";
+		var descrizione = $('#descr_util_mod').val();
+		
+		$.ajax({
+			type: "POST",
+			url: "gestioneVerbale.do?action=modifica_descrizione_utilizzatore",
+			data : "idVerbale="+id+"&descr_util_mod="+descrizione,				
 			dataType: "json",
 			success: function( data, textStatus) {
 				

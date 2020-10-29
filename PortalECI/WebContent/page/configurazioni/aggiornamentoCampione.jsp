@@ -24,6 +24,15 @@ SimpleDateFormat sdf= new SimpleDateFormat("dd/MM/yyyy");
  <c:set var="tipo_camp" value="<%=campione.getTipo_campione().getId() %>"></c:set>
  <form class="form-horizontal" id="formAggiornamentoCampione">
  
+ 
+ 
+      	            <div class="form-group">
+        <label for="inputName" class="col-sm-3 control-label">Proprietario:</label>
+        <div class="col-sm-9">
+                      <input class="form-control  " id="proprietario_mod" type="text" name="proprietario_mod"  value="<%if(campione.getProprietario()!=null){out.println(campione.getProprietario());}%>" required />
+    </div>
+     </div>    
+ 
         <div class="form-group">
           <label for="inputEmail" class="col-sm-3 control-label">Settore:</label>
 
@@ -72,13 +81,13 @@ SimpleDateFormat sdf= new SimpleDateFormat("dd/MM/yyyy");
      </div>
 
 
-<%--    <div class="form-group">
-        <label for="inputName" class="col-sm-3 control-label">Nome:</label>
+          <div class="form-group">
+        <label for="inputName" class="col-sm-3 control-label">Codice:</label>
         <div class="col-sm-9">
-                      <input class="form-control" id="nome_mod" type="text" name="nome_mod" required value="<%=campione.getNome() %>"/>
+                      <input class="form-control" id="codice_mod" type="text" name="codice_mod" required value="<%=campione.getCodice() %>"/>
     </div>
      </div>
-      --%>
+      
             <div class="form-group">
         <label for="inputName" class="col-sm-3 control-label">Descrizione:</label>
         <div class="col-sm-9">
@@ -285,13 +294,7 @@ SimpleDateFormat sdf= new SimpleDateFormat("dd/MM/yyyy");
                                             	}
                                             %> 
                        	            	 	<option <%=def1%> value="S">In Servizio</option>
- 											<%
- 											String def2 = "";
-                                            	if(campione.getStatoCampione().equals("N")){
-                                            		def2 = "selected";
-                                            	}
-                                            %> 
-                            	          	<option <%=def2%> value="N">Scaduto</option>
+ 											
                             	          <%
  											String def3 = "";
                                             	if(campione.getStatoCampione().equals("F")){

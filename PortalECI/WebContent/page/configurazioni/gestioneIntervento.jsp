@@ -315,7 +315,7 @@
 	                									<option value="" disabled selected>Seleziona Sede...</option>
 	                									<option value="0">Default</option>
 	                									<c:forEach items="${lista_sedi_cliente}" var="sd">                		
-		                        							<option value="${sd.indirizzo} - ${sd.comune } (${sd.siglaProvincia })_${sd.esercente }_${sd.descrizione}">${sd.indirizzo} - ${sd.comune } (${sd.siglaProvincia })</option>     	                            
+		                        							<option value="${sd.indirizzo} - ${sd.cap } - ${sd.comune } (${sd.siglaProvincia })_${sd.esercente }_${sd.descrizione}">${sd.indirizzo} - ${sd.comune } (${sd.siglaProvincia })</option>     	                            
 	    	                 							</c:forEach>
 	        	         							</select>
 	        	         							<br><br>

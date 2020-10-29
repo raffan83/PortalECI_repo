@@ -787,6 +787,21 @@ public class GestioneVerbali extends HttpServlet {
 			
 		}
 		
+		else if(action!=null && action.equals("modifica_descrizione_utilizzatore")) {
+		
+			
+			String descrizione = request.getParameter("descr_util_mod");
+			verbale.setDescrizione_sede_utilizzatore(descrizione);
+			session.update(verbale);
+			
+			myObj.addProperty("success", true);
+			myObj.addProperty("messaggio", "Descrizione utilizzatore modificata con successo!");
+
+			out.print(myObj);
+			
+		}
+		
+		
 		else if(action!=null && action.equals("modifica_attrezzatura")) {
 		
 			

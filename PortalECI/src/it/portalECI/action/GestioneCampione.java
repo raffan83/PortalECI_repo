@@ -132,6 +132,7 @@ public class GestioneCampione extends HttpServlet {
         			        
         			 // String nome = (String) ret.get("nome");
         	
+        		   
         		      String settore = (String) ret.get("settore");
         			  String descrizione = (String) ret.get("descrizione");
         			  String costruttore = (String) ret.get("costruttore");
@@ -245,19 +246,12 @@ public class GestioneCampione extends HttpServlet {
 
         					}
         					
-        					if(proprietario!=null && !proprietario.equals("")) {
-        						CompanyDTO cmp = GestioneCompanyBO.getCompanyById(proprietario, session);
-        						campione.setCompany(cmp);
-        					}else {
-        						campione.setCompany((CompanyDTO) request.getSession().getAttribute("usrCompany"));	
-        					}
         					
-        					if(utilizzatore!=null && !utilizzatore.equals("")) {
-        						CompanyDTO cmp = GestioneCompanyBO.getCompanyById(proprietario, session);
-        						campione.setCompany_utilizzatore(cmp);
-        					}else {
-        						campione.setCompany_utilizzatore((CompanyDTO) request.getSession().getAttribute("usrCompany"));	
-        					}
+        					campione.setCompany((CompanyDTO) request.getSession().getAttribute("usrCompany"));	
+        					campione.setProprietario(proprietario);
+        					
+        					
+        					campione.setCompany_utilizzatore((CompanyDTO) request.getSession().getAttribute("usrCompany"));	
         					
         					campione.setPrenotabile("N");
 
@@ -327,6 +321,7 @@ public class GestioneCampione extends HttpServlet {
         			        
         			 // String nome = (String) ret.get("nome_mod");
         	
+        		      String codice = (String) ret.get("codice_mod");
         		      String settore = (String) ret.get("settore_mod");
         			  String descrizione = (String) ret.get("descrizione_mod");
         			  String costruttore = (String) ret.get("costruttore_mod");
@@ -350,9 +345,9 @@ public class GestioneCampione extends HttpServlet {
         			  String descrizione_manutenzione = (String)ret.get("descrizione_manutenzione_mod");
         			  String attivita_di_taratura = (String) ret.get("attivita_taratura_text_mod");
         			  String tipo_campione = (String) ret.get("tipoCampione_mod");
-        			  
+        			  String proprietario = (String) ret.get("proprietario_mod");
         			 
-        				//campione.setNome(nome);
+        				campione.setCodice(codice);
         				campione.setMatricola(matricola);
         	 			campione.setDescrizione(descrizione);
         				campione.setCostruttore(costruttore);
@@ -388,7 +383,7 @@ public class GestioneCampione extends HttpServlet {
         					campione.setFrequenza_manutenzione(0);
         				}
         				
-        				
+        				campione.setProprietario(proprietario);
         				campione.setNote_attivita(note_attivita_taratura);
         				campione.setUbicazione(ubicazione);
         				
