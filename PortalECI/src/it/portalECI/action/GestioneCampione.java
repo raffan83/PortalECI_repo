@@ -153,7 +153,7 @@ public class GestioneCampione extends HttpServlet {
         			  String campo_misura = (String)ret.get("campo_misura");
         			  String unita_formato = (String)ret.get("unita_formato");
         			  String frequenza_manutenzione = (String)ret.get("frequenza_manutenzione");
-        			
+        			  String condizioni_utilizzo = (String)ret.get("condizioni_utilizzo");
         			  String note_attivita_taratura = (String)ret.get("note_attivita_taratura");
         			  String ubicazione = (String)ret.get("ubicazione");
         			  String id_strumento = (String)ret.get("strumento");
@@ -171,7 +171,7 @@ public class GestioneCampione extends HttpServlet {
         	 			campione.setDescrizione(descrizione);
         				campione.setCostruttore(costruttore);
         				campione.setModello(modello);
-
+        				campione.setCondizioni_utilizzo(condizioni_utilizzo);
         				if(freqTaratura!=null && !freqTaratura.equals("")) {
         					campione.setFreqTaraturaMesi(Integer.parseInt(freqTaratura));	
         				}
@@ -346,14 +346,17 @@ public class GestioneCampione extends HttpServlet {
         			  String attivita_di_taratura = (String) ret.get("attivita_taratura_text_mod");
         			  String tipo_campione = (String) ret.get("tipoCampione_mod");
         			  String proprietario = (String) ret.get("proprietario_mod");
-        			 
+        			  String condizioni_utilizzo = (String)ret.get("condizioni_utilizzo_mod");
+        			  
+        			  
         				campione.setCodice(codice);
         				campione.setMatricola(matricola);
         	 			campione.setDescrizione(descrizione);
         				campione.setCostruttore(costruttore);
         				campione.setModello(modello);
         				
-        			
+        				campione.setCondizioni_utilizzo(condizioni_utilizzo);
+        				
         				if(freqTaratura!=null && !freqTaratura.equals("")) {
         					campione.setFreqTaraturaMesi(Integer.parseInt(freqTaratura));	
         				}else {

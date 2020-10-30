@@ -150,6 +150,9 @@
 		<property name="descrizione_sede_utilizzatore" type="java.lang.String">
 			<column name="descrizione_sede_utilizzatore" />
 		</property>
+		<property name="data_conferma" type="java.sql.Date">
+			<column name="data_conferma" />
+		</property> 
 		 
 	</class>
 </hibernate-mapping> 

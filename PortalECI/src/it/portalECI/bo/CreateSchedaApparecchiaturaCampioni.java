@@ -1,15 +1,11 @@
 package it.portalECI.bo;
 
-import java.io.File;
 import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-
 import org.hibernate.Session;
 
 import TemplateReport.PivotTemplate;
-import it.portalECI.DTO.AcAttivitaCampioneDTO;
 import it.portalECI.DTO.CampioneDTO;
 import it.portalECI.Util.Costanti;
 import it.portalECI.Util.Templates;
@@ -68,26 +64,29 @@ public class CreateSchedaApparecchiaturaCampioni {
 				report.addParameter("ubicazione", "");
 			}
 			
-				if(campione.getCampo_accettabilita()!=null) {
-					report.addParameter("campo_accettabilita", campione.getCampo_accettabilita());
-				}else {
-					report.addParameter("campo_accettabilita", "");
-				}
+			if(campione.getCampo_accettabilita()!=null) {
+				report.addParameter("campo_accettabilita", campione.getCampo_accettabilita());
+			}else {
+				report.addParameter("campo_accettabilita", "");
+			}
 				
-				if(campione.getData_messa_in_servizio()!=null) {
-					report.addParameter("data_registrazione", dt.format(campione.getData_messa_in_servizio())); 
-				}else {
-					report.addParameter("data_registrazione", ""); 	
-				}
+			if(campione.getData_messa_in_servizio()!=null) {
+				report.addParameter("data_registrazione", dt.format(campione.getData_messa_in_servizio())); 
+			}else {
+				report.addParameter("data_registrazione", ""); 	
+			}
 				
-//				report.addParameter("condizioni_utilizzo", ""); //MANCA CONDIZIONI UTILIZZO
-				if(campione.getCampo_misura()!=null) {
-					report.addParameter("campi_misura", campione.getCampo_misura());
-				}else {
-					report.addParameter("campi_misura", "");
-				}
+			if(campione.getCondizioni_utilizzo()!=null) {
+				report.addParameter("condizioni_utilizzo", campione.getCondizioni_utilizzo()); 
+			}else {
+				report.addParameter("condizioni_utilizzo", ""); 
+			}
 			
-			
+			if(campione.getCampo_misura()!=null) {
+				report.addParameter("campi_misura", campione.getCampo_misura());
+			}else {
+				report.addParameter("campi_misura", "");
+			}
 			
 			if(campione.getTipo_campione()!=null && campione.getTipo_campione().getNome()!=null) {
 				report.addParameter("classificazione", campione.getTipo_campione().getNome());
@@ -113,7 +112,6 @@ public class CreateSchedaApparecchiaturaCampioni {
 			}else {
 				report.addParameter("descrizione_attivita_taratura", "");
 			}
-			
 
 			if(campione.getDescrizione_manutenzione()!=null) {
 				report.addParameter("attivita_manutenzione",campione.getDescrizione_manutenzione());
@@ -123,7 +121,6 @@ public class CreateSchedaApparecchiaturaCampioni {
 			
 			report.addParameter("frequenza_manutenzione", campione.getFrequenza_manutenzione());
 			
-
 			
 			report.setDataSource(new JREmptyDataSource());
 			
@@ -137,10 +134,10 @@ public class CreateSchedaApparecchiaturaCampioni {
 			  }
 			
 			java.io.File file = new java.io.File(path + "sa_"+campione.getId()+".pdf");
-			  FileOutputStream fos = new FileOutputStream(file);
-			  report.toPdf(fos);
+			FileOutputStream fos = new FileOutputStream(file);
+			report.toPdf(fos);
 			
-			  fos.close();
+			fos.close();
 			 
 	}
 	

@@ -82,7 +82,7 @@ public class CampioneDTO implements Serializable {
 	private int settore;
 	private Date data_messa_in_servizio;
 	private String proprietario;
-	
+	private String condizioni_utilizzo;
 	
 	
 	public Integer getId_strumento() {
@@ -419,6 +419,14 @@ public class CampioneDTO implements Serializable {
 
 	public void setProprietario(String proprietario) {
 		this.proprietario = proprietario;
+	}
+
+	public String getCondizioni_utilizzo() {
+		return condizioni_utilizzo;
+	}
+
+	public void setCondizioni_utilizzo(String condizioni_utilizzo) {
+		this.condizioni_utilizzo = condizioni_utilizzo;
 	}
 
 }

@@ -684,8 +684,7 @@ public class GestioneVerbaleBO {
 //		}
 		String indirizzo_utilizzatore ="";
 		String cliente_utilizzatore = "";
-		String com_prov = "";		
-		String cap = "";
+		String com_prov = "";	
 		
 		if(verbale.getAttrezzatura()!=null) {
 			
@@ -707,8 +706,7 @@ public class GestioneVerbaleBO {
 			html = html.replaceAll("\\$\\{INDIRIZZO_CLIENTE_UTILIZZATORE\\}", indirizzo_utilizzatore);
 		}else {
 			
-			List<SedeDTO> listaSedi = GestioneAnagraficaRemotaBO.getListaSedi();
-			
+		
 			if(verbale.getDescrizione_sede_utilizzatore()!=null && !verbale.getDescrizione_sede_utilizzatore().equals("")) {
 				html = html.replaceAll("\\$\\{CLIENTE_UTILIZZATORE\\}", verbale.getDescrizione_sede_utilizzatore());				
 			
@@ -872,6 +870,12 @@ public class GestioneVerbaleBO {
 			html = html.replaceAll("\\$\\{MATRICOLA_VIE\\}", verbale.getMatricola_vie());
 		}
 		
+		if(verbale.getData_conferma()!=null)
+		{
+			html = html.replaceAll("\\$\\{DATA_CONFERMA\\}", df.format(verbale.getData_conferma()));
+		}
+		
+		
 		String tipo_verifica_val ="";
 				
 		String check1="";
@@ -1005,8 +1009,6 @@ public class GestioneVerbaleBO {
 
 		html = html.replaceAll("\\$\\{TIPO_VERIFICA_VIE\\}", tipo_verifica_vie);
 		
-		
-
 
 		// Elimino i placeholder non utilizzati
 		html = html.replaceAll("\\$\\{(.*?)\\}", "");

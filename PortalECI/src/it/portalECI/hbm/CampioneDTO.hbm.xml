@@ -128,5 +128,9 @@
            <property name="proprietario" type="java.lang.String">
             <column name="proprietario" />
         </property>
+                   <property name="condizioni_utilizzo" type="java.lang.String">
+            <column name="condizioni_utilizzo" />
+        </property>
+        
     </class>
 </hibernate-mapping>

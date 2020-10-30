@@ -435,7 +435,7 @@ req
    
           <div class="form-group">
         <label for="inputName" class="col-sm-2 control-label">Codice:</label>
-        <div class="col-sm-4">
+        <div class="col-sm-10">
                       <input class="form-control  "  id="codice" type="text" name="codice" value=""    style="width:100%" required>
       
                      
@@ -507,6 +507,13 @@ req
         <label for="ubicazione" class="col-sm-2 control-label">Ubicazione:</label>
         <div class="col-sm-10">
                       <input class="form-control " id="ubicazione" type="text" name="ubicazione"  value="" />
+    </div>
+       </div> 
+
+              <div class="form-group">
+        <label for="ubicazione" class="col-sm-2 control-label">Condizioni di utilizzo:</label>
+        <div class="col-sm-10">
+                      <input class="form-control " id="condizioni_utilizzo" type="text" name="condizioni_utilizzo"  value="" />
     </div>
        </div> 
 

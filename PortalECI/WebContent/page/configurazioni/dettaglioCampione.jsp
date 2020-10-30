@@ -153,7 +153,12 @@ SimpleDateFormat sdf= new SimpleDateFormat("dd/MM/yyyy");
                       <input class="form-control required" id="" type="text" name="ubicazione"  value="<%if(campione.getUbicazione()!=null){out.println(campione.getUbicazione());}%>" disabled/>
     </div>
        </div> 
-
+                     <div class="form-group">
+        <label for="ubicazione" class="col-sm-3 control-label">Condizioni di utilizzo:</label>
+        <div class="col-sm-9">
+                      <input class="form-control " id="" type="text" name="condizioni_utilizzo"  value="<%if(campione.getCondizioni_utilizzo()!=null){out.println(campione.getCondizioni_utilizzo());}%>" disabled/>
+    </div>
+       </div> 
        
        <div class="form-group">
         <label for="inputName" class="col-sm-3 control-label">Campo di misura:</label>

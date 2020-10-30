@@ -123,7 +123,7 @@
           	
         	</li>
         	<% }%>
-        	
+        	 <% if(user.checkRuolo("AM") || user.checkPermesso("GESTIONE_CAMPIONI")){%> 
 			<li class="treeview">
 			<a href="#">
 			<i class="fa fa-eyedropper"></i>
@@ -142,7 +142,7 @@
 			</li>
 			</ul>
 			</li>
-			
+			<%} %>
         	<% if(user.checkRuolo("AM") || user.checkPermesso("ACCESS_CONFIG")){%>		
          	<li class="treeview">
           		<a href="#">

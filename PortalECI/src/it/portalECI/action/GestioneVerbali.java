@@ -591,8 +591,10 @@ public class GestioneVerbali extends HttpServlet {
 			
 			
 			if (action != null && action.equals("confermaRisposteCompWeb")) {
-				GestioneVerbaleBO.cambioStato( verbale, GestioneStatoVerbaleDAO.getStatoVerbaleById( StatoVerbaleDTO.DA_VERIFICARE, session) , session);
 				
+				verbale.setData_conferma(new Date());
+				GestioneVerbaleBO.cambioStato( verbale, GestioneStatoVerbaleDAO.getStatoVerbaleById( StatoVerbaleDTO.DA_VERIFICARE, session) , session);				
+
 				if(verbale.getIntervento().getTecnico_verificatore().getEMail()!=null) {
 					ArrayList<UtenteDTO> lista_utenti = GestioneComunicazioniBO.getListaUtentiComunicazione(verbale.getCodiceCategoria(), session);
 					String destinatari = "";

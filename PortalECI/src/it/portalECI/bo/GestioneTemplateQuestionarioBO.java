@@ -222,6 +222,9 @@ public class GestioneTemplateQuestionarioBO {
 		html = html.replaceAll("\\$\\{MATRICOLA_VIE\\}", "MATRICOLA VIE");
 		
 		html = html.replaceAll("\\$\\{COM_PROV\\}", "COMUNE (PROVINCIA)");
+
+		html = html.replaceAll("\\$\\{DATA_CONFERMA\\}", "DATA CONFERMA");
+		
 		
 		
 
