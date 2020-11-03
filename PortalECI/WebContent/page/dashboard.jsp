@@ -150,7 +150,14 @@
 		$('#verbali_totali').html(totali);
 		
 		
-
+/* 		var data_graph_1 = [];
+		data_graph_1.push(map_stati.CREATO);
+		data_graph_1.push(map_stati.IN_CORSO);
+		data_graph_1.push(map_stati.IN_APPROVAZIONE);
+		data_graph_1.push(map_stati.APPROVATO);
+		data_graph_1.push(map_stati.SOSPESO);
+		data_graph_1.push(map_stati.RIFIUTATO);
+		data_graph_1.push(map_stati.ANNULLATO); */
 		
 		var ctx = document.getElementById('graph_1').getContext('2d');
 		
@@ -162,13 +169,17 @@
 			      datasets: [ {
 			        data: data_graph_1,
 			        backgroundColor: [
+			        	
 
+			        	"#000000",
 			        	"#ffff00",
 			        	"#c8b5da",
 			        	"#660000",			        	
 			        	"#77DD77",	
 			        	"#E4E5E0",			        	
 			        	"#CE3018"
+			        	
+
 				        ],
 
 			      },]
