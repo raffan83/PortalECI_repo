@@ -842,13 +842,11 @@ public class GestioneVerbaleBO {
 		{
 			html = html.replaceAll("\\$\\{INDIRIZZO_UTILIZZATORE_VIE\\}", verbale.getSedeUtilizzatore());
 			
-			if(verbale.getSedeUtilizzatore().split("-").length>2) {
-				com_prov = verbale.getSedeUtilizzatore().split("-")[2];	
-			}
+			int length = verbale.getSedeUtilizzatore().split("-").length;
 			
-			else if(verbale.getSedeUtilizzatore().split("-").length>1) {
-				com_prov = verbale.getSedeUtilizzatore().split("-")[1];	
-			}
+			
+			com_prov = verbale.getSedeUtilizzatore().split("-")[length-1];	
+			
 			
 		}
 		

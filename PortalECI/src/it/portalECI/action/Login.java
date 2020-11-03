@@ -1,6 +1,9 @@
 package it.portalECI.action;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -9,9 +12,13 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonElement;
+
 import it.portalECI.DAO.GestioneAccessoDAO;
 import it.portalECI.DTO.UtenteDTO;
 import it.portalECI.Exception.ECIException;
+import it.portalECI.bo.GestioneGraficiBO;
 
 /**
  * Servlet implementation class Login
@@ -61,6 +68,20 @@ public class Login extends HttpServlet {
 				request.getSession().setAttribute("userObj", utente);
 				request.getSession().setAttribute("usrCompany", utente.getCompany());
 				
+				ArrayList<ArrayList<String>> lista_dati = GestioneGraficiBO.getGraficoTipoVerifica(utente);
+				HashMap<String, Integer> map_verbali = GestioneGraficiBO.getGraficoVerbaliVerificatore(utente);
+				HashMap<String, Integer>  map_stati = GestioneGraficiBO.getGraficoStatiVerbali(utente);
+				
+				Gson gson = new Gson();
+				
+				JsonElement obj_codice_verifica = gson.toJsonTree(lista_dati.get(0));
+				JsonElement obj_codice_categoria = gson.toJsonTree(lista_dati.get(1));				
+				
+				request.getSession().setAttribute("obj_codice_verifica", obj_codice_verifica);
+				request.getSession().setAttribute("obj_codice_categoria", obj_codice_categoria);
+				request.getSession().setAttribute("map_stati",gson.toJsonTree(map_stati).toString());
+				request.getSession().setAttribute("map_verbali",gson.toJsonTree(map_verbali).toString());
+				
 				RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/page/dashboard.jsp");
 				dispatcher.forward(request,response);
 			}else{
@@ -71,6 +92,7 @@ public class Login extends HttpServlet {
 			}
 		        
 		}catch(Exception ex){
+			ex.printStackTrace();
 			request.setAttribute("error",ECIException.callException(ex));
 			RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/page/error.jsp");
 			dispatcher.forward(request,response);	
