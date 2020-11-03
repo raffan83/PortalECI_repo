@@ -29,9 +29,9 @@
 			             							  <div class="row">
 			             							  <div class="col-xs-12">
 			             							  <div class="info-box-sm">
-			             							  <span class="info-box-icon primary"><i class="fa fa-file"></i></span>
+			             							  <span class="info-box-icon bg-aqua"><i class="fa fa-file"></i></span>
 			             							  <div class="info-box-content">
-			             							   <span class="info-box-text">Verbali totali</span>
+			             							   <span class="info-box-text"><h3>Verbali totali</h3></span>
 			             							   <span class="info-box-number" id="verbali_totali"></span>
 			             							  </div>
 			             							  </div>
@@ -150,14 +150,7 @@
 		$('#verbali_totali').html(totali);
 		
 		
-/* 		var data_graph_1 = [];
-		data_graph_1.push(map_stati.CREATO);
-		data_graph_1.push(map_stati.IN_CORSO);
-		data_graph_1.push(map_stati.IN_APPROVAZIONE);
-		data_graph_1.push(map_stati.APPROVATO);
-		data_graph_1.push(map_stati.SOSPESO);
-		data_graph_1.push(map_stati.RIFIUTATO);
-		data_graph_1.push(map_stati.ANNULLATO); */
+
 		
 		var ctx = document.getElementById('graph_1').getContext('2d');
 		
