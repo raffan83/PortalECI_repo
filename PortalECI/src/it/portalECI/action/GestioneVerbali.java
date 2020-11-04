@@ -802,7 +802,18 @@ public class GestioneVerbali extends HttpServlet {
 			out.print(myObj);
 			
 		}
+		else if(action!=null && action.equals("modifica_sede_utilizzatore")) {
 		
+			String sede_utilizzatore = request.getParameter("sede_utilizzatore_mod");
+			verbale.setSedeUtilizzatore(sede_utilizzatore);
+			session.update(verbale);
+			
+			myObj.addProperty("success", true);
+			myObj.addProperty("messaggio", "Sede utilizzatore modificata con successo!");
+
+			out.print(myObj);
+			
+		}
 		
 		else if(action!=null && action.equals("modifica_attrezzatura")) {
 		

@@ -808,7 +808,10 @@
       				
       				if(value !=null && value!='' && value!="0"){
       					$('#esercente').val(value.split("_")[1]);
-      					$('#descrizione_sede_util').val(value.split("_")[2]);
+      					if($('#check_descrizione').prop('checked')){
+      						$('#descrizione_sede_util').val(value.split("_")[2]);	
+      					}
+      					
       				}else if(value=="0"){
       					$('#esercente').val("${esercente}");
       				}
@@ -1014,16 +1017,18 @@
 				}
       			
       			function removeRow(tipi_verifica){
-      				$("#"+tipi_verifica).remove();
+      			//	$("#"+tipi_verifica).remove();
       				var table = $('#tabVerifica').DataTable();
 
       				var index = tipi_verifica.split("_")[1];
-      				table.row(index).remove();
+      				table.row("#"+tipi_verifica).remove().draw();
       				
       				if($("#bodytabVerifica").find("tr").size()==0){
       					$("#bodytabVerifica").html("");
       					$('#tabVerifica').DataTable().clear().destroy();
-      				}
+      				}/* else{
+      					table.rows().draw();
+      				} */
       			}
   			</script>	  
 	</jsp:attribute> 

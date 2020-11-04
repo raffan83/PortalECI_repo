@@ -3088,6 +3088,8 @@ function modificaAttrezzatura(scadenzario, date, tipo_data){
 
 
 function addCalendarAttrezzatura(tipo_data){ 
+	
+	   $('#tipo_data').val(tipo_data);
 	   
 	   pleaseWaitDiv = $('#pleaseWaitDialog');
 	   pleaseWaitDiv.modal();
@@ -3173,6 +3175,15 @@ $.ajax({
 //	    	  
 //	    	  
 //	         },	 
+		  viewRender: function (view, element)
+		    {
+		        intervalStart = view.intervalStart;
+		        intervalEnd = view.intervalEnd;
+		        intervalEnd._i =intervalEnd._i+3600000+3600000; 
+		        $('#data_start').val(moment(intervalStart).format());
+		        $('#data_end').val(moment(intervalEnd).format());
+		     
+		    },
 		  eventRender: function(event, element, view) {
 			  if(event.backgroundColor=="#00a65a"){
 				  return $('<span class=\"badge bg-green bigText\"">' 
@@ -3875,8 +3886,8 @@ $.ajax({
 			  viewRender: function (view, element)
 			    {
 			        intervalStart = view.intervalStart;
-			        intervalEnd = view.intervalEnd;
-			        
+			        intervalEnd = view.intervalEnd ;
+			       
 			        $('#data_start').val(moment(intervalStart).format());
 			        $('#data_end').val(moment(intervalEnd).format());
 			     
@@ -4001,6 +4012,63 @@ $.ajax({
 				  pleaseWaitDiv.modal('hide');
 				 
 				   callAction("scadenzario.do?action=download_scadenzario");
+				
+			  }else{
+				  
+				pleaseWaitDiv.modal('hide');
+				$('#myModalErrorContent').html(data.messaggio);
+				$('#myModalError').removeClass();	
+				$('#myModalError').addClass("modal modal-danger");	  
+				$('#report_button').hide();
+				$('#visualizza_report').hide();		
+				$('#myModalError').modal('show');			
+			
+			  }
+		},
+
+		error: function( data, textStatus) {
+			
+			pleaseWaitDiv.modal('hide');
+			  	$('#myModalError').removeClass();
+				$('#myModalError').addClass("modal modal-danger");	  
+				$('#report_button').show();
+				$('#visualizza_report').show();
+					$('#myModalError').modal('show');
+
+		}
+		});
+		   
+		
+	}
+	
+	
+function esportaAttrezzatureScadenzario(){	
+		
+		pleaseWaitDiv = $('#pleaseWaitDialog');
+		pleaseWaitDiv.modal();
+		
+		var start = $('#data_start').val();
+		var end = $('#data_end').val();	
+		var tipo_data = $('#tipo_data').val();
+		
+		var dataObj = {};
+		
+		dataObj.data_start = start;
+		dataObj.data_end = end;
+		dataObj.tipo_data = tipo_data;
+		
+			$.ajax({
+		type: "POST",
+		url: "listaAttrezzature.do?action=esporta_attrezzature_scadenza",
+		data: dataObj,
+		dataType: "json",
+		//if received a response from the server
+		success: function( data, textStatus) {
+			  if(data.success)
+			  {  
+				  pleaseWaitDiv.modal('hide');
+				 
+				   callAction("listaAttrezzature.do?action=download_scadenzario");
 				
 			  }else{
 				  

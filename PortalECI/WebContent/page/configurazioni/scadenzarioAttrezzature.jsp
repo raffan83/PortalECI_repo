@@ -34,6 +34,10 @@
 
 <div class="row">
 	
+	<input type="hidden" id="tipo_data" name="tipo_data">
+			<input type="hidden" id="data_start">
+	<input type="hidden" id="data_end">
+	
 	<div class="col-xs-3">
 	<div class="btn btn-primary" style="background-color:#00a65a;border-color:#00a65a" onClick="addCalendarAttrezzatura(1)"></div><label style="margin-left:5px">Data verifica funzionamento</label>
 	</div>
@@ -46,6 +50,11 @@
 	<div class="col-xs-3">
 	<a class="btn btn-default pull-right" id="generale_btn" onClick="addCalendarAttrezzatura(0)" style="display:none"><i class="fa fa-arrow-left"></i> Torna al generale</a>
 	</div>
+
+        <div class="col-xs-12">
+        <a class="btn btn-default pull-right" onClick="esportaAttrezzatureScadenzario()">Esporta attrezzature in scadenza</a>
+        </div>
+     
 	<div class="col-xs-12">
 	 <div id="calendario" >
 	</div>
@@ -53,6 +62,8 @@
 	</div>
 	</div>
 </div>
+
+
             <!-- /.box-body -->
           </div>
           <!-- /.box -->

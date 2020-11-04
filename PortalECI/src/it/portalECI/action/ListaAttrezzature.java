@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.lang.reflect.Type;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -13,6 +14,7 @@ import java.util.List;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
+import javax.servlet.ServletOutputStream;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -29,12 +31,16 @@ import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import com.google.gson.reflect.TypeToken;
 
 import it.portalECI.DAO.SessionFacotryDAO;
 import it.portalECI.DTO.AttrezzaturaDTO;
+import it.portalECI.DTO.CampioneDTO;
 import it.portalECI.Exception.ECIException;
+import it.portalECI.Util.Costanti;
 import it.portalECI.Util.Utility;
 import it.portalECI.bo.GestioneAttrezzatureBO;
+import it.portalECI.bo.GestioneCampioneBO;
 import it.portalECI.bo.GestioneInterventoBO;
 import it.portalECI.bo.GestioneVerbaleBO;
 
@@ -45,6 +51,8 @@ import it.portalECI.DTO.InterventoDTO;
 import it.portalECI.DTO.SedeDTO;
 import it.portalECI.DTO.UtenteDTO;
 import it.portalECI.DTO.VerbaleDTO;
+import it.portalECI.bo.CreateSchedaScadenzarioAttrezzature;
+import it.portalECI.bo.CreateSchedaScadenzarioCampioni;
 import it.portalECI.bo.GestioneAnagraficaRemotaBO;
 
 
@@ -759,6 +767,64 @@ public class ListaAttrezzature extends HttpServlet {
 		     	dispatcher.forward(request,response);
 				
 			}
+			
+			
+			
+			else if(action!=null && action.equals("esporta_attrezzature_scadenza")) {
+				
+				ajax = true;
+				
+				String data_start = request.getParameter("data_start");
+				String data_end = request.getParameter("data_end");
+				String tipo_data = request.getParameter("tipo_data");
+							
+				ArrayList<AttrezzaturaDTO> listaAttrezzature = GestioneAttrezzatureBO.getlistaAttrezzatureData(data_start, data_end, tipo_data);
+							
+				PrintWriter out = response.getWriter();
+				if(listaAttrezzature.size()>0) {			
+					
+					new CreateSchedaScadenzarioAttrezzature(listaAttrezzature, data_start, data_end, session);
+					
+					
+					myObj.addProperty("success", true);
+					out.print(myObj);
+					
+				}else {
+					
+					myObj.addProperty("success", false);
+					myObj.addProperty("messaggio", "Nessuna attrezzatura in scadenza nel periodo selezionato!");
+					out.print(myObj);
+				}
+				session.close();
+			}
+			else if(action.equals("download_scadenzario")) {
+				
+				File file = new File(Costanti.PATH_ROOT+"//ScadenzarioAttrezzature//ScadenzarioAttrezzature.xlsx");
+				
+				FileInputStream fileIn = new FileInputStream(file);
+				
+				response.setContentType("application/octet-stream");				
+				  
+				 response.setHeader("Content-Disposition","attachment;filename="+ file.getName());
+				 
+				 ServletOutputStream outp = response.getOutputStream();
+				     
+				    byte[] outputByte = new byte[1];
+				    
+				    while(fileIn.read(outputByte, 0, 1) != -1)
+				    {
+				    	outp.write(outputByte, 0, 1);
+				    }
+				    
+				    fileIn.close();
+				    outp.flush();
+				    outp.close();
+				    session.close();
+				
+			}
+			
+			
+			
 			else if(action.equals("rendi_obsoleta")) {
 				ajax = true;
 				

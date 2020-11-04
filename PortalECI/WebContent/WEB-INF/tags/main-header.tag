@@ -9,7 +9,7 @@
 <header class="main-header">
 
 	<!-- Logo -->
-    <a href="/PortalECI" class="logo">
+    <a href="/PortalECI/login.do" class="logo">
     	<!-- mini logo for sidebar mini 50x50 pixels -->
     	<span class="logo-mini"><b>ECI</b></span>
     	<!-- logo for regular state and mobile devices -->

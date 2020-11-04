@@ -251,6 +251,7 @@ public class Scadenzario extends HttpServlet {
 				myObj.addProperty("messaggio", "Nessun campione in scadenza nel periodo selezionato!");
 				out.print(myObj);
 			}
+			session.close();
 		}
 		else if(action.equals("download_scadenzario")) {
 			
@@ -274,7 +275,7 @@ public class Scadenzario extends HttpServlet {
 			    fileIn.close();
 			    outp.flush();
 			    outp.close();
-			
+			session.close();
 		}
 		
 		

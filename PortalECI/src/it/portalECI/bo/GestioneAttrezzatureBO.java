@@ -1,10 +1,14 @@
 package it.portalECI.bo;
 
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 
+import org.hibernate.HibernateException;
 import org.hibernate.Session;
+
+import com.google.gson.JsonArray;
 
 import it.portalECI.DAO.GestioneAttrezzatureDAO;
 import it.portalECI.DTO.AttrezzaturaDTO;
@@ -60,5 +64,10 @@ public class GestioneAttrezzatureBO {
 	public static String getArticoloFromDescrizione(String descrizione, int tipo_verifica, Session session) {
 
 		return GestioneAttrezzatureDAO.getArticoloFromDescrizione(descrizione, tipo_verifica,session);
+	}
+
+	public static ArrayList<AttrezzaturaDTO> getlistaAttrezzatureData(String data_start, String data_end, String tipo_data) throws HibernateException, ParseException {
+		
+		return GestioneAttrezzatureDAO.getlistaAttrezzatureData(data_start, data_end, tipo_data);
 	}
 }

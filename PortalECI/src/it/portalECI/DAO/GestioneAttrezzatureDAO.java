@@ -1,15 +1,24 @@
 package it.portalECI.DAO;
 
+import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
+import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.Session;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+
+import it.portalECI.DTO.AcAttivitaCampioneDTO;
 import it.portalECI.DTO.AttrezzaturaDTO;
+import it.portalECI.DTO.CampioneDTO;
 import it.portalECI.DTO.DescrizioneGruppoAttrezzaturaDTO;
 import it.portalECI.DTO.InterventoDTO;
 
@@ -203,6 +212,47 @@ public class GestioneAttrezzatureDAO {
 		}
 		return result;
 	
+	}
+
+	public static ArrayList<AttrezzaturaDTO> getlistaAttrezzatureData(String data_start, String data_end, String tipo_data) throws HibernateException, ParseException {
+
+		DateFormat df = new SimpleDateFormat("yyyy-MM-dd");		
+		Session session = SessionFacotryDAO.get().openSession();
+		    
+		session.beginTransaction();
+
+		ArrayList<AttrezzaturaDTO> lista = new ArrayList<AttrezzaturaDTO>();			
+
+		Query query = null;
+		
+		if(tipo_data.equals("0")) {
+			
+			query = session.createQuery("from AttrezzaturaDTO where (data_prossima_verifica_funzionamento between :_date_start and :_date_end) "
+					+ "or  (data_prossima_verifica_integrita between :_date_start and :_date_end) "
+					+ "or (data_prossima_verifica_interna between :_date_start and :_date_end) "
+					+ "and obsoleta='N'  order by data_prossima_verifica_funzionamento asc");	
+			
+		}else if(tipo_data.equals("1")) {			
+			query = session.createQuery("from AttrezzaturaDTO where data_prossima_verifica_funzionamento between :_date_start and :_date_end and obsoleta='N' order by data_prossima_verifica_funzionamento asc");	
+
+		}else if(tipo_data.equals("2")) {			
+			query = session.createQuery("from AttrezzaturaDTO where data_prossima_verifica_integrita between :_date_start and :_date_end and obsoleta='N' order by data_prossima_verifica_integrita asc");	
+
+		}else if(tipo_data.equals("3")) {			
+			query = session.createQuery("from AttrezzaturaDTO where data_prossima_verifica_interna between :_date_start and :_date_end and obsoleta='N' order by data_prossima_verifica_interna asc");	
+		}
+		query.setParameter("_date_start", df.parse(data_start));
+		
+		Date d = df.parse(data_end);
+		long sec = d.getTime()-3600000;
+		d.setTime(sec);
+		query.setParameter("_date_end", d);
+				
+		lista = (ArrayList<AttrezzaturaDTO>) query.list();
+		
+		session.close();
+			
+		return lista;		
 	}
 
 }

@@ -39,9 +39,41 @@ public class Login extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 	
-		RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/index.jsp");
-    	dispatcher.forward(request,response);
-     	
+		UtenteDTO utente = (UtenteDTO) request.getSession().getAttribute("userObj");
+		
+		if(utente!=null)
+        {
+		
+			request.setAttribute("forward","site/home.jsp"); 	
+			request.getSession().setAttribute("nomeUtente","  "+utente.getNominativo());
+			request.getSession().setAttribute("idUtente",utente.getId());
+			request.getSession().setAttribute("tipoAccount",utente.getTipoutente());
+			
+			request.getSession().setAttribute("userObj", utente);
+			request.getSession().setAttribute("usrCompany", utente.getCompany());
+			
+			ArrayList<ArrayList<String>> lista_dati = GestioneGraficiBO.getGraficoTipoVerifica(utente);
+			HashMap<String, Integer> map_verbali = GestioneGraficiBO.getGraficoVerbaliVerificatore(utente);
+			HashMap<String, Integer>  map_stati = GestioneGraficiBO.getGraficoStatiVerbali(utente);
+			
+			Gson gson = new Gson();
+			
+			JsonElement obj_codice_verifica = gson.toJsonTree(lista_dati.get(0));
+			JsonElement obj_codice_categoria = gson.toJsonTree(lista_dati.get(1));				
+			
+			request.getSession().setAttribute("obj_codice_verifica", obj_codice_verifica);
+			request.getSession().setAttribute("obj_codice_categoria", obj_codice_categoria);
+			request.getSession().setAttribute("map_stati",gson.toJsonTree(map_stati).toString());
+			request.getSession().setAttribute("map_verbali",gson.toJsonTree(map_verbali).toString());
+			
+			RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/page/dashboard.jsp");
+			dispatcher.forward(request,response);
+			
+			
+        }else {
+			RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/index.jsp");
+			dispatcher.forward(request,response);
+        }
 	}
 
 	/**

@@ -67,6 +67,12 @@
 															${verbale.getIntervento().getId()}
 														</a>														
                 									</li>
+                									<li class="list-group-item">
+                  										<b>Commessa</b>                   										
+                  										<a href="#" class="customTooltip customlink pull-right" title="Click per aprire il dettaglio della Commessa" onclick="callAction('gestioneIntervento.do?idCommessa=${verbale.intervento.getIdCommessa()}');">
+															${verbale.intervento.getIdCommessa()}
+														</a>														
+                									</li>
         											<li class="list-group-item">
                   										<b>ID Verbale</b>                   										
                   										
@@ -159,12 +165,14 @@
                 									</li>
                 									<li class="list-group-item">
                   										<b>Sede Utilizzatore</b>                  										
-                  										<a class="pull-right "  >${verbale.sedeUtilizzatore}
+                  										<a class="pull-right "  >${verbale.sedeUtilizzatore}<c:if test="${verbale.codiceCategoria == 'VIE' }"><i class="fa fa-edit" onclick="modalSedeUtilizzatore('${verbale.sedeUtilizzatore}')" title="Modifica sede utilizzatore"></i></c:if>
+                  										
                   										</a>
                   									
                   									 
                   									       										
                 									</li>
+                									<c:if test="${verbale.codiceCategoria == 'VIE' }">
                 									<li class="list-group-item">
                   										<b>Esercente</b>
                   										<a class="pull-right b"  >${verbale.esercente}   <i class="fa fa-edit" onclick="modalEsercente()" title="Modifica esercente"></i>
@@ -173,7 +181,7 @@
                   									       										
                 									</li>
                 									
-                									<c:if test="${verbale.getDescrizione_sede_utilizzatore()!=null }">
+                									<c:if test="${verbale.codiceCategoria == 'VIE' && verbale.getDescrizione_sede_utilizzatore()!=null }">
                 									<li class="list-group-item">
                   										<b>Descrizione Utilizzatore</b>
                   										<a class="pull-right b"  >${verbale.getDescrizione_sede_utilizzatore()}   <i class="fa fa-edit" onclick="modalDescrUtilizzatore()" title="Modifica descrizione utilizzatore"></i>
@@ -182,7 +190,7 @@
                   									       										
                 									</li>
                 									</c:if>
-                									
+                								</c:if>	
         										</ul> 
 
 												<c:if test='${verbale.getStato().getId()== 5 && (user.checkRuolo("AM") || user.checkRuolo("RT"))}'>										
@@ -1053,6 +1061,33 @@
 						
 						
 						
+						<div id="myModalModificaSedeUtilizzatore" class="modal fade" role="dialog" aria-labelledby="modalCambioStatoVerbale">
+   							<div class="modal-dialog modal-lg" role="document">
+    							<div class="modal-content">
+     								<div class="modal-header">
+        								<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        									<span aria-hidden="true">&times;</span>
+        								</button>
+        								<h4 class="modal-title" id="myModalLabel">Modifica sede utilizzatore</h4>
+      								</div>
+      									
+       								<div class="modal-body" >
+       									<div class="row">
+											<label class="col-sm-3" >Sede Utilizzatore </label>
+                  							
+                  							<div class="col-sm-9">
+                  							<input class="form-control" type="text" id="sede_util_mod" name="sede_util_mod" >							      										
+											</div>											
+										</div>
+    								</div>
+    								<div class="modal-footer">
+    								<input type="hidden" id="com_prov" name="com_prov">
+										<button onclick="modificaSedeUtilizzatore()" class="btn btn-danger" >Salva</button>
+	      							</div>
+  								</div>
+							</div>
+						</div>
+						
 						
 						<div id="myModalModificaAttrezzatura" class="modal fade" role="dialog" aria-labelledby="modalCambioStatoVerbale">
    							<div class="modal-dialog modal-md" role="document">
@@ -1882,6 +1917,23 @@ $('#minuti').change(function(){
 		
 	}
 	
+	function modalSedeUtilizzatore(sedeUtilizzatore){
+		
+		var length = sedeUtilizzatore.split("-").length;
+		
+		var com_prov = sedeUtilizzatore.split("-")[length-2] +"-"+ sedeUtilizzatore.split("-")[length-1];
+		
+		var indirizzo = sedeUtilizzatore.substring(0,sedeUtilizzatore.indexOf(com_prov)-2); 
+		
+		$('#sede_util_mod').val(indirizzo);
+		$('#com_prov').val(com_prov);
+		
+		$('#myModalModificaSedeUtilizzatore').modal();
+		
+				
+	}
+	
+	
 	function modalAttrezzatura(){
 		
 		 var attrezzatura_options = $('#attrezzatura_temp option').clone();
@@ -1976,6 +2028,46 @@ function modificaDescrizioneUtilizzatore(){
 		});
 		
 	}
+	
+
+
+
+function modificaSedeUtilizzatore(){
+	
+	$("#myModalModificaSedeUtilizzatore").modal('hide');
+	pleaseWaitDiv = $('#pleaseWaitDialog');
+	pleaseWaitDiv.modal();
+	
+	var id ="${verbale.id}";
+	var sede_utilizzatore = $('#sede_util_mod').val()+" - "+$('#com_prov').val();
+	
+	$.ajax({
+		type: "POST",
+		url: "gestioneVerbale.do?action=modifica_sede_utilizzatore",
+		data : "idVerbale="+id+"&sede_utilizzatore_mod="+sede_utilizzatore,				
+		dataType: "json",
+		success: function( data, textStatus) {
+			
+			pleaseWaitDiv.modal('hide');
+			$('#modalErrorDiv').html(data.messaggio);
+			$('#myModalError').removeClass();
+			$('#myModalError').addClass("modal modal-success");
+			$('#myModalError').modal('show');		
+			$('#myModalError').on('hidden.bs.modal', function(){
+				location.reload()
+			});
+			
+		},
+		error: function(jqXHR, textStatus, errorThrown){
+			pleaseWaitDiv.modal('hide');
+			$('#modalErrorDiv').html(jqXHR.responseText);
+			$('#myModalError').removeClass();
+			$('#myModalError').addClass("modal modal-danger");
+			$('#myModalError').modal('show');															
+		}
+	});
+	
+}
 	
 	function modificaAttrezzatura(){
 		
