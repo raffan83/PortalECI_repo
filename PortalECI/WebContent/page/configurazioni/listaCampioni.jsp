@@ -103,6 +103,7 @@
  <th>Utilizzatore</th> 
  <th>Tipo Campione</th>
  <th>Codice</th>
+ <th>Matricola</th>
  <th>Costruttore</th>
  <th>Descrizione</th>
  <th>Data Taratura</th>
@@ -125,6 +126,7 @@
 	<td>${campione.company_utilizzatore.denominazione}</td>	
 	<td>${campione.tipo_campione.nome}</td>
 	<td>${campione.codice}</td>
+	<td>${campione.matricola }</td>
 	<td>${campione.costruttore}</td>
 	<td>${campione.descrizione}</td>
 
