@@ -18,7 +18,7 @@
        								<div class="col-xs-6">
 										<div class="box box-danger box-solid">
 											<div class="box-header with-border">
- 											Grafico 1
+ 											Stati verbali
 												<div class="box-tools pull-right">		
 													<button data-widget="collapse" class="btn btn-box-tool"><i class="fa fa-minus"></i></button>
 												</div>
@@ -46,7 +46,7 @@
 									<div class="col-xs-6">
 										<div class="box box-danger box-solid">
 											<div class="box-header with-border">
- 											Grafico 2
+ 											Categorie Verbali
 												<div class="box-tools pull-right">		
 													<button data-widget="collapse" class="btn btn-box-tool"><i class="fa fa-minus"></i></button>
 												</div>
@@ -74,7 +74,7 @@
        								<div class="col-xs-6">
 										<div class="box box-danger box-solid">
 											<div class="box-header with-border">
- 											Grafico 3
+ 											Verbali per verificatore
 												<div class="box-tools pull-right">		
 													<button data-widget="collapse" class="btn btn-box-tool"><i class="fa fa-minus"></i></button>
 												</div>
@@ -369,12 +369,19 @@
 			      datasets: [ {
 			        data: data_graph_3,
 			        backgroundColor: [
-			        	'rgba(54, 162, 235, 0.2)',
-			        	 'rgba(255, 206, 86, 0.2)',
-			        	 'rgba(153, 102, 255, 0.2)',
-			        	 'rgba(255, 99, 132, 0.2)',
-				          '#ff3333',  
-				          '#88ff4d'
+			        	'rgba(255, 99, 132, 0.2)',
+				         'rgba(54, 162, 235, 0.2)',
+				         'rgba(255, 206, 86, 0.2)',
+				         'rgba(75, 192, 192, 0.2)',
+				         'rgba(153, 102, 255, 0.2)',
+				         'rgba(255, 159, 64, 0.2)',
+				         'rgba(255,0,0,0.2)',
+				         'rgba(46,46,255,0.2)',
+				         'rgba(255,102,143,0.2)',
+				         'rgba(255,240,36,0.2)',
+				         'rgba(255,54,255,0.2)',
+				         'rgba(107,255,235,0.2)',
+				         'rgba(255,83,64,0.2)'
 				        ],
 
 			      },]

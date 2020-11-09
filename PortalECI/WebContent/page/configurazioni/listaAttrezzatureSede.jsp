@@ -1358,7 +1358,7 @@ $("#descrizione").change(function() {
 			}
 			else if(descrizione.startsWith("Tubazioni")){
 				opt_tipo_attr.push('<option value="a3">a3</option>');				
-				opt_tipo_attr.opt_tipo_attr('<option value="a4">a4</option>');
+				opt_tipo_attr.push('<option value="a4">a4</option>');
 				opt_tipo_attr.push('<option value="b4">b4</option>');
 				opt_tipo_attr.push('<option value="b5">b5</option>');
 				
@@ -1541,7 +1541,7 @@ $("#descrizione_mod").change(function() {
 			}
 			else if(descrizione.startsWith("Tubazioni")){
 				opt_tipo_attr.push('<option value="a3">a3</option>');				
-				opt_tipo_attr.opt_tipo_attr('<option value="a4">a4</option>');
+				opt_tipo_attr.push('<option value="a4">a4</option>');
 				opt_tipo_attr.push('<option value="b4">b4</option>');
 				opt_tipo_attr.push('<option value="b5">b5</option>');
 				
