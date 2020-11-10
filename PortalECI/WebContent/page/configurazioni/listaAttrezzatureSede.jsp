@@ -1206,7 +1206,7 @@ $("#tipo_attivita").change(function() {
 			settore_opt.push('<option value="N.A.">N.A.</option>');			
 			
 			if(gruppo == 'GVR'){
-				$('#tipo_attrezzatura_gvr').attr("disabled", false);
+				$('#tipo_attrezzatura_gvr').attr("disabled", true);
 				$('#sogg_messa_serv_GVR').attr("disabled", false);	
 			}else{
 				$('#data_scadenza_ventennale').removeClass("disabled");
@@ -1279,7 +1279,7 @@ $("#tipo_attivita_mod").change(function() {
 			settore_opt.push('<option value="N.A.">N.A.</option>');
 			
 			if(gruppo == 'GVR'){
-				$('#tipo_attrezzatura_gvr_mod').attr("disabled", false);
+				$('#tipo_attrezzatura_gvr_mod').attr("disabled", true);
 				$('#sogg_messa_serv_GVR_mod').attr("disabled", false);	
 			}else{
 				$('#data_scadenza_ventennale_mod').removeClass("disabled");
@@ -1380,7 +1380,7 @@ $("#descrizione").change(function() {
 				
 				opt_tipo_attr_gvr.push('<option value="a5">a5</option>');
 			}
-			$("#tipo_attrezzatura_gvr").prop("disabled", false);
+			$("#tipo_attrezzatura_gvr").prop("disabled", true);
 		}
 		
 		else if(gruppo == "SP"){
@@ -1564,7 +1564,7 @@ $("#descrizione_mod").change(function() {
 				opt_tipo_attr_gvr.push('<option value="a5">a5</option>');
 			}
 
-			$("#tipo_attrezzatura_gvr_mod").prop("disabled", false);
+			$("#tipo_attrezzatura_gvr_mod").prop("disabled", true);
 		}
 		
 		else if(gruppo == "SP"){
