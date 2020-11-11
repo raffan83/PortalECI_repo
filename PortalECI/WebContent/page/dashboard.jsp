@@ -18,7 +18,7 @@
        								<div class="col-xs-6">
 										<div class="box box-danger box-solid">
 											<div class="box-header with-border">
- 											Stati verbali
+ 											Stato verbali
 												<div class="box-tools pull-right">		
 													<button data-widget="collapse" class="btn btn-box-tool"><i class="fa fa-minus"></i></button>
 												</div>
@@ -194,7 +194,7 @@
 			      
 			      title: {
 			            display: true,
-			            text: 'Stati Verbale',
+			            text: 'Stato Verbali',
 			            fontSize: 18,
 			            fontColor: '#747474'
 			        }
