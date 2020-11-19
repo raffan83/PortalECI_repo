@@ -93,7 +93,7 @@ public class AggiornamentoCampione extends HttpServlet {
 		 ex.printStackTrace();
 		 request.getSession().setAttribute("exception",ex);
 	     request.setAttribute("error",ECIException.callException(ex));
-		 RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/page/configurazioni/error.jsp");
+		 RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/page/error.jsp");
 	     dispatcher.forward(request,response);
 		
 	} 

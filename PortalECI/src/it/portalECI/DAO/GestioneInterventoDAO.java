@@ -35,8 +35,9 @@ public class GestioneInterventoDAO {
 		boolean ck_AM=user.checkRuolo("AM");
 		boolean ck_ST=user.checkRuolo("ST");
 		boolean ck_RT=user.checkRuolo("RT");
+		boolean ck_SRT=user.checkRuolo("SRT");
 		if(idCommessa!=null) {
-			if(ck_ST==false && ck_AM==false && ck_RT==false) 
+			if(ck_ST==false && ck_AM==false && ck_RT==false && ck_SRT==false) 
 			{
 				query= session.createQuery( "from InterventoDTO WHERE id_commessa= :_id_commessa AND tecnico_verificatore.id=:_idUser");
 				query.setParameter("_id_commessa", idCommessa);		

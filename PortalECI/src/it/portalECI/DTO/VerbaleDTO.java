@@ -62,6 +62,9 @@ public class VerbaleDTO implements Serializable {
 	private Date data_fine_verifica;
 	private String descrizione_sede_utilizzatore;
 	private Date data_conferma;
+	private Date data_approvazione;
+	private UtenteDTO responsabile_approvatore;
+	private int firmato;
 	
 	public int getId() {
 		return id;
@@ -432,6 +435,30 @@ public class VerbaleDTO implements Serializable {
 
 	public void setData_conferma(Date data_conferma) {
 		this.data_conferma = data_conferma;
+	}
+
+	public Date getData_approvazione() {
+		return data_approvazione;
+	}
+
+	public void setData_approvazione(Date data_approvazione) {
+		this.data_approvazione = data_approvazione;
+	}
+
+	public UtenteDTO getResponsabile_approvatore() {
+		return responsabile_approvatore;
+	}
+
+	public void setResponsabile_approvatore(UtenteDTO responsabile_approvatore) {
+		this.responsabile_approvatore = responsabile_approvatore;
+	}
+
+	public int getFirmato() {
+		return firmato;
+	}
+
+	public void setFirmato(int firmato) {
+		this.firmato = firmato;
 	}
 
 	

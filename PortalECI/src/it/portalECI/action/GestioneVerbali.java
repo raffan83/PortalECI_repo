@@ -33,6 +33,8 @@ import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
+import it.arubapec.arubasignservice.ArubaSignService;
+import it.arubapec.arubasignservice.TypeOfTransportNotImplementedException;
 import it.portalECI.DAO.GestioneDocumentoDAO;
 import it.portalECI.DAO.GestioneInterventoDAO;
 import it.portalECI.DAO.GestioneRispostaVerbaleDAO;
@@ -595,7 +597,7 @@ public class GestioneVerbali extends HttpServlet {
 				verbale.setData_conferma(new Date());
 				GestioneVerbaleBO.cambioStato( verbale, GestioneStatoVerbaleDAO.getStatoVerbaleById( StatoVerbaleDTO.DA_VERIFICARE, session) , session);				
 
-				if(verbale.getIntervento().getTecnico_verificatore().getEMail()!=null) {
+				if(verbale.getIntervento()!=null && verbale.getIntervento().getTecnico_verificatore()!=null && verbale.getIntervento().getTecnico_verificatore().getEMail()!=null) {
 					ArrayList<UtenteDTO> lista_utenti = GestioneComunicazioniBO.getListaUtentiComunicazione(verbale.getCodiceCategoria(), session);
 					String destinatari = "";
 					for (UtenteDTO utenteDTO : lista_utenti) {
@@ -646,7 +648,7 @@ public class GestioneVerbali extends HttpServlet {
 		PrintWriter  out = response.getWriter();
 		String action=request.getParameter("action");
 		
-		if(action !=null && action.equals("cambioStato")){			 					
+		if(action !=null && action.equals("cambioStato")){	
 			
 			String stato = request.getParameter("stato" );
 			if(Boolean.parseBoolean(request.getParameter("all"))) {
@@ -655,7 +657,12 @@ public class GestioneVerbali extends HttpServlet {
 				
 			}
 			
-			GestioneVerbaleBO.cambioStato( verbale, GestioneStatoVerbaleDAO.getStatoVerbaleById( Integer.parseInt(stato), session) , session);	
+			GestioneVerbaleBO.cambioStato( verbale, GestioneStatoVerbaleDAO.getStatoVerbaleById( Integer.parseInt(stato), session) , session);
+			if(stato.equals("5")) {
+				verbale.setFirmato(0);
+				session.update(verbale);
+			}
+			
 			if(stato.equals("6")) {
 				try {
 					if(verbale.getIntervento().getTecnico_verificatore().getEMail()!=null && user.getEMail()!=null) {
@@ -668,12 +675,15 @@ public class GestioneVerbali extends HttpServlet {
 			}
 			
 			myObj.addProperty("success", true);
-			myObj.addProperty("messaggio", "Stato modificato con successo");
-			
+			myObj.addProperty("messaggio", "Stato modificato con successo");			
 			out.print(myObj);
 		} else if(action !=null && action.equals("generaCertificato")) {
 			QuestionarioDTO questionario = GestioneQuestionarioBO.getQuestionarioById(verbale.getQuestionarioID(),session);
 			try {
+				verbale.setData_approvazione(new Date());
+				verbale.setResponsabile_approvatore(user);
+				session.update(verbale);
+				
 				File certificato = GestioneVerbaleBO.getPDFVerbale(verbale, questionario, session);
 				if(certificato != null) {
 					byte[] pdfArray = loadFileForBase64(certificato);
@@ -756,6 +766,41 @@ public class GestioneVerbali extends HttpServlet {
 			out.print(myObj);
 		} 
 		
+		else if(action!=null && action.equals("firma_verbale")) {
+			
+			String pin = request.getParameter("pin");	
+				
+			if(user.getPin_firma()!=null && pin.equals(user.getPin_firma())) {
+
+				Set<DocumentoDTO> listaDocumenti = verbale.getDocumentiVerbale();
+				
+				Iterator iterator = listaDocumenti.iterator();
+				
+				while(iterator.hasNext()) {
+					DocumentoDTO doc = (DocumentoDTO) iterator.next();
+					
+					if(!doc.getInvalid()) {						
+						try {
+							
+							myObj = ArubaSignService.sign(user.getId_firma(), doc);
+							verbale.setFirmato(1);
+							session.update(verbale);
+						} catch (TypeOfTransportNotImplementedException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+					}
+				}				
+				
+			}else {
+				myObj.addProperty("success", false);
+				myObj.addProperty("messaggio", "Attenzione! PIN errato!");
+			}
+			
+			out.print(myObj);
+			
+		}
+
 		else if(action !=null && action.equals("comuni")) {
 			
 			String cap = request.getParameter("cap");

@@ -96,5 +96,17 @@
         <property name="cf" type="java.lang.String">
             <column name="cf" />
         </property>
+        
+        <property name="file_firma" type="java.lang.String">
+            <column name="file_firma" />
+        </property>
+        
+        <property name="pin_firma" type="java.lang.String">
+            <column name="pin_firma" />
+        </property>
+        
+                <property name="id_firma" type="java.lang.String">
+            <column name="id_firma" />
+        </property>
     </class>
 </hibernate-mapping>

@@ -192,8 +192,16 @@
                 									</c:if>
                 								</c:if>	
         										</ul> 
+        										
+        										<c:if test='${verbale.getStato().getId()== 5 && (user.checkRuolo("AM") || user.checkRuolo("RT") || user.checkRuolo("SRT"))}'>										
+													<!-- <button type="button" class="btn btn-sm pull-right" onclick="salvaCambioStato(null,null,'6')" style="color:#000000 !important;"> -->
+													<button type="button" class="btn btn-info btn-sm pull-right" onclick="$('#modalPin').modal('show');" style="margin-left:5px">
+														<i class="fa fa-edit"></i>
+														<span>Firma verbale</span>
+													</button>
+												</c:if>	  
 
-												<c:if test='${verbale.getStato().getId()== 5 && (user.checkRuolo("AM") || user.checkRuolo("RT"))}'>										
+												<c:if test='${verbale.getStato().getId()== 5 && (user.checkRuolo("AM") || user.checkRuolo("RT" || user.checkRuolo("SRT")))}'>										
 													<!-- <button type="button" class="btn btn-sm pull-right" onclick="salvaCambioStato(null,null,'6')" style="color:#000000 !important;"> -->
 													<button type="button" class="btn btn-sm pull-right" onclick="$('#confirmRifiuta').modal('show');" style="color:#000000 !important;">
 														<i class="glyphicon glyphicon-remove"></i>
@@ -240,7 +248,11 @@
 	        											<li class="list-group-item ${certificato.getInvalid()?"text-muted":""}">
 	                  										<b>${certificato.getFileName()}</b>
 	                  										<c:if test="${user.checkPermesso('DOWNLOAD_CERTIFICATO')}">             										
-	                  											<a class="btn btn-default btn-xs pull-right" href="gestioneDocumento.do?idDocumento=${certificato.getId()}" style="margin-left:5px"><i class="glyphicon glyphicon-file"></i> Download Certificato</a>														
+	                  											<a class="btn btn-default btn-xs pull-right" href="gestioneDocumento.do?idDocumento=${certificato.getId()}" style="margin-left:5px"><i class="glyphicon glyphicon-file"></i> Download Certificato</a>
+	                  											
+	                  											<c:if test="${verbale.getFirmato()==1 && certificato.getInvalid()== false }">
+	                  											<a class="btn btn-default btn-xs pull-right" href="gestioneDocumento.do?p7m=1&idDocumento=${certificato.getId()}" style="margin-left:5px"><i class="glyphicon glyphicon-file"></i> Download P7m</a>
+	                  											</c:if>														
 	                										</c:if>
 	                									</li>
                 									</c:forEach>
@@ -384,13 +396,6 @@
              					
              					
              					
-
-             					
-             					
-             					
-             					
-             					
-             					
         							<div class="row">         
         								<div class="col-xs-12">
 											<div class="box box-danger box-solid">
@@ -423,42 +428,32 @@
 												
 												<div class="box-footer" id="formVerbalebox">
 													<c:if test="${user.checkPermesso('UPD_VERBALE')}">
-														<%-- <c:if test='${verbale.getStato().getId()!= 8}'>
-															<button type="button" class="btn btn-default ml-1 savebutt" onclick="modificaRisposte(${verbale.getId()},'formVerbale')" style="margin-left: 1em; float: right;">	
-																<span >SALVA MODIFICHE</span>
-															</button>	
-														
-															<button type="button" class="btn btn-default ml-1 savebutt" onclick="annullaModifiche('formVerbale')" style="margin-left: 1em; float: right;">	
-																<span >ANNULLA MODIFICHE</span>
-															</button>
-														</c:if> --%>
+
 														<c:if test='${verbale.getStato().getId()== 8 }'>
 															<button type="button" class="btn btn-default ml-1 savebutt" onclick="salvaRisposteCompWeb(${verbale.getId()},'formVerbale', 'salvaRisposteCompWeb')" style="margin-left: 1em; float: right;">	
 																<span >SALVA MODIFICHE</span>
 															</button>
-																<%-- <button type="button" class="btn btn-default ml-1 changestate formVerbalebox" onclick="salvaRisposteCompWeb(${verbale.getId()},'formVerbale', 'confermaRisposteCompWeb')" style="margin-left: 1em; color:#000000 !important; background-color:${verbale.getStato().getColore(5)} !important; float: right;"> --%> 
+																<%-- <button type="button" class="btn btn-default ml-1 changestate formVerbalebox" onclick="salvaRisposteCompWeb(${verbale.getId()},'formVerbale', 'confermaRisposteCompWeb')" style="margin-left: 1em; color:#000000 !important; background-color:${verbale.getStato().getColore(5)} !important; float: right;"> --%>
+																<c:if test="${verbale.getIntervento().getTecnico_verificatore().getId() == userObj.getId()}"> 
 																<button type="button" class="btn btn-default ml-1 changestate formVerbalebox" onclick="$('#confirmConferma').modal('show')" style="margin-left: 1em; color:#000000 !important; background-color:${verbale.getStato().getColore(5)} !important; float: right;">
 																
-																<%-- <button type="button" class="btn btn-default ml-1 changestate formVerbalebox" onclick="$('#confirmCertificato').modal('show');" style="margin-left: 1em; color:#000000 !important; background-color:${verbale.getStato().getColore(5)} !important; float: right;"> --%>
 																<i class="glyphicon glyphicon glyphicon-ok"></i>
 																<span >CONFERMA</span>
 															</button>
-															
+															</c:if>
 															<a class="btn btn-default pull-right" href="anteprimaCertificato.do?idVerbale=${verbale.getId()}" style="margin-left:5px"><i class="glyphicon glyphicon-eye-open"></i> Anteprima Certificato</a>
 														</c:if>
 														<c:if test='${verbale.getStato().getId()== 6 }'>
 															<button type="button" class="btn btn-default ml-1 savebutt" onclick="modificaRisposte(${verbale.getId()},'formVerbale')" style="margin-left: 1em; float: right;">	
 																<span >SALVA MODIFICHE</span>
 															</button>
-																 <%-- <button type="button" class="btn btn-default ml-1 changestate formVerbalebox" onclick="salvaRisposteCompWeb(${verbale.getId()},'formVerbale', 'confermaRisposteCompWeb')" style="margin-left: 1em; color:#000000 !important; background-color:${verbale.getStato().getColore(5)} !important; float: right;"> --%> 
+																<c:if test="${verbale.getIntervento().getTecnico_verificatore().getId() == userObj.getId()}">  
 																   <button type="button" class="btn btn-default ml-1 changestate formVerbalebox" onclick="$('#confirmConferma').modal('show');" style="margin-left: 1em; color:#000000 !important; background-color:${verbale.getStato().getColore(5)} !important; float: right;"> 
-																
-																
 																
 																<i class="glyphicon glyphicon glyphicon-ok"></i>
 																<span >CONFERMA</span>
 															</button>
-															
+															</c:if>
 															<a class="btn btn-default pull-right" href="anteprimaCertificato.do?idVerbale=${verbale.getId()}" style="margin-left:5px"><i class="glyphicon glyphicon-eye-open"></i> Anteprima Certificato</a>
 														</c:if>
 														
@@ -474,7 +469,15 @@
 													
 													
 													</c:if>
-													<c:if test='${verbale.getStato().getId()== 4 && (user.checkRuolo("AM") || user.checkRuolo("RT"))}'>					
+													
+													<c:if test="${verbale.getCodiceCategoria()=='VIE' }">
+													<c:set var="tipo_rt" value="1"></c:set>
+													</c:if>
+													<c:if test="${verbale.getCodiceCategoria()=='VAL' }">
+													<c:set var="tipo_rt" value="2"></c:set>
+													</c:if>
+													
+													<c:if test='${verbale.getStato().getId()== 4 && (user.checkRuolo("AM") || user.checkRuolo("RT") || user.checkRuolo("SRT")) && user.checkComunicazione(tipo_rt)}'>					
 														
 														<button type="button" class="btn btn-default ml-1 savebutt" onclick="modificaRisposte(${verbale.getId()},'formVerbale')" style="margin-left: 1em; float: right;">	
 																<span >SALVA MODIFICHE</span>
@@ -629,6 +632,7 @@
 												 <option value="4">Funzionamento + Integrità</option>
 												 <option value="5">Funzionamento + Integrità + Interna</option>
 												 <option value="6">Interna + Integrità</option>
+												 <option value="7">Funzionamento + Interna</option>
 												 </select>	
 												
 												<!-- </div> -->
@@ -976,7 +980,7 @@
 														
 														
 													</c:if>
-													<c:if test='${verbale.getSchedaTecnica().getStato().getId()== 4 && (user.checkRuolo("AM") || user.checkRuolo("RT"))}'>			
+													<c:if test='${verbale.getSchedaTecnica().getStato().getId()== 4 && (user.checkRuolo("AM") || user.checkRuolo("RT") || user.checkRuolo("SRT"))}'>			
 														<c:if test="${user.checkPermesso('CH_STA_VERBALE')}">
 															<button type="button" class="btn btn-default ml-1 savebutt" onclick="modificaRisposte(${verbale.getSchedaTecnica().getId()},'formScTecnica')" style="margin-left: 1em; float: right;">	
 																<span >SALVA MODIFICHE</span>
@@ -1219,6 +1223,33 @@
     							</div>
   							</div>
 						</div> 
+						
+						
+						<div id="modalPin" class="modal fade" role="dialog" aria-labelledby="myLargeModalLabel">
+    						<div class="modal-dialog" role="document">
+    							<div class="modal-content">
+     								<div class="modal-header">
+        								<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        								<h4 class="modal-title text-center" id="myModalLabel">Inserisci il PIN</h4>
+      								</div>
+       								<div class="modal-body">
+       								<div class="col-xs-2">
+       								<label>PIN:</label>
+										
+       								</div>
+       								<div class="col-xs-6">
+       								<input type="password" id="pin" name = "pin" class="form-control">
+       								</div>
+										
+  		 							</div>
+      								<div class="modal-footer">
+      									<button type="button" class="btn btn-default" onclick="firmaVerbale('${verbale.id}')" >Firma</button>
+        								<button type="button" class="btn btn-default" data-dismiss="modal">Chiudi</button>
+      								</div>
+    							</div>
+  							</div>
+						</div> 
+						
 						
 						<div id="confirmCertificato" class="modal fade" role="dialog" aria-labelledby="myLargeModalLabel">
     						<div class="modal-dialog" role="document">

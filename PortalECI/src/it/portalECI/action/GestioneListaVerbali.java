@@ -3,6 +3,7 @@ package it.portalECI.action;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -10,6 +11,7 @@ import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -23,6 +25,10 @@ import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.collections.TransformerUtils;
 import org.hibernate.Session;
 
+import com.google.gson.JsonObject;
+
+import it.arubapec.arubasignservice.ArubaSignService;
+import it.arubapec.arubasignservice.TypeOfTransportNotImplementedException;
 import it.portalECI.DAO.SessionFacotryDAO;
 import it.portalECI.DTO.CategoriaVerificaDTO;
 import it.portalECI.DTO.CompanyDTO;
@@ -237,7 +243,6 @@ public class GestioneListaVerbali extends HttpServlet {
 				session.close();
 				
 			}
-			
 				
 		}catch(Exception ex){
    		 	ex.printStackTrace();

@@ -341,6 +341,16 @@ function nuovoInterventoFromModal(divID){
 	  	   
 }
    
+
+function stripHtml(html){
+    // Create a new div element
+    var temporalDivElement = document.createElement("div");
+    // Set the HTML content with the providen
+    temporalDivElement.innerHTML = html;
+    // Retrieve the text property of the element (cross-browser support)
+    return temporalDivElement.textContent || temporalDivElement.innerText || "";
+}
+
 function saveInterventoFromModal(){
 
 	var str1=$('#tecnici').val();
@@ -354,8 +364,13 @@ function saveInterventoFromModal(){
 	});
 	var skTecObb='';
 	$('.skTecObb').each(function(index, item){
-		if($(this)[0].checked)
-			skTecObb+="&schedaTecnica="+$(this).closest('tr').prop('id');
+		if($(this)[0].checked){
+			//skTecObb+="&schedaTecnica="+$(this).closest('tr').prop('id');
+			skTecObb+="&schedaTecnica="+1;
+		}else{
+			skTecObb+="&schedaTecnica="+0;
+		}
+			
 	});
 	
 	var noteVerb='';
@@ -380,6 +395,9 @@ function saveInterventoFromModal(){
 		
 		var data = table.rows().data();
 		data.each(function (value, index) {
+			
+			var x = stripHtml(value[2]);
+			
 			noteVerb+="&note="+value[9];
 			sedi+= "&sedi="+value[5];
 			attrezzature+='&attrezzature='+value[4];
@@ -663,7 +681,7 @@ function salvaUsr(){
 	  
 	$.ajax({
 		type: "POST",
-		url: "salvaUtente.do",
+		url: "areaUtente.do?action=modifica_utente",
 		data: "dataIn="+JSON.stringify(jsonData),
 		//if received a response from the server
 		success: function( dataResp, textStatus) {
@@ -698,6 +716,131 @@ function salvaUsr(){
 	});
 }
   
+
+
+function modificaPinFirma(nuovo_pin, pin_attuale, firma_documento){
+	  pleaseWaitDiv = $('#pleaseWaitDialog');
+	  pleaseWaitDiv.modal();
+
+	  var dataObj = {};
+		dataObj.nuovo_pin = nuovo_pin;
+		if(pin_attuale!=null){
+		dataObj.pin_attuale = pin_attuale;
+		}
+		dataObj.firma_documento = firma_documento
+		
+	  $.ajax({
+        type: "POST",
+        url: "areaUtente.do?action=modifica_pin",
+        data: dataObj,
+        dataType: "json",
+        //if received a response from the server
+        success: function( data, textStatus) {
+      	  //var dataRsp = JSON.parse(dataResp);
+      	  if(data.success)
+    		  {        		
+      		  pleaseWaitDiv.modal('hide');
+      		 
+      		  $('#modalModificaPin').modal('toggle');
+      		  $('#report_button').hide();
+					$('#visualizza_report').hide();
+					$('#myModalErrorContent').html(data.messaggio);
+					if(data.pin!=null){
+						pin0=data.pin;
+					}
+					
+					
+			  	$('#myModalError').removeClass();
+				$('#myModalError').addClass("modal modal-success");
+				$('#myModalError').modal('show');
+				
+
+    		  }else{
+    			 pleaseWaitDiv.modal('hide');
+//    			$("#usrError").html('<h5>Attenzione! il PIN inserito non &egrave; associato all\'utente corrente!</h5>');
+//    			$("#usrError").addClass("callout callout-danger");
+    			 $('#modalModificaPin').modal('toggle');
+    			 $('#myModalErrorContent').html(data.messaggio);
+			  	$('#myModalError').removeClass();
+				$('#myModalError').addClass("modal modal-danger");	  
+				//$('#report_button').show();
+					//$('#visualizza_report').show();
+					$('#myModalError').modal('show');
+    			
+    		  }
+      	 
+        },
+        error: function( data, textStatus) {
+
+            console.log(data);
+            ('#myModalErrorContent').html(data.messaggio);
+			  	$('#myModalError').removeClass();
+				$('#myModalError').addClass("modal modal-danger");	  
+				$('#report_button').show();
+					$('#visualizza_report').show();
+					$('#myModalError').modal('show');
+
+        	pleaseWaitDiv.modal('hide');
+
+        }
+        });
+
+}
+
+function verificaPinFirma(pin, filename){
+	  pleaseWaitDiv = $('#pleaseWaitDialog');
+	  pleaseWaitDiv.modal();
+
+	  var dataObj = {};
+		dataObj.pin = pin;
+	  $.ajax({
+        type: "POST",
+        url: "firmaDocumento.do?action=checkPIN",
+        data: dataObj,
+        dataType: "json",
+        //if received a response from the server
+        success: function( data, textStatus) {
+      	  //var dataRsp = JSON.parse(dataResp);
+      	  if(data.success)
+    		  {  
+      		  pleaseWaitDiv.modal('hide');
+    		  
+      		  firmaDocumento(filename);
+    		  }else{
+    			pleaseWaitDiv.modal('hide');
+    			$('#pin').val("");
+    			
+    			$('#myModalErrorContent').html(data.messaggio);
+			  	$('#myModalError').removeClass();
+				$('#myModalError').addClass("modal modal-danger");
+				if(data.num_error!=1){
+				$('#report_button').show();
+				$('#visualizza_report').show();
+				}
+				$('#myModalError').modal('show');
+				
+				
+    		  }
+        },
+        error: function( data, textStatus) {
+
+      	  $('#myModalErrorContent').html(data.messaggio);
+		  	$('#myModalError').removeClass();
+			$('#myModalError').addClass("modal modal-danger");	  
+			$('#report_button').show();
+				$('#visualizza_report').show();
+				$('#myModalError').modal('show');
+
+
+        	pleaseWaitDiv.modal('hide');
+
+        }
+        });
+
+}
+
+
+
 function salvaCompany(){
 	pleaseWaitDiv = $('#pleaseWaitDialog');
 	pleaseWaitDiv.modal();
@@ -4097,3 +4240,67 @@ function esportaAttrezzatureScadenzario(){
 		   
 		
 	}
+
+
+
+function firmaVerbale(id_verbale){
+	
+	
+	pleaseWaitDiv = $('#pleaseWaitDialog');
+	pleaseWaitDiv.modal();
+	
+	var pin = $('#pin').val();
+	
+	var dataObj = {};
+	
+	dataObj.pin = pin;
+	
+		$.ajax({
+	type: "POST",
+	url: "gestioneVerbale.do?action=firma_verbale&idVerbale="+id_verbale,
+	data: dataObj,
+	dataType: "json",
+	//if received a response from the server
+	success: function( data, textStatus) {
+		  if(data.success)
+		  {  
+			  
+			  pleaseWaitDiv.modal('hide');
+				$('#modalErrorDiv').html(data.messaggio);
+				$('#myModalError').removeClass();	
+				$('#myModalError').addClass("modal modal-success");	  
+				$('#report_button').hide();
+				$('#visualizza_report').hide();		
+				$('#myModalError').modal('show');
+				
+				$('#myModalError').on('hidden.bs.modal',function(){
+					location.reload();
+				});
+			
+		  }else{
+			  
+			pleaseWaitDiv.modal('hide');
+			$('#modalErrorDiv').html(data.messaggio);
+			$('#myModalError').removeClass();	
+			$('#myModalError').addClass("modal modal-danger");	  
+			$('#report_button').hide();
+			$('#visualizza_report').hide();		
+			$('#myModalError').modal('show');			
+		
+		  }
+	},
+
+	error: function( data, textStatus) {
+		
+		pleaseWaitDiv.modal('hide');
+		  	$('#myModalError').removeClass();
+			$('#myModalError').addClass("modal modal-danger");	  
+			$('#report_button').show();
+			$('#visualizza_report').show();
+				$('#myModalError').modal('show');
+
+	}
+	});
+	   
+	
+}

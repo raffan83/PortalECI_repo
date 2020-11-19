@@ -32,27 +32,38 @@ public class GestioneDocumento extends HttpServlet {
 		
 		Session session=SessionFacotryDAO.get().openSession();
 		
-		String idDocumento=request.getParameter("idDocumento");
-		DocumentoDTO documento = GestioneDocumentoDAO.getDocumento(idDocumento, session);
-		File fileDocument = null;
+		String p7m = request.getParameter("p7m");
+			
+			String idDocumento=request.getParameter("idDocumento");		
+			
+			DocumentoDTO documento = GestioneDocumentoDAO.getDocumento(idDocumento, session);
+			File fileDocument = null;
+			
+			if(documento != null) {
+				if(p7m!=null && p7m.equals("1")) {
+					fileDocument =  new File(Costanti.PATH_CERTIFICATI+documento.getFilePath()+".p7m");
+				}else {
+					fileDocument =  new File(Costanti.PATH_CERTIFICATI+documento.getFilePath());
+				}
+			}
+
+			if(fileDocument == null || !fileDocument.exists()) {
+				response.sendError(HttpServletResponse.SC_NOT_FOUND);
+				session.close();
+				return;
+			}
+		    
+			if(p7m!=null && p7m.equals("1")) {
+				response.setContentType("application/octet-stream");
+			}else {
+				response.setContentType("application/pdf");	
+			}
+			
+		    response.setHeader("Content-disposition", "attachment; filename=\""+fileDocument.getName()+"\"");
+
+		    OutputStream output = response.getOutputStream();
+		    output.write(Files.readAllBytes(fileDocument.toPath()));
+		    output.close();
 		
-		if(documento != null) {
-
-			fileDocument =  new File(Costanti.PATH_CERTIFICATI+documento.getFilePath());
-		}
-
-
-		if(fileDocument == null || !fileDocument.exists()) {
-			response.sendError(HttpServletResponse.SC_NOT_FOUND);
-			session.close();
-			return;
-		}
-	    
-		response.setContentType("application/pdf");
-	    response.setHeader("Content-disposition", "attachment; filename=\""+fileDocument.getName()+"\"");
-
-	    OutputStream output = response.getOutputStream();
-	    output.write(Files.readAllBytes(fileDocument.toPath()));
-	    output.close();
 	}
 }

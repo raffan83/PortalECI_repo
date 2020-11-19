@@ -381,8 +381,8 @@ public class GestioneVerbaleBO {
         */
         
 		html = html + template.getTemplate();
-		html = replacePlaceholders(html, verbale,intervento, session);
-		String subheader = replacePlaceholders(template.getSubheader(), verbale,intervento, session);
+		html = replacePlaceholders(html, verbale,intervento, false, session);
+		String subheader = replacePlaceholders(template.getSubheader(), verbale,intervento,false, session);
 
 		GestioneTemplateQuestionarioBO.writePDF(fileOutput, html, template,subheader);
 
@@ -452,8 +452,8 @@ public class GestioneVerbaleBO {
 		
 		
 		html = html + template.getTemplate();
-		html = replacePlaceholders(html, verbale,intervento, session);
-		String subheader = replacePlaceholders(template.getSubheader(), verbale,intervento, session);
+		html = replacePlaceholders(html, verbale,intervento, true,session);
+		String subheader = replacePlaceholders(template.getSubheader(), verbale,intervento, true, session);
 		GestioneTemplateQuestionarioBO.writePDF(fileOutput, html, template, subheader);
         
         if(vecchioDocumento != null) {
@@ -645,7 +645,7 @@ public class GestioneVerbaleBO {
 		return numeroVerbale;
 	}
 	
-	private static String replacePlaceholders(String html, VerbaleDTO verbale, InterventoDTO intervento, Session session) throws Exception {
+	private static String replacePlaceholders(String html, VerbaleDTO verbale, InterventoDTO intervento, boolean isAnteprima, Session session) throws Exception {
 		
 		if(html==null || html.equals("")) {
 			return "";
@@ -874,6 +874,21 @@ public class GestioneVerbaleBO {
 		}
 		
 		
+		String esito ="";
+		if(verbale.getEsito()!=null && verbale.getEsito().equals("P")) {
+			esito = esito + "<img src=\"" + Costanti.PATH_FONT_IMAGE +"checked" +"-"+"radio"+".png" + "\" style=\"height:12px;\" />&nbsp;" + "Positivo&nbsp;";
+			esito = esito + "<img src=\"" + Costanti.PATH_FONT_IMAGE +"unchecked" +"-"+"radio"+".png" + "\" style=\"height:12px;\" />&nbsp;" + "Negativo";
+		}else if(verbale.getEsito()!=null && verbale.getEsito().equals("N")) {
+			esito = esito + "<img src=\"" + Costanti.PATH_FONT_IMAGE +"unchecked" +"-"+"radio"+".png" + "\" style=\"height:12px;\" />&nbsp;" + "Positivo&nbsp;";
+			esito = esito + "<img src=\"" + Costanti.PATH_FONT_IMAGE +"checked" +"-"+"radio"+".png" + "\" style=\"height:12px;\" />&nbsp;" + "Negativo";
+		}else {
+			esito = esito + "<img src=\"" + Costanti.PATH_FONT_IMAGE +"unchecked" +"-"+"radio"+".png" + "\" style=\"height:12px;\" />&nbsp;" + "Positivo&nbsp;";
+			esito = esito + "<img src=\"" + Costanti.PATH_FONT_IMAGE +"unchecked" +"-"+"radio"+".png" + "\" style=\"height:12px;\" />&nbsp;" + "Negativo";
+		}
+		
+		html = html.replaceAll("\\$\\{ESITO_VERIFICA\\}", esito);
+		
+		
 		String tipo_verifica_val ="";
 				
 		String check1="";
@@ -929,6 +944,12 @@ public class GestioneVerbaleBO {
 						check2 = "unchecked";
 						check3 = "checked";
 						check4 = "checked";
+					}
+					if(verbale.getTipo_verifica_gvr()==7) {
+						check1 = "unchecked";
+						check2 = "checked";
+						check3 = "checked";
+						check4 = "unchecked";
 					}
 					
 						
@@ -1007,6 +1028,39 @@ public class GestioneVerbaleBO {
 
 		html = html.replaceAll("\\$\\{TIPO_VERIFICA_VIE\\}", tipo_verifica_vie);
 		
+		
+		String firma_verificatore = "";
+		
+		if(verificatore.getFile_firma()!=null && !isAnteprima) {
+			firma_verificatore ="<img src=\"" + Costanti.PATH_ROOT+"/FileFirme/" + verificatore.getFile_firma()+ "\" style=\"height:60px;\" /><br/>"; 
+		}
+		
+		
+		html = html.replaceAll("\\$\\{FIRMA_VERIFICATORE\\}", firma_verificatore);
+		
+		
+		String firma_riesame = "";
+		String ruolo = "Riesaminato";
+		
+		if(verbale.getResponsabile_approvatore()!=null && verbale.getResponsabile_approvatore().checkRuolo("RT")) {
+			ruolo = ruolo + " RT";
+		}else if(verbale.getResponsabile_approvatore()!=null && verbale.getResponsabile_approvatore().checkRuolo("SRT")){
+			ruolo = ruolo + " SRT";
+		}
+		
+		
+		html = html.replaceAll("\\$\\{RUOLO_RIESAME\\}", ruolo);
+		
+		if(verbale.getData_approvazione()!=null) {
+			html = html.replaceAll("\\$\\{DATA_RIESAME\\}", df.format(verbale.getData_approvazione()));	
+		}
+		
+		if(verbale.getResponsabile_approvatore()!=null && !isAnteprima) {			
+			
+			firma_riesame = "<img src=\"" + Costanti.PATH_ROOT+"/FileFirme/" + verificatore.getFile_firma()+ "\" style=\"height:60px;\" /><br/>";
+		}
+		
+		html = html.replaceAll("\\$\\{FIRMA_RIESAME\\}", firma_riesame);
 
 		// Elimino i placeholder non utilizzati
 		html = html.replaceAll("\\$\\{(.*?)\\}", "");

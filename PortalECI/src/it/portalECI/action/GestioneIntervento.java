@@ -181,17 +181,21 @@ public class GestioneIntervento extends HttpServlet {
 					TipoVerificaDTO tipoVerificaDTO = GestioneInterventoBO.getTipoVerifica(id_tipo, session); 
 					tipoverificalist.add(tipoVerificaDTO);
 					Boolean createSkTec=false;
-					
-					if(schedaTecnicaObbligatoria!=null && schedaTecnicaObbligatoria.length>0) {
-						for( int a = 0; a<= schedaTecnicaObbligatoria.length - 1; a++){
-
-							if(schedaTecnicaObbligatoria[a]!=null && schedaTecnicaObbligatoria[a].equals(categoriaTipo[i])) {
-								schedaTecnicaObbligatoria[a]=null;
-								createSkTec=true;							
-								break;
-							}
+					if(schedaTecnicaObbligatoria!=null) {
+						if(schedaTecnicaObbligatoria[i].equals("1")) {
+							createSkTec = true;
 						}
 					}
+//					if(schedaTecnicaObbligatoria!=null && schedaTecnicaObbligatoria.length>0) {
+//						for( int a = 0; a<= schedaTecnicaObbligatoria.length - 1; a++){
+//
+//							if(schedaTecnicaObbligatoria[a]!=null && schedaTecnicaObbligatoria[a].equals(categoriaTipo[i])) {
+//								schedaTecnicaObbligatoria[a]=null;
+//								createSkTec=true;							
+//								break;
+//							}
+//						}
+//					}
 					
 					AttrezzaturaDTO attrezzatura= null;
 					

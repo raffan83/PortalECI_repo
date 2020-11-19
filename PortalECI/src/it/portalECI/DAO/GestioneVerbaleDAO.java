@@ -24,7 +24,8 @@ public class GestioneVerbaleDAO {
 		boolean ck_AM=user.checkRuolo("AM");
 		boolean ck_ST=user.checkRuolo("ST");
 		boolean ck_RT=user.checkRuolo("RT");
-		if(ck_ST==false && ck_AM==false && ck_RT==false) 
+		boolean ck_SRT=user.checkRuolo("SRT");
+		if(ck_ST==false && ck_AM==false && ck_RT==false && ck_SRT==false) 
 		{
 		 
 		query  = session.createQuery( "from VerbaleDTO WHERE type = :_type AND intervento.tecnico_verificatore.id=:_idUser");
@@ -116,10 +117,10 @@ public class GestioneVerbaleDAO {
 		boolean ck_AM=user.checkRuolo("AM");
 		boolean ck_ST=user.checkRuolo("ST");
 		boolean ck_RT=user.checkRuolo("RT");
-		
+		boolean ck_SRT=user.checkRuolo("SRT");
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 		
-		if(ck_ST==false && ck_AM==false && ck_RT==false) 
+		if(ck_ST==false && ck_AM==false && ck_RT==false && ck_SRT==false) 
 		{
 		 
 		query  = session.createQuery( "from VerbaleDTO WHERE type = :_type AND intervento.tecnico_verificatore.id=:_idUser and data_verifica between :_dateFrom and :_dateTo");
@@ -146,10 +147,10 @@ public class GestioneVerbaleDAO {
 		boolean ck_AM=user.checkRuolo("AM");
 		boolean ck_ST=user.checkRuolo("ST");
 		boolean ck_RT=user.checkRuolo("RT");
-		
+		boolean ck_SRT=user.checkRuolo("SRT");
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 		
-		if(ck_ST==false && ck_AM==false && ck_RT==false) 
+		if(ck_ST==false && ck_AM==false && ck_RT==false && ck_SRT) 
 		{
 		 
 		query  = session.createQuery( "from VerbaleDTO WHERE type = :_type AND intervento.tecnico_verificatore.id=:_idUser and attrezzatura.id = :_id_attrezzatura");

@@ -154,5 +154,17 @@
 			<column name="data_conferma" />
 		</property> 
 		 
+		 
+		 			<many-to-one name="responsabile_approvatore" class="it.portalECI.DTO.UtenteDTO" fetch="join" lazy="false">
+            <column name="responsabile_approvatore" />
+        </many-to-one>
+        
+        <property name="data_approvazione" type="java.sql.Date">
+			<column name="data_approvazione" />
+		</property> 
+				<property name="firmato" type="int">
+			<column name="firmato" />
+		</property>
+		 
 	</class>
 </hibernate-mapping> 

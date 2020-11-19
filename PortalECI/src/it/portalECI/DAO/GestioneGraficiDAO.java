@@ -30,7 +30,8 @@ public class GestioneGraficiDAO {
 		boolean ck_AM=user.checkRuolo("AM");
 		boolean ck_ST=user.checkRuolo("ST");
 		boolean ck_RT=user.checkRuolo("RT");
-		if(ck_ST==false && ck_AM==false && ck_RT==false) 
+		boolean ck_SRT=user.checkRuolo("SRT");
+		if(ck_ST==false && ck_AM==false && ck_RT==false && ck_SRT == false) 
 		{
 		 
 		query  = session.createQuery( "select a.codiceVerifica, a.codiceCategoria from VerbaleDTO a WHERE type = :_type AND a.intervento.tecnico_verificatore.id=:_idUser");
@@ -74,7 +75,8 @@ public class GestioneGraficiDAO {
 		boolean ck_AM=user.checkRuolo("AM");
 		boolean ck_ST=user.checkRuolo("ST");
 		boolean ck_RT=user.checkRuolo("RT");
-		if(ck_ST==false && ck_AM==false && ck_RT==false) 
+		boolean ck_SRT=user.checkRuolo("SRT");
+		if(ck_ST==false && ck_AM==false && ck_RT==false && ck_SRT==false) 
 		{
 		 
 		query  = session.createQuery( "select a.intervento.tecnico_verificatore.nominativo from VerbaleDTO a WHERE a.type = :_type AND a.intervento.tecnico_verificatore.id=:_idUser");
@@ -118,7 +120,8 @@ public class GestioneGraficiDAO {
 		boolean ck_AM=user.checkRuolo("AM");
 		boolean ck_ST=user.checkRuolo("ST");
 		boolean ck_RT=user.checkRuolo("RT");
-		if(ck_ST==false && ck_AM==false && ck_RT==false) 
+		boolean ck_SRT=user.checkRuolo("SRT");
+		if(ck_ST==false && ck_AM==false && ck_RT==false && ck_SRT==false) 
 		{
 		 
 		query  = session.createQuery( "select a.stato from VerbaleDTO a WHERE a.type = :_type AND a.intervento.tecnico_verificatore.id=:_idUser");

@@ -225,7 +225,11 @@ public class GestioneTemplateQuestionarioBO {
 
 		html = html.replaceAll("\\$\\{DATA_CONFERMA\\}", "DATA CONFERMA");
 		
+		String esito = "<img src=\"" + Costanti.PATH_FONT_IMAGE +"unchecked" +"-"+"radio"+".png" + "\" style=\"height:12px;\" />&nbsp;" + "Positivo&nbsp;";
+			esito = esito + "<img src=\"" + Costanti.PATH_FONT_IMAGE +"unchecked" +"-"+"radio"+".png" + "\" style=\"height:12px;\" />&nbsp;" + "Negativo";
 		
+		
+		html = html.replaceAll("\\$\\{ESITO_VERIFICA\\}", esito);
 		
 
 		
@@ -260,6 +264,23 @@ public class GestioneTemplateQuestionarioBO {
 		
 
 		html = html.replaceAll("\\$\\{TIPO_VERIFICA_VIE\\}", tipo_verifica_vie);
+		
+		
+		html = html.replaceAll("\\$\\{FIRMA_VERIFICATORE\\}", "FIRMA VERIFICATORE");
+		
+		
+		
+		html = html.replaceAll("\\$\\{RUOLO_RIESAME\\}", "Riesaminato RT");
+		
+	
+		html = html.replaceAll("\\$\\{DATA_RIESAME\\}", "DATA RIESAME");	
+	
+
+		html = html.replaceAll("\\$\\{FIRMA_RIESAME\\}", "FIRMA RIESAME");
+		
+		
+		
+		
 		// Elimino i placeholder non utilizzati
 		html = html.replaceAll("\\$\\{(.*?)\\}", "");
 		return html;

@@ -40,6 +40,9 @@ public class UtenteDTO implements Serializable {
 	private String resetToken = "";
 	private String qualifica = "";
 	private String cf="";
+	private String file_firma = "";
+	private String pin_firma = "";
+	private String id_firma = "";
 	
 	private Set<RuoloDTO> listaRuoli = new HashSet<RuoloDTO>(0);
 	private Set<CategoriaVerificaDTO> listaCategorieVerifica = new HashSet<CategoriaVerificaDTO>(0);
@@ -384,5 +387,29 @@ public class UtenteDTO implements Serializable {
 
 	public void setListaComunicazioni(Set<TipoComunicazioneUtenteDTO> listaComunicazioni) {
 		this.listaComunicazioni = listaComunicazioni;
+	}
+
+	public String getFile_firma() {
+		return file_firma;
+	}
+
+	public void setFile_firma(String file_firma) {
+		this.file_firma = file_firma;
+	}
+
+	public String getPin_firma() {
+		return pin_firma;
+	}
+
+	public void setPin_firma(String pin_firma) {
+		this.pin_firma = pin_firma;
+	}
+
+	public String getId_firma() {
+		return id_firma;
+	}
+
+	public void setId_firma(String id_firma) {
+		this.id_firma = id_firma;
 	}
 }

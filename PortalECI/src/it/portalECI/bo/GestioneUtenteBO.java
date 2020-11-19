@@ -54,4 +54,9 @@ public class GestioneUtenteBO {
 		return result;		
 	}
 
+
+	public static boolean checkPINFirma(int id, String pin, Session session) {
+		return GestioneUtenteDAO.checkPINFIrma(id, pin, session);
+	}
+
 }
