@@ -12,7 +12,7 @@
 <%@page import="java.text.SimpleDateFormat"%>
 <%@ page language="java" import="java.util.List" %>
 <%@ page language="java" import="java.util.ArrayList" %>
-<%-- <%@ taglib uri="/WEB-INF/tld/utilities" prefix="utl" %> --%>
+<%@ taglib uri="/WEB-INF/tld/utilities" prefix="utl" %>
 <% pageContext.setAttribute("newLineChar", "\r\n"); %>
 <% pageContext.setAttribute("newLineChar2", "\n"); %>
     <% 
@@ -68,12 +68,12 @@ SimpleDateFormat sdf= new SimpleDateFormat("dd/MM/yyyy");
 <td>
 <c:if test="${attivita.tipo_attivita.id==1 }">
 <%-- ${fn:replace(fn:replace(evento.descrizione.replace('\'',' ').replace('\\','/'),newLineChar, ' '),newLineChar2, ' ')} --%>
-<button class="btn customTooltip btn-info" onClick="dettaglioManutenzione('${fn:replace(fn:replace(attivita.descrizione_attivita.replace('\'',' ').replace('\\','/'),newLineChar, ' '),newLineChar2, ' ')}','${attivita.tipo_manutenzione }','${attivita.data }','${attivita.operatore.nominativo }')" title="Click per visualizzare l'attività di manutenzione"><i class="fa fa-arrow-right"></i></button>
+<button class="btn customTooltip btn-info" onClick="dettaglioManutenzione('${utl:escapeJS(attivita.descrizione_attivita)}','${attivita.tipo_manutenzione }','${attivita.data }','${utl:escapeJS(attivita.operatore.nominativo) }')" title="Click per visualizzare l'attività di manutenzione"><i class="fa fa-arrow-right"></i></button>
 </c:if>
 <c:if test="${attivita.tipo_attivita.id==3}">
-<button class="btn customTooltip btn-info" onClick="dettaglioVerificaTaratura('${attivita.tipo_attivita.descrizione }','${attivita.data}','${attivita.ente }','${attivita.data_scadenza }','${attivita.etichettatura }','${attivita.stato }','${attivita.campo_sospesi }','${attivita.operatore.nominativo.replace('\'','&prime;')}','','','')" title="Click per visualizzare l'attività di taratura"><i class="fa fa-arrow-right"></i></button>
+<button class="btn customTooltip btn-info" onClick="dettaglioVerificaTaratura('${utl:escapeJS(attivita.tipo_attivita.descrizione) }','${attivita.data}','${utl:escapeJS(attivita.ente) }','${attivita.data_scadenza }','${utl:escapeJS(attivita.etichettatura) }','${attivita.stato }','${utl:escapeJS(attivita.campo_sospesi) }','${utl:escapeJS(attivita.operatore.nominativo)}','','','')" title="Click per visualizzare l'attività di taratura"><i class="fa fa-arrow-right"></i></button>
 </c:if>
-<button class="btn customTooltip btn-warning" onClick="modificaAttivita('${attivita.id}','${attivita.tipo_attivita.id }','${fn:replace(fn:replace(attivita.descrizione_attivita.replace('\'',' ').replace('\\','/'),newLineChar, ' '),newLineChar2, ' ')}','${attivita.data}','${attivita.tipo_manutenzione }','${attivita.ente }','${attivita.data_scadenza }','${attivita.campo_sospesi }','${attivita.operatore.id }','${attivita.etichettatura }','${attivita.stato }','' )" title="Click per modificare l'attività"><i class="fa fa-edit"></i></button>
+<button class="btn customTooltip btn-warning" onClick="modificaAttivita('${attivita.id}','${attivita.tipo_attivita.id }','${utl:escapeJS(attivita.descrizione_attivita)}','${attivita.data}','${attivita.tipo_manutenzione }','${utl:escapeJS(attivita.ente) }','${attivita.data_scadenza }','${utl:escapeJS(attivita.campo_sospesi) }','${attivita.operatore.id }','${utl:escapeJS(attivita.etichettatura) }','${attivita.stato }','' )" title="Click per modificare l'attività"><i class="fa fa-edit"></i></button>
  <c:if test="${attivita.allegato!=null && !attivita.allegato.equals('') }">
  	<button class="btn customTooltip btn-danger" onClick="callAction('gestioneAttivitaCampioni.do?action=download_allegato_certificato&id_attivita=${attivita.id}')" title="Click per scaricare l'allegato"><i class="fa fa-arrow-down"></i></button>
  </c:if>

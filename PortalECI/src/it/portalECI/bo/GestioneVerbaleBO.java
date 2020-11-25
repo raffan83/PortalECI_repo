@@ -1032,7 +1032,7 @@ public class GestioneVerbaleBO {
 		String firma_verificatore = "";
 		
 		if(verificatore.getFile_firma()!=null && !isAnteprima) {
-			firma_verificatore ="<img src=\"" + Costanti.PATH_ROOT+"/FileFirme/" + verificatore.getFile_firma()+ "\" style=\"height:60px;\" /><br/>"; 
+			firma_verificatore ="<img src=\"" + Costanti.PATH_ROOT+"/FileFirme/" + verificatore.getFile_firma()+ "\" style=\"height:40px;\" /><br/>"; 
 		}
 		
 		
@@ -1055,9 +1055,9 @@ public class GestioneVerbaleBO {
 			html = html.replaceAll("\\$\\{DATA_RIESAME\\}", df.format(verbale.getData_approvazione()));	
 		}
 		
-		if(verbale.getResponsabile_approvatore()!=null && !isAnteprima) {			
+		if(verbale.getResponsabile_approvatore()!=null && verbale.getResponsabile_approvatore().getFile_firma()!=null && !isAnteprima) {			
 			
-			firma_riesame = "<img src=\"" + Costanti.PATH_ROOT+"/FileFirme/" + verificatore.getFile_firma()+ "\" style=\"height:60px;\" /><br/>";
+			firma_riesame = "<img src=\"" + Costanti.PATH_ROOT+"/FileFirme/" + verbale.getResponsabile_approvatore().getFile_firma()+ "\" style=\"height:40px;\" /><br/>";
 		}
 		
 		html = html.replaceAll("\\$\\{FIRMA_RIESAME\\}", firma_riesame);

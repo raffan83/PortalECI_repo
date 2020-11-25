@@ -41,7 +41,7 @@
         Lista Campioni
         <small>Fai doppio click per entrare nel dettaglio</small>
       </h1>
-      
+
     </section>
     <div style="clear: both;"></div>  
     <!-- Main content -->

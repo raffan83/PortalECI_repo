@@ -19,6 +19,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.apache.commons.lang3.StringEscapeUtils;
+
 
 
 public class Utility extends HttpServlet {
@@ -175,5 +177,14 @@ public class Utility extends HttpServlet {
 		
 		
 	}
+	
+    public static String escapeHTML(String value) {
+        return StringEscapeUtils.escapeHtml4(value);
+    }
+    
+    public static String escapeJS(String value) {
+        return StringEscapeUtils.escapeEcmaScript(StringEscapeUtils.escapeHtml4(value));
+    }
+    
 	
 }

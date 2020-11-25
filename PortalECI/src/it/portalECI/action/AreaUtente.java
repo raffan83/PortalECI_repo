@@ -149,7 +149,7 @@ public class AreaUtente extends HttpServlet {
 				myObj.addProperty("success", false);
 				myObj.addProperty("messaggio", "Attenzione! il PIN inserito non &egrave; associato all\'utente corrente!");
 			 }
-			
+			session.getTransaction().commit();
 		 	session.close();
 		 	PrintWriter out = response.getWriter();
 			out.println(myObj.toString());
