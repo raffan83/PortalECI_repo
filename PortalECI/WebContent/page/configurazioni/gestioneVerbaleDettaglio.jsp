@@ -202,6 +202,7 @@
 				break;
 			case "Divisione":
 				risultato = valore1 / valore2;
+				risultato = risultato.toFixed(1);
 				break;
 			case "Potenza":
 				risultato = Math.pow(valore1, valore2);

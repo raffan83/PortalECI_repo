@@ -59,9 +59,10 @@ public class GestioneCampioneBO {
 				return 2;
 			}
 			certificatoCampioneDTO.setFilename(filename);
+			campione.setFilenameCertificato(filename);
 			
 			GestioneCampioneDAO.updateCertificatoCampione(certificatoCampioneDTO,session);
-
+			session.update(campione);
 		}
 			
 		toRet=0;	

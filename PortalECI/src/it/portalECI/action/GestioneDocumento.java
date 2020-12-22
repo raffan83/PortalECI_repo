@@ -33,6 +33,7 @@ public class GestioneDocumento extends HttpServlet {
 		Session session=SessionFacotryDAO.get().openSession();
 		
 		String p7m = request.getParameter("p7m");
+		String controfirmato = request.getParameter("controfirmato");
 			
 			String idDocumento=request.getParameter("idDocumento");		
 			
@@ -40,9 +41,14 @@ public class GestioneDocumento extends HttpServlet {
 			File fileDocument = null;
 			
 			if(documento != null) {
-				if(p7m!=null && p7m.equals("1")) {
+				
+				if(controfirmato!=null && controfirmato.equals("1") && p7m!=null && p7m.equals("1") ) {
+					fileDocument =  new File(Costanti.PATH_CERTIFICATI+documento.getFilePath()+".p7m.p7m");
+				}
+				else if(p7m!=null && p7m.equals("1")) {
 					fileDocument =  new File(Costanti.PATH_CERTIFICATI+documento.getFilePath()+".p7m");
-				}else {
+				}
+				else {
 					fileDocument =  new File(Costanti.PATH_CERTIFICATI+documento.getFilePath());
 				}
 			}

@@ -28,7 +28,7 @@ public class HeaderFooter extends PdfPageEventHelper {
 	private static float MIN_TOP_MARGIN = 72;
 	private static float MIN_BOTTOM_MARGIN = 72;
 	private static float TABLE_FOOTER_HEIGHT = 24;
-	private static float FIXED_FOOTER_FONT_SIZE = 10;
+	private static float FIXED_FOOTER_FONT_SIZE = 7;
 	
     protected Image imgHeader;
     protected Image imgFooter;
@@ -66,7 +66,7 @@ public class HeaderFooter extends PdfPageEventHelper {
 			e.printStackTrace();
 		}
 		
-    	totalPage = writer.getDirectContent().createTemplate(50,TABLE_FOOTER_HEIGHT/2);
+    	totalPage = writer.getDirectContent().createTemplate(50,(TABLE_FOOTER_HEIGHT/2)-3);
     }
 
     @Override
@@ -99,7 +99,7 @@ public class HeaderFooter extends PdfPageEventHelper {
             numberPageCell.setFixedHeight(TABLE_FOOTER_HEIGHT);
             table.addCell(numberPageCell);
             
-            PdfPCell totalNumberPageCell = new PdfPCell(Image.getInstance(totalPage));
+            PdfPCell totalNumberPageCell = new PdfPCell(Image.getInstance(totalPage));           
             totalNumberPageCell.setBorder(Rectangle.NO_BORDER);
             totalNumberPageCell.setVerticalAlignment(Element.ALIGN_BASELINE);
             totalNumberPageCell.setFixedHeight(TABLE_FOOTER_HEIGHT);
@@ -151,7 +151,7 @@ public class HeaderFooter extends PdfPageEventHelper {
 
     @Override
     public void onCloseDocument(PdfWriter writer, Document document) {
-        ColumnText.showTextAligned(totalPage, Element.ALIGN_LEFT,new Phrase(String.valueOf(writer.getPageNumber()), font),0, 0, 0);
+        ColumnText.showTextAligned(totalPage, Element.ALIGN_BASELINE,new Phrase(String.valueOf(writer.getPageNumber()), font),0, 0, 0);
     }
     
     public void formatDocument(Document document) {

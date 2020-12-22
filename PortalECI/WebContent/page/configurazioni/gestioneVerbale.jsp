@@ -165,7 +165,7 @@
                 									</li>
                 									<li class="list-group-item">
                   										<b>Sede Utilizzatore</b>                  										
-                  										<a class="pull-right "  >${verbale.sedeUtilizzatore}<c:if test="${verbale.codiceCategoria == 'VIE' }"><i class="fa fa-edit" onclick="modalSedeUtilizzatore('${verbale.sedeUtilizzatore}')" title="Modifica sede utilizzatore"></i></c:if>
+                  										<a class="pull-right "  >${verbale.sedeUtilizzatore}<c:if test="${verbale.codiceCategoria == 'VIE' }">  <c:if test="${verbale.getStato().getId()!= 5}"><i class="fa fa-edit" onclick="modalSedeUtilizzatore('${verbale.sedeUtilizzatore}')" title="Modifica sede utilizzatore"></i></c:if></c:if>
                   										
                   										</a>
                   									
@@ -175,7 +175,7 @@
                 									<c:if test="${verbale.codiceCategoria == 'VIE' }">
                 									<li class="list-group-item">
                   										<b>Esercente</b>
-                  										<a class="pull-right b"  >${verbale.esercente}   <i class="fa fa-edit" onclick="modalEsercente()" title="Modifica esercente"></i>
+                  										<a class="pull-right b"  >${verbale.esercente} <c:if test="${verbale.getStato().getId()!= 5}">  <i class="fa fa-edit" onclick="modalEsercente()" title="Modifica esercente"></i></c:if>
                   										</a>
                   								
                   									       										
@@ -184,7 +184,7 @@
                 									<c:if test="${verbale.codiceCategoria == 'VIE' && verbale.getDescrizione_sede_utilizzatore()!=null }">
                 									<li class="list-group-item">
                   										<b>Descrizione Utilizzatore</b>
-                  										<a class="pull-right b"  >${verbale.getDescrizione_sede_utilizzatore()}   <i class="fa fa-edit" onclick="modalDescrUtilizzatore()" title="Modifica descrizione utilizzatore"></i>
+                  										<a class="pull-right b"  >${verbale.getDescrizione_sede_utilizzatore()} <c:if test="${verbale.getStato().getId()!= 5}"> <i class="fa fa-edit" onclick="modalDescrUtilizzatore()" title="Modifica descrizione utilizzatore"></i></c:if> 
                   										</a>
                   								
                   									       										
@@ -193,11 +193,11 @@
                 								</c:if>	
         										</ul> 
         										
-        										<c:if test='${verbale.getStato().getId()== 5 && (user.checkRuolo("AM") || user.checkRuolo("RT") || user.checkRuolo("SRT"))}'>										
+        										<c:if test='${verbale.getStato().getId()== 5 && verbale.getFirmato() == 1 && (user.checkRuolo("AM") || user.checkRuolo("RT") || user.checkRuolo("SRT"))  && verbale.getResponsabile_approvatore().getId() == userObj.getId()}'>										
 													<!-- <button type="button" class="btn btn-sm pull-right" onclick="salvaCambioStato(null,null,'6')" style="color:#000000 !important;"> -->
 													<button type="button" class="btn btn-info btn-sm pull-right" onclick="$('#modalPin').modal('show');" style="margin-left:5px">
 														<i class="fa fa-edit"></i>
-														<span>Firma verbale</span>
+														<span>Controfirma verbale</span>
 													</button>
 												</c:if>	  
 
@@ -248,7 +248,15 @@
 	        											<li class="list-group-item ${certificato.getInvalid()?"text-muted":""}">
 	                  										<b>${certificato.getFileName()}</b>
 	                  										<c:if test="${user.checkPermesso('DOWNLOAD_CERTIFICATO')}">             										
-	                  											<a class="btn btn-default btn-xs pull-right" href="gestioneDocumento.do?idDocumento=${certificato.getId()}" style="margin-left:5px"><i class="glyphicon glyphicon-file"></i> Download Certificato</a>
+	                  											<a class="btn btn-default btn-xs pull-right" href="gestioneDocumento.do?p7m=1&idDocumento=${certificato.getId()}" style="margin-left:5px"><i class="glyphicon glyphicon-file"></i> Download Certificato</a>
+	                  											
+	                  											<c:if test="${verbale.getFirmato()==1 && verbale.getControfirmato() == 1 &&  certificato.getInvalid()== false }">
+	                  											<a class="btn btn-default btn-xs pull-right" href="gestioneDocumento.do?p7m=1&controfirmato=1&idDocumento=${certificato.getId()}" style="margin-left:5px"><i class="glyphicon glyphicon-file"></i> Download P7m Controfirmato</a>
+	                  											</c:if>
+	                  											
+	                  											<c:if test="${verbale.getFirmato()==0 && certificato.getInvalid()== false }">
+	                  											<a class="btn btn-default btn-xs pull-right" onClick="modalCaricaP7m('${certificato.getId()}')" style="margin-left:5px"><i class="fa fa-plus"></i> Carica P7m</a>
+	                  											</c:if>
 	                  											
 	                  											<c:if test="${verbale.getFirmato()==1 && certificato.getInvalid()== false }">
 	                  											<a class="btn btn-default btn-xs pull-right" href="gestioneDocumento.do?p7m=1&idDocumento=${certificato.getId()}" style="margin-left:5px"><i class="glyphicon glyphicon-file"></i> Download P7m</a>
@@ -834,7 +842,7 @@
 												</c:if>
 												
 												<div class="col-xs-6">
-												<label>Matricola</label><br>
+												<label>Matricola INAIL/ISPESL/ENPI</label><br>
 											
 													<input type="text" class="form-control" id="matricola_vie" name="matricola_vie" value="${verbale.matricola_vie }">
 									
@@ -1623,6 +1631,47 @@
  
 </div>
    </form>
+   
+   
+   
+   <form class="form-horizontal" id="formNuovaAttrezzatura">
+<div id="modalUploadP7m" class="modal fade" role="dialog" aria-labelledby="myLargeModalLabel">
+    <div class="modal-dialog modal-md" role="document">
+    <div class="modal-content">
+     <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Carica File p7m</h4>
+      </div>
+       <div class="modal-body">
+
+       
+   
+
+    <div class="form-group">
+          <!-- <label for="inputEmail" class="col-sm-4 control-label">:</label> -->
+
+         <div class="col-sm-8">
+         <span class="btn btn-primary fileinput-button ">
+		        <i class="glyphicon glyphicon-plus"></i>
+		        <span>Seleziona un file...</span>
+		        <!-- The file input field used as target for the file upload widget -->
+		        		<input accept=".p7m" id="fileupload" type="file" name="files">
+		   	 </span>
+    	</div>
+   </div>
+
+
+  		 </div>
+      <div class="modal-footer">
+      
+      <input type="hidden" id="id_certificato_p7m" name="id_certificato_p7m">
+
+      </div>
+    </div>
+  </div>
+ 
+</div>
+   </form>
 						
 						
      					<div id="errorMsg"><!-- Place at bottom of page --></div> 
@@ -1654,16 +1703,142 @@
 	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/datejs/1.0/date.min.js"></script>
 		<script src="js/verbale.js" type="text/javascript"></script>
 		<script type="text/javascript" src="plugins/datepicker/locales/bootstrap-datepicker.it.js"></script> 
+		
+		<script src="plugins/jqueryuploadfile/js/jquery.fileupload.js"></script>
+<script src="plugins/jqueryuploadfile/js/jquery.fileupload-process.js"></script>
+<script src="plugins/jqueryuploadfile/js/jquery.fileupload-validate.js"></script>
+<script src="plugins/jqueryuploadfile/js/jquery.fileupload-ui.js"></script>
+<script src="plugins/fileSaver/FileSaver.min.js"></script>
 <!-- <script type="text/javascript" src="plugins/datejs/date.js"></script> -->
  		<script type="text/javascript">
 		   
+ 		
+ 		
+ 	 	
+ 		$('#fileupload').fileupload({
+ 	        url: "gestioneVerbale.do?action=carica_p7m",
+ 	        dataType: 'json',
+ 	        maxNumberOfFiles : 1,
+ 	        getNumberOfFiles: function () {
+ 	            return this.filesContainer.children()
+ 	                .not('.processing').length;
+ 	        },
+ 	        start: function(e){
+ 	        	pleaseWaitDiv = $('#pleaseWaitDialog');
+ 				pleaseWaitDiv.modal();
+ 	        },
+ 	        add: function(e, data) {
+ 	            var uploadErrors = [];
+ 	            var acceptFileTypes = /(\.|\/)(p7m)$/i;
+ 	            if(data.originalFiles[0]['name'].length && !acceptFileTypes.test(data.originalFiles[0]['name'])) {
+ 	                uploadErrors.push('Tipo File non accettato. ');
+ 	            }
+ 	            if(data.originalFiles[0]['size'] > 30000000) {
+ 	                uploadErrors.push('File troppo grande, dimensione massima 30mb');
+ 	            }
+ 	            if(uploadErrors.length > 0) {
+ 	            	//$('#files').html(uploadErrors.join("\n"));
+ 	            	$('#modalErrorDiv').html(uploadErrors.join("\n"));
+ 					$('#modalErrorDiv').removeClass();
+ 					$('#modalErrorDiv').addClass("modal modal-danger");
+ 					
+ 					$('#modalErrorDiv').modal('show');
+ 				
+ 	            } else {
+ 	                data.submit();
+ 	            }
+ 	    	},
+ 	        done: function (e, data) {
+ 				
+ 	        	pleaseWaitDiv.modal('hide');
+ 	        	$('#modalUploadP7m').modal('hide');
+ 	        	if(data.result.success)
+ 				{
+ 	        		
+ 	        			$('#modalErrorDiv').html("File caricato con successo!");
+ 					$('#myModalError').removeClass();
+ 					$('#myModalError').addClass("modal modal-success");
+ 					$('#myModalError').modal('show');
+ 					$('#progress .progress-bar').css(
+ 		                    'width',
+ 		                    '0%'
+ 		                );
+ 				
+ 				}else{
+ 					
+ 					$('#modalErrorDiv').html(data.result.messaggio);
+ 					$('#myModalError').removeClass();
+ 					$('#myModalError').addClass("modal modal-danger");
+ 					
+ 					$('#myModalError').modal('show');
+ 					
+ 					$('#progress .progress-bar').css(
+ 		                    'width',
+ 		                    '0%'
+ 		                );
+
+ 				}
+
+
+ 	        },
+ 	        fail: function (e, data) {
+ 	        	pleaseWaitDiv.modal('hide');
+ 	        	$('#files').html("");
+ 	        	var errorMsg = "";
+ 	            $.each(data.messages, function (index, error) {
+
+ 	            	errorMsg = errorMsg + '<p>ERRORE UPLOAD FILE: ' + error + '</p>';
+ 	       
+
+ 	            });
+ 	        		$('#myModalErrorContent').html(errorMsg);
+ 				$('#myModalError').removeClass();
+ 				$('#myModalError').addClass("modal modal-danger");
+ 				$('#myModalError').find('.modal-footer').append('<button type="button" class="btn btn-outline" id="report_button" onClick="sendReport($(this).parents(\'.modal\'))">Invia Report</button>');
+ 				$('#myModalError').modal('show');
+ 				$('#progress .progress-bar').css(
+ 	                    'width',
+ 	                    '0%'
+ 	                );
+ 				$('#myModal').on('hidden.bs.modal', function(){
+ 					$('#myModal').find('#report_button').remove();
+ 				});
+ 	        },
+ 	        progressall: function (e, data) {
+ 	            var progress = parseInt(data.loaded / data.total * 100, 10);
+ 	            $('#progress .progress-bar').css(
+ 	                'width',
+ 	                progress + '%'
+ 	            );
+
+ 	        }
+ 	    }).prop('disabled', !$.support.fileInput)
+ 	        .parent().addClass($.support.fileInput ? undefined : 'disabled');
+ 		
+ 		
+ 	 	$('#fileupload').bind('fileuploadsubmit', function (e, data) {
+ 		    // The example input, doesn't have to be part of the upload form:
+ 		  var id =  $('#id_certificato_p7m').val();
+ 		    data.formData = { id_documento: id};
+ 		    
+ 
+ 		}); 
+ 		
+ 	 	
+ 	 	$('#myModalError').on('hidden.bs.modal', function(){
+ 	 		if($('#myModalError').hasClass("modal-success")){
+ 	 			location.reload();
+ 	 		}
+				
+			});
+ 		
  		function checkStrumentoVerificatore(){
  			
  			var strumento = $('#strumento_verificatore').val();
  			var ret = true;
  			
- 			
- 			if(strumento==''){
+ 			var stato_verbale = "${verbale.stato.id}"
+ 			if(strumento=='' && stato_verbale=="8"){
  				ret = false;
  			}
  			
@@ -2137,6 +2312,18 @@ function modificaSedeUtilizzatore(){
 		
 	}
 	
+	
+	
+	function modalCaricaP7m(id_certificato){
+		
+		$('#id_certificato_p7m').val(id_certificato);
+		
+		
+		$('#modalUploadP7m').modal();
+	}
+	
+	
+	
 			$(document).ready(function() {
 				
 				$('.rispVerb').on('ifChanged', function(event) {
@@ -2416,7 +2603,7 @@ function modificaSedeUtilizzatore(){
 				$('#myModalError').addClass("modal modal-danger");
 				$('#myModalError').modal('show');	
 			}
-			else if($('#data_prossima_verifica_verb').val()=='' && $('#esito').val()!='S'){
+			else if($('#data_prossima_verifica_verb').val()=='' && $('#esito').val()!='S' && $('#tipo_verifica_vie').val()!=2){
 				
 				$('#modalErrorDiv').html("Il campo data prossima verifica è obbligatorio");
 				$('#myModalError').removeClass();

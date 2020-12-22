@@ -1,5 +1,7 @@
 package it.portalECI.action;
 
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.text.DateFormat;
@@ -13,6 +15,7 @@ import java.util.Locale;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
+import javax.servlet.ServletOutputStream;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -31,6 +34,7 @@ import it.portalECI.DTO.CampioneDTO;
 import it.portalECI.DTO.CompanyDTO;
 import it.portalECI.DTO.TipoCampioneDTO;
 import it.portalECI.Exception.ECIException;
+import it.portalECI.Util.Costanti;
 import it.portalECI.Util.Utility;
 import it.portalECI.bo.GestioneCampioneBO;
 import it.portalECI.bo.GestioneCompanyBO;
@@ -55,7 +59,7 @@ public class GestioneCampione extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		response.getWriter().append("Served at: ").append(request.getContextPath());
+		doPost(request, response);
 	}
 
 	/**
@@ -67,12 +71,12 @@ public class GestioneCampione extends HttpServlet {
 		if(Utility.validateSession(request,response,getServletContext()))return;
 		Session session = SessionFacotryDAO.get().openSession();
 		session.beginTransaction();
-		PrintWriter out = response.getWriter();
+	
 		JsonObject myObj = new JsonObject();
    
 		  response.setContentType("application/json");
 			
-        
+        boolean ajax = false;
         try{
         	
         	
@@ -81,6 +85,7 @@ public class GestioneCampione extends HttpServlet {
 
         			if(action.equals("lista")) {
         				
+        				        				
         				ArrayList<CompanyDTO> lista_company = new ArrayList<CompanyDTO>();
         				lista_company.add(company);
         				
@@ -100,6 +105,7 @@ public class GestioneCampione extends HttpServlet {
         			        			
         			else if(action.equals("nuovo")) {
         				//List<FileItem> items = new ServletFileUpload(new DiskFileItemFactory()).parseRequest(request);
+        				ajax = true;
         				
         				CampioneDTO campione = new CampioneDTO();
 
@@ -285,12 +291,14 @@ public class GestioneCampione extends HttpServlet {
         				 		session.close();
         				 		
         					} 
-        					
+        					PrintWriter out = response.getWriter();
         					
         					
         					out.println(myObj.toString());
         				}
         			else if(action.equals("modifica")) {
+        				
+        				ajax = true;
         				
         				List<FileItem> items = null;
         		        if (request.getContentType() != null && request.getContentType().toLowerCase().indexOf("multipart/form-data") > -1 ) {
@@ -459,29 +467,72 @@ public class GestioneCampione extends HttpServlet {
         				 		session.close();
         				 		
         					} 
-        					
+        					PrintWriter out = response.getWriter();
         					
         					out.println(myObj.toString());
         				
         			}
         				
         		
+        			else if(action.equals("download_certificato"))
+        			{
         			
+        			String idCampione= request.getParameter("idC");
+        			 	
+        			 	CampioneDTO campione= GestioneCampioneDAO.getCampioneFromId(idCampione);
+        			   
+        			 	
+        			 	if(campione!=null && campione.getCertificatoCorrente(campione.getListaCertificatiCampione())!=null)
+        			 	{
+        				
+        			     File d = new File(Costanti.PATH_ROOT+"//Campioni//"+campione.getId()+"/"+campione.getCertificatoCorrente(campione.getListaCertificatiCampione()).getFilename());
+        				 
+        				 FileInputStream fileIn = new FileInputStream(d);
+        				 
+        				 response.setContentType("application/octet-stream");
+        								 
+        				 response.setHeader("Content-Disposition","attachment;filename="+campione.getCertificatoCorrente(campione.getListaCertificatiCampione()).getFilename());
+        				 
+        				 ServletOutputStream outp = response.getOutputStream();
+        				     
+        				    byte[] outputByte = new byte[1];
+        				    
+        				    while(fileIn.read(outputByte, 0, 1) != -1)
+        				    {
+        				    	outp.write(outputByte, 0, 1);
+        				     }
+        				    
+        				    
+        				    
+        				    session.close();
+        				    fileIn.close();
+        			
+        				    outp.flush();
+        				    outp.close();
+        			 	}
+        			}
         	
         	
         }  
         catch(Exception ex)
     	{
-        	ex.printStackTrace();
-        	session.getTransaction().rollback();
-        	session.close();
-        	request.getSession().setAttribute("exception", ex);
-        	//myObj.addProperty("success", false);
-        	//myObj.addProperty("messaggio", STIException.callException(ex).toString());
-        	myObj = ECIException.callExceptionJsonObject(ex);
-        	out.println(myObj.toString());
-        	}  
         	
+			if(ajax) {
+				PrintWriter out = response.getWriter();
+				ex.printStackTrace();
+	        	session.getTransaction().rollback();
+	        	session.close();
+	        	request.getSession().setAttribute("exception", ex);
+	        	myObj = ECIException.callExceptionJsonObject(ex);
+	        	out.println(myObj.toString());
+	        	  	
+			}else {
+	    		 ex.printStackTrace();
+	    		 request.getSession().setAttribute("exception",ex);
+	    	     request.setAttribute("error",ECIException.callException(ex));
+	    		 RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/page/error.jsp");
+	    	     dispatcher.forward(request,response);
+			}
+    	}
 	}
-
 }

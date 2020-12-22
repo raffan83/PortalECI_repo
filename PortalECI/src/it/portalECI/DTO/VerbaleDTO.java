@@ -65,6 +65,7 @@ public class VerbaleDTO implements Serializable {
 	private Date data_approvazione;
 	private UtenteDTO responsabile_approvatore;
 	private int firmato;
+	private int controfirmato;
 	
 	public int getId() {
 		return id;
@@ -459,6 +460,14 @@ public class VerbaleDTO implements Serializable {
 
 	public void setFirmato(int firmato) {
 		this.firmato = firmato;
+	}
+
+	public int getControfirmato() {
+		return controfirmato;
+	}
+
+	public void setControfirmato(int controfirmato) {
+		this.controfirmato = controfirmato;
 	}
 
 	

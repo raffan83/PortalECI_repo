@@ -165,6 +165,10 @@
 				<property name="firmato" type="int">
 			<column name="firmato" />
 		</property>
+		
+		<property name="controfirmato" type="int">
+			<column name="controfirmato" />
+		</property>
 		 
 	</class>
 </hibernate-mapping> 

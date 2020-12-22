@@ -26,7 +26,7 @@
         Dati Profilo Utente
         <small>Modifica i dati personali ed i dati aziendali</small>
       </h1>
-       <a class="btn btn-default pull-right" href="/AccPoint"><i class="fa fa-dashboard"></i> Home</a>
+      
     </section>
     <div style="clear: both;"></div>    
     <!-- Main content -->

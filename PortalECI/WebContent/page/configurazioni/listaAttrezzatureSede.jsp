@@ -85,7 +85,12 @@
  	<td>${attrezzatura.tipo_attivita }</td>
  	<td>${attrezzatura.descrizione }</td>
  	<td>${attrezzatura.nome_cliente }</td>
- 	<td>${attrezzatura.nome_sede }</td>
+ 	<c:if test="${attrezzatrua.nome_sede == null || attrezzatura.nome_sede == '' }">
+ 	<td>${attrezzatura.nome_cliente } - ${attrezzatura.indirizzo} - ${attrezzatura.comune} (${attrezzatura.provincia})</td>
+ 	</c:if>	
+ 	<c:if test="${attrezzatrua.nome_sede != null & attrezzatura.nome_sede != '' }">
+ 	<td>${attrezzatura.nome_sede } - ${attrezzatura.indirizzo} - ${attrezzatura.comune} (${attrezzatura.provincia})</td>
+ 	</c:if>	 	
  	<td><fmt:formatDate pattern = "dd/MM/yyyy" value = "${attrezzatura.data_verifica_funzionamento }" /></td>
  	<td><fmt:formatDate pattern = "dd/MM/yyyy" value = "${attrezzatura.data_prossima_verifica_funzionamento }" /></td>
  	<td><fmt:formatDate pattern = "dd/MM/yyyy" value = "${attrezzatura.data_verifica_integrita }" /></td>
@@ -472,6 +477,14 @@
                     <!--   <input class="form-control" id="descrizione_mod" type="text" name="descrizione_mod" required value=""/> -->
           <select class="form-control select2" disabled id="descrizione_mod" name="descrizione_mod" data-placeholder="Seleziona Descrizione..." style="width:100%">
          <option value=""></option>
+
+         </select>  
+    </div>
+    
+            <div class="col-sm-8" style="display:none">
+                    <!--   <input class="form-control" id="descrizione_mod" type="text" name="descrizione_mod" required value=""/> -->
+          <select class="form-control select2" disabled id="descrizione_mod_temp" name="descrizione_mod_temp" data-placeholder="Seleziona Descrizione..." style="width:100%">
+         <option value=""></option>
         <c:forEach items="${lista_descrizioni_gruppi }" var="desc">
         <c:if test="${desc.id_specifica!=null && desc.id_specifica!=''}">
         <option value="${desc.gruppo}_${desc.descrizione}_${desc.id_specifica}">${desc.descrizione }</option>
@@ -733,13 +746,13 @@ function openTab(id_attrezzatura, matricola_inail, numero_fabbrica, tipo_attivit
 	$('#numero_fabbrica_mod').val(numero_fabbrica);
 	$('#tipo_attivita_mod').val(tipo_attivita);
 	$('#tipo_attivita_mod').change();
-	if(id_specifica!=null && id_specifica!=''){
+ 	if(id_specifica!=null && id_specifica!=''){
 		$('#descrizione_mod').val(tipo_attivita+"_"+descrizione+"_"+id_specifica);
 	}else{
 		$('#descrizione_mod').val(tipo_attivita+"_"+descrizione);	
 	}
 	
-	$('#descrizione_mod').change();
+	$('#descrizione_mod').change(); 
 	$('#cliente_mod').val(id_cliente);
 	$('#cliente_mod').change();
 	if(id_sede!=0){
@@ -1245,7 +1258,7 @@ $("#tipo_attivita_mod").change(function() {
 	  if ($(this).data('options') == undefined) 
 	  {
 	    /*Taking an array of all options-2 and kind of embedding it on the select1*/
-	    $(this).data('options', $('#descrizione_mod option').clone());
+	    $(this).data('options', $('#descrizione_mod_temp option').clone());
 	  }
 	  
 	  var gruppo = $(this).val();

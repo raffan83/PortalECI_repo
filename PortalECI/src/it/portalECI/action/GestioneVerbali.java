@@ -25,6 +25,10 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.fileupload.FileItem;
+import org.apache.commons.fileupload.FileUploadException;
+import org.apache.commons.fileupload.disk.DiskFileItemFactory;
+import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.apache.tomcat.util.codec.binary.Base64;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
@@ -35,6 +39,7 @@ import com.google.gson.JsonObject;
 
 import it.arubapec.arubasignservice.ArubaSignService;
 import it.arubapec.arubasignservice.TypeOfTransportNotImplementedException;
+import it.portalECI.DAO.GestioneCampioneDAO;
 import it.portalECI.DAO.GestioneDocumentoDAO;
 import it.portalECI.DAO.GestioneInterventoDAO;
 import it.portalECI.DAO.GestioneRispostaVerbaleDAO;
@@ -42,6 +47,7 @@ import it.portalECI.DAO.GestioneStatoVerbaleDAO;
 import it.portalECI.DAO.GestioneStoricoModificheDAO;
 import it.portalECI.DAO.SessionFacotryDAO;
 import it.portalECI.DTO.AttrezzaturaDTO;
+import it.portalECI.DTO.CampioneDTO;
 import it.portalECI.DTO.ClienteDTO;
 import it.portalECI.DTO.ColonnaTabellaVerbaleDTO;
 import it.portalECI.DTO.CommessaDTO;
@@ -660,6 +666,7 @@ public class GestioneVerbali extends HttpServlet {
 			GestioneVerbaleBO.cambioStato( verbale, GestioneStatoVerbaleDAO.getStatoVerbaleById( Integer.parseInt(stato), session) , session);
 			if(stato.equals("5")) {
 				verbale.setFirmato(0);
+				verbale.setControfirmato(0);
 				session.update(verbale);
 			}
 			
@@ -667,6 +674,10 @@ public class GestioneVerbali extends HttpServlet {
 				try {
 					if(verbale.getIntervento().getTecnico_verificatore().getEMail()!=null && user.getEMail()!=null) {
 						GestioneComunicazioniBO.sendEmailVerbale(verbale, verbale.getIntervento().getTecnico_verificatore().getEMail(), user.getEMail(), 6);
+						
+						verbale.setFirmato(0);
+						verbale.setControfirmato(0);
+						
 					}
 				}catch (Exception e) {
 					myObj.addProperty("success", false);
@@ -783,11 +794,15 @@ public class GestioneVerbali extends HttpServlet {
 						try {
 							
 							myObj = ArubaSignService.sign(user.getId_firma(), doc);
-							verbale.setFirmato(1);
+							verbale.setControfirmato(1);
 							session.update(verbale);
 						} catch (TypeOfTransportNotImplementedException e) {
-							// TODO Auto-generated catch block
+							
 							e.printStackTrace();
+				        	
+				        	request.getSession().setAttribute("exception", e);
+				        	myObj = ECIException.callExceptionJsonObject(e);
+				        	out.print(myObj);
 						}
 					}
 				}				
@@ -880,6 +895,81 @@ public class GestioneVerbali extends HttpServlet {
 
 			out.print(myObj);
 			
+		}
+		else if(action!=null && action.equals("carica_p7m")) {
+			
+
+			PrintWriter writer = response.getWriter();
+			JsonObject jsono = new JsonObject();
+			
+			ServletFileUpload uploadHandler = new ServletFileUpload(new DiskFileItemFactory());
+			List<FileItem> items = null;
+			try {
+				items = uploadHandler.parseRequest(request);
+			} catch (FileUploadException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+			String id_certificato = "";
+	
+			FileItem fileUploaded = null;
+			String filename = "";
+			for (FileItem item : items) {
+				if (!item.isFormField()) {
+
+					fileUploaded = item;
+					filename = item.getName();
+				}else {
+					
+					if(item.getFieldName().equals("id_documento")) {
+						id_certificato = item.getString();
+					}
+					
+
+				}
+				
+			
+			}
+			
+		DocumentoDTO documento = GestioneDocumentoDAO.getDocumento(id_certificato, session);
+		verbale = documento.getVerbale();
+			
+		String filename_pdf = documento.getFilePath().split("\\\\")[2];
+		if(filename!=null && !filename.equals("") && !filename.replace(".p7m", "").equals(filename_pdf) && !filename.replace(".P7M", "").equals(filename_pdf) ) {
+			
+			jsono.addProperty("success", false);
+			jsono.addProperty("messaggio","Attenzione! Il file non corrisponde al verbale generato!");
+			
+		}else {
+			if(fileUploaded != null) {
+				
+				String path = documento.getFilePath().replace(filename_pdf,"");
+				//String path = "Intervento_"+intervento.getId()+File.separator+verbale.getType()+"_"+verbale.getCodiceCategoria()+"_"+verbale.getId()+File.separator;
+				new File(Costanti.PATH_CERTIFICATI+path).mkdirs();
+				File file = new File(Costanti.PATH_CERTIFICATI+path+filename);
+				int counter = 0;
+
+					try {
+						fileUploaded.write(file);
+					} catch (Exception e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+										
+					verbale.setFirmato(1);
+					session.update(documento);
+			
+					jsono.addProperty("success", true);
+					jsono.addProperty("messaggio","File caricato con successo!");
+				}
+		}
+		
+			
+
+			writer.write(jsono.toString());
+			writer.close();
+		
 		}
 		
 		else {

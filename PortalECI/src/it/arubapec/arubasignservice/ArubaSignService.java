@@ -48,7 +48,7 @@ public class ArubaSignService {
 		sign.setIdentity(identity);
 		//${certificato.nomeCertificato}&pack=${certificato.misura.intervento.nomePack}
 		
-		String nomeCert = Costanti.PATH_CERTIFICATI+documento.getFilePath();
+		String nomeCert = Costanti.PATH_CERTIFICATI+documento.getFilePath()+".p7m";
 		File f = new File(nomeCert);
 
  		URI uri = f.toURI();

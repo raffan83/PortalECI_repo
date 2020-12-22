@@ -29,6 +29,7 @@ import com.google.gson.JsonObject;
 
 import it.arubapec.arubasignservice.ArubaSignService;
 import it.arubapec.arubasignservice.TypeOfTransportNotImplementedException;
+import it.portalECI.DAO.DirectMySqlDAO;
 import it.portalECI.DAO.SessionFacotryDAO;
 import it.portalECI.DTO.CategoriaVerificaDTO;
 import it.portalECI.DTO.CompanyDTO;
@@ -82,6 +83,8 @@ public class GestioneListaVerbali extends HttpServlet {
 		try {
 			Session session=SessionFacotryDAO.get().openSession();
 			session.beginTransaction();
+			
+						
 				
 			UtenteDTO user = (UtenteDTO)request.getSession().getAttribute("userObj");
 			
@@ -89,6 +92,7 @@ public class GestioneListaVerbali extends HttpServlet {
 			if(action == null || action.equals("") ) {
 				List<VerbaleDTO> listaVerbali =GestioneVerbaleBO.getListaVerbali(session,user) ;
 				
+
 				request.getSession().setAttribute("listaVerbali", listaVerbali);
 				request.getSession().setAttribute("dateFrom", null);
 				request.getSession().setAttribute("dateTo", null);
