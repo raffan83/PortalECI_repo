@@ -5,6 +5,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintWriter;
+import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -18,6 +19,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import javax.mail.MessagingException;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -30,7 +32,6 @@ import org.apache.commons.fileupload.FileUploadException;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.apache.tomcat.util.codec.binary.Base64;
-import org.hibernate.HibernateException;
 import org.hibernate.Session;
 
 import com.google.gson.Gson;
@@ -39,7 +40,6 @@ import com.google.gson.JsonObject;
 
 import it.arubapec.arubasignservice.ArubaSignService;
 import it.arubapec.arubasignservice.TypeOfTransportNotImplementedException;
-import it.portalECI.DAO.GestioneCampioneDAO;
 import it.portalECI.DAO.GestioneDocumentoDAO;
 import it.portalECI.DAO.GestioneInterventoDAO;
 import it.portalECI.DAO.GestioneRispostaVerbaleDAO;
@@ -47,7 +47,6 @@ import it.portalECI.DAO.GestioneStatoVerbaleDAO;
 import it.portalECI.DAO.GestioneStoricoModificheDAO;
 import it.portalECI.DAO.SessionFacotryDAO;
 import it.portalECI.DTO.AttrezzaturaDTO;
-import it.portalECI.DTO.CampioneDTO;
 import it.portalECI.DTO.ClienteDTO;
 import it.portalECI.DTO.ColonnaTabellaVerbaleDTO;
 import it.portalECI.DTO.CommessaDTO;
@@ -64,7 +63,6 @@ import it.portalECI.DTO.RispostaTabellaVerbaleDTO;
 import it.portalECI.DTO.RispostaTestoVerbaleDTO;
 import it.portalECI.DTO.RispostaVerbaleDTO;
 import it.portalECI.DTO.SedeDTO;
-import it.portalECI.DTO.StatoInterventoDTO;
 import it.portalECI.DTO.StatoVerbaleDTO;
 import it.portalECI.DTO.StoricoModificheDTO;
 import it.portalECI.DTO.StrumentoVerificatoreDTO;
@@ -77,9 +75,9 @@ import it.portalECI.bo.GestioneAnagraficaRemotaBO;
 import it.portalECI.bo.GestioneAttrezzatureBO;
 import it.portalECI.bo.GestioneCommesseBO;
 import it.portalECI.bo.GestioneComunicazioniBO;
-import it.portalECI.bo.GestioneInterventoBO;
 import it.portalECI.bo.GestioneQuestionarioBO;
 import it.portalECI.bo.GestioneVerbaleBO;
+
 
 /**
  * Servlet implementation class GestioneIntervento
@@ -780,6 +778,7 @@ public class GestioneVerbali extends HttpServlet {
 		else if(action!=null && action.equals("firma_verbale")) {
 			
 			String pin = request.getParameter("pin");	
+			String controfirma = request.getParameter("controfirma");
 				
 			if(user.getPin_firma()!=null && pin.equals(user.getPin_firma())) {
 
@@ -793,8 +792,15 @@ public class GestioneVerbali extends HttpServlet {
 					if(!doc.getInvalid()) {						
 						try {
 							
-							myObj = ArubaSignService.sign(user.getId_firma(), doc);
-							verbale.setControfirmato(1);
+							myObj = ArubaSignService.sign(user.getId_firma(), doc, controfirma);
+							
+							if(controfirma!=null && controfirma.equals("1")) {
+								verbale.setControfirmato(1);
+							}else {
+								verbale.setFirmato(1);
+									
+							}
+							
 							session.update(verbale);
 						} catch (TypeOfTransportNotImplementedException e) {
 							
@@ -970,6 +976,91 @@ public class GestioneVerbali extends HttpServlet {
 			writer.write(jsono.toString());
 			writer.close();
 		
+		}
+		
+		else if(action!=null && action.equals("email_destinatario")) {			
+		
+			try {
+			String indirizzo = "";
+			if(verbale.getIntervento().getIdSede()==0) {
+				ClienteDTO cliente = GestioneAnagraficaRemotaBO.getClienteById(""+verbale.getIntervento().getId_cliente());
+				indirizzo = cliente.getEmail();
+			}else {
+				ClienteDTO cliente;
+				
+					cliente = GestioneAnagraficaRemotaBO.getClienteFromSede(""+verbale.getIntervento().getId_cliente(), ""+verbale.getIntervento().getIdSede());
+				
+				indirizzo = cliente.getEmail();							
+			}
+			if(indirizzo == null) {
+				indirizzo = "";
+			}
+			
+			myObj.addProperty("success", true);
+			myObj.addProperty("indirizzo", indirizzo);
+			 out.println(myObj);
+			
+			} catch (Exception e) {
+				
+				e.printStackTrace();
+	        	
+	        	request.getSession().setAttribute("exception", e);
+	        	myObj = ECIException.callExceptionJsonObject(e);
+	        	out.print(myObj);
+			}
+			
+			
+		   
+			
+		}
+		
+		else if(action!=null && action.equals("invia_email")) {
+
+			try {
+				response.setContentType("text/html");
+				
+				String indirizzo = request.getParameter("destinatario");
+				String id_documento = request.getParameter("id_documento");
+			
+				DocumentoDTO documento = GestioneDocumentoDAO.getDocumento(id_documento, session);
+			
+				GestioneComunicazioniBO.sendPecVerbale(documento,documento.getVerbale(), indirizzo);
+				
+				myObj.addProperty("success", true);
+				myObj.addProperty("messaggio", "Email inviata con successo!");
+				
+				out.println(myObj.toString());
+				
+			} catch (MessagingException e) {
+				
+				e.printStackTrace();
+	        	
+	        	request.getSession().setAttribute("exception", e);
+	        	myObj = ECIException.callExceptionJsonObject(e);
+	        	out.print(myObj);
+			}
+				
+//				String[] destinatari = indirizzo.replace(" ", "").split(";");
+				
+//				for (String dest : destinatari) {
+//					VerEmailDTO email = new VerEmailDTO();
+//					
+//					email.setCertificato(certificato);
+//					email.setData_invio(new Timestamp(System.currentTimeMillis()));
+//					email.setUtente(utente);
+//					email.setDestinatario(dest);
+//					
+//					session.save(email);
+//				}
+//				
+//				certificato.setEmail_inviata(1);
+				
+//				session.update(certificato);
+				
+			
+			
+
+			
 		}
 		
 		else {

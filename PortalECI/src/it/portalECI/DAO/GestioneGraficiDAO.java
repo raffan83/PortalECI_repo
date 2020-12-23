@@ -2,6 +2,7 @@ package it.portalECI.DAO;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.hibernate.Query;
@@ -108,12 +109,13 @@ public class GestioneGraficiDAO {
 		return map;
 	}
 
-	public static HashMap<String, Integer>  getGraficoStatiVerbali(UtenteDTO user) {
+	public static ArrayList<HashMap<String, String>>  getGraficoStatiVerbali(UtenteDTO user) {
 				
 		Session session = SessionFacotryDAO.get().openSession();
 		session.beginTransaction();
-		
-		HashMap<String, Integer> map = new HashMap<String, Integer>();	
+		ArrayList<HashMap<String, String>> list_map = new ArrayList<HashMap<String, String>>();
+		HashMap<String, String> map = new HashMap<String, String>();	
+		HashMap<String, String> color_map = new HashMap<String, String>();
 		ArrayList<StatoVerbaleDTO> lista = null;		
 		Query query  = null;
 		
@@ -130,7 +132,7 @@ public class GestioneGraficiDAO {
 		}
 		else 
 		{
-			 query  = session.createQuery( "select stato from VerbaleDTO WHERE type = :_type");
+			query  = session.createQuery( "select stato from VerbaleDTO WHERE type = :_type");
 			query.setParameter("_type",VerbaleDTO.VERBALE);
 		}
 
@@ -146,12 +148,32 @@ public class GestioneGraficiDAO {
 				count=1;
 			}			
 
-			map.put(stato.getDescrizione().replace(" ", "_"), count);
+			map.put(stato.getDescrizione().replace(" ", "_"), ""+count);
+			color_map.put(stato.getDescrizione().replace(" ", "_"), stato.getColore(stato.getId()));
 		}
+		
+		query  = session.createQuery( "from StatoVerbaleDTO");
+		
+		lista = (ArrayList<StatoVerbaleDTO>) query.list();	
+		
+		for (StatoVerbaleDTO stato : lista) {
+			
+			if(map.containsKey(stato.getDescrizione().replace(" ", "_"))) {
+				
+			}else {
+				map.put(stato.getDescrizione().replace(" ", "_"), ""+0);
+				color_map.put(stato.getDescrizione().replace(" ", "_"), stato.getColore(stato.getId()));
+			}			
+
+			
+		}
+		
+		list_map.add(map);
+		list_map.add(color_map);
 		
 		session.close();
 		
-		return map;
+		return list_map;
 	}	
 
 }

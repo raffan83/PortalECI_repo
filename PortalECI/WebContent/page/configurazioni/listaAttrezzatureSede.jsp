@@ -88,7 +88,7 @@
  	<c:if test="${attrezzatrua.nome_sede == null || attrezzatura.nome_sede == '' }">
  	<td>${attrezzatura.nome_cliente } - ${attrezzatura.indirizzo} - ${attrezzatura.comune} (${attrezzatura.provincia})</td>
  	</c:if>	
- 	<c:if test="${attrezzatrua.nome_sede != null & attrezzatura.nome_sede != '' }">
+ 	<c:if test="${attrezzatrua.nome_sede != null && attrezzatura.nome_sede != '' }">
  	<td>${attrezzatura.nome_sede } - ${attrezzatura.indirizzo} - ${attrezzatura.comune} (${attrezzatura.provincia})</td>
  	</c:if>	 	
  	<td><fmt:formatDate pattern = "dd/MM/yyyy" value = "${attrezzatura.data_verifica_funzionamento }" /></td>

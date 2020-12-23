@@ -21,7 +21,7 @@ import it.portalECI.Util.Costanti;
 
 public class ArubaSignService {
 
-	public static JsonObject sign(String utente, DocumentoDTO documento) throws TypeOfTransportNotImplementedException, IOException {
+	public static JsonObject sign(String utente, DocumentoDTO documento, String controfirma) throws TypeOfTransportNotImplementedException, IOException {
 	
 		 
 		ArubaSignServiceServiceStub stub = new ArubaSignServiceServiceStub();
@@ -48,7 +48,14 @@ public class ArubaSignService {
 		sign.setIdentity(identity);
 		//${certificato.nomeCertificato}&pack=${certificato.misura.intervento.nomePack}
 		
-		String nomeCert = Costanti.PATH_CERTIFICATI+documento.getFilePath()+".p7m";
+		String nomeCert = "";
+		
+		if(controfirma!=null && controfirma.equals("1")) {
+			nomeCert = Costanti.PATH_CERTIFICATI+documento.getFilePath()+".p7m";
+		}else {
+			nomeCert = Costanti.PATH_CERTIFICATI+documento.getFilePath();
+		}
+		
 		File f = new File(nomeCert);
 
  		URI uri = f.toURI();

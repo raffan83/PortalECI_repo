@@ -2,6 +2,7 @@ package it.portalECI.bo;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import it.portalECI.DAO.GestioneGraficiDAO;
@@ -19,7 +20,7 @@ public class GestioneGraficiBO {
 		return GestioneGraficiDAO.getGraficoVerbaliVerificatore( user);
 	}
 
-	public static HashMap<String, Integer>  getGraficoStatiVerbali(UtenteDTO user) {
+	public static ArrayList<HashMap<String, String>>  getGraficoStatiVerbali(UtenteDTO user) {
 		
 		return GestioneGraficiDAO.getGraficoStatiVerbali( user);
 	}

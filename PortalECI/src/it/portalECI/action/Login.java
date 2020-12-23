@@ -54,7 +54,10 @@ public class Login extends HttpServlet {
 			
 			ArrayList<ArrayList<String>> lista_dati = GestioneGraficiBO.getGraficoTipoVerifica(utente);
 			HashMap<String, Integer> map_verbali = GestioneGraficiBO.getGraficoVerbaliVerificatore(utente);
-			HashMap<String, Integer>  map_stati = GestioneGraficiBO.getGraficoStatiVerbali(utente);
+			ArrayList<HashMap<String, String>>  list_map = GestioneGraficiBO.getGraficoStatiVerbali(utente);
+			
+			HashMap<String, String> map_stati = list_map.get(0);
+			HashMap<String, String> map_color = list_map.get(1);
 			
 			Gson gson = new Gson();
 			
@@ -65,6 +68,7 @@ public class Login extends HttpServlet {
 			request.getSession().setAttribute("obj_codice_categoria", obj_codice_categoria);
 			request.getSession().setAttribute("map_stati",gson.toJsonTree(map_stati).toString());
 			request.getSession().setAttribute("map_verbali",gson.toJsonTree(map_verbali).toString());
+			request.getSession().setAttribute("map_color",gson.toJsonTree(map_color).toString());
 			
 			RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/page/dashboard.jsp");
 			dispatcher.forward(request,response);
@@ -102,7 +106,11 @@ public class Login extends HttpServlet {
 				
 				ArrayList<ArrayList<String>> lista_dati = GestioneGraficiBO.getGraficoTipoVerifica(utente);
 				HashMap<String, Integer> map_verbali = GestioneGraficiBO.getGraficoVerbaliVerificatore(utente);
-				HashMap<String, Integer>  map_stati = GestioneGraficiBO.getGraficoStatiVerbali(utente);
+				//HashMap<String, Integer>  map_stati = GestioneGraficiBO.getGraficoStatiVerbali(utente);
+				ArrayList<HashMap<String, String>>  list_map = GestioneGraficiBO.getGraficoStatiVerbali(utente);
+				
+				HashMap<String, String> map_stati = list_map.get(0);
+				HashMap<String, String> map_color = list_map.get(1);
 				
 				Gson gson = new Gson();
 				
@@ -113,6 +121,7 @@ public class Login extends HttpServlet {
 				request.getSession().setAttribute("obj_codice_categoria", obj_codice_categoria);
 				request.getSession().setAttribute("map_stati",gson.toJsonTree(map_stati).toString());
 				request.getSession().setAttribute("map_verbali",gson.toJsonTree(map_verbali).toString());
+				request.getSession().setAttribute("map_color",gson.toJsonTree(map_color).toString());
 				
 				RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/page/dashboard.jsp");
 				dispatcher.forward(request,response);

@@ -4250,10 +4250,12 @@ function firmaVerbale(id_verbale){
 	pleaseWaitDiv.modal();
 	
 	var pin = $('#pin').val();
+	var controfirma = $('#controfirma').val();
 	
 	var dataObj = {};
 	
 	dataObj.pin = pin;
+	dataObj.controfirma = controfirma;
 	
 		$.ajax({
 	type: "POST",

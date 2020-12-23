@@ -195,11 +195,18 @@
         										
         										<c:if test='${verbale.getStato().getId()== 5 && verbale.getFirmato() == 1 && (user.checkRuolo("AM") || user.checkRuolo("RT") || user.checkRuolo("SRT"))  && verbale.getResponsabile_approvatore().getId() == userObj.getId()}'>										
 													<!-- <button type="button" class="btn btn-sm pull-right" onclick="salvaCambioStato(null,null,'6')" style="color:#000000 !important;"> -->
-													<button type="button" class="btn btn-info btn-sm pull-right" onclick="$('#modalPin').modal('show');" style="margin-left:5px">
+													<button type="button" class="btn btn-info btn-sm pull-right" onclick="modalPin(1)" style="margin-left:5px">
 														<i class="fa fa-edit"></i>
 														<span>Controfirma verbale</span>
 													</button>
 												</c:if>	  
+												<c:if test='${verbale.getStato().getId()== 5 && verbale.getFirmato() == 0 && (user.checkRuolo("AM") || user.checkRuolo("RT") || user.checkRuolo("SRT"))  && verbale.getResponsabile_approvatore().getId() == userObj.getId() && userObj.getId_firma()!=null}'>										
+													<!-- <button type="button" class="btn btn-sm pull-right" onclick="salvaCambioStato(null,null,'6')" style="color:#000000 !important;"> -->
+													<button type="button" class="btn btn-info btn-sm pull-right" onclick="modalPin()" style="margin-left:5px">
+														<i class="fa fa-edit"></i>
+														<span>Firma verbale</span>
+													</button>
+												</c:if>	
 
 												<c:if test='${verbale.getStato().getId()== 5 && (user.checkRuolo("AM") || user.checkRuolo("RT" || user.checkRuolo("SRT")))}'>										
 													<!-- <button type="button" class="btn btn-sm pull-right" onclick="salvaCambioStato(null,null,'6')" style="color:#000000 !important;"> -->
@@ -248,19 +255,27 @@
 	        											<li class="list-group-item ${certificato.getInvalid()?"text-muted":""}">
 	                  										<b>${certificato.getFileName()}</b>
 	                  										<c:if test="${user.checkPermesso('DOWNLOAD_CERTIFICATO')}">             										
-	                  											<a class="btn btn-default btn-xs pull-right" href="gestioneDocumento.do?p7m=1&idDocumento=${certificato.getId()}" style="margin-left:5px"><i class="glyphicon glyphicon-file"></i> Download Certificato</a>
+	                  											<a class="btn btn-default btn-xs pull-right" href="gestioneDocumento.do?idDocumento=${certificato.getId()}" style="margin-left:5px"><i class="glyphicon glyphicon-file"></i> Download Certificato</a>
 	                  											
-	                  											<c:if test="${verbale.getFirmato()==1 && verbale.getControfirmato() == 1 &&  certificato.getInvalid()== false }">
-	                  											<a class="btn btn-default btn-xs pull-right" href="gestioneDocumento.do?p7m=1&controfirmato=1&idDocumento=${certificato.getId()}" style="margin-left:5px"><i class="glyphicon glyphicon-file"></i> Download P7m Controfirmato</a>
-	                  											</c:if>
+	                  											
 	                  											
 	                  											<c:if test="${verbale.getFirmato()==0 && certificato.getInvalid()== false }">
 	                  											<a class="btn btn-default btn-xs pull-right" onClick="modalCaricaP7m('${certificato.getId()}')" style="margin-left:5px"><i class="fa fa-plus"></i> Carica P7m</a>
 	                  											</c:if>
 	                  											
+	                  											
+	                  											
 	                  											<c:if test="${verbale.getFirmato()==1 && certificato.getInvalid()== false }">
 	                  											<a class="btn btn-default btn-xs pull-right" href="gestioneDocumento.do?p7m=1&idDocumento=${certificato.getId()}" style="margin-left:5px"><i class="glyphicon glyphicon-file"></i> Download P7m</a>
-	                  											</c:if>														
+	                  											</c:if>			
+	                  											
+	                  											<c:if test="${verbale.getFirmato()==1 && verbale.getControfirmato() == 1 &&  certificato.getInvalid()== false }">
+	                  											<a class="btn btn-default btn-xs pull-right" href="gestioneDocumento.do?p7m=1&controfirmato=1&idDocumento=${certificato.getId()}" style="margin-left:5px"><i class="glyphicon glyphicon-file"></i> Download P7m Controfirmato</a>
+	                  											
+	                  												<a class="btn btn-default btn-xs pull-right" onClick="getDestinatarioEmail('${certificato.getId()}')" style="margin-left:5px"><i class="fa fa-paper-plane-o"></i> Invia Verbale</a>
+	                  											</c:if>		
+	                  											
+	                  																			
 	                										</c:if>
 	                									</li>
                 									</c:forEach>
@@ -1241,17 +1256,47 @@
         								<h4 class="modal-title text-center" id="myModalLabel">Inserisci il PIN</h4>
       								</div>
        								<div class="modal-body">
+       								<div class="row">
        								<div class="col-xs-2">
        								<label>PIN:</label>
 										
        								</div>
        								<div class="col-xs-6">
        								<input type="password" id="pin" name = "pin" class="form-control">
+       								<input type="hidden" id="controfirma" name = "controfirma" class="form-control">
        								</div>
-										
+										</div>
   		 							</div>
       								<div class="modal-footer">
       									<button type="button" class="btn btn-default" onclick="firmaVerbale('${verbale.id}')" >Firma</button>
+        								<button type="button" class="btn btn-default" data-dismiss="modal">Chiudi</button>
+      								</div>
+    							</div>
+  							</div>
+						</div> 
+						
+						<div id="modalDestinatario" class="modal fade" role="dialog" aria-labelledby="myLargeModalLabel">
+    						<div class="modal-dialog" role="document">
+    							<div class="modal-content">
+     								<div class="modal-header">
+        								<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        								<h4 class="modal-title text-center" id="myModalLabel">Invia verbale</h4>
+      								</div>
+       								<div class="modal-body">
+       								<div class="row">
+       								<div class="col-xs-2">
+       								<label>Destinatario:</label>
+										
+       								</div>
+       								<div class="col-xs-6">
+       								<input type="text" id="destinatario" name = "destinatario" class="form-control">
+       								<input type="hidden" id="id_documento" name = "id_documento" class="form-control">
+       								
+       								</div>
+										</div>
+  		 							</div>
+      								<div class="modal-footer">
+      									<button type="button" class="btn btn-default" onclick="inviaPec()" >Invia</button>
         								<button type="button" class="btn btn-default" data-dismiss="modal">Chiudi</button>
       								</div>
     							</div>
@@ -2083,6 +2128,7 @@ $('#minuti').change(function(){
 		
 		var val = $(this).val();
 		
+		
 		var date = $('#data_verifica').val();
 		var d = moment(date, "DD-MM-YYYY");
 		if(date!='' && d._isValid){
@@ -2102,7 +2148,7 @@ $('#minuti').change(function(){
 	function formatDate(data){
 		
 		   var mydate = new Date(data);
-		   
+		   var str;
 		   if(!isNaN(mydate.getTime())){
 		   
 			   str = mydate.toString("dd/MM/yyyy");
@@ -2236,6 +2282,115 @@ function modificaDescrizioneUtilizzatore(){
 	}
 	
 
+function getDestinatarioEmail(id_documento){
+	
+	pleaseWaitDiv = $('#pleaseWaitDialog');
+	pleaseWaitDiv.modal();
+	
+	var id ="${verbale.id}";
+	$('#id_documento').val(id_documento);
+		
+	$.ajax({
+		type: "POST",
+		url: "gestioneVerbale.do?action=email_destinatario",
+		data : "idVerbale="+id,				
+		dataType: "json",
+		success: function( data, textStatus) {
+			pleaseWaitDiv.modal('hide');
+			if(data.success){
+				
+				$('#destinatario').val(data.indirizzo);
+				$('#modalDestinatario').modal();
+				
+			}else{
+				$('#modalErrorDiv').html(data.messaggio);
+				$('#myModalError').removeClass();
+				$('#myModalError').addClass("modal modal-danger");
+				$('#myModalError').modal('show');	
+			}
+			
+			
+			
+		},
+		error: function(jqXHR, textStatus, errorThrown){
+			pleaseWaitDiv.modal('hide');
+			$('#modalErrorDiv').html(jqXHR.responseText);
+			$('#myModalError').removeClass();
+			$('#myModalError').addClass("modal modal-danger");
+			$('#myModalError').modal('show');															
+		}
+	});
+	
+}
+
+
+function inviaPec(){
+	
+	 pleaseWaitDiv = $('#pleaseWaitDialog');
+	 pleaseWaitDiv.modal();
+	  
+	
+	  var destinatario = $('#destinatario').val();
+	  var id_documento = $('#id_documento').val();
+	  
+	  if(destinatario!=null && destinatario!=''){
+	  
+		  var id ="${verbale.id}";
+		  $.ajax({
+		  type: "POST",
+		  url: "gestioneVerbale.do?action=invia_email&idVerbale="+id+"&destinatario="+destinatario+"&id_documento="+id_documento,
+		  dataType: "json",
+	
+		  success: function( data, textStatus) {
+			  pleaseWaitDiv.modal('hide');
+			  if(data.success)
+			  { 
+				  $('#modalErrorDiv').html(data.messaggio);
+	 			  	$('#myModalError').removeClass();
+	 				$('#myModalError').addClass("modal modal-success");
+	 				$('#report_button').hide();
+	 				$('#visualizza_report').hide();
+	 				$('#myModalError').modal('show');
+	 				$('#myModalError').on('hidden.bs.modal', function(){
+						$('#modalDestinatario').modal('hide');
+					});
+			
+			  }else{
+				  
+				  $('#modalErrorDiv').html(data.messaggio);
+	 			  	$('#myModalError').removeClass();
+	 				$('#myModalError').addClass("modal modal-danger");
+	 				$('#report_button').hide();
+	 				$('#visualizza_report').hide();
+	 				$('#myModalError').modal('show');			
+			  }
+		  
+	  },
+
+	  error: function(jqXHR, textStatus, errorThrown){
+		  pleaseWaitDiv.modal('hide');
+
+			$('#modalErrorDiv').html(errorThrown.message);
+		  	$('#myModalError').removeClass();
+			$('#myModalError').addClass("modal modal-danger");
+			$('#report_button').show();
+				$('#visualizza_report').show();
+			$('#myModalError').modal('show');
+			
+
+	  }
+  });
+	  }else{
+		  pleaseWaitDiv.modal('hide');
+			  $('#myModalErrorContent').html("Nessun indirizzo email inserito!");
+			  	$('#myModalError').removeClass();
+				$('#myModalError').addClass("modal modal-danger");
+				$('#report_button').hide();
+				$('#visualizza_report').hide();
+				$('#myModalError').modal('show');	
+		  }
+	
+}
 
 
 function modificaSedeUtilizzatore(){
@@ -2322,7 +2477,11 @@ function modificaSedeUtilizzatore(){
 		$('#modalUploadP7m').modal();
 	}
 	
-	
+	function modalPin(controfirma){
+		
+		$('#controfirma').val(controfirma);
+		$('#modalPin').modal('show');
+	}
 	
 			$(document).ready(function() {
 				

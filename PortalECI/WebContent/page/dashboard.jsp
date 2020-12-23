@@ -133,32 +133,29 @@
 		var lista_categorie = JSON.parse('${obj_codice_categoria}');
 		var lista_verifiche = JSON.parse('${obj_codice_verifica}');
 		var map_stati = JSON.parse('${map_stati}');
-		
+		var map_color = JSON.parse('${map_color}')
+
 		
 		var data_graph_1 = [];
 		var label_graph_1 = [];
+		var color_graph_1 = [];
 		var length = Object.keys(map_stati).length;
 		var totali = 0;
 		for(var i = 0; i<length;i++){
 			if(Object.keys(map_stati)[i]!='IN_COMPILAZIONE'){
 				label_graph_1.push(Object.keys(map_stati)[i].replace("_"," "));
-				data_graph_1.push(Object.values(map_stati)[i]);
-				totali = totali +Object.values(map_stati)[i];
+				data_graph_1.push(parseInt(Object.values(map_stati)[i]));
+				color_graph_1.push(Object.values(map_color)[i])
+				totali = totali +(parseInt(Object.values(map_stati)[i]));
 			}
 		}
+	
 		
 		$('#verbali_totali').html(totali);
 		
+
 		
-/* 		var data_graph_1 = [];
-		data_graph_1.push(map_stati.CREATO);
-		data_graph_1.push(map_stati.IN_CORSO);
-		data_graph_1.push(map_stati.IN_APPROVAZIONE);
-		data_graph_1.push(map_stati.APPROVATO);
-		data_graph_1.push(map_stati.SOSPESO);
-		data_graph_1.push(map_stati.RIFIUTATO);
-		data_graph_1.push(map_stati.ANNULLATO); */
-		
+				
 		var ctx = document.getElementById('graph_1').getContext('2d');
 		
 		 var myChart1 = new Chart(ctx, {
@@ -168,7 +165,8 @@
 			      labels: label_graph_1,
 			      datasets: [ {
 			        data: data_graph_1,
-			        backgroundColor: [
+			        backgroundColor: color_graph_1,
+			        /* backgroundColor: [
 			        	
 
 			        	"#000000",
@@ -180,7 +178,7 @@
 			        	"#CE3018"
 			        	
 
-				        ],
+				        ], */
 
 			      },]
 			    },
