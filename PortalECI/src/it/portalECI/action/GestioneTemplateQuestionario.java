@@ -92,7 +92,7 @@ public class GestioneTemplateQuestionario extends HttpServlet {
 			File fileDocument;
 			try {
 				fileDocument = GestioneTemplateQuestionarioBO.getAnteprimaQuestionario(template, questionario, session);
-			} catch (DocumentException e) {
+			} catch (Exception e) {
 				ServletContext sc = getServletContext();
 				request.setAttribute("issue", "Si &egrave; generato un errore durante la generazione del documento!");
 				sc.getRequestDispatcher("/page/downloadError.jsp").forward(request, response);

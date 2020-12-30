@@ -18,6 +18,10 @@
 <c:if test="${user.checkPermesso('MODIFICA_ATTREZZATURE') }">
 <button class="btn btn-primary" onClick="modalNuovaAttrezzatura()">Nuova Attrezzatura</button>
 </c:if>
+
+<button class="btn btn-primary pull-right"  id="btnObsolete" >Obsolete</button>
+<button class="btn btn-primary pull-right"  style="margin-right:5px" id="btnInVerifica">In verifica</button>
+<button class="btn btn-primary pull-right"  style="margin-right:5px" id="btnTutte" disabled>Tutte</button>
 <div id="errorMsg" ></div>
 </div>
 </div><br>
@@ -30,7 +34,8 @@
 	<table id="tabPM" class="table table-bordered table-hover dataTable table-striped" role="grid" width="100%">
 <thead><tr class="active">
  					
- 						<th>ID</th> 						  
+ 						<th>ID</th> 		
+ 						 <th hidden="hidden"></th>  				  
             	       <th>N. matricola INAIL</th>		   
             		   <th>N. di fabbrica</th>
                        <th>Gruppo</th>
@@ -56,8 +61,10 @@
                        <th>N. ID ON</th>
                        <th>Scadenza Ventennale</th>
                        <th>Note tecniche</th>
-                       <th>Note generiche</th>       
+                       <th>Note generiche</th>     
+                      
                        <td style="min-width:100px;">Azioni</td>
+                       
  </tr></thead>
  
  <tbody>
@@ -80,6 +87,7 @@
  	</c:choose>
  
  	<td>${attrezzatura.id }</td>
+ 	<td hidden="hidden">${attrezzatura.obsoleta }</td>
  	<td>${attrezzatura.matricola_inail }</td>
  	<td>${attrezzatura.numero_fabbrica }</td>
  	<td>${attrezzatura.tipo_attivita }</td>
@@ -120,6 +128,8 @@
  	'${attrezzatura.n_panieri_idroestrattori }','${attrezzatura.marcatura }','${attrezzatura.n_id_on }','${attrezzatura.data_scadenza_ventennale }')"><i class="fa fa-edit"></i></a>
  	</c:if>
  	</td>
+ 	
+ 	
  	
  	</tr>
  	</c:forEach>
@@ -851,9 +861,9 @@ $("#tabPM").on( 'init.dt', function ( e, settings ) {
     $('#tabPM thead th').each( function () {
      	if(columsDatatables.length==0 || columsDatatables[$(this).index()]==null ){columsDatatables.push({search:{search:""}});}
     	   var title = $('#tabPM thead th').eq( $(this).index() ).text();
-    	   if($(this).index()!= 0){
+    	   
     		   $(this).append( '<div><input class="inputsearchtable" id="inputsearchtable_'+$(this).index()+'" style="width:100%" type="text" value="'+columsDatatables[$(this).index()].search.search+'" /></div>');
-    	   }
+    	   
     	  
     	} );
 
@@ -995,6 +1005,46 @@ $('#modalModificaAttrezzatura').on('hidden.bs.modal', function(){
 });
 
 
+
+function filtraObsolete(obsolete){
+	
+	var table = $('#tabPM').DataTable();
+	
+	
+		table
+        .columns( 1 )
+        .search( obsolete)
+        .draw();
+	
+}
+
+$('#btnObsolete').click(function(){
+	
+	$('#btnObsolete').attr('disabled', true);
+	$('#btnInVerifica').attr('disabled', false);
+	$('#btnTutte').attr('disabled', false);
+	
+	filtraObsolete(1)
+	
+});
+
+$('#btnInVerifica').click(function(){
+	
+	$('#btnObsolete').attr('disabled', false);
+	$('#btnInVerifica').attr('disabled', true);
+	$('#btnTutte').attr('disabled', false);
+	filtraObsolete(0)
+});
+
+$('#btnTutte').click(function(){
+	
+	$('#btnObsolete').attr('disabled', false);
+	$('#btnInVerifica').attr('disabled', false);
+	$('#btnTutte').attr('disabled', true);
+	filtraObsolete('');
+});
+
+
 var tipo_attrezzatura_options = [];
 
 
@@ -1047,8 +1097,8 @@ $(document).ready(function() {
 	      columnDefs: [
 					 
 	                   { responsivePriority: 1, targets: 0 },	                  
-	                   { responsivePriority: 2, targets: 27 }
-	              
+	                   { responsivePriority: 2, targets: 28 }
+	                  
 	                  /*  { orderable: false, targets: 6 }, */
 	               ],
        
@@ -1100,7 +1150,7 @@ $( 'input', table.column( colIdx ).header() ).on( 'keyup', function () {
 } );  
 table.columns.adjust().draw();
 	
-	
+	filtraObsolete('')
 });
 
 

@@ -792,7 +792,10 @@ public class GestioneVerbali extends HttpServlet {
 					if(!doc.getInvalid()) {						
 						try {
 							
-							myObj = ArubaSignService.sign(user.getId_firma(), doc, controfirma);
+							//myObj = ArubaSignService.sign(user.getId_firma(), doc, controfirma);
+							myObj = ArubaSignService.signDocumentoPades(user, "", doc, controfirma);
+							
+						//	GestioneVerbaleBO.addSignature(doc);
 							
 							if(controfirma!=null && controfirma.equals("1")) {
 								verbale.setControfirmato(1);
@@ -802,7 +805,7 @@ public class GestioneVerbali extends HttpServlet {
 							}
 							
 							session.update(verbale);
-						} catch (TypeOfTransportNotImplementedException e) {
+						} catch (Exception e) {
 							
 							e.printStackTrace();
 				        	
@@ -902,7 +905,7 @@ public class GestioneVerbali extends HttpServlet {
 			out.print(myObj);
 			
 		}
-		else if(action!=null && action.equals("carica_p7m")) {
+		else if(action!=null && action.equals("carica_verbale_firmato")) {
 			
 
 			PrintWriter writer = response.getWriter();
@@ -942,7 +945,8 @@ public class GestioneVerbali extends HttpServlet {
 		verbale = documento.getVerbale();
 			
 		String filename_pdf = documento.getFilePath().split("\\\\")[2];
-		if(filename!=null && !filename.equals("") && !filename.replace(".p7m", "").equals(filename_pdf) && !filename.replace(".P7M", "").equals(filename_pdf) ) {
+		//if(filename!=null && !filename.equals("") && !filename.replace(".p7m", "").equals(filename_pdf) && !filename.replace(".P7M", "").equals(filename_pdf) ) {
+		if(filename!=null && !filename.equals("") && !filename.equals(filename_pdf) && !filename.equals(filename_pdf) ) {
 			
 			jsono.addProperty("success", false);
 			jsono.addProperty("messaggio","Attenzione! Il file non corrisponde al verbale generato!");
@@ -953,7 +957,8 @@ public class GestioneVerbali extends HttpServlet {
 				String path = documento.getFilePath().replace(filename_pdf,"");
 				//String path = "Intervento_"+intervento.getId()+File.separator+verbale.getType()+"_"+verbale.getCodiceCategoria()+"_"+verbale.getId()+File.separator;
 				new File(Costanti.PATH_CERTIFICATI+path).mkdirs();
-				File file = new File(Costanti.PATH_CERTIFICATI+path+filename);
+				String fileNoExt = filename.substring(0, filename.length()-4);
+				File file = new File(Costanti.PATH_CERTIFICATI+path+fileNoExt+"_F.pdf");
 				int counter = 0;
 
 					try {

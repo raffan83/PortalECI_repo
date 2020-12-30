@@ -27,14 +27,13 @@ import com.itextpdf.text.DocumentException;
 import com.itextpdf.text.Element;
 import com.itextpdf.text.Font;
 import com.itextpdf.text.Font.FontFamily;
-import com.itextpdf.text.Paragraph;
 import com.itextpdf.text.Phrase;
-import com.itextpdf.text.Rectangle;
 import com.itextpdf.text.pdf.ColumnText;
 import com.itextpdf.text.pdf.PdfContentByte;
 import com.itextpdf.text.pdf.PdfGState;
 import com.itextpdf.text.pdf.PdfReader;
 import com.itextpdf.text.pdf.PdfStamper;
+
 
 import it.portalECI.DAO.GestioneDocumentoDAO;
 import it.portalECI.DAO.GestioneDomandaVerbaleDAO;
@@ -45,7 +44,6 @@ import it.portalECI.DAO.GestioneStatoInterventoDAO;
 import it.portalECI.DAO.GestioneStatoVerbaleDAO;
 import it.portalECI.DAO.GestioneVerbaleDAO;
 import it.portalECI.DTO.AttrezzaturaDTO;
-import it.portalECI.DTO.ClienteDTO;
 import it.portalECI.DTO.ColonnaTabellaQuestionarioDTO;
 import it.portalECI.DTO.ColonnaTabellaVerbaleDTO;
 import it.portalECI.DTO.CommessaDTO;
@@ -68,7 +66,6 @@ import it.portalECI.DTO.RispostaTabellaVerbaleDTO;
 import it.portalECI.DTO.RispostaTestoQuestionarioDTO;
 import it.portalECI.DTO.RispostaTestoVerbaleDTO;
 import it.portalECI.DTO.RispostaVerbaleDTO;
-import it.portalECI.DTO.SedeDTO;
 import it.portalECI.DTO.StatoInterventoDTO;
 import it.portalECI.DTO.StatoVerbaleDTO;
 import it.portalECI.DTO.TemplateQuestionarioDTO;
@@ -1043,17 +1040,17 @@ public class GestioneVerbaleBO {
 		String ruolo = "Riesaminato";
 		
 		if(verbale.getResponsabile_approvatore()!=null && verbale.getResponsabile_approvatore().checkRuolo("RT")) {
-			ruolo = ruolo + " RT";
+			ruolo = ruolo + " RT<br>"+verbale.getResponsabile_approvatore().getQualifica()+" "+verbale.getResponsabile_approvatore().getNominativo();
 		}else if(verbale.getResponsabile_approvatore()!=null && verbale.getResponsabile_approvatore().checkRuolo("SRT")){
-			ruolo = ruolo + " SRT";
+			ruolo = ruolo + " SRT<br>Per. Ind. "+verbale.getResponsabile_approvatore().getNominativo();
 		}
 		
 		
 		html = html.replaceAll("\\$\\{RUOLO_RIESAME\\}", ruolo);
 		
-		if(verbale.getData_approvazione()!=null) {
-			html = html.replaceAll("\\$\\{DATA_RIESAME\\}", df.format(verbale.getData_approvazione()));	
-		}
+//		if(verbale.getData_approvazione()!=null) {
+//			html = html.replaceAll("\\$\\{DATA_RIESAME\\}", df.format(verbale.getData_approvazione()));	
+//		}
 		
 		if(verbale.getResponsabile_approvatore()!=null && verbale.getResponsabile_approvatore().getFile_firma()!=null && !isAnteprima) {			
 			
@@ -1415,6 +1412,9 @@ public class GestioneVerbaleBO {
 		
 	}
 	
+
+
+	
 	public static void setStatoCompilazioneWeb(InterventoDTO intervento, StatoVerbaleDTO stato, Session session) {	
 		for (VerbaleDTO verbale: intervento.getVerbali()) {
 			if (verbale.getSchedaTecnica()!=null) {
@@ -1477,6 +1477,7 @@ public class GestioneVerbaleBO {
 		
 		return GestioneVerbaleDAO.getVerbaliPDFAll(session, dateFrom, dateTo);
 	}
+
 
 	
 

@@ -220,21 +220,21 @@ public static void sendPecVerbale(DocumentoDTO documento, VerbaleDTO verbale, St
 			  
 		  Multipart multipart = new MimeMultipart();
 		  
-			String filenamePdf = verbale.getNumeroVerbale()+".pdf";
-			String filenameP7m = verbale.getNumeroVerbale()+".pdf.p7m.p7m";			
+			String filenamePdf = verbale.getNumeroVerbale()+"_CF.pdf";
+			//String filenameP7m = verbale.getNumeroVerbale()+".pdf.p7m.p7m";			
 			// Create the attachment
 
-	         DataSource source = new FileDataSource(Costanti.PATH_CERTIFICATI+documento.getFilePath());
+	         DataSource source = new FileDataSource(Costanti.PATH_CERTIFICATI+documento.getFilePath().replace(documento.getFileName(), filenamePdf));
 	         attachPdf.setDataHandler(new DataHandler(source));
 	         attachPdf.setFileName(filenamePdf);	         
 	        
-	         source = new FileDataSource(Costanti.PATH_CERTIFICATI+documento.getFilePath()+".p7m.p7m");
-	         attachP7m.setDataHandler(new DataHandler(source));
-	         attachP7m.setFileName(filenameP7m);
+	     //    source = new FileDataSource(Costanti.PATH_CERTIFICATI+documento.getFilePath()+".p7m.p7m");
+	     //    attachP7m.setDataHandler(new DataHandler(source));
+	       //  attachP7m.setFileName(filenameP7m);
 	         
 	         multipart.addBodyPart(messageBodyPart);
 	         multipart.addBodyPart(attachPdf);	       
-	         multipart.addBodyPart(attachP7m);	         
+	       //  multipart.addBodyPart(attachP7m);	         
 	  
 	         multipart.addBodyPart(image);
 	         // Send the complete message parts

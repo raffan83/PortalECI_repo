@@ -4,7 +4,6 @@ import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
-import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.nio.charset.Charset;
@@ -19,7 +18,6 @@ import org.hibernate.Session;
 import org.jsoup.Jsoup;
 
 import com.itextpdf.text.Document;
-import com.itextpdf.text.DocumentException;
 import com.itextpdf.text.PageSize;
 import com.itextpdf.text.pdf.PdfWriter;
 import com.itextpdf.tool.xml.XMLWorker;
@@ -41,7 +39,6 @@ import com.itextpdf.tool.xml.pipeline.html.LinkProvider;
 import it.portalECI.DAO.GestioneRispostaQuestionarioDAO;
 import it.portalECI.DAO.GestioneTemplateQuestionarioDAO;
 import it.portalECI.DTO.ColonnaTabellaQuestionarioDTO;
-import it.portalECI.DTO.CommessaDTO;
 import it.portalECI.DTO.DomandaQuestionarioDTO;
 import it.portalECI.DTO.DomandaSchedaTecnicaQuestionarioDTO;
 import it.portalECI.DTO.OpzioneRispostaQuestionarioDTO;
@@ -62,7 +59,7 @@ public class GestioneTemplateQuestionarioBO {
 		return GestioneTemplateQuestionarioDAO.getTemplateById(idTemplate, session);
 	}
 	
-	public static File getAnteprimaQuestionario(TemplateQuestionarioDTO template, QuestionarioDTO questionario, Session session) throws IOException, DocumentException {
+	public static File getAnteprimaQuestionario(TemplateQuestionarioDTO template, QuestionarioDTO questionario, Session session) throws Exception {
 		
 		String path = "QuestionarioTest"+File.separator;
 		new File(Costanti.PATH_CERTIFICATI+path).mkdirs();
@@ -79,7 +76,7 @@ public class GestioneTemplateQuestionarioBO {
 	
 	
 	
-	static public void writePDF(OutputStream fileOutput,String html, TemplateQuestionarioDTO template, String subhedaer) throws DocumentException, IOException {
+	static public void writePDF(OutputStream fileOutput,String html, TemplateQuestionarioDTO template, String subhedaer) throws Exception {
 		final org.jsoup.nodes.Document documentJsoup = Jsoup.parse(html);
 		documentJsoup.outputSettings().syntax(org.jsoup.nodes.Document.OutputSettings.Syntax.xml);
 		String validXHTML = documentJsoup.html();
@@ -154,9 +151,46 @@ public class GestioneTemplateQuestionarioBO {
 		XMLParser p = new XMLParser(worker);
 		p.parse(new ByteArrayInputStream(validXHTML.getBytes()),
     		Charset.forName("UTF-8"));
-
+		
 		document.close();
+
+		
 	}
+	
+	
+//	private static void image2Pdf(String path) throws Exception {
+//		path = "C:\\Users\\antonio.dicivita\\Desktop\\test_cert.pdf";
+//		PDDocument document = PDDocument.load(new File(path));
+//		PDFRenderer pdfRenderer = new PDFRenderer(document);
+//		for (int page = 0; page < document.getNumberOfPages(); ++page)
+//		{ 
+//		    BufferedImage bim = pdfRenderer.renderImageWithDPI(page, 300, ImageType.RGB);
+//
+//		    // suffix in filename will be used as the file format
+//		    ImageIOUtil.writeImage(bim, path + "-" + (page+1) + ".png", 300);
+//		}
+//		document.close();
+//		
+//		PDDocument doc = new PDDocument();
+//		doc.addPage(new PDPage());
+//		 PDPage page = doc.getPage(0);
+//
+//         // createFromFile is the easiest way with an image file
+//         // if you already have the image in a BufferedImage, 
+//         // call LosslessFactory.createFromImage() instead
+//         PDImageXObject pdImage = PDImageXObject.createFromFile(path+"-1.png", doc);
+//
+//         try (PDPageContentStream contentStream = new PDPageContentStream(doc, page, AppendMode.APPEND, true, true))
+//         {
+//             // contentStream.drawImage(ximage, 20, 20 );
+//             // better method inspired by http://stackoverflow.com/a/22318681/535646
+//             // reduce this value if the image is too large
+//             float scale = 0.22f;
+//             contentStream.drawImage(pdImage, 20, 20, pdImage.getWidth() * scale, pdImage.getHeight() * scale);
+//         }
+//         doc.save(path.split("test_cert")[0]+"test2.pdf");
+//		
+//	}
 	
 	private static String replacePlaceholders(String html, QuestionarioDTO questionario, Session session) {
 		if(html==null || html.isEmpty()) {

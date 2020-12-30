@@ -259,7 +259,7 @@
 	                  											
 	                  											
 	                  											
-	                  											<c:if test="${verbale.getFirmato()==0 && certificato.getInvalid()== false }">
+	                  											<%-- <c:if test="${verbale.getFirmato()==0 && certificato.getInvalid()== false  && verbale.getStato().getId()== 5}">
 	                  											<a class="btn btn-default btn-xs pull-right" onClick="modalCaricaP7m('${certificato.getId()}')" style="margin-left:5px"><i class="fa fa-plus"></i> Carica P7m</a>
 	                  											</c:if>
 	                  											
@@ -269,8 +269,20 @@
 	                  											<a class="btn btn-default btn-xs pull-right" href="gestioneDocumento.do?p7m=1&idDocumento=${certificato.getId()}" style="margin-left:5px"><i class="glyphicon glyphicon-file"></i> Download P7m</a>
 	                  											</c:if>			
 	                  											
-	                  											<c:if test="${verbale.getFirmato()==1 && verbale.getControfirmato() == 1 &&  certificato.getInvalid()== false }">
-	                  											<a class="btn btn-default btn-xs pull-right" href="gestioneDocumento.do?p7m=1&controfirmato=1&idDocumento=${certificato.getId()}" style="margin-left:5px"><i class="glyphicon glyphicon-file"></i> Download P7m Controfirmato</a>
+	                  											<c:if test="${verbale.getFirmato()==1 && verbale.getControfirmato() == 1 &&  certificato.getInvalid()== false }"> --%>
+	                  											
+	                  											 <c:if test="${verbale.getFirmato()==0 && certificato.getInvalid()== false  && verbale.getStato().getId()== 5}">
+	                  											<a class="btn btn-default btn-xs pull-right" onClick="modalCaricaFileFirmato('${certificato.getId()}')" style="margin-left:5px"><i class="fa fa-plus"></i> Carica Verbale Firmato</a>
+	                  											</c:if>
+	                  											
+	                  											
+	                  											
+	                  											<c:if test="${verbale.getFirmato()==1 && certificato.getInvalid()== false }">
+	                  											<a class="btn btn-default btn-xs pull-right" href="gestioneDocumento.do?firmato=1&idDocumento=${certificato.getId()}" style="margin-left:5px"><i class="glyphicon glyphicon-file"></i> Download Verbale Firmato</a>
+	                  											</c:if>			
+	                  											
+	                  											<c:if test="${verbale.getFirmato()==1 && verbale.getControfirmato() == 1 &&  certificato.getInvalid()== false }"> 
+	                  											<a class="btn btn-default btn-xs pull-right" href="gestioneDocumento.do?controfirmato=1&idDocumento=${certificato.getId()}" style="margin-left:5px"><i class="glyphicon glyphicon-file"></i> Download Verbale Controfirmato</a>
 	                  											
 	                  												<a class="btn btn-default btn-xs pull-right" onClick="getDestinatarioEmail('${certificato.getId()}')" style="margin-left:5px"><i class="fa fa-paper-plane-o"></i> Invia Verbale</a>
 	                  											</c:if>		
@@ -1680,12 +1692,12 @@
    
    
    <form class="form-horizontal" id="formNuovaAttrezzatura">
-<div id="modalUploadP7m" class="modal fade" role="dialog" aria-labelledby="myLargeModalLabel">
+<div id="modalUploadFileFirmato" class="modal fade" role="dialog" aria-labelledby="myLargeModalLabel">
     <div class="modal-dialog modal-md" role="document">
     <div class="modal-content">
      <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="myModalLabel">Carica File p7m</h4>
+        <h4 class="modal-title" id="myModalLabel">Carica Verbale Firmato</h4>
       </div>
        <div class="modal-body">
 
@@ -1700,7 +1712,7 @@
 		        <i class="glyphicon glyphicon-plus"></i>
 		        <span>Seleziona un file...</span>
 		        <!-- The file input field used as target for the file upload widget -->
-		        		<input accept=".p7m" id="fileupload" type="file" name="files">
+		        		<input accept=".pdf, .PDF" id="fileupload" type="file" name="files">
 		   	 </span>
     	</div>
    </div>
@@ -1761,7 +1773,7 @@
  		
  	 	
  		$('#fileupload').fileupload({
- 	        url: "gestioneVerbale.do?action=carica_p7m",
+ 	        url: "gestioneVerbale.do?action=carica_verbale_firmato",
  	        dataType: 'json',
  	        maxNumberOfFiles : 1,
  	        getNumberOfFiles: function () {
@@ -1774,7 +1786,7 @@
  	        },
  	        add: function(e, data) {
  	            var uploadErrors = [];
- 	            var acceptFileTypes = /(\.|\/)(p7m)$/i;
+ 	            var acceptFileTypes = /(\.|\/)(pdf|PDF)$/i;
  	            if(data.originalFiles[0]['name'].length && !acceptFileTypes.test(data.originalFiles[0]['name'])) {
  	                uploadErrors.push('Tipo File non accettato. ');
  	            }
@@ -1796,7 +1808,7 @@
  	        done: function (e, data) {
  				
  	        	pleaseWaitDiv.modal('hide');
- 	        	$('#modalUploadP7m').modal('hide');
+ 	        	$('#modalUploadFileFirmato').modal('hide');
  	        	if(data.result.success)
  				{
  	        		
@@ -2469,12 +2481,12 @@ function modificaSedeUtilizzatore(){
 	
 	
 	
-	function modalCaricaP7m(id_certificato){
+	function modalCaricaFileFirmato(id_certificato){
 		
 		$('#id_certificato_p7m').val(id_certificato);
 		
 		
-		$('#modalUploadP7m').modal();
+		$('#modalUploadFileFirmato').modal();
 	}
 	
 	function modalPin(controfirma){
