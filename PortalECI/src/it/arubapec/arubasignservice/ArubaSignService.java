@@ -10,8 +10,6 @@ import java.util.Date;
 import javax.activation.DataHandler;
 
 import org.apache.commons.io.FileUtils;
-import org.apache.pdfbox.pdmodel.PDDocument;
-import org.apache.pdfbox.text.PDFTextStripper;
 
 import com.google.gson.JsonObject;
 import com.itextpdf.text.pdf.PdfReader;
