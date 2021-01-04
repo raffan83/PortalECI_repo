@@ -147,7 +147,7 @@ public class ArubaSignService {
 		
 		String path = Costanti.PATH_CERTIFICATI+documento.getFilePath();
 		
-		String keyWord = "Il verificatore";
+		String keyWord = "Verificatore";
 		
 		if(controfirma!=null && controfirma.equals("1")) {
 			keyWord = "Riesaminato";
@@ -183,50 +183,83 @@ public class ArubaSignService {
 //		apparence.setLefty(450);
 //		apparence.setRightx(550);
 //		apparence.setRighty(490);
-        if(controfirma!=null && controfirma.equals("1")) {
-        	apparence.setLeftx(fontPosition[0] - 35);
-    		apparence.setLefty(fontPosition[1] - 60);
-    		apparence.setRightx(fontPosition[0] + 115);
-    		apparence.setRighty(fontPosition[1] -20);
-        }else {
-        	apparence.setLeftx(fontPosition[0] - 20);
-    		apparence.setLefty(fontPosition[1] - 60);
-    		apparence.setRightx(fontPosition[0] + 140);
-    		apparence.setRighty(fontPosition[1] -20);
-        }
-		
         
-		
-		pkcs.setApparence(apparence);
-		request.setPdfsignatureV2(pkcs);
-		
-		
-		PdfsignatureV2ResponseE response= stub.pdfsignatureV2(request);
-		JsonObject jsonObj = new JsonObject();
-		
+        JsonObject jsonObj = new JsonObject();
+        
+        if(fontPosition[0]!= null && fontPosition[1]!=null) {
+        	if(controfirma!=null && controfirma.equals("1")) {
+            	apparence.setLeftx(fontPosition[0] - 35);
+        		apparence.setLefty(fontPosition[1] - 60);
+        		apparence.setRightx(fontPosition[0] + 115);
+        		apparence.setRighty(fontPosition[1] -20);
+            }else {
+            	apparence.setLeftx(fontPosition[0] - 20);
+        		apparence.setLefty(fontPosition[1] - 60);
+        		apparence.setRightx(fontPosition[0] + 140);
+        		apparence.setRighty(fontPosition[1] -20);
+            }
+    		
+            
+    		
+    		
+    		
+    		
+        }else {
+        	
+        	keyWord = "Il verificatore";
+        	
+        	fontPosition = getFontPosition(path, keyWord, null);
+            System.out.println(Arrays.toString(fontPosition));
+        	
+            
+        	if(controfirma!=null && controfirma.equals("1")) {
+            	apparence.setLeftx(fontPosition[0] - 35);
+        		apparence.setLefty(fontPosition[1] - 60);
+        		apparence.setRightx(fontPosition[0] + 115);
+        		apparence.setRighty(fontPosition[1] -20);
+            }else {
+            	apparence.setLeftx(fontPosition[0] - 20);
+        		apparence.setLefty(fontPosition[1] - 60);
+        		apparence.setRightx(fontPosition[0] + 140);
+        		apparence.setRighty(fontPosition[1] -20);
+            }
+        }
+        
+        if(apparence.getLeftx()!= 0 && apparence.getLefty() != 0) {
+        	
+        	 pkcs.setApparence(apparence);
+         	request.setPdfsignatureV2(pkcs);
+         		
+         		
+         		PdfsignatureV2ResponseE response= stub.pdfsignatureV2(request);
+         		
+         		if( response.getPdfsignatureV2Response().get_return().getStatus().equals("KO")) {
+         			jsonObj.addProperty("success", false);
+         			jsonObj.addProperty("messaggio", response.getPdfsignatureV2Response().get_return().getDescription());
+         		}else {
+         			
+         			jsonObj.addProperty("success", true);
+         			
+         			DataHandler fileReturn=response.getPdfsignatureV2Response().get_return().getBinaryoutput();
+         			//File targetFile = new File(Costanti.PATH_FIRMA_DIGITALE+ fileNoExt+".pdf");
+         			File targetFile;
+         			if(controfirma!=null && controfirma.equals("1")) {
+         				targetFile=  new File(Costanti.PATH_CERTIFICATI+fileNoExt+"_CF.pdf");
+         			}else {
+         				targetFile=  new File(Costanti.PATH_CERTIFICATI+fileNoExt+"_F.pdf");	
+         			}
+         			
+         			FileUtils.copyInputStreamToFile(fileReturn.getInputStream(), targetFile);
 
-
-		if( response.getPdfsignatureV2Response().get_return().getStatus().equals("KO")) {
-			jsonObj.addProperty("success", false);
-			jsonObj.addProperty("messaggio", response.getPdfsignatureV2Response().get_return().getDescription());
-		}else {
-			
-			jsonObj.addProperty("success", true);
-			
-			DataHandler fileReturn=response.getPdfsignatureV2Response().get_return().getBinaryoutput();
-			//File targetFile = new File(Costanti.PATH_FIRMA_DIGITALE+ fileNoExt+".pdf");
-			File targetFile;
-			if(controfirma!=null && controfirma.equals("1")) {
-				targetFile=  new File(Costanti.PATH_CERTIFICATI+fileNoExt+"_CF.pdf");
-			}else {
-				targetFile=  new File(Costanti.PATH_CERTIFICATI+fileNoExt+"_F.pdf");	
-			}
-			
-			FileUtils.copyInputStreamToFile(fileReturn.getInputStream(), targetFile);
-
-			jsonObj.addProperty("messaggio", "Documento firmato");
-		}
-		
+         			jsonObj.addProperty("messaggio", "Documento firmato");
+         		}
+        	
+        }else {
+        	jsonObj.addProperty("success", false);
+        	jsonObj.addProperty("messaggio", "Impossibile trovare posizione firma!");
+        }
+       
+        		
 	//	f.delete();
 		reader.close();
 		return jsonObj;

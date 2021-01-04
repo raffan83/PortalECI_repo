@@ -4295,6 +4295,7 @@ function firmaVerbale(id_verbale){
 	error: function( data, textStatus) {
 		
 		pleaseWaitDiv.modal('hide');
+		$('#modalErrorDiv').html(textStatus);
 		  	$('#myModalError').removeClass();
 			$('#myModalError').addClass("modal modal-danger");	  
 			$('#report_button').show();

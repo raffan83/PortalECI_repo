@@ -281,11 +281,18 @@
 	                  											<a class="btn btn-default btn-xs pull-right" href="gestioneDocumento.do?firmato=1&idDocumento=${certificato.getId()}" style="margin-left:5px"><i class="glyphicon glyphicon-file"></i> Download Verbale Firmato</a>
 	                  											</c:if>			
 	                  											
-	                  											<c:if test="${verbale.getFirmato()==1 && verbale.getControfirmato() == 1 &&  certificato.getInvalid()== false }"> 
+	                  											<c:if test="${verbale.getFirmato()==1 && verbale.getControfirmato() == 1  &&  certificato.getInvalid()== false }"> 
 	                  											<a class="btn btn-default btn-xs pull-right" href="gestioneDocumento.do?controfirmato=1&idDocumento=${certificato.getId()}" style="margin-left:5px"><i class="glyphicon glyphicon-file"></i> Download Verbale Controfirmato</a>
 	                  											
-	                  												<a class="btn btn-default btn-xs pull-right" onClick="getDestinatarioEmail('${certificato.getId()}')" style="margin-left:5px"><i class="fa fa-paper-plane-o"></i> Invia Verbale</a>
+	                  												
 	                  											</c:if>		
+	                  											
+	                  											
+	                  											<c:if test="${verbale.getFirmato()==1 && (verbale.getControfirmato() == 1 || verbale.codiceCategoria == 'VAL') &&  certificato.getInvalid()== false }"> 
+	                  											
+	                  											
+	                  												<a class="btn btn-default btn-xs pull-right" onClick="getDestinatarioEmail('${certificato.getId()}')" style="margin-left:5px"><i class="fa fa-paper-plane-o"></i> Invia Verbale</a>
+	                  											</c:if>	
 	                  											
 	                  																			
 	                										</c:if>

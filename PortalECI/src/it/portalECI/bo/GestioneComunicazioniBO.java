@@ -221,6 +221,10 @@ public static void sendPecVerbale(DocumentoDTO documento, VerbaleDTO verbale, St
 		  Multipart multipart = new MimeMultipart();
 		  
 			String filenamePdf = verbale.getNumeroVerbale()+"_CF.pdf";
+					
+			if(verbale.getControfirmato()==0) {
+				filenamePdf = verbale.getNumeroVerbale()+"_F.pdf";
+			}
 			//String filenameP7m = verbale.getNumeroVerbale()+".pdf.p7m.p7m";			
 			// Create the attachment
 
