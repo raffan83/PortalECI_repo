@@ -17,5 +17,9 @@
 	 	<property name="progressivo">
 			<column name="progressivo"/>
 		</property> 
+		
+			<property name="sigla" type="java.lang.String">
+			<column name="sigla"/>
+		</property> 
     </class>
 </hibernate-mapping>

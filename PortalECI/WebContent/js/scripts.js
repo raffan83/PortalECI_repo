@@ -4251,11 +4251,13 @@ function firmaVerbale(id_verbale){
 	
 	var pin = $('#pin').val();
 	var controfirma = $('#controfirma').val();
+	var scheda_tecnica = $('#scheda_tecnica').val();
 	
 	var dataObj = {};
 	
 	dataObj.pin = pin;
 	dataObj.controfirma = controfirma;
+	dataObj.scheda_tecnica = scheda_tecnica;
 	
 		$.ajax({
 	type: "POST",

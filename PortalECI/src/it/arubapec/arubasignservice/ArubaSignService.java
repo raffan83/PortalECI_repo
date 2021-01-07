@@ -199,10 +199,6 @@ public class ArubaSignService {
         		apparence.setRighty(fontPosition[1] -20);
             }
     		
-            
-    		
-    		
-    		
     		
         }else {
         	

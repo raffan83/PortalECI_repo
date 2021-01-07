@@ -193,20 +193,29 @@
                 								</c:if>	
         										</ul> 
         										
-        										<c:if test='${verbale.getStato().getId()== 5 && verbale.getFirmato() == 1 && (user.checkRuolo("AM") || user.checkRuolo("RT") || user.checkRuolo("SRT"))  && verbale.getResponsabile_approvatore().getId() == userObj.getId()}'>										
+        										<c:if test='${verbale.getStato().getId()== 5 && verbale.getFirmato() == 1 && (user.checkRuolo("AM") || user.checkRuolo("RT") || user.checkRuolo("SRT"))  && verbale.getResponsabile_approvatore().getId() == userObj.getId() && verbale.codiceCategoria != "VAL"}'>										
 													<!-- <button type="button" class="btn btn-sm pull-right" onclick="salvaCambioStato(null,null,'6')" style="color:#000000 !important;"> -->
-													<button type="button" class="btn btn-info btn-sm pull-right" onclick="modalPin(1)" style="margin-left:5px">
+													<button type="button" class="btn btn-info btn-sm pull-right" onclick="modalPin(1, null)" style="margin-left:5px">
 														<i class="fa fa-edit"></i>
 														<span>Controfirma verbale</span>
 													</button>
 												</c:if>	  
-												<c:if test='${verbale.getStato().getId()== 5 && verbale.getFirmato() == 0 && (user.checkRuolo("AM") || user.checkRuolo("RT") || user.checkRuolo("SRT"))  && verbale.getResponsabile_approvatore().getId() == userObj.getId() && userObj.getId_firma()!=null}'>										
+												<c:if test='${verbale.getStato().getId()== 5 && verbale.getFirmato() == 0 && (user.checkRuolo("AM") || user.checkRuolo("RT") || user.checkRuolo("SRT"))  && verbale.getIntervento().getTecnico_verificatore().getId() == userObj.getId() && userObj.getId_firma()!=null}'>										
 													<!-- <button type="button" class="btn btn-sm pull-right" onclick="salvaCambioStato(null,null,'6')" style="color:#000000 !important;"> -->
 													<button type="button" class="btn btn-info btn-sm pull-right" onclick="modalPin()" style="margin-left:5px">
 														<i class="fa fa-edit"></i>
 														<span>Firma verbale</span>
 													</button>
 												</c:if>	
+
+												<c:if test='${verbale.getSchedaTecnica()!=null && verbale.getSchedaTecnica().getStato().getId()== 5 && verbale.getSchedaTecnica().getFirmato() == 0 && (user.checkRuolo("AM") || user.checkRuolo("RT") || user.checkRuolo("SRT"))  && verbale.getIntervento().getTecnico_verificatore().getId() == userObj.getId() && userObj.getId_firma()!=null}'>										
+													<!-- <button type="button" class="btn btn-sm pull-right" onclick="salvaCambioStato(null,null,'6')" style="color:#000000 !important;"> -->
+													<button type="button" class="btn btn-info btn-sm pull-right" onclick="modalPin(null, 1)" style="margin-left:5px">
+														<i class="fa fa-edit"></i>
+														<span>Firma Scheda Tecnica</span>
+													</button>
+												</c:if>	
+
 
 												<c:if test='${verbale.getStato().getId()== 5 && (user.checkRuolo("AM") || user.checkRuolo("RT" || user.checkRuolo("SRT")))}'>										
 													<!-- <button type="button" class="btn btn-sm pull-right" onclick="salvaCambioStato(null,null,'6')" style="color:#000000 !important;"> -->
@@ -288,7 +297,7 @@
 	                  											</c:if>		
 	                  											
 	                  											
-	                  											<c:if test="${verbale.getFirmato()==1 && (verbale.getControfirmato() == 1 || verbale.codiceCategoria == 'VAL') &&  certificato.getInvalid()== false }"> 
+	                  											<c:if test="${verbale.getFirmato()==1 && (verbale.getControfirmato() == 1 || verbale.codiceCategoria == 'VAL') &&  certificato.getInvalid()== false && (verbale.getSchedaTecnica()==null || verbale.getSchedaTecnica().getFirmato()==1)}"> 
 	                  											
 	                  											
 	                  												<a class="btn btn-default btn-xs pull-right" onClick="getDestinatarioEmail('${certificato.getId()}')" style="margin-left:5px"><i class="fa fa-paper-plane-o"></i> Invia Verbale</a>
@@ -309,6 +318,15 @@
 								</c:if>
 								</c:if>
 								
+								
+<%-- 								                <li class="list-group-item">    
+                    <div class="row">
+                     <div class="col-xs-12"> 
+                    <b>Sede Utilizzatore</b> <a class="pull-right">${pacco.nome_sede_util}</a>
+                    </div>
+                     </div> 
+                  </li> --%>
+								
 								<c:if test="${verbale.getSchedaTecnica().getDocumentiVerbale().size()>0 || user.checkRuolo('AM') }">
 								<c:if test="${verbale.getSchedaTecnica().getStato().getId()>=5 && verbale.getSchedaTecnica().getStato().getId()<8 }">
 									<div class="col-md-6 col-xs-12" id="schedaTecnicaBox">
@@ -323,17 +341,28 @@
 												<ul class="list-group list-group-unbordered" id="">
 	       											<c:forEach items="${listaSchedeTecniche}" var="schedaTec"> 
 	        											<li class="list-group-item">
+	        											  <div class="row">
+                    											 <div class="col-xs-12"> 
+	        											
 	                  										<b>${schedaTec.getFileName()}</b>
+	                  									
 	                  										<c:if test="${user.checkPermesso('DOWNLOAD_SKTECNICA')}">             										
 	                  											<a class="btn btn-default btn-xs pull-right" href="gestioneDocumento.do?idDocumento=${schedaTec.getId()}" style="margin-left:5px"><i class="glyphicon glyphicon-file"></i> Download SchedaTecnica</a>														
 	                										</c:if>
+	                										
+	                										<c:if test="${schedaTec.getVerbale().getFirmato()==1 && schedaTec.getInvalid()== false }">
+	                  											<a class="btn btn-default btn-xs pull-right" href="gestioneDocumento.do?firmato=1&idDocumento=${schedaTec.getId()}" style="margin-left:5px"><i class="glyphicon glyphicon-file"></i> Download Scheda Tecnica Firmata</a>
+	                  											</c:if>	
+	                  											
+	                  											</div>
+	                  											</div>
 	                									</li>
 	               									</c:forEach>
 	               								</ul>
-	               								<c:if test="${user.checkPermesso('GENERA_SKTECNICA')}">
+<%-- 	               								<c:if test="${user.checkPermesso('GENERA_SKTECNICA')}">
 	               									<button class="btn btn-default pull-right" onClick="$('#confirmSchedaTecnica').modal('show');" style="margin-left:5px"><i class="glyphicon glyphicon-edit"></i> Genera Scheda Tecnica</button>
 													<a class="btn btn-default pull-right" href="anteprimaCertificato.do?idVerbale=${verbale.getSchedaTecnica().getId()}" style="margin-left:5px"><i class="glyphicon glyphicon-eye-open"></i> Anteprima Scheda Tecnica</a>
-												</c:if>
+												</c:if> --%>
 											</div>
 										</div>
 									</div>								
@@ -1001,7 +1030,9 @@
 															<button type="button" class="btn btn-default ml-1 savebutt" onclick="salvaRisposteCompWeb(${verbale.getSchedaTecnica().getId()},'formScTecnica', 'salvaRisposteCompWeb')" style="margin-left: 1em; float: right;">	
 																<span >SALVA MODIFICHE</span>
 															</button>
-															<button type="button" class="btn btn-default ml-1 changestate formVerbalebox" onclick="salvaRisposteCompWeb(${verbale.getSchedaTecnica().getId()},'formScTecnica', 'confermaRisposteCompWeb')" style="margin-left: 1em; color:#000000 !important; background-color:${verbale.getStato().getColore(5)} !important; float: right;">
+															
+															<button type="button" class="btn btn-default ml-1 changestate formVerbalebox" onclick="$('#confirmConfermaScheda').modal('show')" style="margin-left: 1em; color:#000000 !important; background-color:${verbale.getStato().getColore(5)} !important; float: right;">
+															<%-- <button type="button" class="btn btn-default ml-1 changestate formVerbalebox" onclick="salvaRisposteCompWeb(${verbale.getSchedaTecnica().getId()},'formScTecnica', 'confermaRisposteCompWeb')" style="margin-left: 1em; color:#000000 !important; background-color:${verbale.getStato().getColore(5)} !important; float: right;"> --%>
 																<i class="glyphicon glyphicon glyphicon-ok"></i>
 																<span >CONFERMA</span>
 															</button>
@@ -1012,7 +1043,10 @@
 															<button type="button" class="btn btn-default ml-1 savebutt" onclick="modificaRisposte(${verbale.getSchedaTecnica().getId()},'formScTecnica')" style="margin-left: 1em; float: right;">	
 																<span >SALVA MODIFICHE</span>
 															</button>	
-															<button type="button" class="btn btn-default ml-1 changestate formVerbalebox" onclick="salvaRisposteCompWeb(${verbale.getSchedaTecnica().getId()},'formScTecnica', 'confermaRisposteCompWeb')" style="margin-left: 1em; color:#000000 !important; background-color:${verbale.getStato().getColore(5)} !important; float: right;">
+															
+															<button type="button" class="btn btn-default ml-1 changestate formVerbalebox" onclick="$('#confirmConfermaScheda').modal('show')" style="margin-left: 1em; color:#000000 !important; background-color:${verbale.getStato().getColore(5)} !important; float: right;">
+															
+															<%-- <button type="button" class="btn btn-default ml-1 changestate formVerbalebox" onclick="salvaRisposteCompWeb(${verbale.getSchedaTecnica().getId()},'formScTecnica', 'confermaRisposteCompWeb')" style="margin-left: 1em; color:#000000 !important; background-color:${verbale.getStato().getColore(5)} !important; float: right;"> --%>
 																<i class="glyphicon glyphicon glyphicon-ok"></i>
 																<span >CONFERMA</span>
 															</button>
@@ -1028,12 +1062,14 @@
 																<span >SALVA MODIFICHE</span>
 															</button>	
 														
-            	      										<button type="button" class="btn btn-default  ml-1 changestate formScTecnicabox" onclick="preCambioStato(${verbale.getSchedaTecnica().getId()},'formScTecnica','6')" style="margin-left: 1em; color:#000000 !important; background-color:${verbale.getStato().getColore(6)} !important; float: right;">
+            	      										<%-- <button type="button" class="btn btn-default  ml-1 changestate formScTecnicabox" onclick="preCambioStato(${verbale.getSchedaTecnica().getId()},'formScTecnica','6')" style="margin-left: 1em; color:#000000 !important; background-color:${verbale.getStato().getColore(6)} !important; float: right;"> --%>
+            	      										<button type="button" class="btn btn-default  ml-1 changestate formVerbalebox" onclick="$('#confirmRifiutaSchedaTecnica').modal('show');" style="margin-left: 1em; color:#000000 !important; background-color:${verbale.getStato().getColore(6)} !important; float: right;">
                 		  										<i class="glyphicon glyphicon-remove"></i>
                 	  											<span >RIFIUTATO</span>
             	      										</button>
 										
-															<button type="button" class="btn btn-default ml-1 changestate formScTecnicabox" onclick="preCambioStato(${verbale.getSchedaTecnica().getId()},'formScTecnica','5')" style="margin-left: 1em; color:#000000 !important; background-color:${verbale.getStato().getColore(5)} !important; float: right;">
+										<button class="btn btn-default pull-right" onClick="$('#confirmSchedaTecnica').modal('show');" style="margin-left: 1em; color:#000000 !important; background-color:${verbale.getStato().getColore(5)} !important; float: right;" >
+															<%-- <button type="button" class="btn btn-default ml-1 changestate formScTecnicabox" onclick="preCambioStato(${verbale.getSchedaTecnica().getId()},'formScTecnica','5')" style="margin-left: 1em; color:#000000 !important; background-color:${verbale.getStato().getColore(5)} !important; float: right;"> --%>
 																<i class="glyphicon glyphicon glyphicon-ok"></i>
 																<span >ACCETTATO</span>
 															</button>
@@ -1283,11 +1319,13 @@
        								<div class="col-xs-6">
        								<input type="password" id="pin" name = "pin" class="form-control">
        								<input type="hidden" id="controfirma" name = "controfirma" class="form-control">
+       								<input type="hidden" id="scheda_tecnica" name = "scheda_tecnica" class="form-control">
        								</div>
 										</div>
   		 							</div>
       								<div class="modal-footer">
       									<button type="button" class="btn btn-default" onclick="firmaVerbale('${verbale.id}')" >Firma</button>
+      									
         								<button type="button" class="btn btn-default" data-dismiss="modal">Chiudi</button>
       								</div>
     							</div>
@@ -1360,7 +1398,29 @@
       								</div>
     							</div>
   							</div>
-						</div> 
+						</div>
+						
+						
+						<div id="confirmRifiutaSchedaTecnica" class="modal fade" role="dialog" aria-labelledby="myLargeModalLabel">
+    						<div class="modal-dialog" role="document">
+    							<div class="modal-content">
+     								<div class="modal-header">
+        								<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        								<h4 class="modal-title text-center" id="myModalLabel">Attenzione!</h4>
+      								</div>
+       								<div class="modal-body">
+										<h3 class="text-center">Attenzione, stai per annullare una scheda tecnica!<br/>
+											Questa operazione non può essere annullata. <br/>
+											Sei sicuro di voler annullare la scheda tecnica?</h3>
+  		 							</div>
+      								<div class="modal-footer">
+      									<button type="button" class="btn btn-default" onclick="preCambioStato(${verbale.getSchedaTecnica().getId()},'formScTecnica','6')" >Rifiuta per modifica</button>     									
+        								<button type="button" class="btn btn-default" data-dismiss="modal">Annulla</button>
+      								</div>
+    							</div>
+  							</div>
+						</div>
+						 
 						
 						<div id="confirmRifiuta" class="modal fade" role="dialog" aria-labelledby="myLargeModalLabel">
     						<div class="modal-dialog" role="document">
@@ -1381,6 +1441,10 @@
     							</div>
   							</div>
 						</div>
+						
+						
+						
+						
 						
 						<div id="confirmRifiutaDaVerificare" class="modal fade" role="dialog" aria-labelledby="myLargeModalLabel">
     						<div class="modal-dialog" role="document">
@@ -1417,6 +1481,27 @@
   		 							</div>
       								<div class="modal-footer">
       									<button type="button" class="btn btn-default" onclick="salvaRisposteCompWeb(${verbale.getId()},'formVerbale', 'confermaRisposteCompWeb')" >Conferma</button>     									
+        								<button type="button" class="btn btn-default" data-dismiss="modal">Annulla</button>
+      								</div>
+    							</div>
+  							</div>
+						</div>
+						
+								<div id="confirmConfermaScheda" class="modal fade" role="dialog" aria-labelledby="myLargeModalLabel">
+    						<div class="modal-dialog" role="document">
+    							<div class="modal-content">
+     								<div class="modal-header">
+        								<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        								<h4 class="modal-title text-center" id="myModalLabel">Attenzione!</h4>
+      								</div>
+       								<div class="modal-body">
+										<h3 class="text-center">
+										La scheda tecnica sarà inviata in approvazione al RT. <br> Sicuro di voler procedere?
+											
+											</h3>
+  		 							</div>
+      								<div class="modal-footer">
+      									<button type="button" class="btn btn-default" onclick="salvaRisposteCompWeb(${verbale.getSchedaTecnica().getId()},'formScTecnica', 'confermaRisposteCompWeb')" >Conferma</button>     									
         								<button type="button" class="btn btn-default" data-dismiss="modal">Annulla</button>
       								</div>
     							</div>
@@ -2496,9 +2581,10 @@ function modificaSedeUtilizzatore(){
 		$('#modalUploadFileFirmato').modal();
 	}
 	
-	function modalPin(controfirma){
+	function modalPin(controfirma, scheda_tecnica){
 		
 		$('#controfirma').val(controfirma);
+		$('#scheda_tecnica').val(scheda_tecnica);
 		$('#modalPin').modal('show');
 	}
 	
@@ -2672,7 +2758,7 @@ function modificaSedeUtilizzatore(){
 					data : "idVerbale="+id,				
 					dataType: "json",
 					success: function( data, textStatus) {
-						
+						pleaseWaitDiv.modal('hide');
 						
 						/* salvaRisposteCompWeb(id,'formVerbale', 'confermaRisposteCompWeb'); */
 						preCambioStato(id,'formVerbale','5')

@@ -45,6 +45,7 @@ import it.portalECI.DAO.GestioneInterventoDAO;
 import it.portalECI.DAO.GestioneRispostaVerbaleDAO;
 import it.portalECI.DAO.GestioneStatoVerbaleDAO;
 import it.portalECI.DAO.GestioneStoricoModificheDAO;
+import it.portalECI.DAO.GestioneVerbaleDAO;
 import it.portalECI.DAO.SessionFacotryDAO;
 import it.portalECI.DTO.AttrezzaturaDTO;
 import it.portalECI.DTO.ClienteDTO;
@@ -599,16 +600,29 @@ public class GestioneVerbali extends HttpServlet {
 			if (action != null && action.equals("confermaRisposteCompWeb")) {
 				
 				verbale.setData_conferma(new Date());
-				GestioneVerbaleBO.cambioStato( verbale, GestioneStatoVerbaleDAO.getStatoVerbaleById( StatoVerbaleDTO.DA_VERIFICARE, session) , session);				
+				GestioneVerbaleBO.cambioStato( verbale, GestioneStatoVerbaleDAO.getStatoVerbaleById( StatoVerbaleDTO.DA_VERIFICARE, session) , session);		
+				
+				UtenteDTO verificatore = null;
+				String commessa = null;
+				
+				VerbaleDTO verbale_origine = null;
+				if(verbale.getType().equals(VerbaleDTO.SK_TEC)){
+					verbale_origine=GestioneVerbaleDAO.getVerbaleFromSkTec(String.valueOf(verbale.getId()), session);
+					verificatore = verbale_origine.getIntervento().getTecnico_verificatore();
+					commessa = verbale_origine.getIntervento().getIdCommessa();
+				}else {
+					verificatore = verbale.getIntervento().getTecnico_verificatore();
+					commessa = verbale.getIntervento().getIdCommessa();
+				}
 
-				if(verbale.getIntervento()!=null && verbale.getIntervento().getTecnico_verificatore()!=null && verbale.getIntervento().getTecnico_verificatore().getEMail()!=null) {
+				if(verificatore.getEMail()!=null) {
 					ArrayList<UtenteDTO> lista_utenti = GestioneComunicazioniBO.getListaUtentiComunicazione(verbale.getCodiceCategoria(), session);
 					String destinatari = "";
 					for (UtenteDTO utenteDTO : lista_utenti) {
 						destinatari = destinatari+utenteDTO.getEMail()+";";
 					}				
 										
-					GestioneComunicazioniBO.sendEmailVerbale(verbale, destinatari, verbale.getIntervento().getTecnico_verificatore().getEMail(), StatoVerbaleDTO.DA_VERIFICARE);
+					GestioneComunicazioniBO.sendEmailVerbale(verbale, commessa, destinatari, verificatore.getEMail(), StatoVerbaleDTO.DA_VERIFICARE, verbale.getType(), verbale_origine);
 				}
 				
 			}
@@ -670,8 +684,20 @@ public class GestioneVerbali extends HttpServlet {
 			
 			if(stato.equals("6")) {
 				try {
-					if(verbale.getIntervento().getTecnico_verificatore().getEMail()!=null && user.getEMail()!=null) {
-						GestioneComunicazioniBO.sendEmailVerbale(verbale, verbale.getIntervento().getTecnico_verificatore().getEMail(), user.getEMail(), 6);
+					
+					UtenteDTO verificatore = null;
+					String commessa = null;
+					VerbaleDTO verbale_origine = null;
+					if(verbale.getType().equals(VerbaleDTO.SK_TEC)){
+						verbale_origine=GestioneVerbaleDAO.getVerbaleFromSkTec(String.valueOf(verbale.getId()), session);
+						verificatore = verbale_origine.getIntervento().getTecnico_verificatore();
+						commessa = verbale_origine.getIntervento().getIdCommessa();
+					}else {
+						verificatore = verbale.getIntervento().getTecnico_verificatore();
+						commessa = verbale.getIntervento().getIdCommessa();
+					}
+					if(verificatore.getEMail()!=null && user.getEMail()!=null) {
+						GestioneComunicazioniBO.sendEmailVerbale(verbale, commessa, verificatore.getEMail(), user.getEMail(), 6, verbale.getType(), verbale_origine);
 						
 						verbale.setFirmato(0);
 						verbale.setControfirmato(0);
@@ -703,8 +729,20 @@ public class GestioneVerbali extends HttpServlet {
 						byte[] encoded = Base64.encodeBase64(pdfArray);
 						String pdfBytes = new String(encoded);
 						
-						if(verbale.getIntervento().getTecnico_verificatore().getEMail()!=null && user.getEMail()!=null) {
-							GestioneComunicazioniBO.sendEmailVerbale(verbale, verbale.getIntervento().getTecnico_verificatore().getEMail(), user.getEMail(), 5);
+						UtenteDTO verificatore = null;
+						String commessa = null;
+						VerbaleDTO verbale_origine = null;
+						if(verbale.getType().equals(VerbaleDTO.SK_TEC)){
+							verbale_origine=GestioneVerbaleDAO.getVerbaleFromSkTec(String.valueOf(verbale.getId()), session);
+							verificatore = verbale_origine.getIntervento().getTecnico_verificatore();
+							commessa = verbale_origine.getIntervento().getIdCommessa();
+						}else {
+							verificatore = verbale.getIntervento().getTecnico_verificatore();
+							commessa = verbale.getIntervento().getIdCommessa();
+						}
+						
+						if(verificatore.getEMail()!=null && user.getEMail()!=null) {
+							GestioneComunicazioniBO.sendEmailVerbale(verbale, commessa, verificatore.getEMail(), user.getEMail(), 5, verbale.getType(), verbale_origine);
 						}
 						
 						myObj.addProperty("pdfString", pdfBytes);
@@ -779,8 +817,14 @@ public class GestioneVerbali extends HttpServlet {
 			
 			String pin = request.getParameter("pin");	
 			String controfirma = request.getParameter("controfirma");
+			String scheda_tecnica = request.getParameter("scheda_tecnica");
 				
 			if(user.getPin_firma()!=null && pin.equals(user.getPin_firma())) {
+				String tipo = DocumentoDTO.CERTIFIC;
+				if(scheda_tecnica!=null && scheda_tecnica.equals("1")) {
+					tipo = DocumentoDTO.SK_TEC;
+					verbale = verbale.getSchedaTecnica();
+				}
 
 				Set<DocumentoDTO> listaDocumenti = verbale.getDocumentiVerbale();
 				
@@ -789,7 +833,7 @@ public class GestioneVerbali extends HttpServlet {
 				while(iterator.hasNext()) {
 					DocumentoDTO doc = (DocumentoDTO) iterator.next();
 					
-					if(!doc.getInvalid()) {						
+					if(!doc.getInvalid() && doc.getType().equals(tipo)) {						
 						try {
 							
 							//myObj = ArubaSignService.sign(user.getId_firma(), doc, controfirma);

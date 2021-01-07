@@ -100,11 +100,11 @@ public class GestioneVerbaleDAO {
 	}
 
 	public static synchronized ProgressivoVerbaleDTO getProgressivoVerbale(UtenteDTO utente, TipoVerificaDTO tipo, Session session) {
-		Query query = session.createQuery("from ProgressivoVerbaleDTO where idUtente= :_idUtente and idTipo= :_idTipo");
-		query.setInteger("_idTipo", tipo.getId());
+		Query query = session.createQuery("from ProgressivoVerbaleDTO where idUtente= :_idUtente and sigla= :_idTipo");
+		query.setString("_idTipo", tipo.getSigla());
 		query.setInteger("_idUtente", utente.getId());
 		ProgressivoVerbaleDTO progressivo = (ProgressivoVerbaleDTO) query.uniqueResult();
-		if(progressivo == null) progressivo= new ProgressivoVerbaleDTO(utente.getId(), tipo.getId());
+		if(progressivo == null) progressivo= new ProgressivoVerbaleDTO(utente.getId(), tipo.getSigla());
 		progressivo.incrementaProgressivo();
 		session.saveOrUpdate(progressivo);
 		return progressivo;

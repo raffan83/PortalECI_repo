@@ -10,13 +10,14 @@ public class ProgressivoVerbaleDTO implements Serializable {
 	private int idUtente;
 	private int idTipo;
 	private int progressivo = 0;
+	private String sigla;
 	
 	public ProgressivoVerbaleDTO() {
 		
 	}
-	public ProgressivoVerbaleDTO(int idUtente, int idTipo) {
+	public ProgressivoVerbaleDTO(int idUtente, String sigla) {
 		this.idUtente = idUtente;
-		this.idTipo = idTipo;
+		this.sigla = sigla;
 	}
 
 	
@@ -48,6 +49,12 @@ public class ProgressivoVerbaleDTO implements Serializable {
 	} 
 	public void incrementaProgressivo() {
 		this.progressivo++;
+	}
+	public String getSigla() {
+		return sigla;
+	}
+	public void setSigla(String sigla) {
+		this.sigla = sigla;
 	} 
 
 }
