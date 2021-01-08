@@ -804,6 +804,15 @@ public class GestioneVerbaleBO {
 			}else {
 				html = html.replaceAll("\\$\\{DATA_VERIFICA\\}", df.format(verbale.getData_verifica()));	
 			}			
+		}else {
+			if(verbale.getType().equals(VerbaleDTO.SK_TEC)) {
+				VerbaleDTO verb = GestioneVerbaleDAO.getVerbaleFromSkTec(""+verbale.getId(), session);
+				if(verb.getData_fine_verifica()!=null && verb.getData_verifica().getTime() != verb.getData_fine_verifica().getTime()) {
+					html = html.replaceAll("\\$\\{DATA_VERIFICA\\}", df.format(verb.getData_verifica())+" - "+df.format(verb.getData_fine_verifica()));
+				}else {
+					html = html.replaceAll("\\$\\{DATA_VERIFICA\\}", df.format(verb.getData_verifica()));	
+				}
+			}
 		}
 		
 		if(verbale.getData_prossima_verifica() != null) 

@@ -1374,7 +1374,7 @@
 											Sei sicuro di voler generare il certificato?</h3>
   		 							</div>
       								<div class="modal-footer">
-      									<button type="button" class="btn btn-default" onclick="generaCertificato(${verbale.getId()})" >Genera Certificato</button>     									
+      									<button type="button" class="btn btn-default" onclick="generaCertificato(${verbale.getId()}, 'formVerbale')" >Genera Certificato</button>     									
         								<button type="button" class="btn btn-default" data-dismiss="modal">Annulla</button>
       								</div>
     							</div>
@@ -1393,7 +1393,7 @@
 											Sei sicuro di voler generare la scheda tecnica?</h3>
   		 							</div>
       								<div class="modal-footer">
-      									<button type="button" class="btn btn-default" onclick="generaCertificato(${verbale.getSchedaTecnica().getId()})" >Genera Scheda Tecnica</button>     									
+      									<button type="button" class="btn btn-default" onclick="generaCertificato(${verbale.getSchedaTecnica().getId()}, 'formScTecnica')" >Genera Scheda Tecnica</button>     									
         								<button type="button" class="btn btn-default" data-dismiss="modal">Annulla</button>
       								</div>
     							</div>
@@ -2744,14 +2744,13 @@ function modificaSedeUtilizzatore(){
 				
 			}
 			
-			function generaCertificato(id){
+			function generaCertificato(id, form){
 				$("#confirmCertificato").modal('hide');
 				$("#confirmSchedaTecnica").modal('hide');
 				pleaseWaitDiv = $('#pleaseWaitDialog');
 				pleaseWaitDiv.modal();
 				
-				
-				
+			
 				$.ajax({
 					type: "POST",
 					url: "gestioneVerbale.do?action=generaCertificato",
@@ -2761,8 +2760,8 @@ function modificaSedeUtilizzatore(){
 						pleaseWaitDiv.modal('hide');
 						
 						/* salvaRisposteCompWeb(id,'formVerbale', 'confermaRisposteCompWeb'); */
-						preCambioStato(id,'formVerbale','5')
-						
+						preCambioStato(id,form,'5')
+						//salvaCambioStato(idverbale, idform, idstato);
 						//location.reload();
 					},
 					error: function(jqXHR, textStatus, errorThrown){
