@@ -179,26 +179,10 @@ public class ArubaSignService {
 		Integer[] fontPosition = getFontPosition(path, keyWord, null);
         System.out.println(Arrays.toString(fontPosition));
 
-//		apparence.setLeftx(390);
-//		apparence.setLefty(450);
-//		apparence.setRightx(550);
-//		apparence.setRighty(490);
-        
         JsonObject jsonObj = new JsonObject();
         
         if(fontPosition[0]!= null && fontPosition[1]!=null) {
-//        	if(controfirma!=null && controfirma.equals("1")) {
-//            	apparence.setLeftx(fontPosition[0] - 35);        	
-//        		apparence.setLefty(fontPosition[1] - 60);
-//        		apparence.setRightx(fontPosition[0] + 115);
-//        		apparence.setRighty(fontPosition[1] -20);
-//            }else {
-//            	apparence.setLeftx(fontPosition[0] - 20);
-//        		apparence.setLefty(fontPosition[1] - 60);
-//        		apparence.setRightx(fontPosition[0] + 140);
-//        		apparence.setRighty(fontPosition[1] -20);
-//            }
-//    		
+
         	if(controfirma!=null && controfirma.equals("1")) {
             	apparence.setLeftx(fontPosition[0] - 65);        	
         		apparence.setLefty(fontPosition[1] - 60);
@@ -219,20 +203,7 @@ public class ArubaSignService {
         	fontPosition = getFontPosition(path, keyWord, null);
             System.out.println(Arrays.toString(fontPosition));
         	
-            
-//        	if(controfirma!=null && controfirma.equals("1")) {
-//            	apparence.setLeftx(fontPosition[0] - 35);     
-//        		apparence.setLefty(fontPosition[1] - 60);
-//        		apparence.setRightx(fontPosition[0] + 115);
-//        		apparence.setRighty(fontPosition[1] -20);
-//            }else {
-//            	apparence.setLeftx(fontPosition[0] - 20);
-//        		apparence.setLefty(fontPosition[1] - 60);
-//        		apparence.setRightx(fontPosition[0] + 140);
-//        		apparence.setRighty(fontPosition[1] -20);
-//            }
-            
-            
+ 
             if(controfirma!=null && controfirma.equals("1")) {
             	apparence.setLeftx(fontPosition[0] - 65);     
         		apparence.setLefty(fontPosition[1] - 60);
