@@ -57,5 +57,9 @@
    		
    		<mapping class="AcAttivitaCampioniDTO" package="it.portalECI.DTO" resource="it/portalECI/hbm/AcAttivitaCampioniDTO.hbm.xml"/>
  		<mapping class="AcTipoAttivitaCampioniDTO" package="it.portalECI.DTO" resource="it/portalECI/hbm/AcTipoAttivitaCampioniDTO.hbm.xml"/>
+ 		
+ 		
+ 		<mapping class="VerbaleStoricoDTO" package="it.portalECI.DTO" resource="it/portalECI/hbm/VerbaleStoricoDTO.hbm.xml"/>
+ 		<mapping class="VerbaleStoricoAllegatoDTO" package="it.portalECI.DTO" resource="it/portalECI/hbm/VerbaleStoricoAllegatoDTO.hbm.xml"/>
  	</session-factory>
 </hibernate-configuration>

@@ -187,15 +187,27 @@ public class ArubaSignService {
         JsonObject jsonObj = new JsonObject();
         
         if(fontPosition[0]!= null && fontPosition[1]!=null) {
+//        	if(controfirma!=null && controfirma.equals("1")) {
+//            	apparence.setLeftx(fontPosition[0] - 35);        	
+//        		apparence.setLefty(fontPosition[1] - 60);
+//        		apparence.setRightx(fontPosition[0] + 115);
+//        		apparence.setRighty(fontPosition[1] -20);
+//            }else {
+//            	apparence.setLeftx(fontPosition[0] - 20);
+//        		apparence.setLefty(fontPosition[1] - 60);
+//        		apparence.setRightx(fontPosition[0] + 140);
+//        		apparence.setRighty(fontPosition[1] -20);
+//            }
+//    		
         	if(controfirma!=null && controfirma.equals("1")) {
-            	apparence.setLeftx(fontPosition[0] - 35);
+            	apparence.setLeftx(fontPosition[0] - 65);        	
         		apparence.setLefty(fontPosition[1] - 60);
-        		apparence.setRightx(fontPosition[0] + 115);
+        		apparence.setRightx(fontPosition[0] + 145);
         		apparence.setRighty(fontPosition[1] -20);
             }else {
-            	apparence.setLeftx(fontPosition[0] - 20);
+            	apparence.setLeftx(fontPosition[0] - 65);
         		apparence.setLefty(fontPosition[1] - 60);
-        		apparence.setRightx(fontPosition[0] + 140);
+        		apparence.setRightx(fontPosition[0] + 165);
         		apparence.setRighty(fontPosition[1] -20);
             }
     		
@@ -208,15 +220,28 @@ public class ArubaSignService {
             System.out.println(Arrays.toString(fontPosition));
         	
             
-        	if(controfirma!=null && controfirma.equals("1")) {
-            	apparence.setLeftx(fontPosition[0] - 35);
+//        	if(controfirma!=null && controfirma.equals("1")) {
+//            	apparence.setLeftx(fontPosition[0] - 35);     
+//        		apparence.setLefty(fontPosition[1] - 60);
+//        		apparence.setRightx(fontPosition[0] + 115);
+//        		apparence.setRighty(fontPosition[1] -20);
+//            }else {
+//            	apparence.setLeftx(fontPosition[0] - 20);
+//        		apparence.setLefty(fontPosition[1] - 60);
+//        		apparence.setRightx(fontPosition[0] + 140);
+//        		apparence.setRighty(fontPosition[1] -20);
+//            }
+            
+            
+            if(controfirma!=null && controfirma.equals("1")) {
+            	apparence.setLeftx(fontPosition[0] - 65);     
         		apparence.setLefty(fontPosition[1] - 60);
-        		apparence.setRightx(fontPosition[0] + 115);
+        		apparence.setRightx(fontPosition[0] + 145);
         		apparence.setRighty(fontPosition[1] -20);
             }else {
-            	apparence.setLeftx(fontPosition[0] - 20);
+            	apparence.setLeftx(fontPosition[0] - 65);
         		apparence.setLefty(fontPosition[1] - 60);
-        		apparence.setRightx(fontPosition[0] + 140);
+        		apparence.setRightx(fontPosition[0] + 165);
         		apparence.setRighty(fontPosition[1] -20);
             }
         }

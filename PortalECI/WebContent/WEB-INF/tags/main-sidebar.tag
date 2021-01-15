@@ -198,6 +198,25 @@
           		
         	</li>
         	<% }%>
+        	
+        		<li class="treeview">
+        		
+        		<a href="#">
+          			<i class="fa fa-hourglass"></i> 
+          			<span>Storico</span>
+            		<span class="pull-right-container">
+              			<i class="fa fa-angle-left pull-right"></i>
+            		</span>
+          		</a>
+        		
+        		<ul class="treeview-menu">
+        		
+        		<li>
+        			<a href="gestioneStoricoVerbale.do"><i class="fa fa-clock-o"></i>Storico Verbale</a>
+				</li>
+        		
+        		</ul>
+        		</li>
       	</ul>
       	<!-- /.sidebar-menu -->
     </section>

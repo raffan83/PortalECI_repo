@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 15-feb-2017 11.20.27 by Hibernate Tools 3.4.0.CR1 -->
+
+<hibernate-mapping>
+    <class name="it.portalECI.DTO.VerbaleStoricoDTO" table="verbale_storico">
+        <id name="id" type="int">
+            <column name="id" />
+            <generator class="native" />
+        </id>
+       
+        <property name="codice_verificatore" type="java.lang.String">
+            <column name="codice_verificatore" />
+        </property>
+        <property name="verificatore" type="java.lang.String">
+            <column name="verificatore" />
+        </property>
+        <property name="numero_verbale" type="java.lang.String">
+            <column name="numero_verbale" />
+        </property>
+        <property name="cliente" type="java.lang.String">
+            <column name="cliente" />
+        </property>
+                <property name="indirizzo_cliente" type="java.lang.String">
+            <column name="indirizzo_cliente" />
+        </property>
+                <property name="localita_cliente" type="java.lang.String">
+            <column name="localita_cliente" />
+        </property>
+                <property name="ubicazione_impianto" type="java.lang.String">
+            <column name="ubicazione_impianto" />
+        </property>
+                        <property name="localita_impianto" type="java.lang.String">
+            <column name="localita_impianto" />
+        </property>
+                <property name="provincia" type="java.lang.String">
+            <column name="provincia" />
+        </property>
+                <property name="esito" type="java.lang.String">
+            <column name="esito" />
+        </property>
+                <property name="codice_commessa" type="java.lang.String">
+            <column name="codice_commessa" />
+        </property>
+                        <property name="strumento_utilizzato" type="java.lang.String">
+            <column name="strumento_utilizzato" />
+        </property>
+                        <property name="data_prossima_verifica" type="java.sql.Date">
+            <column name="data_prossima_verifica" />
+        </property>
+                        <property name="data_verifica" type="java.sql.Date">
+            <column name="data_verifica" />
+        </property>
+                        <property name="frequenza" type="int">
+            <column name="frequenza" />
+        </property>
+                        <property name="ore_uomo" type="java.lang.String">
+            <column name="ore_uomo" />
+        </property>
+                        <property name="tipologia_verifica" type="int">
+            <column name="tipologia_verifica" />
+        </property>
+          <property name="filename" type="java.lang.String">
+            <column name="filename" />
+        </property>
+
+    </class>
+</hibernate-mapping>
+
+
