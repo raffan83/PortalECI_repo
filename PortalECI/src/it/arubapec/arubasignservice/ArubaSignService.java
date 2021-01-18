@@ -172,7 +172,7 @@ public class ArubaSignService {
 		pkcs.setPdfprofile(PdfProfile.BASIC);
 		PdfSignApparence apparence = new PdfSignApparence();
 		apparence.setPage( reader.getNumberOfPages());
-		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 		apparence.setTesto("Firmato digitalmente da: "+utente.getNominativo()+"\nData: "+sdf.format(new Date()));
 
 		
