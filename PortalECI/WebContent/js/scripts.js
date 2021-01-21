@@ -4312,4 +4312,54 @@ function firmaVerbale(id_verbale){
 
 
 
+function submitInfoVerbaleEmail(){
+	
+	  var form = $('#formEmail')[0]; 
+	  var formData = new FormData(form);
 
+      $.ajax({
+    	  type: "POST",
+    	  url: "gestioneInfoVerbale.do?action=invia_info",
+    	  data: formData,
+    	  //dataType: "json",
+    	  contentType: false, // NEEDED, DON'T OMIT THIS (requires jQuery 1.6+)
+    	  processData: false, // NEEDED, DON'T OMIT THIS
+    	  //enctype: 'multipart/form-data',
+    	  success: function( data, textStatus) {
+
+    		  if(data.success)
+    		  { 
+    			  $('#report_button').hide();
+						$('#visualizza_report').hide();
+    			  $('#myModalErrorContent').html(data.messaggio);
+    			  	$('#myModalError').removeClass();
+    				$('#myModalError').addClass("modal modal-success");
+    				$('#myModalError').modal('show');
+    				
+
+    		  }else{
+    			  $('#myModalErrorContent').html("Errore nell'invio delle informazioni!");
+    			  	$('#myModalError').removeClass();
+    				$('#myModalError').addClass("modal modal-danger");	  
+    				$('#report_button').show();
+						$('#visualizza_report').show();
+						$('#myModalError').modal('show');
+						
+
+    		  }
+    	  },
+
+    	  error: function(jqXHR, textStatus, errorThrown){
+    	
+    		  $('#myModalErrorContent').html(data.messaggio);
+				$('#myModalError').removeClass();
+				$('#myModalError').addClass("modal modal-danger");
+				$('#report_button').show();
+				$('#visualizza_report').show();
+				$('#myModalError').modal('show');
+				
+			
+    	  }
+      });
+	
+}

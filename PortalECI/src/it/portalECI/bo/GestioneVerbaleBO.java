@@ -73,7 +73,7 @@ import it.portalECI.DTO.TipoVerificaDTO;
 import it.portalECI.DTO.UtenteDTO;
 import it.portalECI.DTO.VerbaleDTO;
 import it.portalECI.Util.Costanti;
-
+import it.portalECI.Util.Utility;
 
 import org.apache.commons.codec.binary.Base64;
 
@@ -376,9 +376,11 @@ public class GestioneVerbaleBO {
         	html = html + "<p style=\"text-align:center;font-size:16px;font-family:Helvetica,sans-serif;font-weight:900\">"+String.format(Costanti.DOCUMENT_INVALIDS_PHRASE, vecchioDocumento.getFileName())+"</p>";
         }
         */
+		
+		Utility.createQR(verbale.getId(), Costanti.PATH_CERTIFICATI + path);
         
 		html = html + template.getTemplate();
-		html = replacePlaceholders(html, verbale,intervento, false, session);
+		html = replacePlaceholders(html, verbale,intervento, false,  session);
 		String subheader = replacePlaceholders(template.getSubheader(), verbale,intervento,false, session);
 
 		GestioneTemplateQuestionarioBO.writePDF(fileOutput, html, template,subheader);
@@ -449,8 +451,8 @@ public class GestioneVerbaleBO {
 		
 		
 		html = html + template.getTemplate();
-		html = replacePlaceholders(html, verbale,intervento, true,session);
-		String subheader = replacePlaceholders(template.getSubheader(), verbale,intervento, true, session);
+		html = replacePlaceholders(html, verbale,intervento, true, session);
+		String subheader = replacePlaceholders(template.getSubheader(), verbale,intervento, true,  session);
 		GestioneTemplateQuestionarioBO.writePDF(fileOutput, html, template, subheader);
         
         if(vecchioDocumento != null) {
@@ -1068,6 +1070,15 @@ public class GestioneVerbaleBO {
 		
 		html = html.replaceAll("\\$\\{FIRMA_RIESAME\\}", firma_riesame);
 
+		if(!isAnteprima) {
+			String path = "Intervento_"+intervento.getId()+"/"+verbale.getType()+"_"+verbale.getCodiceCategoria()+"_"+verbale.getId()+"/";
+			String qr = "<img src=\"" + Costanti.PATH_CERTIFICATI + path +"qrcode.png\""+ "\" style=\"height:50px;\" />";
+			
+			html = html.replaceAll("\\$\\{QR_CODE\\}", qr);
+		}
+		
+		
+		
 		// Elimino i placeholder non utilizzati
 		html = html.replaceAll("\\$\\{(.*?)\\}", "");
 		return html;

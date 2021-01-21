@@ -90,8 +90,9 @@ public class GestioneListaVerbali extends HttpServlet {
 			
 			String action = request.getParameter("action");
 			if(action == null || action.equals("") ) {
-				List<VerbaleDTO> listaVerbali =GestioneVerbaleBO.getListaVerbali(session,user) ;				
+				List<VerbaleDTO> listaVerbali =GestioneVerbaleBO.getListaVerbali(session,user) ;	
 				
+							
 				request.getSession().setAttribute("listaVerbali", listaVerbali);
 				request.getSession().setAttribute("dateFrom", null);
 				request.getSession().setAttribute("dateTo", null);

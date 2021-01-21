@@ -264,9 +264,9 @@ public class GestioneTemplateQuestionarioBO {
 		
 		
 		html = html.replaceAll("\\$\\{ESITO_VERIFICA\\}", esito);
+		html = html.replace("\\$\\{DATA_CONFERMA\\}", "DATA CONFERMA");
 		
 
-		
 //		private static String getTemplateOpzione(OpzioneRispostaQuestionarioDTO opzione) {
 //			String typeInput = opzione.getRisposta().getMultipla()?"checkbox":"radio";
 //			String checked = "unchecked";
@@ -313,7 +313,8 @@ public class GestioneTemplateQuestionarioBO {
 		html = html.replaceAll("\\$\\{FIRMA_RIESAME\\}", "FIRMA RIESAME");
 		
 		
-		
+		String qr = "<img src=\"" + Costanti.PATH_FONT_IMAGE +"qr_example.png" + "\" style=\"height:50px;\" />";
+		html = html.replaceAll("\\$\\{QR_CODE\\}", qr);
 		
 		// Elimino i placeholder non utilizzati
 		html = html.replaceAll("\\$\\{(.*?)\\}", "");
