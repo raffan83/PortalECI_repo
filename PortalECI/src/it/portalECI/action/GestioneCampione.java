@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Hashtable;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 
@@ -83,18 +84,36 @@ public class GestioneCampione extends HttpServlet {
         	
         	 String action=  request.getParameter("action");
         	 CompanyDTO company=(CompanyDTO)request.getSession().getAttribute("usrCompany");
-
+        		UtenteDTO utente = (UtenteDTO)request.getSession().getAttribute("userObj");
         			if(action.equals("lista")) {
         				
+        				boolean ck_AM=utente.checkRuolo("AM");
+        				boolean ck_ST=utente.checkRuolo("ST");
+        				boolean ck_RT=utente.checkRuolo("RT");
+        				boolean ck_SRT=utente.checkRuolo("SRT");
         				        				
         				ArrayList<CompanyDTO> lista_company = new ArrayList<CompanyDTO>();
         				lista_company.add(company);
         				
-        				ArrayList<CampioneDTO> listaCampioni = GestioneCampioneDAO.getListaCampioni(null,company.getId());
+        				ArrayList<CampioneDTO> listaCampioni = null;
         				ArrayList<TipoCampioneDTO> listaTipoCampione= GestioneCampioneDAO.getListaTipoCampione();
+        				
+        				if(ck_ST==false && ck_AM==false && ck_RT==false && ck_SRT==false) {
+        					listaCampioni = new ArrayList<CampioneDTO>();
+        							
+        					Iterator<CampioneDTO> iterator = utente.getListaCampioni().iterator();
+        					while(iterator.hasNext()) {
+        						listaCampioni.add(iterator.next());
+        					}
+        					
+        				}else {
+        					listaCampioni =  GestioneCampioneDAO.getListaCampioni(null,company.getId());
+        				}
+        				
         				request.getSession().setAttribute("listaTipoCampione",listaTipoCampione);
         				request.getSession().setAttribute("listaCampioni",listaCampioni);
         				request.getSession().setAttribute("lista_company",lista_company);
+        				request.getSession().setAttribute("userObj",utente);
         				
         				session.close();
         	

@@ -150,7 +150,7 @@ public class GestioneVerbaleDAO {
 		boolean ck_SRT=user.checkRuolo("SRT");
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 		
-		if(ck_ST==false && ck_AM==false && ck_RT==false && ck_SRT) 
+		if(ck_ST==false && ck_AM==false && ck_RT==false && ck_SRT==false) 
 		{
 		 
 		query  = session.createQuery( "from VerbaleDTO WHERE type = :_type AND intervento.tecnico_verificatore.id=:_idUser and attrezzatura.id = :_id_attrezzatura");

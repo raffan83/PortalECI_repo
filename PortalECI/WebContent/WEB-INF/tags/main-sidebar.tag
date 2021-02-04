@@ -137,9 +137,12 @@
 			<li>
 			<a  href="#" onclick="callAction('gestioneCampione.do?action=lista',null,true);" >Gestione Campioni</a>
 			</li>
+			<% if(user.checkRuolo("AM")){ %>
 			<li>
 			<a href="#" onclick="callAction('scadenzario.do')">Scadenzario</a>
+			
 			</li>
+			<%}%>
 			</ul>
 			</li>
 			<%} %>

@@ -25,11 +25,12 @@ CampioneDTO campione=(CampioneDTO)gson.fromJson(jsonElem,CampioneDTO.class);
 ArrayList<TipoCampioneDTO> listaTipoCampione = (ArrayList)session.getAttribute("listaTipoCampione");
 
 SimpleDateFormat sdf= new SimpleDateFormat("dd/MM/yyyy"); 
+UtenteDTO userObj = (UtenteDTO)request.getSession().getAttribute("userObj");
 %>
 <div class="row">
 <div class="col-xs-3">
 
-<c:if test="${utente.checkRuolo('AM') }">
+<c:if test="${userObj.checkRuolo('AM') }">
 <button class="btn btn-primary" id="nuovo_evento_btn" onClick="nuovoInterventoFromModal('#modalNuovaAttivita')">Nuova Attività</button><br><br>
 </c:if>
 </div>
@@ -75,7 +76,7 @@ SimpleDateFormat sdf= new SimpleDateFormat("dd/MM/yyyy");
 <c:if test="${attivita.tipo_attivita.id==3}">
 <button class="btn customTooltip btn-info" onClick="dettaglioVerificaTaratura('${utl:escapeJS(attivita.tipo_attivita.descrizione) }','${attivita.data}','${utl:escapeJS(attivita.ente) }','${attivita.data_scadenza }','${utl:escapeJS(attivita.etichettatura) }','${attivita.stato }','${utl:escapeJS(attivita.campo_sospesi) }','${utl:escapeJS(attivita.operatore.nominativo)}','','','')" title="Click per visualizzare l'attività di taratura"><i class="fa fa-arrow-right"></i></button>
 </c:if>
-<c:if test="${utente.checkRuolo('AM') }">
+<c:if test="${userObj.checkRuolo('AM') }">
 <button class="btn customTooltip btn-warning" onClick="modificaAttivita('${attivita.id}','${attivita.tipo_attivita.id }','${utl:escapeJS(attivita.descrizione_attivita)}','${attivita.data}','${attivita.tipo_manutenzione }','${utl:escapeJS(attivita.ente) }','${attivita.data_scadenza }','${utl:escapeJS(attivita.campo_sospesi) }','${attivita.operatore.id }','${utl:escapeJS(attivita.etichettatura) }','${attivita.stato }','' )" title="Click per modificare l'attività"><i class="fa fa-edit"></i></button>
 </c:if>
  <c:if test="${attivita.allegato!=null && !attivita.allegato.equals('') }">
