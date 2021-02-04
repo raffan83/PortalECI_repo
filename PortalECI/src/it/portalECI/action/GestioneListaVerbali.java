@@ -33,6 +33,7 @@ import it.portalECI.DAO.DirectMySqlDAO;
 import it.portalECI.DAO.SessionFacotryDAO;
 import it.portalECI.DTO.CategoriaVerificaDTO;
 import it.portalECI.DTO.CompanyDTO;
+import it.portalECI.DTO.ComuneDTO;
 import it.portalECI.DTO.DocumentoDTO;
 import it.portalECI.DTO.InterventoDTO;
 import it.portalECI.DTO.TipoVerificaDTO;
@@ -90,8 +91,8 @@ public class GestioneListaVerbali extends HttpServlet {
 			
 			String action = request.getParameter("action");
 			if(action == null || action.equals("") ) {
-				List<VerbaleDTO> listaVerbali =GestioneVerbaleBO.getListaVerbali(session,user) ;	
-				
+				List<VerbaleDTO> listaVerbali =GestioneVerbaleBO.getListaVerbali(session,user) ;					
+
 							
 				request.getSession().setAttribute("listaVerbali", listaVerbali);
 				request.getSession().setAttribute("dateFrom", null);

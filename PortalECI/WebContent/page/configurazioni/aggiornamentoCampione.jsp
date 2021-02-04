@@ -8,6 +8,7 @@
 <%@ page language="java" import="java.util.ArrayList" %>
 <%@page import="java.text.SimpleDateFormat"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib uri="/WEB-INF/tld/utilities" prefix="utl" %>
 <% 
 UtenteDTO utente = (UtenteDTO)request.getSession().getAttribute("userObj");
 
@@ -17,6 +18,7 @@ Gson gson = new Gson();
 CampioneDTO campione=(CampioneDTO)gson.fromJson(jsonElem,CampioneDTO.class); 
 
 ArrayList<TipoCampioneDTO> listaTipoCampione = (ArrayList)session.getAttribute("listaTipoCampione");
+ArrayList<UtenteDTO> listaVerificatori = (ArrayList)session.getAttribute("listaVerificatori");
 
 SimpleDateFormat sdf= new SimpleDateFormat("dd/MM/yyyy");
 %>
@@ -314,8 +316,30 @@ SimpleDateFormat sdf= new SimpleDateFormat("dd/MM/yyyy");
     </div>
        </div> 
        
-         
        
+                <div class="form-group">
+        <label for="inputName" class="col-sm-3 control-label">Associa a Verificatore:</label>
+        <div class="col-sm-9">
+
+                        <select class="form-control select2" id="verificatori_mod" name="verificatori_mod" multiple>
+                     		<option value=""></option>
+                     		
+                     		<%
+							for(int i = 0;i<listaVerificatori.size();i++){                     		
+                     			if(campione.getListaVerificatori().contains(listaVerificatori.get(i))){                     			
+                     				%>
+                     			<option value="<%=listaVerificatori.get(i).getId() %>" selected><%=listaVerificatori.get(i).getNominativo() %></option>
+                     		<%}else{ %>
+                     	<option value="<%=listaVerificatori.get(i).getId() %>" ><%=listaVerificatori.get(i).getNominativo() %></option>
+							<%}
+							} %>
+                      </select>
+                      
+    </div>
+       </div> 
+         
+       <input type="hidden" id="verificatori_associa_mod" name="verificatori_associa_mod">
+       <input type="hidden" id="verificatori_dissocia_mod" name="verificatori_dissocia_mod">
 
        
         <button type="submit" class="btn btn-danger" >Invia Modifica</button>
@@ -387,6 +411,37 @@ SimpleDateFormat sdf= new SimpleDateFormat("dd/MM/yyyy");
 
 
 
+
+$('#verificatori_mod').on('change', function() {
+	  
+	var selected = $(this).val();
+	var selected_before = $('#verificatori_associa_mod').val().split(";");
+	var deselected = "";
+	
+
+	if(selected!=null && selected.length>0){
+		
+		for(var i = 0; i<selected_before.length;i++){
+			var found = false
+			for(var j = 0; j<selected.length;j++){
+				if(selected_before[i] == selected[j]){
+					found = true;
+				}
+			}
+			if(!found && selected_before[i]!=''){
+				deselected = deselected+selected_before[i]+";";
+			}
+		}
+	}else{
+		deselected = $('#verificatori_associa_mod').val();
+	}
+	 
+	
+	$('#verificatori_dissocia_mod').val(deselected)
+	
+  });
+
+
 $('#modalStrumenti').on('hidden.bs.modal', function(){
 	  contentID == "registro_attivitaTab";
 	  
@@ -415,7 +470,8 @@ $(document).ready(function(){
 	$('#tipoCampione_mod').select2();
 	$('#settore_mod').select2();	
 	
-	
+	controllaAssociati(<%=json%>, <%=campione.getId() %>);
+	$('.select2').select2();
 	
 	var selection = $('#attivita_taratura_text_mod').val();
 	
@@ -444,6 +500,20 @@ $('#select_manutenzione_mod').select2();
 
 $('#formAggiornamentoCampione').on('submit',function(e){
     e.preventDefault();
+    
+	 if($('#verificatori_mod').val()!=null && $('#verificatori_mod').val()!=''){
+		 
+		 var values = $('#verificatori_mod').val();
+		 var ids = "";
+		 for(var i = 0;i<values.length;i++){
+			 ids = ids + values[i]+";";
+		 }
+		 
+		 $('#verificatori_associa_mod').val(ids);
+	 }else {
+		 $('#verificatori_associa_mod').val("");
+	 }
+    
     modificaCampione(<%=campione.getId() %>);
 
 });

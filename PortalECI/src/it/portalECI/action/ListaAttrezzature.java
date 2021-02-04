@@ -147,12 +147,16 @@ public class ListaAttrezzature extends HttpServlet {
 					request.getSession().setAttribute("listaClienti",listaClienti);
 					request.getSession().setAttribute("lista_id_clienti",lista_id_clienti);
 					request.getSession().setAttribute("lista_id_sedi",lista_id_sedi);	
-					request.getSession().setAttribute("listaSedi",listaSedi);						
+					request.getSession().setAttribute("listaSedi",listaSedi);		
+					request.getSession().setAttribute("dateFrom",null);	
+					request.getSession().setAttribute("dateTo",null);	
 					
 				}else {
 					
 					request.getSession().setAttribute("listaClienti",listaClientiFull);
 					request.getSession().setAttribute("listaSedi",listaSediFull);	
+					request.getSession().setAttribute("dateFrom",null);	
+					request.getSession().setAttribute("dateTo",null);
 				}								
 				
 				
@@ -903,6 +907,10 @@ public class ListaAttrezzature extends HttpServlet {
 				String id_attrezzatura = request.getParameter("id_attrezzatura");				
 				
 				ArrayList<VerbaleDTO> listaVerbali = GestioneVerbaleBO.getListaVerbaliFromAttrezzatura(Integer.parseInt(id_attrezzatura), utente,session);
+				//System.out.println(listaVerbali.get(0).getIntervento().getIdCommessa());
+				for (VerbaleDTO verbaleDTO : listaVerbali) {
+					String comm = verbaleDTO.getIntervento().getIdCommessa();
+				}
 				
 				request.getSession().setAttribute("listaVerbali",listaVerbali);
 				 
@@ -910,6 +918,26 @@ public class ListaAttrezzature extends HttpServlet {
 				 
 				RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/page/configurazioni/listaVerbaliAttrezzatura.jsp");
 				dispatcher.forward(request,response);
+				
+			}
+			else if(action.equals("filtra_date")) {
+				
+				String id_cliente = request.getParameter("id_cliente");
+				String id_sede = request.getParameter("id_sede");
+				String dateFrom = request.getParameter("dateFrom");
+				String dateTo = request.getParameter("dateTo");
+				
+				
+				ArrayList<AttrezzaturaDTO> lista_attrezzature = GestioneAttrezzatureBO.getlistaAttrezzatureScadenza(dateFrom, dateTo, id_cliente, id_sede, session);
+				
+				request.getSession().setAttribute("lista_attrezzature",lista_attrezzature);
+				request.getSession().setAttribute("dateFrom",dateFrom);
+				request.getSession().setAttribute("dateTo",dateTo);
+				 
+				session.close();
+				 
+				RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/page/configurazioni/listaAttrezzatureSede.jsp");
+			    dispatcher.forward(request,response);
 				
 			}
 

@@ -460,6 +460,81 @@ public class GestioneIntervento extends HttpServlet {
 			
 				out.print(myObj);
 			}
+			
+			else if(action!=null && action.equals("aggiungi_verbale")) {
+				
+				String id_tecnico = request.getParameter("tecnico");
+				String id_intervento = request.getParameter("id_intervento");
+				InterventoDTO intervento= GestioneInterventoBO.getIntervento(id_intervento, session);
+				
+				List<TipoVerificaDTO> tipoverificalist = new ArrayList<TipoVerificaDTO>();
+				List<VerbaleDTO> verbali = intervento.getVerbali();
+
+				String[] categoriaTipo=request.getParameterValues("categoriaTipo");
+				String[] schedaTecnicaObbligatoria=request.getParameterValues("schedaTecnica");
+				String[] listaNote =request.getParameterValues("note");
+				String[] listaSedi =request.getParameterValues("sedi");
+				String[] listaAttrezzature =request.getParameterValues("attrezzature");
+				String[] listaEsercenti =request.getParameterValues("esercenti");
+				String[] listaEffVer =request.getParameterValues("effettuazione_verifica");
+				String[] listaTipoVer =request.getParameterValues("tipo_verifica");
+				String[] listaDescrizioneUtil =request.getParameterValues("descrizione_util");
+				
+
+				CommessaDTO comm=(CommessaDTO)request.getSession().getAttribute("commessa");
+				
+				for( int i = 0; i <= categoriaTipo.length - 1; i++){
+					
+					String id_tipo=categoriaTipo[i].substring(0, categoriaTipo[i].indexOf("_"));
+					String id_categoria=categoriaTipo[i].substring(categoriaTipo[i].indexOf("_")+1, categoriaTipo[i].length());
+					TipoVerificaDTO tipoVerificaDTO = GestioneInterventoBO.getTipoVerifica(id_tipo, session); 
+					tipoverificalist.add(tipoVerificaDTO);
+					Boolean createSkTec=false;
+					if(schedaTecnicaObbligatoria!=null) {
+						if(schedaTecnicaObbligatoria[i].equals("1")) {
+							createSkTec = true;
+						}
+					}
+
+					AttrezzaturaDTO attrezzatura= null;
+					
+					if(listaAttrezzature!=null && listaAttrezzature[i]!=null && !listaAttrezzature[i].equals("") && !listaAttrezzature[i].equals("0")) {
+							attrezzatura = GestioneAttrezzatureBO.getAttrezzaturaFromId(Integer.parseInt(listaAttrezzature[i]), session);
+					}
+						
+					VerbaleDTO verbale =GestioneVerbaleBO.buildVerbale(tipoVerificaDTO.getCodice(), session, createSkTec,listaNote[i],attrezzatura,listaSedi[i], listaEsercenti[i], listaEffVer[i], listaTipoVer[i], listaDescrizioneUtil[i]);
+					if(verbale !=null) {
+						verbali.add(verbale);
+						
+						
+						//myObj.add("verbale", verbale.getVerbaleJsonObject());
+					}else {
+						throw new Exception("Questionario inesistente per Codice Verifica : "+tipoVerificaDTO.getCodice());
+					}
+					
+				}
+				
+				
+				GestioneInterventoBO.update(intervento,session);
+					
+				myObj.addProperty("success", true);
+				//myObj.add("intervento", intervento.getInterventoJsonObject());
+			
+				out.print(myObj);
+				
+			}
+			else if(action!=null && action.equals("elimina_verbale")){
+				
+				String id_verbale = request.getParameter("idVerbale");
+				
+				VerbaleDTO verbale = GestioneVerbaleBO.getVerbale(id_verbale, session);
+				session.delete(verbale);
+				myObj.addProperty("success", true);
+				myObj.addProperty("messaggio", "Verbale eliminato con successo");
+			
+				out.print(myObj);
+				
+			}
 	
 			session.getTransaction().commit();
 			session.close();	

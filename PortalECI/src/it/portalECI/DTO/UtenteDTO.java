@@ -48,7 +48,7 @@ public class UtenteDTO implements Serializable {
 	private Set<CategoriaVerificaDTO> listaCategorieVerifica = new HashSet<CategoriaVerificaDTO>(0);
 	private Set<StrumentoVerificatoreDTO> listaStrumentiVerificatore = new HashSet<StrumentoVerificatoreDTO>(0);
 	private Set<TipoComunicazioneUtenteDTO> listaComunicazioni = new HashSet<TipoComunicazioneUtenteDTO>(0);
-	
+	private Set<CampioneDTO> listaCampioni = new HashSet<CampioneDTO>(0);
 	
 	
 	public UtenteDTO() {
@@ -411,5 +411,13 @@ public class UtenteDTO implements Serializable {
 
 	public void setId_firma(String id_firma) {
 		this.id_firma = id_firma;
+	}
+
+	public Set<CampioneDTO> getListaCampioni() {
+		return listaCampioni;
+	}
+
+	public void setListaCampioni(Set<CampioneDTO> listaCampioni) {
+		this.listaCampioni = listaCampioni;
 	}
 }

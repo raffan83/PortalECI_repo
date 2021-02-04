@@ -255,4 +255,41 @@ public class GestioneAttrezzatureDAO {
 		return lista;		
 	}
 
+
+
+
+
+public static ArrayList<AttrezzaturaDTO> getlistaAttrezzatureScadenza(String data_start, String data_end, String id_cliente, String id_sede,Session session) throws HibernateException, ParseException {
+
+	DateFormat df = new SimpleDateFormat("yyyy-MM-dd");	
+
+	ArrayList<AttrezzaturaDTO> lista = new ArrayList<AttrezzaturaDTO>();			
+
+	Query query = null;
+	
+	if(id_cliente.equals("0") && id_sede.equals("0")) {
+		
+		query = session.createQuery("from AttrezzaturaDTO where (data_prossima_verifica_funzionamento between :_date_start and :_date_end) "
+				+ "or  (data_prossima_verifica_integrita between :_date_start and :_date_end) "
+				+ "or (data_prossima_verifica_interna between :_date_start and :_date_end) "
+				+ "and obsoleta='N'  order by data_prossima_verifica_funzionamento asc");	
+		
+	}else {			
+		query = session.createQuery("from AttrezzaturaDTO where (data_prossima_verifica_funzionamento between :_date_start and :_date_end) "
+				+ "or  (data_prossima_verifica_integrita between :_date_start and :_date_end) "
+				+ "or (data_prossima_verifica_interna between :_date_start and :_date_end) "
+				+ "and obsoleta='N' and id_cliente =:_id_cliente and id_sede =:_id_sede order by data_prossima_verifica_funzionamento asc");
+		
+		query.setParameter("_id_cliente", Integer.parseInt(id_cliente));
+		query.setParameter("_id_sede", Integer.parseInt(id_sede));
+	}
+	query.setParameter("_date_start", df.parse(data_start));
+	query.setParameter("_date_end", df.parse(data_end));
+			
+	lista = (ArrayList<AttrezzaturaDTO>) query.list();
+	
+
+	return lista;		
+}
+
 }

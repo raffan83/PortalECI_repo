@@ -40,6 +40,7 @@ import com.google.gson.JsonObject;
 
 import it.arubapec.arubasignservice.ArubaSignService;
 import it.arubapec.arubasignservice.TypeOfTransportNotImplementedException;
+import it.portalECI.DAO.GestioneCampioneDAO;
 import it.portalECI.DAO.GestioneDocumentoDAO;
 import it.portalECI.DAO.GestioneInterventoDAO;
 import it.portalECI.DAO.GestioneRispostaVerbaleDAO;
@@ -48,6 +49,7 @@ import it.portalECI.DAO.GestioneStoricoModificheDAO;
 import it.portalECI.DAO.GestioneVerbaleDAO;
 import it.portalECI.DAO.SessionFacotryDAO;
 import it.portalECI.DTO.AttrezzaturaDTO;
+import it.portalECI.DTO.CampioneDTO;
 import it.portalECI.DTO.ClienteDTO;
 import it.portalECI.DTO.ColonnaTabellaVerbaleDTO;
 import it.portalECI.DTO.CommessaDTO;
@@ -74,6 +76,7 @@ import it.portalECI.Util.Costanti;
 import it.portalECI.Util.Utility;
 import it.portalECI.bo.GestioneAnagraficaRemotaBO;
 import it.portalECI.bo.GestioneAttrezzatureBO;
+import it.portalECI.bo.GestioneCampioneBO;
 import it.portalECI.bo.GestioneCommesseBO;
 import it.portalECI.bo.GestioneComunicazioniBO;
 import it.portalECI.bo.GestioneQuestionarioBO;
@@ -125,10 +128,13 @@ public class GestioneVerbali extends HttpServlet {
 					
 					String id_strumento = request.getParameter("strumento_verificatore");
 					if(id_strumento!=null && !id_strumento.equals("") && !id_strumento.equals("0")) {
-						verbale.setStrumento_verificatore(new StrumentoVerificatoreDTO(Integer.parseInt(id_strumento)));
+						//verbale.setStrumento_verificatore(new StrumentoVerificatoreDTO(Integer.parseInt(id_strumento)));
+						CampioneDTO campione = GestioneCampioneDAO.getCampioneFromId(id_strumento);
+						verbale.setCampione(campione);
 						session.update(verbale);
 					}else {
-						verbale.setStrumento_verificatore(null);
+						//verbale.setStrumento_verificatore(null);
+						verbale.setCampione(null);
 						session.update(verbale);
 					}
 				}

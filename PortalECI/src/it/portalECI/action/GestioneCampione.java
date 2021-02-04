@@ -33,11 +33,12 @@ import it.portalECI.DAO.SessionFacotryDAO;
 import it.portalECI.DTO.CampioneDTO;
 import it.portalECI.DTO.CompanyDTO;
 import it.portalECI.DTO.TipoCampioneDTO;
+import it.portalECI.DTO.UtenteDTO;
 import it.portalECI.Exception.ECIException;
 import it.portalECI.Util.Costanti;
 import it.portalECI.Util.Utility;
 import it.portalECI.bo.GestioneCampioneBO;
-import it.portalECI.bo.GestioneCompanyBO;
+import it.portalECI.bo.GestioneUtenteBO;
 
 /**
  * Servlet implementation class GestioneCampione1
@@ -355,7 +356,8 @@ public class GestioneCampione extends HttpServlet {
         			  String tipo_campione = (String) ret.get("tipoCampione_mod");
         			  String proprietario = (String) ret.get("proprietario_mod");
         			  String condizioni_utilizzo = (String)ret.get("condizioni_utilizzo_mod");
-        			  
+        			  String verificatori_associa_mod = (String)ret.get("verificatori_associa_mod");
+        			  String verificatori_dissocia_mod = (String)ret.get("verificatori_dissocia_mod");
         			  
         				campione.setCodice(codice);
         				campione.setMatricola(matricola);
@@ -434,10 +436,30 @@ public class GestioneCampione extends HttpServlet {
         				}
         	 				 			
         	 				campione.setNumeroCertificato(numeroCerificato);
-        	
-        		
+        	 				
+        	 				int success = GestioneCampioneBO.saveCampione(campione, action, fileItem,ente_certificatore, session);
+        	 				
+        	 				if(verificatori_associa_mod !=null && !verificatori_associa_mod.equals("")) {
         						
-        				int success = GestioneCampioneBO.saveCampione(campione, action, fileItem,ente_certificatore, session);
+        						for (String id : verificatori_associa_mod.split(";")) {
+        							UtenteDTO verificatore = GestioneUtenteBO.getUtenteById(id, session);
+        						
+        							campione.getListaVerificatori().add(verificatore);	
+        							session.update(campione);
+        						}
+        						
+        					}
+        					
+        					if(verificatori_dissocia_mod !=null && !verificatori_dissocia_mod.equals("")) {
+        						
+        						for (String id : verificatori_dissocia_mod.split(";")) {
+        							UtenteDTO verificatore = GestioneUtenteBO.getUtenteById(id, session);
+        							campione.getListaVerificatori().remove(verificatore);
+        							session.update(campione);
+        						}
+        						
+        					}
+        					
         	
         					if(success==0)
         					{

@@ -18,6 +18,7 @@
 <div class="row">
 <div class="col-xs-12">
 
+<c:if test="${utente.checkRuolo('AM') }">
 <div class="row">
 <div class="col-xs-12">
 <h4>CARICAMENTO DOCUMENTI</h4>
@@ -33,6 +34,7 @@
   		</div>
   		</div>
   			</div>
+  			
 	<div class="row">
 <div class="col-xs-12">
 		    <div class="col-xs-9">
@@ -60,13 +62,15 @@
 	<!-- </div> -->
 	</div>
 <!-- 	<div class="row"> -->
-	<div class="col-xs-12">
+
+ </div>
+ </c:if>
+ 
+ </div>
+ 	<div class="col-xs-12">
 	<h4>LISTA DOCUMENTI</h4>
 
-<%-- </c:if>		
- --%>
- </div>
- </div>
+
  </div>
  <div class="col-xs-12">
  <table id="tabDocumenti" class="table table-bordered table-hover dataTable table-striped" role="grid" width="100%">
@@ -94,7 +98,9 @@
 
 		<a onclick="callAction('documentiEsterni.do?action=scaricaDocumento&idDoc=${documento.id}')" class="btn btn-danger"><i class="fa fa-file-pdf-o"></i></a>
 		<%-- <c:if test="${userObj.checkPermesso('LISTA_DOCUMENTI_ESTERNI_STRUMENTO_METROLOGIA')}"> --%>
+		<c:if test="${utente.checkRuolo('AM') }">
 		<a href="#" onClick="modalEliminaDocumentoEsternoCampione(${documento.id})" class="btn btn-danger"><i class="fa fa-remove"></i></a>
+		</c:if>
 			<%-- </c:if>	 --%>	
 		</td>
 	

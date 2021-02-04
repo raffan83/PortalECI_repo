@@ -786,6 +786,24 @@ public class GestioneVerbaleBO {
 		{			
 			html = html.replaceAll("\\$\\{STR_MATR\\}", verbale.getStrumento_verificatore().getMatricola());
 		}
+		if(verbale.getCampione() != null && verbale.getCampione().getCostruttore()!=null) 
+		{			
+			html = html.replaceAll("\\$\\{STR_MARCA\\}", verbale.getCampione().getCostruttore());
+		}
+		
+		if(verbale.getCampione() != null && verbale.getCampione().getModello()!=null) 
+		{			
+			html = html.replaceAll("\\$\\{STR_MOD\\}", verbale.getCampione().getModello());
+		}
+		
+		if(verbale.getCampione() != null && verbale.getCampione().getMatricola()!=null) 
+		{			
+			if(verbale.getCampione().getCodice()!=null) {
+				html = html.replaceAll("\\$\\{STR_MATR\\}", verbale.getCampione().getMatricola() +" ("+verbale.getCampione().getCodice()+")");
+			}else{
+				html = html.replaceAll("\\$\\{STR_MATR\\}", verbale.getCampione().getMatricola());	
+			}
+		}
 		
 		DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
 		
@@ -798,7 +816,18 @@ public class GestioneVerbaleBO {
 		{			
 			html = html.replaceAll("\\$\\{STR_SCADENZA\\}", df.format(verbale.getStrumento_verificatore().getScadenza()));
 		}
+		
+		if(verbale.getCampione() != null && verbale.getCampione().getDataVerifica()!=null) 
+		{			
+			html = html.replaceAll("\\$\\{STR_ULT_TAR\\}", df.format(verbale.getCampione().getDataVerifica()));
+		}
+		
+		if(verbale.getCampione() != null && verbale.getCampione().getDataScadenza()!=null) 
+		{			
+			html = html.replaceAll("\\$\\{STR_SCADENZA\\}", df.format(verbale.getCampione().getDataScadenza()));
+		}
 				
+		
 		if(verbale.getData_verifica() != null) 
 		{			
 			if(verbale.getData_fine_verifica()!=null && verbale.getData_verifica().getTime() != verbale.getData_fine_verifica().getTime()) {
@@ -844,6 +873,9 @@ public class GestioneVerbaleBO {
 		
 		if(verbale.getStrumento_verificatore()!=null && verbale.getStrumento_verificatore().getNumero_certificato()!=null) {
 			html = html.replaceAll("\\$\\{STR_NUMERO_CERT\\}", verbale.getStrumento_verificatore().getNumero_certificato());
+		}
+		if(verbale.getCampione()!=null && verbale.getCampione().getNumeroCertificato()!=null) {
+			html = html.replaceAll("\\$\\{STR_NUMERO_CERT\\}", verbale.getCampione().getNumeroCertificato());
 		}
 		
 		if(verbale.getSedeUtilizzatore() != null ) 

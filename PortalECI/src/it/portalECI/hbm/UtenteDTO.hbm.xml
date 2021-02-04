@@ -108,5 +108,17 @@
                 <property name="id_firma" type="java.lang.String">
             <column name="id_firma" />
         </property>
+        
+        
+                <set name="listaCampioni" table="campione_verificatore"
+        	inverse="false" lazy="false" fetch="select" cascade="all" >
+            <key>
+                <column name="id_verificatore" not-null="true" />
+            </key>
+            <many-to-many entity-name="it.portalECI.DTO.CampioneDTO">
+                <column name="id_campione" not-null="true" />
+            </many-to-many>
+        </set>
+        
     </class>
 </hibernate-mapping>

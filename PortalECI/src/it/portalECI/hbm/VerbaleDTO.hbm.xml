@@ -169,6 +169,9 @@
 		<property name="controfirmato" type="int">
 			<column name="controfirmato" />
 		</property>
+		<many-to-one name="campione" class="it.portalECI.DTO.CampioneDTO" fetch="join" lazy="false">
+            <column name="id_campione" />
+        </many-to-one>
 		 
 	</class>
 </hibernate-mapping> 

@@ -83,7 +83,7 @@ public static void sendEmailVerbale(VerbaleDTO verbale, String id_commessa, Stri
 					
 				  email.setSubject("Richiesta di approvazione scheda tecnica verbale ID n. "+verbale_origine.getId()+" - Cliente: "+commessa.getID_ANAGEN_NOME());
 				  
-				  email.setHtmlMsg("<html>Si richiede l'apporvazione della scheda tecnica del verbale di verifica in oggetto. <br />  <br /><br /> "
+				  email.setHtmlMsg("<html>Si richiede l'approvazione della scheda tecnica del verbale di verifica in oggetto. <br />  <br /><br /> "
 				  		+ "<em><b style='color:#9d201d' >ECI Ente di Certificazione & Ispezione Srl</em></b><br><br><span style='color:#204d74'>Via Tofaro 42, B - 03039 Sora (FR)<br>  " + 
 				  		"			  		<em>Tel + 39 0776.18151 - Fax+ 39 0776.814169 <br> " + 
 				  		"			  		Mail: </em>info@ecisrl.it<br> \r\n" + 
@@ -129,7 +129,7 @@ public static void sendEmailVerbale(VerbaleDTO verbale, String id_commessa, Stri
 					
 				  email.setSubject("Richiesta di approvazione verbale ID n. "+verbale.getId()+" - Cliente: "+commessa.getID_ANAGEN_NOME());
 				  
-				  email.setHtmlMsg("<html>Si richiede l'apporvazione del verbale di verifica in oggetto. <br />  <br /><br /> "
+				  email.setHtmlMsg("<html>Si richiede l'approvazione del verbale di verifica in oggetto. <br />  <br /><br /> "
 				  		+ "<em><b style='color:#9d201d' >ECI Ente di Certificazione & Ispezione Srl</em></b><br><br><span style='color:#204d74'>Via Tofaro 42, B - 03039 Sora (FR)<br>  " + 
 				  		"			  		<em>Tel + 39 0776.18151 - Fax+ 39 0776.814169 <br> " + 
 				  		"			  		Mail: </em>info@ecisrl.it<br> \r\n" + 

@@ -13,7 +13,11 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.hibernate.Session;
 
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
+
 import it.portalECI.DAO.SessionFacotryDAO;
+import it.portalECI.DTO.AttrezzaturaDTO;
 import it.portalECI.DTO.CategoriaVerificaDTO;
 import it.portalECI.DTO.CommessaDTO;
 import it.portalECI.DTO.InterventoDTO;
@@ -23,6 +27,7 @@ import it.portalECI.DTO.UtenteDTO;
 import it.portalECI.DTO.VerbaleDTO;
 import it.portalECI.Util.Utility;
 import it.portalECI.bo.GestioneAnagraficaRemotaBO;
+import it.portalECI.bo.GestioneAttrezzatureBO;
 import it.portalECI.bo.GestioneCommesseBO;
 import it.portalECI.bo.GestioneInterventoBO;
 import it.portalECI.bo.GestioneQuestionarioBO;
@@ -130,8 +135,17 @@ public class GestioneInterventoDati extends HttpServlet {
 			}
 		}
 	
+		JsonArray jarr = new JsonArray();
+		JsonObject json = new JsonObject();
+		for (UtenteDTO utente : users) {
+			jarr.add(utente.getUtenteJsonObject(false));	
+		}
+		json.add("utenti", jarr);
+		
+	
 		
 		
+		request.getSession().setAttribute("tecnici_json", jarr);
 		request.getSession().setAttribute("listIdCodiciCategoria", listIdCodiciCategoria);
 		request.getSession().setAttribute("listCodiciCategoria", listCodiciCategoria);
 		request.getSession().setAttribute("listIdCodiciTipo", listIdCodiciTipo);
@@ -145,9 +159,11 @@ public class GestioneInterventoDati extends HttpServlet {
 			commessa = GestioneCommesseBO.getCommessaById(intervento.getIdCommessa());
 			
 			String nome_cliente = GestioneAnagraficaRemotaBO.getClienteById(intervento.getId_cliente()+"").getNome();
+			ArrayList<AttrezzaturaDTO> listaAttrezzature =GestioneAttrezzatureBO.getlistaAttrezzatureSede(commessa.getID_ANAGEN_UTIL(), commessa.getK2_ANAGEN_INDR_UTIL(), false, session);
 			
 			request.getSession().setAttribute("commessa", commessa);
 			request.getSession().setAttribute("nome_cliente", nome_cliente);
+			request.getSession().setAttribute("listaAttrezzature", listaAttrezzature);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

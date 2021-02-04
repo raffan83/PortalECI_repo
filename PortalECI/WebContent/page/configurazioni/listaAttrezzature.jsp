@@ -76,7 +76,34 @@
 
   
 </div>
+
+
 </div>
+
+<div class="row">
+        				
+        				
+        					<div class="col-xs-5">
+			 <div class="form-group">
+				 <label for="datarange" class="control-label">Filtra Scadenze:</label>
+					<div class="col-md-10 input-group" >
+						<div class="input-group-addon">
+				             <i class="fa fa-calendar"></i>
+				        </div>				                  	
+						 <input type="text" class="form-control" id="datarange" name="datarange" value=""/> 						    
+							 <span class="input-group-btn">
+				               <button type="button" class="btn btn-info btn-flat" onclick="filtraDate()">Cerca</button>
+				               <button type="button" style="margin-left:5px" class="btn btn-primary btn-flat" onclick="resetDate()">Reset Date</button>
+				             </span>				                     
+  					</div>  								
+			 </div>	
+			 
+			 
+        				</div>
+
+        				</div>
+
+
 
           </div>
             <div class="box-body">
@@ -86,7 +113,9 @@
 	
 	 <div id="boxLista" class="box box-danger box-solid">
 <div class="box-header with-border">
-	 Lista
+	 Lista  <c:if test="${dateFrom!=null }">attrezzature in scadenza tra <fmt:formatDate pattern = "dd/MM/yyyy" value = "${dateFrom}" /> e <fmt:formatDate pattern = "dd/MM/yyyy" value = "${dateTo}" /> </c:if>
+	 
+	
 	<div class="box-tools pull-right">
 		
 		<button data-widget="collapse" class="btn btn-box-tool"><i class="fa fa-minus"></i></button>
@@ -256,12 +285,13 @@
 
 <jsp:attribute name="extra_css">
 
-
+	<link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/bootstrap.daterangepicker/2/daterangepicker.css" />
 </jsp:attribute>
 
 <jsp:attribute name="extra_js_footer">
 
-<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/lodash@4.17.11/lodash.min.js"></script> 
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/lodash@4.17.11/lodash.min.js"></script>
+<script type="text/javascript" src="//cdn.jsdelivr.net/bootstrap.daterangepicker/2/daterangepicker.js"></script> 
   <script type="text/javascript">
 
   var json_obj = '${json}';
@@ -328,9 +358,78 @@
 
   	
   	});
+
+    
+    
+	function filtraDate(){
+		
+		var id_cliente = $('#cliente_appoggio').val();
+		var id_sede = $('#selec2').val();
+		if(id_sede==null){
+			id_sede = 0;
+		}
+			
+			var startDatePicker = $("#datarange").data('daterangepicker').startDate;
+		 	var endDatePicker = $("#datarange").data('daterangepicker').endDate;
+		 	dataString = "action=filtra_date&dateFrom=" + startDatePicker.format('YYYY-MM-DD') + "&dateTo=" + 
+		 			endDatePicker.format('YYYY-MM-DD')+"&id_cliente="+id_cliente+"&id_sede="+id_sede;
+		 	
+		 	 pleaseWaitDiv = $('#pleaseWaitDialog');
+			  pleaseWaitDiv.modal();
+
+		 	//callAction("listaAttrezzature.do"+ dataString, "#posTab",false);
+
+		 	exploreModal("listaAttrezzature.do", dataString, '#posTab');
+	}
+
+
+
+
+	function resetDate(){
+		pleaseWaitDiv = $('#pleaseWaitDialog');
+			  pleaseWaitDiv.modal();
+		callAction("listaAttrezzature.do");
+
+	}
+	function formatDate(data){
+		
+		   var mydate = new Date(data);
+		   
+		   if(!isNaN(mydate.getTime())){
+		   
+			   str = mydate.toString("dd/MM/yyyy");
+		   }			   
+		   return str;	 		
+	}
+    
     
     $(document).ready(function() {
     
+    	
+    	var tipo_attrezzatura_options = [];
+
+    	$('.datepicker').datepicker();
+    	
+        var start = "${dateFrom}";
+       	var end = "${dateTo}";
+       	
+       	$('input[name="datarange"]').daterangepicker({
+      	    locale: {
+      	      format: 'DD/MM/YYYY'
+      	    
+      	    }
+      	}, 
+      	function(start, end, label) {
+
+      	});
+       	
+       	if(start!=null && start!=""){
+      	 	$('#datarange').data('daterangepicker').setStartDate(formatDate(start));
+      	 	$('#datarange').data('daterangepicker').setEndDate(formatDate(end));
+      	
+      	 }
+    	
+    	
     	
     	$("#select2").select2();
     	initSelect2('#select1');

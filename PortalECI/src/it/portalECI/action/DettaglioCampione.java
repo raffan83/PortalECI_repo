@@ -11,17 +11,21 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.hibernate.Session;
+
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
 import it.portalECI.DAO.GestioneCampioneDAO;
-
+import it.portalECI.DAO.SessionFacotryDAO;
 import it.portalECI.DTO.CampioneDTO;
 
 import it.portalECI.DTO.TipoCampioneDTO;
+import it.portalECI.DTO.UtenteDTO;
 import it.portalECI.Exception.ECIException;
 import it.portalECI.Util.Utility;
+import it.portalECI.bo.GestioneUtenteBO;
 
 
 /**
@@ -55,7 +59,8 @@ public class DettaglioCampione extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
 		if(Utility.validateSession(request,response,getServletContext()))return;
-		
+		Session session = SessionFacotryDAO.get().openSession();
+		session.beginTransaction();
 	try{	
 		String idC = request.getParameter("idCamp");
 
@@ -63,6 +68,8 @@ public class DettaglioCampione extends HttpServlet {
 		CampioneDTO dettaglio =GestioneCampioneDAO.getCampioneFromId(idC);	
 		
 		ArrayList<TipoCampioneDTO> listaTipoCampione= GestioneCampioneDAO.getListaTipoCampione();
+		
+		ArrayList<UtenteDTO> listaVerificatori = (ArrayList<UtenteDTO>) GestioneUtenteBO.getTecnici("2", session);
 
 		 Gson gson = new Gson(); 
 	        JsonObject myObj = new JsonObject();
@@ -73,17 +80,18 @@ public class DettaglioCampione extends HttpServlet {
 
 	       
 	        myObj.add("dataInfo", obj);
-	        
+	        myObj.add("verificatori_json", gson.toJsonTree(listaVerificatori));
 	        request.getSession().setAttribute("myObj",myObj);
 	        request.getSession().setAttribute("listaTipoCampione",listaTipoCampione);
 
+	        session.close();
 			 RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/page/configurazioni/dettaglioCampione.jsp");
 		     dispatcher.forward(request,response);
 
 	
 	}catch(Exception ex)
 	{
-		
+		session.close();
 		 ex.printStackTrace();
 	     request.setAttribute("error",ECIException.callException(ex));
 	     request.getSession().setAttribute("exception",ex);

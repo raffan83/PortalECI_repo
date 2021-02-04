@@ -60,7 +60,7 @@ public class CampioneDTO implements Serializable {
 	
 
 	public  Set<CertificatoCampioneDTO> listaCertificatiCampione = new HashSet<CertificatoCampioneDTO>(0);
-	
+	private transient Set<UtenteDTO> listaVerificatori = new HashSet<UtenteDTO>(0);
 //	private Set<DocumentoCampioneDTO> listaDocumentiEsterni = new HashSet<DocumentoCampioneDTO>(0);
 	
 
@@ -427,6 +427,14 @@ public class CampioneDTO implements Serializable {
 
 	public void setCondizioni_utilizzo(String condizioni_utilizzo) {
 		this.condizioni_utilizzo = condizioni_utilizzo;
+	}
+
+	public Set<UtenteDTO> getListaVerificatori() {
+		return listaVerificatori;
+	}
+
+	public void setListaVerificatori(Set<UtenteDTO> listaVerificatori) {
+		this.listaVerificatori = listaVerificatori;
 	}
 
 }

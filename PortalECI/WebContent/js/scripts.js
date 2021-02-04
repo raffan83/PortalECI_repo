@@ -398,7 +398,7 @@ function saveInterventoFromModal(){
 			
 			var x = stripHtml(value[2]);
 			
-			noteVerb+="&note="+value[9];
+			noteVerb+="&note="+value[10];
 			sedi+= "&sedi="+value[5];
 			attrezzature+='&attrezzature='+value[4];
 			esercenti+='&esercenti='+value[6];
@@ -4362,4 +4362,206 @@ function submitInfoVerbaleEmail(){
     	  }
       });
 	
+}
+
+
+
+function aggiungiVerbale(id_intervento){
+
+	var str1=$('#tecnici').val();
+
+	
+	//var str2="&note="+$('#noteVerbale').val();
+	//var str3=$('#select2').val();
+	var listCatVer='';
+	$('.categoriaTipiRow').each(function(index, item){
+		listCatVer+="&categoriaTipo="+item.attributes[2].value;
+	});
+	var skTecObb='';
+	$('.skTecObb').each(function(index, item){
+		if($(this)[0].checked){
+			//skTecObb+="&schedaTecnica="+$(this).closest('tr').prop('id');
+			skTecObb+="&schedaTecnica="+1;
+		}else{
+			skTecObb+="&schedaTecnica="+0;
+		}
+			
+	});
+	
+	var noteVerb='';
+	
+	var attrezzature='';
+	
+	var sedi = '';
+	
+	var esercenti = '';
+	
+	var eff_ver = '';
+	
+	var tipo_ver = '';
+	
+	var descrizione_util = '';
+	
+	if(listCatVer==""){
+		$('#empty').html("Devi inserire almeno un 'Tipo Verifica' per poter creare l'intervento!"); 
+	}else if(str1!= null){
+		//var dataArr={"tecnico":str};
+		var table = $('#tabVerifica').DataTable();
+		
+		var data = table.rows().data();
+		data.each(function (value, index) {
+			
+			var x = stripHtml(value[2]);
+			
+			noteVerb+="&note="+value[10];
+			sedi+= "&sedi="+value[5];
+			attrezzature+='&attrezzature='+value[4];
+			esercenti+='&esercenti='+value[6];
+			descrizione_util+='&descrizione_util='+value[7];
+			eff_ver+='&effettuazione_verifica='+value[8];
+			tipo_ver+='&tipo_verifica='+value[9];
+		 });
+	            
+		
+		pleaseWaitDiv = $('#pleaseWaitDialog');
+		pleaseWaitDiv.modal();
+	    
+		$.ajax({
+			type: "POST",
+			url: "gestioneIntervento.do?action=aggiungi_verbale&id_intervento="+id_intervento,
+			//data: "dataIn="+JSON.stringify(dataArr),
+			//data: "dataIn="+str1,
+			data : "tecnico="+str1 +listCatVer+skTecObb+noteVerb+attrezzature+sedi+esercenti+eff_ver+tipo_ver+descrizione_util,
+			//	'id='+ encodeURIComponent(id) + '&name='+ encodeURIComponent(name)
+			dataType: "json",
+			success: function( data, textStatus) {
+				pleaseWaitDiv.hide();
+				if(data.success){ 
+					location.reload();
+					
+
+					$('#myModal').modal('hide')
+//	          		$('#errorMsg').html("<h3 class='label label-primary' style=\"color:green\">"+textStatus+"</h3>");
+					var table = $('#tabPM').DataTable();
+
+					//verbale = data.verbale;
+		
+				}else{
+					$('#modalErrorDiv').html(data.messaggio+' '+data.dettaglio);
+					$('#myModalError').removeClass();
+					$('#myModalError').addClass("modal modal-danger");
+					$('#myModalError').modal('show');
+				}
+				pleaseWaitDiv.modal('hide');
+			},
+
+			error: function(jqXHR, textStatus, errorThrown){
+	          
+				$('#errorMsg').html("<h3 class='label label-danger'>"+textStatus+"</h3>");
+				//callAction('logout.do');
+				pleaseWaitDiv.modal('hide');
+			}
+		});
+	}else{
+		$('#empty').html("Il campo 'Tecnico Verificatore' non pu&ograve; essere vuoto"); 
+	}
+	  	   
+}
+
+
+
+
+function eliminaVerbale(id_verbale){
+	pleaseWaitDiv = $('#pleaseWaitDialog');
+	pleaseWaitDiv.modal();
+	
+	dataObj ={}
+
+		$.ajax({
+	type: "POST",
+	url: "gestioneIntervento.do?action=elimina_verbale&idVerbale="+id_verbale,
+	data: dataObj,
+	dataType: "json",
+	//if received a response from the server
+	success: function( data, textStatus) {
+		  if(data.success)
+		  {  
+			  $('#myModalYesOrNo').modal('hide');
+			  pleaseWaitDiv.modal('hide');
+				$('#modalErrorDiv').html(data.messaggio);
+				$('#myModalError').removeClass();	
+				$('#myModalError').addClass("modal modal-success");	  
+				$('#report_button').hide();
+				$('#visualizza_report').hide();		
+				$('#myModalError').modal('show');
+				
+				$('#myModalError').on('hidden.bs.modal',function(){
+					location.reload();
+				});
+			
+		  }else{
+			  
+			pleaseWaitDiv.modal('hide');
+			$('#modalErrorDiv').html(data.messaggio);
+			$('#myModalError').removeClass();	
+			$('#myModalError').addClass("modal modal-danger");	  
+			$('#report_button').hide();
+			$('#visualizza_report').hide();		
+			$('#myModalError').modal('show');			
+		
+		  }
+	},
+
+	error: function( data, textStatus) {
+		
+		pleaseWaitDiv.modal('hide');
+		$('#modalErrorDiv').html(textStatus);
+		  	$('#myModalError').removeClass();
+			$('#myModalError').addClass("modal modal-danger");	  
+			$('#report_button').show();
+			$('#visualizza_report').show();
+				$('#myModalError').modal('show');
+
+	}
+	});
+	   
+}
+
+function controllaAssociati(ver, id_campione){
+	
+
+	var verificatori = ver.verificatori_json;
+	 var opt = [];
+	 
+	opt.push("<option value=''></<option>");				 
+	 
+	var ids = "";
+	 for(var i = 0;i<verificatori.length;i++){	
+		 
+		 var campioni = verificatori[i].listaCampioni;
+		 
+		 if(campioni.length>0){
+			
+			 for(var j = 0;j<campioni.length;j++){
+				 
+				 if(campioni[j].id == id_campione){
+					 opt.push("<option value='"+verificatori[i].id+"' selected>"+verificatori[i].nome+ " " + verificatori[i].cognome+"</option>");
+					 ids = ids +verificatori[i].id+";";
+					 
+					 $('#verificatori_associa_mod').val(ids);
+				 }
+			 }
+		 }
+		 
+		 if(!ids.includes(verificatori[i].id)){
+			 opt.push("<option value='"+verificatori[i].id+"' >"+verificatori[i].nome+ " " + verificatori[i].cognome+"</option>");
+		 }
+				 
+		
+	 }
+	
+	
+	 $('#verificatori_mod').html(opt);
+	 $('#verificatori_dtl').html(opt);
+	 
 }

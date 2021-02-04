@@ -43,40 +43,40 @@
         				<div class="col-xs-12">
           					<div class="box">
           						<div class="row">
-        							<div class="col-xs-5">
-	        						</div>		
-	        						<div class="col-xs-3">
-    			      				<h3>
+        							 <!-- <div class="col-xs-1">
+	        						</div>		 --> 
+	        						<div class="col-xs-12">
+    			      				<h3 style="text-align: center;">
         				Controllo validità verbali
       				</h3>
       				</div>
-      				<div class="col-xs-5">
-      				</div>
+      				<!-- <div class="col-xs-2">
+      				</div> -->
 </div><br>
 
             					<div class="box-body">
             					<div class="row">
-        							<div class="col-xs-2">
-	        						</div>
-	        						<div class="col-xs-3">
+        						<!-- 	<div class="col-xs-2">
+	        						</div> -->
+	        						<div class="col-xs-5">
 	        						
-	        						<label class="pull-right">Numero Verbale</label>
+	        						<label class="pull-left">Numero Verbale</label>
 	        						</div>
-	        						<div class="col-xs-4">
+	        						<div class="col-xs-7">
 	        						<input type="text" class="form-control" value="${verbale.numeroVerbale }" readonly>
 	        						</div>
-	        						<div class="col-xs-2">
-	        						</div>
+	        			<!-- 			<div class="col-xs-2">
+	        						</div> -->
         						</div><br>
         						
         						<div class="row">
-        							<div class="col-xs-2">
-	        						</div>
-	        						<div class="col-xs-3">
+        						<!-- 	<div class="col-xs-2">
+	        						</div> -->
+	        						<div class="col-xs-5">
 	        						
-	        						<label class="pull-right">Stato</label>
+	        						<label class="pull-left">Stato</label>
 	        						</div>
-	        						<div class="col-xs-4">	        
+	        						<div class="col-xs-7">	        
 	        							<c:choose>
 	        							<c:when test="${verbale.stato.id == 10}">
 	        							<a><span class="label label-info" style="color:#000000 !important; background-color:${verbale.getStato().getColore(verbale.getStato().getId())} !important;">${verbale.getStato().getDescrizione()}</span> --%>
@@ -91,182 +91,215 @@
 	        							<a><span class="label label-info" id="stato"></span>
 												</a>
 	        						</div>
-	        						<div class="col-xs-2">
-	        						</div>
+	        						<!-- <div class="col-xs-2">
+	        						</div> -->
         						</div><br>
         						
+        						<c:if test="${verbale.codiceCategoria == 'VAL'}" >
+        						<div class="row">
+        							<!-- <div class="col-xs-2">
+	        						</div> -->
+	        						<div class="col-xs-5">
+	        						
+	        						<label class="pull-left">Matricola attrezzatura</label>
+	        						</div>
+	        						<div class="col-xs-7">	        
+	        							<input type="text" class="form-control" value="${verbale.attrezzatura.matricola_inail }" readonly>
+	        						</div>
+	        					<!-- 	<div class="col-xs-2">
+	        						</div> -->
+        						</div><br>
+        						
+        						</c:if>
         						
         						<div class="row">
-        							<div class="col-xs-2">
-	        						</div>
-	        						<div class="col-xs-3">
+        							<!-- <div class="col-xs-2">
+	        						</div> -->
+	        						<div class="col-xs-5">
 	        						
 	        					<c:choose>
 	        						<c:when test="${verbale.codiceCategoria == 'VAL' && verbale.codiceVerifica.startsWith('GVR')}">
-	        						<label class="pull-right">Data verifica di funzionamento</label>
+	        						<label class="pull-left">Data verifica funzionamento</label>
 	        						</c:when>
 	        						<c:otherwise >
-	        						<label class="pull-right">Data verifica</label>
+	        						<label class="pull-left">Data verifica</label>
 	        						</c:otherwise>
 	        						</c:choose>
 	        						</div>
-	        						<div class="col-xs-4">
+	        						<div class="col-xs-7">
 	        						<fmt:formatDate value="${verbale.data_verifica }"  pattern="dd/MM/yyyy" var="myDate" />      
 	        						<input type="text" class="form-control" value="${myDate }" readonly> 						
 	        						</div>
-	        						<div class="col-xs-2">
-	        						</div>
+	        						<!-- <div class="col-xs-2">
+	        						</div> -->
         						</div><br>
         						
         						
         						<div class="row">
-        							<div class="col-xs-2">
-	        						</div>
-	        						<div class="col-xs-3">
+        							<!-- <div class="col-xs-2">
+	        						</div> -->
+	        						<div class="col-xs-5">
 	        						<c:choose>
 	        						<c:when test="${verbale.codiceCategoria == 'VAL' && verbale.codiceVerifica.startsWith('GVR')}">
-	        						<label class="pull-right">Data scadenza verifica di funzionamento</label>
+	        						<label class="pull-left">Data prossima verifica funzionamento</label>
 	        						</c:when>
 	        						<c:otherwise >
-	        						<label class="pull-right">Data scadenza</label>
+	        						<label class="pull-left">Data prossima verifica</label>
 	        						</c:otherwise>
 	        						</c:choose>
 	        						
 	        						</div>
-	        						<div class="col-xs-4">
-	        						<fmt:formatDate value="${verbale.data_prossima_verifica }" pattern="dd/MM/yyyy" var="myDate" />      
-	        						<input type="text" class="form-control"  id="data_scadenza_input"  readonly> 						
-	        						<input type="hidden" class="form-control" value="${myDate }" id="data_scadenza">
+	        						<div class="col-xs-7">
+	        						<c:choose>
+	        						<c:when test="${verbale.codiceCategoria == 'VAL' && verbale.codiceVerifica.startsWith('GVR')}">
+	        						<fmt:formatDate value="${verbale.attrezzatura.data_prossima_verifica_funzionamento }" pattern="dd/MM/yyyy" var="myDate" />
+	        						</c:when>
+	        						<c:otherwise >
+	        						<fmt:formatDate value="${verbale.data_prossima_verifica }" pattern="dd/MM/yyyy" var="myDate" />
+	        						</c:otherwise>
+	        						</c:choose>
+	        						      
+	        					<!-- 	<input type="text" class="form-control"  id="data_scadenza_input"  readonly> 		 -->				
+	        						<input type="text" class="form-control" value="${myDate }" id="data_scadenza" style="width:100%" readonly>
 
 	        						</div>
-	        						<div class="col-xs-2">
-	        						</div>
+	        						<!-- <div class="col-xs-2">
+	        						</div> -->
         						</div><br>
         						
         						<c:if test="${verbale.codiceCategoria == 'VAL' && verbale.codiceVerifica.startsWith('GVR')}">
             					
             					<div class="row">
-        							<div class="col-xs-2">
-	        						</div>
-	        						<div class="col-xs-3">
+        							<!-- <div class="col-xs-2">
+	        						</div> -->
+	        						<div class="col-xs-5">
 	        						
-	        						<label class="pull-right">Data verifica di integrità</label>
+	        						<label class="pull-left">Data verifica integrità</label>
 	        						</div>
-	        						<div class="col-xs-4">
-	        						<fmt:formatDate value="${verbale.data_verifica_integrita }" pattern="dd/MM/yyyy" var="myDate" />      
+	        						<div class="col-xs-7">
+	        						<fmt:formatDate value="${verbale.attrezzatura.data_verifica_integrita }" pattern="dd/MM/yyyy" var="myDate" />      
 	        						<input type="text" class="form-control" value="${myDate }" readonly> 						
 	        						</div>
-	        						<div class="col-xs-2">
-	        						</div>
+	        						<!-- <div class="col-xs-2">
+	        						</div> -->
         						</div><br>
         						
         						
         						<div class="row">
-        							<div class="col-xs-2">
-	        						</div>
-	        						<div class="col-xs-3">
+        							<!-- <div class="col-xs-2">
+	        						</div> -->
+	        						<div class="col-xs-5">
 	        						
-	        						<label class="pull-right">Data scadenza verifica di integrità</label>
+	        						<label class="pull-left">Data prossima verifica integrità</label>
 	        						</div>
-	        						<div class="col-xs-4">
-	        						<fmt:formatDate value="${verbale.data_prossima_verifica_integrita }" pattern="dd/MM/yyyy" var="myDate" />      
-	        						<input type="text" class="form-control"  id="data_scadenza_integrita_input" readonly> 						
-	        						<input type="hidden" class="form-control" value="${myDate }" id="data_scadenza_integrita" readonly>
+	        						<div class="col-xs-7">
+	        						<fmt:formatDate value="${verbale.attrezzatura.data_prossima_verifica_integrita }" pattern="dd/MM/yyyy" var="myDate" />      
+	        						<!-- <input type="text" class="form-control"  id="data_scadenza_integrita_input" readonly>  -->						
+	        						<input type="text" class="form-control" value="${myDate }" id="data_scadenza_integrita" readonly>
 	        						</div>
-	        						<div class="col-xs-2">
-	        						</div>
+	        						<!-- <div class="col-xs-2">
+	        						</div> -->
         						</div><br>
         						
         						
         						<div class="row">
-        							<div class="col-xs-2">
-	        						</div>
-	        						<div class="col-xs-3">
+        							<!-- <div class="col-xs-2">
+	        						</div> -->
+	        						<div class="col-xs-5">
 	        						
-	        						<label class="pull-right">Data verifica di interna</label>
+	        						<label class="pull-left">Data verifica interna</label>
 	        						</div>
-	        						<div class="col-xs-4">
-	        						<fmt:formatDate value="${verbale.data_verifica_interna }" pattern="dd/MM/yyyy" var="myDate" />      
+	        						<div class="col-xs-7">
+	        						<fmt:formatDate value="${verbale.attrezzatura.data_verifica_interna }" pattern="dd/MM/yyyy" var="myDate" />      
 	        						<input type="text" class="form-control" value="${myDate }" readonly> 						
 	        						</div>
-	        						<div class="col-xs-2">
-	        						</div>
+	        						<!-- <div class="col-xs-2">
+	        						</div> -->
         						</div><br>
         						
         						
         						<div class="row">
-        							<div class="col-xs-2">
-	        						</div>
-	        						<div class="col-xs-3">
+        							<!-- <div class="col-xs-2">
+	        						</div> -->
+	        						<div class="col-xs-5">
 	        						
-	        						<label class="pull-right">Data scadenza verifica di interna</label>
+	        						<label class="pull-left">Data prossima verifica interna</label>
 	        						</div>
-	        						<div class="col-xs-4">
-	        						<fmt:formatDate value="${verbale.data_prossima_verifica_interna }" pattern="dd/MM/yyyy" var="myDate" />      
-	        						<input type="hidden" class="form-control"  id="data_scadenza_interna" value="${myDate}" readonly>
-	        						<input type="text" class="form-control"  id="data_scadenza_interna_input" readonly> 	 						
+	        						<div class="col-xs-7">
+	        						<fmt:formatDate value="${verbale.attrezzatura.data_prossima_verifica_interna }" pattern="dd/MM/yyyy" var="myDate" />      
+	        						<input type="text" class="form-control"  id="data_scadenza_interna" value="${myDate}" readonly>
+	        					<!-- 	<input type="text" class="form-control"  id="data_scadenza_interna_input" readonly> 	 --> 						
 	        						</div>
-	        						<div class="col-xs-2">
-	        						</div>
+	        						<!-- <div class="col-xs-2">
+	        						</div> -->
         						</div><br>
             					
             					
             					</c:if>
             					<div class="row">
-        							<div class="col-xs-2">
-	        						</div>
-	        						<div class="col-xs-3">
+        							<!-- <div class="col-xs-2">
+	        						</div> -->
+	        						<div class="col-xs-5">
 	        						
-	        						<label class="pull-right">Rilasciato a</label>
+	        						<label class="pull-left">Rilasciato a</label>
 	        						</div>
-	        						<div class="col-xs-4">
+	        						<div class="col-xs-7">
 	        					      
 	        						<input type="text" class="form-control" value="${ragione_sociale }" readonly> 						
 	        						</div>
-	        						<div class="col-xs-2">
-	        						</div>
+	        						<!-- <div class="col-xs-2">
+	        						</div> -->
         						</div><br>
         						
         						
         						<div class="row">
-        							<div class="col-xs-2">
-	        						</div>
-	        						<div class="col-xs-3">
+        							<!-- <div class="col-xs-2">
+	        						</div> -->
+	        						<div class="col-xs-5">
 	        						
-	        						<label class="pull-right">Partita IVA</label>
+	        						<label class="pull-left">Partita IVA</label>
 	        						</div>
-	        						<div class="col-xs-4">
+	        						<div class="col-xs-7">
 	        					      
 	        						<input type="text" class="form-control" value="${partita_iva }" readonly> 						
 	        						</div>
-	        						<div class="col-xs-2">
-	        						</div>
+	        						<!-- <div class="col-xs-2">
+	        						</div> -->
         						</div><br>
             					
             					
             					<div class="row">
-        							<div class="col-xs-2">
-	        						</div>
-	        						<div class="col-xs-3">
+        							<!-- <div class="col-xs-2">
+	        						</div> -->
+	        						<div class="col-xs-5">
 	        						
-	        						<label class="pull-right">Indirizzo impianto</label>
+	        						<c:choose>
+	        						<c:when test="${verbale.codiceCategoria == 'VAL'}">
+	        						<label class="pull-left">Indirizzo attrezzatura</label>
+	        						</c:when>
+	        						<c:otherwise >
+	        						<label class="pull-left">Indirizzo impianto</label>
+	        						</c:otherwise>
+	        						</c:choose>
+	        						
+	        					
 	        						</div>
-	        						<div class="col-xs-4">
+	        						<div class="col-xs-7">
 	        					      
 	        						<input type="text" class="form-control" value="${indirizzo }" readonly> 						
 	        						</div>
-	        						<div class="col-xs-2">
-	        						</div>
+	        						<!-- <div class="col-xs-2">
+	        						</div> -->
         						</div><br>
         						
         						<div class="row">
-        							<div class="col-xs-2">
-	        						</div>
-	        						<div class="col-xs-3">
+        							<!-- <div class="col-xs-2">
+	        						</div> -->
+	        						<div class="col-xs-5">
 	        						
-	        						<label class="pull-right">Normativa di riferimento</label>
+	        						<label class="pull-left">Normativa di riferimento</label>
 	        						</div>
-	        						<div class="col-xs-4">
+	        						<div class="col-xs-7">
 	        						<c:choose>
 	        						<c:when test="${verbale.codiceCategoria == 'VIE'}">
 	        						  <input type="text" class="form-control" value="D.P.R. 462/01" readonly>
@@ -279,13 +312,13 @@
 	        					    
 	        					   	
 	        						</div>
-	        						<div class="col-xs-2">
-	        						</div>
+	        						<!-- <div class="col-xs-2">
+	        						</div> -->
         						</div><br><br>
         						
         						
         						<div class="row">
-        							<div class="col-xs-5">
+        							<div class="col-xs-3">
 	        						</div>
 	        						<div class="col-xs-2">
 	        						
@@ -518,9 +551,9 @@ function checkStato(){
     				$(document).ready(function() {       
     					
     					
-    					$('#data_scadenza_input').val(checkScadenza($('#data_scadenza').val()));
+/*     					$('#data_scadenza_input').val(checkScadenza($('#data_scadenza').val()));
     					$('#data_scadenza_integrita_input').val(checkScadenza($('#data_scadenza_integrita').val()));
-    					$('#data_scadenza_interna_input').val(checkScadenza($('#data_scadenza_interna').val()));
+    					$('#data_scadenza_interna_input').val(checkScadenza($('#data_scadenza_interna').val())); */
     					checkStato()
     				});
 

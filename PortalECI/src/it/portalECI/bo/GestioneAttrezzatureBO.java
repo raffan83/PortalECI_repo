@@ -70,4 +70,9 @@ public class GestioneAttrezzatureBO {
 		
 		return GestioneAttrezzatureDAO.getlistaAttrezzatureData(data_start, data_end, tipo_data);
 	}
+	
+	public static ArrayList<AttrezzaturaDTO> getlistaAttrezzatureScadenza(String data_start, String data_end, String id_cliente, String id_sede,Session session) throws HibernateException, ParseException {
+		
+		return GestioneAttrezzatureDAO.getlistaAttrezzatureScadenza(data_start, data_end, id_cliente, id_sede, session);
+	}
 }

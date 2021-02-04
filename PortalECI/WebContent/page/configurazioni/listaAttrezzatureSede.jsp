@@ -30,6 +30,7 @@
 <div class="row">
 <div class="col-lg-12">
 
+            		
 
 	<table id="tabPM" class="table table-bordered table-hover dataTable table-striped" role="grid" width="100%">
 <thead><tr class="active">
@@ -723,6 +724,7 @@
 
 
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/datejs/1.0/date.min.js"></script>
+
 <script type="text/javascript">
 
 
@@ -1045,7 +1047,9 @@ $('#btnTutte').click(function(){
 });
 
 
-var tipo_attrezzatura_options = [];
+
+
+
 
 
 $(document).ready(function() {
@@ -1059,6 +1063,9 @@ $(document).ready(function() {
 		}
        
     });
+	
+	
+
 	
 	table = $('#tabPM').DataTable({
 		 language: {

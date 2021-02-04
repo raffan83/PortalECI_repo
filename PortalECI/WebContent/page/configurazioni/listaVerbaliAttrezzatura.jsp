@@ -19,7 +19,7 @@
  																<th>Numero Verbale</th>
  																<th>Matricola Attrezzatura</th>
  																<%-- <th>Sede Cliente</th> --%>
- 																<th>Codice Categoria</th>
+ 																<th>ID Commessa</th>
  																<th>Codice Verifica</th>
  																<%-- <th>Tecnico Verificatore</th> --%>
  																<th>Descrizione Verifica</th>
@@ -64,7 +64,7 @@
 																		<c:out value='${verbale.getIntervento().getNome_sede()}'/>
 																	</td> --%>
 																	<td>
-																		<c:out value='${verbale.getCodiceCategoria()}'/>
+																		<c:out value='${verbale.intervento.idCommessa}'/>
 																	</td>
 																	<td>
 																		<c:out value='${verbale.getCodiceVerifica()}'/>

@@ -16,6 +16,8 @@ Gson gson = new Gson();
 CampioneDTO campione=(CampioneDTO)gson.fromJson(jsonElem,CampioneDTO.class); 
 
 ArrayList<TipoCampioneDTO> listaTipoCampione = (ArrayList)session.getAttribute("listaTipoCampione");
+ArrayList<UtenteDTO> listaVerificatori = (ArrayList)session.getAttribute("listaVerificatori");
+
 
 SimpleDateFormat sdf= new SimpleDateFormat("dd/MM/yyyy");
 %>
@@ -310,6 +312,27 @@ SimpleDateFormat sdf= new SimpleDateFormat("dd/MM/yyyy");
                       
     </div>
        </div> 
+       
+                       <div class="form-group">
+        <label for="inputName" class="col-sm-3 control-label">Associato ai Verificatori:</label>
+        <div class="col-sm-9">
+
+                        <select class="form-control select2" id="verificatori_dtl" name="verificatori_dtl" multiple disabled>
+                     		<option value=""></option>
+                     		
+                     		<%-- <%
+							for(int i = 0;i<listaVerificatori.size();i++){                     		
+                     			if(campione.getListaVerificatori().contains(listaVerificatori.get(i))){                     			
+                     				%>
+                     			<option value="<%=listaVerificatori.get(i).getId() %>" selected><%=listaVerificatori.get(i).getNominativo() %></option>
+                     		<%}else{ %>
+                     	<option value="<%=listaVerificatori.get(i).getId() %>" ><%=listaVerificatori.get(i).getNominativo() %></option>
+							<%}
+							} %> --%>
+                      </select>
+                      
+    </div>
+       </div> 
           
        
       <!--     <div class="form-group">
@@ -337,5 +360,19 @@ SimpleDateFormat sdf= new SimpleDateFormat("dd/MM/yyyy");
        
     
    </form>
+   
+  <script type="text/javascript">
+  
+  $(document).ready(function(){
+	 
+		controllaAssociati(<%=json%>, <%=campione.getId() %>);
+	  $('#verificatori_dtl').select2();
+  });
+   
+   
+<!--
+
+//-->
+</script>
 
 				

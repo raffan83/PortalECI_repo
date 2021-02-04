@@ -418,9 +418,10 @@
 											</div>
 											<div class="box-body">	
 											<label>Seleziona uno strumento per il verificatore</label>
+											
+											<c:if test="${verbale.strumento_verificatore!=null }">
+											
 											<c:choose>
-											
-											
 											<c:when test="${verbale.getStato().getId() == 8 ||  verbale.getStato().getId() == 6}">
 											 <select id="strumento_verificatore" name="strumento_verificatore" class="form-contol select2" data-placeholder="Seleziona Strumento Verificatore..."  style="width:100%" required >
 														<option value=""></option>
@@ -458,6 +459,49 @@
 														</select>
       										</c:otherwise>
       											</c:choose>
+      											</c:if>
+      											
+      									<c:if test="${verbale.strumento_verificatore==null }">
+											
+											<c:choose>
+											<c:when test="${verbale.getStato().getId() == 8 ||  verbale.getStato().getId() == 6}">
+											 <select id="strumento_verificatore" name="strumento_verificatore" class="form-contol select2" data-placeholder="Seleziona Strumento Verificatore..."  style="width:100%" required >
+														<option value=""></option>
+														<option value="0">Nessuno</option>
+														<c:forEach items="${intervento.getTecnico_verificatore().getListaCampioni()}" var="str" varStatus="loop">
+														<c:if test="${str.id == verbale.campione.id }">
+															<option value="${str.id}" selected>${str.costruttore } - ${str.modello } - ${str.matricola }</option>
+														</c:if>
+														<c:if test="${str.id != verbale.campione.id }">
+															<option value="${str.id}">${str.costruttore } - ${str.modello } - ${str.matricola }</option>
+														</c:if>
+														
+														
+														</c:forEach>
+														
+														
+														</select>
+											</c:when>
+											<c:otherwise>
+        										 	 <select id="strumento_verificatore" name="strumento_verificatore" class="form-contol select2" data-placeholder="Seleziona Strumento Verificatore..."  style="width:100%" disabled >
+														<option value=""></option>
+														<option value="0">Nessuno</option>
+														<c:forEach items="${intervento.getTecnico_verificatore().getListaCampioni()}" var="str" varStatus="loop">
+														<c:if test="${str.id == verbale.campione.id }">
+															<option value="${str.id}" selected>${str.costruttore } - ${str.modello } - ${str.matricola }</option>
+														</c:if>
+														<c:if test="${str.id != verbale.campione.id }">
+															<option value="${str.id}">${str.costruttore } - ${str.modello } - ${str.matricola }</option>
+														</c:if>
+														
+														
+														</c:forEach>
+														
+														
+														</select>
+      										</c:otherwise>
+      											</c:choose>
+      											</c:if>
       			
 											</div>
 										</div>
