@@ -4,6 +4,9 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
@@ -87,6 +90,8 @@ public class GestioneStoricoVerbale extends HttpServlet {
 				request.getSession().setAttribute("lista_verbali", lista_verbali);
 				request.getSession().setAttribute("dateFrom", null);
 				request.getSession().setAttribute("dateTo", null); 
+				
+				//importaDaExcel(session);
 				
 //				
 //				
@@ -359,4 +364,110 @@ public class GestioneStoricoVerbale extends HttpServlet {
 			    outp.flush();
 			    outp.close();
 	 }
+	 
+	 
+	 
+	 
+	 
+	 public static void importaDaExcel( Session session) throws Exception {
+			
+			
+			File file = new File("C:\\Users\\antonio.dicivita\\Desktop\\tbl_upload.xlsx");
+	
+			int esito_generale = 0;
+			FileInputStream fis = new FileInputStream(file);   //obtaining bytes from the file  
+			//creating Workbook instance that refers to .xlsx file  
+			XSSFWorkbook wb = new XSSFWorkbook(fis);   
+			XSSFSheet sheet = wb.getSheetAt(0);     //creating a Sheet object to retrieve object  
+			Iterator<Row> itr = sheet.iterator();    //iterating over excel file  
+			
+
+			while (itr.hasNext())                 
+			{  
+				Row row = itr.next();  
+				Iterator<Cell> cellIterator = row.cellIterator();   //iterating over each column  
+						
+				boolean esito = false;
+				String nome_file = null;
+				String codice_commessa = null;
+				String verbeletter_id = null;
+				while (cellIterator.hasNext())  
+				{  
+					Cell cell = cellIterator.next();  
+				
+					
+					if(cell.getRowIndex()>0) {		
+						
+						if(row.getCell(cell.getColumnIndex()).getCellType()==Cell.CELL_TYPE_STRING) {
+							
+								esito = true;		
+								
+							    if(cell.getColumnIndex()==1) {
+									nome_file = cell.getStringCellValue();
+								}	
+							    
+							    if(cell.getColumnIndex()==2) {
+							    	verbeletter_id =""+ (int)cell.getNumericCellValue();
+								}	
+							    	
+								else if(cell.getColumnIndex()==4) {
+									codice_commessa = cell.getStringCellValue();
+								}
+						
+							
+						}else {
+								esito = true;		
+								
+							    
+							    if(cell.getColumnIndex()==2) {
+							    	verbeletter_id =""+ (int)cell.getNumericCellValue();
+								}	
+						}
+				}
+			}
+				
+				
+				if(codice_commessa!=null) {
+					VerbaleStoricoDTO verbale = GestioneStoricoVerbaleBO.getVerbaleFromCommessa(codice_commessa, session);
+					
+					if(verbale!=null) {
+						String path = "C:\\Users\\antonio.dicivita\\Desktop\\app\\upload\\verbscariche\\";
+						File fileToCopy = new File(path+verbeletter_id+"\\"+nome_file);
+						
+						String pathDest = Costanti.PATH_ROOT+"//Storico//Verbali//"+verbale.getId()+"//"+nome_file;
+						 
+						String path_folder =Costanti.PATH_ROOT+"//Storico//Verbali//"+verbale.getId()+"//";
+						File folder=new File(path_folder);
+						
+						if(!folder.exists()) {
+							folder.mkdirs();
+						}
+					
+						File f = new File(path+verbeletter_id+"\\"+nome_file);
+						
+						if(f.exists()) {
+						
+							Files.copy(Paths.get(path+verbeletter_id+"\\"+nome_file), Paths.get(path_folder+"\\"+nome_file), StandardCopyOption.REPLACE_EXISTING);
+															
+							
+							VerbaleStoricoAllegatoDTO allegato = new VerbaleStoricoAllegatoDTO();
+							allegato.setId_verbale_storico(verbale.getId());
+							allegato.setFilename(nome_file);
+							session.save(allegato);
+						}else {
+							System.out.println(verbeletter_id+"\\"+nome_file);
+						}
+				}
+					
+		}
+	    
+	}
+
+	 }
+	 
+	 
+	 
 }
+
+
+

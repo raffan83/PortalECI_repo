@@ -193,7 +193,7 @@
                 								</c:if>	
         										</ul> 
         										
-        										<c:if test='${verbale.getStato().getId()== 5 && verbale.getFirmato() == 1 && (user.checkRuolo("AM") || user.checkRuolo("RT") || user.checkRuolo("SRT"))  && verbale.getResponsabile_approvatore().getId() == userObj.getId() && verbale.codiceCategoria != "VAL"}'>										
+        										<c:if test='${verbale.getStato().getId()== 5 && verbale.getFirmato() == 1 && (user.checkRuolo("AM") || user.checkRuolo("RT") || user.checkRuolo("SRT"))  && verbale.getResponsabile_approvatore().getId() == userObj.getId() && verbale.codiceCategoria != "VAL" && verbale.getControfirmato()==0}'>										
 													<!-- <button type="button" class="btn btn-sm pull-right" onclick="salvaCambioStato(null,null,'6')" style="color:#000000 !important;"> -->
 													<button type="button" class="btn btn-info btn-sm pull-right" onclick="modalPin(1, null)" style="margin-left:5px">
 														<i class="fa fa-edit"></i>

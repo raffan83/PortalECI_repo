@@ -126,7 +126,7 @@
  	'${attrezzatura.data_verifica_funzionamento }','${attrezzatura.data_prossima_verifica_funzionamento }','${attrezzatura.data_verifica_integrita }','${attrezzatura.data_prossima_verifica_integrita }','${attrezzatura.data_verifica_interna }','${attrezzatura.data_prossima_verifica_interna }',
  	'${attrezzatura.anno_costruzione }','${attrezzatura.fabbricante }','${attrezzatura.modello }','${attrezzatura.settore_impiego }','${fn:replace(fn:replace(attrezzatura.note_tecniche.replace('\'',' ').replace('\\','/'),newLineChar, ' '),newLineChar2, ' ')}','${fn:replace(fn:replace(attrezzatura.note_generiche.replace('\'',' ').replace('\\','/').replace('\\n',' '),newLineChar, ' '),newLineChar2,' ')}','${attrezzatura.obsoleta }',
  	'${attrezzatura.tipo_attrezzatura }','${attrezzatura.tipo_attrezzatura_GVR }','${attrezzatura.ID_specifica }','${attrezzatura.sogg_messa_serv_GVR }',
- 	'${attrezzatura.n_panieri_idroestrattori }','${attrezzatura.marcatura }','${attrezzatura.n_id_on }','${attrezzatura.data_scadenza_ventennale }')"><i class="fa fa-edit"></i></a>
+ 	'${attrezzatura.n_panieri_idroestrattori }','${attrezzatura.marcatura }','${attrezzatura.n_id_on }','${attrezzatura.data_scadenza_ventennale }', '${attrezzatura.codice_milestone }')"><i class="fa fa-edit"></i></a>
  	</c:if>
  	</td>
  	
@@ -218,7 +218,8 @@
         <select class="form-control select2" disabled id="descrizione" name="descrizione" data-placeholder="Seleziona Descrizione..." style="width:100%">
          <option value=""></option>
         <c:forEach items="${lista_descrizioni_gruppi }" var="desc" varStatus="loop">
-        <option value="${desc.gruppo}_${desc.descrizione}_${desc.id_specifica}">${desc.descrizione }</option>
+        <%-- <option value="${desc.gruppo}_${desc.descrizione}_${desc.id_specifica}">${desc.descrizione }</option> --%>
+        <option value="${desc.gruppo}_${desc.descrizione}_${desc.id_specifica}@${desc.codici_milestone}">${desc.descrizione }</option>
         
         </c:forEach>
          </select>  
@@ -379,6 +380,13 @@
     </div>
        </div>
        
+        <div class="form-group">
+        <label for="inputName" class="col-sm-4 control-label">Codici Milestone:</label>
+        <div class="col-sm-8">
+                      <textarea class="form-control" id="codice_milestone" name="codice_milestone" rows ="3" readonly></textarea>
+    </div>
+    </div>
+       
 
  <div class="form-group">
         <label for="inputName" class="col-sm-4 control-label">Note tecniche:</label>
@@ -498,10 +506,10 @@
          <option value=""></option>
         <c:forEach items="${lista_descrizioni_gruppi }" var="desc">
         <c:if test="${desc.id_specifica!=null && desc.id_specifica!=''}">
-        <option value="${desc.gruppo}_${desc.descrizione}_${desc.id_specifica}">${desc.descrizione }</option>
+        <option value="${desc.gruppo}_${desc.descrizione}_${desc.id_specifica}@${desc.codici_milestone}">${desc.descrizione }</option>
         </c:if>
         <c:if test="${desc.id_specifica==null || desc.id_specifica==''}">
-        <option value="${desc.gruppo}_${desc.descrizione}">${desc.descrizione }</option>
+        <option value="${desc.gruppo}_${desc.descrizione}@${desc.codici_milestone}">${desc.descrizione }</option>
         </c:if>
         
         </c:forEach>
@@ -664,7 +672,12 @@
     </div>
        </div>
        
-       
+         <div class="form-group">
+        <label for="inputName" class="col-sm-4 control-label">Codici Milestone:</label>
+        <div class="col-sm-8">
+                      <textarea class="form-control" id="codice_milestone_mod" name="codice_milestone_mod" rows ="3" readonly></textarea>
+    </div>
+    </div>
        
  <div class="form-group">
         <label for="inputName" class="col-sm-4 control-label">Note tecniche:</label>
@@ -747,7 +760,7 @@
 
 
 
-function openTab(id_attrezzatura, matricola_inail, numero_fabbrica, tipo_attivita, descrizione, id_cliente, id_sede,
+/* function openTab(id_attrezzatura, matricola_inail, numero_fabbrica, tipo_attivita, descrizione, id_cliente, id_sede,
 		data_verifica_funzionamento, data_prossima_verifica_funzionamento,data_verifica_integrita, data_prossima_verifica_integrita, data_verifica_interna, data_prossima_verifica_interna,
 		anno_costruzione, fabbricante, modello, settore_impiego, note_tecniche, note_generiche, obsoleta, tipo_attrezzatura, tipo_attrezzatura_gvr,
 		id_specifica, sogg_messa_serv_GVR, n_panieri_idroestrattori, marcatura, n_id_on, data_scadenza_ventennale){
@@ -772,6 +785,9 @@ function openTab(id_attrezzatura, matricola_inail, numero_fabbrica, tipo_attivit
 	}else{
 		$('#sede_mod').val(0);
 	}
+	
+	
+	
 	
 	$('#sede_mod').change();
 	$('#anno_costruzione_mod').val(anno_costruzione);
@@ -845,7 +861,7 @@ function openTab(id_attrezzatura, matricola_inail, numero_fabbrica, tipo_attivit
 	
 }
 		
-
+ */
 
 
 var columsDatatables = [];
@@ -897,7 +913,7 @@ function modalNuovaAttrezzatura(){
 function modalModificaAttrezzatura(id_attrezzatura, matricola_inail, numero_fabbrica, tipo_attivita, descrizione, id_cliente, id_sede,
 		data_verifica_funzionamento, data_prossima_verifica_funzionamento,data_verifica_integrita, data_prossima_verifica_integrita, data_verifica_interna, data_prossima_verifica_interna,
 		anno_costruzione, fabbricante, modello, settore_impiego, note_tecniche, note_generiche, obsoleta, tipo_attrezzatura, tipo_attrezzatura_gvr,
-		id_specifica, sogg_messa_serv_GVR, n_panieri_idroestrattori, marcatura, n_id_on, data_scadenza_ventennale){
+		id_specifica, sogg_messa_serv_GVR, n_panieri_idroestrattori, marcatura, n_id_on, data_scadenza_ventennale, codice_milestone){
 
 	
 	
@@ -907,9 +923,9 @@ function modalModificaAttrezzatura(id_attrezzatura, matricola_inail, numero_fabb
 	$('#tipo_attivita_mod').val(tipo_attivita);
 	$('#tipo_attivita_mod').change();
 	if(id_specifica!=null && id_specifica!=''){
-		$('#descrizione_mod').val(tipo_attivita+"_"+descrizione+"_"+id_specifica);
+		$('#descrizione_mod').val(tipo_attivita+"_"+descrizione+"_"+id_specifica+"@"+codice_milestone);
 	}else{
-		$('#descrizione_mod').val(tipo_attivita+"_"+descrizione);	
+		$('#descrizione_mod').val(tipo_attivita+"_"+descrizione+"@"+codice_milestone);	
 	}
 	
 	$('#descrizione_mod').change();
@@ -920,6 +936,14 @@ function modalModificaAttrezzatura(id_attrezzatura, matricola_inail, numero_fabb
 	}else{
 		$('#sede_mod').val(0);
 	}
+	
+/* 	var z = tipo_attivita+"_"+descrizione+"_"+id_specifica+"@"+codice_milestone
+	var y = $('#descrizione_mod option').clone();
+	
+	if(z == y[14].value){
+		alert("OK")
+	}
+	var x = $('#descrizione_mod').val(); */
 	
 	$('#sede_mod').change();
 	$('#anno_costruzione_mod').val(anno_costruzione);
@@ -1294,11 +1318,6 @@ $("#tipo_attivita").change(function() {
 			$('#data_scadenza_ventennale').removeClass("disabled");
 		}
 		
-		
-		
-		
-		
-		
 		 $("#settore_impiego").prop("disabled", false);
 		  $('#settore_impiego').html(settore_opt);
 			$("#settore_impiego").change();  
@@ -1381,7 +1400,11 @@ $("#descrizione").change(function() {
 	  var gruppo = $(this).val().split('_')[0];
 	 
 	  var descrizione = $(this).val().split("_")[1];
-	  var id_spec = $(this).val().split("_")[2];
+	
+	 // var id_spec = $(this).val().split("_")[3];
+	  var id_spec = $(this).val().split("_")[2].split("@")[0];
+	  var codice_milestone = $(this).val().split("@")[1];
+
 
 	  var opt_tipo_attr =[];
 	  var opt_tipo_attr_gvr =[];	
@@ -1540,6 +1563,8 @@ $("#descrizione").change(function() {
 			
 			
 		}
+		
+		$('#codice_milestone').val(codice_milestone);
 		 $("#tipo_attrezzatura").prop("disabled", false);
 		  $('#tipo_attrezzatura').html(opt_tipo_attr);
 			$("#tipo_attrezzatura").change();  
@@ -1557,185 +1582,193 @@ $("#descrizione_mod").change(function() {
     
 	$('#n_panieri_idroestrattori_mod').attr("disabled",true);
 	$("#tipo_attrezzatura_gvr_mod").prop("disabled", true);
+	
+	if($(this).val()!=null){
+		 var gruppo = $(this).val().split('_')[0];
+		 
+		  var descrizione = $(this).val().split("_")[1];
+		  var id_spec = $(this).val().split("_")[2].split("@")[0];
+		  var codice_milestone = $(this).val().split("@")[1];
+		  //var id_spec = $(this).val().split("_")[2];
 
-	  var gruppo = $(this).val().split('_')[0];
-	 
-	  var descrizione = $(this).val().split("_")[1];
-	  var id_spec = $(this).val().split("_")[2];
-
-	  var opt_tipo_attr =[];
-	  var opt_tipo_attr_gvr =[];	
-	  
-	  
-	  if(descrizione.startsWith('Idroestrattor')){
-		  $('#n_panieri_idroestrattori_mod').attr("disabled",false);
-	  }
-	  	
-	  $('#id_specifica_mod').val(id_spec);
-	  
-	  
-		if(gruppo == "GVR"){
-			
-			if(descrizione.startsWith("Recipienti")){
-				opt_tipo_attr.push('<option value="a1">a1</option>');
-				opt_tipo_attr.push('<option value="a2">a2</option>');
-				opt_tipo_attr.push('<option value="a5">a5</option>');
-				opt_tipo_attr.push('<option value="b1">b1</option>');
-				opt_tipo_attr.push('<option value="b2">b2</option>');
+		  var opt_tipo_attr =[];
+		  var opt_tipo_attr_gvr =[];	
+		  
+		  
+		  if(descrizione.startsWith('Idroestrattor')){
+			  $('#n_panieri_idroestrattori_mod').attr("disabled",false);
+		  }
+		  	
+		  $('#id_specifica_mod').val(id_spec);
+		  
+		  
+			if(gruppo == "GVR"){
 				
-				opt_tipo_attr_gvr.push('<option value="a1">a1</option>');
-
-			}
-			else if(descrizione.startsWith("Generatori")){
-				opt_tipo_attr.push('<option value="b3">b3</option>');
-				
-				if(descrizione.startsWith("Generatori acqua")){
-					
-					
-					opt_tipo_attr_gvr.push('<option value="a3">a3</option>');
-
-				}else{
-					opt_tipo_attr_gvr.push('<option value="a2">a2</option>');
-				}
-				
-
-				
-				
-			}			
-			else if(descrizione.startsWith("Forni")){
-				opt_tipo_attr.push('<option value="a1">a1</option>');
-				
-				opt_tipo_attr_gvr.push('<option value="a6">a6</option>');
-			
-
-			}
-			else if(descrizione.startsWith("Tubazioni")){
-				opt_tipo_attr.push('<option value="a3">a3</option>');				
-				opt_tipo_attr.push('<option value="a4">a4</option>');
-				opt_tipo_attr.push('<option value="b4">b4</option>');
-				opt_tipo_attr.push('<option value="b5">b5</option>');
-				
-				opt_tipo_attr_gvr.push('<option value="a4">a4</option>');
-			}
-			else if(descrizione.startsWith("Insieme")){
-				
-				opt_tipo_attr.push('<option value="a1">a1</option>');
-				opt_tipo_attr.push('<option value="a2">a2</option>');
-				opt_tipo_attr.push('<option value="a5">a5</option>');
-				opt_tipo_attr.push('<option value="b1">b1</option>');
-				opt_tipo_attr.push('<option value="b2">b2</option>');
-				
-				opt_tipo_attr_gvr.push('<option value="b">b</option>');
-			}
-			
-			else{
-				opt_tipo_attr.push('<option value=""></option>');
-				
-				opt_tipo_attr_gvr.push('<option value="a5">a5</option>');
-			}
-
-			$("#tipo_attrezzatura_gvr_mod").prop("disabled", true);
-		}
-		
-		else if(gruppo == "SP"){
-			
-			if(descrizione.startsWith("Scale")){
-				opt_tipo_attr.push('<option value="a">a</option>');
-
-			//	opt_tipo_attr_gvr.push('<option value=""></option>');				
-
-
-				
-			}
-			else if(descrizione.startsWith("Ponti mobili")){
-				
-				if(descrizione.includes("azionamento")){
-					
-					opt_tipo_attr.push('<option value="b">b</option>');
-
-				}else{
-					opt_tipo_attr.push('<option value="c">c</option>');
-				}
-				
-
-			}			
-			else if(descrizione.startsWith("Carri") || descrizione.startsWith("Ponti sospesi")){
-				
-				opt_tipo_attr.push('<option value="d">d</option>');				
-			
-				
-			}
-			else if(descrizione.startsWith("Piattaforme")){
-				opt_tipo_attr.push('<option value="e">e</option>');				
-
-			}			
-			else{
-				opt_tipo_attr.push('<option value="f">f</option>');				
-			}
-
-		}
-
-		else if(gruppo == "SC"){
-					
-			
-			if(descrizione.startsWith("Carrelli")){
-				opt_tipo_attr.push('<option value="c">c</option>');
-				
-		//		opt_tipo_attr_gvr.push('<option value="a1">a1</option>');
-				
-		
-				
-			}
-			else if(descrizione.startsWith("Idroestrattori")){
-				
-			
-				opt_tipo_attr.push('<option value="d1">d1</option>');
-				opt_tipo_attr.push('<option value="d2">d2</option>');
-				opt_tipo_attr.push('<option value="d3">d3</option>');
-			
-			}			
-			else if(descrizione.startsWith("Gru")){
-				
-				if(descrizione.includes("braccio")||descrizione.includes("trasferibile")||descrizione.includes("torre")||descrizione.includes("Derrick")){
-					opt_tipo_attr.push('<option value="b1">b1</option>');
-					opt_tipo_attr.push('<option value="b2">b2</option>');
-					opt_tipo_attr.push('<option value="b3">b3</option>');				
-					
-				}else{
+				if(descrizione.startsWith("Recipienti")){
 					opt_tipo_attr.push('<option value="a1">a1</option>');
 					opt_tipo_attr.push('<option value="a2">a2</option>');
-					opt_tipo_attr.push('<option value="a3">a3</option>');
+					opt_tipo_attr.push('<option value="a5">a5</option>');
+					opt_tipo_attr.push('<option value="b1">b1</option>');
+					opt_tipo_attr.push('<option value="b2">b2</option>');
+					
+					opt_tipo_attr_gvr.push('<option value="a1">a1</option>');
+
+				}
+				else if(descrizione.startsWith("Generatori")){
+					opt_tipo_attr.push('<option value="b3">b3</option>');
+					
+					if(descrizione.startsWith("Generatori acqua")){
+						
+						
+						opt_tipo_attr_gvr.push('<option value="a3">a3</option>');
+
+					}else{
+						opt_tipo_attr_gvr.push('<option value="a2">a2</option>');
+					}
+					
+
+					
+					
+				}			
+				else if(descrizione.startsWith("Forni")){
+					opt_tipo_attr.push('<option value="a1">a1</option>');
+					
+					opt_tipo_attr_gvr.push('<option value="a6">a6</option>');
+				
+
+				}
+				else if(descrizione.startsWith("Tubazioni")){
+					opt_tipo_attr.push('<option value="a3">a3</option>');				
 					opt_tipo_attr.push('<option value="a4">a4</option>');
+					opt_tipo_attr.push('<option value="b4">b4</option>');
+					opt_tipo_attr.push('<option value="b5">b5</option>');
+					
+					opt_tipo_attr_gvr.push('<option value="a4">a4</option>');
+				}
+				else if(descrizione.startsWith("Insieme")){
+					
+					opt_tipo_attr.push('<option value="a1">a1</option>');
+					opt_tipo_attr.push('<option value="a2">a2</option>');
+					opt_tipo_attr.push('<option value="a5">a5</option>');
+					opt_tipo_attr.push('<option value="b1">b1</option>');
+					opt_tipo_attr.push('<option value="b2">b2</option>');
+					
+					opt_tipo_attr_gvr.push('<option value="b">b</option>');
 				}
 				
-			}
+				else{
+					opt_tipo_attr.push('<option value=""></option>');
+					
+					opt_tipo_attr_gvr.push('<option value="a5">a5</option>');
+				}
 
-
-			
-			else{
-				opt_tipo_attr.push('<option value="b1">b1</option>');
-				opt_tipo_attr.push('<option value="b2">b2</option>');
-				opt_tipo_attr.push('<option value="b3">b3</option>');	
-
+				$("#tipo_attrezzatura_gvr_mod").prop("disabled", true);
 			}
 			
+			else if(gruppo == "SP"){
+				
+				if(descrizione.startsWith("Scale")){
+					opt_tipo_attr.push('<option value="a">a</option>');
+
+				//	opt_tipo_attr_gvr.push('<option value=""></option>');				
+
+
+					
+				}
+				else if(descrizione.startsWith("Ponti mobili")){
+					
+					if(descrizione.includes("azionamento")){
+						
+						opt_tipo_attr.push('<option value="b">b</option>');
+
+					}else{
+						opt_tipo_attr.push('<option value="c">c</option>');
+					}
+					
+
+				}			
+				else if(descrizione.startsWith("Carri") || descrizione.startsWith("Ponti sospesi")){
+					
+					opt_tipo_attr.push('<option value="d">d</option>');				
+				
+					
+				}
+				else if(descrizione.startsWith("Piattaforme")){
+					opt_tipo_attr.push('<option value="e">e</option>');				
+
+				}			
+				else{
+					opt_tipo_attr.push('<option value="f">f</option>');				
+				}
+
+			}
+
+			else if(gruppo == "SC"){
+						
+				
+				if(descrizione.startsWith("Carrelli")){
+					opt_tipo_attr.push('<option value="c">c</option>');
+					
+			//		opt_tipo_attr_gvr.push('<option value="a1">a1</option>');
+					
 			
-			
-			
-			
-		}
-		 $("#tipo_attrezzatura_mod").prop("disabled", false);
-		  $('#tipo_attrezzatura_mod').html(opt_tipo_attr);
-			$("#tipo_attrezzatura_mod").change();  
-			
-			 
-			  $('#tipo_attrezzatura_gvr_mod').html(opt_tipo_attr_gvr);
-				$("#tipo_attrezzatura_gvr_mod").change();  
+					
+				}
+				else if(descrizione.startsWith("Idroestrattori")){
+					
+				
+					opt_tipo_attr.push('<option value="d1">d1</option>');
+					opt_tipo_attr.push('<option value="d2">d2</option>');
+					opt_tipo_attr.push('<option value="d3">d3</option>');
+				
+				}			
+				else if(descrizione.startsWith("Gru")){
+					
+					if(descrizione.includes("braccio")||descrizione.includes("trasferibile")||descrizione.includes("torre")||descrizione.includes("Derrick")){
+						opt_tipo_attr.push('<option value="b1">b1</option>');
+						opt_tipo_attr.push('<option value="b2">b2</option>');
+						opt_tipo_attr.push('<option value="b3">b3</option>');				
+						
+					}else{
+						opt_tipo_attr.push('<option value="a1">a1</option>');
+						opt_tipo_attr.push('<option value="a2">a2</option>');
+						opt_tipo_attr.push('<option value="a3">a3</option>');
+						opt_tipo_attr.push('<option value="a4">a4</option>');
+					}
+					
+				}
+
+
+				
+				else{
+					opt_tipo_attr.push('<option value="b1">b1</option>');
+					opt_tipo_attr.push('<option value="b2">b2</option>');
+					opt_tipo_attr.push('<option value="b3">b3</option>');	
+
+				}
 				
 				
 				
 				
-				select_settore_impiego("_mod");
+				
+			}
+			
+			$('#codice_milestone_mod').val(codice_milestone);
+			 $("#tipo_attrezzatura_mod").prop("disabled", false);
+			  $('#tipo_attrezzatura_mod').html(opt_tipo_attr);
+				$("#tipo_attrezzatura_mod").change();  
+				
+				 
+				  $('#tipo_attrezzatura_gvr_mod').html(opt_tipo_attr_gvr);
+					$("#tipo_attrezzatura_gvr_mod").change();  
+					
+					
+					
+					
+					select_settore_impiego("_mod");
+	}
+
+	 
 	});
 
 $('#settore_impiego_mod').change(function(){

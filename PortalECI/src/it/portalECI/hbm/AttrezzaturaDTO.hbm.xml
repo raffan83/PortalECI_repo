@@ -132,6 +132,8 @@
             <column name="regione_div" />
         </property>
 	
-	 
+	  <property name="codice_milestone" type="java.lang.String">
+            <column name="codice_milestone" />
+        </property>
     </class>
 </hibernate-mapping>

@@ -137,7 +137,7 @@
 			<li>
 			<a  href="#" onclick="callAction('gestioneCampione.do?action=lista',null,true);" >Gestione Campioni</a>
 			</li>
-			<% if(user.checkRuolo("AM")){ %>
+			<% if(user.checkRuolo("AM") || user.checkPermesso("SCADENZARIO_CAMPIONI")){ %>
 			<li>
 			<a href="#" onclick="callAction('scadenzario.do')">Scadenzario</a>
 			

@@ -10,6 +10,7 @@ public class DescrizioneGruppoAttrezzaturaDTO {
 	private String indice_verifica_2;
 	private String indice_verifica_3;
 	private String indice_verifica_4;
+	private String codici_milestone;
 	
 	public int getId() {
 		return id;
@@ -58,6 +59,12 @@ public class DescrizioneGruppoAttrezzaturaDTO {
 	}
 	public void setIndice_verifica_4(String indice_verifica_4) {
 		this.indice_verifica_4 = indice_verifica_4;
+	}
+	public String getCodici_milestone() {
+		return codici_milestone;
+	}
+	public void setCodici_milestone(String codici_milestone) {
+		this.codici_milestone = codici_milestone;
 	}
 	
 	

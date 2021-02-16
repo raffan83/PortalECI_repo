@@ -11,14 +11,18 @@
 <%@page import="java.text.SimpleDateFormat"%>
 <%@ page language="java" import="java.util.List" %>
 <%@ page language="java" import="java.util.ArrayList" %>
+    <% 
 
+
+UtenteDTO userObj = (UtenteDTO)request.getSession().getAttribute("userObj");
+%>
 
 <%-- <c:if test="${userObj.checkPermesso('CARICAMENTO_DOCUMENTI_ESTERNI_STRUMENTO_METROLOGIA')}"> --%>
 
 <div class="row">
 <div class="col-xs-12">
 
-<c:if test="${utente.checkRuolo('AM') }">
+<c:if test="${userObj.checkRuolo('AM') }">
 <div class="row">
 <div class="col-xs-12">
 <h4>CARICAMENTO DOCUMENTI</h4>
@@ -98,7 +102,7 @@
 
 		<a onclick="callAction('documentiEsterni.do?action=scaricaDocumento&idDoc=${documento.id}')" class="btn btn-danger"><i class="fa fa-file-pdf-o"></i></a>
 		<%-- <c:if test="${userObj.checkPermesso('LISTA_DOCUMENTI_ESTERNI_STRUMENTO_METROLOGIA')}"> --%>
-		<c:if test="${utente.checkRuolo('AM') }">
+		<c:if test="${userObj.checkRuolo('AM') }">
 		<a href="#" onClick="modalEliminaDocumentoEsternoCampione(${documento.id})" class="btn btn-danger"><i class="fa fa-remove"></i></a>
 		</c:if>
 			<%-- </c:if>	 --%>	

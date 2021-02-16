@@ -33,4 +33,9 @@ public class GestioneStoricoVerbaleBO {
 		return GestioneStoricoVerbaleDAO.getAllegatoFormId(id_allegato, session);
 	}
 
+	public static VerbaleStoricoDTO getVerbaleFromCommessa(String codice_commessa, Session session) {
+		
+		return GestioneStoricoVerbaleDAO.getVerbaleFromCommessa(codice_commessa, session);
+	}
+
 }

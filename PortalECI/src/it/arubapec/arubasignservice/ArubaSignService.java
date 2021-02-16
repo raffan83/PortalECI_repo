@@ -10,6 +10,7 @@ import java.util.Date;
 import javax.activation.DataHandler;
 
 import org.apache.commons.io.FileUtils;
+import org.hibernate.Session;
 
 import com.google.gson.JsonObject;
 import com.itextpdf.text.pdf.PdfReader;
@@ -29,9 +30,11 @@ import it.arubapec.arubasignservice.ArubaSignServiceServiceStub.Pkcs7SignV2E;
 import it.arubapec.arubasignservice.ArubaSignServiceServiceStub.Pkcs7SignV2ResponseE;
 import it.arubapec.arubasignservice.ArubaSignServiceServiceStub.SignRequestV2;
 import it.arubapec.arubasignservice.ArubaSignServiceServiceStub.TypeTransport;
+import it.portalECI.DAO.SessionFacotryDAO;
 import it.portalECI.DTO.DocumentoDTO;
 import it.portalECI.DTO.UtenteDTO;
 import it.portalECI.Util.Costanti;
+import it.portalECI.bo.GestioneUtenteBO;
 
 public class ArubaSignService {
 
@@ -298,6 +301,120 @@ public class ArubaSignService {
 	        return result;
 	    }
 
+	 
+//	 public static void main(String[] args) throws Exception {
+//			Session session = SessionFacotryDAO.get().openSession();
+//			session.beginTransaction();
+//		 UtenteDTO utente = GestioneUtenteBO.getUtenteById("4", session);
+//		 session.close();
+//		 signDocumentoPadesTest(utente);
+//	}
 
+	 
+	 
+//	 public static JsonObject signDocumentoPadesTest(UtenteDTO utente) throws TypeOfTransportNotImplementedException, IOException {
+//			
+//
+//			ArubaSignServiceServiceStub stub = new ArubaSignServiceServiceStub();
+//			
+//			
+//			PdfsignatureV2E request= new PdfsignatureV2E();
+//			PdfsignatureV2 pkcs = new PdfsignatureV2();
+//			
+//			SignRequestV2  sign = new SignRequestV2();
+//			
+//			
+//			sign.setCertID("AS0");
+//			
+//			Auth identity = new Auth();
+//			identity.setDelegated_domain("faSTI");
+//			identity.setTypeOtpAuth("faSTI");
+//			identity.setOtpPwd("dsign");
+//			identity.setTypeOtpAuth("faSTI");
+//			
+//			identity.setUser(utente.getId_firma());
+//			
+//			identity.setDelegated_user("admin.firma");
+//			identity.setDelegated_password("uBFqc8YYslTG");
+//			
+//			sign.setIdentity(identity);
+//			
+//			//String fileNoExt = ""
+//			
+//			String path = "C:\\Users\\antonio.dicivita\\Desktop\\Esempio firma.pdf";
+//			
+//			String keyWord = "Verificatore";
+//
+//			
+//			File f = new File(path);
+//
+//			URI uri = f.toURI();
+//			
+//
+//	        PdfReader reader = new PdfReader(path);
+//
+//			javax.activation.DataHandler dh = new DataHandler(uri.toURL());
+//			
+//			sign.setBinaryinput(dh);
+//
+//			sign.setTransport(TypeTransport.BYNARYNET);
+//			
+//
+//			pkcs.setSignRequestV2(sign);
+//			pkcs.setPdfprofile(PdfProfile.BASIC);
+//			PdfSignApparence apparence = new PdfSignApparence();
+//			apparence.setPage( reader.getNumberOfPages());
+//			SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+//			apparence.setTesto("Firmato digitalmente da: "+utente.getNominativo()+"\nData: "+sdf.format(new Date()));
+//
+//			
+//			Integer[] fontPosition = getFontPosition(path, keyWord, null);
+//	        System.out.println(Arrays.toString(fontPosition));
+//	        apparence.setLeftx(300);
+//	        apparence.setLefty(100);
+//
+//	        JsonObject jsonObj = new JsonObject();
+//	        
+//
+//	        
+//	        if(apparence.getLeftx()!= 0 && apparence.getLefty() != 0) {
+//	        	
+//	        	 pkcs.setApparence(apparence);
+//	         	request.setPdfsignatureV2(pkcs);
+//	         		
+//	         		
+//	         		PdfsignatureV2ResponseE response= stub.pdfsignatureV2(request);
+//	         		
+//	         		if( response.getPdfsignatureV2Response().get_return().getStatus().equals("KO")) {
+//	         			jsonObj.addProperty("success", false);
+//	         			jsonObj.addProperty("messaggio", response.getPdfsignatureV2Response().get_return().getDescription());
+//	         		}else {
+//	         			
+//	         			jsonObj.addProperty("success", true);
+//	         			
+//	         			DataHandler fileReturn=response.getPdfsignatureV2Response().get_return().getBinaryoutput();
+//	         			//File targetFile = new File(Costanti.PATH_FIRMA_DIGITALE+ fileNoExt+".pdf");
+//	         			File targetFile = 
+//	         				new File("C:\\Users\\antonio.dicivita\\Desktop\\"+"_F.pdf");	
+//	         			
+//	         			
+//	         			FileUtils.copyInputStreamToFile(fileReturn.getInputStream(), targetFile);
+//
+//	         			jsonObj.addProperty("messaggio", "Documento firmato");
+//	         		}
+//	        	
+//	        }else {
+//	        	jsonObj.addProperty("success", false);
+//	        	jsonObj.addProperty("messaggio", "Impossibile trovare posizione firma!");
+//	        }
+//	       
+//	        		
+//		//	f.delete();
+//			reader.close();
+//			return jsonObj;
+//			
+//			
+//			 
+//		}
 }
 

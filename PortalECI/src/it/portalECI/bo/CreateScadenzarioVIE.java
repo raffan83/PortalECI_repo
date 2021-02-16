@@ -295,8 +295,8 @@ public class CreateScadenzarioVIE {
    		 		indirizzo_impianto = verbale.getSedeUtilizzatore().split("-")[0];
    		 		
    		 		if(verbale.getSedeUtilizzatore().split("-").length>1) {
-   		 			localita_impianto = verbale.getSedeUtilizzatore().split("-")[1].substring(0, verbale.getSedeUtilizzatore().split("-")[1].length()-4);
-   		 			provincia_impianto = verbale.getSedeUtilizzatore().split("-")[1].substring(verbale.getSedeUtilizzatore().split("-")[1].length()-4, verbale.getSedeUtilizzatore().split("-")[1].length()).replace("(", "").replace(")", "");	
+   		 			localita_impianto = verbale.getSedeUtilizzatore().split("-")[2].substring(0, verbale.getSedeUtilizzatore().split("-")[2].length()-4);
+   		 			provincia_impianto = verbale.getSedeUtilizzatore().split("-")[2].substring(verbale.getSedeUtilizzatore().split("-")[2].length()-4, verbale.getSedeUtilizzatore().split("-")[2].length()).replace("(", "").replace(")", "");	
    		 		}
    		 		
    		 	 }

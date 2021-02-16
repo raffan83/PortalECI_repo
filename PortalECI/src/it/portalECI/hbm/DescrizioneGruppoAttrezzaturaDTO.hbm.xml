@@ -30,5 +30,8 @@
         <property name="indice_verifica_4" type="java.lang.String">
             <column name="indice_verifica_4" />
         </property>
+        <property name="codici_milestone" type="java.lang.String">
+            <column name="codici_milestone" />
+        </property>
     </class>
 </hibernate-mapping>

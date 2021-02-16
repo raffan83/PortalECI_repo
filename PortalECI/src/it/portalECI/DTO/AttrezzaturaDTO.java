@@ -49,7 +49,7 @@ public class AttrezzaturaDTO {
 	private String cap_div;
 	private String provincia_div;
 	private String regione_div;
-		
+	private String codice_milestone;	
 	
 	
 	public int getAnno_costruzione() {
@@ -297,6 +297,12 @@ public class AttrezzaturaDTO {
 	}
 	public void setPresso_div(String presso_div) {
 		this.presso_div = presso_div;
+	}
+	public String getCodice_milestone() {
+		return codice_milestone;
+	}
+	public void setCodice_milestone(String codice_milestone) {
+		this.codice_milestone = codice_milestone;
 	}
 
 	

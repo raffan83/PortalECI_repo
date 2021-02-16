@@ -3025,6 +3025,9 @@ function nuovaAttrezzatura(){
 	pleaseWaitDiv = $('#pleaseWaitDialog');
 	pleaseWaitDiv.modal();
 	
+	var cliente_return = $('#select1').val();	
+	var sede_return = $('#select2').val();
+	
 	var id_cliente = $('#cliente').val();
 	var id_sede = $('#sede').val();
 	var matricola_inail = $('#matricola_inail').val();
@@ -3052,7 +3055,7 @@ function nuovaAttrezzatura(){
 	var marcatura = $('#marcatura').val();
 	var n_id_on = $('#n_id_on').val();
 	var data_scadenza_ventennale = $('#data_scadenza_ventennale').val();
-
+	var codice_milestone = $('#codice_milestone').val();
 
 	var dataObj = {};
 	          
@@ -3082,7 +3085,7 @@ function nuovaAttrezzatura(){
 	dataObj.marcatura = marcatura;
 	dataObj.n_id_on = n_id_on;
 	dataObj.data_scadenza_ventennale = data_scadenza_ventennale;
-	
+	dataObj.codice_milestone = codice_milestone;
 
 	$.ajax({
 		type: "POST",
@@ -3095,7 +3098,7 @@ function nuovaAttrezzatura(){
 			if(data.success){ 
 				$('#modalNuovaAttrezzatura').modal('hide');
 				
-				 dataString ="action=cliente_sede&id_cliente="+ id_cliente+"&id_sede="+id_sede;
+				 dataString ="action=cliente_sede&id_cliente="+ cliente_return+"&id_sede="+sede_return;
 		          exploreModal("listaAttrezzature.do",dataString,"#posTab",function(data,textStatus){
 				
 		        	  pleaseWaitDiv.modal('hide');
@@ -3126,6 +3129,9 @@ function modificaAttrezzatura(scadenzario, date, tipo_data){
 	pleaseWaitDiv = $('#pleaseWaitDialog');
 	pleaseWaitDiv.modal();
 	
+	var cliente_return = $('#select1').val();	
+	var sede_return = $('#select2').val();
+	
 	var id_attrezzatura = $('#id_attrezzatura').val();
 	var id_cliente = $('#cliente_mod').val();
 	var id_sede = $('#sede_mod').val();
@@ -3154,7 +3160,7 @@ function modificaAttrezzatura(scadenzario, date, tipo_data){
 	var n_id_on = $('#n_id_on_mod').val();
 	var data_scadenza_ventennale = $('#data_scadenza_ventennale_mod').val();
 	var numero_certificato = $('#numero_certificato_mod').val();
-	
+	var codice_milestone = $('#codice_milestone_mod').val();
 	  		
 	var dataObj = {};
 	 
@@ -3186,7 +3192,8 @@ function modificaAttrezzatura(scadenzario, date, tipo_data){
 	dataObj.n_id_on = n_id_on;
 	dataObj.data_scadenza_ventennale = data_scadenza_ventennale;
 	dataObj.numero_certificato = numero_certificato;
-
+	dataObj.codice_milestone = codice_milestone;
+	
 	$.ajax({
 		type: "POST",
 		url: "listaAttrezzature.do?action=modifica",
@@ -3203,7 +3210,7 @@ function modificaAttrezzatura(scadenzario, date, tipo_data){
 					callAction("listaAttrezzature.do"+dataString)
 		 
 				}else{
-					dataString ="action=cliente_sede&id_cliente="+ id_cliente+"&id_sede="+id_sede;
+					dataString ="action=cliente_sede&id_cliente="+ cliente_return+"&id_sede="+sede_return;
 			         exploreModal("listaAttrezzature.do",dataString,"#posTab",function(data,textStatus){
 
 			        	  pleaseWaitDiv.modal('hide');

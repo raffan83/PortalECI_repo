@@ -292,4 +292,27 @@ public static ArrayList<AttrezzaturaDTO> getlistaAttrezzatureScadenza(String dat
 	return lista;		
 }
 
+
+
+public static String getCodiceMilestoneFromDescrizione(String descrizione, Session session) {
+	
+	ArrayList<String> lista =null;
+	String result = null;
+
+	Query query = session.createQuery("select codici_milestone from DescrizioneGruppoAttrezzaturaDTO where descrizione = :_descrizione");
+	query.setParameter("_descrizione", descrizione);
+	
+	lista= (ArrayList<String>)query.list();
+	
+	if(lista!=null && lista.size()>0) {
+		result = lista.get(0);
+	}
+	return result;
+
 }
+
+}
+
+
+
+

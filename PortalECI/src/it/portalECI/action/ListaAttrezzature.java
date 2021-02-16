@@ -33,6 +33,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
 
+import it.portalECI.DAO.GestioneAttrezzatureDAO;
 import it.portalECI.DAO.SessionFacotryDAO;
 import it.portalECI.DTO.AttrezzaturaDTO;
 import it.portalECI.DTO.CampioneDTO;
@@ -158,6 +159,14 @@ public class ListaAttrezzature extends HttpServlet {
 					request.getSession().setAttribute("dateFrom",null);	
 					request.getSession().setAttribute("dateTo",null);
 				}								
+				
+				
+//				ArrayList<AttrezzaturaDTO> lista_attrezzature = GestioneAttrezzatureBO.getlistaAttrezzature(session);
+//				for (AttrezzaturaDTO a : lista_attrezzature) {
+//					String codice = GestioneAttrezzatureDAO.getCodiceMilestoneFromDescrizione(a.getDescrizione(), session);
+//					a.setCodice_milestone(codice);
+//					session.update(a);
+//				}
 				
 				
 //								
@@ -553,7 +562,7 @@ public class ListaAttrezzature extends HttpServlet {
 				String marcatura = request.getParameter("marcatura");
 				String n_id_on = request.getParameter("n_id_on");
 				String data_scadenza_ventennale = request.getParameter("data_scadenza_ventennale");
-				
+				String codici_milestone = request.getParameter("codice_milestone");
 				
 				
 				List<SedeDTO> listaSedi = (List<SedeDTO>) request.getSession().getAttribute("listaSedi");
@@ -602,7 +611,7 @@ public class ListaAttrezzature extends HttpServlet {
 				attrezzatura.setMarcatura(marcatura);
 				attrezzatura.setN_id_on(n_id_on);
 				
-				
+				attrezzatura.setCodice_milestone(codici_milestone);
 				if(data_scadenza_ventennale!=null && !data_scadenza_ventennale.equals("")) {
 					attrezzatura.setData_scadenza_ventennale(format.parse(data_scadenza_ventennale));
 				}
@@ -675,7 +684,7 @@ public class ListaAttrezzature extends HttpServlet {
 				String marcatura = request.getParameter("marcatura");
 				String n_id_on = request.getParameter("n_id_on");
 				String data_scadenza_ventennale = request.getParameter("data_scadenza_ventennale");
-				
+				String codici_milestone = request.getParameter("codice_milestone");
 				
 				List<SedeDTO> listaSedi = (List<SedeDTO>) request.getSession().getAttribute("listaSedi");
 				SedeDTO sede = null;
@@ -723,7 +732,7 @@ public class ListaAttrezzature extends HttpServlet {
 				attrezzatura.setMarcatura(marcatura);
 				attrezzatura.setN_id_on(n_id_on);
 				
-				
+				attrezzatura.setCodice_milestone(codici_milestone);
 				if(data_scadenza_ventennale!=null && !data_scadenza_ventennale.equals("")) {
 					attrezzatura.setData_scadenza_ventennale(format.parse(data_scadenza_ventennale));
 				}else {

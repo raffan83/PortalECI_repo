@@ -105,4 +105,21 @@ public class GestioneStoricoVerbaleDAO {
 		return result;
 	}
 
+	public static VerbaleStoricoDTO getVerbaleFromCommessa(String codice_commessa, Session session) {
+		
+		ArrayList<VerbaleStoricoDTO> lista;
+		VerbaleStoricoDTO result = null;
+		
+		Query query = session.createQuery("from VerbaleStoricoDTO where codice_commessa = :_codice_commessa");
+		query.setParameter("_codice_commessa", codice_commessa);
+		
+		lista = (ArrayList<VerbaleStoricoDTO>) query.list();
+		
+		if(lista.size()>0) {
+			result = lista.get(0);
+		}
+		
+		return result;
+	}
+
 }
