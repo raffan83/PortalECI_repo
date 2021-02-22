@@ -1469,15 +1469,19 @@ public class GestioneVerbaleBO {
 	
 	public static void setStatoCompilazioneWeb(InterventoDTO intervento, StatoVerbaleDTO stato, Session session) {	
 		for (VerbaleDTO verbale: intervento.getVerbali()) {
-			if (verbale.getSchedaTecnica()!=null) {
-				verbale.getSchedaTecnica().setDataScaricamento(new Date());
-				buildVerbaleVuotoByQuestionario(verbale.getSchedaTecnica(), session);
-				verbale.getSchedaTecnica().setStato(stato);	
+			
+			if(verbale.getStato().getId() == StatoVerbaleDTO.CREATO) {
+				if (verbale.getSchedaTecnica()!=null) {
+					verbale.getSchedaTecnica().setDataScaricamento(new Date());
+					buildVerbaleVuotoByQuestionario(verbale.getSchedaTecnica(), session);
+					verbale.getSchedaTecnica().setStato(stato);	
+				}
+				verbale.setDataScaricamento(new Date());
+				buildVerbaleVuotoByQuestionario(verbale, session);
+				verbale.setStato(stato);
+				session.update(verbale);
 			}
-			verbale.setDataScaricamento(new Date());
-			buildVerbaleVuotoByQuestionario(verbale, session);
-			verbale.setStato(stato);
-			session.update(verbale);
+			
 		}
 	}
 	

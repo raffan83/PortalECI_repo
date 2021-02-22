@@ -31,6 +31,7 @@ import it.portalECI.DAO.GestioneComunicazioniDAO;
 import it.portalECI.DAO.GestioneDocumentoDAO;
 import it.portalECI.DTO.CommessaDTO;
 import it.portalECI.DTO.DocumentoDTO;
+import it.portalECI.DTO.InterventoDTO;
 import it.portalECI.DTO.TipoComunicazioneUtenteDTO;
 import it.portalECI.DTO.UtenteDTO;
 import it.portalECI.DTO.VerbaleDTO;
@@ -194,7 +195,8 @@ public static void sendPecVerbale(DocumentoDTO documento, VerbaleDTO verbale, St
 	   String SMTP_HOST_NAME = "smtps.pec.aruba.it";
 	   int SMTP_HOST_PORT = 465;
 	   String SMTP_AUTH_USER = "verifiche@pec.ecisrl.it";
-	   String SMTP_AUTH_PWD  = "8pfSu3sYx+";
+	   //String SMTP_AUTH_PWD  = "8pfSu3sYx+";
+	   String SMTP_AUTH_PWD  = "&w&K3vQ!HQY%@vV&";
 	   
 	   Properties props = new Properties();
 
@@ -401,6 +403,89 @@ public static void sendPecVerbale(DocumentoDTO documento, VerbaleDTO verbale, St
 		  email.setFrom("info@ecisrl.it", "info@ecisrl.it");
 
 		  email.send();
+	}
+
+	public static void sendEmail(UtenteDTO ricevente, InterventoDTO intervento, VerbaleDTO verbale, int motivo) throws Exception {
+		
+		String to = ricevente.getEMail();
+		
+		
+		  HtmlEmail email = new HtmlEmail();
+		  email.setHostName("smtps.aruba.it");
+		 //email.setDebug(true);
+
+		  email.setAuthentication("info@ecisrl.it", "a$77?Qz9bx");
+
+	        email.getMailSession().getProperties().put("mail.smtp.auth", "true");
+	        email.getMailSession().getProperties().put("mail.debug", "true");
+	        email.getMailSession().getProperties().put("mail.smtp.port", "465");
+	        email.getMailSession().getProperties().put("mail.smtp.socketFactory.port", "465");
+	        email.getMailSession().getProperties().put("mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
+	        email.getMailSession().getProperties().put("mail.smtp.socketFactory.fallback", "false");
+	        email.getMailSession().getProperties().put("mail.smtp.ssl.enable", "true");
+	        
+	
+	        CommessaDTO commessa = GestioneCommesseBO.getCommessaById(intervento.getIdCommessa());
+			  if(motivo==0) {
+				  
+					
+				  email.setSubject("Creazione intervento ID n. "+intervento.getId()+" - Cliente: "+commessa.getID_ANAGEN_NOME());
+				  
+				  email.setHtmlMsg("<html>Si comunica che &egrave; stato creato l'intervento in oggetto. <br />  <br /><br /> "
+				  		+ "<em><b style='color:#9d201d' >ECI Ente di Certificazione & Ispezione Srl</em></b><br><br><span style='color:#204d74'>Via Tofaro 42, B - 03039 Sora (FR)<br>  " + 
+				  		"			  		<em>Tel + 39 0776.18151 - Fax+ 39 0776.814169 <br> " + 
+				  		"			  		Mail: </em>info@ecisrl.it<br> \r\n" + 
+				  		"			  		<em>Web: </em>http://www.ecisrl.it<br></span>"
+				  		+ "<br><br>"
+				  		+ "<font size='1' style='color:#204d74'><br><br>In ottemperanza al D.L. n. 196 del 30/6/2003 e Reg. UE n.2016/679 (GDPR) in materia di protezione dei dati personali, le informazioni contenute in questo messaggio sono strettamente confidenziali e riservate ed esclusivamente indirizzate al destinatario indicato (oppure alla persona responsabile di rimetterlo al destinatario). " + 
+				  		"Vogliate tener presente che qualsiasi uso, riproduzione o divulgazione di questo messaggio è vietato. Nel caso in cui aveste ricevuto questo messaggio per errore, vogliate cortesemente avvertire il mittente e distruggere il presente messaggio.<br>" +
+				  		"			  		<br>According to Italian law D.L. 196/2003 and Reg. UE n.2016/679 (GDPR)  concerning privacy, if you are not the addressee (or responsible for delivery of the message to such person) you are hereby notified that any disclosure, reproduction, distribution or other dissemination or use of this communication is strictly prohibited. If you have received this message in error, please destroy it and notify us by email." + 
+				  		"			  		</font></html>");
+			  }
+			  else if(motivo == 1) {
+				  
+				  email.setSubject("Richiesta controfirma verbale ID n. "+verbale.getId()+" - Cliente: "+commessa.getID_ANAGEN_NOME());
+				  
+				  email.setHtmlMsg("<html>Si richiede la controfirma del verbale di verifica in oggetto. <br />  <br /><br /> "
+				  		+ "<em><b style='color:#9d201d' >ECI Ente di Certificazione & Ispezione Srl</em></b><br><br><span style='color:#204d74'>Via Tofaro 42, B - 03039 Sora (FR)<br>  " + 
+				  		"			  		<em>Tel + 39 0776.18151 - Fax+ 39 0776.814169 <br> " + 
+				  		"			  		Mail: </em>info@ecisrl.it<br> \r\n" + 
+				  		"			  		<em>Web: </em>http://www.ecisrl.it<br></span>"
+				  		+ "<br><br>"
+				  		+ "<font size='1' style='color:#204d74'><br><br>In ottemperanza al D.L. n. 196 del 30/6/2003 e Reg. UE n.2016/679 (GDPR) in materia di protezione dei dati personali, le informazioni contenute in questo messaggio sono strettamente confidenziali e riservate ed esclusivamente indirizzate al destinatario indicato (oppure alla persona responsabile di rimetterlo al destinatario). " + 
+				  		"Vogliate tener presente che qualsiasi uso, riproduzione o divulgazione di questo messaggio è vietato. Nel caso in cui aveste ricevuto questo messaggio per errore, vogliate cortesemente avvertire il mittente e distruggere il presente messaggio.<br>" +
+				  		"			  		<br>According to Italian law D.L. 196/2003 and Reg. UE n.2016/679 (GDPR)  concerning privacy, if you are not the addressee (or responsible for delivery of the message to such person) you are hereby notified that any disclosure, reproduction, distribution or other dissemination or use of this communication is strictly prohibited. If you have received this message in error, please destroy it and notify us by email." + 
+				  		"			  		</font></html>");
+			  }else if(motivo == 2) {
+				  email.setSubject("Comunicazione avvenuta controfirma verbale ID n. "+verbale.getId()+" - Cliente: "+commessa.getID_ANAGEN_NOME());
+				  
+				  email.setHtmlMsg("<html>Si comunica l'avvenuta controfirma da parte del RT/SRT del verbale di verifica in oggetto. <br />  <br /><br /> "
+				  		+ "<em><b style='color:#9d201d' >ECI Ente di Certificazione & Ispezione Srl</em></b><br><br><span style='color:#204d74'>Via Tofaro 42, B - 03039 Sora (FR)<br>  " + 
+				  		"			  		<em>Tel + 39 0776.18151 - Fax+ 39 0776.814169 <br> " + 
+				  		"			  		Mail: </em>info@ecisrl.it<br> \r\n" + 
+				  		"			  		<em>Web: </em>http://www.ecisrl.it<br></span>"
+				  		+ "<br><br>"
+				  		+ "<font size='1' style='color:#204d74'><br><br>In ottemperanza al D.L. n. 196 del 30/6/2003 e Reg. UE n.2016/679 (GDPR) in materia di protezione dei dati personali, le informazioni contenute in questo messaggio sono strettamente confidenziali e riservate ed esclusivamente indirizzate al destinatario indicato (oppure alla persona responsabile di rimetterlo al destinatario). " + 
+				  		"Vogliate tener presente che qualsiasi uso, riproduzione o divulgazione di questo messaggio è vietato. Nel caso in cui aveste ricevuto questo messaggio per errore, vogliate cortesemente avvertire il mittente e distruggere il presente messaggio.<br>" +
+				  		"			  		<br>According to Italian law D.L. 196/2003 and Reg. UE n.2016/679 (GDPR)  concerning privacy, if you are not the addressee (or responsible for delivery of the message to such person) you are hereby notified that any disclosure, reproduction, distribution or other dissemination or use of this communication is strictly prohibited. If you have received this message in error, please destroy it and notify us by email." + 
+				  		"			  		</font></html>");
+			  }
+			  
+			  
+		  email.addTo(to);
+		  
+		  		 
+		  email.setFrom("info@ecisrl.it", "info@ecisrl.it");
+		  
+		  // embed the image and get the content id
+
+//		  File image = new File(ctx.getRealPath("images/logo_calver_v2.png"));
+//		  String cid = email.embed(image, "Calver logo");
+
+		  
+		  // send the email
+		  email.send();
+		
 	}
 	
 }

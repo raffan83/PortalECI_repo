@@ -545,7 +545,7 @@
 													<c:if test="${user.checkPermesso('UPD_VERBALE')}">
 
 														<c:if test='${verbale.getStato().getId()== 8 }'>
-															<button type="button" class="btn btn-default ml-1 savebutt" onclick="salvaRisposteCompWeb(${verbale.getId()},'formVerbale', 'salvaRisposteCompWeb')" style="margin-left: 1em; float: right;">	
+															<button type="button" class="btn btn-default ml-1 savebutt" onclick="salvaRisposteCompWeb(${verbale.getId()},true,'formVerbale', 'salvaRisposteCompWeb')" style="margin-left: 1em; float: right;">	
 																<span >SALVA MODIFICHE</span>
 															</button>
 																<%-- <button type="button" class="btn btn-default ml-1 changestate formVerbalebox" onclick="salvaRisposteCompWeb(${verbale.getId()},'formVerbale', 'confermaRisposteCompWeb')" style="margin-left: 1em; color:#000000 !important; background-color:${verbale.getStato().getColore(5)} !important; float: right;"> --%>
@@ -1071,7 +1071,7 @@
 													<c:if test="${user.checkPermesso('UPD_VERBALE')}">
 												
 														<c:if test='${verbale.getSchedaTecnica().getStato().getId()== 8}'>
-															<button type="button" class="btn btn-default ml-1 savebutt" onclick="salvaRisposteCompWeb(${verbale.getSchedaTecnica().getId()},'formScTecnica', 'salvaRisposteCompWeb')" style="margin-left: 1em; float: right;">	
+															<button type="button" class="btn btn-default ml-1 savebutt" onclick="salvaRisposteCompWeb(${verbale.getSchedaTecnica().getId()},true,'formScTecnica', 'salvaRisposteCompWeb')" style="margin-left: 1em; float: right;">	
 																<span >SALVA MODIFICHE</span>
 															</button>
 															
@@ -1524,7 +1524,7 @@
 											</h3>
   		 							</div>
       								<div class="modal-footer">
-      									<button type="button" class="btn btn-default" onclick="salvaRisposteCompWeb(${verbale.getId()},'formVerbale', 'confermaRisposteCompWeb')" >Conferma</button>     									
+      									<button type="button" class="btn btn-default" onclick="salvaRisposteCompWeb(${verbale.getId()},false,'formVerbale', 'confermaRisposteCompWeb')" >Conferma</button>     									
         								<button type="button" class="btn btn-default" data-dismiss="modal">Annulla</button>
       								</div>
     							</div>
@@ -1545,7 +1545,7 @@
 											</h3>
   		 							</div>
       								<div class="modal-footer">
-      									<button type="button" class="btn btn-default" onclick="salvaRisposteCompWeb(${verbale.getSchedaTecnica().getId()},'formScTecnica', 'confermaRisposteCompWeb')" >Conferma</button>     									
+      									<button type="button" class="btn btn-default" onclick="salvaRisposteCompWeb(${verbale.getSchedaTecnica().getId()},false,'formScTecnica', 'confermaRisposteCompWeb')" >Conferma</button>     									
         								<button type="button" class="btn btn-default" data-dismiss="modal">Annulla</button>
       								</div>
     							</div>
@@ -2638,6 +2638,28 @@ function modificaSedeUtilizzatore(){
 					$('.'+$(this).attr('id')).find('input').val('');
 					//$('.'+$(this).attr('id')).find('textarea').val('');
 					
+					var id = $(this).attr('id');
+										
+					var textarea_array = $('.'+$(this).attr('id').split("_")[0]).find('textarea');
+					
+					for(var i = 0; i<textarea_array.length;i++){						
+						
+						var a = document.getElementById($(textarea_array[i]).attr('id'));
+						var els = [];
+						while (a) {
+						    els.unshift(a);
+						    a = a.parentNode;
+						}
+						var x = els[18];
+						var y = $(x).find('input');
+						var text = $(x).find('textarea');	
+						if(y.length>0 && y.includes(id)){
+							var text = $(x).find('textarea');	
+						}
+						
+					}
+					
+					
 					var index = $(this).attr('id').split("_")[1]
 					if(index != null){
 						var textarea = $('.'+$(this).attr('id').split("_")[0]).find('textarea')[index];
@@ -2891,11 +2913,11 @@ function modificaSedeUtilizzatore(){
 			}		
 			}
 			
-			function salvaRisposteCompWeb(idVerb,idform,action){
+			function salvaRisposteCompWeb(idVerb, salva_mod, idform, action){
 				
 				var gvr = "${isGvr}";
 				
-			if(!checkStrumentoVerificatore()){
+			if(!checkStrumentoVerificatore() && !salva_mod){
 					
 				$('#modalErrorDiv').html("Il campo strumento verificatore è obbligatorio");
 				$('#myModalError').removeClass();
@@ -2903,42 +2925,42 @@ function modificaSedeUtilizzatore(){
 				$('#myModalError').modal('show');	
 					
 			}
-			else if($('#data_verifica').val()=='' && $('#esito').val()!='S'){
+			else if($('#data_verifica').val()=='' && $('#esito').val()!='S' && !salva_mod){
 				
 				$('#modalErrorDiv').html("Il campo data verifica è obbligatorio");
 				$('#myModalError').removeClass();
 				$('#myModalError').addClass("modal modal-danger");
 				$('#myModalError').modal('show');	
 			}
-			else if($('#data_prossima_verifica_verb').val()=='' && $('#esito').val()!='S' && $('#tipo_verifica_vie').val()!=2){
+			else if($('#data_prossima_verifica_verb').val()=='' && $('#esito').val()!='S' && $('#tipo_verifica_vie').val()!=2 && !salva_mod){
 				
 				$('#modalErrorDiv').html("Il campo data prossima verifica è obbligatorio");
 				$('#myModalError').removeClass();
 				$('#myModalError').addClass("modal modal-danger");
 				$('#myModalError').modal('show');	
 			}
-			else if(gvr !='' && gvr=='1'&& !$('#data_verifica_integrita_verb').attr("disabled")  &&$('#data_verifica_integrita_verb').val()=='' && $('#esito').val()!='S'){
+			else if(gvr !='' && gvr=='1'&& !$('#data_verifica_integrita_verb').attr("disabled")  &&$('#data_verifica_integrita_verb').val()=='' && $('#esito').val()!='S' && !salva_mod){
 				
 				$('#modalErrorDiv').html("Il campo data verifica integrità è obbligatorio");
 				$('#myModalError').removeClass();
 				$('#myModalError').addClass("modal modal-danger");
 				$('#myModalError').modal('show');	
 			}
-			else if(gvr !='' && gvr=='1'&& !$('#data_prossima_verifica_integrita_verb').attr("disabled")  &&$('#data_prossima_verifica_integrita_verb').val()=='' && $('#esito').val()!='S'){
+			else if(gvr !='' && gvr=='1'&& !$('#data_prossima_verifica_integrita_verb').attr("disabled")  &&$('#data_prossima_verifica_integrita_verb').val()=='' && $('#esito').val()!='S' && !salva_mod){
 				
-				$('#modalErrorDiv').html("Il campo data prossima verifica integrità è obbligatorio");
+				$('#modalErrorDiv').html("Il campo data prossima verifica integrità è obbligatorio" && !salva_mod);
 				$('#myModalError').removeClass();
 				$('#myModalError').addClass("modal modal-danger");
 				$('#myModalError').modal('show');	
 			}
-			else if(gvr !='' && gvr=='1' && !$('#data_verifica_interna_verb').attr("disabled") && $('#data_verifica_interna_verb').val()=='' && $('#esito').val()!='S'){
+			else if(gvr !='' && gvr=='1' && !$('#data_verifica_interna_verb').attr("disabled") && $('#data_verifica_interna_verb').val()=='' && $('#esito').val()!='S' && !salva_mod){
 				
 				$('#modalErrorDiv').html("Il campo data verifica interna è obbligatorio");
 				$('#myModalError').removeClass();
 				$('#myModalError').addClass("modal modal-danger");
 				$('#myModalError').modal('show');	
 			}
-			else if(gvr !='' && gvr=='1' && !$('#data_prossima_verifica_interna_verb').attr("disabled") &&$('#data_prossima_verifica_interna_verb').val()=='' && $('#esito').val()!='S' ){
+			else if(gvr !='' && gvr=='1' && !$('#data_prossima_verifica_interna_verb').attr("disabled") && $('#data_prossima_verifica_interna_verb').val()=='' && $('#esito').val()!='S'  && !salva_mod){
 				
 				$('#modalErrorDiv').html("Il campo data prossima verifica interna è obbligatorio");
 				$('#myModalError').removeClass();
@@ -2946,14 +2968,14 @@ function modificaSedeUtilizzatore(){
 				$('#myModalError').modal('show');	
 			}
 			
-			else if($('#esito').val()==''){
+			else if($('#esito').val()=='' && !salva_mod){
 				
 				$('#modalErrorDiv').html("Il campo Esito verifica è obbligatorio");
 				$('#myModalError').removeClass();
 				$('#myModalError').addClass("modal modal-danger");
 				$('#myModalError').modal('show');	
 			}
-			else if($('#esito').val()=='S' && $('#descrizione_sospensione').val()==''){
+			else if($('#esito').val()=='S' && $('#descrizione_sospensione').val()=='' && !salva_mod){
 				
 				$('#modalErrorDiv').html("Il campo Motivo sospensione è obbligatorio");
 				$('#myModalError').removeClass();
@@ -2961,7 +2983,7 @@ function modificaSedeUtilizzatore(){
 				$('#myModalError').modal('show');	
 			}
 			
-			else if(gvr !='' && gvr=='1' &&$('#tipo_verifica_gvr').val()==''){
+			else if(gvr !='' && gvr=='1' &&$('#tipo_verifica_gvr').val()=='' && !salva_mod){
 				
 				$('#modalErrorDiv').html("Il campo Tipo verifica GVR è obbligatorio");
 				$('#myModalError').removeClass();
@@ -2969,7 +2991,7 @@ function modificaSedeUtilizzatore(){
 				$('#myModalError').modal('show');	
 			}
 			
-			else if($('#check_sede_diversa').is(':checked')  && $('#presso').val()==''){
+			else if($('#check_sede_diversa').is(':checked')  && $('#presso').val()=='' && !salva_mod){
 				
 				$('#modalErrorDiv').html("Il campo presso è obbligatorio");
 				$('#myModalError').removeClass();
@@ -2977,7 +2999,7 @@ function modificaSedeUtilizzatore(){
 				$('#myModalError').modal('show');	
 			}
 			
-			else if($('#check_sede_diversa').is(':checked')  && $('#indirizzo').val()==''){
+			else if($('#check_sede_diversa').is(':checked')  && $('#indirizzo').val()=='' && !salva_mod){
 				
 				$('#modalErrorDiv').html("Il campo indirizzo è obbligatorio");
 				$('#myModalError').removeClass();
@@ -2985,39 +3007,39 @@ function modificaSedeUtilizzatore(){
 				$('#myModalError').modal('show');	
 			}
 			
-			else if($('#check_sede_diversa').is(':checked') && $('#cap').val()==''){
+			else if($('#check_sede_diversa').is(':checked') && $('#cap').val()=='' && !salva_mod){
 				
 				$('#modalErrorDiv').html("Il campo cap è obbligatorio");
 				$('#myModalError').removeClass();
 				$('#myModalError').addClass("modal modal-danger");
 				$('#myModalError').modal('show');	
 			}
-			else if($('#frequenza').val()=='' && $('#check_motivo').val()=='1'){
+			else if($('#frequenza').val()=='' && $('#check_motivo').val()=='1' && !salva_mod){
 				$('#modalErrorDiv').html("Il campo frequenza è obbligatorio");
 				$('#myModalError').removeClass();
 				$('#myModalError').addClass("modal modal-danger");
 				$('#myModalError').modal('show');	
 			}
- 			else if($('#check_motivo').val()==''){
+ 			else if($('#check_motivo').val()=='' && !salva_mod){
 				$('#modalErrorDiv').html("Il campo tipo verifica è obbligatorio");
 				$('#myModalError').removeClass();
 				$('#myModalError').addClass("modal modal-danger");
 				$('#myModalError').modal('show');	
 			} 
-			else if($('#tipologia_verifica').val()==''){
+			else if($('#tipologia_verifica').val()=='' && !salva_mod){
 				$('#modalErrorDiv').html("Il campo tipologia verifica è obbligatorio");
 				$('#myModalError').removeClass();
 				$('#myModalError').addClass("modal modal-danger");
 				$('#myModalError').modal('show');	
 			}
 			
-			else if($('#ore').val()=='' || $('#minuti').val()==''){
+			else if(($('#ore').val()=='' || $('#minuti').val()=='') && !salva_mod){
 				$('#modalErrorDiv').html("Il campo ore/uomo è obbligatorio");
 				$('#myModalError').removeClass();
 				$('#myModalError').addClass("modal modal-danger");
 				$('#myModalError').modal('show');	
 			}
-			else if($('#matricola_vie').val()==''){
+			else if($('#matricola_vie').val()=='' && !salva_mod){
 				$('#modalErrorDiv').html("Il campo matricola è obbligatorio");
 				$('#myModalError').removeClass();
 				$('#myModalError').addClass("modal modal-danger");

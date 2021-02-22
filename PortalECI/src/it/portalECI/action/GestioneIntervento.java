@@ -38,6 +38,7 @@ import it.portalECI.Util.Utility;
 import it.portalECI.bo.GestioneAnagraficaRemotaBO;
 import it.portalECI.bo.GestioneAttrezzatureBO;
 import it.portalECI.bo.GestioneCommesseBO;
+import it.portalECI.bo.GestioneComunicazioniBO;
 import it.portalECI.bo.GestioneInterventoBO;
 import it.portalECI.bo.GestioneUtenteBO;
 import it.portalECI.bo.GestioneVerbaleBO;
@@ -259,7 +260,9 @@ public class GestioneIntervento extends HttpServlet {
 				
 				
 				GestioneInterventoBO.save(intervento,session);
-					
+				
+				GestioneComunicazioniBO.sendEmail(intervento.getTecnico_verificatore(),intervento,null, 0);
+				
 				myObj.addProperty("success", true);
 				myObj.add("intervento", intervento.getInterventoJsonObject());
 			

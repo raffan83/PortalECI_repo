@@ -350,20 +350,20 @@ public class GestioneVerbali extends HttpServlet {
 					
 					String ore_uomo = request.getParameter("ore_uomo");
 					
-					if(ore_uomo!=null && !ore_uomo.equals("")) {
+					//if(ore_uomo!=null && !ore_uomo.equals("")) {
 						verbale.setOre_uomo(ore_uomo);
 						session.save(verbale);
-					}
+					//}
 					
 				}
 				if(paramName.equals("matricola_vie")) {
 					
 					String matricola_vie = request.getParameter("matricola_vie");
 					
-					if(matricola_vie!=null && !matricola_vie.equals("")) {
+					//if(matricola_vie!=null && !matricola_vie.equals("")) {
 						verbale.setMatricola_vie(matricola_vie);
 						session.save(verbale);
-					}
+				//	}
 					
 				}
 				
@@ -849,9 +849,10 @@ public class GestioneVerbali extends HttpServlet {
 							
 							if(controfirma!=null && controfirma.equals("1")) {
 								verbale.setControfirmato(1);
+								GestioneComunicazioniBO.sendEmail(verbale.getIntervento().getTecnico_verificatore(), verbale.getIntervento(), verbale, 2);
 							}else {
 								verbale.setFirmato(1);
-									
+								GestioneComunicazioniBO.sendEmail(verbale.getResponsabile_approvatore(), verbale.getIntervento(), verbale, 1);	
 							}
 							
 							session.update(verbale);
@@ -1013,16 +1014,18 @@ public class GestioneVerbali extends HttpServlet {
 
 					try {
 						fileUploaded.write(file);
+					
+										
+					verbale.setFirmato(1);
+					session.update(documento);
+					GestioneComunicazioniBO.sendEmail(verbale.getResponsabile_approvatore(), verbale.getIntervento(), verbale, 1);
+					jsono.addProperty("success", true);
+					jsono.addProperty("messaggio","File caricato con successo!");
+					
 					} catch (Exception e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
-										
-					verbale.setFirmato(1);
-					session.update(documento);
-			
-					jsono.addProperty("success", true);
-					jsono.addProperty("messaggio","File caricato con successo!");
 				}
 		}
 		
