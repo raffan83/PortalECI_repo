@@ -179,7 +179,13 @@ public class ArubaSignService {
 		apparence.setTesto("Firmato digitalmente da: "+utente.getNominativo()+"\nData: "+sdf.format(new Date()));
 
 		
-		Integer[] fontPosition = getFontPosition(path, keyWord, null);
+		Integer[] fontPosition = getFontPosition(path, keyWord, reader.getNumberOfPages());
+		
+		if(fontPosition[0] == null && fontPosition[1] == null) {
+			fontPosition = getFontPosition(path, keyWord, (reader.getNumberOfPages()-1));
+			apparence.setPage((reader.getNumberOfPages()-1));
+		}
+		
         System.out.println(Arrays.toString(fontPosition));
 
         JsonObject jsonObj = new JsonObject();
@@ -203,7 +209,13 @@ public class ArubaSignService {
         	
         	keyWord = "Il verificatore";
         	
-        	fontPosition = getFontPosition(path, keyWord, null);
+        	fontPosition =  getFontPosition(path, keyWord, reader.getNumberOfPages());
+        	apparence.setPage(reader.getNumberOfPages());
+        	
+        	if(fontPosition[0] == null && fontPosition[1] == null) {
+        		fontPosition = getFontPosition(path, keyWord, (reader.getNumberOfPages()-1));
+        		apparence.setPage((reader.getNumberOfPages()-1));
+    		}
             System.out.println(Arrays.toString(fontPosition));
         	
  
@@ -268,7 +280,7 @@ public class ArubaSignService {
 	 private static Integer[] getFontPosition(String filePath, final String keyWord, Integer pageNum) throws IOException {
 	        final Integer[] result = new Integer[2];
 	        PdfReader pdfReader = new PdfReader(filePath);
-	        if (null == pageNum) {
+	        if (pageNum == null) {
 	            pageNum = pdfReader.getNumberOfPages();
 	        }
 	        new PdfReaderContentParser(pdfReader).processContent(pageNum, new RenderListener() {
@@ -277,6 +289,7 @@ public class ArubaSignService {
 	            }
 	 
 	            public void renderText(TextRenderInfo textRenderInfo) {
+	            	
 	                String text = textRenderInfo.getText();
 	              //  System.out.println("text is ：" + text);
 	                if (text != null && text.contains(keyWord)) {

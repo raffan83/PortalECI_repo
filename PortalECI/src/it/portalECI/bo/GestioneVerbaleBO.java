@@ -941,11 +941,38 @@ public class GestioneVerbaleBO {
 			
 			if(verbale.getCodiceVerifica().startsWith("GVR")) {
 				
+	
 				if(verbale.getTipo_verifica()==1 || verbale.getTipo_verifica()==2) {
 					check1 = "checked";
-					check2 = "unchecked";
-					check3 = "unchecked";
-					check4 = "unchecked";
+										
+					
+					if(verbale.getTipo_verifica_gvr()==1) {
+						
+						check2 = "unchecked";
+						check3 = "unchecked";
+						check4 = "unchecked";
+					}
+					
+					if(verbale.getTipo_verifica_gvr()==4) {
+					
+						check2 = "unchecked";
+						check3 = "unchecked";
+						check4 = "checked";
+					}
+					if(verbale.getTipo_verifica_gvr()==5) {
+					
+						check2 = "unchecked";
+						check3 = "checked";
+						check4 = "checked";
+					}
+					
+					if(verbale.getTipo_verifica_gvr()==7) {
+				
+						check2 = "unchecked";
+						check3 = "checked";
+						check4 = "unchecked";
+					}
+					
 				}
 
 				else if(verbale.getTipo_verifica()==3 || verbale.getTipo_verifica()==4) {
@@ -994,6 +1021,7 @@ public class GestioneVerbaleBO {
 					
 						
 				}
+				
 								
 				tipo_verifica_val = tipo_verifica_val + "<img src=\"" + Costanti.PATH_FONT_IMAGE + check1+"-"+"radio"+".png" + "\" style=\"height:12px;\" />&nbsp;" + "Prima delle verifiche periodiche"+"<br/>";					
 				tipo_verifica_val = tipo_verifica_val + "<img src=\"" + Costanti.PATH_FONT_IMAGE + check2+"-"+"radio"+".png" + "\" style=\"height:12px;\" />&nbsp;" + "Verifica di funzionamento"+"<br/>";						

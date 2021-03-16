@@ -244,9 +244,13 @@ public class GestioneVerbali extends HttpServlet {
 					
 					String tipo_verifica_gvr = request.getParameter("tipo_verifica_gvr");
 			
-					verbale.setTipo_verifica_gvr(Integer.parseInt(tipo_verifica_gvr));
-					session.update(verbale);
-					
+					if(tipo_verifica_gvr!=null && !tipo_verifica_gvr.equals("")) {
+						verbale.setTipo_verifica_gvr(Integer.parseInt(tipo_verifica_gvr));
+						session.update(verbale);
+					}else {
+						verbale.setTipo_verifica_gvr(0);
+						session.update(verbale);
+					}
 					
 				}				
 
@@ -827,9 +831,13 @@ public class GestioneVerbali extends HttpServlet {
 				
 			if(user.getPin_firma()!=null && pin.equals(user.getPin_firma())) {
 				String tipo = DocumentoDTO.CERTIFIC;
+				InterventoDTO intervento = verbale.getIntervento();
+				VerbaleDTO verbale_principale = null;
 				if(scheda_tecnica!=null && scheda_tecnica.equals("1")) {
 					tipo = DocumentoDTO.SK_TEC;
+					verbale_principale = verbale;
 					verbale = verbale.getSchedaTecnica();
+					
 				}
 
 				Set<DocumentoDTO> listaDocumenti = verbale.getDocumentiVerbale();
@@ -849,10 +857,10 @@ public class GestioneVerbali extends HttpServlet {
 							
 							if(controfirma!=null && controfirma.equals("1")) {
 								verbale.setControfirmato(1);
-								GestioneComunicazioniBO.sendEmail(verbale.getIntervento().getTecnico_verificatore(), verbale.getIntervento(), verbale, 2);
+								GestioneComunicazioniBO.sendEmail(intervento.getTecnico_verificatore(), intervento, verbale, verbale_principale, 2);
 							}else {
 								verbale.setFirmato(1);
-								GestioneComunicazioniBO.sendEmail(verbale.getResponsabile_approvatore(), verbale.getIntervento(), verbale, 1);	
+								GestioneComunicazioniBO.sendEmail(verbale.getResponsabile_approvatore(), intervento, verbale,verbale_principale, 1);	
 							}
 							
 							session.update(verbale);
@@ -1018,7 +1026,7 @@ public class GestioneVerbali extends HttpServlet {
 										
 					verbale.setFirmato(1);
 					session.update(documento);
-					GestioneComunicazioniBO.sendEmail(verbale.getResponsabile_approvatore(), verbale.getIntervento(), verbale, 1);
+					GestioneComunicazioniBO.sendEmail(verbale.getResponsabile_approvatore(), verbale.getIntervento(), verbale, null,1);
 					jsono.addProperty("success", true);
 					jsono.addProperty("messaggio","File caricato con successo!");
 					

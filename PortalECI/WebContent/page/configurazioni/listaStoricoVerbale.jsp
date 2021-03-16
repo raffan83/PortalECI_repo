@@ -82,10 +82,10 @@
  													<div class="clearfix"></div>
 													<div class="row" style="margin-top:20px;">
 														<div class="col-lg-12">
-  															<table id="tabPM" class="table table-bordered table-hover dataTable table-striped" role="grid" width="100%">
+  															<table id="tabSt" class="table table-bordered table-hover dataTable table-striped" role="grid" width="100%">
  																<thead>
  																	<tr class="active">
- 																		<td>ID</td>
+ 																		<th>ID</th>
  																		<th>Codice Verificatore</th>
  																		<th>Verificatore</th>
  																		<th>Numero verbale</th>
@@ -264,7 +264,7 @@
   				
   				var columsDatatables = [];
 
-   				$("#tabPM").on( 'init.dt', function ( e, settings ) {
+   				$("#tabSt").on( 'init.dt', function ( e, settings ) {
 
   				    var api = new $.fn.dataTable.Api( settings );
   				    var state = api.state.loaded();
@@ -274,9 +274,9 @@
   				    
   				    columsDatatables = state.columns;
   				    }
-  				    $('#tabPM thead th').each( function () {
-  				     	if(columsDatatables.length==0 || columsDatatables[$(this).index()]==null ){columsDatatables.push({search:{search:""}});}
-  				    	   var title = $('#tabPM thead th').eq( $(this).index() ).text();
+  				    $('#tabSt thead th').each( function () {
+  				     	//if(columsDatatables.length==0  ){columsDatatables.push({search:{search:""}});}
+  				    	   var title = $('#tabSt thead th').eq( $(this).index() ).text();
   				    	   
   				    		   $(this).append( '<div><input class="inputsearchtable" id="inputsearchtable_'+$(this).index()+'" style="width:100%" type="text" value="'+columsDatatables[$(this).index()].search.search+'" /></div>');
   				    	   
@@ -321,7 +321,7 @@
     		    		  	 }
 
 
-    					table = $('#tabPM').DataTable({
+    					table = $('#tabSt').DataTable({
     						 language: {
     					        	emptyTable : 	"Nessun dato presente nella tabella",
     					        	info	:"Vista da _START_ a _END_ di _TOTAL_ elementi",
@@ -391,15 +391,15 @@
     					      
     					    });
     					table.buttons().container()
-    				  .appendTo( '#tabPM_wrapper .col-sm-6:eq(1)' );
+    				  .appendTo( '#tabSt_wrapper .col-sm-6:eq(1)' );
     					
     					
-    					table.buttons().container().appendTo( '#tabPM_wrapper .col-sm-6:eq(1)');
+    					table.buttons().container().appendTo( '#tabSt_wrapper .col-sm-6:eq(1)');
     					    $('.inputsearchtable').on('click', function(e){
     					       e.stopPropagation();    
     					    });
     				//DataTable
-    				//table = $('#tabPM').DataTable();
+    				//table = $('#tabSt').DataTable();
     				//Apply the search
     				table.columns().eq( 0 ).each( function ( colIdx ) {
     				$( 'input', table.column( colIdx ).header() ).on( 'keyup', function () {

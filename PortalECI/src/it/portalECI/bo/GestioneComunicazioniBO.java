@@ -405,7 +405,7 @@ public static void sendPecVerbale(DocumentoDTO documento, VerbaleDTO verbale, St
 		  email.send();
 	}
 
-	public static void sendEmail(UtenteDTO ricevente, InterventoDTO intervento, VerbaleDTO verbale, int motivo) throws Exception {
+	public static void sendEmail(UtenteDTO ricevente, InterventoDTO intervento, VerbaleDTO verbale,VerbaleDTO verbale_principale, int motivo) throws Exception {
 		
 		String to = ricevente.getEMail();
 		
@@ -424,7 +424,7 @@ public static void sendPecVerbale(DocumentoDTO documento, VerbaleDTO verbale, St
 	        email.getMailSession().getProperties().put("mail.smtp.socketFactory.fallback", "false");
 	        email.getMailSession().getProperties().put("mail.smtp.ssl.enable", "true");
 	        
-	
+
 	        CommessaDTO commessa = GestioneCommesseBO.getCommessaById(intervento.getIdCommessa());
 			  if(motivo==0) {
 				  
@@ -442,11 +442,19 @@ public static void sendPecVerbale(DocumentoDTO documento, VerbaleDTO verbale, St
 				  		"			  		<br>According to Italian law D.L. 196/2003 and Reg. UE n.2016/679 (GDPR)  concerning privacy, if you are not the addressee (or responsible for delivery of the message to such person) you are hereby notified that any disclosure, reproduction, distribution or other dissemination or use of this communication is strictly prohibited. If you have received this message in error, please destroy it and notify us by email." + 
 				  		"			  		</font></html>");
 			  }
-			  else if(motivo == 1) {
+			  else if(motivo == 1) {				  
+				
+				  String str = "";		
+			        if(verbale.getType() == VerbaleDTO.SK_TEC) {
+			        	 email.setSubject("Richiesta controfirma scheda tecnica verbale ID n. "+verbale_principale.getId()+" - Cliente: "+commessa.getID_ANAGEN_NOME());
+			        	 str = "Si richiede la controfirma della scheda tecnica del verbale di verifica in oggetto.";
+			        }else {
+			        	 email.setSubject("Richiesta controfirma verbale ID n. "+verbale.getId()+" - Cliente: "+commessa.getID_ANAGEN_NOME());
+			        	 str = "Si richiede la controfirma del verbale di verifica in oggetto.";
+			        }
+						 
 				  
-				  email.setSubject("Richiesta controfirma verbale ID n. "+verbale.getId()+" - Cliente: "+commessa.getID_ANAGEN_NOME());
-				  
-				  email.setHtmlMsg("<html>Si richiede la controfirma del verbale di verifica in oggetto. <br />  <br /><br /> "
+				  email.setHtmlMsg("<html>"+str+" <br />  <br /><br /> "
 				  		+ "<em><b style='color:#9d201d' >ECI Ente di Certificazione & Ispezione Srl</em></b><br><br><span style='color:#204d74'>Via Tofaro 42, B - 03039 Sora (FR)<br>  " + 
 				  		"			  		<em>Tel + 39 0776.18151 - Fax+ 39 0776.814169 <br> " + 
 				  		"			  		Mail: </em>info@ecisrl.it<br> \r\n" + 
@@ -457,9 +465,17 @@ public static void sendPecVerbale(DocumentoDTO documento, VerbaleDTO verbale, St
 				  		"			  		<br>According to Italian law D.L. 196/2003 and Reg. UE n.2016/679 (GDPR)  concerning privacy, if you are not the addressee (or responsible for delivery of the message to such person) you are hereby notified that any disclosure, reproduction, distribution or other dissemination or use of this communication is strictly prohibited. If you have received this message in error, please destroy it and notify us by email." + 
 				  		"			  		</font></html>");
 			  }else if(motivo == 2) {
-				  email.setSubject("Comunicazione avvenuta controfirma verbale ID n. "+verbale.getId()+" - Cliente: "+commessa.getID_ANAGEN_NOME());
 				  
-				  email.setHtmlMsg("<html>Si comunica l'avvenuta controfirma da parte del RT/SRT del verbale di verifica in oggetto. <br />  <br /><br /> "
+				  String str = "";		
+			        if(verbale.getType() == VerbaleDTO.SK_TEC) {
+			        	 email.setSubject("Comunicazione avvenuta controfirma scheda tecnica verbale ID n. "+verbale_principale.getId()+" - Cliente: "+commessa.getID_ANAGEN_NOME());
+			        	 str = "Si comunica l'avvenuta controfirma da parte del RT/SRT della scheda tecnica del verbale di verifica in oggetto.";
+			        }else {
+			        	 email.setSubject("Comunicazione avvenuta controfirma verbale ID n. "+verbale.getId()+" - Cliente: "+commessa.getID_ANAGEN_NOME());
+			        	 str = "Si comunica l'avvenuta controfirma da parte del RT/SRT del verbale di verifica in oggetto.";
+			        }
+					
+				  email.setHtmlMsg("<html>"+str+" <br />  <br /><br /> "
 				  		+ "<em><b style='color:#9d201d' >ECI Ente di Certificazione & Ispezione Srl</em></b><br><br><span style='color:#204d74'>Via Tofaro 42, B - 03039 Sora (FR)<br>  " + 
 				  		"			  		<em>Tel + 39 0776.18151 - Fax+ 39 0776.814169 <br> " + 
 				  		"			  		Mail: </em>info@ecisrl.it<br> \r\n" + 

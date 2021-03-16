@@ -261,7 +261,7 @@ public class GestioneIntervento extends HttpServlet {
 				
 				GestioneInterventoBO.save(intervento,session);
 				
-				GestioneComunicazioniBO.sendEmail(intervento.getTecnico_verificatore(),intervento,null, 0);
+				GestioneComunicazioniBO.sendEmail(intervento.getTecnico_verificatore(),intervento,null, null,0);
 				
 				myObj.addProperty("success", true);
 				myObj.add("intervento", intervento.getInterventoJsonObject());

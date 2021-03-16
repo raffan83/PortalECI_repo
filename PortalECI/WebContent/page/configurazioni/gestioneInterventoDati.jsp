@@ -193,7 +193,7 @@
  															<th>Codice Categoria</th> 															
  															<th>Codice Verifica</th>
  															<th>Data Creazione</th>
- 															<th>Descrizione Verifica</th>
+ 															<th>Sede Utilizzatore</th>
  															<th>Stato</th>
  															<th>Numero Certificato</th>
  															<th>Certificato</th>
@@ -217,7 +217,7 @@
   																	${verbale.getCreateDate()}
 																</td>	
 																<td>
-  																	${verbale.getDescrizioneVerifica()}
+  																	${verbale.getSedeUtilizzatore()}
 																</td>
 																<td>
 																	<span class="label" style="color:#000000 !important; background-color:${verbale.getStato().getColore(verbale.getStato().getId())} !important;">${verbale.getStato().getDescrizione()}</span>  																	
@@ -693,6 +693,7 @@
 			processing:	"Elaborazione...",
 			search:	"Cerca:",
 			zeroRecords	:"La ricerca non ha portato alcun risultato.",
+			   
 			paginate:	{
 					first:	"Inizio",
 					previous:	"Precedente",
@@ -881,7 +882,7 @@
 								}
 								$("#bodytabVerifica").append(objectdata);	
 									 
-								 var table = $('#tabVerifica').DataTable({language : lang, responsive: true, ordering: false,columnDefs: [{ responsivePriority: 1, targets: 10 }]});
+								 var table = $('#tabVerifica').DataTable({language : lang, responsive: true, ordering: false, paging: true, pageLength: 100,columnDefs: [{ responsivePriority: 1, targets: 10 }]});
 								var column =  table.column(4 );
 								column.visible(!column.visible());
 								$('#str_attrezzature').val(str_attrezzature)
@@ -970,7 +971,7 @@
 							}
 							$("#bodytabVerifica").append(objectdata);	
 								 
-							 var table = $('#tabVerifica').DataTable({language : lang, responsive: true, ordering: false,columnDefs: [{ responsivePriority: 1, targets: 10 }]});
+							 var table = $('#tabVerifica').DataTable({language : lang, responsive: true, ordering: false, paging: true, pageLength: 100,columnDefs: [{ responsivePriority: 1, targets: 10 }]});
 							var column =  table.column(4 );
 							column.visible(!column.visible());
 							$('#str_attrezzature').val(str_attrezzature)

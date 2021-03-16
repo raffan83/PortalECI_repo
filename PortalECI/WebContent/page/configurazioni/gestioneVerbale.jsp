@@ -739,6 +739,18 @@
 													<div class="col-xs-6">
 													<c:set var="tipo_ver_gvr" value="${verbale.tipo_verifica_gvr }"></c:set>
 												<label>Tipo Verifica GVR</label>
+												
+												<c:if test="${verbale.tipo_verifica == 1 || verbale.tipo_verifica == 2 }">
+												   <select id="tipo_verifica_gvr" name="tipo_verifica_gvr" class="form-control select2" data-placeholder="Seleziona Tipo Verifica GVR" style="width:100%">
+												 <option value=""></option>
+												 <option value="1">PVP</option>
+												 <option value="4">PVP + Integrità</option>
+												 <option value="5">PVP + Integrità + Interna</option>
+												 <option value="7">PVP + Interna</option>
+												 </select>	
+												</c:if>
+												
+												<c:if test="${verbale.tipo_verifica == 3 || verbale.tipo_verifica == 4 }">
 												   <select id="tipo_verifica_gvr" name="tipo_verifica_gvr" class="form-control select2" data-placeholder="Seleziona Tipo Verifica GVR" style="width:100%">
 												 <option value=""></option>
 												 <option value="1">Funzionamento</option>
@@ -749,7 +761,7 @@
 												 <option value="6">Interna + Integrità</option>
 												 <option value="7">Funzionamento + Interna</option>
 												 </select>	
-												
+												</c:if>
 												<!-- </div> -->
 											</div>
 												
@@ -977,10 +989,10 @@
 													<label>Ore</label>													
 													</div>
 													<div class="col-xs-2">
-													<c:if test="${verbale.ore_uomo!=null }">
+													<c:if test="${verbale.ore_uomo!=null && verbale.ore_uomo!=''}">
 													<input type="number" class="form-control" min="0" step="1" id="ore" name="ore" value="${verbale.ore_uomo.split('h')[0] }">
 													</c:if>
-													<c:if test="${verbale.ore_uomo==null }">
+													<c:if test="${verbale.ore_uomo==null || verbale.ore_uomo==''}">
 													<input type="number" class="form-control" min="0" step="1" id="ore" name="ore" >
 													</c:if>
 													</div>
@@ -990,11 +1002,11 @@
 													
 													</div>
 														<div class="col-xs-2">
-														<c:if test="${verbale.ore_uomo!=null }">
+														<c:if test="${verbale.ore_uomo!=null && verbale.ore_uomo!=''}">
 														<input type="number" class="form-control" min="0" step="1" max="59" id="minuti" name="minuti" value="${verbale.ore_uomo.split('-')[1].replace('min','') }">
 													
 													</c:if>
-													<c:if test="${verbale.ore_uomo==null }">
+													<c:if test="${verbale.ore_uomo==null || verbale.ore_uomo==''}">
 													<input type="number" class="form-control" min="0" step="1" max="59" id="minuti" name="minuti">
 													</c:if>
 													
@@ -2056,7 +2068,7 @@
  	    	$('#data_prossima_verifica_interna_verb').attr("disabled", true);
  	    
  	    	 
- 	    	 if(value == 1 || value == 4 || value == 5){
+ 	    	 if(value == 1 || value == 4 || value == 5 || value == 7){
  	    		$('#data_verifica').prop("disabled", false);
  	    		$('#data_prossima_verifica_verb').prop("disabled", false);
  	    		  
@@ -2066,7 +2078,7 @@
  	    		$('#data_prossima_verifica_integrita_verb').prop("disabled", false);
  	    	 }
  	    	
- 	    	if(value == 3 || value == 5 || value == 6){
+ 	    	if(value == 3 || value == 5 || value == 6 || value == 7){
  	    		$('#data_verifica_interna_verb').prop("disabled", false);
  	    		$('#data_prossima_verifica_interna_verb').prop("disabled", false);
  	    	 }
@@ -2232,7 +2244,12 @@
 		var ore = $(this).val();
 		var minuti = $('#minuti').val();
 		
-		$('#ore_uomo').val(ore+"h-"+minuti+"min");
+		if(ore == '' || minuti == ''){
+			$('#ore_uomo').val("");
+		}else{
+			$('#ore_uomo').val(ore+"h-"+minuti+"min");
+		}
+		
 	});
 	
 	
@@ -2246,8 +2263,13 @@ $('#minuti').change(function(){
 			$(this).val(59);
 			
 		}
+		if(ore == '' || minuti == ''){
+			$('#ore_uomo').val("");
+		}else{
+			$('#ore_uomo').val(ore+"h-"+minuti+"min");
+		}
 		
-		$('#ore_uomo').val(ore+"h-"+minuti+"min");
+		
 	});
 	
 	$('#tipo_verifica_vie').change(function(){
@@ -2633,6 +2655,10 @@ function modificaSedeUtilizzatore(){
 	}
 	
 			$(document).ready(function() {
+				
+				$('#minuti').change();
+				
+				var x = $('#ore_uomo').val();
 				
 				$('.rispVerb').on('ifChanged', function(event) {
 					$('.'+$(this).attr('id')).find('input').val('');
@@ -3033,7 +3059,7 @@ function modificaSedeUtilizzatore(){
 				$('#myModalError').modal('show');	
 			}
 			
-			else if(($('#ore').val()=='' || $('#minuti').val()=='') && !salva_mod){
+			else if(($('#ore').val()=='' || $('#minuti').val()=='') && $('#ore_uomo').val()=='' && !salva_mod){
 				$('#modalErrorDiv').html("Il campo ore/uomo è obbligatorio");
 				$('#myModalError').removeClass();
 				$('#myModalError').addClass("modal modal-danger");

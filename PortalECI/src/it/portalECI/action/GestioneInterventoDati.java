@@ -22,6 +22,7 @@ import it.portalECI.DTO.CategoriaVerificaDTO;
 import it.portalECI.DTO.CommessaDTO;
 import it.portalECI.DTO.InterventoDTO;
 import it.portalECI.DTO.QuestionarioDTO;
+import it.portalECI.DTO.SedeDTO;
 import it.portalECI.DTO.TipoVerificaDTO;
 import it.portalECI.DTO.UtenteDTO;
 import it.portalECI.DTO.VerbaleDTO;
@@ -161,6 +162,21 @@ public class GestioneInterventoDati extends HttpServlet {
 			String nome_cliente = GestioneAnagraficaRemotaBO.getClienteById(intervento.getId_cliente()+"").getNome();
 			ArrayList<AttrezzaturaDTO> listaAttrezzature =GestioneAttrezzatureBO.getlistaAttrezzatureSede(commessa.getID_ANAGEN_UTIL(), commessa.getK2_ANAGEN_INDR_UTIL(), false, session);
 			
+			
+			
+			List<SedeDTO> listaSedi = (List<SedeDTO>) request.getSession().getAttribute("listaSedi");
+			if(listaSedi==null) {
+					listaSedi = GestioneAnagraficaRemotaBO.getListaSedi();							
+			}
+			
+			List<SedeDTO> lista_sedi_cliente =  (List<SedeDTO>) request.getSession().getAttribute("lista_sedi_cliente");
+			if(lista_sedi_cliente == null) {
+				lista_sedi_cliente = GestioneAnagraficaRemotaBO.getSediFromCliente(listaSedi, commessa.getID_ANAGEN_UTIL());
+			}
+					
+					
+			
+			request.getSession().setAttribute("lista_sedi_cliente", lista_sedi_cliente);
 			request.getSession().setAttribute("commessa", commessa);
 			request.getSession().setAttribute("nome_cliente", nome_cliente);
 			request.getSession().setAttribute("listaAttrezzature", listaAttrezzature);

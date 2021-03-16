@@ -85,11 +85,11 @@
  																<th>Numero Verbale</th>
  																<th>Data verifica</th>
  																<th>Matricola Attrezzatura</th>
- 																<th>Sede Cliente</th>
+ 																<th style="min-width:200px">Sede Cliente</th>
  																<th>Codice Categoria</th>
  																<th>Codice Verifica</th>
- 																<th>Tecnico Verificatore</th>
- 																<th>Descrizione Verifica</th>
+ 																<th>Tecnico Verificatore</th><%-- 
+ 																<th>Descrizione Verifica</th> --%>
  																<th>Stato</th>
  																<th>Stato S.T.</th>
  																<th>Data Creazione</th>
@@ -139,9 +139,9 @@
 																	<td>
 																		<c:out value='${verbale.getIntervento().getTecnico_verificatore().getNominativo()}'/>
 																	</td>
-																	<td>
+																	<%-- <td>
 																		<c:out value='${verbale.getDescrizioneVerifica()}'/>
-																	</td>
+																	</td> --%>
 																	<td>
 																		<span class="label" style="color:#000000 !important; background-color:${verbale.getStato().getColore(verbale.getStato().getId())} !important;">${verbale.getStato().getDescrizione()}</span>
 																		
@@ -314,7 +314,7 @@
     	                { responsivePriority: 4, targets: 3 },
     	                { responsivePriority: 2, targets: 6 },
     	                { responsivePriority: 2, targets: 8, type:"date-eu" },
-    	                { responsivePriority: 5, targets: 11 },
+    	                { responsivePriority: 5, targets: 10 },
     	                { orderable: false, targets: 6 },
     	            ],
     	            buttons: [ {

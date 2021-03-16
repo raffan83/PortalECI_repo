@@ -61,6 +61,7 @@
                        <th>Marcatura</th>
                        <th>N. ID ON</th>
                        <th>Scadenza Ventennale</th>
+                       <th>Codici Milestone</th>
                        <th>Note tecniche</th>
                        <th>Note generiche</th>     
                       
@@ -118,6 +119,7 @@
  	<td>${attrezzatura.marcatura }</td>
  	<td>${attrezzatura.n_id_on }</td>
  	<td>${attrezzatura.data_scadenza_ventennale}</td>
+ 	<td>${attrezzatura.codice_milestone }</td>
  	<td>${attrezzatura.note_tecniche }</td> 	
  	<td>${attrezzatura.note_generiche }</td> 
  	<td>
@@ -1128,7 +1130,7 @@ $(document).ready(function() {
 	      columnDefs: [
 					 
 	                   { responsivePriority: 1, targets: 0 },	                  
-	                   { responsivePriority: 2, targets: 28 }
+	                   { responsivePriority: 2, targets: 29 }
 	                  
 	                  /*  { orderable: false, targets: 6 }, */
 	               ],
@@ -1587,7 +1589,12 @@ $("#descrizione_mod").change(function() {
 		 var gruppo = $(this).val().split('_')[0];
 		 
 		  var descrizione = $(this).val().split("_")[1];
-		  var id_spec = $(this).val().split("_")[2].split("@")[0];
+		  if($(this).val().split("_").length>2){
+			  var id_spec = $(this).val().split("_")[2].split("@")[0];
+		  }else{
+			  var id_spec = "";
+		  }
+		  
 		  var codice_milestone = $(this).val().split("@")[1];
 		  //var id_spec = $(this).val().split("_")[2];
 
