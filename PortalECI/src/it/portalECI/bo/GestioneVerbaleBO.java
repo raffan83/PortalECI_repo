@@ -43,6 +43,7 @@ import it.portalECI.DAO.GestioneRispostaVerbaleDAO;
 import it.portalECI.DAO.GestioneStatoInterventoDAO;
 import it.portalECI.DAO.GestioneStatoVerbaleDAO;
 import it.portalECI.DAO.GestioneVerbaleDAO;
+import it.portalECI.DTO.AllegatoMinisteroDTO;
 import it.portalECI.DTO.AttrezzaturaDTO;
 import it.portalECI.DTO.ColonnaTabellaQuestionarioDTO;
 import it.portalECI.DTO.ColonnaTabellaVerbaleDTO;
@@ -1560,6 +1561,21 @@ public class GestioneVerbaleBO {
 	public static List<DocumentoDTO> getVerbaliPDFAll(Session session, String dateFrom, String dateTo) throws ParseException, Exception {
 		
 		return GestioneVerbaleDAO.getVerbaliPDFAll(session, dateFrom, dateTo);
+	}
+
+	public static List<VerbaleDTO> getListaVerbaliMinistero(Session session, String dateFrom, String dateTo) throws ParseException, Exception {
+	
+		return GestioneVerbaleDAO.getListaVerbaliMinistero(session, dateFrom, dateTo);
+	}
+
+	public static ArrayList<AllegatoMinisteroDTO> getListaAllegatiMinistero(Session session) {
+		
+		return GestioneVerbaleDAO.getListaAllegatiMinistero(session);
+	}
+
+	public static AllegatoMinisteroDTO getAllegatoMinistero(int id_allegato, Session session) {
+		
+		return GestioneVerbaleDAO.getAllegatoMinistero(id_allegato, session);
 	}
 
 

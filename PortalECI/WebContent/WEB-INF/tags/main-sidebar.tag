@@ -33,6 +33,7 @@
           			</ul>
           		<% }%>
         	</li>
+        	<% if(user.checkPermesso("GESTIONE_INTERVENTO")){%> 
         	<li class="treeview">
         	 	<a href="#">
         	 		<i class="fa fa-wrench "></i> 
@@ -41,14 +42,16 @@
               			<i class="fa fa-angle-left pull-right"></i>
             		</span>
           		</a>
-          		<% if(user.checkPermesso("GESTIONE_INTERVENTO")){%> 
+          		<%-- <% if(user.checkPermesso("GESTIONE_INTERVENTO")){%>  --%>
           			<ul class="treeview-menu">
             			<li>
             				<a href="gestioneListaInterventi.do">Gestione Intervento</a>
             			</li>
           			</ul>
-          		<% }%>
+          		
         	</li>
+        	<% }%>
+        		<% if(user.checkPermesso("GESTIONE_VERBALI")){%> 
         	<li class="treeview">
         	 	<a href="#">
         	 		<i class="fa fa-clipboard "></i> 
@@ -57,17 +60,19 @@
               			<i class="fa fa-angle-left pull-right"></i>
             		</span>
           		</a>
-          		<% if(user.checkPermesso("GESTIONE_VERBALI")){%> 
+          	
           			<ul class="treeview-menu">
             			<li>
 	            			<a href="gestioneListaVerbali.do">Gestione Verbali</a>
 	            			<% if(user.checkRuolo("AM")){%>
 	            			<a href="#" onClick="callAction('gestioneListaVerbali.do?action=lista_file')">Lista Verbali PDF</a>
 	            		<% }%>
+	            	
     	        		</li>
         	  		</ul>
-        	  	<% }%>
+        	  	
         	</li>
+        	<% }%>
         	<% if(user.checkPermesso("GESTIONE_QUESTIONARI")){%>
         	<li class="treeview">
         	 	<a href="#">
@@ -201,7 +206,7 @@
           		
         	</li>
         	<% }%>
-        	
+        	<% if(user.checkPermesso("GESTIONE_VERBALI")){%> 
         		<li class="treeview">
         		
         		<a href="#">
@@ -220,6 +225,39 @@
         		
         		</ul>
         		</li>
+        		<% }%>
+        	<% if(user.checkPermesso("GESTIONE_ACCESSO_MINISTERO")){%> 
+        		<li class="treeview">
+        		
+        		<a href="#">
+          			<i class="fa fa-clipboard"></i> 
+          			<span>Lista Verbali MISE</span>
+            		<span class="pull-right-container">
+              			<i class="fa fa-angle-left pull-right"></i>
+            		</span>
+          		</a>
+        		
+        		<ul class="treeview-menu">
+        		
+        		<li>
+        				
+	            		<a href="#" onClick="callAction('gestioneListaVerbali.do?action=accesso_ministero')">Lista Verbali Ministero</a>
+	            			
+				</li>
+        		
+        		<li>
+        				
+	            		<a href="#" onClick="callAction('gestioneListaVerbali.do?action=allegati_ministero')">Gestione allegati</a>
+	            			
+				</li>
+        		
+        		</ul>
+        		</li>
+        		
+        		<% }%>
+        		
+        		
+        		
       	</ul>
       	<!-- /.sidebar-menu -->
     </section>

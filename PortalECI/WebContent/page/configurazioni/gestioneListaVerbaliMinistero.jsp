@@ -24,7 +24,7 @@
    				<!-- Content Header (Page header) -->
     			<section class="content-header">
       				<h1>
-        				Storico Verbale
+        				Lista Verbali
       				</h1>
     			</section>
     			
@@ -40,7 +40,7 @@
         								<div class="col-xs-12">	
  											<div class="box box-danger box-solid">
 												<div class="box-header with-border">
-	 												Storico
+	 												Lista Verbali
 													<div class="box-tools pull-right">			
 														<button data-widget="collapse" class="btn btn-box-tool"><i class="fa fa-minus"></i></button>
 													</div>
@@ -86,51 +86,63 @@
  																<thead>
  																	<tr class="active">
  																		<th>ID</th>
- 																		<th>Codice Verificatore</th>
+ 																	
  																		<th>Verificatore</th>
  																		<th>Numero verbale</th>
- 																		<th>Cliente</th>
- 																		<th>Indirizzo Cliente</th>
- 																		<th>Località Cliente</th>		
- 																		<th>Ubicazione Impianto</th>
- 																		<th>Località Impianto</th>		
+ 																		<th>Cliente</th> 	
  																		<th>Provincia</th>		
  																		<th>Esito</th>		
  																		<th>Codice Commessa</th>		
- 																		<th>Strumento Utilizzato</th>		
+ 																			
  																		<th>Data Verifica</th>		
  																		<th>Frequenza</th>	
  																		<th>Data Prossima Verifica</th>	
  																		<th>Ore Uomo</th>	
  																		<th>Tipologia Verifica</th>
- 																		<th>Azioni</th>							
+ 																								
  																	</tr>
  																</thead> 
  																<tbody>	
- 																	<c:forEach items="${lista_verbali}" var="verbale" varStatus="loop">	
+ 																	<c:forEach items="${listaVerbali}" var="verbale" varStatus="loop">	
 	 																	<tr role="row" id="${verbale.id}-${loop.index}">	
 																			<td>${verbale.id}</td>
-																			<td>${verbale.codice_verificatore}</td>
-																			<td>${verbale.verificatore}</td>
-																			<td>${verbale.numero_verbale}</td>
-																			<td>${verbale.cliente}</td>
-																			<td>${verbale.indirizzo_cliente}</td>
-																			<td>${verbale.localita_cliente }</td>
-																			<td>${verbale.ubicazione_impianto}</td>
-																			<td>${verbale.localita_impianto}</td>
-																			<td>${verbale.provincia}</td>
-																			<td>${verbale.esito}</td>
-																			<td>${verbale.codice_commessa}</td>
-																			<td>${verbale.strumento_utilizzato}</td>
+																		
+																			<td>${verbale.intervento.tecnico_verificatore.nominativo}</td>
+																			<td>${verbale.numeroVerbale}</td>																			
+																			<td>${verbale.intervento.nome_sede}</td>
+																			<td>${verbale.intervento.codiceProvincia }</td>		
+																			<c:if test="${verbale.esito == 'P' }">
+																			<td>Positivo</td>
+																			</c:if>				
+																			<c:if test="${verbale.esito == 'N'}">
+																			<td>Negativo</td>
+																			</c:if>	
+																			<c:if test="${verbale.esito == 'S' }">
+																			<td>Sospeso</td>
+																			</c:if>													
+																			
+																			<td>${verbale.intervento.idCommessa}</td>
+																		
 																			<td><fmt:formatDate pattern = "dd/MM/yyyy" value = "${verbale.data_verifica}" /></td>
+																				<c:if test="${verbale.frequenza != 0}">
 																			<td>${verbale.frequenza}</td>
+																			</c:if>
+																			<c:if test="${verbale.frequenza == 0}">
+																			<td></td>
+																			</c:if>
 																			<td><fmt:formatDate pattern = "dd/MM/yyyy" value = "${verbale.data_prossima_verifica}" /></td>
 																			<td>${verbale.ore_uomo}</td>
-																			<td>${verbale.tipologia_verifica}</td>
-																			<td>
+																			<td>${verbale.codiceVerifica }</td>
+																			<%-- <c:if test="${verbale.tipo_verifica !=0 && verbale.tipo_verifica<3}">
+																			<td>Prima periodica</td>
+																			</c:if>
+																			<c:if test="${verbale.tipo_verifica !=0 && verbale.tipo_verifica>=3}">
+																			<td>Periodica successiva</td>
+																			</c:if>
+																			<c:if test="${verbale.tipo_verifica ==0}">
+																			<td></td>
+																			</c:if> --%>
 																			
-																			<a href="#" class="btn btn-primary customTooltip" title="Click per visualizzare l'archivio" onclick="modalArchivio('${verbale.id }')"><i class="fa fa-archive"></i></a>
-																			</td>
 																			
 																			
 																			
@@ -154,27 +166,7 @@
 
 							
 							
-	 <div id="myModalArchivio" class="modal fade" role="dialog" aria-labelledby="myLargeModalLabel">
-  
-    <div class="modal-dialog modal-md" role="document">
-    <div class="modal-content">
-     <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="myModalLabel">Allegati</h4>
-      </div>
-       <div class="modal-body">
-       <div class="row">
-        <div class="col-xs-12">
-       <div id="tab_allegati"></div>
-</div>
-  		 </div>
-  		 </div>
-      <div class="modal-footer">
-      </div>
-   
-  </div>
-  </div>
-</div>
+
 
 
      					<div id="myModalError" class="modal fade" role="dialog" aria-labelledby="myLargeModalLabel">
@@ -226,13 +218,13 @@
   		  			
   		  			var startDatePicker = $("#datarange").data('daterangepicker').startDate;
   		  		 	var endDatePicker = $("#datarange").data('daterangepicker').endDate;
-  		  		 	dataString = "?action=filtra_date&dateFrom=" + startDatePicker.format('YYYY-MM-DD') + "&dateTo=" + 
+  		  		 	dataString = "?action=accesso_ministero&dateFrom=" + startDatePicker.format('YYYY-MM-DD') + "&dateTo=" + 
   		  		 			endDatePicker.format('YYYY-MM-DD');
   		  		 	
   		  		 	 pleaseWaitDiv = $('#pleaseWaitDialog');
   		  			  pleaseWaitDiv.modal();
 
-  		  		 	callAction("gestioneStoricoVerbale.do"+ dataString, false,true);
+  		  		 	callAction("gestioneListaVerbali.do"+ dataString, false,true);
 
   		  		 	//exploreModal("gestioneListaVerbali.do", dataString, '#content_consuntivo');
   		  	}
@@ -243,7 +235,7 @@
   		  	function resetDate(){
   		  		pleaseWaitDiv = $('#pleaseWaitDialog');
   		  			  pleaseWaitDiv.modal();
-  		  		callAction("gestioneStoricoVerbale.do");
+  		  		callAction("gestioneListaVerbali.do?action=accesso_ministero");
 
   		  	}
 
@@ -262,28 +254,28 @@
   		   
   				
   				
-/*   				var columsDatatables = [];
+  				var columsDatatables = [];
 
    				$("#tabSt").on( 'init.dt', function ( e, settings ) {
 
   				    var api = new $.fn.dataTable.Api( settings );
   				    var state = api.state.loaded();
   				 
-  				    if(state != null && state.columns!=null){
+  				     if(state != null && state.columns!=null){
   				    		console.log(state.columns);
   				    
   				    columsDatatables = state.columns;
-  				    }
+  				    } 
   				    $('#tabSt thead th').each( function () {
-  				     	//if(columsDatatables.length==0  ){columsDatatables.push({search:{search:""}});}
-  				    	   var title = $('#tabSt thead th').eq( $(this).index() ).text();
+  				     	if(columsDatatables.length==0  ){columsDatatables.push({search:{search:""}});}
+  				    	//   var title = $('#tabSt thead th').eq( $(this).index() ).text();
   				    	   
   				    		   $(this).append( '<div><input class="inputsearchtable" id="inputsearchtable_'+$(this).index()+'" style="width:100%" type="text" value="'+columsDatatables[$(this).index()].search.search+'" /></div>');
   				    	   
   				    	  
   				    	} );
 
-  				} );  */
+  				} ); 
 
   				function modalArchivio(id_verbale){
   					 
@@ -358,7 +350,7 @@
     					      columnDefs: [
     									 
     					                   { responsivePriority: 1, targets: 0 },	                  
-    					                   { responsivePriority: 2, targets: 18 }
+    					                 
     					                  
     					                  /*  { orderable: false, targets: 6 }, */
     					               ],
@@ -390,14 +382,6 @@
     					    	
     					      
     					    });
-    					
-    					
-    					$('#tabSt thead th').each( function () {
-    	        			var title = $('#tabSt thead th').eq( $(this).index() ).text();
-    	        			$(this).append( '<div><input class="inputsearchtable" style="width:100%" type="text" /></div>');
-    					} );
-    					
-    					
     					table.buttons().container()
     				  .appendTo( '#tabSt_wrapper .col-sm-6:eq(1)' );
     					

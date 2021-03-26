@@ -24,7 +24,7 @@
    				<!-- Content Header (Page header) -->
     			<section class="content-header">
       				<h1>
-        				Storico Verbale
+        				Gestione Allegati
       				</h1>
     			</section>
     			
@@ -40,98 +40,52 @@
         								<div class="col-xs-12">	
  											<div class="box box-danger box-solid">
 												<div class="box-header with-border">
-	 												Storico
+	 												Lista Allegati
 													<div class="box-tools pull-right">			
 														<button data-widget="collapse" class="btn btn-box-tool"><i class="fa fa-minus"></i></button>
 													</div>
 												</div>
 												<div class="box-body">
 												
-												            		<div class="row">
-        				
-        				
-        					<div class="col-xs-5">
-			 <div class="form-group">
-				 <label for="datarange" class="control-label">Filtra Data Verifica:</label>
-					<div class="col-md-10 input-group" >
-						<div class="input-group-addon">
-				             <i class="fa fa-calendar"></i>
-				        </div>				                  	
-						 <input type="text" class="form-control" id="datarange" name="datarange" value=""/> 						    
-							 <span class="input-group-btn">
-				               <button type="button" class="btn btn-info btn-flat" onclick="filtraDate()">Cerca</button>
-				               <button type="button" style="margin-left:5px" class="btn btn-primary btn-flat" onclick="resetDate()">Reset Date</button>
-				             </span>				                     
-  					</div>  								
-			 </div>	
-			 
-			 
-        				</div>
-
-        				</div>
-            					
-												
 												
 													<div class="row">														
 														<div class="col-lg-12">															
 
-															<div id="errorMsg" >
-															</div>
+													<c:if test="${user.checkRuolo('AM') }">	
+														<a class="btn btn-primary" onClick="$('#modalAllegati').modal()"><i class="fa fa-plus"></i> Carica Allegato</a><br><br>
+														</c:if>
+															
 														</div>          												
 													</div>
- 													<div class="clearfix"></div>
-													<div class="row" style="margin-top:20px;">
+ 													
+													<div class="row">
 														<div class="col-lg-12">
+														
+														
+														
   															<table id="tabSt" class="table table-bordered table-hover dataTable table-striped" role="grid" width="100%">
  																<thead>
  																	<tr class="active">
  																		<th>ID</th>
- 																		<th>Codice Verificatore</th>
- 																		<th>Verificatore</th>
- 																		<th>Numero verbale</th>
- 																		<th>Cliente</th>
- 																		<th>Indirizzo Cliente</th>
- 																		<th>Località Cliente</th>		
- 																		<th>Ubicazione Impianto</th>
- 																		<th>Località Impianto</th>		
- 																		<th>Provincia</th>		
- 																		<th>Esito</th>		
- 																		<th>Codice Commessa</th>		
- 																		<th>Strumento Utilizzato</th>		
- 																		<th>Data Verifica</th>		
- 																		<th>Frequenza</th>	
- 																		<th>Data Prossima Verifica</th>	
- 																		<th>Ore Uomo</th>	
- 																		<th>Tipologia Verifica</th>
- 																		<th>Azioni</th>							
+ 																	
+ 																		<th>Descrizione</th>
+ 																		<th>File</th>
+ 																		<th>Azioni</th> 	
+ 																								
  																	</tr>
  																</thead> 
  																<tbody>	
- 																	<c:forEach items="${lista_verbali}" var="verbale" varStatus="loop">	
-	 																	<tr role="row" id="${verbale.id}-${loop.index}">	
-																			<td>${verbale.id}</td>
-																			<td>${verbale.codice_verificatore}</td>
-																			<td>${verbale.verificatore}</td>
-																			<td>${verbale.numero_verbale}</td>
-																			<td>${verbale.cliente}</td>
-																			<td>${verbale.indirizzo_cliente}</td>
-																			<td>${verbale.localita_cliente }</td>
-																			<td>${verbale.ubicazione_impianto}</td>
-																			<td>${verbale.localita_impianto}</td>
-																			<td>${verbale.provincia}</td>
-																			<td>${verbale.esito}</td>
-																			<td>${verbale.codice_commessa}</td>
-																			<td>${verbale.strumento_utilizzato}</td>
-																			<td><fmt:formatDate pattern = "dd/MM/yyyy" value = "${verbale.data_verifica}" /></td>
-																			<td>${verbale.frequenza}</td>
-																			<td><fmt:formatDate pattern = "dd/MM/yyyy" value = "${verbale.data_prossima_verifica}" /></td>
-																			<td>${verbale.ore_uomo}</td>
-																			<td>${verbale.tipologia_verifica}</td>
+ 																	<c:forEach items="${lista_allegati}" var="allegato" varStatus="loop">	
+	 																	<tr role="row">	
+																			<td>${allegato.id}</td>
+																		
+																			<td>${allegato.descrizione}</td>
+																			<td>${allegato.nome_file}</td>																			
+																			
 																			<td>
-																			
-																			<a href="#" class="btn btn-primary customTooltip" title="Click per visualizzare l'archivio" onclick="modalArchivio('${verbale.id }')"><i class="fa fa-archive"></i></a>
+																			<a class="btn btn-primary" href='gestioneListaVerbali.do?action=download_allegato&id_allegato=${allegato.id}'><i class="fa fa-arrow-down"></i></a>
+																			<a class="btn btn-primary" onClick="modalEliminaAllegato('${allegato.id}')"><i class="fa fa-trash"></i></a>
 																			</td>
-																			
 																			
 																			
 																		</tr>
@@ -150,31 +104,53 @@
         					</div>
         					<!-- /.col -->
 
-			
+			<form id="formAllegatiMinistero" name="formAllegatiMinistero">
+						<div id="modalAllegati" class="modal fade" role="dialog" aria-labelledby="myLargeModalLabel">
+    						<div class="modal-dialog" role="document">
+    							<div class="modal-content">
+     								<div class="modal-header">
+        								<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        								<h4 class="modal-title" id="myModalLabel">Carica Allegato</h4>
+      								</div>
+       								<div class="modal-body">
+										
+										<div class="row">
+									        <div class="col-xs-12">
+									
+									 <span class="btn btn-primary fileinput-button">
+											        <i class="glyphicon glyphicon-plus"></i>
+											        <span>Seleziona un file...</span>
+													<input accept=".pdf,.PDF,.jpg,.gif,.jpeg,.png,.doc,.docx,.xls,.xlsx"  id="fileupload" type="file" name="file" >
+											       
+											   	 </span> <label id="label_fileupload"></label>
+									
+											   	 <br>
+									
+									      
+									</div>
+									  		 </div><br>
+									  		 
+									  		 <div class="row">
+									        <div class="col-xs-12">
+									        <label>Descrizione</label>
+									        <input id="descrizione" name="descrizione" class="form-control" type="text" required>
+									        </div>
+									        </div>
+										
+										   
+  										<div id="empty" class="label label-danger testo12"></div>
+  		 							</div>
+      								<div class="modal-footer">
+      								<button type="submit" class="btn btn-primary" >Salva</button>
+      								
+        								<button type="button" class="btn btn-primary" data-dismiss="modal">Chiudi</button>
+      								</div>
+    							</div>
+  							</div>
+						</div> 
+ 
+						</form>	
 
-							
-							
-	 <div id="myModalArchivio" class="modal fade" role="dialog" aria-labelledby="myLargeModalLabel">
-  
-    <div class="modal-dialog modal-md" role="document">
-    <div class="modal-content">
-     <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="myModalLabel">Allegati</h4>
-      </div>
-       <div class="modal-body">
-       <div class="row">
-        <div class="col-xs-12">
-       <div id="tab_allegati"></div>
-</div>
-  		 </div>
-  		 </div>
-      <div class="modal-footer">
-      </div>
-   
-  </div>
-  </div>
-</div>
 
 
      					<div id="myModalError" class="modal fade" role="dialog" aria-labelledby="myLargeModalLabel">
@@ -196,6 +172,29 @@
   							</div>
 						</div> 
  
+ 
+ 
+ 
+   <div id="myModalYesOrNo" class="modal fade" role="dialog" aria-labelledby="myLargeModalsaveStato">
+   
+    <div class="modal-dialog modal-md" role="document">
+    <div class="modal-content">
+     <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Attenzione</h4>
+      </div>
+       <div class="modal-body">       
+      	Sei sicuro di voler eliminare l'allegato?
+      	</div>
+      <div class="modal-footer">
+      <input type="hidden" id="id_allegato_elimina">
+      <a class="btn btn-primary" onclick="eliminaAllegatoMise($('#id_allegato_elimina').val())" >SI</a>
+		<a class="btn btn-primary" onclick="$('#myModalYesOrNo').modal('hide')" >NO</a>
+      </div>
+    </div>
+  </div>
+
+</div>
 
 							
 						</section>
@@ -222,17 +221,41 @@
   				<script type="text/javascript">
   				
   				
+  				function modalEliminaAllegato(id_allegato){
+  					
+  					$('#id_allegato_elimina').val(id_allegato);
+  					
+  					$('#myModalYesOrNo').modal();
+  					
+  				}
+  				
+  				
+  				$('#formAllegatiMinistero').on('submit', function(e){
+  					
+  					e.preventDefault();
+  					submitAllegatoMinistero();
+  					
+  				});
+  				
+  				$('#fileupload').change(function(){
+
+  					$('#label_fileupload').html($(this).val().split("\\")[2]);
+  				
+  					 
+  				 });
+  				
+  				
   		  		function filtraDate(){
   		  			
   		  			var startDatePicker = $("#datarange").data('daterangepicker').startDate;
   		  		 	var endDatePicker = $("#datarange").data('daterangepicker').endDate;
-  		  		 	dataString = "?action=filtra_date&dateFrom=" + startDatePicker.format('YYYY-MM-DD') + "&dateTo=" + 
+  		  		 	dataString = "?action=accesso_ministero&dateFrom=" + startDatePicker.format('YYYY-MM-DD') + "&dateTo=" + 
   		  		 			endDatePicker.format('YYYY-MM-DD');
   		  		 	
   		  		 	 pleaseWaitDiv = $('#pleaseWaitDialog');
   		  			  pleaseWaitDiv.modal();
 
-  		  		 	callAction("gestioneStoricoVerbale.do"+ dataString, false,true);
+  		  		 	callAction("gestioneListaVerbali.do"+ dataString, false,true);
 
   		  		 	//exploreModal("gestioneListaVerbali.do", dataString, '#content_consuntivo');
   		  	}
@@ -243,7 +266,7 @@
   		  	function resetDate(){
   		  		pleaseWaitDiv = $('#pleaseWaitDialog');
   		  			  pleaseWaitDiv.modal();
-  		  		callAction("gestioneStoricoVerbale.do");
+  		  		callAction("gestioneListaVerbali.do?action=accesso_ministero");
 
   		  	}
 
@@ -358,7 +381,7 @@
     					      columnDefs: [
     									 
     					                   { responsivePriority: 1, targets: 0 },	                  
-    					                   { responsivePriority: 2, targets: 18 }
+    					                 
     					                  
     					                  /*  { orderable: false, targets: 6 }, */
     					               ],
@@ -396,6 +419,7 @@
     	        			var title = $('#tabSt thead th').eq( $(this).index() ).text();
     	        			$(this).append( '<div><input class="inputsearchtable" style="width:100%" type="text" /></div>');
     					} );
+    					
     					
     					
     					table.buttons().container()

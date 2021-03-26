@@ -4572,3 +4572,118 @@ function controllaAssociati(ver, id_campione){
 	 $('#verificatori_dtl').html(opt);
 	 
 }
+
+
+function submitAllegatoMinistero(){
+	
+	  var form = $('#formAllegatiMinistero')[0]; 
+	  var formData = new FormData(form);
+
+      $.ajax({
+    	  type: "POST",
+    	  url: "gestioneListaVerbali.do?action=upload_allegato_ministero",
+    	  data: formData,
+    	  //dataType: "json",
+    	  contentType: false, // NEEDED, DON'T OMIT THIS (requires jQuery 1.6+)
+    	  processData: false, // NEEDED, DON'T OMIT THIS
+    	  //enctype: 'multipart/form-data',
+    	  success: function( data, textStatus) {
+
+    		  if(data.success)
+    		  { 
+    			  $('#report_button').hide();
+						$('#visualizza_report').hide();
+    			  $('#modalErrorDiv').html(data.messaggio);
+    			  	$('#myModalError').removeClass();
+    				$('#myModalError').addClass("modal modal-success");
+    				$('#myModalError').modal('show');
+    				$('#myModalError').on('hidden.bs.modal', function(){
+    					location.reload()
+    				});
+
+    		  }else{
+    			  $('#modalErrorDiv').html("Errore nel caricamento del file!");
+    			  	$('#myModalError').removeClass();
+    				$('#myModalError').addClass("modal modal-danger");	  
+    				$('#report_button').show();
+						$('#visualizza_report').show();
+						$('#myModalError').modal('show');
+						
+
+    		  }
+    	  },
+
+    	  error: function(jqXHR, textStatus, errorThrown){
+    	
+    		  $('#myModalErrorContent').html(data.messaggio);
+				$('#myModalError').removeClass();
+				$('#myModalError').addClass("modal modal-danger");
+				$('#report_button').show();
+				$('#visualizza_report').show();
+				$('#myModalError').modal('show');
+				
+			
+    	  }
+      });
+	
+}
+
+function eliminaAllegatoMise(id_allegato){
+	
+	
+	
+	pleaseWaitDiv = $('#pleaseWaitDialog');
+	pleaseWaitDiv.modal();
+	
+	dataObj ={}
+
+		$.ajax({
+	type: "POST",
+	url: "gestioneListaVerbali.do?action=elimina_allegato_ministero&id_allegato="+id_allegato,
+	data: dataObj,
+	dataType: "json",
+	//if received a response from the server
+	success: function( data, textStatus) {
+		  if(data.success)
+		  {  
+			  $('#myModalYesOrNo').modal('hide');
+			  pleaseWaitDiv.modal('hide');
+				$('#modalErrorDiv').html(data.messaggio);
+				$('#myModalError').removeClass();	
+				$('#myModalError').addClass("modal modal-success");	  
+				$('#report_button').hide();
+				$('#visualizza_report').hide();		
+				$('#myModalError').modal('show');
+				
+				$('#myModalError').on('hidden.bs.modal',function(){
+					location.reload();
+				});
+			
+		  }else{
+			  
+			pleaseWaitDiv.modal('hide');
+			$('#modalErrorDiv').html(data.messaggio);
+			$('#myModalError').removeClass();	
+			$('#myModalError').addClass("modal modal-danger");	  
+			$('#report_button').hide();
+			$('#visualizza_report').hide();		
+			$('#myModalError').modal('show');			
+		
+		  }
+	},
+
+	error: function( data, textStatus) {
+		
+		pleaseWaitDiv.modal('hide');
+		$('#modalErrorDiv').html(textStatus);
+		  	$('#myModalError').removeClass();
+			$('#myModalError').addClass("modal modal-danger");	  
+			$('#report_button').show();
+			$('#visualizza_report').show();
+				$('#myModalError').modal('show');
+
+	}
+	});
+	   
+	
+}

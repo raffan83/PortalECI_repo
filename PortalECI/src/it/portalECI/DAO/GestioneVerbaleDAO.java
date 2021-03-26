@@ -9,6 +9,7 @@ import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.Session;
 
+import it.portalECI.DTO.AllegatoMinisteroDTO;
 import it.portalECI.DTO.DocumentoDTO;
 import it.portalECI.DTO.ProgressivoVerbaleDTO;
 import it.portalECI.DTO.StatoVerbaleDTO;
@@ -192,6 +193,57 @@ public class GestioneVerbaleDAO {
 		lista = query.list();		
 		
 		return lista;
+	}
+
+	public static List<VerbaleDTO> getListaVerbaliMinistero(Session session, String dateFrom, String dateTo) throws Exception, ParseException {
+		
+		List<VerbaleDTO> lista = null;
+		
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		
+		Query query  = null;
+		
+		if(dateFrom==null) {
+			query = session.createQuery( "from VerbaleDTO WHERE type = 'VERBALE' and stato.id = 5");
+		
+		}else {
+			query = session.createQuery( "from VerbaleDTO WHERE type = 'VERBALE' and stato.id = 5 AND data_verifica between :_dateFrom and :_dateTo");
+			query.setParameter("_dateFrom", sdf.parse(dateFrom));
+			query.setParameter("_dateTo", sdf.parse(dateTo));
+		}
+		
+		lista = query.list();		
+		
+		return lista;
+		
+	}
+
+	public static ArrayList<AllegatoMinisteroDTO> getListaAllegatiMinistero(Session session) {
+		
+		ArrayList<AllegatoMinisteroDTO> lista = null;
+		
+		Query query  = session.createQuery( "from AllegatoMinisteroDTO where disabilitato = 0");
+
+		lista = (ArrayList<AllegatoMinisteroDTO>) query.list();		
+		
+		return lista;
+	}
+
+	public static AllegatoMinisteroDTO getAllegatoMinistero(int id_allegato, Session session) {
+		
+		ArrayList<AllegatoMinisteroDTO> lista = null;
+		AllegatoMinisteroDTO result = null;
+		
+		Query query  = session.createQuery( "from AllegatoMinisteroDTO where id=:_id_allegato");
+		query.setParameter("_id_allegato", id_allegato);
+		
+		lista = (ArrayList<AllegatoMinisteroDTO>) query.list();		
+		
+		if(lista.size()>0) {
+			result = lista.get(0);
+		}
+		
+		return result;
 	}
 	
 }
