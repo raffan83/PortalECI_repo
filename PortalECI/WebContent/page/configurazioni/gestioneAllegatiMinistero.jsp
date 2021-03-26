@@ -84,7 +84,9 @@
 																			
 																			<td>
 																			<a class="btn btn-primary" href='gestioneListaVerbali.do?action=download_allegato&id_allegato=${allegato.id}'><i class="fa fa-arrow-down"></i></a>
+																			<c:if test="${user.checkRuolo('AM') }">	
 																			<a class="btn btn-primary" onClick="modalEliminaAllegato('${allegato.id}')"><i class="fa fa-trash"></i></a>
+																			</c:if>
 																			</td>
 																			
 																			
