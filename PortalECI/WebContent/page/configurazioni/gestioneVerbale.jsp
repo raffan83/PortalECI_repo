@@ -2668,7 +2668,7 @@ function modificaSedeUtilizzatore(){
 										
 					var textarea_array = $('.'+$(this).attr('id').split("_")[0]).find('textarea');
 					
-					for(var i = 0; i<textarea_array.length;i++){						
+/* 					for(var i = 0; i<textarea_array.length;i++){						
 						
 						var a = document.getElementById($(textarea_array[i]).attr('id'));
 						var els = [];
@@ -2684,7 +2684,7 @@ function modificaSedeUtilizzatore(){
 						}
 						
 					}
-					
+					 */
 					
 					var index = $(this).attr('id').split("_")[1]
 					if(index != null){
