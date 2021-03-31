@@ -254,7 +254,7 @@
   		   
   				
   				
-  				var columsDatatables = [];
+/*   				var columsDatatables = [];
 
    				$("#tabSt").on( 'init.dt', function ( e, settings ) {
 
@@ -275,7 +275,7 @@
   				    	  
   				    	} );
 
-  				} ); 
+  				} );  */
 
   				function modalArchivio(id_verbale){
   					 
@@ -382,6 +382,14 @@
     					    	
     					      
     					    });
+    					
+    					
+    					$('#tabSt thead th').each( function () {
+    	        			var title = $('#tabSt thead th').eq( $(this).index() ).text();
+    	        			$(this).append( '<div><input class="inputsearchtable" style="width:100%" type="text" /></div>');
+    					} );
+    					
+    					
     					table.buttons().container()
     				  .appendTo( '#tabSt_wrapper .col-sm-6:eq(1)' );
     					

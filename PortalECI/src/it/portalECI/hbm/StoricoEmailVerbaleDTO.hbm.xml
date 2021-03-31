@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 15-feb-2017 11.20.27 by Hibernate Tools 3.4.0.CR1 -->
+
+<hibernate-mapping>
+    <class name="it.portalECI.DTO.StoricoEmailVerbaleDTO" table="storico_email_verbale">
+        <id name="id" type="int">
+            <column name="id" />
+            <generator class="native" />
+        </id>
+       
+        <property name="id_verbale" type="int">
+            <column name="id_verbale" />
+        </property>
+        <property name="destinatario" type="java.lang.String">
+            <column name="destinatario" />
+        </property>
+         <property name="data" type="java.sql.Date">
+            <column name="data" />
+        </property>     
+        <many-to-one name="utente" class="it.portalECI.DTO.UtenteDTO" fetch="join" lazy="false">
+        <column name="id_utente" />
+        </many-to-one>   
+
+    </class>
+</hibernate-mapping>
+
+

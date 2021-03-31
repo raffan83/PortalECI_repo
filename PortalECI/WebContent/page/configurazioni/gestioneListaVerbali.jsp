@@ -92,6 +92,10 @@
  																<th>Descrizione Verifica</th> --%>
  																<th>Stato</th>
  																<th>Stato S.T.</th>
+ 																<th>Firmato</th>
+ 																<th>Controfirmato</th>
+ 																<th>S.T. Firmata</th>
+ 																<th>S.T. Controfirmata</th>
  																<th>Data Creazione</th>
  																<td></td>
  															</tr>
@@ -154,6 +158,30 @@
 																		<c:if test="${verbale.getSchedaTecnica()==null }">
 																			<span class="label" style="color:#000000 !important; background-color:grey !important;">ASSENTE</span>
 																		</c:if>	 
+																	</td>
+																	<td>
+																	
+																	<c:if test="${verbale.firmato == 1 }">
+																		<i class="fa fa-check"></i>
+																	</c:if>
+																																		
+																	</td>
+																	<td>
+																		<c:if test="${verbale.controfirmato == 1 }">
+																	<i class="fa fa-check"></i>
+																	</c:if>																
+																	</td>
+																	<td>
+																	
+																	<c:if test="${verbale.getSchedaTecnica()!=null && verbale.getSchedaTecnica().getFirmato() == 1 }">
+																		<i class="fa fa-check"></i>
+																	</c:if>
+																																		
+																	</td>
+																	<td>
+																		<c:if test="${verbale.getSchedaTecnica()!=null && verbale.getSchedaTecnica().getControfirmato()  == 1 }">
+																	<i class="fa fa-check"></i>
+																	</c:if>																
 																	</td>
         															<td>
 																		<fmt:formatDate pattern="dd/MM/yyyy" value='${verbale.getCreateDate()}' type='date' />

@@ -22,7 +22,7 @@ UtenteDTO userObj = (UtenteDTO)request.getSession().getAttribute("userObj");
 <div class="row">
 <div class="col-xs-12">
 
-<c:if test="${userObj.checkRuolo('AM') }">
+<c:if test="${userObj.checkRuolo('AM') || userObj.checkRuolo('ST') }">
 <div class="row">
 <div class="col-xs-12">
 <h4>CARICAMENTO DOCUMENTI</h4>
@@ -102,7 +102,7 @@ UtenteDTO userObj = (UtenteDTO)request.getSession().getAttribute("userObj");
 
 		<a onclick="callAction('documentiEsterni.do?action=scaricaDocumento&idDoc=${documento.id}')" class="btn btn-danger"><i class="fa fa-file-pdf-o"></i></a>
 		<%-- <c:if test="${userObj.checkPermesso('LISTA_DOCUMENTI_ESTERNI_STRUMENTO_METROLOGIA')}"> --%>
-		<c:if test="${userObj.checkRuolo('AM') }">
+		<c:if test="${userObj.checkRuolo('AM') || userObj.checkRuolo('ST') }">
 		<a href="#" onClick="modalEliminaDocumentoEsternoCampione(${documento.id})" class="btn btn-danger"><i class="fa fa-remove"></i></a>
 		</c:if>
 			<%-- </c:if>	 --%>	

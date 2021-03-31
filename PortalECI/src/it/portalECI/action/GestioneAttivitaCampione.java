@@ -164,6 +164,13 @@ public class GestioneAttivitaCampione extends HttpServlet {
 				if(Integer.parseInt(tipo_attivita)==2 || Integer.parseInt(tipo_attivita)==3) {
 					attivita.setEnte(ente);					
 					attivita.setData_scadenza(format.parse(data_scadenza));
+					
+					if(Integer.parseInt(tipo_attivita)==3) {
+						campione.setDataVerifica(date);
+						campione.setDataScadenza(format.parse(data_scadenza));
+						session.update(campione);
+					}
+					
 					attivita.setEtichettatura(etichettatura);
 					attivita.setStato(stato);
 					attivita.setCampo_sospesi(campo_sospesi);
@@ -265,6 +272,13 @@ public class GestioneAttivitaCampione extends HttpServlet {
 				if(Integer.parseInt(tipo_attivita)==2 || Integer.parseInt(tipo_attivita)==3) {
 					attivita.setEnte(ente);					
 					attivita.setData_scadenza(format.parse(data_scadenza));
+					
+					if(Integer.parseInt(tipo_attivita)==3) {
+						attivita.getCampione().setDataVerifica(date);
+						attivita.getCampione().setDataScadenza(format.parse(data_scadenza));
+						session.update(attivita.getCampione());
+					}
+					
 					attivita.setEtichettatura(etichettatura);
 					attivita.setStato(stato);
 					attivita.setCampo_sospesi(campo_sospesi);

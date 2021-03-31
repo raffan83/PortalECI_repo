@@ -91,7 +91,7 @@ public class GestioneIntervento extends HttpServlet {
 				CommessaDTO comm=GestioneCommesseBO.getCommessaById(idCommessa);									
 				request.getSession().setAttribute("commessa", comm);
 			
-				List<InterventoDTO> listaInterventi =GestioneInterventoBO.getListaInterventi(idCommessa,session,user);	
+				List<InterventoDTO> listaInterventi =GestioneInterventoBO.getListaInterventi(idCommessa,session,user, null);	
 			
 				if(comm.getSYS_STATO().equals("1CHIUSA")) {
 					

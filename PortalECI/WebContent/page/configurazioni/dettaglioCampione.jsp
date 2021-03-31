@@ -304,14 +304,14 @@ SimpleDateFormat sdf= new SimpleDateFormat("dd/MM/yyyy");
        </div> 
        
        
-                <div class="form-group">
+<%--                 <div class="form-group">
         <label for="inputName" class="col-sm-3 control-label">Certificato Campione:</label>
         <div class="col-sm-9">
 
                   <a class="btn btn-danger"  href="gestioneCampione.do?action=download_certificato&idC=<%=campione.getId()%>"><i class="fa fa-file-pdf-o"></i></a>      
                       
     </div>
-       </div> 
+       </div>  --%>
        
                        <div class="form-group">
         <label for="inputName" class="col-sm-3 control-label">Associato ai Verificatori:</label>

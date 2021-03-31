@@ -63,5 +63,7 @@
  		<mapping class="VerbaleStoricoAllegatoDTO" package="it.portalECI.DTO" resource="it/portalECI/hbm/VerbaleStoricoAllegatoDTO.hbm.xml"/>
  		
  		<mapping class="AllegatoMinisteroDTO" package="it.portalECI.DTO" resource="it/portalECI/hbm/AllegatoMinisteroDTO.hbm.xml"/>
+ 		
+ 		<mapping class="StoricoEmailVerbaleDTO" package="it.portalECI.DTO" resource="it/portalECI/hbm/StoricoEmailVerbaleDTO.hbm.xml"/>
  	</session-factory>
 </hibernate-configuration>

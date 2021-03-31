@@ -26,8 +26,8 @@ import com.google.gson.JsonObject;
 
 public class GestioneInterventoBO {
 
-	public static List<InterventoDTO> getListaInterventi(String idCommessa, Session session, UtenteDTO user) throws Exception {
-		return GestioneInterventoDAO.getListaInterventi(idCommessa,session,user);
+	public static List<InterventoDTO> getListaInterventi(String idCommessa, Session session, UtenteDTO user, String stato) throws Exception {
+		return GestioneInterventoDAO.getListaInterventi(idCommessa,session,user, stato);
 	}
 	
 	public static boolean scaricaIntervento(InterventoDTO intervento, Session session) {

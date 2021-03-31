@@ -76,7 +76,7 @@
 <div class="row">
 <div class="col-lg-12">
 
- <c:if test="${utente.checkRuolo('AM')}"> 
+ <c:if test="${utente.checkRuolo('AM') || utente.checkRuolo('ST')}"> 
  <button class="btn btn-primary" onClick="nuovoInterventoFromModal('#modalNuovoCampione')">Nuovo Campione</button>
 </c:if>
  <c:if test="${utente.checkPermesso('ESPORTA_LISTA_CAMPIONI_METROLOGIA')}"><a class="btn btn-primary" href="gestioneCampione.do?action=exportLista">ESPORTA Campioni</a></c:if>
@@ -204,7 +204,7 @@
                
               <li class=""><a href="#prenotazione" data-toggle="tab" aria-expanded="false"   id="prenotazioneTab"> Prenotazioni</a></li>
               </c:if>
-                <c:if test="${utente.checkRuolo('AM') }"><li class=""><a href="#aggiorna" data-toggle="tab" aria-expanded="false"   id="aggiornaTab">Aggiornamento Campione</a></li></c:if>
+                <c:if test="${utente.checkRuolo('AM') || utente.checkRuolo('ST') }"><li class=""><a href="#aggiorna" data-toggle="tab" aria-expanded="false"   id="aggiornaTab">Aggiornamento Campione</a></li></c:if>
                <%-- <c:if test="${utente.checkPermesso('MODIFICA_CAMPIONE')}"> <li class=""><a href="#aggiorna" data-toggle="tab" aria-expanded="false"   id="aggiornaTab">Aggiornamento Campione</a></li></c:if> --%>
                
                <c:if test="${utente.checkPermesso('REGISTRO_EVENTI_CAMPIONE')}"> <li class=""><a href="#registro_eventi" data-toggle="tab" aria-expanded="false"   id="registro_eventiTab"> Registro Eventi</a></li></c:if>
@@ -621,14 +621,14 @@ req
        </div>
        
        
-                <div class="form-group">
+<!--                 <div class="form-group">
         <label for="inputName" class="col-sm-2 control-label">Certificato:</label>
         <div class="col-sm-10">
 
 
                         <input accept="application/pdf" type="file" onChange="validateSize(this)" class="form-control" id="certificato" type="text" name="certificato" required />
     </div>
-       </div> 
+       </div>  -->
        
          <div class="form-group">
         <label for="inputName" class="col-sm-2 control-label">Numero Certificato:</label>

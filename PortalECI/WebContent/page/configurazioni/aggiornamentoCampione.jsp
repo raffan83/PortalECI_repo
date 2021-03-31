@@ -267,13 +267,13 @@ SimpleDateFormat sdf= new SimpleDateFormat("dd/MM/yyyy");
        </div> 
      
        
-         <div class="form-group">
+<!--          <div class="form-group">
         <label for="inputName" class="col-sm-3 control-label">Certificato:</label>
         <div class="col-sm-9">
 
                         <input accept="application/pdf" onChange="validateSize(this)" type="file" class="form-control" id="certificato_mod" type="text" name="certificato_mod" />
     </div>
-       </div> 
+       </div> --> 
        
          <div class="form-group">
         <label for="inputName" class="col-sm-3 control-label">Numero Certificato:</label>

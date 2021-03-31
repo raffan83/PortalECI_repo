@@ -232,39 +232,39 @@ public static ArrayList<HashMap<String, Integer>> getListaAttivitaScadenziario(S
 			mapVerifiche.put(sdf.format(att.getData_scadenza()), i);
 			
 		}
+		if(att.getTipo_attivita().getId()==3 && att.getData_scadenza()!=null) {
+			
+			int i=1;
+			if(mapTarature.get(sdf.format(att.getData_scadenza()))!=null) {
+				i= mapTarature.get(sdf.format(att.getData_scadenza()))+1;
+			}
+			
+			mapTarature.put(sdf.format(att.getData_scadenza()), i);
+			
+		}
 		
-//		if(att.getTipo_attivita().getId()==3 && att.getData_scadenza()!=null) {
-//			
-//			int i=1;
-//			if(mapTarature.get(sdf.format(att.getData_scadenza()))!=null) {
-//				i= mapTarature.get(sdf.format(att.getData_scadenza()))+1;
-//			}
-//			
-//			mapTarature.put(sdf.format(att.getData_scadenza()), i);
-//			
-//		}
-		
+
 
     }
 	
-	query  = session.createQuery( "from CampioneDTO where statoCampione != 'F'");	
-	
-	lista_campioni=query.list();
-	
-	for (CampioneDTO c : lista_campioni) {
+//	query  = session.createQuery( "from CampioneDTO where statoCampione != 'F'");	
+//	
+//	lista_campioni=query.list();
+//	
+//	for (CampioneDTO c : lista_campioni) {
+//		
+//		if(c.getDataScadenza()!=null) {
+//		
+//		int i=1;
+//		if(mapTarature.get(sdf.format(c.getDataScadenza()))!=null) {
+//			i= mapTarature.get(sdf.format(c.getDataScadenza()))+1;
+//		}
+//		
+//		mapTarature.put(sdf.format(c.getDataScadenza()), i);
+//		
+//	}
 		
-		if(c.getDataScadenza()!=null) {
-		
-		int i=1;
-		if(mapTarature.get(sdf.format(c.getDataScadenza()))!=null) {
-			i= mapTarature.get(sdf.format(c.getDataScadenza()))+1;
-		}
-		
-		mapTarature.put(sdf.format(c.getDataScadenza()), i);
-		
-	}
-		
-	}
+//	}
 	
 	listMap.add(mapManutenzioni);
 	listMap.add(mapVerifiche);
@@ -329,10 +329,17 @@ public static ArrayList<CampioneDTO> getListaCampioniPerData(String data, String
 			
 		}
 		else if(tipo_data_lat.equals("3")) {
-			query = session.createQuery("from CampioneDTO where data_scadenza = :_date and stato_campione != 'F'");	
+			//query = session.createQuery("from CampioneDTO where data_scadenza = :_date and stato_campione != 'F'");	
+			query = session.createQuery("from AcAttivitaCampioneDTO where data_scadenza = :_date and tipo_attivita.id = 3 and (obsoleta = null or obsoleta = 'N')");
 			query.setParameter("_date", df.parse(data));
 			
-			lista = (ArrayList<CampioneDTO>) query.list();
+			attivita = (ArrayList<AcAttivitaCampioneDTO>) query.list();
+			
+			for (AcAttivitaCampioneDTO a : attivita) {
+				
+					lista.add(a.getCampione());	
+				
+			}
 		}
 	
 	

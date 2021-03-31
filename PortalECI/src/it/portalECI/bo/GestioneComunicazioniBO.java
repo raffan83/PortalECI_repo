@@ -189,7 +189,8 @@ public static ArrayList<UtenteDTO> getListaUtentiComunicazione(String codiceCate
 	return GestioneComunicazioniDAO.getListaUtentiComunicazione(codiceCategoria, session);
 }
 
-public static void sendPecVerbale(DocumentoDTO documento, VerbaleDTO verbale, String mailTo) throws MessagingException {
+
+public static void sendPecVerbale(ArrayList<VerbaleDTO> lista_verbali, String mailTo) throws MessagingException {
 	
 	   String from = "verifiche@pec.ecisrl.it";
 	   String SMTP_HOST_NAME = "smtps.pec.aruba.it";
@@ -200,25 +201,25 @@ public static void sendPecVerbale(DocumentoDTO documento, VerbaleDTO verbale, St
 	   
 	   Properties props = new Properties();
 
-       props.put("mail.transport.protocol", "smtps");
-       props.put("mail.smtps.host", SMTP_HOST_NAME);
-       props.put("mail.smtps.auth", true);    
-       props.put("mail.smtps.port", 465);      
-       props.put("mail.smtps.auth",true);
-       props.put("mail.smtps.user","verifiche@pec.ecisrl.it");
-       props.put("mail.debug", "true");
-       props.put("mail.smtps.port", 465);
-       props.put("mail.smtps.socketFactory.port", 465);
-       props.put("mail.smtps.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
-       props.put("mail.smtps.socketFactory.fallback", "false");
-       props.put("mail.smtps.ssl.enable", true);
-       props.put("mail.smtps.ssl.protocols", "TLSv1.2");
-       
-       
-       javax.mail.Session mailSession =  javax.mail.Session.getDefaultInstance(props);       
-       
+    props.put("mail.transport.protocol", "smtps");
+    props.put("mail.smtps.host", SMTP_HOST_NAME);
+    props.put("mail.smtps.auth", true);    
+    props.put("mail.smtps.port", 465);      
+    props.put("mail.smtps.auth",true);
+    props.put("mail.smtps.user","verifiche@pec.ecisrl.it");
+    props.put("mail.debug", "true");
+    props.put("mail.smtps.port", 465);
+    props.put("mail.smtps.socketFactory.port", 465);
+    props.put("mail.smtps.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
+    props.put("mail.smtps.socketFactory.fallback", "false");
+    props.put("mail.smtps.ssl.enable", true);
+    props.put("mail.smtps.ssl.protocols", "TLSv1.2");
     
-       MimeMessage message = new MimeMessage(mailSession); 
+    
+    javax.mail.Session mailSession =  javax.mail.Session.getDefaultInstance(props);       
+    
+ 
+    MimeMessage message = new MimeMessage(mailSession); 
 		
 		// header field of the header. 
 		message.setFrom(new InternetAddress(from)); 	
@@ -227,53 +228,32 @@ public static void sendPecVerbale(DocumentoDTO documento, VerbaleDTO verbale, St
 		
 		message.addRecipients(Message.RecipientType.TO, address); 
 		
-		message.setSubject("Trasmissione verbale "+verbale.getNumeroVerbale()); 
+		message.setSubject("Trasmissione verbali "); 
 			
 		StringBuffer msg = new StringBuffer();
 		
 		  msg.append("<html><body>");
 		
-		  if(verbale.getSchedaTecnica()!=null) {
-			  
-			  msg.append("<html>Gentile Cliente, <br /> " + 
-				  		"Inviamo in allegato il Verbale e la Scheda Tecnica attestanti l'avvenuta verifica del Vs. impianto  <br /> " + 
-				  		"elettrico ai sensi del D.P.R. 462/01.<br /> " + 		
-				  		"<br />Con l'occasione Vi ricordiamo che tale documentazione deve essere conservata <br>" + 
-				  		"per tutto il periodo di validit&agrave; della verifica ed esibita a richiesta degli Organi di vigilanza. <br>" + 
-				  		"Restiamo a disposizione per qualsiasi chiarimento in merito. <br>"+
-				  		"Distinti saluti. "+
-				  		"  <br /> <br />"
-				  		+"<em><b>Segreteria Tecnica-Commerciale</b></em> <br>"
-				  		+ "<em><b>E.C.I. Ente di Certificazione & Ispezione Srl <br>" + 
-				  		"Organismo di Ispezione di Tipo A n. ISP 322E" + 
-				  		"</b><br>Via Tofaro 42, B - 03039 Sora (FR)</em><br><br>" + 
-				  		"<em>Tel + 39 0776.18151 - Fax+ 39 0776.814169 <br> "
-				  		+ "Mail: </em>segreteria@ecisrl.it<br>" + 
-				  		 "<em>Pec: </em>verifiche@pec.ecisrl.it<br>" + 
-				  		"<em>Web: </em>http://www.ecisrl.it<br>" + 
-				  		"<br/></html>");
-			  
-		  }else {
-			  
-			  msg.append("<html>Gentile Cliente, <br /> " + 
-				  		"Inviamo in allegato il Verbale attestante l'avvenuta verifica del Vs. impianto  <br /> " + 
-				  		"elettrico ai sensi del D.P.R. 462/01.<br /> " + 		
-				  		"<br />Con l'occasione Vi ricordiamo che tale documentazione deve essere conservata <br>" + 
-				  		"per tutto il periodo di validit&agrave; della verifica ed esibita a richiesta degli Organi di vigilanza. <br>" + 
-				  		"Restiamo a disposizione per qualsiasi chiarimento in merito. <br>"+
-				  		"Distinti saluti. "+
-				  		"  <br /> <br />"
-				  		+"<em><b>Segreteria Tecnica-Commerciale</b></em> <br>"
-				  		+ "<em><b>E.C.I. Ente di Certificazione & Ispezione Srl <br>" + 
-				  		"Organismo di Ispezione di Tipo A n. ISP 322E" + 
-				  		"</b><br>Via Tofaro 42, B - 03039 Sora (FR)</em><br><br>" + 
-				  		"<em>Tel + 39 0776.18151 - Fax+ 39 0776.814169 <br> "
-				  		+ "Mail: </em>segreteria@ecisrl.it<br>" + 
-				  		 "<em>Pec: </em>verifiche@pec.ecisrl.it<br>" + 
-				  		"<em>Web: </em>http://www.ecisrl.it<br>" + 
-				  		"<br/></html>");
-		  }
-			 
+		  
+		  msg.append("<html>Gentile Cliente, <br /> " + 
+			  		"Inviamo in allegato i Verbali e le Schede Tecniche attestanti l'avvenuta verifica dei Vs. impianti  <br /> " + 
+			  		"elettrici ai sensi del D.P.R. 462/01.<br /> " + 		
+			  		"<br />Con l'occasione Vi ricordiamo che tale documentazione deve essere conservata <br>" + 
+			  		"per tutto il periodo di validit&agrave; della verifica ed esibita a richiesta degli Organi di vigilanza. <br>" + 
+			  		"Restiamo a disposizione per qualsiasi chiarimento in merito. <br>"+
+			  		"Distinti saluti. "+
+			  		"  <br /> <br />"
+			  		+"<em><b>Segreteria Tecnica-Commerciale</b></em> <br>"
+			  		+ "<em><b>E.C.I. Ente di Certificazione & Ispezione Srl <br>" + 
+			  		"Organismo di Ispezione di Tipo A n. ISP 322E" + 
+			  		"</b><br>Via Tofaro 42, B - 03039 Sora (FR)</em><br><br>" + 
+			  		"<em>Tel + 39 0776.18151 - Fax+ 39 0776.814169 <br> "
+			  		+ "Mail: </em>segreteria@ecisrl.it<br>" + 
+			  		 "<em>Pec: </em>verifiche@pec.ecisrl.it<br>" + 
+			  		"<em>Web: </em>http://www.ecisrl.it<br>" + 
+			  		"<br/></html>");
+		  
+		  
 			//  msg.append("<img width='350' src=cid:").append(message.embed(img)).append(">");
 			  msg.append("<a href='www.ecisrl.it'><img width='350' src=\"cid:image1\"></a>");
 		
@@ -287,8 +267,7 @@ public static void sendPecVerbale(DocumentoDTO documento, VerbaleDTO verbale, St
 		  BodyPart messageBodyPart = new MimeBodyPart();
 		  messageBodyPart.setContent(msg.toString(),"text/html");
 		  
-		  BodyPart attachPdf = new MimeBodyPart();
-		  BodyPart attachSchedaTecnica = new MimeBodyPart();
+		
 		 		  
 		  BodyPart image = new MimeBodyPart();
 		  BodyPart image_ann = new MimeBodyPart();
@@ -300,48 +279,63 @@ public static void sendPecVerbale(DocumentoDTO documento, VerbaleDTO verbale, St
 		  
 			  
 		  Multipart multipart = new MimeMultipart();
-		  
-			String filenamePdf = verbale.getNumeroVerbale()+"_CF.pdf";
-			String filenamePdfScheda = null;
-			String pathScheda = null;
-			
-			
-			if(verbale.getControfirmato()==0) {
-				filenamePdf = verbale.getNumeroVerbale()+"_F.pdf";
-			}
-			
+		  multipart.addBodyPart(messageBodyPart);
 			
 			//String filenameP7m = verbale.getNumeroVerbale()+".pdf.p7m.p7m";			
 			// Create the attachment
-
-	         DataSource source = new FileDataSource(Costanti.PATH_CERTIFICATI+documento.getFilePath().replace(documento.getFileName(), filenamePdf));
-	         attachPdf.setDataHandler(new DataHandler(source));
-	         attachPdf.setFileName(verbale.getNumeroVerbale()+".pdf");	   	         
-	         multipart.addBodyPart(messageBodyPart);
-	         multipart.addBodyPart(attachPdf);
-	        
-			if(verbale.getSchedaTecnica()!=null) {
-				Set<DocumentoDTO> lista_doc= verbale.getSchedaTecnica().getDocumentiVerbale();
-					
-				Iterator<DocumentoDTO> doc = lista_doc.iterator();
-				while(doc.hasNext()) {
-					DocumentoDTO d = doc.next();
-					if(!d.getInvalid()) {
-						filenamePdfScheda = d.getFileName().substring(0,d.getFileName().length()-4)+"_F.pdf";
-						pathScheda = Costanti.PATH_CERTIFICATI+d.getFilePath().replace(d.getFileName(), filenamePdfScheda);
+			
+			for (VerbaleDTO verbale  : lista_verbali) {
+				
+				  BodyPart attachPdf = new MimeBodyPart();
+				  
+				  
+				String filenamePdf = verbale.getNumeroVerbale()+"_CF.pdf";
+				String filenamePdfScheda = null;
+				String pathScheda = null;
+				
+				
+				if(verbale.getControfirmato()==0) {
+					filenamePdf = verbale.getNumeroVerbale()+"_F.pdf";
+				}
+				
+				
+				for (DocumentoDTO doc : verbale.getDocumentiVerbale()) {
+					if(!doc.getInvalid() && doc.getType().equals("CERTIFICATO")) {
+						DataSource source = new FileDataSource(Costanti.PATH_CERTIFICATI+doc.getFilePath().replace(doc.getFileName(), filenamePdf));
+				        attachPdf.setDataHandler(new DataHandler(source));
+				        attachPdf.setFileName(verbale.getNumeroVerbale()+".pdf");					        
+				        
+				        multipart.addBodyPart(attachPdf);
 					}
 				}
-					
-				source = new FileDataSource(pathScheda);
-			    attachSchedaTecnica.setDataHandler(new DataHandler(source));
-			    attachSchedaTecnica.setFileName(filenamePdfScheda.replace("_F.pdf", ".pdf"));
-			    multipart.addBodyPart(attachSchedaTecnica);	
-			}
+				
+				if(verbale.getSchedaTecnica()!=null) {
+					BodyPart attachSchedaTecnica = new MimeBodyPart();
+					Set<DocumentoDTO> lista_doc= verbale.getSchedaTecnica().getDocumentiVerbale();
+						
+					Iterator<DocumentoDTO> doc = lista_doc.iterator();
+					while(doc.hasNext()) {
+						DocumentoDTO d = doc.next();
+						if(!d.getInvalid()) {
+							filenamePdfScheda = d.getFileName().substring(0,d.getFileName().length()-4)+"_F.pdf";
+							pathScheda = Costanti.PATH_CERTIFICATI+d.getFilePath().replace(d.getFileName(), filenamePdfScheda);
+						}
+					}
+						
+					DataSource source = new FileDataSource(pathScheda);
+				    attachSchedaTecnica.setDataHandler(new DataHandler(source));
+				    attachSchedaTecnica.setFileName(filenamePdfScheda.replace("_F.pdf", ".pdf"));
+				    multipart.addBodyPart(attachSchedaTecnica);	
+				}
+			}	                  
+	        
+	        
+			
 	  
 	         multipart.addBodyPart(image);
 	         // Send the complete message parts
 	         message.setContent(multipart);
-      
+   
 	
 	         Transport tr = mailSession.getTransport("smtps");
 	         
@@ -353,6 +347,175 @@ public static void sendPecVerbale(DocumentoDTO documento, VerbaleDTO verbale, St
 
 		
 	}
+
+
+
+
+
+//public static void sendPecVerbale(DocumentoDTO documento, VerbaleDTO verbale, String mailTo) throws MessagingException {
+//	
+//	   String from = "verifiche@pec.ecisrl.it";
+//	   String SMTP_HOST_NAME = "smtps.pec.aruba.it";
+//	   int SMTP_HOST_PORT = 465;
+//	   String SMTP_AUTH_USER = "verifiche@pec.ecisrl.it";
+//	   //String SMTP_AUTH_PWD  = "8pfSu3sYx+";
+//	   String SMTP_AUTH_PWD  = "&w&K3vQ!HQY%@vV&";
+//	   
+//	   Properties props = new Properties();
+//
+//       props.put("mail.transport.protocol", "smtps");
+//       props.put("mail.smtps.host", SMTP_HOST_NAME);
+//       props.put("mail.smtps.auth", true);    
+//       props.put("mail.smtps.port", 465);      
+//       props.put("mail.smtps.auth",true);
+//       props.put("mail.smtps.user","verifiche@pec.ecisrl.it");
+//       props.put("mail.debug", "true");
+//       props.put("mail.smtps.port", 465);
+//       props.put("mail.smtps.socketFactory.port", 465);
+//       props.put("mail.smtps.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
+//       props.put("mail.smtps.socketFactory.fallback", "false");
+//       props.put("mail.smtps.ssl.enable", true);
+//       props.put("mail.smtps.ssl.protocols", "TLSv1.2");
+//       
+//       
+//       javax.mail.Session mailSession =  javax.mail.Session.getDefaultInstance(props);       
+//       
+//    
+//       MimeMessage message = new MimeMessage(mailSession); 
+//		
+//		// header field of the header. 
+//		message.setFrom(new InternetAddress(from)); 	
+//		
+//		InternetAddress[] address = InternetAddress.parse(mailTo.trim().replace(";", ","));
+//		
+//		message.addRecipients(Message.RecipientType.TO, address); 
+//		
+//		message.setSubject("Trasmissione verbale "+verbale.getNumeroVerbale()); 
+//			
+//		StringBuffer msg = new StringBuffer();
+//		
+//		  msg.append("<html><body>");
+//		
+//		  if(verbale.getSchedaTecnica()!=null) {
+//			  
+//			  msg.append("<html>Gentile Cliente, <br /> " + 
+//				  		"Inviamo in allegato il Verbale e la Scheda Tecnica attestanti l'avvenuta verifica del Vs. impianto  <br /> " + 
+//				  		"elettrico ai sensi del D.P.R. 462/01.<br /> " + 		
+//				  		"<br />Con l'occasione Vi ricordiamo che tale documentazione deve essere conservata <br>" + 
+//				  		"per tutto il periodo di validit&agrave; della verifica ed esibita a richiesta degli Organi di vigilanza. <br>" + 
+//				  		"Restiamo a disposizione per qualsiasi chiarimento in merito. <br>"+
+//				  		"Distinti saluti. "+
+//				  		"  <br /> <br />"
+//				  		+"<em><b>Segreteria Tecnica-Commerciale</b></em> <br>"
+//				  		+ "<em><b>E.C.I. Ente di Certificazione & Ispezione Srl <br>" + 
+//				  		"Organismo di Ispezione di Tipo A n. ISP 322E" + 
+//				  		"</b><br>Via Tofaro 42, B - 03039 Sora (FR)</em><br><br>" + 
+//				  		"<em>Tel + 39 0776.18151 - Fax+ 39 0776.814169 <br> "
+//				  		+ "Mail: </em>segreteria@ecisrl.it<br>" + 
+//				  		 "<em>Pec: </em>verifiche@pec.ecisrl.it<br>" + 
+//				  		"<em>Web: </em>http://www.ecisrl.it<br>" + 
+//				  		"<br/></html>");
+//			  
+//		  }else {
+//			  
+//			  msg.append("<html>Gentile Cliente, <br /> " + 
+//				  		"Inviamo in allegato il Verbale attestante l'avvenuta verifica del Vs. impianto  <br /> " + 
+//				  		"elettrico ai sensi del D.P.R. 462/01.<br /> " + 		
+//				  		"<br />Con l'occasione Vi ricordiamo che tale documentazione deve essere conservata <br>" + 
+//				  		"per tutto il periodo di validit&agrave; della verifica ed esibita a richiesta degli Organi di vigilanza. <br>" + 
+//				  		"Restiamo a disposizione per qualsiasi chiarimento in merito. <br>"+
+//				  		"Distinti saluti. "+
+//				  		"  <br /> <br />"
+//				  		+"<em><b>Segreteria Tecnica-Commerciale</b></em> <br>"
+//				  		+ "<em><b>E.C.I. Ente di Certificazione & Ispezione Srl <br>" + 
+//				  		"Organismo di Ispezione di Tipo A n. ISP 322E" + 
+//				  		"</b><br>Via Tofaro 42, B - 03039 Sora (FR)</em><br><br>" + 
+//				  		"<em>Tel + 39 0776.18151 - Fax+ 39 0776.814169 <br> "
+//				  		+ "Mail: </em>segreteria@ecisrl.it<br>" + 
+//				  		 "<em>Pec: </em>verifiche@pec.ecisrl.it<br>" + 
+//				  		"<em>Web: </em>http://www.ecisrl.it<br>" + 
+//				  		"<br/></html>");
+//		  }
+//			 
+//			//  msg.append("<img width='350' src=cid:").append(message.embed(img)).append(">");
+//			  msg.append("<a href='www.ecisrl.it'><img width='350' src=\"cid:image1\"></a>");
+//		
+//			  msg.append("</body><font size='1'><br><br>In ottemperanza al D.L. n. 196 del 30/6/2003 e Reg. UE n.2016/679 (GDPR) in materia di protezione dei dati personali, le informazioni contenute in questo messaggio sono strettamente confidenziali e riservate ed esclusivamente indirizzate al destinatario indicato (oppure alla persona responsabile di rimetterlo al destinatario). \r\n" + 
+//			  		"Vogliate tener presente che qualsiasi uso, riproduzione o divulgazione di questo messaggio è vietato. Nel caso in cui aveste ricevuto questo messaggio per errore, vogliate cortesemente avvertire il mittente e distruggere il presente messaggio.\r\n" + 
+//			  		"<br><br>" + 
+//			  		"According to Italian law D.L. 196/2003 and Reg. UE n.2016/679 (GDPR)  concerning privacy, if you are not the addressee (or responsible for delivery of the message to such person) you are hereby notified that any disclosure, reproduction, distribution or other dissemination or use of this communication is strictly prohibited. If you have received this message in error, please destroy it and notify us by email." + 
+//			  		"</font></html>");
+//		
+//
+//		  BodyPart messageBodyPart = new MimeBodyPart();
+//		  messageBodyPart.setContent(msg.toString(),"text/html");
+//		  
+//		  BodyPart attachPdf = new MimeBodyPart();
+//		  BodyPart attachSchedaTecnica = new MimeBodyPart();
+//		 		  
+//		  BodyPart image = new MimeBodyPart();
+//		  BodyPart image_ann = new MimeBodyPart();
+//		 // DataSource fds = new FileDataSource(Costanti.PATH_FOLDER_LOGHI +"logo_sti.png");
+//		  DataSource fds = new FileDataSource(Costanti.PATH_HEADER_IMAGE +"Logo ECI Srl.jpg");
+//
+//		  image.setDataHandler(new DataHandler(fds));
+//		  image.setHeader("Content-ID", "<image1>");
+//		  
+//			  
+//		  Multipart multipart = new MimeMultipart();
+//		  
+//			String filenamePdf = verbale.getNumeroVerbale()+"_CF.pdf";
+//			String filenamePdfScheda = null;
+//			String pathScheda = null;
+//			
+//			
+//			if(verbale.getControfirmato()==0) {
+//				filenamePdf = verbale.getNumeroVerbale()+"_F.pdf";
+//			}
+//			
+//			
+//			//String filenameP7m = verbale.getNumeroVerbale()+".pdf.p7m.p7m";			
+//			// Create the attachment
+//
+//	         DataSource source = new FileDataSource(Costanti.PATH_CERTIFICATI+documento.getFilePath().replace(documento.getFileName(), filenamePdf));
+//	         attachPdf.setDataHandler(new DataHandler(source));
+//	         attachPdf.setFileName(verbale.getNumeroVerbale()+".pdf");	   	         
+//	         multipart.addBodyPart(messageBodyPart);
+//	         multipart.addBodyPart(attachPdf);
+//	        
+//			if(verbale.getSchedaTecnica()!=null) {
+//				Set<DocumentoDTO> lista_doc= verbale.getSchedaTecnica().getDocumentiVerbale();
+//					
+//				Iterator<DocumentoDTO> doc = lista_doc.iterator();
+//				while(doc.hasNext()) {
+//					DocumentoDTO d = doc.next();
+//					if(!d.getInvalid()) {
+//						filenamePdfScheda = d.getFileName().substring(0,d.getFileName().length()-4)+"_F.pdf";
+//						pathScheda = Costanti.PATH_CERTIFICATI+d.getFilePath().replace(d.getFileName(), filenamePdfScheda);
+//					}
+//				}
+//					
+//				source = new FileDataSource(pathScheda);
+//			    attachSchedaTecnica.setDataHandler(new DataHandler(source));
+//			    attachSchedaTecnica.setFileName(filenamePdfScheda.replace("_F.pdf", ".pdf"));
+//			    multipart.addBodyPart(attachSchedaTecnica);	
+//			}
+//	  
+//	         multipart.addBodyPart(image);
+//	         // Send the complete message parts
+//	         message.setContent(multipart);
+//      
+//	
+//	         Transport tr = mailSession.getTransport("smtps");
+//	         
+//	         tr.connect(SMTP_HOST_NAME, SMTP_HOST_PORT, SMTP_AUTH_USER, SMTP_AUTH_PWD);
+//	         message.saveChanges();      // don't forget this
+//	         tr.sendMessage(message, message.getAllRecipients());
+//	         tr.close();
+//	
+//
+//		
+//	}
 
 	public static void sendEmailInfoVerbale(VerbaleDTO verbale, String nome, String cognome, String motivazione, String indirizzo_email) throws Exception {
 	

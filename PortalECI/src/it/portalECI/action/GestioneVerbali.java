@@ -35,6 +35,7 @@ import org.apache.tomcat.util.codec.binary.Base64;
 import org.hibernate.Session;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
@@ -67,6 +68,7 @@ import it.portalECI.DTO.RispostaTestoVerbaleDTO;
 import it.portalECI.DTO.RispostaVerbaleDTO;
 import it.portalECI.DTO.SedeDTO;
 import it.portalECI.DTO.StatoVerbaleDTO;
+import it.portalECI.DTO.StoricoEmailVerbaleDTO;
 import it.portalECI.DTO.StoricoModificheDTO;
 import it.portalECI.DTO.StrumentoVerificatoreDTO;
 import it.portalECI.DTO.UtenteDTO;
@@ -79,6 +81,7 @@ import it.portalECI.bo.GestioneAttrezzatureBO;
 import it.portalECI.bo.GestioneCampioneBO;
 import it.portalECI.bo.GestioneCommesseBO;
 import it.portalECI.bo.GestioneComunicazioniBO;
+import it.portalECI.bo.GestioneInterventoBO;
 import it.portalECI.bo.GestioneQuestionarioBO;
 import it.portalECI.bo.GestioneVerbaleBO;
 
@@ -798,8 +801,15 @@ public class GestioneVerbali extends HttpServlet {
 		} else if(action !=null && action.equals("visualizzaDocumento")) {
 			String idDoc=request.getParameter("idDoc");
 			if(idDoc != null && idDoc != "") {
-				DocumentoDTO doc = GestioneDocumentoDAO.getDocumento(idDoc, session);					
-				File docPdf =  new File(Costanti.PATH_CERTIFICATI+doc.getFilePath());
+				DocumentoDTO doc = GestioneDocumentoDAO.getDocumento(idDoc, session);
+				
+				File docPdf =  null;
+				if(verbale.getCodiceCategoria().equals("VAL")) {
+					docPdf	= new File(Costanti.PATH_CERTIFICATI+doc.getFilePath().substring(0, doc.getFilePath().length()-4)+"_F.pdf");
+				}else {
+					docPdf	= new File(Costanti.PATH_CERTIFICATI+doc.getFilePath().substring(0, doc.getFilePath().length()-4)+"_CF.pdf");
+				}
+				//new File(Costanti.PATH_CERTIFICATI+doc.getFilePath());
 				if(docPdf.length() > 0) {
 					byte[] pdfArray = loadFileForBase64(docPdf);
 					if(pdfArray.length == 0) {
@@ -1046,15 +1056,19 @@ public class GestioneVerbali extends HttpServlet {
 		
 		else if(action!=null && action.equals("email_destinatario")) {			
 		
+			String id_intervento = request.getParameter("id_intervento");
+			InterventoDTO intervento = GestioneInterventoBO.getIntervento(id_intervento, session);
+			
 			try {
+				
 			String indirizzo = "";
-			if(verbale.getIntervento().getIdSede()==0) {
-				ClienteDTO cliente = GestioneAnagraficaRemotaBO.getClienteById(""+verbale.getIntervento().getId_cliente());
+			if(intervento.getIdSede()==0) {
+				ClienteDTO cliente = GestioneAnagraficaRemotaBO.getClienteById(""+intervento.getId_cliente());
 				indirizzo = cliente.getEmail();
 			}else {
 				ClienteDTO cliente;
 				
-					cliente = GestioneAnagraficaRemotaBO.getClienteFromSede(""+verbale.getIntervento().getId_cliente(), ""+verbale.getIntervento().getIdSede());
+					cliente = GestioneAnagraficaRemotaBO.getClienteFromSede(""+intervento.getId_cliente(), ""+intervento.getIdSede());
 				
 				indirizzo = cliente.getEmail();							
 			}
@@ -1086,11 +1100,31 @@ public class GestioneVerbali extends HttpServlet {
 				response.setContentType("text/html");
 				
 				String indirizzo = request.getParameter("destinatario");
-				String id_documento = request.getParameter("id_documento");
+				String id_verbali = request.getParameter("id_verbali");
 			
-				DocumentoDTO documento = GestioneDocumentoDAO.getDocumento(id_documento, session);
-			
-				GestioneComunicazioniBO.sendPecVerbale(documento,documento.getVerbale(), indirizzo);
+				String[] ids_verbali = id_verbali.split(";");
+				
+				ArrayList<VerbaleDTO> lista_verbali_send = new ArrayList<VerbaleDTO>();
+				
+				for (String id : ids_verbali) {
+					
+					VerbaleDTO v = GestioneVerbaleBO.getVerbale(id, session);
+					lista_verbali_send.add(v);					
+				}
+											
+				GestioneComunicazioniBO.sendPecVerbale(lista_verbali_send, indirizzo);				
+				
+				for (VerbaleDTO v : lista_verbali_send) {
+					v.setInviato(1);
+					session.update(v);
+					StoricoEmailVerbaleDTO email = new StoricoEmailVerbaleDTO();
+					email.setData(new Date());
+					email.setDestinatario(indirizzo);
+					email.setId_verbale(v.getId());
+					email.setUtente(user);
+					
+					session.save(email);
+				}
 				
 				myObj.addProperty("success", true);
 				myObj.addProperty("messaggio", "Email inviata con successo!");
@@ -1127,6 +1161,19 @@ public class GestioneVerbali extends HttpServlet {
 			
 
 			
+		}
+		else if(action!=null && action.equals("storico_email")) {
+			
+			response.setContentType("application/json");
+			
+			ArrayList<StoricoEmailVerbaleDTO> lista_email = GestioneVerbaleBO.getListaEmailVerbale(verbale.getId(), session);
+			
+			Gson g = new GsonBuilder().setDateFormat("dd/MM/yyyy").create();
+			
+			myObj.addProperty("success", true);
+			myObj.add("lista_email",g.toJsonTree(lista_email));			
+			
+			out.println(myObj.toString());
 		}
 		
 		else {

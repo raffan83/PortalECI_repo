@@ -26,7 +26,7 @@ public class GestioneInterventoDAO {
 			"LEFT JOIN BWT_ANAGEN AS b ON  a.ID_ANAGEN=b.ID_ANAGEN " +
 			"LEFT JOIN BWT_ANAGEN_INDIR AS c on a.K2_ANAGEN_INDIR=c.K2_ANAGEN_INDIR AND a.ID_ANAGEN=c.ID_ANAGEN ";*/
 
-	public static List<InterventoDTO> getListaInterventi(String idCommessa, Session session, UtenteDTO user) throws Exception {
+	public static List<InterventoDTO> getListaInterventi(String idCommessa, Session session, UtenteDTO user, String stato) throws Exception {
 		
 		List<InterventoDTO> lista =null;
 			
@@ -36,15 +36,25 @@ public class GestioneInterventoDAO {
 		boolean ck_ST=user.checkRuolo("ST");
 		boolean ck_RT=user.checkRuolo("RT");
 		boolean ck_SRT=user.checkRuolo("SRT");
+		
+		String stato_intervento = "";
+		
+		if(stato!=null && Integer.parseInt(stato) == StatoInterventoDTO.CHIUSO ) {
+			stato_intervento = " and statoIntervento.id = "+StatoInterventoDTO.CHIUSO;
+		}
+		else if (stato!=null && Integer.parseInt(stato)!=StatoInterventoDTO.CHIUSO) {
+			stato_intervento = " and statoIntervento.id != "+StatoInterventoDTO.CHIUSO;
+		}
+		
 		if(idCommessa!=null) {
 			if(ck_ST==false && ck_AM==false && ck_RT==false && ck_SRT==false) 
 			{
-				query= session.createQuery( "from InterventoDTO WHERE id_commessa= :_id_commessa AND tecnico_verificatore.id=:_idUser");
+				query= session.createQuery( "from InterventoDTO WHERE id_commessa= :_id_commessa AND tecnico_verificatore.id=:_idUser"+stato_intervento);
 				query.setParameter("_id_commessa", idCommessa);		
 				query.setParameter("_idUser", user.getId());	
 			}else 
 			{
-				query= session.createQuery( "from InterventoDTO WHERE id_commessa= :_id_commessa");
+				query= session.createQuery( "from InterventoDTO WHERE id_commessa= :_id_commessa"+stato_intervento);
 				query.setParameter("_id_commessa", idCommessa);		
 			}
 		
@@ -54,11 +64,12 @@ public class GestioneInterventoDAO {
 		{
 			if(ck_ST==false && ck_AM==false && ck_RT==false ) 
 			{
-				query= session.createQuery( "from InterventoDTO WHERE tecnico_verificatore.id=:_idUser");
+				query= session.createQuery( "from InterventoDTO WHERE tecnico_verificatore.id=:_idUser"+stato_intervento);
 				query.setParameter("_idUser", user.getId());
 			}else 
 			{
-				query= session.createQuery( "from InterventoDTO");
+				stato_intervento = stato_intervento.replace("and", "where");
+				query= session.createQuery( "from InterventoDTO"+stato_intervento);
 			}
 	
 			

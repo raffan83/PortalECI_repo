@@ -172,6 +172,8 @@
 		<many-to-one name="campione" class="it.portalECI.DTO.CampioneDTO" fetch="join" lazy="false">
             <column name="id_campione" />
         </many-to-one>
-		 
+		<property name="inviato" type="int">
+			<column name="inviato" />
+		</property> 
 	</class>
 </hibernate-mapping> 

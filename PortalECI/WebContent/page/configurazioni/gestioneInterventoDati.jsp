@@ -187,9 +187,12 @@
 											
 											<a class="btn btn-primary" onClick="modalAggiungiVerbale()"><i class="fa fa-plus"></i> Aggiungi verbale</a>
 											
+											<a class="btn btn-primary pull-right" onClick="getDestinatarioEmail('${intervento.id}')" style="margin-left:5px"><i class="fa fa-paper-plane-o" ></i> Invia Verbale</a>
+											
 		      									<table id="tabPM" class="table table-bordered table-hover dataTable table-striped" role="grid" width="100%">
  													<thead>
  														<tr class="active">
+ 														<td><input type="checkbox" id="check_all" class="form-control"></td>
  															<th>Codice Categoria</th> 															
  															<th>Codice Verifica</th>
  															<th>Data Creazione</th>
@@ -200,6 +203,7 @@
  															
  															<th width="150px">Sc. Tecnica</th>
  															<th>Attrezzatura</th>
+ 															<th>Storico invio</th>
  															<th>Note</th>
  															<td></td>
 														</tr>
@@ -207,6 +211,12 @@
  													<tbody>
  														<c:forEach items="${intervento.verbali}" var="verbale"> 
  															<tr role="row">
+ 															<td>
+ 															<c:if test="${verbale.firmato == 1 && (verbale.codiceCategoria == 'VAL' || verbale.controfirmato == 1)  }">
+ 															<input type="checkbox" id="check_${verbale.id }" class="form-control" >
+ 															</c:if>
+ 															
+ 															</td>
 																<td>
   																	${verbale.getCodiceCategoria()}
 																</td>
@@ -230,7 +240,7 @@
   																	<c:if test="${verbale.getDocumentiVerbale().size()>0 && user.checkPermesso('DOWNLOAD_CERTIFICATO')}">
       																	<c:forEach items="${verbale.getDocumentiVerbale()}" var="docum">	
       																		<c:if test="${docum.getType().equals('CERTIFICATO')}">
-    	  																		<a class="btn customTooltip" title="Click per aprire il certificato" onclick="scaricaFile(${docum.id});">
+    	  																		<a class="btn customTooltip" title="Click per aprire il certificato" onclick="scaricaFile(${docum.id}, ${docum.verbale.id });">
 	      																			<i class="glyphicon glyphicon-file"></i>
             																	</a>
 	      																	</c:if>      																		
@@ -241,7 +251,7 @@
   																	<c:if test="${verbale.getSchedaTecnica().getDocumentiVerbale().size()>0 && user.checkPermesso('DOWNLOAD_SKTECNICA')}">
       																	<c:forEach items="${verbale.getSchedaTecnica().getDocumentiVerbale()}" var="docum">	      																		
       																		<c:if test="${docum.getType().equals('SCHEDA_TECNICA')}">
-	      																		<a class="btn customTooltip" title="Click per aprire la scheda tecnica" onclick="scaricaFile(${docum.id});">
+	      																		<a class="btn customTooltip" title="Click per aprire la scheda tecnica" onclick="scaricaFile(${docum.id}, ${docum.verbale.id });">
 	      																			<i class="glyphicon glyphicon-file"></i>
             																	</a>
     	  																	</c:if>
@@ -249,6 +259,12 @@
       																</c:if> 
 																</td>
 																<td>${verbale.attrezzatura.matricola_inail }</td>
+																<td>
+																																	
+																<c:if test="${verbale.inviato == 1 }">
+																	<a class="btn btn-primary customTooltip" title="Vedi storico invio" onClick="modalStorico(${verbale.id})"><i class="fa fa-envelope"></i></a>
+																	</c:if>
+																</td>
 																<td>
   																	${verbale.getNote()}
 																</td>	
@@ -618,6 +634,76 @@
 						</div> 
 						
 						
+						<div id="modalDestinatario" class="modal fade" role="dialog" aria-labelledby="myLargeModalLabel">
+    						<div class="modal-dialog" role="document">
+    							<div class="modal-content">
+     								<div class="modal-header">
+        								<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        								<h4 class="modal-title text-center" id="myModalLabel">Invia verbale</h4>
+      								</div>
+       								<div class="modal-body">
+       								<div class="row">
+       								<div class="col-xs-2">
+       								<label>Destinatario:</label>
+										
+       								</div>
+       								<div class="col-xs-6">
+       								<input type="text" id="destinatario" name = "destinatario" class="form-control">
+       								<input type="hidden" id="id_documento" name = "id_documento" class="form-control">
+       								
+       								</div>
+										</div>
+  		 							</div>
+      								<div class="modal-footer">
+      									<button type="button" class="btn btn-default" onclick="inviaPec()" >Invia</button>
+        								<button type="button" class="btn btn-default" data-dismiss="modal">Chiudi</button>
+      								</div>
+    							</div>
+  							</div>
+						</div> 
+						
+		 <div id="myModalStorico" class=" modal fade" role="dialog" aria-labelledby="myLargeModalLabel">
+    <div class="modal-dialog" role="document">
+    <div class="modal-content">
+     <div class="modal-header">
+        <a type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></a>
+        <h4 class="modal-title" id="myModalLabelHeader">Storico email</h4>
+      </div>
+       <div class="modal-body">
+       <div class="row">
+       <div class="col-sm-12">
+			
+       <div id="tab_storico">
+       
+       <table id="table_storico" class="table table-bordered table-hover dataTable table-striped" role="grid" width="100%">
+ 													<thead>
+ 														<tr class="active">
+ 															<th>Data</th>
+ 															<th>Destinatario</th>
+ 															<th>Utente</th>
+ 															
+														</tr>
+													</thead> 													
+ 												</table>  
+       
+       </div>
+        </div>
+
+     		</div>
+
+		</div>
+      <div class="modal-footer">
+ 		
+ 		<a class="btn btn-default pull-right" onClick="$('#myModalStorico').modal('hide')">Chiudi</a>
+         
+         
+         </div>
+     
+    </div>
+  </div>
+</div>
+						
+						
  <div id="myModalYesOrNo" class="modal fade" role="dialog" aria-labelledby="myLargeModalsaveStato">
    
     <div class="modal-dialog modal-md" role="document">
@@ -661,6 +747,8 @@
 	</jsp:attribute>
 
 	<jsp:attribute name="extra_js_footer">
+	<script type="text/javascript" src="plugins/datejs/date.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment-with-locales.min.js"></script>
  		<script type="text/javascript">
  		
  		
@@ -668,6 +756,51 @@
  		
  			$('#elimina_verbale_id').val(id_verbale);
  			$('#myModalYesOrNo').modal();
+ 		}
+ 		
+ 		function formatDate(data){
+ 			
+ 		   var mydate = new Date(data);
+ 		   
+ 		   if(!isNaN(mydate.getTime())){
+ 		   
+ 			   str = mydate.toString("dd/MM/yyyy");
+ 		   }			   
+ 		   return str;	 		
+ 	}
+ 		
+ 		
+ 		function modalStorico(id_verbale){
+ 			
+ 			exploreModal("gestioneVerbale.do?action=storico_email&idVerbale="+id_verbale, null, null, function(datab){
+ 				
+ 				
+ 				
+				if(datab.success){
+					var lista_email = datab.lista_email;
+					var table_data = [];
+					for(var i = 0; i<lista_email.length;i++){
+		    			  var dati = {};
+		    			 	
+		    			  //dati.data = formatDate(moment(lista_email[i].data, "DD, MMM YY"));
+		    			  dati.data = lista_email[i].data;
+		    			  dati.destinatario = lista_email[i].destinatario;
+		    			  dati.utente =  lista_email[i].utente.nominativo;
+		    			
+		    			  table_data.push(dati);
+		    			  
+		    		  }
+		    		  var table = $('#table_storico').DataTable();
+		    		  
+		     		   table.clear().draw();
+		     		   
+		     			table.rows.add(table_data).draw();
+		     			table.columns.adjust().draw();
+					
+				} 			
+
+ 				$('#myModalStorico').modal();
+ 			});
  		}
  		
  		function modalAggiungiVerbale(){
@@ -706,10 +839,98 @@
 			} 
 			}
  		
+			
+			
+			
+			function checkVerbale(id_verbale){
+				
+				
+			}
+			
+			$('input:checkbox').on('ifToggled', function() {
+				
+				//var id =$(this)[0].id;
+				
+				var id ="#"+$(this)[0].id;
+				
+				if(id!='#check_all' ){
+					$(id).on('ifChecked', function(event){
+						//send_verbali = send_verbali.replace(id.split("_")[1]+";", "");
+						send_verbali = send_verbali+id.split("_")[1]+";"
+					});
+
+
+					$(id).on('ifUnchecked', function(event) {
+						
+					//	send_verbali = send_verbali+id.split("_")[1]+";"
+						send_verbali = send_verbali.replace(id.split("_")[1]+";", "");
+						
+					});
+				}
+				
+
+				});
+			
+			
+			
+		    $("#check_all").on('ifChecked', function(event){
+		    	 
+		    	$('input:checkbox').each(function(){
+		    		
+		    		var id =$(this)[0].id;
+		    		console.log($(this)[0].id);
+		    		if(id!=''&& id!='check_all'){
+		    			console.log(id);
+		    			id="#"+id;
+		    			if($(id).prop('checked')== false){
+		    				
+		    			$(id).iCheck('check');        			    			
+		    			send_verbali = send_verbali+id.split("_")[1]+";"
+		    		
+		    			}
+
+		    		}
+		    	
+		    	
+		    		
+		    	})
+		    });
+
+
+		    $("#check_all").on('ifUnchecked', function(event){
+		     
+		    	$('input:checkbox').each(function(){
+		    		
+		    		var id =$(this)[0].id;
+		    		
+		    		if(id!=''&& id!='check_all'){
+		    				
+		    			id="#"+id;
+		    			if($(id).prop('checked')== true){
+		    			$(id).iCheck('uncheck');        			    			
+		     		
+		    			send_verbali = send_verbali.replace(id.split("_")[1]+";", "");
+		    			}
+
+		    		}
+		    	
+		    	
+		    		
+		    	})
+		    });
+
+			
+			
  		var attrezzatura_options;
 			var tecnici_options;
+			
+			var send_verbali;
  		
 			$(document).ready(function() {
+				
+				
+				send_verbali = "";
+				
 				$('#formModificaIntervento').on('submit',function(e){		
 					$("#ulError").html("");
 	    			e.preventDefault();
@@ -737,6 +958,43 @@
 			    	
 			    $('#tecnici').val(${intervento.tecnico_verificatore.id})	
 		    	$('#tecnici').attr('disabled', true);
+			    
+			    
+			    
+			    
+			    
+			    table_storico = $('#table_storico').DataTable({
+					language: lang,
+			        pageLength: 25,
+			        "order": [[ 0, "desc" ]],
+				      paging: false, 
+				      ordering: true,
+				      info: false, 
+				      searchable: false, 
+				      targets: 0,
+				      responsive: true,  
+				      scrollX: false,
+				      stateSave: true,	
+				      columns : [
+				      	{"data" : "data"},
+				      	{"data" : "destinatario"},
+				      	{"data" : "utente"},
+				       ],	
+				           
+				      columnDefs: [
+				    	  
+				    	  { responsivePriority: 1, targets: 1 },
+		    	  
+				               ], 	        
+			  	      buttons: [   
+			  	          {
+			  	            extend: 'colvis',
+			  	            text: 'Nascondi Colonne'  	                   
+			 			  } ]
+				               
+				    });
+				
+
 												
     		});	
 			
@@ -1149,12 +1407,12 @@
 				});
 			}
 			
-			function scaricaFile(idDoc){
+			function scaricaFile(idDoc, id_verbale){
 				pleaseWaitDiv = $('#pleaseWaitDialog');
 				pleaseWaitDiv.modal();
 				$.ajax({
 					type: "POST",
-					url: "gestioneVerbale.do?action=visualizzaDocumento",
+					url: "gestioneVerbale.do?action=visualizzaDocumento&idVerbale="+id_verbale,
 					data : "idDoc="+idDoc,				
 					dataType: "json",
 					success: function( data, textStatus) {
@@ -1327,6 +1585,137 @@
   				
   				
   			});
+  			
+  			
+  			function getDestinatarioEmail(id_intervento){
+  				
+  				var checked = false;
+  				
+  				$('input:checkbox').each(function(){
+  					
+  					var id ="#"+this.id;
+  					
+  					if($(id).prop('checked')== true){  
+  						checked = true;
+  						
+  					}
+  				});
+  				
+  				if(!checked){
+  					$('#modalErrorDiv').html("Attezione! Selezionare almeno un verbale!");
+						$('#myModalError').removeClass();
+						$('#myModalError').addClass("modal modal-danger");
+						$('#myModalError').modal('show');			 				
+  				}else{
+  					
+	  				pleaseWaitDiv = $('#pleaseWaitDialog');
+	  				pleaseWaitDiv.modal();
+	  				
+	  				/* var id ="${verbale.id}";
+	  				$('#id_documento').val(id_documento); */
+	  					
+	  				$.ajax({
+	  					type: "POST",
+	  					url: "gestioneVerbale.do?action=email_destinatario",
+	  					data : "id_intervento="+id_intervento,				
+	  					dataType: "json",
+	  					success: function( data, textStatus) {
+	  						pleaseWaitDiv.modal('hide');
+	  						if(data.success){
+	  							
+	  							$('#destinatario').val(data.indirizzo);
+	  							$('#modalDestinatario').modal();
+	  							
+	  						}else{
+	  							$('#modalErrorDiv').html(data.messaggio);
+	  							$('#myModalError').removeClass();
+	  							$('#myModalError').addClass("modal modal-danger");
+	  							$('#myModalError').modal('show');	
+	  						}
+	  						
+	  						
+	  						
+	  					},
+	  					error: function(jqXHR, textStatus, errorThrown){
+	  						pleaseWaitDiv.modal('hide');
+	  						$('#modalErrorDiv').html(jqXHR.responseText);
+	  						$('#myModalError').removeClass();
+	  						$('#myModalError').addClass("modal modal-danger");
+	  						$('#myModalError').modal('show');															
+	  					}
+	  				});
+  				}
+  			}
+
+
+  			function inviaPec(){
+  				
+  				 pleaseWaitDiv = $('#pleaseWaitDialog');
+  				 pleaseWaitDiv.modal();
+  				  
+  				
+  				  var destinatario = $('#destinatario').val();
+  				  var id_documento = $('#id_documento').val();
+  				  
+  				  if(destinatario!=null && destinatario!=''){
+  				  
+  					  
+  					  $.ajax({
+  					  type: "POST",
+  					  url: "gestioneVerbale.do?action=invia_email&id_verbali="+send_verbali+"&destinatario="+destinatario,
+  					  dataType: "json",
+  				
+  					  success: function( data, textStatus) {
+  						  pleaseWaitDiv.modal('hide');
+  						  if(data.success)
+  						  { 
+  							$('#modalDestinatario').modal('hide');
+  						    $('#modalErrorDiv').html(data.messaggio);
+  				 			  	$('#myModalError').removeClass();
+  				 				$('#myModalError').addClass("modal modal-success");
+  				 				$('#report_button').hide();
+  				 				$('#visualizza_report').hide();
+  				 				$('#myModalError').modal('show');
+  				 				$('#myModalError').on('hidden.bs.modal', function(){
+  									location.reload();
+  								});
+  						
+  						  }else{
+  							  
+  							  $('#modalErrorDiv').html(data.messaggio);
+  				 			  	$('#myModalError').removeClass();
+  				 				$('#myModalError').addClass("modal modal-danger");
+  				 				$('#report_button').hide();
+  				 				$('#visualizza_report').hide();
+  				 				$('#myModalError').modal('show');			
+  						  }
+  					  
+  				  },
+
+  				  error: function(jqXHR, textStatus, errorThrown){
+  					  pleaseWaitDiv.modal('hide');
+
+  						$('#modalErrorDiv').html(errorThrown.message);
+  					  	$('#myModalError').removeClass();
+  						$('#myModalError').addClass("modal modal-danger");
+  						$('#report_button').show();
+  							$('#visualizza_report').show();
+  						$('#myModalError').modal('show');
+  						
+
+  				  }
+  			  });
+  				  }else{
+  					  pleaseWaitDiv.modal('hide');
+  						  $('#myModalErrorContent').html("Nessun indirizzo email inserito!");
+  						  	$('#myModalError').removeClass();
+  							$('#myModalError').addClass("modal modal-danger");
+  							$('#report_button').hide();
+  							$('#visualizza_report').hide();
+  							$('#myModalError').modal('show');	
+  					  }
+  				
+  			}
   			
   			
   			

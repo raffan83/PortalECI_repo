@@ -70,13 +70,36 @@
 														 	Cerca
 														</button>    
 														
-														<button class="btn btn-default pull-right col-sm-offset-2" onclick="annulla()" style="position: absolute; bottom: 0;">
+														<button class="btn btn-default pull-right col-sm-offset-1" onclick="annulla()" style="position: absolute; bottom: 0;">
 															<i class="glyphicon glyphicon-remove"></i>
 															 Annulla
 														</button>
+														
+														<div class="col-sm-3"> </div>
+														<div class="col-sm-3">  
+								  						 <button class="btn btn-primary pull-right" onclick="filtraInterventi()" style="margin-top:25px"id="tutti_btn" >
+															
+															 Tutti
+														</button> 
+														 
+														       
 														         
+														    <button class="btn btn-primary pull-right" onclick="filtraInterventi(7)" style="margin-top:25px; margin-right:5px" id="chiusi_btn" >
+															
+															 Chiusi
+														</button>  
+														
+														 <button class="btn btn-primary pull-right" onclick="filtraInterventi(0)" style="margin-top:25px; margin-right:5px" id="aperti_btn" >
+															
+															 Aperti
+														</button> 						         
+														 
+												</div>
         												                                     
-  													</div>			
+  													</div>	
+  													
+
+  															
 													<!--  -->
 
               										<table id="tabPM" class="table table-bordered table-hover dataTable table-striped" role="grid" width="100%">
@@ -177,8 +200,44 @@
 	<jsp:attribute name="extra_js_footer">
 
   		<script type="text/javascript">
+  		
+  		
+  		function filtraInterventi(stato){
+  			 
+  			if(stato!=null){
+  				callAction("gestioneListaInterventi.do?stato="+stato)
+  			}else{
+  				callAction("gestioneListaInterventi.do")
+  			}
+  		}
    
+  		function disableButtons(stato){
+  			
+  			if(stato==''){  				
+  				$('#aperti_btn').prop("disabled", false);
+  				$('#chiusi_btn').prop("disabled", false);
+  				$('#tutti_btn').prop("disabled", true);
+  			}else if(stato == 0){
+  				$('#aperti_btn').prop("disabled", true);
+  				$('#chiusi_btn').prop("disabled", false);
+  				$('#tutti_btn').prop("disabled", false);
+  			}else{
+  				$('#aperti_btn').prop("disabled", false);
+  				$('#chiusi_btn').prop("disabled", true);
+  				$('#tutti_btn').prop("disabled", false);
+  			}
+  			
+  		}
+  		
+  		
+  		
+  		
     		$(document).ready(function() {
+    			
+    			var stato = "${stato}"
+    			
+    			disableButtons(stato);
+    			
      			table = $('#tabPM').DataTable({
     				language: {
   	        			emptyTable : 	"Nessun dato presente nella tabella",

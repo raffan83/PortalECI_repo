@@ -69,6 +69,7 @@ import it.portalECI.DTO.RispostaTestoVerbaleDTO;
 import it.portalECI.DTO.RispostaVerbaleDTO;
 import it.portalECI.DTO.StatoInterventoDTO;
 import it.portalECI.DTO.StatoVerbaleDTO;
+import it.portalECI.DTO.StoricoEmailVerbaleDTO;
 import it.portalECI.DTO.TemplateQuestionarioDTO;
 import it.portalECI.DTO.TipoVerificaDTO;
 import it.portalECI.DTO.UtenteDTO;
@@ -1576,6 +1577,11 @@ public class GestioneVerbaleBO {
 	public static AllegatoMinisteroDTO getAllegatoMinistero(int id_allegato, Session session) {
 		
 		return GestioneVerbaleDAO.getAllegatoMinistero(id_allegato, session);
+	}
+
+	public static ArrayList<StoricoEmailVerbaleDTO> getListaEmailVerbale(int id, Session session) {
+		
+		return GestioneVerbaleDAO.getListaEmailVerbale(id, session);
 	}
 
 

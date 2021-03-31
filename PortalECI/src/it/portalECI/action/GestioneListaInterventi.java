@@ -62,11 +62,13 @@ public class GestioneListaInterventi extends HttpServlet {
 			Session session=SessionFacotryDAO.get().openSession();
 			session.beginTransaction();
 			
+			String stato = request.getParameter("stato");			
+			
 			CompanyDTO company =(CompanyDTO)request.getSession().getAttribute("usrCompany");
 			
 			UtenteDTO user = (UtenteDTO)request.getSession().getAttribute("userObj");
 					
-			List<InterventoDTO> listaInterventi =GestioneInterventoBO.getListaInterventi(null,session,user) ;
+			List<InterventoDTO> listaInterventi =GestioneInterventoBO.getListaInterventi(null,session,user, stato) ;
 			
 			ArrayList<TipoVerificaDTO> tipi_verifica = GestioneInterventoBO.getTipoVerifica(session);
 			ArrayList<CategoriaVerificaDTO> categorie_verifica = GestioneInterventoBO.getCategoriaVerifica(session);
@@ -78,6 +80,7 @@ public class GestioneListaInterventi extends HttpServlet {
 			request.getSession().setAttribute("tipi_verifica", tipi_verifica);
 			request.getSession().setAttribute("categorie_verifica", categorie_verifica);
 			request.getSession().setAttribute("clienti", clienti);
+			request.getSession().setAttribute("stato", stato);
 			
 			RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/page/configurazioni/gestioneListaInterventi.jsp");
 	     	dispatcher.forward(request,response);

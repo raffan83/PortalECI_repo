@@ -45,7 +45,7 @@
           		<%-- <% if(user.checkPermesso("GESTIONE_INTERVENTO")){%>  --%>
           			<ul class="treeview-menu">
             			<li>
-            				<a href="gestioneListaInterventi.do">Gestione Intervento</a>
+            				<a href="gestioneListaInterventi.do?stato=0">Gestione Intervento</a>
             			</li>
           			</ul>
           		

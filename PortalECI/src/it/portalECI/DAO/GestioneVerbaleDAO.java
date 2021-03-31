@@ -13,6 +13,7 @@ import it.portalECI.DTO.AllegatoMinisteroDTO;
 import it.portalECI.DTO.DocumentoDTO;
 import it.portalECI.DTO.ProgressivoVerbaleDTO;
 import it.portalECI.DTO.StatoVerbaleDTO;
+import it.portalECI.DTO.StoricoEmailVerbaleDTO;
 import it.portalECI.DTO.TipoVerificaDTO;
 import it.portalECI.DTO.UtenteDTO;
 import it.portalECI.DTO.VerbaleDTO;
@@ -204,10 +205,10 @@ public class GestioneVerbaleDAO {
 		Query query  = null;
 		
 		if(dateFrom==null) {
-			query = session.createQuery( "from VerbaleDTO WHERE type = 'VERBALE' and stato.id = 5");
+			query = session.createQuery( "from VerbaleDTO WHERE type = 'VERBALE' and stato.id = 5 and codiceCategoria = 'VIE'");
 		
 		}else {
-			query = session.createQuery( "from VerbaleDTO WHERE type = 'VERBALE' and stato.id = 5 AND data_verifica between :_dateFrom and :_dateTo");
+			query = session.createQuery( "from VerbaleDTO WHERE type = 'VERBALE' and stato.id = 5 and codiceCategoria = 'VIE' AND data_verifica between :_dateFrom and :_dateTo");
 			query.setParameter("_dateFrom", sdf.parse(dateFrom));
 			query.setParameter("_dateTo", sdf.parse(dateTo));
 		}
@@ -244,6 +245,19 @@ public class GestioneVerbaleDAO {
 		}
 		
 		return result;
+	}
+
+	public static ArrayList<StoricoEmailVerbaleDTO> getListaEmailVerbale(int id, Session session) {
+		
+		ArrayList<StoricoEmailVerbaleDTO> lista = null;		
+		
+		Query query  = session.createQuery( "from StoricoEmailVerbaleDTO where id_verbale=:_id");
+		query.setParameter("_id", id);
+		
+		lista = (ArrayList<StoricoEmailVerbaleDTO>) query.list();		
+		
+				
+		return lista;
 	}
 	
 }
