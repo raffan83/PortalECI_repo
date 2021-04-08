@@ -511,7 +511,7 @@
         <option value="${desc.gruppo}_${desc.descrizione}_${desc.id_specifica}@${desc.codici_milestone}">${desc.descrizione }</option>
         </c:if>
         <c:if test="${desc.id_specifica==null || desc.id_specifica==''}">
-        <option value="${desc.gruppo}_${desc.descrizione}@${desc.codici_milestone}">${desc.descrizione }</option>
+        <option value="${desc.gruppo}_${desc.descrizione}_@${desc.codici_milestone}">${desc.descrizione }</option>
         </c:if>
         
         </c:forEach>
@@ -759,113 +759,6 @@
 	}); 
 
 
-
-
-
-/* function openTab(id_attrezzatura, matricola_inail, numero_fabbrica, tipo_attivita, descrizione, id_cliente, id_sede,
-		data_verifica_funzionamento, data_prossima_verifica_funzionamento,data_verifica_integrita, data_prossima_verifica_integrita, data_verifica_interna, data_prossima_verifica_interna,
-		anno_costruzione, fabbricante, modello, settore_impiego, note_tecniche, note_generiche, obsoleta, tipo_attrezzatura, tipo_attrezzatura_gvr,
-		id_specifica, sogg_messa_serv_GVR, n_panieri_idroestrattori, marcatura, n_id_on, data_scadenza_ventennale){
-
-	
-	$('#id_attrezzatura').val(id_attrezzatura);
-	$('#matricola_inail_mod').val(matricola_inail);
-	$('#numero_fabbrica_mod').val(numero_fabbrica);
-	$('#tipo_attivita_mod').val(tipo_attivita);
-	$('#tipo_attivita_mod').change();
- 	if(id_specifica!=null && id_specifica!=''){
-		$('#descrizione_mod').val(tipo_attivita+"_"+descrizione+"_"+id_specifica);
-	}else{
-		$('#descrizione_mod').val(tipo_attivita+"_"+descrizione);	
-	}
-	
-	$('#descrizione_mod').change(); 
-	$('#cliente_mod').val(id_cliente);
-	$('#cliente_mod').change();
-	if(id_sede!=0){
-		$('#sede_mod').val(id_sede+"_"+id_cliente);	
-	}else{
-		$('#sede_mod').val(0);
-	}
-	
-	
-	
-	
-	$('#sede_mod').change();
-	$('#anno_costruzione_mod').val(anno_costruzione);
-	$('#fabbricante_mod').val(fabbricante);
-	$('#modello_mod').val(modello);
-	$('#settore_impiego_mod').val(settore_impiego);
-	$('#settore_impiego_mod').change();
-	$('#note_tecniche_mod').val(note_tecniche);
-	$('#note_generiche_mod').val(note_generiche);	
-	
-	if(data_verifica_funzionamento!=null && data_verifica_funzionamento!= ''){
-		$('#data_verifica_funzionamento_mod').val(Date.parse(data_verifica_funzionamento).toString("dd/MM/yyyy"));	
-	}
-	if(data_prossima_verifica_funzionamento!=null && data_prossima_verifica_funzionamento!= ''){
-		$('#data_prossima_verifica_funzionamento_mod').val(Date.parse(data_prossima_verifica_funzionamento).toString("dd/MM/yyyy"));	
-	}
-	if(data_verifica_integrita!=null && data_verifica_integrita!= ''){
-		$('#data_verifica_integrita_mod').val(Date.parse(data_verifica_integrita).toString("dd/MM/yyyy"));	
-	}
-	if(data_prossima_verifica_integrita!=null && data_prossima_verifica_integrita!= ''){
-		$('#data_prossima_verifica_integrita_mod').val(Date.parse(data_prossima_verifica_integrita).toString("dd/MM/yyyy"));	
-	}
-	if(data_verifica_interna!=null && data_verifica_interna!= ''){
-		$('#data_verifica_interna_mod').val(Date.parse(data_verifica_interna).toString("dd/MM/yyyy"));	
-	}
-	if(data_prossima_verifica_interna!=null && data_prossima_verifica_interna!= ''){
-		$('#data_prossima_verifica_interna_mod').val(Date.parse(data_prossima_verifica_interna).toString("dd/MM/yyyy"));	
-	}
-	
-	if(data_scadenza_ventennale!=null && data_scadenza_ventennale!= ''){
-		$('#data_scadenza_ventennale_mod').val(Date.parse(data_scadenza_ventennale).toString("dd/MM/yyyy"));	
-	}
-	
-	$('#id_specifica_mod').val(id_specifica);	
-	
-	$('#data_prossima_verifica_funzionamento_mod').datepicker({
-			format: "dd/MM/yyyy"
-	});
-	
-
-	$('#tipo_attrezzatura_mod').val(tipo_attrezzatura);
-	$('#tipo_attrezzatura_mod').change();
-
-	$('#tipo_attrezzatura_gvr_mod').val(tipo_attrezzatura_gvr);
-	$('#tipo_attrezzatura_gvr_mod').change();
-	
-	$('#sogg_messa_serv_GVR_mod').val(sogg_messa_serv_GVR);
-	$('#sogg_messa_serv_GVR_mod').change();
-	
-	$('#n_panieri_idroestrattori_mod').val(n_panieri_idroestrattori);
-	
-	$('#marcatura_mod').val(marcatura);
-	$('#marcatura_mod').change();
-
-	$('#n_id_on_mod').val(n_id_on);
-	
-	if(obsoleta==0){
-		$('#rendi_obsoleta').addClass("btn-danger");
-		$('#rendi_obsoleta').show();
-		$('#rendi_non_obsoleta').hide();
-	}else{
-		$('#rendi_non_obsoleta').addClass("btn-success");
-		$('#rendi_obsoleta').hide();
-		$('#rendi_non_obsoleta').show();
-	}
-	
-	
-
-	$('#modalModificaAttrezzatura').modal();
-	
-	
-}
-		
- */
-
-
 var columsDatatables = [];
 
 $("#tabPM").on( 'init.dt', function ( e, settings ) {
@@ -927,7 +820,7 @@ function modalModificaAttrezzatura(id_attrezzatura, matricola_inail, numero_fabb
 	if(id_specifica!=null && id_specifica!=''){
 		$('#descrizione_mod').val(tipo_attivita+"_"+descrizione+"_"+id_specifica+"@"+codice_milestone);
 	}else{
-		$('#descrizione_mod').val(tipo_attivita+"_"+descrizione+"@"+codice_milestone);	
+		$('#descrizione_mod').val(tipo_attivita+"_"+descrizione+"_@"+codice_milestone);	
 	}
 	
 	$('#descrizione_mod').change();

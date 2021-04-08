@@ -125,13 +125,16 @@ public class CreateScadenzarioVAL {
 		 Row rowHeader = sheet0.createRow(0);
 		 
 		 rowHeader.setHeight((short)1000);
-		 for(int j = 0; j<47; j++) {
+		 for(int j = 0; j<50; j++) {
 			 rowHeader.createCell(j);
 			 
-			 if(j==8 || j==21|| j==22|| j==23|| j==25) {
+			 if(j==10 || j==23|| j==24|| j==25|| j==27) {
 				 rowHeader.getCell(j).setCellStyle(yellowStyle);
-			 }else if(j==29){
+			 }else if(j==31){
 				 rowHeader.getCell(j).setCellStyle(greenStyle);
+			 }
+			 else if(j==0 || j== 1 || j == 48) {
+				 rowHeader.getCell(j).setCellStyle(titleStyle);
 			 }else {
 				 rowHeader.getCell(j).setCellStyle(redStyle);
 			 }
@@ -139,88 +142,92 @@ public class CreateScadenzarioVAL {
 			 
 		 }
 		 
-		 sheet0.addMergedRegion(CellRangeAddress.valueOf("A1:H1"));		 
+		 sheet0.addMergedRegion(CellRangeAddress.valueOf("C1:J1"));		 
 		 
-		 sheet0.getRow(0).getCell(0).setCellValue("Dati sempre obbligatori");
+		 sheet0.getRow(0).getCell(2).setCellValue("Dati sempre obbligatori");
 		 
-		 sheet0.getRow(0).getCell(8).setCellValue("dati obbligatori solo nel caso esito_verifica sia sospeso");
+		 sheet0.getRow(0).getCell(10).setCellValue("dati obbligatori solo nel caso esito_verifica sia sospeso");
 		 
-		 sheet0.addMergedRegion(CellRangeAddress.valueOf("J1:U1"));
+		 sheet0.addMergedRegion(CellRangeAddress.valueOf("L1:W1"));
 		 
-		 sheet0.getRow(0).getCell(9).setCellValue("Dati sempre obbligatori");		 
+		 sheet0.getRow(0).getCell(11).setCellValue("Dati sempre obbligatori");		 
 		 
-		 sheet0.addMergedRegion(CellRangeAddress.valueOf("V1:X1"));
+		 sheet0.addMergedRegion(CellRangeAddress.valueOf("X1:Z1"));
 		 
-		 sheet0.getRow(0).getCell(21).setCellValue("Dati obbligatori per attrezzature GVR vedi anche (Informazioni)");		 
+		 sheet0.getRow(0).getCell(23).setCellValue("Dati obbligatori per attrezzature GVR vedi anche (Informazioni)");		 
 		 
-		 sheet0.getRow(0).getCell(24).setCellValue("Dato obbligatorio");
+		 sheet0.getRow(0).getCell(26).setCellValue("Dato obbligatorio");
 		 
-		 sheet0.getRow(0).getCell(25).setCellValue("Dati obbligatori per attrezzature SC vedi anche (Informazioni");		 
+		 sheet0.getRow(0).getCell(27).setCellValue("Dati obbligatori per attrezzature SC vedi anche (Informazioni");		 
 		 
-		 sheet0.addMergedRegion(CellRangeAddress.valueOf("AA1:AC1"));
+		 sheet0.addMergedRegion(CellRangeAddress.valueOf("AC1:AE1"));
 		 
-		 sheet0.getRow(0).getCell(26).setCellValue("Dati obbligatori");		 
+		 sheet0.getRow(0).getCell(28).setCellValue("Dati obbligatori");		 
 		 
-		 sheet0.getRow(0).getCell(29).setCellValue("Dato opzionale");		 
+		 sheet0.getRow(0).getCell(31).setCellValue("Dato opzionale");		 
 		 
-		 sheet0.getRow(0).getCell(30).setCellValue("Dati obbligatori");
+		 sheet0.getRow(0).getCell(32).setCellValue("Dati obbligatori");
 		 
-		 sheet0.addMergedRegion(CellRangeAddress.valueOf("AE1:AT1"));		 
+		 sheet0.addMergedRegion(CellRangeAddress.valueOf("AG1:AV1"));		 
 		 
-		 sheet0.getRow(0).getCell(46).setCellValue("Dato obbligatorio");
+		 sheet0.getRow(0).getCell(48).setCellValue("Dato non inserire");
+		 
+		 sheet0.getRow(0).getCell(49).setCellValue("Dato obbligatorio");
 		 
 		 Row rowTitle = sheet0.createRow(1);
 		 		 
+		 rowTitle.createCell(0).setCellValue("note");
+		 rowTitle.createCell(1).setCellValue("id_verifica");
+		 rowTitle.createCell(2).setCellValue("eff_verifica");
+		 rowTitle.createCell(3).setCellValue("anno Matricola");
+		 rowTitle.createCell(4).setCellValue("cod.att. Matricola");
+		 rowTitle.createCell(5).setCellValue("numero Matricola");
+		 rowTitle.createCell(6).setCellValue("provincia Matricola");
+		 rowTitle.createCell(7).setCellValue("Matricola");
+		 rowTitle.createCell(8).setCellValue("esito_verifica");
+		 rowTitle.createCell(9).setCellValue("tipo_verifica");
+		 rowTitle.createCell(10).setCellValue("sospensione");
+		 rowTitle.createCell(11).setCellValue("data_rilascio");
+		 rowTitle.createCell(12).setCellValue("data_pvp");
+		 rowTitle.createCell(13).setCellValue("dl_rag_sociale");
+		 rowTitle.createCell(14).setCellValue("dl_indirizzo");
+		 rowTitle.createCell(15).setCellValue("dl_comune");
+		 rowTitle.createCell(16).setCellValue("dl_cap");
+		 rowTitle.createCell(17).setCellValue("dl_prov");
+		 rowTitle.createCell(18).setCellValue("dl_reg");
+		 rowTitle.createCell(19).setCellValue("dl_cod_fisc");
+		 rowTitle.createCell(20).setCellValue("dl_part_iva");
+		 rowTitle.createCell(21).setCellValue("attr_gruppo");
+		 rowTitle.createCell(22).setCellValue("tipo_attr");
+		 rowTitle.createCell(23).setCellValue("tipo_attr_GVR");
+		 rowTitle.createCell(24).setCellValue("tipo_verifica_GVR");
+		 rowTitle.createCell(25).setCellValue("Sogg_Messa_Servizio_GVR");
+		 rowTitle.createCell(26).setCellValue("ID Specifica");
+		 rowTitle.createCell(27).setCellValue("n_Panieri_Idroestrattori");
+		 rowTitle.createCell(28).setCellValue("modello_attr");
+		 rowTitle.createCell(29).setCellValue("num_fabbrica");
+		 rowTitle.createCell(30).setCellValue("marcatura_CE");
+		 rowTitle.createCell(31).setCellValue("num_id_ON");
+		 rowTitle.createCell(32).setCellValue("sv_rag_sociale");
+		 rowTitle.createCell(33).setCellValue("sv_nome_tecn");
+		 rowTitle.createCell(34).setCellValue("sv_cognome_tecn");
+		 rowTitle.createCell(35).setCellValue("sv_CF_tecn");
+		 rowTitle.createCell(36).setCellValue("tariffa_app");
+		 rowTitle.createCell(37).setCellValue("tariffa_regolare");
+		 rowTitle.createCell(38).setCellValue("contributo");
+		 rowTitle.createCell(39).setCellValue("attr_indirizzo");
+		 rowTitle.createCell(40).setCellValue("attr_comune");
+		 rowTitle.createCell(41).setCellValue("attr_cap");
+		 rowTitle.createCell(42).setCellValue("attr_provincia");
+		 rowTitle.createCell(43).setCellValue("attr_regione");
+		 rowTitle.createCell(44).setCellValue("fattura");
+		 rowTitle.createCell(45).setCellValue("verbale");
+		 rowTitle.createCell(46).setCellValue("scheda_tecnica");
+		 rowTitle.createCell(47).setCellValue("user_inserimento");
+		 rowTitle.createCell(48).setCellValue("inail_conferma");
+		 rowTitle.createCell(49).setCellValue("cs_ragionesociale");
 		 
-		 rowTitle.createCell(0).setCellValue("eff_verifica");
-		 rowTitle.createCell(1).setCellValue("anno Matricola");
-		 rowTitle.createCell(2).setCellValue("cod.att. Matricola");
-		 rowTitle.createCell(3).setCellValue("numero Matricola");
-		 rowTitle.createCell(4).setCellValue("provincia Matricola");
-		 rowTitle.createCell(5).setCellValue("Matricola");
-		 rowTitle.createCell(6).setCellValue("esito_verifica");
-		 rowTitle.createCell(7).setCellValue("tipo_verifica");
-		 rowTitle.createCell(8).setCellValue("sospensione");
-		 rowTitle.createCell(9).setCellValue("data_rilascio");
-		 rowTitle.createCell(10).setCellValue("data_pvp");
-		 rowTitle.createCell(11).setCellValue("dl_rag_sociale");
-		 rowTitle.createCell(12).setCellValue("dl_indirizzo");
-		 rowTitle.createCell(13).setCellValue("dl_comune");
-		 rowTitle.createCell(14).setCellValue("dl_cap");
-		 rowTitle.createCell(15).setCellValue("dl_prov");
-		 rowTitle.createCell(16).setCellValue("dl_reg");
-		 rowTitle.createCell(17).setCellValue("dl_cod_fisc");
-		 rowTitle.createCell(18).setCellValue("dl_part_iva");
-		 rowTitle.createCell(19).setCellValue("attr_gruppo");
-		 rowTitle.createCell(20).setCellValue("tipo_attr");
-		 rowTitle.createCell(21).setCellValue("tipo_attr_GVR");
-		 rowTitle.createCell(22).setCellValue("tipo_verifica_GVR");
-		 rowTitle.createCell(23).setCellValue("Sogg_Messa_Servizio_GVR");
-		 rowTitle.createCell(24).setCellValue("ID Specifica");
-		 rowTitle.createCell(25).setCellValue("n_Panieri_Idroestrattori");
-		 rowTitle.createCell(26).setCellValue("modello_attr");
-		 rowTitle.createCell(27).setCellValue("num_fabbrica");
-		 rowTitle.createCell(28).setCellValue("marcatura_CE");
-		 rowTitle.createCell(29).setCellValue("num_id_ON");
-		 rowTitle.createCell(30).setCellValue("sv_rag_sociale");
-		 rowTitle.createCell(31).setCellValue("sv_nome_tecn");
-		 rowTitle.createCell(32).setCellValue("sv_cognome_tecn");
-		 rowTitle.createCell(33).setCellValue("sv_CF_tecn");
-		 rowTitle.createCell(34).setCellValue("tariffa_app");
-		 rowTitle.createCell(35).setCellValue("tariffa_regolare");
-		 rowTitle.createCell(36).setCellValue("contributo");
-		 rowTitle.createCell(37).setCellValue("attr_indirizzo");
-		 rowTitle.createCell(38).setCellValue("attr_comune");
-		 rowTitle.createCell(39).setCellValue("attr_cap");
-		 rowTitle.createCell(40).setCellValue("attr_provincia");
-		 rowTitle.createCell(41).setCellValue("attr_regione");
-		 rowTitle.createCell(42).setCellValue("fattura");
-		 rowTitle.createCell(43).setCellValue("verbale");
-		 rowTitle.createCell(44).setCellValue("scheda_tecnica");
-		 rowTitle.createCell(45).setCellValue("user_inserimento");
-		 rowTitle.createCell(46).setCellValue("cs_ragionesociale");
-		 
-		 for(int j = 0; j<47; j++) {
+		 for(int j = 0; j<50; j++) {
 			 rowTitle.getCell(j).setCellStyle(titleStyle);
 		 }
 	     	        
@@ -236,6 +243,69 @@ public class CreateScadenzarioVAL {
 	    		 int col = 0;
 	    		 
 	    		 Cell cell = row.createCell(col);
+	    		 
+	    		 cell.setCellValue("");
+	    		 
+	    		 col++;
+	    		 cell = row.createCell(col);
+	    		 
+	    		 
+	    		 String tipo_verifica = "";
+	    		 
+	    		 if(listaVerbali.get(i).getTipo_verifica()!=0) {
+	    			 
+	    			 if(listaVerbali.get(i).getAttrezzatura().getTipo_attivita().equals("GVR")) {
+	    				 
+	    				 if(listaVerbali.get(i).getTipo_verifica()<3) {
+	    					 
+	    					 tipo_verifica = "1";
+	    				 }else {
+	    					 tipo_verifica = "2"; //TIPO VERIFICA
+	    				 }		    				 
+	    				 
+	    			 }else {
+	    				 
+	    				 tipo_verifica = ""+listaVerbali.get(i).getTipo_verifica();
+	    				 
+	    			 }
+	    		 }
+	    		 
+	    		 Date data_rilascio = null;
+	    		 Date data_pvp = getDataPvP(listaVerbali.get(i));
+	    		 
+	    		 
+	    		 if(listaVerbali.get(i).getStato().getId()!=9 && listaVerbali.get(i).getTipo_verifica_gvr()==0 || listaVerbali.get(i).getTipo_verifica_gvr()==1 || listaVerbali.get(i).getTipo_verifica_gvr()==4 || listaVerbali.get(i).getTipo_verifica_gvr()==5) {
+	    			 data_rilascio = listaVerbali.get(i).getData_verifica();
+	    			// data_pvp = listaVerbali.get(i).getData_prossima_verifica();
+	    		 }
+	    		 else if(listaVerbali.get(i).getStato().getId()!=9 && listaVerbali.get(i).getTipo_verifica_gvr()!=0 && (listaVerbali.get(i).getTipo_verifica_gvr()==3 || listaVerbali.get(i).getTipo_verifica_gvr()==6)) {
+	    			 data_rilascio = listaVerbali.get(i).getData_verifica_interna();
+	    		//	 data_pvp = listaVerbali.get(i).getData_prossima_verifica_interna();
+	    		 }
+	    		 else if(listaVerbali.get(i).getStato().getId()!=9 && listaVerbali.get(i).getTipo_verifica_gvr()!=0 && listaVerbali.get(i).getTipo_verifica_gvr()==2) {
+	    			 data_rilascio = listaVerbali.get(i).getData_verifica_integrita();
+	    			// data_pvp = listaVerbali.get(i).getData_prossima_verifica_integrita();
+	    		 }
+	    		 
+	    		 
+	    		 
+	    		 SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");	
+	    		 
+	    		 if(listaVerbali.get(i).getAttrezzatura()!=null && listaVerbali.get(i).getAttrezzatura().getMatricola_inail().split("/").length>0) {
+	    			 
+	    			 df.applyPattern("yyyy-MM-dd");	
+		    		 
+		    		 Date date = df.parse(df.format(data_pvp)); 
+		    		 
+		    		 df.applyPattern("ddMMyyyy");				    		 
+	    			 
+	    			 cell.setCellValue(listaVerbali.get(i).getAttrezzatura().getMatricola_inail().replaceAll("/", "") + tipo_verifica+df.format(date));
+	    		 }else {
+	    			 cell.setCellValue("");	 
+	    		 }
+	    		 
+	    		 col++;
+	    		 cell = row.createCell(col);
 	    		 
 	    		 if(listaVerbali.get(i).getEffettuazione_verifica()!=0) {
 	    			 cell.setCellValue(listaVerbali.get(i).getEffettuazione_verifica());
@@ -317,25 +387,7 @@ public class CreateScadenzarioVAL {
 					 col++;
 		    		 cell = row.createCell(col);
 		    		 
-		    		 String tipo_verifica = "";
-		    		 
-		    		 if(listaVerbali.get(i).getTipo_verifica()!=0) {
-		    			 
-		    			 if(listaVerbali.get(i).getAttrezzatura().getTipo_attivita().equals("GVR")) {
-		    				 
-		    				 if(listaVerbali.get(i).getTipo_verifica()<3) {
-		    					 
-		    					 tipo_verifica = "1";
-		    				 }else {
-		    					 tipo_verifica = "2"; //TIPO VERIFICA
-		    				 }		    				 
-		    				 
-		    			 }else {
-		    				 
-		    				 tipo_verifica = ""+listaVerbali.get(i).getTipo_verifica();
-		    				 
-		    			 }
-		    		 }
+
 					
 		    		 cell.setCellValue(tipo_verifica); //TIPO VERIFICA	 
 		    		 
@@ -345,52 +397,8 @@ public class CreateScadenzarioVAL {
 					cell.setCellValue(sospensione); //SOSPENSIONE
 					 col++;
 		    		 cell = row.createCell(col);
-		    		 
-		    		 Date data_rilascio = null;
-		    		 Date data_pvp = null;
-		    		 
-//		    		 ArrayList<Date> lista_date = new ArrayList<Date>();
-//		    		 ArrayList<Date> lista_date_pvp = new ArrayList<Date>();
-//		    		 
-//		    		 
-//		    		 if(listaVerbali.get(i).getData_verifica()!=null) {
-//		    			 lista_date.add(listaVerbali.get(i).getData_verifica());
-//		    		 }
-//		    		 if(listaVerbali.get(i).getData_verifica_integrita()!=null) {
-//		    			 lista_date.add(listaVerbali.get(i).getData_verifica_integrita());
-//		    		 }
-//		    		 if(listaVerbali.get(i).getData_verifica_interna()!=null) {
-//		    			 lista_date.add(listaVerbali.get(i).getData_verifica_interna());
-//		    		 }
-//		    		 
-//		    		 
-//		    		 if(listaVerbali.get(i).getData_prossima_verifica()!=null) {
-//		    			 lista_date_pvp.add(listaVerbali.get(i).getData_prossima_verifica());
-//		    		 }
-//		    		 if(listaVerbali.get(i).getData_prossima_verifica_integrita()!=null) {
-//		    			 lista_date_pvp.add(listaVerbali.get(i).getData_prossima_verifica_integrita());
-//		    		 }
-//		    		 if(listaVerbali.get(i).getData_prossima_verifica_interna()!=null) {
-//		    			 lista_date_pvp.add(listaVerbali.get(i).getData_prossima_verifica_interna());
-//		    		 }
-		    		 
-		    		 if(listaVerbali.get(i).getStato().getId()!=9 && listaVerbali.get(i).getTipo_verifica_gvr()==0 || listaVerbali.get(i).getTipo_verifica_gvr()==1 || listaVerbali.get(i).getTipo_verifica_gvr()==4 || listaVerbali.get(i).getTipo_verifica_gvr()==5) {
-		    			 data_rilascio = listaVerbali.get(i).getData_verifica();
-		    			 data_pvp = listaVerbali.get(i).getData_prossima_verifica();
-		    		 }
-		    		 else if(listaVerbali.get(i).getStato().getId()!=9 && listaVerbali.get(i).getTipo_verifica_gvr()!=0 && (listaVerbali.get(i).getTipo_verifica_gvr()==3 || listaVerbali.get(i).getTipo_verifica_gvr()==6)) {
-		    			 data_rilascio = listaVerbali.get(i).getData_verifica_interna();
-		    			 data_pvp = listaVerbali.get(i).getData_prossima_verifica_interna();
-		    		 }
-		    		 else if(listaVerbali.get(i).getStato().getId()!=9 && listaVerbali.get(i).getTipo_verifica_gvr()!=0 && listaVerbali.get(i).getTipo_verifica_gvr()==2) {
-		    			 data_rilascio = listaVerbali.get(i).getData_verifica_integrita();
-		    			 data_pvp = listaVerbali.get(i).getData_prossima_verifica_integrita();
-		    		 }
-		    		 
-		    		 //data_rilascio = Utility.getMostRecentDate(lista_date);
-		    		// data_pvp = Utility.getMostRecentDate(lista_date_pvp);
-		    		 
-		    		 SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");		    		 
+
+		    		 	    		 
 		    	
 		    		 Date date =null; 
 		    				 
@@ -508,14 +516,20 @@ public class CreateScadenzarioVAL {
 				
 		    		 
 		    		 String tipo_ver_gvr="";
-		    		 
-		    		 if(listaVerbali.get(i).getTipo_verifica_gvr()==1 || listaVerbali.get(i).getTipo_verifica_gvr()==4 || listaVerbali.get(i).getTipo_verifica_gvr()==5) {
-		    			 tipo_ver_gvr = "Verifica di funzionamento";
-		    		 }else if(listaVerbali.get(i).getTipo_verifica_gvr()==2) {
-		    			 tipo_ver_gvr = "Verifica di integrità";
-		    		 }else if(listaVerbali.get(i).getTipo_verifica_gvr()==3 || listaVerbali.get(i).getTipo_verifica_gvr()==6) {
-		    			 tipo_ver_gvr = "Verifica interna";
+		    		
+		    		 if(listaVerbali.get(i).getTipo_verifica_gvr()!=0) {
+		    			 if((listaVerbali.get(i).getTipo_verifica() == 1 ||listaVerbali.get(i).getTipo_verifica() == 2) || listaVerbali.get(i).getTipo_verifica_gvr()==1 || listaVerbali.get(i).getTipo_verifica_gvr()==7) {
+			    			 tipo_ver_gvr = "Verifica di funzionamento";
+			    			 
+			    		 }else if((listaVerbali.get(i).getTipo_verifica() != 1 && listaVerbali.get(i).getTipo_verifica() != 2) && listaVerbali.get(i).getTipo_verifica_gvr()==2 || listaVerbali.get(i).getTipo_verifica_gvr()==4 || listaVerbali.get(i).getTipo_verifica_gvr()==5|| listaVerbali.get(i).getTipo_verifica_gvr()==6) {
+			    			 tipo_ver_gvr = "Verifica di integrità";
+			    			 
+			    		 }else if((listaVerbali.get(i).getTipo_verifica() != 1 && listaVerbali.get(i).getTipo_verifica() != 2) && listaVerbali.get(i).getTipo_verifica_gvr()==3 ) {
+			    			 tipo_ver_gvr = "Verifica interna";
+			    			 
+			    		 }
 		    		 }
+		    		
 					cell.setCellValue(tipo_ver_gvr); //TIPO VERIFICA GVR
 					
 					 col++;
@@ -725,11 +739,16 @@ public class CreateScadenzarioVAL {
 					
 					 col++;
 		    		 cell = row.createCell(col);
-					cell.setCellValue("ecientespa027"); // USER INSERIMENTO
+					cell.setCellValue("ecientespa027");// USER INSERIMENTO
+					
+					 col++;
+		    		 cell = row.createCell(col);
+					cell.setCellValue("");
 					
 					 col++;
 		    		 cell = row.createCell(col);
 					cell.setCellValue(listaVerbali.get(i).getAttrezzatura().getFabbricante()); // COSTRUTTORE RAG SOCIALE
+					
 					
 					row_index++;
 	    	 }
@@ -768,6 +787,59 @@ public class CreateScadenzarioVAL {
 	
 	
 	
+
+
+	private Date getDataPvP(VerbaleDTO verbale) {
+		
+		Date data_pvp = null;
+		
+			if(verbale.getStato().getId()!=9 && verbale.getTipo_verifica_gvr()==0) {
+				data_pvp = verbale.getData_prossima_verifica();
+			}else {
+				
+				 if((verbale.getTipo_verifica() == 1 || verbale.getTipo_verifica() == 2) || verbale.getTipo_verifica_gvr()==1  ) {
+					 data_pvp = verbale.getData_prossima_verifica();
+	    			 
+	    		 }else if((verbale.getTipo_verifica() != 1 && verbale.getTipo_verifica() != 2) && verbale.getTipo_verifica_gvr()==2 ) {
+	    			 data_pvp = verbale.getData_prossima_verifica_integrita();
+	    			 
+	    		 }else if((verbale.getTipo_verifica() != 1 && verbale.getTipo_verifica() != 2) && verbale.getTipo_verifica_gvr()==3 ) {
+	    			 data_pvp = verbale.getData_prossima_verifica_interna();	    			 
+	    			 
+	    		 }else if((verbale.getTipo_verifica() != 1 && verbale.getTipo_verifica() != 2) && verbale.getTipo_verifica_gvr()==7){
+	    			 data_pvp = getMinDate(verbale.getData_prossima_verifica(), verbale.getData_prossima_verifica_interna());
+	    		 }
+	    		 else if((verbale.getTipo_verifica() != 1 && verbale.getTipo_verifica() != 2) && verbale.getTipo_verifica_gvr()==4){
+	    			 data_pvp = getMinDate(verbale.getData_prossima_verifica(), verbale.getData_prossima_verifica_integrita());
+	    		 }
+	    		 else if((verbale.getTipo_verifica() != 1 && verbale.getTipo_verifica() != 2) && verbale.getTipo_verifica_gvr()==5){
+	    			 data_pvp = getMinDate(getMinDate(verbale.getData_prossima_verifica(), verbale.getData_prossima_verifica_integrita()), verbale.getData_prossima_verifica_interna());
+	    		 }
+	    		 else if((verbale.getTipo_verifica() != 1 && verbale.getTipo_verifica() != 2) && verbale.getTipo_verifica_gvr()==6){
+	    			 data_pvp = getMinDate(verbale.getData_prossima_verifica_integrita(), verbale.getData_prossima_verifica_interna());
+	    		 }
+			}
+			
+				
+		return data_pvp;
+	}
+
+
+	private Date getMinDate(Date data1, Date data2) {
+		
+		Date min = null;
+		
+		long time1 = data1.getTime();
+		long time2 = data2.getTime();
+		
+		if(time1<=time2) {
+			min = data1;
+		}else {
+			min = data2;
+		}
+		
+		return min;
+	}
 
 
 	public static void main(String[] args) throws Exception {

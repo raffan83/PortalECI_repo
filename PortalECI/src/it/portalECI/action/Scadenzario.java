@@ -255,7 +255,7 @@ public class Scadenzario extends HttpServlet {
 		}
 		else if(action.equals("download_scadenzario")) {
 			
-			File file = new File(Costanti.PATH_ROOT+"//ScadenzarioCampioni//SchedaListacampioni.pdf");
+			File file = new File(Costanti.PATH_ROOT+"//ScadenzarioCampioni//SchedaListacampioni.xlsx");
 			
 			FileInputStream fileIn = new FileInputStream(file);
 			

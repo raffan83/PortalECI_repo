@@ -93,9 +93,9 @@
  																<th>Stato</th>
  																<th>Stato S.T.</th>
  																<th>Firmato</th>
- 																<th>Controfirmato</th>
+ 																
  																<th>S.T. Firmata</th>
- 																<th>S.T. Controfirmata</th>
+ 													
  																<th>Data Creazione</th>
  																<td></td>
  															</tr>
@@ -161,28 +161,27 @@
 																	</td>
 																	<td>
 																	
-																	<c:if test="${verbale.firmato == 1 }">
-																		<i class="fa fa-check"></i>
+																	<c:if test="${verbale.firmato == 1 && verbale.controfirmato == 1}">
+																		CF
+																	</c:if>
+																		<c:if test="${verbale.firmato == 1 && verbale.controfirmato == 0}">
+																		F
 																	</c:if>
 																																		
 																	</td>
-																	<td>
-																		<c:if test="${verbale.controfirmato == 1 }">
-																	<i class="fa fa-check"></i>
-																	</c:if>																
-																	</td>
+
 																	<td>
 																	
-																	<c:if test="${verbale.getSchedaTecnica()!=null && verbale.getSchedaTecnica().getFirmato() == 1 }">
-																		<i class="fa fa-check"></i>
+																	<c:if test="${verbale.getSchedaTecnica()!=null && verbale.getSchedaTecnica().getFirmato() == 1 && verbale.getSchedaTecnica().getControfirmato()  == 1}">
+																		CF
+																	</c:if>
+																	
+																	<c:if test="${verbale.getSchedaTecnica()!=null && verbale.getSchedaTecnica().getFirmato() == 1 && verbale.getSchedaTecnica().getControfirmato()  == 0}">
+																		F
 																	</c:if>
 																																		
 																	</td>
-																	<td>
-																		<c:if test="${verbale.getSchedaTecnica()!=null && verbale.getSchedaTecnica().getControfirmato()  == 1 }">
-																	<i class="fa fa-check"></i>
-																	</c:if>																
-																	</td>
+																	
         															<td>
 																		<fmt:formatDate pattern="dd/MM/yyyy" value='${verbale.getCreateDate()}' type='date' />
 																	</td>

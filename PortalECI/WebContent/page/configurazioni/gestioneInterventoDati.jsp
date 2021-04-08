@@ -187,8 +187,9 @@
 											
 											<a class="btn btn-primary" onClick="modalAggiungiVerbale()"><i class="fa fa-plus"></i> Aggiungi verbale</a>
 											
+											<c:if test="${user.checkPermesso('INVIO_VERBALI') }">
 											<a class="btn btn-primary pull-right" onClick="getDestinatarioEmail('${intervento.id}')" style="margin-left:5px"><i class="fa fa-paper-plane-o" ></i> Invia Verbale</a>
-											
+											</c:if>
 		      									<table id="tabPM" class="table table-bordered table-hover dataTable table-striped" role="grid" width="100%">
  													<thead>
  														<tr class="active">
@@ -202,6 +203,10 @@
  															<th>Certificato</th>
  															
  															<th width="150px">Sc. Tecnica</th>
+ 															<th>Firmato</th>
+ 																
+ 																<th>S.T. Firmata</th>
+ 																
  															<th>Attrezzatura</th>
  															<th>Storico invio</th>
  															<th>Note</th>
@@ -258,6 +263,28 @@
       																	</c:forEach>
       																</c:if> 
 																</td>
+																<td>
+																	
+																	<c:if test="${verbale.firmato == 1 && verbale.controfirmato == 1}">
+																		CF
+																	</c:if>
+																		<c:if test="${verbale.firmato == 1 && verbale.controfirmato == 0}">
+																		F
+																	</c:if>
+																																		
+																	</td>
+
+																	<td>
+																	
+																	<c:if test="${verbale.getSchedaTecnica()!=null && verbale.getSchedaTecnica().getFirmato() == 1 && verbale.getSchedaTecnica().getControfirmato()  == 1}">
+																		CF
+																	</c:if>
+																	
+																	<c:if test="${verbale.getSchedaTecnica()!=null && verbale.getSchedaTecnica().getFirmato() == 1 && verbale.getSchedaTecnica().getControfirmato()  == 0}">
+																		F
+																	</c:if>
+																																		
+																	</td>
 																<td>${verbale.attrezzatura.matricola_inail }</td>
 																<td>
 																																	
@@ -853,22 +880,24 @@
 				
 				var id ="#"+$(this)[0].id;
 				
-				if(id!='#check_all' ){
+				if(id!='#check_all' && id!='#check_descrizione' ){
 					$(id).on('ifChecked', function(event){
 						//send_verbali = send_verbali.replace(id.split("_")[1]+";", "");
-						send_verbali = send_verbali+id.split("_")[1]+";"
+						if(!send_verbali.includes(id.split("_")[1]+";")){
+							send_verbali = send_verbali+id.split("_")[1]+";"	
+						}
+						
 					});
 
 
 					$(id).on('ifUnchecked', function(event) {
 						
 					//	send_verbali = send_verbali+id.split("_")[1]+";"
-						send_verbali = send_verbali.replace(id.split("_")[1]+";", "");
+						send_verbali = send_verbali.replaceAll(id.split("_")[1]+";", "");
 						
 					});
 				}
 				
-
 				});
 			
 			
@@ -879,13 +908,13 @@
 		    		
 		    		var id =$(this)[0].id;
 		    		console.log($(this)[0].id);
-		    		if(id!=''&& id!='check_all'){
+		    		if(id!='check_descrizione' && id!=''&& id!='check_all'){
 		    			console.log(id);
 		    			id="#"+id;
 		    			if($(id).prop('checked')== false){
 		    				
 		    			$(id).iCheck('check');        			    			
-		    			send_verbali = send_verbali+id.split("_")[1]+";"
+		    			//send_verbali = send_verbali+id.split("_")[1]+";"
 		    		
 		    			}
 
@@ -894,6 +923,8 @@
 		    	
 		    		
 		    	})
+		    	
+		 
 		    });
 
 
@@ -903,13 +934,13 @@
 		    		
 		    		var id =$(this)[0].id;
 		    		
-		    		if(id!=''&& id!='check_all'){
+		    		if(id!='check_descrizione' && id!=''&& id!='check_all'){
 		    				
 		    			id="#"+id;
 		    			if($(id).prop('checked')== true){
 		    			$(id).iCheck('uncheck');        			    			
 		     		
-		    			send_verbali = send_verbali.replace(id.split("_")[1]+";", "");
+		    		//	send_verbali = send_verbali.replaceAll(id.split("_")[1]+";", "");
 		    			}
 
 		    		}
@@ -917,6 +948,7 @@
 		    	
 		    		
 		    	})
+		    
 		    });
 
 			

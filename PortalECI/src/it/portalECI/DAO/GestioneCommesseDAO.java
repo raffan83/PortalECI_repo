@@ -101,7 +101,7 @@ public class GestioneCommesseDAO {
 			"  FROM [BTOMEN_CRESCO_DATI].[dbo].[PJT_LISTINO_CLIFOR] " + 
 			"  where DT_INIZIO_VAL=( select max(DT_INIZIO_VAL) from [BTOMEN_CRESCO_DATI].[dbo].[PJT_LISTINO_CLIFOR] where ID_ANAART=?)" + 
 			"  AND ID_ANAART=?) b on a.ID_ANAART=b.ID_ANAART" + 
-			"  where tb_tipo_mile='MILE' AND ID_COMMESSA= ? and a.ID_ANAART = ?";
+			"  where tb_tipo_mile='MILE' AND ID_COMMESSA= ? and a.ID_ANAART = ? and a.[IMPORTO_UNIT] > 2";
 
 	/*public static ArrayList<CommessaDTO> getListaCommesse(CompanyDTO company, String categoria, UtenteDTO user) throws Exception {
 		Connection con=null;
@@ -674,8 +674,6 @@ public class GestioneCommesseDAO {
 		try {
 			
 			con =ManagerSQLServer.getConnectionSQL();
-			
-			
 				
 				PreparedStatement pst= con.prepareStatement(queryTariffe);
 				pst.setString(1, articolo);
@@ -684,7 +682,6 @@ public class GestioneCommesseDAO {
 				pst.setString(4, articolo);
 				
 				ResultSet rs =pst.executeQuery();
-				
 								
 				while(rs.next()){
 					result = rs.getString(1)+";"+rs.getString(2);
@@ -696,7 +693,5 @@ public class GestioneCommesseDAO {
 		}
 		return result;
 	}
-	
-	
-	
+		
 }
