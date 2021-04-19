@@ -90,7 +90,7 @@ public class CreateSchedaScadenzarioAttrezzature {
 			 
 			
 			 
-			 for(int j = 0; j<11; j++) {
+			 for(int j = 0; j<12; j++) {
 				 rowHeader.createCell(j);
 				 
 				 rowHeader.getCell(j).setCellStyle(greenStyle);
@@ -98,7 +98,7 @@ public class CreateSchedaScadenzarioAttrezzature {
 				 rowTitle.getCell(j).setCellStyle(greenStyle);
 			 }
 			 
-			 sheet0.addMergedRegion(CellRangeAddress.valueOf("A1:K1"));	
+			 sheet0.addMergedRegion(CellRangeAddress.valueOf("A1:L1"));	
 			 
 			 DateFormat df = new SimpleDateFormat("yyyy-MM-dd");		
 			 SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
@@ -122,11 +122,17 @@ public class CreateSchedaScadenzarioAttrezzature {
 			 sheet0.getRow(1).getCell(5).setCellValue("Sede cliente");
 			 
 			 sheet0.getRow(1).getCell(6).setCellValue("Verifica funzionamento");
+			 
 			 sheet0.getRow(1).getCell(7).setCellValue("Verifica integrità");
+			 
 			 sheet0.getRow(1).getCell(8).setCellValue("Verifica interna");
 			 
+			 
 			 sheet0.getRow(1).getCell(9).setCellValue("Note tecniche");
+			 
 			 sheet0.getRow(1).getCell(10).setCellValue("Note generiche");
+			 
+			 sheet0.getRow(1).getCell(11).setCellValue("Codici Milestone");
 			 
 		     int row_index = 0;	        
 		     for (int i = 0; i<listaAttrezzature.size();i++) {
@@ -268,6 +274,17 @@ public class CreateSchedaScadenzarioAttrezzature {
 				    	 if(attrezzatura.getNote_generiche()!=null) {		    		 
 				    		 
 				    		 cell.setCellValue(attrezzatura.getNote_generiche());
+				    	 }else {
+				    		 cell.setCellValue("");
+				    	 }
+				    	 
+				    	 col++;
+				    	 cell = row.createCell(col);
+				    	 
+				    	 
+				    	 if(attrezzatura.getCodice_milestone()!=null) {		    		 
+				    		 
+				    		 cell.setCellValue(attrezzatura.getCodice_milestone());
 				    	 }else {
 				    		 cell.setCellValue("");
 				    	 }

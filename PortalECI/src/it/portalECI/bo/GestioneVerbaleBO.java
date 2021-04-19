@@ -343,7 +343,8 @@ public class GestioneVerbaleBO {
 			VerbaleDTO verb=GestioneVerbaleDAO.getVerbaleFromSkTec(String.valueOf(verbale.getId()), session);
 			intervento = verb.getIntervento();
 			template = questionario.getTemplateSchedaTecnica();
-			nomefile = questionario.getTitolo()+"_"+questionario.getTipo().getCodice()+"_"+intervento.getId();
+			//nomefile = questionario.getTitolo()+"_"+questionario.getTipo().getCodice()+"_"+intervento.getId();
+			nomefile = "SCHEDA TECNICA MATRICOLA "+verbale.getAttrezzatura().getMatricola_inail().replace("/", ".");
 		}
 		
 		String path = "Intervento_"+intervento.getId()+File.separator+verbale.getType()+"_"+verbale.getCodiceCategoria()+"_"+verbale.getId()+File.separator;
@@ -843,6 +844,7 @@ public class GestioneVerbaleBO {
 				if(verb.getData_fine_verifica()!=null && verb.getData_verifica().getTime() != verb.getData_fine_verifica().getTime()) {
 					html = html.replaceAll("\\$\\{DATA_VERIFICA\\}", df.format(verb.getData_verifica())+" - "+df.format(verb.getData_fine_verifica()));
 				}else {
+				
 					html = html.replaceAll("\\$\\{DATA_VERIFICA\\}", df.format(verb.getData_verifica()));	
 				}
 			}

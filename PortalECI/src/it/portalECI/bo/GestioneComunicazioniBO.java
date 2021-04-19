@@ -234,9 +234,9 @@ public static void sendPecVerbale(ArrayList<VerbaleDTO> lista_verbali, String ma
 		
 		  msg.append("<html><body>");
 		
-		if(lista_verbali.get(0).getCodiceVerifica().equals("VIE")) {
+		if(lista_verbali.get(0).getCodiceCategoria().equals("VIE")) {
 			  msg.append("<html>Gentile Cliente, <br /> " + 
-				  		"Inviamo in allegato i Verbali e le Schede Tecniche attestanti l'avvenuta verifica dei Vs. impianti  <br /> " + 
+				  		"Inviamo in allegato i Verbali attestanti l'avvenuta verifica dei Vs. impianti  <br /> " + 
 				  		"elettrici ai sensi del D.P.R. 462/01.<br /> " + 		
 				  		"<br />Con l'occasione Vi ricordiamo che tale documentazione deve essere conservata <br>" + 
 				  		"per tutto il periodo di validit&agrave; della verifica ed esibita a richiesta degli Organi di vigilanza. <br><br>" + 
@@ -260,12 +260,12 @@ public static void sendPecVerbale(ArrayList<VerbaleDTO> lista_verbali, String ma
 				  		"<br />Con l'occasione Vi ricordiamo che tale documentazione deve essere conservata <br>" + 
 				  		"per tutto il periodo di validit&agrave; della verifica ed esibita a richiesta degli Organi di vigilanza. <br><br>" +
 				  		"Si specifica che non saranno inviate copie cartacee. <br><br>"+
-				  		"Restiamo a disposizione per qualsiasi chiarimento in merito. <br>"+
+				  		"In attesa di ricevere copia controfirmata, restiamo a disposizione per qualsiasi chiarimento in merito. <br>"+
 				  		"Distinti saluti. "+
 				  		"  <br /> <br />"
 				  		+"<em><b>Segreteria Tecnica-Commerciale</b></em> <br>"
 				  		+ "<em><b>E.C.I. Ente di Certificazione & Ispezione Srl <br>" + 
-				  		"Organismo di Ispezione di Tipo A n. ISP 322E" + 
+				  		"Soggetto Abilitato ai sensi dei D.M. 11/04/2011" + 
 				  		"</b><br>Via Tofaro 42, B - 03039 Sora (FR)</em><br><br>" + 
 				  		"<em>Tel + 39 0776.18151 - Fax+ 39 0776.814169 <br> "
 				  		+ "Mail: </em>segreteria@ecisrl.it<br>" + 

@@ -3,12 +3,14 @@ package it.portalECI.DTO;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+
 
 public class OpzioneRispostaVerbaleDTO {
 	private int id;
@@ -17,7 +19,7 @@ public class OpzioneRispostaVerbaleDTO {
 	private Date createDate;
 	private Date updateDate;
 	
-	private Set<DomandaVerbaleDTO> domande;
+	private Set<DomandaVerbaleDTO> domande = new LinkedHashSet<DomandaVerbaleDTO>(0);
 	
 	private boolean checked;
 	
@@ -102,7 +104,7 @@ public class OpzioneRispostaVerbaleDTO {
 	}
 
 	public void addToDomande(DomandaVerbaleDTO domandaOpzioneVerbale) {
-		if (this.domande == null) this.domande=new HashSet<DomandaVerbaleDTO>();
+		if (this.domande == null) this.domande=new LinkedHashSet<DomandaVerbaleDTO>();
 		this.domande.add(domandaOpzioneVerbale);
 	}
 	

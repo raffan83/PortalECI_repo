@@ -39,6 +39,7 @@
 	        }
 	    });
 		
+
 		request.setAttribute("opzioni",opzioni);
 		request.setAttribute("risposta",risp);
 	
@@ -90,13 +91,14 @@
   							${opzione.getOpzioneQuestionario().getTesto()}
 					</label><br/>
 					<c:if test="${opzione.getDomande().size()>0}">
-						<c:forEach items="${opzione.getDomande()}" var="domVerbalenew" varStatus="loop">	
+						<c:forEach items="${opzione.getDomande()}" var="domVerbalenew" varStatus="loop1">	
 							<div class="options${domVerbalePage.getId()}" style="margin-left:20px;">   	 
 								<label>Se opzione ${opzione.getOpzioneQuestionario().getTesto()} &egrave; selezionata</label>
 							   			
 								<c:set var="domVerbale" value="${domVerbalenew}" scope="request"></c:set>
 								<div class="box box-danger box-domanda ">
 									<label for="titolo-input" class="control-label col-xs-12">${domVerbalenew.getDomandaQuestionario().getTesto()}</label><br/>
+									<input type="hidden" id="hidden_${domVerbalenew.getRisposta().getId()}" value ="options${domVerbalePage.getId()}_${loop.index}">
 									<jsp:include page="gestioneVerbaleDettaglio.jsp"></jsp:include>
 								</div>
 							</div>

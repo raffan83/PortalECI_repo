@@ -529,9 +529,13 @@ public class GestioneIntervento extends HttpServlet {
 			else if(action!=null && action.equals("elimina_verbale")){
 				
 				String id_verbale = request.getParameter("idVerbale");
+				String id_intervento = request.getParameter("id_intervento");
+				InterventoDTO intervento= GestioneInterventoBO.getIntervento(id_intervento, session);
 				
 				VerbaleDTO verbale = GestioneVerbaleBO.getVerbale(id_verbale, session);
 				session.delete(verbale);
+				
+				intervento.getVerbali().remove(verbale);
 				myObj.addProperty("success", true);
 				myObj.addProperty("messaggio", "Verbale eliminato con successo");
 			

@@ -2654,6 +2654,15 @@ function modificaSedeUtilizzatore(){
 		$('#modalPin').modal('show');
 	}
 	
+	
+	var input = [1, 2, 3, 1, 3, 1];
+	var duplicates = input.reduce(function(acc, el, i, arr) {
+		if (arr.indexOf(el) !== i && acc.indexOf(el) < 0) 
+			acc.push(el); 
+		return acc; 
+		}, []);
+	document.write(duplicates); // = 1,3 (actual arrays == [1, 3])
+	
 			$(document).ready(function() {
 				
 				$('#minuti').change();
@@ -2668,31 +2677,33 @@ function modificaSedeUtilizzatore(){
 										
 					var textarea_array = $('.'+$(this).attr('id').split("_")[0]).find('textarea');
 					
-/* 					for(var i = 0; i<textarea_array.length;i++){						
+					for(var i = 0; i<textarea_array.length;i++){
+						var hidden_id = $('#hidden_'+textarea_array[i].name).val()
 						
-						var a = document.getElementById($(textarea_array[i]).attr('id'));
-						var els = [];
-						while (a) {
-						    els.unshift(a);
-						    a = a.parentNode;
-						}
-						var x = els[18];
-						var y = $(x).find('input');
-						var text = $(x).find('textarea');	
-						if(y.length>0 && y.includes(id)){
-							var text = $(x).find('textarea');	
+						if(hidden_id == id){
+							$('#comment'+textarea_array[i].name).val('');
 						}
 						
 					}
-					 */
 					
-					var index = $(this).attr('id').split("_")[1]
+					
+/* 					 var index = $(this).attr('id').split("_")[1]
 					if(index != null){
 						var textarea = $('.'+$(this).attr('id').split("_")[0]).find('textarea')[index];
-					}
-					if(textarea != null){
-						$('#comment'+textarea.name).val('');
-					}
+						var i = parseInt(index);
+						while(textarea_array[i+1]!= null && textarea_array[i+1].name.split("_")[1]==textarea_array[i].name.split("_")[1]){
+							textarea_blank.push(textarea_array[i]);
+							textarea_blank.push(textarea_array[i+1]);
+							i++;
+						}
+					} 
+					 
+					 for(var i = 0; i<textarea_blank.length;i++){
+							$('#comment'+textarea_blank[i].name).val('');
+					 } */
+					//if(textarea != null){
+					//	$('#comment'+textarea.name).val('');
+					//}
 					$('.'+$(this).attr('id')).find(':checkbox').removeAttr('checked').iCheck('update');
 					$('.'+$(this).attr('id')).find(':radio').removeAttr('checked').iCheck('update');
 					

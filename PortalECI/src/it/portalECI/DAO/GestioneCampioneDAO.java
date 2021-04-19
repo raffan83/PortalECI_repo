@@ -257,7 +257,7 @@ public class GestioneCampioneDAO {
 		ArrayList<String> lista_date = new ArrayList<String>();
 		JsonArray list = new JsonArray();			
 	
-		Query query = session.createQuery("from AcAttivitaCampioneDTO where  data_scadenza between :_date_start and :_date_end and obsoleta='N'");	
+		Query query = session.createQuery("from AcAttivitaCampioneDTO where campione.statoCampione != 'F' and data_scadenza between :_date_start and :_date_end and obsoleta='N'");	
 		query.setParameter("_date_start", df.parse(data_start));
 		query.setParameter("_date_end", df.parse(data_end));
 				
