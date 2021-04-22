@@ -570,11 +570,63 @@ public class GestioneVerbali extends HttpServlet {
 					
 						Set<OpzioneRispostaVerbaleDTO> listaOpzioni= GestioneRispostaVerbaleDAO.getRispostaSceltaVerbaleDTO(valueRicercato, session).getOpzioni();
 					
-						for (OpzioneRispostaVerbaleDTO s : listaOpzioni) {
+						for (OpzioneRispostaVerbaleDTO s : listaOpzioni) {							
 							OpzioneRispostaVerbaleDTO opzioneRispostaVerbaleDTO = GestioneRispostaVerbaleDAO.getOpzioneVerbale(s.getId(), session);
 							opzioneRispostaVerbaleDTO.setChecked(false);
 							GestioneRispostaVerbaleDAO.saveOpzioneVerbale(opzioneRispostaVerbaleDTO, session);
+							
+							Set<DomandaVerbaleDTO> listaDomandeOpzione = s.getDomande();
+							for (DomandaVerbaleDTO d : listaDomandeOpzione) {	
+								int value = d.getRisposta().getId();
+								
+								RispostaSceltaVerbaleDTO risp = GestioneRispostaVerbaleDAO.getRispostaSceltaVerbaleDTO(value, session);
+								
+								if(risp!=null) {
+								Set<OpzioneRispostaVerbaleDTO> listaOpzioniOpzione= risp.getOpzioni();
+								
+									for (OpzioneRispostaVerbaleDTO op : listaOpzioniOpzione) {	
+										if(!request.getParameterMap().containsKey("options"+value)){
+											OpzioneRispostaVerbaleDTO opt = GestioneRispostaVerbaleDAO.getOpzioneVerbale(op.getId(), session);
+											opt.setChecked(false);
+											GestioneRispostaVerbaleDAO.saveOpzioneVerbale(opt, session);
+										}
+									}
+								}
+							}
 						}		
+					}else {
+						if (action == null || !action.equals("salvaRisposteCompWeb")) {
+							if(domanda.getDomandaQuestionario().getObbligatoria()) {
+								myObj.addProperty("success", false);
+								myObj.addProperty("messaggio", "La domanda '"+domanda.getDomandaQuestionario().getTesto()+"' &egrave; obbligatoria.");
+						
+								out.print(myObj);
+								return;
+							}
+						}
+					
+						Set<OpzioneRispostaVerbaleDTO> listaOpzioni= GestioneRispostaVerbaleDAO.getRispostaSceltaVerbaleDTO(valueRicercato, session).getOpzioni();
+					
+						for (OpzioneRispostaVerbaleDTO s : listaOpzioni) {							
+							Set<DomandaVerbaleDTO> listaDomandeOpzione = s.getDomande();
+							for (DomandaVerbaleDTO d : listaDomandeOpzione) {	
+								int value = d.getRisposta().getId();
+								
+								RispostaSceltaVerbaleDTO risp = GestioneRispostaVerbaleDAO.getRispostaSceltaVerbaleDTO(value, session);
+								
+								if(risp!=null) {
+								Set<OpzioneRispostaVerbaleDTO> listaOpzioniOpzione= risp.getOpzioni();
+								
+									for (OpzioneRispostaVerbaleDTO op : listaOpzioniOpzione) {	
+										if(!request.getParameterMap().containsKey("options"+value)){
+											OpzioneRispostaVerbaleDTO opt = GestioneRispostaVerbaleDAO.getOpzioneVerbale(op.getId(), session);
+											opt.setChecked(false);
+											GestioneRispostaVerbaleDAO.saveOpzioneVerbale(opt, session);
+										}
+									}
+								}
+							}
+						}
 					}
 				} else if(domanda.getRisposta().getTipo().equals(RispostaVerbaleDTO.TIPO_TESTO)) {
 					if (action != null && action.equals("confermaRisposteCompWeb")) {
