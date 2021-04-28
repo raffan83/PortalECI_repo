@@ -20,6 +20,7 @@ public class ClienteDTO implements Serializable{
 	 private String cap;
 	 private String citta;
 	 private String provincia;
+	 private String pec;
 
 	  public ClienteDTO(){}
 
@@ -168,6 +169,14 @@ public class ClienteDTO implements Serializable{
 
 	public void setProvincia(String provincia) {
 		this.provincia = provincia;
+	}
+
+	public String getPec() {
+		return pec;
+	}
+
+	public void setPec(String pec) {
+		this.pec = pec;
 	};
 	  
 	  

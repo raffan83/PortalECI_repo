@@ -13,7 +13,7 @@
 
 <%@ page import="java.util.Collections" %>
 <%@ page import="java.util.Comparator" %>
-<%@page import="java.util.ArrayList"%>
+<%@page import="java.util.ArrayList"%>+
 <%@page import="java.util.List"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <% pageContext.setAttribute("newLineChar", "\r\n"); %>
@@ -63,7 +63,8 @@
         										<ul class="list-group list-group-unbordered">
         											<li class="list-group-item">
                   										<b>ID Intervento</b>                   										
-                  										<a class="pull-right" href="#" class="btn customTooltip customlink" title="Click per aprire il dettaglio dell'Intervento" onclick="callAction('gestioneInterventoDati.do?idIntervento=${verbale.getIntervento().getId()}');">
+                  										<%-- <a class="pull-right" href="#" class="btn customTooltip customlink" title="Click per aprire il dettaglio dell'Intervento" onclick="callAction('gestioneInterventoDati.do?idIntervento=${verbale.getIntervento().getId()}');"> --%>
+                  										<a class="pull-right" href="gestioneInterventoDati.do?idIntervento=${verbale.getIntervento().getId()}" class="btn customTooltip customlink" title="Click per aprire il dettaglio dell'Intervento" >
 															${verbale.getIntervento().getId()}
 														</a>														
                 									</li>

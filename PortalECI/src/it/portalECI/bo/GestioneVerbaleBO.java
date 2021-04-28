@@ -33,7 +33,7 @@ import com.itextpdf.text.pdf.PdfContentByte;
 import com.itextpdf.text.pdf.PdfGState;
 import com.itextpdf.text.pdf.PdfReader;
 import com.itextpdf.text.pdf.PdfStamper;
-
+import com.sun.xml.internal.ws.api.server.SDDocumentFilter;
 
 import it.portalECI.DAO.GestioneDocumentoDAO;
 import it.portalECI.DAO.GestioneDomandaVerbaleDAO;
@@ -917,6 +917,8 @@ public class GestioneVerbaleBO {
 			html = html.replaceAll("\\$\\{DATA_CONFERMA\\}", df.format(verbale.getData_conferma()));
 		}
 		
+	
+		
 		
 		String esito ="";
 		if(verbale.getEsito()!=null && verbale.getEsito().equals("P")) {
@@ -940,11 +942,10 @@ public class GestioneVerbaleBO {
 		String check3="";
 		String check4="";
 		String check5="";
-				
+	
 		if(verbale.getAttrezzatura()!=null) {			
 			
-			if(verbale.getCodiceVerifica().startsWith("GVR")) {
-				
+			if(verbale.getCodiceVerifica().startsWith("GVR")) {								
 	
 				if(verbale.getTipo_verifica()==1 || verbale.getTipo_verifica()==2) {
 					check1 = "checked";
@@ -1056,6 +1057,7 @@ public class GestioneVerbaleBO {
 		html = html.replaceAll("\\$\\{TIPO_VERIFICA_VAL\\}", tipo_verifica_val);
 		
 
+		
 		if(verbale.getMotivo_verifica() == 1 ) 
 		{
 		
@@ -1099,6 +1101,68 @@ public class GestioneVerbaleBO {
 		
 
 		html = html.replaceAll("\\$\\{TIPO_VERIFICA_VIE\\}", tipo_verifica_vie);
+		
+		
+		ArrayList<Date> lista_date_multi = new ArrayList<Date>();
+		String data_multi ="";
+		if(verbale.getTipo_verifica_gvr()!=0) {
+			if(verbale.getTipo_verifica_gvr()==1) {
+				
+				lista_date_multi.add(verbale.getData_verifica());
+				
+			}else if(verbale.getTipo_verifica_gvr()==2) {
+				
+				lista_date_multi.add(verbale.getData_verifica_integrita());
+				
+			}else if(verbale.getTipo_verifica_gvr()==3) {
+				
+				lista_date_multi.add(verbale.getData_verifica_interna());
+				
+			}else if(verbale.getTipo_verifica_gvr()==4) {
+				lista_date_multi.add(verbale.getData_verifica());
+				lista_date_multi.add(verbale.getData_verifica_integrita());
+				
+			}else if(verbale.getTipo_verifica_gvr()==5) {
+				
+				lista_date_multi.add(verbale.getData_verifica());
+				lista_date_multi.add(verbale.getData_verifica_integrita());
+				lista_date_multi.add(verbale.getData_verifica_interna());
+				
+			}else if(verbale.getTipo_verifica_gvr()==6) {
+				lista_date_multi.add(verbale.getData_verifica_integrita());
+				lista_date_multi.add(verbale.getData_verifica_interna());
+				
+			}else if(verbale.getTipo_verifica_gvr()==7) {
+				
+				lista_date_multi.add(verbale.getData_verifica());
+				lista_date_multi.add(verbale.getData_verifica_interna());
+				
+			}
+			
+			
+			
+			 if(lista_date_multi.size()>1) {
+				Collections.sort(lista_date_multi, new Comparator<Date>() {
+					  public int compare(Date o1, Date o2) {
+						  if (o1 == null || o2 == null)
+						      return 0;
+					      return o1.compareTo(o2);
+					  }
+					});
+				
+			}
+			
+			if(lista_date_multi.get(0)!=null) {
+				data_multi = ""+df.format(lista_date_multi.get(0)); 
+			}
+			
+			for (int i = 1; i<lista_date_multi.size();i++) {
+				data_multi +=" - "+ df.format(lista_date_multi.get(i));
+			}
+			
+		}
+		
+		html = html.replaceAll("\\$\\{DATA_VERIFICA_MULTIPLA\\}", data_multi);
 		
 		
 		String firma_verificatore = "";

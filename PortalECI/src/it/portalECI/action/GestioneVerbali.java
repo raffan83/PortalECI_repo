@@ -596,7 +596,7 @@ public class GestioneVerbali extends HttpServlet {
 						}		
 					}else {
 						if (action == null || !action.equals("salvaRisposteCompWeb")) {
-							if(domanda.getDomandaQuestionario().getObbligatoria()) {
+							if(domanda.getDomandaQuestionario().getObbligatoria() && domanda.getRisposta()== null) {
 								myObj.addProperty("success", false);
 								myObj.addProperty("messaggio", "La domanda '"+domanda.getDomandaQuestionario().getTesto()+"' &egrave; obbligatoria.");
 						
@@ -1122,7 +1122,7 @@ public class GestioneVerbali extends HttpServlet {
 				
 					cliente = GestioneAnagraficaRemotaBO.getClienteFromSede(""+intervento.getId_cliente(), ""+intervento.getIdSede());
 				
-				indirizzo = cliente.getEmail();							
+				indirizzo = cliente.getPec();							
 			}
 			if(indirizzo == null) {
 				indirizzo = "";

@@ -194,6 +194,8 @@ public class GestioneAnagraficaRemotaDAO {
 					cliente.setCitta(rs.getString("CITTA"));
 					cliente.setProvincia(rs.getString("CODPROV"));
 					cliente.setEmail(rs.getString("EMAIL"));
+					cliente.setPec(rs.getString("EMAIL_PEC"));
+					
 				}
 				
 			} catch (Exception e) {
@@ -234,6 +236,7 @@ public class GestioneAnagraficaRemotaDAO {
 				cliente.setCodice(rs.getString("CODCLI"));
 				cliente.setCf(rs.getString("CODFIS"));
 				cliente.setEmail(rs.getString("EMAIL"));
+				cliente.setPec(rs.getString("EMAIL_PEC"));
 			}
 			
 		} catch (Exception e) {

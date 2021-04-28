@@ -259,6 +259,8 @@ public class GestioneTemplateQuestionarioBO {
 
 		html = html.replaceAll("\\$\\{DATA_CONFERMA\\}", "DATA CONFERMA");
 		
+		html = html.replaceAll("\\$\\{DATA_VERIFICA_MULTIPLA\\}", "DATA VERIFICA - DATA VERIFICA INTEGRITA' - DATA VERIFICA INTERNA");
+		
 		String esito = "<img src=\"" + Costanti.PATH_FONT_IMAGE +"unchecked" +"-"+"radio"+".png" + "\" style=\"height:12px;\" />&nbsp;" + "Positivo&nbsp;";
 			esito = esito + "<img src=\"" + Costanti.PATH_FONT_IMAGE +"unchecked" +"-"+"radio"+".png" + "\" style=\"height:12px;\" />&nbsp;" + "Negativo";
 		

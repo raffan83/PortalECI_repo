@@ -18,7 +18,7 @@
      <jsp:invoke fragment="extra_js_header"/>
      
  </head>
- <body class="${bodyClass}">
+ <body class="${bodyClass} fixed">
  	 <form id="callActionForm" method="post"></form>
  
      <jsp:invoke fragment="body_area"/>
