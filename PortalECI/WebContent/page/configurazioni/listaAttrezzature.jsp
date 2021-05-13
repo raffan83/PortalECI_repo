@@ -363,8 +363,8 @@
     
 	function filtraDate(){
 		
-		var id_cliente = $('#cliente_appoggio').val();
-		var id_sede = $('#selec2').val();
+		var id_cliente = $('#select1').val();
+		var id_sede = $('#select2').val();
 		if(id_sede==null){
 			id_sede = 0;
 		}

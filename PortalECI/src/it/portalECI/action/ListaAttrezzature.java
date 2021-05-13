@@ -937,7 +937,7 @@ public class ListaAttrezzature extends HttpServlet {
 				String dateTo = request.getParameter("dateTo");
 				
 				
-				ArrayList<AttrezzaturaDTO> lista_attrezzature = GestioneAttrezzatureBO.getlistaAttrezzatureScadenza(dateFrom, dateTo, id_cliente, id_sede, session);
+				ArrayList<AttrezzaturaDTO> lista_attrezzature = GestioneAttrezzatureBO.getlistaAttrezzatureScadenza(dateFrom, dateTo, id_cliente, id_sede.split("_")[0], session);
 				
 				request.getSession().setAttribute("lista_attrezzature",lista_attrezzature);
 				request.getSession().setAttribute("dateFrom",dateFrom);

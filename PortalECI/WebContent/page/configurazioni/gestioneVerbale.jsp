@@ -386,8 +386,16 @@
         											<c:forEach items="${listaAllegati}" var="allegato"> 
         											<li class="list-group-item">
                   										<b>${allegato.getFileName()}</b>    
-                  										<c:if test="${user.checkPermesso('DOWNLOAD_ALLEGATO')}">              										
-                  											<a class="btn btn-default btn-xs pull-right" href="gestioneDocumento.do?idDocumento=${allegato.getId()}" style="margin-left:5px"><i class="glyphicon glyphicon-file"></i> Download Allegato</a>														
+                  										<c:if test="${user.checkPermesso('DOWNLOAD_ALLEGATO')}">    
+                  										        										
+                  											<a class="btn btn-default btn-xs pull-right" href="gestioneDocumento.do?idDocumento=${allegato.getId()}" style="margin-left:5px"><i class="glyphicon glyphicon-file"></i> Download Allegato</a>
+                  											<c:if test="${allegato.allegato_inviabile ==0}">
+                  											<label class="pull-right">Inviabile  <input type="checkbox" class="pull-right" style="position: relative" id="check_allegato_${allegato.getId() }" name="check_allegato_${allegato.getId() }" onChange="allegatoInviabile('${allegato.getId()}')" ></label>
+                  											</c:if>
+                  											<c:if test="${allegato.allegato_inviabile ==1}">
+                  												<label class="pull-right">Inviabile  <input type="checkbox" class="pull-right" style="position: relative" id="check_allegato_${allegato.getId() }" name="check_allegato_${allegato.getId() }" onChange="allegatoInviabile('${allegato.getId()}')" checked></label>
+                  											</c:if>  
+                  																								
                 										</c:if>
                 									</li>
                 									</c:forEach>
@@ -2664,6 +2672,48 @@ function modificaSedeUtilizzatore(){
 		}, []);
 	document.write(duplicates); // = 1,3 (actual arrays == [1, 3])
 	
+	
+	
+	
+	
+	
+	
+	
+	
+	function allegatoInviabile(id_allegato){
+		
+		var value = 0
+		
+		if($('#check_allegato_'+id_allegato).is(':checked')){
+			value = 1
+		}
+	
+		$.ajax({
+			type: "POST",
+			url: "gestioneVerbale.do?action=allegato_inviabile&id_allegato="+id_allegato+"&checked="+value,	
+			dataType: "json",
+			success: function( data, textStatus) {
+
+				if(data.success){
+					
+					
+				}
+				
+			},
+
+			error: function(jqXHR, textStatus, errorThrown){
+				$('#errorMsg').html("<h3 class='label label-danger'>"+textStatus+"</h3>");
+				//callAction('logout.do');
+				pleaseWaitDiv.modal('hide');
+			}
+		});
+	
+		
+	
+	}
+	
+	
+	
 			$(document).ready(function() {
 				
 				$('#minuti').change();
@@ -2963,14 +3013,14 @@ function modificaSedeUtilizzatore(){
 				$('#myModalError').modal('show');	
 					
 			}
-			else if($('#data_verifica').val()=='' && $('#esito').val()!='S' && !salva_mod){
+			else if(!$('#data_verifica').attr("disabled") &&$('#data_verifica').val()=='' && $('#esito').val()!='S' && !salva_mod){
 				
 				$('#modalErrorDiv').html("Il campo data verifica è obbligatorio");
 				$('#myModalError').removeClass();
 				$('#myModalError').addClass("modal modal-danger");
 				$('#myModalError').modal('show');	
 			}
-			else if($('#data_prossima_verifica_verb').val()=='' && $('#esito').val()!='S' && $('#tipo_verifica_vie').val()!=2 && !salva_mod){
+			else if(!$('#data_prossima_verifica_verb').attr("disabled") && $('#data_prossima_verifica_verb').val()=='' && $('#esito').val()!='S' && $('#tipo_verifica_vie').val()!=2 && !salva_mod){
 				
 				$('#modalErrorDiv').html("Il campo data prossima verifica è obbligatorio");
 				$('#myModalError').removeClass();

@@ -140,11 +140,11 @@
             		</a>
 			<ul class="treeview-menu">
 			<li>
-			<a  href="#" onclick="callAction('gestioneCampione.do?action=lista',null,true);" >Gestione Campioni</a>
+			<a  href="gestioneCampione.do?action=lista" >Gestione Campioni</a>
 			</li>
 			<% if(user.checkRuolo("AM") || user.checkPermesso("SCADENZARIO_CAMPIONI")){ %>
 			<li>
-			<a href="#" onclick="callAction('scadenzario.do')">Scadenzario</a>
+			<a href="scadenzarion.do" >Scadenzario</a>
 			
 			</li>
 			<%}%>

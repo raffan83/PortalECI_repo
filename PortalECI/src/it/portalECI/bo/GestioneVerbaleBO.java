@@ -115,10 +115,10 @@ public class GestioneVerbaleBO {
 			verbale.setStato(stato);			
 			session.update(verbale);
 			//InterventoDTO intervento= verbale.getIntervento();	
-			if(intervento==null) {
+			//if(intervento==null) {
 				//la scheda tecnica non ha un intervento associato per il momento
-				return;
-			}
+				//return;
+			//}
 			Boolean verificato=true;
 			
 			for(VerbaleDTO verbaleInt : intervento.getVerbali()) {

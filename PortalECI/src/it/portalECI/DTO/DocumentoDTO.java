@@ -20,6 +20,8 @@ public class DocumentoDTO implements Serializable {
 	private Boolean invalid = false;
 	private CampioneDTO campione;
 	
+	private int allegato_inviabile;
+	
 	public Date getCreateDate() {
 		return createDate;
 	}
@@ -71,6 +73,12 @@ public class DocumentoDTO implements Serializable {
 	}
 	public void setCampione(CampioneDTO campione) {
 		this.campione = campione;
+	}
+	public int getAllegato_inviabile() {
+		return allegato_inviabile;
+	}
+	public void setAllegato_inviabile(int allegato_inviabile) {
+		this.allegato_inviabile = allegato_inviabile;
 	}
 	
 }

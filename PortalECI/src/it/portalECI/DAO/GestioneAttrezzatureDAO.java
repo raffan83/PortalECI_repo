@@ -275,10 +275,16 @@ public static ArrayList<AttrezzaturaDTO> getlistaAttrezzatureScadenza(String dat
 				+ "and obsoleta='N'  order by data_prossima_verifica_funzionamento asc");	
 		
 	}else {			
-		query = session.createQuery("from AttrezzaturaDTO where (data_prossima_verifica_funzionamento between :_date_start and :_date_end) "
+//		query = session.createQuery("from AttrezzaturaDTO where ((data_prossima_verifica_funzionamento between :_date_start and :_date_end) "
+//				+ "or  (data_prossima_verifica_integrita between :_date_start and :_date_end) "
+//				+ "or (data_prossima_verifica_interna between :_date_start and :_date_end)) "
+//				+ "and obsoleta='N' and id_cliente =:_id_cliente and id_sede =:_id_sede order by data_prossima_verifica_funzionamento asc");
+		
+		query = session.createQuery("from AttrezzaturaDTO where  obsoleta='N' and id_cliente =:_id_cliente and id_sede =:_id_sede and ((data_prossima_verifica_funzionamento between :_date_start and :_date_end) "
 				+ "or  (data_prossima_verifica_integrita between :_date_start and :_date_end) "
-				+ "or (data_prossima_verifica_interna between :_date_start and :_date_end) "
-				+ "and obsoleta='N' and id_cliente =:_id_cliente and id_sede =:_id_sede order by data_prossima_verifica_funzionamento asc");
+				+ "or (data_prossima_verifica_interna between :_date_start and :_date_end)) "
+				+ " order by data_prossima_verifica_funzionamento asc");
+		
 		
 		query.setParameter("_id_cliente", Integer.parseInt(id_cliente));
 		query.setParameter("_id_sede", Integer.parseInt(id_sede));

@@ -1116,13 +1116,20 @@ public class GestioneVerbali extends HttpServlet {
 			String indirizzo = "";
 			if(intervento.getIdSede()==0) {
 				ClienteDTO cliente = GestioneAnagraficaRemotaBO.getClienteById(""+intervento.getId_cliente());
-				indirizzo = cliente.getEmail();
+				indirizzo = cliente.getPec();
+				
+				if(indirizzo== null || indirizzo.equals("")) {
+					indirizzo = cliente.getEmail();
+				}
 			}else {
 				ClienteDTO cliente;
 				
 					cliente = GestioneAnagraficaRemotaBO.getClienteFromSede(""+intervento.getId_cliente(), ""+intervento.getIdSede());
 				
-				indirizzo = cliente.getPec();							
+				indirizzo = cliente.getPec();		
+				if(indirizzo== null || indirizzo.equals("")) {
+					indirizzo = cliente.getEmail();
+				}
 			}
 			if(indirizzo == null) {
 				indirizzo = "";
@@ -1216,6 +1223,7 @@ public class GestioneVerbali extends HttpServlet {
 		}
 		else if(action!=null && action.equals("storico_email")) {
 			
+				
 			response.setContentType("application/json");
 			
 			ArrayList<StoricoEmailVerbaleDTO> lista_email = GestioneVerbaleBO.getListaEmailVerbale(verbale.getId(), session);
@@ -1226,6 +1234,19 @@ public class GestioneVerbali extends HttpServlet {
 			myObj.add("lista_email",g.toJsonTree(lista_email));			
 			
 			out.println(myObj.toString());
+		}
+		else if(action!=null && action.equals("allegato_inviabile")) {
+			
+			String id_allegato = request.getParameter("id_allegato");
+			String value = request.getParameter("checked");
+			DocumentoDTO allegato = GestioneDocumentoDAO.getDocumento(id_allegato, session);
+		
+			allegato.setAllegato_inviabile(Integer.parseInt(value));
+
+			session.update(allegato);
+			
+			myObj.addProperty("success", true);
+			out.print(myObj);
 		}
 		
 		else {

@@ -33,5 +33,9 @@
         <many-to-one name="campione" class="it.portalECI.DTO.CampioneDTO">
             <column name="id_campione" not-null="false" />
         </many-to-one>
+        
+           <property name="allegato_inviabile" type="int">
+            <column name="allegato_inviabile" />
+        </property>	
 	</class>
 </hibernate-mapping> 
