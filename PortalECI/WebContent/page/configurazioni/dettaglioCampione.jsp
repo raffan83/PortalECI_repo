@@ -289,14 +289,21 @@ SimpleDateFormat sdf= new SimpleDateFormat("dd/MM/yyyy");
                                             	}
                                             %> 
                        	            	 	<option <%=def1%> value="S">In Servizio</option>
+                       	            	 	<%
+ 											String def2 = "";
+                                            	if(campione.getStatoCampione().equals("F")){
+                                            		def2 = "selected";
+                                            	}
+                                            %> 
+                            	          	<option <%=def2%> value="F">Fuori Taratura</option>
  											
                             	          	<%
  											String def3 = "";
-                                            	if(campione.getStatoCampione().equals("F")){
+                                            	if(campione.getStatoCampione().equals("N")){
                                             		def3 = "selected";
                                             	}
                                             %> 
-                            	          	<option <%=def3%> value="F">Fuori Servizio</option>
+                            	          	<option <%=def3%> value="N">Fuori Servizio</option>
                             	          
                       </select>
                       

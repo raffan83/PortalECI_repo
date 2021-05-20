@@ -146,6 +146,10 @@
 				<span class="label  label-success">IN SERVIZIO</span>  
 			</c:if>
 			<c:if test="${campione.statoCampione == 'F'}">
+				<span class="label  label-warning">FUORI TARATURA</span> 
+			</c:if>
+			
+			<c:if test="${campione.statoCampione == 'N'}">
 				<span class="label  label-danger">FUORI SERVIZIO</span> 
 			</c:if>
 </td>
@@ -657,8 +661,8 @@ req
                         <select class="form-control  " id="statoCampione" name="statoCampione"  >
                       					<option value="">Selezionare Stato</option>
 	                                    <option value="S" selected>In Servizio</option>
-	                             
-	 									<option value="F">Fuori Servizio</option>
+	                            		 <option value="F">Fuori Taratura</option>
+	 									<option value="N">Fuori Servizio</option>
                             	          
                       </select>
                       

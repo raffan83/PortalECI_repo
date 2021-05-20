@@ -144,7 +144,7 @@
 			</li>
 			<% if(user.checkRuolo("AM") || user.checkPermesso("SCADENZARIO_CAMPIONI")){ %>
 			<li>
-			<a href="scadenzarion.do" >Scadenzario</a>
+			<a href="scadenzario.do" >Scadenzario</a>
 			
 			</li>
 			<%}%>
