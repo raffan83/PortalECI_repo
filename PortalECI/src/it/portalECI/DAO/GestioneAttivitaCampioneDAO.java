@@ -193,7 +193,7 @@ public static ArrayList<HashMap<String, Integer>> getListaAttivitaScadenziario(S
 	List<AcAttivitaCampioneDTO> lista =null;
 	List<CampioneDTO> lista_campioni = null;
 	
-	query  = session.createQuery( "from AcAttivitaCampioneDTO where campione.statoCampione != 'F' and (obsoleta = null or obsoleta = 'N')");	
+	query  = session.createQuery( "from AcAttivitaCampioneDTO where campione.statoCampione != 'N' and (obsoleta = null or obsoleta = 'N')");	
 	
 	lista=query.list();
 	
@@ -285,7 +285,8 @@ public static void updateObsolete(String idC, int tipo_attivita, Session session
 		query = session.createQuery("update AcAttivitaCampioneDTO set obsoleta='S' where id_campione =:_id_campione and id_tipo_attivita = 1 and tipo_manutenzione=1 ");
 		
 	}else {
-		query = session.createQuery("update AcAttivitaCampioneDTO set obsoleta='S' where id_campione =:_id_campione and id_tipo_attivita = 2");
+		query = session.createQuery("update AcAttivitaCampioneDTO set obsoleta='S' where id_campione =:_id_campione and id_tipo_attivita =:_tipo_attivita");
+		query.setParameter("_tipo_attivita", tipo_attivita);
 	}
 	query.setParameter("_id_campione", idC);
 	

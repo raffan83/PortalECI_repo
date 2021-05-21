@@ -106,8 +106,12 @@
  <th>Matricola</th>
  <th>Costruttore</th>
  <th>Descrizione</th>
+ <th>Modello</th>
+ <th>Settore</th>
+ <th>Certificato</th>
  <th>Data Taratura</th>
  <th>Data Scadenza</th>
+ <th>Freq. Taratura</th>
  <th>Stato</th>
  <th>Distributore</th>
  <th>Data Acquisto</th>
@@ -128,8 +132,21 @@
 	<td>${campione.codice}</td>
 	<td>${campione.matricola }</td>
 	<td>${campione.costruttore}</td>
-	<td>${campione.descrizione}</td>
 
+	<td>${campione.descrizione}</td>
+<td>${campione.modello }</td>
+	<td>
+	<c:if test="${campione.settore == 0}">
+	
+	Organismo di ispezione
+	</c:if>
+	
+		<c:if test="${campione.settore == 1}">
+	
+	Soggetto abilitato
+	</c:if>
+	</td>
+	<td>${campione.getNumeroCertificato()}</td>
 <td>
 <c:if test="${not empty campione.dataVerifica}">
    <fmt:formatDate pattern="dd/MM/yyyy" 
@@ -140,6 +157,7 @@
    <fmt:formatDate pattern="dd/MM/yyyy" 
          value="${campione.dataScadenza}" />
 </c:if></td>
+<td>${campione.getFreqTaraturaMesi() }</td>
 <td align="center"> 
 
 			<c:if test="${campione.statoCampione == 'S'}">
@@ -1071,7 +1089,7 @@ var listaStrumenti = ${listaCampioniJson};
   	                   { responsivePriority: 2, targets: 1 },
   	                   { responsivePriority: 3, targets: 2 },
   	                   { responsivePriority: 4, targets: 6 },
-  	                 { responsivePriority: 5, targets: 10 }
+  	                 { responsivePriority: 5, targets: 14 }
   	               ],
   	     
   	               buttons: [ {

@@ -196,7 +196,7 @@ public class GestioneAttivitaCampione extends HttpServlet {
 					attivita.setAllegato(filenameAllegato);
 				}
 				
-				if(tipo_attivita.equals("2") || (tipo_attivita.equals("1") && tipo_manutenzione!=null && tipo_manutenzione.equals("1"))) {
+				if(tipo_attivita.equals("2") ||  tipo_attivita.equals("3") || (tipo_attivita.equals("1") && tipo_manutenzione!=null && tipo_manutenzione.equals("1"))) {
 					GestioneAttivitaCampioneBO.updateObsolete(idC, Integer.parseInt(tipo_attivita),session);
 				}
 				
