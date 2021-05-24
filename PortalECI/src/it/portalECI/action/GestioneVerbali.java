@@ -338,6 +338,9 @@ public class GestioneVerbali extends HttpServlet {
 						
 						if(Integer.parseInt(motivo)>1) {
 							verbale.setFrequenza(0);
+							verbale.setData_prossima_verifica(null);
+							verbale.setData_prossima_verifica_integrita(null);
+							verbale.setData_prossima_verifica_interna(null);
 						}
 						session.save(verbale);
 					}

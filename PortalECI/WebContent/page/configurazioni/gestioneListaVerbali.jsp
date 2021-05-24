@@ -86,6 +86,7 @@
  																<th>Data verifica</th>
  																<th>Matricola Attrezzatura</th>
  																<th style="min-width:200px">Sede Cliente</th>
+ 																<th>Sede Utilizzatore</th>
  																<th>Codice Categoria</th>
  																<th>Codice Verifica</th>
  																<th>Tecnico Verificatore</th><%-- 
@@ -133,6 +134,9 @@
 																	
 																	<td>
 																		<c:out value='${verbale.getIntervento().getNome_sede()}'/>
+																	</td>
+																	<td>
+																		<c:out value='${verbale.getSedeUtilizzatore()}'/>
 																	</td>
 																	<td>
 																		<c:out value='${verbale.getCodiceCategoria()}'/>
@@ -341,7 +345,7 @@
     	                { responsivePriority: 4, targets: 3 },
     	                { responsivePriority: 2, targets: 6 },
     	                { responsivePriority: 2, targets: 8, type:"date-eu" },
-    	                { responsivePriority: 5, targets: 10 },
+    	                { responsivePriority: 5, targets: 11 },
     	                { orderable: false, targets: 6 },
     	            ],
     	            buttons: [ {

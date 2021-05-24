@@ -161,7 +161,7 @@ public class DirectMySqlDAO {
 	
 	public static void aggiornaCampioniScadenza() throws Exception {
 
-		String query = "update campione set stato_campione='F' where (campione.data_Scadenza<now() or campione.data_scadenza is null)";
+		String query = "update campione set stato_campione='F' where stato_campione != 'N' and (campione.data_Scadenza<now() or campione.data_scadenza is null)";
 
 		Connection con=null;
 		PreparedStatement pst=null;
