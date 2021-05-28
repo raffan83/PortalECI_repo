@@ -35,5 +35,6 @@ public class Costanti {
 	//Usare il placehlder %s se si vuole inserire il numero del documento invalidato nella dicitura
 	public static String DOCUMENT_INVALIDS_PHRASE = "Questo documento annulla e sostituisce il documento %s";
 	
-
+	public static String PASS_EMAIL;
+	public static String PASS_PEC;
 }

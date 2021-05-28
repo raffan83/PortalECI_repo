@@ -123,7 +123,27 @@
 																	<td>
 																		${verbale.numeroVerbale }
 																	</td>
-																	<td><fmt:formatDate pattern="dd/MM/yyyy" value='${verbale.data_verifica}' type='date' /></td>
+																	<td>
+																	<c:choose>
+																	<c:when test="${verbale.data_verifica!=null }">
+																		<fmt:formatDate pattern="dd/MM/yyyy" value='${verbale.data_verifica}' type='date' />
+																	</c:when>
+																	<c:otherwise>
+																		<c:choose>
+																		<c:when test="${verbale.data_verifica_interna!=null }">
+																			<fmt:formatDate pattern="dd/MM/yyyy" value='${verbale.data_verifica_interna}' type='date' />
+																		</c:when>
+																		<c:otherwise>
+																			<c:if test="${verbale.data_verifica_integrita!=null }">
+																			<fmt:formatDate pattern="dd/MM/yyyy" value='${verbale.data_verifica_integrita}' type='date' />
+																			</c:if>																	
+																		</c:otherwise>
+																		</c:choose>
+																	</c:otherwise>
+																	</c:choose>
+																	
+																	
+																	</td>
 																	<td>
 																	<c:if test="${verbale.attrezzatura!=null}">
 																	${verbale.attrezzatura.matricola_inail }

@@ -65,7 +65,7 @@ public class DettaglioCampione extends HttpServlet {
 		String idC = request.getParameter("idCamp");
 
 
-		CampioneDTO dettaglio =GestioneCampioneDAO.getCampioneFromId(idC);	
+		CampioneDTO dettaglio =GestioneCampioneDAO.getCampioneFromId(idC, session);	
 		
 		ArrayList<TipoCampioneDTO> listaTipoCampione= GestioneCampioneDAO.getListaTipoCampione();
 		

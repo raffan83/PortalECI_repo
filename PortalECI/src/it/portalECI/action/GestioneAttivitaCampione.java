@@ -77,7 +77,7 @@ public class GestioneAttivitaCampione extends HttpServlet {
 		if(Utility.validateSession(request,response,getServletContext()))return;
 		Session session = SessionFacotryDAO.get().openSession();
 		session.beginTransaction();
-		UtenteDTO utente = (UtenteDTO) request.getSession().getAttribute("userObj");
+		//UtenteDTO utente = (UtenteDTO) request.getSession().getAttribute("userObj");
 		
 		String action = request.getParameter("action");
 		JsonObject myObj = new JsonObject();
@@ -92,12 +92,12 @@ public class GestioneAttivitaCampione extends HttpServlet {
 				ArrayList<AcTipoAttivitaCampioniDTO> lista_tipo_attivita = GestioneAttivitaCampioneBO.getListaTipoAttivitaCampione(session);
 				
 				//CampioneDTO campione = GestioneCampioneDAO.getCampioneFromId(idC);
-				ArrayList<UtenteDTO> lista_utenti = (ArrayList<UtenteDTO>) GestioneAccessoDAO.getListUser();
+				ArrayList<UtenteDTO> lista_utenti = (ArrayList<UtenteDTO>) GestioneAccessoDAO.getListUser(session);
 				
 				request.getSession().setAttribute("lista_attivita", lista_attivita);
 				request.getSession().setAttribute("lista_tipo_attivita_campioni", lista_tipo_attivita);
 				request.getSession().setAttribute("lista_utenti", lista_utenti);
-				
+				session.getTransaction().commit();
 				session.close();
 				
 				RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/page/configurazioni/listaAttivitaCampione.jsp");
@@ -144,7 +144,7 @@ public class GestioneAttivitaCampione extends HttpServlet {
 				String campo_sospesi = ret.get("campo_sospesi");
 				String operatore = ret.get("operatore");				
 				
-				CampioneDTO campione = GestioneCampioneDAO.getCampioneFromId(idC);				
+				CampioneDTO campione = GestioneCampioneDAO.getCampioneFromId(idC, session);				
 				
 				AcAttivitaCampioneDTO attivita = new AcAttivitaCampioneDTO();
 				attivita.setCampione(campione);
@@ -326,7 +326,7 @@ public class GestioneAttivitaCampione extends HttpServlet {
 				if(lista_manutenzioni.size()>0) {
 					campione = lista_manutenzioni.get(0).getCampione();
 				}else {
-					campione = GestioneCampioneDAO.getCampioneFromId(id_campione);
+					campione = GestioneCampioneDAO.getCampioneFromId(id_campione, session);
 				}
 				new CreateSchedaManutenzioniCampione(lista_manutenzioni, campione);
 				
@@ -368,7 +368,7 @@ public class GestioneAttivitaCampione extends HttpServlet {
 				if(lista_verifiche.size()>0) {
 					campione = lista_verifiche.get(0).getCampione();
 				}else {
-					campione = GestioneCampioneDAO.getCampioneFromId(id_campione);
+					campione = GestioneCampioneDAO.getCampioneFromId(id_campione, session);
 				}
 				new CreateSchedaTaraturaVerificaIntermedia(lista_verifiche, campione);
 				
@@ -405,7 +405,7 @@ public class GestioneAttivitaCampione extends HttpServlet {
 				String id_campione = request.getParameter("id_campione");
 				
 				//ArrayList<AcAttivitaCampioneDTO> lista_verifiche = GestioneAttivitaCampioneBO.getListaTaratureVerificheIntermedie(Integer.parseInt(id_campione), session);
-				CampioneDTO campione = GestioneCampioneDAO.getCampioneFromId(id_campione);
+				CampioneDTO campione = GestioneCampioneDAO.getCampioneFromId(id_campione, session);
 				
 				new CreateSchedaApparecchiaturaCampioni(campione,false, session);
 				

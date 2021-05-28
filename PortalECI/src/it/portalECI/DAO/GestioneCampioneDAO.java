@@ -88,15 +88,25 @@ public class GestioneCampioneDAO {
 
 
 
-	public static CampioneDTO getCampioneFromId(String campioneId) throws Exception{
+	public static CampioneDTO getCampioneFromId(String campioneId, Session session) throws Exception{
 		try 
 		{
-			Session session = SessionFacotryDAO.get().openSession();	    
-			session.beginTransaction();
+			//Session session = SessionFacotryDAO.get().openSession();	    
+			//session.beginTransaction();
+			CampioneDTO campione = null;
+			ArrayList<CampioneDTO> lista = null;
 			
-			CampioneDTO campione = (CampioneDTO) session.get(CampioneDTO.class, Integer.parseInt(campioneId));
-			session.getTransaction().commit();
-			session.close();
+			Query query = session.createQuery("from CampioneDTO where __id = :_id_campione");
+			query.setParameter("_id_campione", Integer.parseInt(campioneId));
+			
+			lista = (ArrayList<CampioneDTO>) query.list();
+			
+			if(lista.size()>0) {
+				campione = lista.get(0);
+			}
+			//CampioneDTO campione = (CampioneDTO) session.get(CampioneDTO.class, Integer.parseInt(campioneId));
+			//session.getTransaction().commit();
+			//session.close();
 			
 			return campione;
 		}catch (Exception e){

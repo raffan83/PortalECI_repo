@@ -90,6 +90,7 @@
  																		<th>Verificatore</th>
  																		<th>Numero verbale</th>
  																		<th>Cliente</th> 	
+ 																		<th>Sede Utilizzatore</th>
  																		<th>Provincia</th>		
  																		<th>Esito</th>		
  																		<th>Codice Commessa</th>		
@@ -110,6 +111,7 @@
 																			<td>${verbale.intervento.tecnico_verificatore.nominativo}</td>
 																			<td>${verbale.numeroVerbale}</td>																			
 																			<td>${verbale.intervento.nome_sede}</td>
+																			<td>${verbale.sedeUtilizzatore }</td>
 																			<td>${verbale.intervento.codiceProvincia }</td>		
 																			<c:if test="${verbale.esito == 'P' }">
 																			<td>Positivo</td>

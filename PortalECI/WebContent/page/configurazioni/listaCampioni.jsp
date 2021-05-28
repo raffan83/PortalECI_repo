@@ -98,25 +98,29 @@
 <div class="col-lg-12">
   <table id="tabPM" class="table table-bordered table-hover dataTable table-striped" role="grid" width="100%">
  <thead><tr class="active">
- <th>ID</th>
- <th>Proprietario</th>
- <th>Utilizzatore</th> 
- <th>Tipo Campione</th>
+ <th style="min-width:30px">ID</th>
  <th>Codice</th>
- <th>Matricola</th>
- <th>Costruttore</th>
  <th>Descrizione</th>
+ <th>Costruttore</th>
  <th>Modello</th>
- <th>Settore</th>
+ <th>Matricola</th>
  <th>Certificato</th>
  <th>Data Taratura</th>
- <th>Data Scadenza</th>
  <th>Freq. Taratura</th>
+ <th>Data Scadenza</th>
  <th>Stato</th>
+  <th>Settore</th>
+ <th>Proprietario</th>
+<%--  <th>Utilizzatore</th> 
+ <th>Tipo Campione</th> --%>
+<%--  <th>Data Taratura</th>
+ 
+ <th>Freq. Taratura</th>
+ 
  <th>Distributore</th>
  <th>Data Acquisto</th>
  <th>Campo di Accettabilità</th>
- <th>Attività Di Taratura</th>
+ <th>Attività Di Taratura</th> --%>
  </tr></thead>
  
  <tbody>
@@ -126,38 +130,26 @@
 	 <tr role="row" id="${campione.codice}-${loop.index}" class="customTooltip" title="Doppio Click per aprire il dettaglio del Campione">
 
 	<td>${campione.id}</td>
-	<td>${campione.proprietario}</td>
-	<td>${campione.company_utilizzatore.denominazione}</td>	
-	<td>${campione.tipo_campione.nome}</td>
 	<td>${campione.codice}</td>
-	<td>${campione.matricola }</td>
-	<td>${campione.costruttore}</td>
-
 	<td>${campione.descrizione}</td>
-<td>${campione.modello }</td>
-	<td>
-	<c:if test="${campione.settore == 0}">
-	
-	Organismo di ispezione
-	</c:if>
-	
-		<c:if test="${campione.settore == 1}">
-	
-	Soggetto abilitato
-	</c:if>
-	</td>
+	<td>${campione.costruttore}</td>
+	<td>${campione.modello }</td>
+	<td>${campione.matricola }</td>
 	<td>${campione.getNumeroCertificato()}</td>
-<td>
+	<td>
 <c:if test="${not empty campione.dataVerifica}">
    <fmt:formatDate pattern="dd/MM/yyyy" 
          value="${campione.dataVerifica}" />
 </c:if></td>
+	
+	<td>${campione.getFreqTaraturaMesi() }</td>
+	
 <td>
 <c:if test="${not empty campione.dataScadenza}">
    <fmt:formatDate pattern="dd/MM/yyyy" 
          value="${campione.dataScadenza}" />
 </c:if></td>
-<td>${campione.getFreqTaraturaMesi() }</td>
+
 <td align="center"> 
 
 			<c:if test="${campione.statoCampione == 'S'}">
@@ -171,11 +163,38 @@
 				<span class="label  label-danger">FUORI SERVIZIO</span> 
 			</c:if>
 </td>
-<td>${campione.distributore }</td>
-<td><fmt:formatDate pattern="dd/MM/yyyy" 
-         value="${campione.data_acquisto }" /></td>
-<td>${campione.campo_accettabilita }</td>
-<td>${campione.attivita_di_taratura }</td>
+
+	<td>
+	<c:if test="${campione.settore == 0}">
+	
+	Organismo di ispezione
+	</c:if>
+	
+		<c:if test="${campione.settore == 1}">
+	
+	Soggetto abilitato
+	</c:if>
+	</td>
+
+	<td>${campione.proprietario}</td>
+	<%-- <td>${campione.company_utilizzatore.denominazione}</td>	 --%>
+	<%-- <td>${campione.tipo_campione.nome}</td> --%>
+	
+	
+	
+
+	
+
+
+	
+
+
+
+<%-- <td>${campione.distributore }</td> --%>
+<%-- <td><fmt:formatDate pattern="dd/MM/yyyy" 
+         value="${campione.data_acquisto }" /></td> --%>
+<%-- <td>${campione.campo_accettabilita }</td>
+<td>${campione.attivita_di_taratura }</td> --%>
 
 	</tr>
 	
@@ -851,11 +870,11 @@ var listaStrumenti = ${listaCampioniJson};
 	    
 	    columsDatatables = state.columns;
 	    }
-	    $('#tabPM thead th').each( function () {
+/* 	    $('#tabPM thead th').each( function () {
 	     	if(columsDatatables.length==0 || columsDatatables[$(this).index()]==null ){columsDatatables.push({search:{search:""}});}
 	        var title = $('#tabPM thead th').eq( $(this).index() -1 ).text();	       
 	        $(this).append( '<div><input class="inputsearchtable" id="inputsearchtable_'+$(this).index()+'" style="width:100%" type="text"  value="'+columsDatatables[$(this).index()].search.search+'"/></div>');
-	    } );
+	    } ); */
 
 	} );
 	
@@ -1008,6 +1027,14 @@ var listaStrumenti = ${listaCampioniJson};
 		 });   
 	
     $(document).ready(function() {
+    	
+    	
+    	
+	    $('#tabPM thead th').each( function () {
+	     	if(columsDatatables.length==0 || columsDatatables[$(this).index()]==null ){columsDatatables.push({search:{search:""}});}
+	        var title = $('#tabPM thead th').eq( $(this).index() -1 ).text();	       
+	        $(this).append( '<div><input class="inputsearchtable" id="inputsearchtable_'+$(this).index()+'" style="width:100%" type="text"  value="'+columsDatatables[$(this).index()].search.search+'"/></div>');
+	    } );
     
 
     	$('#select_manutenzione').select2();
@@ -1081,15 +1108,15 @@ var listaStrumenti = ${listaCampioniJson};
   	      info: true, 
   	      searchable: false, 
   	      targets: 0,
-  	      responsive: true,
-  	      scrollX: false,
-  	    stateSave: true,
+  	      responsive: false,
+  	      scrollX: true,
+  	    stateSave: false,
   	      columnDefs: [
-						   { responsivePriority: 1, targets: 0 },
+/* 						   { responsivePriority: 1, targets: 0 },
   	                   { responsivePriority: 2, targets: 1 },
   	                   { responsivePriority: 3, targets: 2 },
   	                   { responsivePriority: 4, targets: 6 },
-  	                 { responsivePriority: 5, targets: 14 }
+  	                 { responsivePriority: 5, targets: 12 } */
   	               ],
   	     
   	               buttons: [ {

@@ -101,7 +101,7 @@ public class Scadenzario extends HttpServlet {
 				
 					ArrayList<HashMap<String,Integer>> listaScadenze = null;
 				if(id_campione!=null) {
-					CampioneDTO	campione = GestioneCampioneDAO.getCampioneFromId(id_campione);				
+					CampioneDTO	campione = GestioneCampioneDAO.getCampioneFromId(id_campione, session);				
 					
 					listaScadenze = GestioneAttivitaCampioneBO.getListaAttivitaScadenziarioCampione(campione, session);
 				}else {

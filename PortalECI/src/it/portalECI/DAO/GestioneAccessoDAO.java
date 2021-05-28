@@ -117,18 +117,18 @@ public class GestioneAccessoDAO {
 
 	}
 	
-	public static List<UtenteDTO> getListUser() throws HibernateException, Exception{
+	public static List<UtenteDTO> getListUser(Session session) throws HibernateException, Exception{
 		
-		Session session=SessionFacotryDAO.get().openSession();
-		
-		session.beginTransaction();
+//		Session session=SessionFacotryDAO.get().openSession();
+//		
+//		session.beginTransaction();
 		
 		Query query  = session.createQuery( "from UtenteDTO" );
 	    
 		List<UtenteDTO> result =query.list();
 				
-		session.getTransaction().commit();
-		session.close();
+		//session.getTransaction().commit();
+		//session.close();
 		
 		return result;	
 	}

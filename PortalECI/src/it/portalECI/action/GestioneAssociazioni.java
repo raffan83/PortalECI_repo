@@ -12,8 +12,10 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.hibernate.Session;
 
 import it.portalECI.DAO.GestioneAccessoDAO;
+import it.portalECI.DAO.SessionFacotryDAO;
 import it.portalECI.DTO.PermessoDTO;
 import it.portalECI.DTO.RuoloDTO;
 import it.portalECI.DTO.UtenteDTO;
@@ -54,10 +56,12 @@ public class GestioneAssociazioni extends HttpServlet {
 		if(Utility.validateSession(request,response,getServletContext()))return;
 		
 		response.setContentType("text/html");
+		Session session = SessionFacotryDAO.get().openSession();
+		session.beginTransaction();
 		
 		try {
 			
-			ArrayList<UtenteDTO> listaUtenti =  (ArrayList<UtenteDTO>) GestioneAccessoDAO.getListUser();
+			ArrayList<UtenteDTO> listaUtenti =  (ArrayList<UtenteDTO>) GestioneAccessoDAO.getListUser(session);
 			ArrayList<PermessoDTO> listaPermessi =  (ArrayList<PermessoDTO>) GestioneAccessoDAO.getListPermission();
 			ArrayList<RuoloDTO> listaRuoli =  (ArrayList<RuoloDTO>) GestioneAccessoDAO.getListRole();
 			
@@ -68,6 +72,9 @@ public class GestioneAssociazioni extends HttpServlet {
 
 			RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/page/configurazioni/gestioneAssociazioni.jsp");
 	     	dispatcher.forward(request,response);
+	     	
+	     	session.getTransaction().commit();
+	     	session.close();
 		} catch (Exception ex) {
 			
 			//	ex.printStackTrace();

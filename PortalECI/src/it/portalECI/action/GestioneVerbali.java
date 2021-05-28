@@ -132,7 +132,7 @@ public class GestioneVerbali extends HttpServlet {
 					String id_strumento = request.getParameter("strumento_verificatore");
 					if(id_strumento!=null && !id_strumento.equals("") && !id_strumento.equals("0")) {
 						//verbale.setStrumento_verificatore(new StrumentoVerificatoreDTO(Integer.parseInt(id_strumento)));
-						CampioneDTO campione = GestioneCampioneDAO.getCampioneFromId(id_strumento);
+						CampioneDTO campione = GestioneCampioneDAO.getCampioneFromId(id_strumento, session);
 						verbale.setCampione(campione);
 						session.update(verbale);
 					}else {

@@ -113,7 +113,7 @@ public class DocumentiEsterni extends HttpServlet {
 				
 				}
 				
-				CampioneDTO campione = GestioneCampioneDAO.getCampioneFromId(id_campione);
+				CampioneDTO campione = GestioneCampioneDAO.getCampioneFromId(id_campione, session);
 				if(fileUploaded != null) {
 					
 					File directory =new File(Costanti.PATH_ROOT+"//Campioni//DocumentiEsterni//"+id_campione);

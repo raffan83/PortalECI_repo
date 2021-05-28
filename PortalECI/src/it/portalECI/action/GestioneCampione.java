@@ -326,7 +326,7 @@ public class GestioneCampione extends HttpServlet {
         		        		items = new ServletFileUpload(new DiskFileItemFactory()).parseRequest(request);
         		        	}
         				
-        				CampioneDTO campione = GestioneCampioneDAO.getCampioneFromId( request.getParameter("id"));
+        				CampioneDTO campione = GestioneCampioneDAO.getCampioneFromId( request.getParameter("id"), session);
         				
         				
         				FileItem fileItem = null;
@@ -520,7 +520,7 @@ public class GestioneCampione extends HttpServlet {
         			
         			String idCampione= request.getParameter("idC");
         			 	
-        			 	CampioneDTO campione= GestioneCampioneDAO.getCampioneFromId(idCampione);
+        			 	CampioneDTO campione= GestioneCampioneDAO.getCampioneFromId(idCampione, session);
         			   
         			 	
         			 	if(campione!=null && campione.getCertificatoCorrente(campione.getListaCertificatiCampione())!=null)

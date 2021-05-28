@@ -70,7 +70,7 @@ public class ListaUtenti extends HttpServlet {
 			String idRuolo = request.getParameter("idRuolo");
 			if(idRuolo != null && !idRuolo.equals("")){
 
-				ArrayList<UtenteDTO> listaUtenti =  (ArrayList<UtenteDTO>) GestioneAccessoDAO.getListUser();
+				ArrayList<UtenteDTO> listaUtenti =  (ArrayList<UtenteDTO>) GestioneAccessoDAO.getListUser(session);
 		        RuoloDTO ruolo = GestioneRuoloBO.getRuoloById(idRuolo, session);
 
 		        request.getSession().setAttribute("listaUtenti",listaUtenti);
@@ -81,7 +81,7 @@ public class ListaUtenti extends HttpServlet {
 				RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/page/configurazioni/listaUtentiAssociazione.jsp");
 		     	dispatcher.forward(request,response);
 			}else{
-				ArrayList<UtenteDTO> listaUtenti =  (ArrayList<UtenteDTO>) GestioneAccessoDAO.getListUser();
+				ArrayList<UtenteDTO> listaUtenti =  (ArrayList<UtenteDTO>) GestioneAccessoDAO.getListUser(session);
 				ArrayList<CompanyDTO> listaCompany =  (ArrayList<CompanyDTO>) GestioneAccessoDAO.getListCompany();
 				ArrayList<RuoloDTO> listaRuoli =  (ArrayList<RuoloDTO>) GestioneAccessoDAO.getListRole();
 				

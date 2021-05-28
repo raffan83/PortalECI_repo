@@ -1,6 +1,9 @@
 package it.portalECI.action;
 
 import java.io.File;
+import java.io.InputStream;
+import java.security.PublicKey;
+import java.util.Properties;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletContextEvent;
@@ -19,6 +22,9 @@ import org.quartz.TriggerBuilder;
 import org.quartz.impl.StdSchedulerFactory;
 
 import it.portalECI.Exception.ECIException;
+import it.portalECI.Util.AsymmetricCryptography;
+import it.portalECI.Util.Costanti;
+
 
 
 /**
@@ -48,10 +54,10 @@ public class ContextListener implements ServletContextListener {
     public void contextInitialized(ServletContextEvent event)  { 
     	// initialize log4j here
         ServletContext context = event.getServletContext();
-       
+
          
         try {
-        	
+        	configCostantApplication();
 			startScheduler();
 		} catch (SchedulerException e) {
 			// TODO Auto-generated catch block
@@ -64,6 +70,29 @@ public class ContextListener implements ServletContextListener {
 		}
        
     }
+    
+    
+    
+    public void configCostantApplication() throws Exception {
+    	String resourceName = "config.properties"; // could also be a constant
+    	//String resourceName = "config_svil.properties"; // could also be a constant
+   
+    	ClassLoader loader = Thread.currentThread().getContextClassLoader();
+    	Properties props = new Properties();
+    	try(InputStream resourceStream = loader.getResourceAsStream(resourceName)) {
+    	    props.load(resourceStream);
+    	}
+    	
+    	AsymmetricCryptography ac = new AsymmetricCryptography();
+	//	PrivateKey privateKey = ac.getPrivate("c:\\privateKey");
+		PublicKey publicKey = ac.getPublic("c:\\pKey\\publicKey");
+		
+    	
+		Costanti.PASS_EMAIL=ac.decryptText(props.getProperty("PASS_EMAIL"), publicKey);
+		Costanti.PASS_PEC=ac.decryptText(props.getProperty("PASS_PEC"),publicKey);
+    	
+    }
+    
     
 public void startScheduler() throws SchedulerException {
     	
