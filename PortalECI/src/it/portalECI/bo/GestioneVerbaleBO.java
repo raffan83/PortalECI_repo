@@ -1161,7 +1161,10 @@ public class GestioneVerbaleBO {
 			}
 			
 			for (int i = 1; i<lista_date_multi.size();i++) {
-				data_multi +=" - "+ df.format(lista_date_multi.get(i));
+				if(!data_multi.contains(df.format(lista_date_multi.get(i)))){
+					data_multi +=" - "+ df.format(lista_date_multi.get(i));	
+				}
+				
 			}
 			
 		}

@@ -185,8 +185,9 @@
 											</div>
 											<div class="box-body">
 											
+											<c:if test="${!user.checkRuolo('VT')}" >
 											<a class="btn btn-primary" onClick="modalAggiungiVerbale()"><i class="fa fa-plus"></i> Aggiungi verbale</a>
-											
+											</c:if>
 											<c:if test="${user.checkPermesso('INVIO_VERBALI') }">
 											<a class="btn btn-primary pull-right" onClick="getDestinatarioEmail('${intervento.id}')" style="margin-left:5px"><i class="fa fa-paper-plane-o" ></i> Invia Verbale</a>
 											</c:if>
