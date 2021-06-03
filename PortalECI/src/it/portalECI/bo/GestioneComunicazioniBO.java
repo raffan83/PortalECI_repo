@@ -58,7 +58,7 @@ public static void sendEmailVerbale(VerbaleDTO verbale, String id_commessa, Stri
 		  email.setHostName("smtps.aruba.it");
   		 //email.setDebug(true);
 
-		  //email.setAuthentication("info@ecisrl.it", "a$77?Qz9bx");
+
 		  email.setAuthentication("info@ecisrl.it", Costanti.PASS_EMAIL);
 
 	        email.getMailSession().getProperties().put("mail.smtp.auth", "true");
@@ -197,8 +197,7 @@ public static void sendPecVerbale(ArrayList<VerbaleDTO> lista_verbali, String ma
 	   String SMTP_HOST_NAME = "smtps.pec.aruba.it";
 	   int SMTP_HOST_PORT = 465;
 	   String SMTP_AUTH_USER = "verifiche@pec.ecisrl.it";
-	   //String SMTP_AUTH_PWD  = "8pfSu3sYx+";
-	   //String SMTP_AUTH_PWD  = "&w&K3vQ!HQY%@vV&";    8kJvYYAe%Hp5
+	 
 	   String SMTP_AUTH_PWD  = Costanti.PASS_PEC;
 	   
 	   Properties props = new Properties();
@@ -555,7 +554,7 @@ public static void sendPecVerbale(ArrayList<VerbaleDTO> lista_verbali, String ma
 		  email.setHostName("smtps.aruba.it");
 		 //email.setDebug(true);
 
-		  //email.setAuthentication("info@ecisrl.it", "a$77?Qz9bx");
+	
 		  email.setAuthentication("info@ecisrl.it", Costanti.PASS_EMAIL);
 
 	        email.getMailSession().getProperties().put("mail.smtp.auth", "true");
@@ -609,7 +608,7 @@ public static void sendPecVerbale(ArrayList<VerbaleDTO> lista_verbali, String ma
 		  email.setHostName("smtps.aruba.it");
 		 //email.setDebug(true);
 
-		 // email.setAuthentication("info@ecisrl.it", "a$77?Qz9bx");
+	
 		  email.setAuthentication("info@ecisrl.it", Costanti.PASS_EMAIL);
 
 	        email.getMailSession().getProperties().put("mail.smtp.auth", "true");
