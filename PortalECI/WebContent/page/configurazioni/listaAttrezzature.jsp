@@ -313,7 +313,7 @@
   	  var id = $(this).val();
   	  
   	  if(id == 0){
-  		$('#select2').val("");
+  		$('#select2').val("0");
   		$("#select2").prop("disabled", true);
   		$("#select2").change();  
   	  }else{
@@ -363,12 +363,24 @@
     
 	function filtraDate(){
 		
+		
+		
 		var id_cliente = $('#select1').val();
 		var id_sede = $('#select2').val();
-		if(id_sede==null){
+		if(id_sede==null || id_sede == ''){
 			id_sede = 0;
 		}
 			
+		if(id_cliente == ''){
+			
+			$('#myModalErrorContent').html("Cliente non selezionato!");
+			$('#myModalError').removeClass();	
+			$('#myModalError').addClass("modal modal-default");	  
+			$('#report_button').hide();
+			$('#visualizza_report').hide();		
+			$('#myModalError').modal('show');
+			
+		}else{
 			var startDatePicker = $("#datarange").data('daterangepicker').startDate;
 		 	var endDatePicker = $("#datarange").data('daterangepicker').endDate;
 		 	dataString = "action=filtra_date&dateFrom=" + startDatePicker.format('YYYY-MM-DD') + "&dateTo=" + 
@@ -380,6 +392,10 @@
 		 	//callAction("listaAttrezzature.do"+ dataString, "#posTab",false);
 
 		 	exploreModal("listaAttrezzature.do", dataString, '#posTab');
+			
+		}
+		
+			
 	}
 
 
