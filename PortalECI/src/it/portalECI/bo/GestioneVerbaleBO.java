@@ -110,6 +110,7 @@ public class GestioneVerbaleBO {
 			
 			setStatoCompilazioneWeb(intervento, stato, session);
 			intervento.setStatoIntervento(GestioneStatoInterventoDAO.getStatoInterventoById(StatoInterventoDTO.COMPILAZIONE_WEB, session));
+			session.update(intervento);
 		} else {
 				
 			verbale.setStato(stato);			
@@ -119,28 +120,33 @@ public class GestioneVerbaleBO {
 				//la scheda tecnica non ha un intervento associato per il momento
 				//return;
 			//}
-			Boolean verificato=true;
 			
-			for(VerbaleDTO verbaleInt : intervento.getVerbali()) {
-				if(verbaleInt != null && verbaleInt.getStato().getId()!=StatoVerbaleDTO.RIFIUTATO && verbaleInt.getStato().getId()!= StatoVerbaleDTO.ACCETTATO ) {
-					verificato=false;
-					break;
+			if(intervento!=null) {
+				Boolean verificato=true;
+				
+				for(VerbaleDTO verbaleInt : intervento.getVerbali()) {
+					if(verbaleInt != null && verbaleInt.getStato().getId()!=StatoVerbaleDTO.RIFIUTATO && verbaleInt.getStato().getId()!= StatoVerbaleDTO.ACCETTATO ) {
+						verificato=false;
+						break;
+					}
+					
+					if(verbaleInt != null && verbaleInt.getSchedaTecnica()!=null && verbaleInt.getSchedaTecnica().getStato().getId()!=StatoVerbaleDTO.RIFIUTATO && verbaleInt.getSchedaTecnica().getStato().getId()!= StatoVerbaleDTO.ACCETTATO) {
+						verificato=false;
+						break;
+					}
 				}
 				
-				if(verbaleInt != null && verbaleInt.getSchedaTecnica()!=null && verbaleInt.getSchedaTecnica().getStato().getId()!=StatoVerbaleDTO.RIFIUTATO && verbaleInt.getSchedaTecnica().getStato().getId()!= StatoVerbaleDTO.ACCETTATO) {
-					verificato=false;
-					break;
+				if(verificato) {
+					intervento.setStatoIntervento(GestioneStatoInterventoDAO.getStatoInterventoById(StatoInterventoDTO.VERIFICATO, session));
+				}else if(intervento.getStatoIntervento().getId()!= StatoInterventoDTO.IN_VERIFICA) {
+					intervento.setStatoIntervento(GestioneStatoInterventoDAO.getStatoInterventoById(StatoInterventoDTO.IN_VERIFICA, session));
 				}
+				session.update(intervento);
 			}
 			
-			if(verificato) {
-				intervento.setStatoIntervento(GestioneStatoInterventoDAO.getStatoInterventoById(StatoInterventoDTO.VERIFICATO, session));
-			}else if(intervento.getStatoIntervento().getId()!= StatoInterventoDTO.IN_VERIFICA) {
-				intervento.setStatoIntervento(GestioneStatoInterventoDAO.getStatoInterventoById(StatoInterventoDTO.IN_VERIFICA, session));
-			}
 		}
 		
-		session.update(intervento);
+		
 	}
 	
 	public static VerbaleDTO buildVerbale(String codiceVerifica, Session session, Boolean creaSchedaTecnica,String note, AttrezzaturaDTO attrezzatura, String sedeUtilizzatore, String esercente, String effettuazione_verbale, String tipo_verifica, String descrizione_utilizzatore) {
