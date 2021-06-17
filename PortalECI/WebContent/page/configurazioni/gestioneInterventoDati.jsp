@@ -299,7 +299,7 @@
 																<td>
 																<c:if test="${verbale.getStato().getId()==1 }">
 																
-																<a class="btn customTooltip" title="Elimina verbale" onclick="modalYesOrNo('${verbale.id}');">
+																<a class="btn customTooltip" title="Elimina verbale" onclick="modalYesOrNo('${verbale.id}', '${verbale.intervento.id }');">
                 															<i class="fa fa-times"></i>
             															</a>
 																</c:if>
@@ -745,7 +745,8 @@
       	</div>
       <div class="modal-footer">
       <input type="hidden" id="elimina_verbale_id">
-      <a class="btn btn-primary" onclick="eliminaVerbale($('#elimina_verbale_id').val())" >SI</a>
+      <input type="hidden" id="elimina_intervento_id">
+      <a class="btn btn-primary" onclick="eliminaVerbale($('#elimina_verbale_id').val(), $('#elimina_intervento_id').val())" >SI</a>
 		<a class="btn btn-primary" onclick="$('#myModalYesOrNo').modal('hide')" >NO</a>
       </div>
     </div>
@@ -780,9 +781,10 @@
  		<script type="text/javascript">
  		
  		
- 		function modalYesOrNo(id_verbale){
+ 		function modalYesOrNo(id_verbale, id_intervento){
  		
  			$('#elimina_verbale_id').val(id_verbale);
+ 			$('#elimina_intervento_id').val(id_intervento);
  			$('#myModalYesOrNo').modal();
  		}
  		

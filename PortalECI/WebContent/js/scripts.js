@@ -4478,7 +4478,7 @@ function aggiungiVerbale(id_intervento){
 
 
 
-function eliminaVerbale(id_verbale){
+function eliminaVerbale(id_verbale, id_intervento){
 	pleaseWaitDiv = $('#pleaseWaitDialog');
 	pleaseWaitDiv.modal();
 	
@@ -4486,7 +4486,7 @@ function eliminaVerbale(id_verbale){
 
 		$.ajax({
 	type: "POST",
-	url: "gestioneIntervento.do?action=elimina_verbale&idVerbale="+id_verbale,
+	url: "gestioneIntervento.do?action=elimina_verbale&idVerbale="+id_verbale+"&id_intervento="+id_intervento,
 	data: dataObj,
 	dataType: "json",
 	//if received a response from the server
