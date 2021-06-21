@@ -994,19 +994,29 @@
 												<div class="col-xs-6">
 												<label>Ore/Uomo</label><br>
 												<div class ="row">
-												<div class="col-xs-1">
+												<!-- <div class="col-xs-1">
 													<label>Ore</label>													
-													</div>
-													<div class="col-xs-2">
-													<c:if test="${verbale.ore_uomo!=null && verbale.ore_uomo!=''}">
+													</div> -->
+													<div class="col-xs-3">
+													
+													<select id="ore_uomo" name="ore_uomo" class="form-control select2">
+													<option value=""></option>
+													<c:forEach begin="0" end="400" varStatus="loop">
+													<option value="${loop.index * 0.25}">${loop.index * 0.25}</option>
+													</c:forEach>
+													
+													
+													</select>
+													
+<%-- 													<c:if test="${verbale.ore_uomo!=null && verbale.ore_uomo!=''}">
 													<input type="number" class="form-control" min="0" step="1" id="ore" name="ore" value="${verbale.ore_uomo.split('h')[0] }">
 													</c:if>
 													<c:if test="${verbale.ore_uomo==null || verbale.ore_uomo==''}">
 													<input type="number" class="form-control" min="0" step="1" id="ore" name="ore" >
-													</c:if>
+													</c:if> --%>
 													</div>
 													
-													<div class="col-xs-1">
+												<%-- 	<div class="col-xs-1">
 													<label>Minuti</label>
 													
 													</div>
@@ -1020,7 +1030,7 @@
 													</c:if>
 													
 											
-													</div>
+													</div> --%>
 															
 
 												 </div>
@@ -1041,7 +1051,7 @@
             				
             				
             				<input type="hidden" id="check_motivo" name="check_motivo" value="">
-												<input type="hidden" id="ore_uomo" name="ore_uomo" value="">
+												<!-- <input type="hidden" id="ore_uomo" name="ore_uomo" value=""> -->
             				           				
             				           				<input type="hidden" id="data_prossima_verifica_verb" name="data_prossima_verifica_verb" value="">
             				           				</c:if>
@@ -2716,6 +2726,11 @@ function modificaSedeUtilizzatore(){
 	
 			$(document).ready(function() {
 				
+				var ore_uomo = '${verbale.ore_uomo}';
+				
+				$('#ore_uomo').select2();
+				$('#ore_uomo').val(ore_uomo)
+				$('#ore_uomo').change()
 				$('#minuti').change();
 				
 				var x = $('#ore_uomo').val();
@@ -3121,7 +3136,8 @@ function modificaSedeUtilizzatore(){
 				$('#myModalError').modal('show');	
 			}
 			
-			else if(($('#ore').val()=='' || $('#minuti').val()=='') && $('#ore_uomo').val()=='' && !salva_mod){
+			//else if(($('#ore').val()=='' || $('#minuti').val()=='') && $('#ore_uomo').val()=='' && !salva_mod){
+			else if($('#ore_uomo').val()=='' && !salva_mod){
 				$('#modalErrorDiv').html("Il campo ore/uomo è obbligatorio");
 				$('#myModalError').removeClass();
 				$('#myModalError').addClass("modal modal-danger");
