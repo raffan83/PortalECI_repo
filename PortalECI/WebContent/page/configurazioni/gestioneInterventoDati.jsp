@@ -297,12 +297,12 @@
   																	${verbale.getNote()}
 																</td>	
 																<td>
-																<c:if test="${verbale.getStato().getId()==1 }">
+																 <c:if test="${user.checkPermesso('ELIMINA_ANNULLA_VERBALE')}"> 
 																
-																<a class="btn customTooltip" title="Elimina verbale" onclick="modalYesOrNo('${verbale.id}', '${verbale.intervento.id }');">
+																<a class="btn customTooltip" title="Elimina/annulla verbale" onclick="modalYesOrNo('${verbale.id}', '${verbale.intervento.id }');">
                 															<i class="fa fa-times"></i>
             															</a>
-																</c:if>
+																 </c:if> 
 																	<c:if test="${user.checkPermesso('GESTIONE_VERBALI')}">
 																		<a class="btn customTooltip" title="Click per aprire il dettaglio del Verbale" onclick="callAction('gestioneVerbale.do?idVerbale=${verbale.id}');">
                 															<i class="fa fa-arrow-right"></i>
@@ -740,8 +740,9 @@
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
         <h4 class="modal-title" id="myModalLabel">Attenzione</h4>
       </div>
-       <div class="modal-body">       
-      	Sei sicuro di voler eliminare il verbale?
+       <div class="modal-body">     
+       Se il verbale è nello stato CREATO verrà eliminato, altrimenti verrà annullato.
+      	Sei sicuro di voler proseguire?
       	</div>
       <div class="modal-footer">
       <input type="hidden" id="elimina_verbale_id">

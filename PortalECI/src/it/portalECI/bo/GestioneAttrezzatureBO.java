@@ -75,4 +75,9 @@ public class GestioneAttrezzatureBO {
 		
 		return GestioneAttrezzatureDAO.getlistaAttrezzatureScadenza(data_start, data_end, id_cliente, id_sede, session);
 	}
+
+	public static AttrezzaturaDTO checkMatricola(String matricola_inail, Session session) {
+		
+		return GestioneAttrezzatureDAO.checkMatricola(matricola_inail, session);
+	}
 }

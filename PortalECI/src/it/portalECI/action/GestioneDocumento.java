@@ -62,7 +62,7 @@ public class GestioneDocumento extends HttpServlet {
 //			if(p7m!=null && p7m.equals("1")) {
 //				response.setContentType("application/octet-stream");
 //			}else {
-				response.setContentType("application/pdf");	
+				response.setContentType("application/octet-stream");	
 		//	}
 			
 		    response.setHeader("Content-disposition", "attachment; filename=\""+fileDocument.getName()+"\"");

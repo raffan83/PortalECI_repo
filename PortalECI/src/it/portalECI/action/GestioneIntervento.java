@@ -533,11 +533,16 @@ public class GestioneIntervento extends HttpServlet {
 				InterventoDTO intervento= GestioneInterventoBO.getIntervento(id_intervento, session);
 				
 				VerbaleDTO verbale = GestioneVerbaleBO.getVerbale(id_verbale, session);
-				session.delete(verbale);
+				if(verbale.getStato().getId()==StatoVerbaleDTO.CREATO) {
+					session.delete(verbale);
+					intervento.getVerbali().remove(verbale);
+				}else {
+					StatoVerbaleDTO stato = GestioneStatoVerbaleDAO.getStatoVerbaleById( 10, session);
+					verbale.setStato(stato);
+				}
 				
-				intervento.getVerbali().remove(verbale);
 				myObj.addProperty("success", true);
-				myObj.addProperty("messaggio", "Verbale eliminato con successo");
+				myObj.addProperty("messaggio", "Operazione completata con successo");
 			
 				out.print(myObj);
 				

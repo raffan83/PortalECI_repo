@@ -175,10 +175,10 @@ public class GestioneVerbaleBO {
 				verbale.setEsercente(esercente);	
 			}			
 	
-			if(codiceVerifica.equals("VS")) {
+			if(codiceVerifica.startsWith("VS")) {
 				verbale.setTipologia_verifica(1);
 			}
-			else if(codiceVerifica.equals("VE")) {
+			else if(codiceVerifica.startsWith("VE")) {
 				verbale.setTipologia_verifica(4);
 			}
 			
@@ -892,7 +892,7 @@ public class GestioneVerbaleBO {
 			html = html.replaceAll("\\$\\{STR_NUMERO_CERT\\}", verbale.getCampione().getNumeroCertificato());
 		}
 		
-		if(verbale.getSedeUtilizzatore() != null ) 
+		if(verbale.getSedeUtilizzatore() != null && verbale.getCodiceCategoria().equals("VIE")) 
 		{
 			html = html.replaceAll("\\$\\{INDIRIZZO_UTILIZZATORE_VIE\\}", verbale.getSedeUtilizzatore());
 			

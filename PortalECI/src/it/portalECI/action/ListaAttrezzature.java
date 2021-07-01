@@ -565,92 +565,108 @@ public class ListaAttrezzature extends HttpServlet {
 				String codici_milestone = request.getParameter("codice_milestone");
 				
 				
-				List<SedeDTO> listaSedi = (List<SedeDTO>) request.getSession().getAttribute("listaSedi");
-				SedeDTO sede = null;
-				if(!id_sede.equals("0")) {
-					sede = GestioneAnagraficaRemotaBO.getSedeFromId(listaSedi, Integer.parseInt(id_sede.split("_")[0]), Integer.parseInt(id_cliente));
-				}
-				DateFormat format = new SimpleDateFormat("dd/MM/yyyy");
-				
 				AttrezzaturaDTO attrezzatura = new AttrezzaturaDTO();
-				attrezzatura.setId_cliente(Integer.parseInt(id_cliente));				
-				attrezzatura.setId_sede(Integer.parseInt(id_sede.split("_")[0]));			
 				
-				ClienteDTO cliente = GestioneAnagraficaRemotaBO.getClienteById(id_cliente);
+				attrezzatura = GestioneAttrezzatureBO.checkMatricola(matricola_inail, session);
 				
-				attrezzatura.setNome_cliente(cliente.getNome());	
-				if(!id_sede.equals("0")) {
-					attrezzatura.setNome_sede(sede.getDescrizione());
-					attrezzatura.setIndirizzo(sede.getIndirizzo());
-					attrezzatura.setComune(sede.getComune());
-					attrezzatura.setProvincia(sede.getSiglaProvincia());
-					attrezzatura.setCap(sede.getCap());
-					attrezzatura.setRegione(GestioneAnagraficaRemotaBO.getRegioneFromProvincia(sede.getSiglaProvincia(),session));
-				}else {
-					attrezzatura.setNome_sede("");
+				if(attrezzatura!=null) {
+					session.getTransaction().commit();
+					session.close();
 					
-					attrezzatura.setIndirizzo(cliente.getIndirizzo());
-					attrezzatura.setComune(cliente.getCitta());
-					attrezzatura.setProvincia(cliente.getProvincia());
-					attrezzatura.setCap(cliente.getCap());
-					attrezzatura.setRegione(GestioneAnagraficaRemotaBO.getRegioneFromProvincia(cliente.getProvincia(),session));
-				}				
-				attrezzatura.setMatricola_inail(matricola_inail);
-				attrezzatura.setNumero_fabbrica(numero_fabbrica);
-				if(descrizione!=null && !descrizione.equals("")) {
-					attrezzatura.setDescrizione(descrizione.split("_")[1]);	
-				}				
-				attrezzatura.setTipo_attivita(tipo_attivita);
-				attrezzatura.setTipo_attrezzatura(tipo_attrezzatura);
-				attrezzatura.setTipo_attrezzatura_GVR(tipo_attrezzatura_gvr);
-				attrezzatura.setID_specifica(id_specifica);
-				attrezzatura.setSogg_messa_serv_GVR(sogg_messa_servizio_gvr);
-				if(n_panieri_idroestrattori!=null && !n_panieri_idroestrattori.equals("")) {
-					attrezzatura.setN_panieri_idroestrattori(Integer.parseInt(n_panieri_idroestrattori));	
+					PrintWriter out = response.getWriter();
+					myObj.addProperty("success", false);
+					myObj.addProperty("messaggio", "Esiste già un'attrezzatura con questa matricola!");
+		        	out.print(myObj);
+				}else {
+					List<SedeDTO> listaSedi = (List<SedeDTO>) request.getSession().getAttribute("listaSedi");
+					SedeDTO sede = null;
+					if(!id_sede.equals("0")) {
+						sede = GestioneAnagraficaRemotaBO.getSedeFromId(listaSedi, Integer.parseInt(id_sede.split("_")[0]), Integer.parseInt(id_cliente));
+					}
+					DateFormat format = new SimpleDateFormat("dd/MM/yyyy");
+					
+					
+					attrezzatura.setId_cliente(Integer.parseInt(id_cliente));				
+					attrezzatura.setId_sede(Integer.parseInt(id_sede.split("_")[0]));			
+					
+					ClienteDTO cliente = GestioneAnagraficaRemotaBO.getClienteById(id_cliente);
+					
+					attrezzatura.setNome_cliente(cliente.getNome());	
+					if(!id_sede.equals("0")) {
+						attrezzatura.setNome_sede(sede.getDescrizione());
+						attrezzatura.setIndirizzo(sede.getIndirizzo());
+						attrezzatura.setComune(sede.getComune());
+						attrezzatura.setProvincia(sede.getSiglaProvincia());
+						attrezzatura.setCap(sede.getCap());
+						attrezzatura.setRegione(GestioneAnagraficaRemotaBO.getRegioneFromProvincia(sede.getSiglaProvincia(),session));
+					}else {
+						attrezzatura.setNome_sede("");
+						
+						attrezzatura.setIndirizzo(cliente.getIndirizzo());
+						attrezzatura.setComune(cliente.getCitta());
+						attrezzatura.setProvincia(cliente.getProvincia());
+						attrezzatura.setCap(cliente.getCap());
+						attrezzatura.setRegione(GestioneAnagraficaRemotaBO.getRegioneFromProvincia(cliente.getProvincia(),session));
+					}				
+					attrezzatura.setMatricola_inail(matricola_inail);
+					attrezzatura.setNumero_fabbrica(numero_fabbrica);
+					if(descrizione!=null && !descrizione.equals("")) {
+						attrezzatura.setDescrizione(descrizione.split("_")[1]);	
+					}				
+					attrezzatura.setTipo_attivita(tipo_attivita);
+					attrezzatura.setTipo_attrezzatura(tipo_attrezzatura);
+					attrezzatura.setTipo_attrezzatura_GVR(tipo_attrezzatura_gvr);
+					attrezzatura.setID_specifica(id_specifica);
+					attrezzatura.setSogg_messa_serv_GVR(sogg_messa_servizio_gvr);
+					if(n_panieri_idroestrattori!=null && !n_panieri_idroestrattori.equals("")) {
+						attrezzatura.setN_panieri_idroestrattori(Integer.parseInt(n_panieri_idroestrattori));	
+					}
+					attrezzatura.setMarcatura(marcatura);
+					attrezzatura.setN_id_on(n_id_on);
+					
+					attrezzatura.setCodice_milestone(codici_milestone);
+					if(data_scadenza_ventennale!=null && !data_scadenza_ventennale.equals("")) {
+						attrezzatura.setData_scadenza_ventennale(format.parse(data_scadenza_ventennale));
+					}
+					if(data_ver_funz!=null && !data_ver_funz.equals("")) {
+						attrezzatura.setData_verifica_funzionamento(format.parse(data_ver_funz));
+					}
+					if(data_pross_ver_funz!=null && !data_pross_ver_funz.equals("")) {
+						attrezzatura.setData_prossima_verifica_funzionamento(format.parse(data_pross_ver_funz));	
+					}
+					if(data_ver_integrita!=null && !data_ver_integrita.equals("")) {
+						attrezzatura.setData_verifica_integrita(format.parse(data_ver_integrita));	
+					}
+					if(data_pross_ver_integrita!=null && !data_pross_ver_integrita.equals("")) {
+						attrezzatura.setData_prossima_verifica_integrita(format.parse(data_pross_ver_integrita));	
+					}
+					if(data_ver_interna!=null && !data_ver_interna.equals("")) {
+						attrezzatura.setData_verifica_interna(format.parse(data_ver_interna));	
+					}
+					if(data_pross_ver_interna!=null && !data_pross_ver_interna.equals("")) {
+						attrezzatura.setData_prossima_verifica_interna(format.parse(data_pross_ver_interna));	
+					}			
+					
+					if(anno_costruzione!=null && !anno_costruzione.equals("")) {
+						attrezzatura.setAnno_costruzione(Integer.parseInt(anno_costruzione));	
+					}
+					attrezzatura.setFabbricante(fabbricante);
+					attrezzatura.setModello(modello);
+					attrezzatura.setSettore_impiego(settore_impiego);
+					attrezzatura.setNote_tecniche(note_tecniche);
+					attrezzatura.setNote_generiche(note_generiche);
+					
+					session.save(attrezzatura);
+					session.getTransaction().commit();
+					session.close();
+					
+					PrintWriter out = response.getWriter();
+					myObj.addProperty("success", true);
+					myObj.addProperty("messaggio", "Attrezzatura salvata con successo!");
+		        	out.print(myObj);
 				}
-				attrezzatura.setMarcatura(marcatura);
-				attrezzatura.setN_id_on(n_id_on);
 				
-				attrezzatura.setCodice_milestone(codici_milestone);
-				if(data_scadenza_ventennale!=null && !data_scadenza_ventennale.equals("")) {
-					attrezzatura.setData_scadenza_ventennale(format.parse(data_scadenza_ventennale));
-				}
-				if(data_ver_funz!=null && !data_ver_funz.equals("")) {
-					attrezzatura.setData_verifica_funzionamento(format.parse(data_ver_funz));
-				}
-				if(data_pross_ver_funz!=null && !data_pross_ver_funz.equals("")) {
-					attrezzatura.setData_prossima_verifica_funzionamento(format.parse(data_pross_ver_funz));	
-				}
-				if(data_ver_integrita!=null && !data_ver_integrita.equals("")) {
-					attrezzatura.setData_verifica_integrita(format.parse(data_ver_integrita));	
-				}
-				if(data_pross_ver_integrita!=null && !data_pross_ver_integrita.equals("")) {
-					attrezzatura.setData_prossima_verifica_integrita(format.parse(data_pross_ver_integrita));	
-				}
-				if(data_ver_interna!=null && !data_ver_interna.equals("")) {
-					attrezzatura.setData_verifica_interna(format.parse(data_ver_interna));	
-				}
-				if(data_pross_ver_interna!=null && !data_pross_ver_interna.equals("")) {
-					attrezzatura.setData_prossima_verifica_interna(format.parse(data_pross_ver_interna));	
-				}			
 				
-				if(anno_costruzione!=null && !anno_costruzione.equals("")) {
-					attrezzatura.setAnno_costruzione(Integer.parseInt(anno_costruzione));	
-				}
-				attrezzatura.setFabbricante(fabbricante);
-				attrezzatura.setModello(modello);
-				attrezzatura.setSettore_impiego(settore_impiego);
-				attrezzatura.setNote_tecniche(note_tecniche);
-				attrezzatura.setNote_generiche(note_generiche);
-				
-				session.save(attrezzatura);
-				session.getTransaction().commit();
-				session.close();
-				
-				PrintWriter out = response.getWriter();
-				myObj.addProperty("success", true);
-				myObj.addProperty("messaggio", "Attrezzatura salvata con successo!");
-	        	out.print(myObj);
 				
 			}
 			else if(action.equals("modifica")) {

@@ -226,8 +226,10 @@ public class CreateScadenzarioVAL {
 		 rowTitle.createCell(47).setCellValue("user_inserimento");
 		 rowTitle.createCell(48).setCellValue("inail_conferma");
 		 rowTitle.createCell(49).setCellValue("cs_ragionesociale");
+		 rowTitle.createCell(50).setCellValue("codice_commessa");
+		 rowTitle.createCell(51).setCellValue("numero_verbale");
 		 
-		 for(int j = 0; j<50; j++) {
+		 for(int j = 0; j<52; j++) {
 			 rowTitle.getCell(j).setCellStyle(titleStyle);
 		 }
 	     	        
@@ -750,6 +752,23 @@ public class CreateScadenzarioVAL {
 					cell.setCellValue(listaVerbali.get(i).getAttrezzatura().getFabbricante()); // COSTRUTTORE RAG SOCIALE
 					
 					
+					 col++;
+		    		 cell = row.createCell(col);
+		    		 if(listaVerbali.get(i).getIntervento()!=null) {
+		    			 cell.setCellValue(listaVerbali.get(i).getIntervento().getIdCommessa());
+		    		 }else {
+		    			 cell.setCellValue("");	 
+		    		 }
+		    		 
+		    		 col++;
+		    		 cell = row.createCell(col);
+		    		 if(listaVerbali.get(i).getNumeroVerbale()!=null) {
+		    			 cell.setCellValue(listaVerbali.get(i).getNumeroVerbale());
+		    		 }else {
+		    			 cell.setCellValue("");	 
+		    		 }
+		    		 
+		    		 
 					row_index++;
 	    	 }
 	    		 
@@ -758,7 +777,7 @@ public class CreateScadenzarioVAL {
 	     
 	     
 	     
-	    	 for(int j = 0; j<50;j++) {
+	    	 for(int j = 0; j<52;j++) {
 	    		 sheet0.autoSizeColumn(j);
 	    	 }
 	     

@@ -40,10 +40,10 @@ public class GestioneInterventoDAO {
 		String stato_intervento = "";
 		
 		if(stato!=null && Integer.parseInt(stato) == StatoInterventoDTO.CHIUSO ) {
-			stato_intervento = " and statoIntervento.id = "+StatoInterventoDTO.CHIUSO;
+			stato_intervento = " and statoIntervento.id = "+StatoInterventoDTO.CHIUSO +" or statoIntervento.id ="+StatoInterventoDTO.ANNULLATO;
 		}
 		else if (stato!=null && Integer.parseInt(stato)!=StatoInterventoDTO.CHIUSO) {
-			stato_intervento = " and statoIntervento.id != "+StatoInterventoDTO.CHIUSO;
+			stato_intervento = " and statoIntervento.id != "+StatoInterventoDTO.CHIUSO+ " and statoIntervento.id !="+StatoInterventoDTO.ANNULLATO;
 		}
 		
 		if(idCommessa!=null) {
@@ -68,7 +68,7 @@ public class GestioneInterventoDAO {
 				query.setParameter("_idUser", user.getId());
 			}else 
 			{
-				stato_intervento = stato_intervento.replace("and", "where");
+				stato_intervento = " where "+ stato_intervento.substring(4, stato_intervento.length());
 				query= session.createQuery( "from InterventoDTO"+stato_intervento);
 			}
 	

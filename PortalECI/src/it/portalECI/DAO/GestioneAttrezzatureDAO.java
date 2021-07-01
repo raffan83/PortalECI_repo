@@ -317,6 +317,21 @@ public static String getCodiceMilestoneFromDescrizione(String descrizione, Sessi
 
 }
 
+public static AttrezzaturaDTO checkMatricola(String matricola_inail, Session session) {
+	ArrayList<AttrezzaturaDTO> lista =null;
+	AttrezzaturaDTO result = null;
+
+	Query query = session.createQuery("from AttrezzaturaDTO where matricola_inail = :_matricola");
+	query.setParameter("_matricola", matricola_inail);
+	
+	lista= (ArrayList<AttrezzaturaDTO>)query.list();
+	
+	if(lista!=null && lista.size()>0) {
+		result = lista.get(0);
+	}
+	return result;
+}
+
 }
 
 

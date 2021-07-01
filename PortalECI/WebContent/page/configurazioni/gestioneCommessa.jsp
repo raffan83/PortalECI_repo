@@ -61,6 +61,26 @@
 			 
 
 	</div>
+	
+															<div class="col-sm-6">  
+								  						 <button class="btn btn-primary pull-right"  onclick="filtraCommesse('')" style="margin-top:25px"id="tutte_btn" >
+															
+															 Tutte
+														</button> 
+														 
+														       
+														         
+														    <button class="btn btn-primary pull-right" onclick="filtraCommesse('CHIUSA')" style="margin-top:25px; margin-right:5px" id="chiuse_btn" >
+															
+															 Chiuse
+														</button>  
+														
+														 <button class="btn btn-primary pull-right" disabled onclick="filtraCommesse('APERTA')" style="margin-top:25px; margin-right:5px" id="aperte_btn" >
+															
+															 Aperte
+														</button> 						         
+														 
+												</div>
 												</div>
 												
 												
@@ -241,6 +261,33 @@
 
    
   		<script type="text/javascript">
+  		
+  		
+  		function filtraCommesse(filtro){
+  			
+			var table = $('#tabPM').DataTable();
+		    
+			table.column( 5 ).search( filtro ).draw();	
+			
+			
+			if(filtro == 'APERTA'){
+				$('#aperte_btn').attr("disabled", true);
+				$('#chiuse_btn').attr("disabled", false);
+				$('#tutte_btn').attr("disabled", false);
+				
+			}else if(filtro == 'CHIUSA'){
+				$('#aperte_btn').attr("disabled", false);
+				$('#chiuse_btn').attr("disabled", true);
+				$('#tutte_btn').attr("disabled", false);
+			}else{
+				$('#aperte_btn').attr("disabled", false);
+				$('#chiuse_btn').attr("disabled", false);
+				$('#tutte_btn').attr("disabled", true);
+			}
+			
+
+  			
+  		}
    
   		
   	  function filtraCommessePerData(){		
@@ -400,6 +447,12 @@
 			        	theme: 'tooltipster-light'
 			    	});
 			  	} );
+    	 		
+    	 		
+    	 		
+    	 		
+    	 		
+    	 		filtraCommesse('APERTA')
     		});
     		
     	    $("#select1").change(function(){	
