@@ -68,7 +68,10 @@ public class GestioneInterventoDAO {
 				query.setParameter("_idUser", user.getId());
 			}else 
 			{
-				stato_intervento = " where "+ stato_intervento.substring(4, stato_intervento.length());
+				if(!stato_intervento.equals("")) {
+					stato_intervento = " where "+ stato_intervento.substring(4, stato_intervento.length());	
+				}
+				
 				query= session.createQuery( "from InterventoDTO"+stato_intervento);
 			}
 	

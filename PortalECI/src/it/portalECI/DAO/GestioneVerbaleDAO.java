@@ -125,7 +125,7 @@ public class GestioneVerbaleDAO {
 		if(ck_ST==false && ck_AM==false && ck_RT==false && ck_SRT==false) 
 		{
 		 
-		query  = session.createQuery( "from VerbaleDTO WHERE type = :_type AND intervento.tecnico_verificatore.id=:_idUser and data_verifica between :_dateFrom and :_dateTo");
+		query  = session.createQuery( "from VerbaleDTO WHERE type = :_type AND intervento.tecnico_verificatore.id=:_idUser and (data_verifica between :_dateFrom and :_dateTo or data_verifica_integrita between :_dateFrom and :_dateTo or data_verifica_interna between :_dateFrom and :_dateTo)");
 		query.setParameter("_type",VerbaleDTO.VERBALE);
 		query.setParameter("_idUser",user.getId());
 		query.setParameter("_dateFrom", sdf.parse(dateFrom));
@@ -133,7 +133,7 @@ public class GestioneVerbaleDAO {
 		}
 		else 
 		{
-			 query  = session.createQuery( "from VerbaleDTO WHERE type = :_type and data_verifica between :_dateFrom and :_dateTo");
+			 query  = session.createQuery( "from VerbaleDTO WHERE type = :_type and (data_verifica between :_dateFrom and :_dateTo or data_verifica_integrita between :_dateFrom and :_dateTo or data_verifica_interna between :_dateFrom and :_dateTo)");
 			query.setParameter("_type",VerbaleDTO.VERBALE);
 			query.setParameter("_dateFrom", sdf.parse(dateFrom));
 			query.setParameter("_dateTo", sdf.parse(dateTo));
