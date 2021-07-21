@@ -28,4 +28,6 @@
     </div>
     <!-- Default to the left -->
     <strong>Copyright &copy; 2017 <a href="#">Eci srl</a>.</strong> All rights reserved.
+    
+    <strong class="pull-right">Versione ${versione_portale }</strong> 
 </footer>

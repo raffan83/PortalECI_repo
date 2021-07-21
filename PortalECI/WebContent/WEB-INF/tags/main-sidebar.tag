@@ -202,6 +202,14 @@
 								<a href="gestioneStrumentiVerificatore.do"><i class="fa fa-wrench"></i>Gestione Strumenti Verificatore</a>
 							</li>
 						<% }%>
+					<% if(user.checkRuolo("AM")){%>
+							<li>
+								<a href="gestioneVersionePortale.do"><i class="fa fa-code-fork""></i>Gestione Versioni Portale</a>
+							</li>
+						<% }%>
+						
+						
+						
           			</ul>          			
           		
         	</li>
@@ -256,10 +264,13 @@
         		
         		<% }%>
         		
-        		
-        		
+        		        		
       	</ul>
       	<!-- /.sidebar-menu -->
+      	
+      	
+      	
+      	 
     </section>
     <!-- /.sidebar -->
  </aside>

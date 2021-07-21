@@ -12,13 +12,17 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.hibernate.Session;
+
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 
 import it.portalECI.DAO.GestioneAccessoDAO;
+import it.portalECI.DAO.SessionFacotryDAO;
 import it.portalECI.DTO.UtenteDTO;
 import it.portalECI.Exception.ECIException;
 import it.portalECI.bo.GestioneGraficiBO;
+import it.portalECI.bo.GestioneVersionePortaleBO;
 
 /**
  * Servlet implementation class Login
@@ -43,7 +47,8 @@ public class Login extends HttpServlet {
 		
 		if(utente!=null)
         {
-		
+			Session session = SessionFacotryDAO.get().openSession();
+			session.beginTransaction();
 			request.setAttribute("forward","site/home.jsp"); 	
 			request.getSession().setAttribute("nomeUtente","  "+utente.getNominativo());
 			request.getSession().setAttribute("idUtente",utente.getId());
@@ -55,6 +60,7 @@ public class Login extends HttpServlet {
 			ArrayList<ArrayList<String>> lista_dati = GestioneGraficiBO.getGraficoTipoVerifica(utente);
 			HashMap<String, Integer> map_verbali = GestioneGraficiBO.getGraficoVerbaliVerificatore(utente);
 			ArrayList<HashMap<String, String>>  list_map = GestioneGraficiBO.getGraficoStatiVerbali(utente);
+			String versione_portale = GestioneVersionePortaleBO.getVersioneCorrente(session);
 			
 			HashMap<String, String> map_stati = list_map.get(0);
 			HashMap<String, String> map_color = list_map.get(1);
@@ -69,11 +75,13 @@ public class Login extends HttpServlet {
 			request.getSession().setAttribute("map_stati",gson.toJsonTree(map_stati).toString());
 			request.getSession().setAttribute("map_verbali",gson.toJsonTree(map_verbali).toString());
 			request.getSession().setAttribute("map_color",gson.toJsonTree(map_color).toString());
+			request.getSession().setAttribute("versione_portale",versione_portale);
+			
 			
 			RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/page/dashboard.jsp");
 			dispatcher.forward(request,response);
 			
-			
+			session.close();
         }else {
 			RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/index.jsp");
 			dispatcher.forward(request,response);
@@ -96,6 +104,8 @@ public class Login extends HttpServlet {
 			UtenteDTO utente=GestioneAccessoDAO.controllaAccesso(user,pwd);
 		        
 			if(utente!=null){
+				Session session = SessionFacotryDAO.get().openSession();
+				session.beginTransaction();
 				request.setAttribute("forward","site/home.jsp"); 	
 				request.getSession().setAttribute("nomeUtente","  "+utente.getNominativo());
 				request.getSession().setAttribute("idUtente",utente.getId());
@@ -103,6 +113,7 @@ public class Login extends HttpServlet {
 				
 				request.getSession().setAttribute("userObj", utente);
 				request.getSession().setAttribute("usrCompany", utente.getCompany());
+				String versione_portale = GestioneVersionePortaleBO.getVersioneCorrente(session);
 				
 				ArrayList<ArrayList<String>> lista_dati = GestioneGraficiBO.getGraficoTipoVerifica(utente);
 				HashMap<String, Integer> map_verbali = GestioneGraficiBO.getGraficoVerbaliVerificatore(utente);
@@ -122,6 +133,9 @@ public class Login extends HttpServlet {
 				request.getSession().setAttribute("map_stati",gson.toJsonTree(map_stati).toString());
 				request.getSession().setAttribute("map_verbali",gson.toJsonTree(map_verbali).toString());
 				request.getSession().setAttribute("map_color",gson.toJsonTree(map_color).toString());
+				request.getSession().setAttribute("versione_portale",versione_portale);
+				
+				session.close();
 				
 				RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/page/dashboard.jsp");
 				dispatcher.forward(request,response);

@@ -565,9 +565,7 @@ public class ListaAttrezzature extends HttpServlet {
 				String codici_milestone = request.getParameter("codice_milestone");
 				
 				
-				AttrezzaturaDTO attrezzatura = new AttrezzaturaDTO();
-				
-				attrezzatura = GestioneAttrezzatureBO.checkMatricola(matricola_inail, session);
+				AttrezzaturaDTO attrezzatura = GestioneAttrezzatureBO.checkMatricola(matricola_inail, session);
 				
 				if(attrezzatura!=null) {
 					session.getTransaction().commit();
@@ -585,7 +583,7 @@ public class ListaAttrezzature extends HttpServlet {
 					}
 					DateFormat format = new SimpleDateFormat("dd/MM/yyyy");
 					
-					
+					attrezzatura = new AttrezzaturaDTO();
 					attrezzatura.setId_cliente(Integer.parseInt(id_cliente));				
 					attrezzatura.setId_sede(Integer.parseInt(id_sede.split("_")[0]));			
 					

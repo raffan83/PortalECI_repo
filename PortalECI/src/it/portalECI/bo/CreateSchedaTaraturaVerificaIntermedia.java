@@ -166,8 +166,8 @@ private void build(ArrayList<AcAttivitaCampioneDTO> lista_tar_ver,  CampioneDTO 
 							arrayPs.add("");
 						}											
 						
-						if(attivita.getCertificato()!=null) {
-							arrayPs.add(attivita.getCertificato());	
+						if(attivita.getCampione().getNumeroCertificato()!=null) {
+							arrayPs.add(attivita.getCampione().getNumeroCertificato());	
 						}else {
 							arrayPs.add("");
 						}

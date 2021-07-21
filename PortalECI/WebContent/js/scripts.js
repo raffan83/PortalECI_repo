@@ -4687,3 +4687,114 @@ function eliminaAllegatoMise(id_allegato){
 	   
 	
 }
+
+
+function nuovaVersione(){
+	
+	  var form = $('#formNuovaVersione')[0]; 
+	  var formData = new FormData(form);
+
+    $.ajax({
+  	  type: "POST",
+  	  url: "gestioneVersionePortale.do?action=nuovo",
+  	  data: formData,
+  	  //dataType: "json",
+  	  contentType: false, // NEEDED, DON'T OMIT THIS (requires jQuery 1.6+)
+  	  processData: false, // NEEDED, DON'T OMIT THIS
+  	  //enctype: 'multipart/form-data',
+  	  success: function( data, textStatus) {
+
+  		  if(data.success)
+  		  { 
+  			  $('#report_button').hide();
+						$('#visualizza_report').hide();
+  			  $('#modalErrorDiv').html(data.messaggio);
+  			  	$('#myModalError').removeClass();
+  				$('#myModalError').addClass("modal modal-success");
+  				$('#myModalError').modal('show');
+  				$('#myModalError').on('hidden.bs.modal', function(){
+  					location.reload()
+  				});
+
+  		  }else{
+  			  $('#modalErrorDiv').html("Errore nel salvataggio!");
+  			  	$('#myModalError').removeClass();
+  				$('#myModalError').addClass("modal modal-danger");	  
+  				$('#report_button').show();
+						$('#visualizza_report').show();
+						$('#myModalError').modal('show');
+						
+
+  		  }
+  	  },
+
+  	  error: function(jqXHR, textStatus, errorThrown){
+  	
+  		  $('#myModalErrorContent').html(data.messaggio);
+				$('#myModalError').removeClass();
+				$('#myModalError').addClass("modal modal-danger");
+				$('#report_button').show();
+				$('#visualizza_report').show();
+				$('#myModalError').modal('show');
+				
+			
+  	  }
+    });
+	
+}
+
+
+
+function modificaVersione(){
+	
+	  var form = $('#formModificaVersione')[0]; 
+	  var formData = new FormData(form);
+
+  $.ajax({
+	  type: "POST",
+	  url: "gestioneVersionePortale.do?action=modifica",
+	  data: formData,
+	  //dataType: "json",
+	  contentType: false, // NEEDED, DON'T OMIT THIS (requires jQuery 1.6+)
+	  processData: false, // NEEDED, DON'T OMIT THIS
+	  //enctype: 'multipart/form-data',
+	  success: function( data, textStatus) {
+
+		  if(data.success)
+		  { 
+			  $('#report_button').hide();
+						$('#visualizza_report').hide();
+			  $('#modalErrorDiv').html(data.messaggio);
+			  	$('#myModalError').removeClass();
+				$('#myModalError').addClass("modal modal-success");
+				$('#myModalError').modal('show');
+				$('#myModalError').on('hidden.bs.modal', function(){
+					location.reload()
+				});
+
+		  }else{
+			  $('#modalErrorDiv').html("Errore nel salvataggio!");
+			  	$('#myModalError').removeClass();
+				$('#myModalError').addClass("modal modal-danger");	  
+				$('#report_button').show();
+						$('#visualizza_report').show();
+						$('#myModalError').modal('show');
+						
+
+		  }
+	  },
+
+	  error: function(jqXHR, textStatus, errorThrown){
+	
+		  $('#myModalErrorContent').html(data.messaggio);
+				$('#myModalError').removeClass();
+				$('#myModalError').addClass("modal modal-danger");
+				$('#report_button').show();
+				$('#visualizza_report').show();
+				$('#myModalError').modal('show');
+				
+			
+	  }
+  });
+	
+}

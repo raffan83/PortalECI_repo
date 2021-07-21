@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 15-feb-2017 11.20.27 by Hibernate Tools 3.4.0.CR1 -->
+
+<hibernate-mapping>
+    <class name="it.portalECI.DTO.VersionePortaleDTO" table="versione_portale">
+        <id name="id" type="int">
+            <column name="id" />
+            <generator class="native" />
+        </id>
+       
+        <property name="versione" type="java.lang.String">
+            <column name="versione" />
+        </property>
+        <property name="data_aggiornamento" type="java.sql.Date">
+            <column name="data_aggiornamento" />
+        </property>
+        <property name="note_aggiornamento" type="java.lang.String">
+            <column name="note_aggiornamento" />
+        </property>
+	<property name="disabilitato" type="int">
+            <column name="disabilitato" />
+        </property>
+    </class>
+</hibernate-mapping>
+
+
