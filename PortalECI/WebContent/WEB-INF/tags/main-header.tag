@@ -11,7 +11,7 @@
 	<!-- Logo -->
     <a href="/PortalECI/login.do" class="logo">
     	<!-- mini logo for sidebar mini 50x50 pixels -->
-    	<span class="logo-mini"><b>ECI</b></span>
+    	<span class="logo-mini"><b><font size="2">ISPECI</font> </b></span>
     	<!-- logo for regular state and mobile devices -->
     	<span class="logo-lg"> <img src="images/logo_eci_s.png" style="height:35px"> <b> ISPECI</b> </span>
     </a>
