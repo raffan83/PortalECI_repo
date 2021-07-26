@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+    <class name="it.portalECI.DTO.AllegatoClienteDTO" table="allegato_cliente">
+       
+        <id name="id" type="int">
+            <column name="id" />
+            <generator class="native" />
+        </id>
+        <property name="descrizione" type="java.lang.String">
+            <column name="descrizione" />
+        </property>
+        <property name="nome_file" type="java.lang.String">
+            <column name="nome_file" />
+        </property>
+       
+       <property name="disabilitato" type="int">
+            <column name="disabilitato" />
+        </property>
+        
+          <property name="id_cliente" type="int">
+            <column name="id_cliente" />
+        </property>
+        
+          <property name="id_sede" type="int">
+            <column name="id_sede" />
+        </property>
+        
+         <property name="nome_cliente" type="java.lang.String">
+            <column name="nome_cliente" />
+        </property>
+        
+         <property name="nome_sede" type="java.lang.String">
+            <column name="nome_sede" />
+        </property>
+    </class>
+</hibernate-mapping>

@@ -68,6 +68,7 @@ public class VerbaleDTO implements Serializable {
 	private int controfirmato;
 	private CampioneDTO campione;
 	private int inviato;
+	private int visibile_cliente;
 	
 	public int getId() {
 		return id;
@@ -486,6 +487,14 @@ public class VerbaleDTO implements Serializable {
 
 	public void setInviato(int inviato) {
 		this.inviato = inviato;
+	}
+
+	public int getVisibile_cliente() {
+		return visibile_cliente;
+	}
+
+	public void setVisibile_cliente(int visibile_cliente) {
+		this.visibile_cliente = visibile_cliente;
 	}
 
 	

@@ -34,8 +34,8 @@ public class UtenteDTO implements Serializable {
 	private String telefono = "";
 	private CompanyDTO company;
 	private String tipoutente = "";
-	private int idCliente = 0;
-	private int idSede = 0;
+	private int idCliente;
+	private int idSede;
 	private int trasversale = 0;
 	private String resetToken = "";
 	private String qualifica = "";

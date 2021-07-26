@@ -192,6 +192,18 @@
                 									</li>
                 									</c:if>
                 								</c:if>	
+                								
+                								
+                								<li class="list-group-item">
+                								
+                								<c:if test="${verbale.visibile_cliente ==0}">
+                  											<b>Visibile al cliente  <input type="checkbox" class="pull-right" style="position: relative" id="check_visibile_${verbale.getId() }" name="check_visibile_${verbale.getId() }" onChange="visibileCliente('${verbale.getId()}')" ></b>
+                  											</c:if>
+                  											<c:if test="${verbale.visibile_cliente ==1}">
+                  												<b>Visibile al cliente  <input type="checkbox" class="pull-right" style="position: relative" id="check_visibile_${verbale.getId() }" name="check_visibile_${verbale.getId() }" onChange="visibileCliente('${verbale.getId()}')" checked></b>
+                  											</c:if>  
+                								</li>
+                								
         										</ul> 
         										
         										<c:if test='${verbale.getStato().getId()== 5 && verbale.getFirmato() == 1 && (user.checkRuolo("AM") || user.checkRuolo("RT") || user.checkRuolo("SRT"))  && verbale.getResponsabile_approvatore().getId() == userObj.getId() && verbale.codiceCategoria != "VAL" && verbale.getControfirmato()==0}'>										
@@ -281,24 +293,24 @@
 	                  											
 	                  											<c:if test="${verbale.getFirmato()==1 && verbale.getControfirmato() == 1 &&  certificato.getInvalid()== false }"> --%>
 	                  											
-	                  											 <c:if test="${verbale.getFirmato()==0 && certificato.getInvalid()== false  && verbale.getStato().getId()== 5}">
+	                  											 <c:if test="${verbale.getFirmato()==0   && verbale.getStato().getId()== 5}">
 	                  											<a class="btn btn-default btn-xs pull-right" onClick="modalCaricaFileFirmato('${certificato.getId()}')" style="margin-left:5px"><i class="fa fa-plus"></i> Carica Verbale Firmato</a>
 	                  											</c:if>
 	                  											
 	                  											
 	                  											
-	                  											<c:if test="${verbale.getFirmato()==1 && certificato.getInvalid()== false }">
+	                  											<c:if test="${verbale.getFirmato()==1  }">
 	                  											<a class="btn btn-default btn-xs pull-right" href="gestioneDocumento.do?firmato=1&idDocumento=${certificato.getId()}" style="margin-left:5px"><i class="glyphicon glyphicon-file"></i> Download Verbale Firmato</a>
 	                  											</c:if>			
 	                  											
-	                  											<c:if test="${verbale.getFirmato()==1 && verbale.getControfirmato() == 1  &&  certificato.getInvalid()== false }"> 
+	                  											<c:if test="${verbale.getFirmato()==1 && verbale.getControfirmato() == 1   }"> 
 	                  											<a class="btn btn-default btn-xs pull-right" href="gestioneDocumento.do?controfirmato=1&idDocumento=${certificato.getId()}" style="margin-left:5px"><i class="glyphicon glyphicon-file"></i> Download Verbale Controfirmato</a>
 	                  											
 	                  												
 	                  											</c:if>		
 	                  											
 	                  											
-	                  											<c:if test="${verbale.getFirmato()==1 && (verbale.getControfirmato() == 1 || verbale.codiceCategoria == 'VAL') &&  certificato.getInvalid()== false && (verbale.getSchedaTecnica()==null || verbale.getSchedaTecnica().getFirmato()==1)}"> 
+	                  											<c:if test="${verbale.getFirmato()==1 && (verbale.getControfirmato() == 1 || verbale.codiceCategoria == 'VAL')  && (verbale.getSchedaTecnica()==null || verbale.getSchedaTecnica().getFirmato()==1)}"> 
 	                  											
 	                  											
 	                  												<a class="btn btn-default btn-xs pull-right" onClick="getDestinatarioEmail('${certificato.getId()}')" style="margin-left:5px"><i class="fa fa-paper-plane-o"></i> Invia Verbale</a>
@@ -2722,7 +2734,36 @@ function modificaSedeUtilizzatore(){
 	
 	}
 	
+	function visibileCliente(id_verbale){
+		
+		var value = 0
+		
+		if($('#check_visibile_'+id_verbale).is(':checked')){
+			value = 1
+		}
 	
+		$.ajax({
+			type: "POST",
+			url: "gestioneVerbale.do?action=visibile_cliente&idVerbale="+id_verbale+"&checked="+value,	
+			dataType: "json",
+			success: function( data, textStatus) {
+
+				if(data.success){
+					
+					
+				}
+				
+			},
+
+			error: function(jqXHR, textStatus, errorThrown){
+				$('#errorMsg').html("<h3 class='label label-danger'>"+textStatus+"</h3>");
+				//callAction('logout.do');
+				pleaseWaitDiv.modal('hide');
+			}
+		});
+	
+		
+	}
 	
 			$(document).ready(function() {
 				

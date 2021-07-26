@@ -1,7 +1,11 @@
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@taglib prefix="t" tagdir="/WEB-INF/tags"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
-
+<%@ page import="it.portalECI.DTO.UtenteDTO" %>
+<%
+UtenteDTO user = (UtenteDTO)request.getSession().getAttribute("userObj");
+request.setAttribute("user",user);
+%>
 
 <t:layout title="Dashboard" bodyClass="skin-red sidebar-mini wysihtml5-supported">
 <jsp:attribute name="body_area">
@@ -351,6 +355,17 @@
 	  	 
 	  	  $('#select2').html(opt);
 	
+	  	  if(cliente == "true"){
+		var id_sede = ${user.getIdSede()};
+		var id_cliente = ${user.getIdCliente()};
+    		
+		if(id_sede == 0){
+			$('#select2').val(0);
+		}else{
+			$('#select2').val(id_sede+"_"+id_cliente);
+		}
+    	 	
+	  	  }
 	  		$("#select2").change();  
 	  		
   	  }
@@ -418,9 +433,27 @@
 		   return str;	 		
 	}
     
-    
+	var cliente = "${user.checkRuolo('CL')}";
     $(document).ready(function() {
-    
+    	
+    	$("#select2").select2();
+    	initSelect2('#select1');
+    	
+    	if(cliente == "true"){
+    		
+    		id_cliente = ${user.getIdCliente()};
+    		id_sede = ${user.getIdSede()};
+    		
+    		$('#select1').val(id_cliente);
+    		$('#select1').change();
+    		
+    	//	$('#select2').val(id_sede);
+    	//	$('#select2').change();
+    		
+    		$('#select1').attr("disabled",true);
+    		$('#select2').attr("disabled",true);
+    		
+    	} 
     	
     	var tipo_attrezzatura_options = [];
 
@@ -447,8 +480,7 @@
     	
     	
     	
-    	$("#select2").select2();
-    	initSelect2('#select1');
+    
       	 
    
     });

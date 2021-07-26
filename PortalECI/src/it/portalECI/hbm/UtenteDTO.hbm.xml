@@ -120,5 +120,12 @@
             </many-to-many>
         </set>
         
+       <property name="idCliente" type="int">
+            <column name="id_cliente" />
+        </property>
+        
+               <property name="idSede" type="int">
+            <column name="id_sede" />
+        </property>
     </class>
 </hibernate-mapping>

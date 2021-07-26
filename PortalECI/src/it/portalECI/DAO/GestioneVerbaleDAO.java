@@ -9,6 +9,7 @@ import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.Session;
 
+import it.portalECI.DTO.AllegatoClienteDTO;
 import it.portalECI.DTO.AllegatoMinisteroDTO;
 import it.portalECI.DTO.DocumentoDTO;
 import it.portalECI.DTO.ProgressivoVerbaleDTO;
@@ -27,12 +28,19 @@ public class GestioneVerbaleDAO {
 		boolean ck_ST=user.checkRuolo("ST");
 		boolean ck_RT=user.checkRuolo("RT");
 		boolean ck_SRT=user.checkRuolo("SRT");
-		if(ck_ST==false && ck_AM==false && ck_RT==false && ck_SRT==false) 
+		boolean ck_CL=user.checkRuolo("CL");
+		if(ck_ST==false && ck_AM==false && ck_RT==false && ck_SRT==false && ck_CL == false) 
 		{
 		 
 		query  = session.createQuery( "from VerbaleDTO WHERE type = :_type AND intervento.tecnico_verificatore.id=:_idUser");
 		query.setParameter("_type",VerbaleDTO.VERBALE);
 		query.setParameter("_idUser",user.getId());
+		}
+		else if(ck_CL == true) {
+			query  = session.createQuery( "from VerbaleDTO WHERE type = :_type AND stato.id = 5 and visibile_cliente = 1 and intervento.id_cliente = :_idCliente and intervento.idSede =:_idSede");
+			query.setParameter("_type",VerbaleDTO.VERBALE);
+			query.setParameter("_idCliente",user.getIdCliente());
+			query.setParameter("_idSede",user.getIdSede());
 		}
 		else 
 		{
@@ -258,6 +266,43 @@ public class GestioneVerbaleDAO {
 		
 				
 		return lista;
+	}
+
+	public static ArrayList<AllegatoClienteDTO> getListaAllegatiCliente(int id_cliente, int id_sede, Session session) {
+		
+		ArrayList<AllegatoClienteDTO> lista = null;
+		
+		Query query  = null;
+		
+		if(id_cliente == 0 && id_sede == 0) {
+			query = session.createQuery( "from AllegatoClienteDTO where disabilitato = 0");
+		}else{
+			query = session.createQuery( "from AllegatoClienteDTO where disabilitato = 0 and id_cliente = :_id_cliente and id_sede = :_id_sede");
+			query.setParameter("_id_cliente", id_cliente);
+			query.setParameter("_id_sede", id_sede);
+		}
+		
+
+		lista = (ArrayList<AllegatoClienteDTO>) query.list();		
+		
+		return lista;
+	}
+
+	public static AllegatoClienteDTO getAllegatoCliente(int id_allegato, Session session) {
+		
+		ArrayList<AllegatoClienteDTO> lista = null;
+		AllegatoClienteDTO result = null;
+		
+		Query query  = session.createQuery( "from AllegatoClienteDTO where id=:_id_allegato");
+		query.setParameter("_id_allegato", id_allegato);
+		
+		lista = (ArrayList<AllegatoClienteDTO>) query.list();		
+		
+		if(lista.size()>0) {
+			result = lista.get(0);
+		}
+		
+		return result;
 	}
 	
 }

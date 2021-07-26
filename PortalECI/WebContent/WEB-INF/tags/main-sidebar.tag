@@ -69,6 +69,12 @@
 	            		<% }%>
 	            	
     	        		</li>
+    	        		
+    	        		<li>
+        				
+	            		<a href="#" onClick="callAction('gestioneListaVerbali.do?action=allegati_cliente')">Gestione allegati</a>
+	            			
+				</li>
         	  		</ul>
         	  	
         	</li>
@@ -105,7 +111,7 @@
 					<li><a href="downloadCalver.do"><i class="fa fa-link"></i>Calver Desktop</a></li>
           		</ul>
         	</li> -->
-         <% if(user.checkRuolo("AM") ||(user.checkPermesso("ATTREZZATURE") && user.checkCategoria("VAL"))){%> 
+         <% if(user.checkRuolo("AM") ||user.checkRuolo("CL") ||(user.checkPermesso("ATTREZZATURE") && user.checkCategoria("VAL"))){%> 
         	<li class="treeview">
         	 	<a href="#">
         	 		<i class="fa fa-briefcase"></i>
@@ -214,7 +220,7 @@
           		
         	</li>
         	<% }%>
-        	<% if(user.checkPermesso("GESTIONE_VERBALI")){%> 
+        	<% if(user.checkPermesso("GESTIONE_VERBALI") && !user.checkRuolo("CL")){%> 
         		<li class="treeview">
         		
         		<a href="#">

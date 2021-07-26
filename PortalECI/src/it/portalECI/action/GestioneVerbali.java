@@ -1251,7 +1251,17 @@ public class GestioneVerbali extends HttpServlet {
 			myObj.addProperty("success", true);
 			out.print(myObj);
 		}
+		else if(action!=null && action.equals("visibile_cliente")) {
+			
+			
+			String value = request.getParameter("checked");
+			verbale.setVisibile_cliente(Integer.parseInt(value));
 		
+			session.update(verbale);
+			
+			myObj.addProperty("success", true);
+			out.print(myObj);
+		}
 		else {
 			//caso genericoc della ricerca del verbale per aprire gestioneVerbali					
 			List<DomandaVerbaleDTO> domandeVerbale=new ArrayList<DomandaVerbaleDTO>();

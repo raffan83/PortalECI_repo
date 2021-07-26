@@ -26,14 +26,19 @@ import org.hibernate.Session;
 import com.google.gson.JsonObject;
 
 import it.portalECI.DAO.SessionFacotryDAO;
+import it.portalECI.DTO.AllegatoClienteDTO;
 import it.portalECI.DTO.AllegatoMinisteroDTO;
+import it.portalECI.DTO.ClienteDTO;
+import it.portalECI.DTO.CompanyDTO;
 import it.portalECI.DTO.DocumentoDTO;
+import it.portalECI.DTO.SedeDTO;
 import it.portalECI.DTO.UtenteDTO;
 import it.portalECI.DTO.VerbaleDTO;
 import it.portalECI.Exception.ECIException;
 import it.portalECI.Util.Utility;
 import it.portalECI.bo.CreateScadenzarioVAL;
 import it.portalECI.bo.CreateScadenzarioVIE;
+import it.portalECI.bo.GestioneAnagraficaRemotaBO;
 import it.portalECI.bo.GestioneVerbaleBO;
 import it.portalECI.Util.Costanti;
 
@@ -271,7 +276,46 @@ public class GestioneListaVerbali extends HttpServlet {
 				session.close();
 				
 			}
-			else if(action.equals("upload_allegato_ministero")) {
+			
+			else if(action.equals("allegati_cliente")) {
+				
+				String id_cliente = request.getParameter("id_cliente");
+				String id_sede = request.getParameter("id_sede");
+				
+				if(id_cliente == null) {
+					id_cliente = "0";
+				}
+				if(id_sede == null) {
+					id_sede = "0";
+				}
+				
+				List<SedeDTO> listaSedi = (List<SedeDTO>) request.getSession().getAttribute("listaSedi");
+				if(listaSedi==null) {
+					listaSedi = GestioneAnagraficaRemotaBO.getListaSedi();	
+				}
+				CompanyDTO cmp=(CompanyDTO)request.getSession().getAttribute("usrCompany");
+				
+				String idCompany=""+cmp.getId();
+				
+				List<ClienteDTO> listaClientiFull = GestioneAnagraficaRemotaBO.getListaClienti(idCompany);		
+				
+				
+				ArrayList<AllegatoClienteDTO> lista_allegati = GestioneVerbaleBO.getListaAllegatiCliente(Integer.parseInt(id_cliente), Integer.parseInt(id_sede),session);
+				
+				request.getSession().setAttribute("lista_allegati", lista_allegati);
+				request.getSession().setAttribute("listaClienti", listaClientiFull);
+				request.getSession().setAttribute("listaSedi", listaSedi);
+
+				RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/page/configurazioni/gestioneAllegatiCliente.jsp");
+		     	dispatcher.forward(request,response);
+		     	
+		     	session.getTransaction().commit();
+				session.close();
+				
+			}
+			
+			
+			else if(action.equals("upload_allegato_cliente")) {
 				
 				ajax = true;
 				
@@ -303,10 +347,132 @@ public class GestioneListaVerbali extends HttpServlet {
 		        
 		        		
 				String descrizione = ret.get("descrizione");
+				String id_cliente = ret.get("id_cliente");
+				String id_sede = ret.get("id_sede");
+				
+				AllegatoClienteDTO allegato = new AllegatoClienteDTO();
+				allegato.setDescrizione(descrizione);
+				
+				if(filename!=null && !filename.equals("")) {
+					allegato.setNome_file(filename);
+					//saveFile(fileItem, "DocumentiTest//"+lista_corsi, filename);
+				}
+				
+				
+				ClienteDTO cliente = GestioneAnagraficaRemotaBO.getClienteById(id_cliente);
+				
+				List<SedeDTO> listaSedi = (List<SedeDTO>) request.getSession().getAttribute("listaSedi");
+				if(listaSedi==null) {
+					listaSedi = GestioneAnagraficaRemotaBO.getListaSedi();	
+				}
+				
+				SedeDTO sede = null;
+				if(!id_sede.equals("0")) {
+					sede = GestioneAnagraficaRemotaBO.getSedeFromId(listaSedi, Integer.parseInt(id_sede.split("_")[0]), cliente.get__id());
+					allegato.setId_sede(sede.get__id());
+					allegato.setNome_sede(sede.getDescrizione() +" - "+sede.getIndirizzo()+" - " +sede.getComune()+" ("+sede.getSiglaProvincia()+")");
+				}else {
+					allegato.setId_sede(0);
+					allegato.setNome_sede("Non associate");
+				}
+				
+				
+				allegato.setId_cliente(cliente.get__id());
+				allegato.setNome_cliente(cliente.getNome());
+				
+				session.save(allegato);
+				
+				if(filename!=null && !filename.equals("")) {
+					
+					saveFile(fileItem, allegato.getId(),true, filename);
+				}
+				
+				JsonObject myObj = new JsonObject();
+				PrintWriter  out = response.getWriter();
+				myObj.addProperty("success", true);
+				myObj.addProperty("messaggio", "Allegato salvato con successo!");
+				out.print(myObj);
+				session.getTransaction().commit();
+				session.close();
+				
+			}
+			else if(action.equals("download_allegato_cliente")) {
+				
+				String id_allegato = request.getParameter("id_allegato");
+
+				AllegatoClienteDTO allegato = GestioneVerbaleBO.getAllegatoCliente(Integer.parseInt(id_allegato), session);
+					
+				String path = Costanti.PATH_ROOT+"//AllegatiCliente//"+allegato.getId()+"//"+allegato.getNome_file();
+					
+				response.setHeader("Content-disposition", "attachment; filename=\""+allegato.getNome_file()+"\"");
+				
+				downloadFile(path, response.getOutputStream());
+					
+				response.setContentType("application/pdf");	
+				
+					
+				session.close();
+					
+			}
+			
+			else if(action.equals("elimina_allegato_cliente")) {
+				
+				String id_allegato = request.getParameter("id_allegato");
+
+				AllegatoClienteDTO allegato = GestioneVerbaleBO.getAllegatoCliente(Integer.parseInt(id_allegato), session);
+					
+				allegato.setDisabilitato(1);
+				session.update(allegato);
+				
+				JsonObject myObj = new JsonObject();
+				PrintWriter  out = response.getWriter();
+				myObj.addProperty("success", true);
+				myObj.addProperty("messaggio", "Allegato eliminato con successo!");
+				out.print(myObj);
+				session.getTransaction().commit();
+				session.close();
+				
+				
+			}
+			
+			
+			else if(action.equals("upload_allegato_ministero")) {
+				
+				ajax = true;
+				
+				response.setContentType("application/json");
+				 
+			  	List<FileItem> items = null;
+		        if (request.getContentType() != null && request.getContentType().toLowerCase().indexOf("multipart/form-data") > -1 ) {
+
+		        		items = new ServletFileUpload(new DiskFileItemFactory()).parseRequest(request);
+		        	}
+		        
+		       
+				FileItem fileItem = null;
+				String filename= null;
+		        Hashtable<String,String> ret = new Hashtable<String,String>();
+		      
+		        for (FileItem item : items) {
+	            	 if (!item.isFormField()) {
+	            		
+	                     fileItem = item;
+	                     filename = item.getName();
+	                     
+	            	 }else
+	            	 {
+	                      ret.put(item.getFieldName(), new String (item.getString().getBytes ("iso-8859-1"), "UTF-8"));
+	            	 }
+	            	
+	            }
+		        
+		        		
+				String descrizione = ret.get("descrizione");				
 				
 				AllegatoMinisteroDTO allegato = new AllegatoMinisteroDTO();
 				allegato.setDescrizione(descrizione);
 				
+							
 				if(filename!=null && !filename.equals("")) {
 					allegato.setNome_file(filename);
 					//saveFile(fileItem, "DocumentiTest//"+lista_corsi, filename);
@@ -316,7 +482,7 @@ public class GestioneListaVerbali extends HttpServlet {
 				
 				if(filename!=null && !filename.equals("")) {
 					
-					saveFile(fileItem, allegato.getId(), filename);
+					saveFile(fileItem, allegato.getId(), false,filename);
 				}
 				
 				JsonObject myObj = new JsonObject();
@@ -377,9 +543,14 @@ public class GestioneListaVerbali extends HttpServlet {
 	}
 	
 	
-	 private void saveFile(FileItem item, int id, String filename) {
+	 private void saveFile(FileItem item, int id, boolean cliente, String filename) {
 
 		 	String path_folder = Costanti.PATH_ROOT+"//AllegatiMinistero//"+id+"//";
+		 	
+		 	if(cliente) {
+		 		path_folder = Costanti.PATH_ROOT+"//AllegatiCliente//"+id+"//";	
+		 	}
+		 	 
 			File folder=new File(path_folder);
 			
 			if(!folder.exists()) {

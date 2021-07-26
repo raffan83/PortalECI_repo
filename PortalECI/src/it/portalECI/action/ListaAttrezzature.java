@@ -108,7 +108,7 @@ public class ListaAttrezzature extends HttpServlet {
 				List<ClienteDTO> listaClientiFull = GestioneAnagraficaRemotaBO.getListaClienti(idCompany);		
 				List<SedeDTO> listaSediFull = GestioneAnagraficaRemotaBO.getListaSedi();
 				
-				if(!utente.checkRuolo("AM") && !utente.checkRuolo("ST") ) {
+				if(!utente.checkRuolo("AM") && !utente.checkRuolo("ST") && !utente.checkRuolo("CL") ) {
 					
 					List<ClienteDTO> listaClienti = new ArrayList<ClienteDTO>();	
 					
@@ -152,7 +152,24 @@ public class ListaAttrezzature extends HttpServlet {
 					request.getSession().setAttribute("dateFrom",null);	
 					request.getSession().setAttribute("dateTo",null);	
 					
-				}else {
+				}
+				else if(utente.checkRuolo("CL")) {
+					
+					List<ClienteDTO> listaClienti = new ArrayList<ClienteDTO>();	
+					
+					List<SedeDTO> listaSedi = new ArrayList<SedeDTO>();
+					
+					ClienteDTO cliente = GestioneAnagraficaRemotaBO.getClienteById(utente.getIdCliente()+"");
+					SedeDTO sede = GestioneAnagraficaRemotaBO.getSedeFromId(listaSediFull, utente.getIdSede(), utente.getIdCliente());
+					
+					listaClienti.add(cliente);
+					listaSedi.add(sede);
+					request.getSession().setAttribute("listaClienti",listaClienti);
+					request.getSession().setAttribute("listaSedi",listaSedi);	
+					request.getSession().setAttribute("dateFrom",null);	
+					request.getSession().setAttribute("dateTo",null);
+				}
+				else {
 					
 					request.getSession().setAttribute("listaClienti",listaClientiFull);
 					request.getSession().setAttribute("listaSedi",listaSediFull);	

@@ -2,7 +2,11 @@
 <%@taglib prefix="t" tagdir="/WEB-INF/tags"%>
 <%@page import="java.text.SimpleDateFormat"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
-
+<%@ page import="it.portalECI.DTO.UtenteDTO" %>
+<%
+UtenteDTO user = (UtenteDTO)request.getSession().getAttribute("userObj");
+request.setAttribute("user",user);
+%>
 <t:layout title="Dashboard" bodyClass="skin-red sidebar-mini wysihtml5-supported">
 
 	<jsp:attribute name="body_area">
@@ -78,6 +82,28 @@
 													
               										<table id="tabPM" class="table table-bordered table-hover dataTable table-striped" role="grid" width="100%">
  														<thead>
+ 														<c:if test="${user.checkRuolo('CL') }">
+ 														<th>ID Verbale</th>
+ 																<th>ID Intervento</th>
+ 																<th>ID Commessa</th>
+ 																<th>Numero Verbale</th>
+ 																<th>Data verifica</th>
+ 																<th>Matricola Attrezzatura</th>
+ 																<th style="min-width:200px">Sede Cliente</th>
+ 																<th>Sede Utilizzatore</th>
+ 																
+ 																<th>Codice Verifica</th>
+ 																<th>Tecnico Verificatore</th><%-- 
+ 																<th>Descrizione Verifica</th> --%>
+ 																<th>Stato</th>
+ 																<th>Stato S.T.</th>
+ 																<th>Certificati</th>
+ 																
+ 																<th>Allegati</th>
+ 													
+ 																
+ 														</c:if>
+ 														<c:if test="${!user.checkRuolo('CL') }">
  															<tr class="active"> 
  																<th>ID Verbale</th>
  																<th>ID Intervento</th>
@@ -100,10 +126,141 @@
  																<th>Data Creazione</th>
  																<td></td>
  															</tr>
+ 															</c:if>
  														</thead>
  
  														<tbody> 
-  															<c:forEach items="${listaVerbali}" var="verbale">  															
+  															<c:forEach items="${listaVerbali}" var="verbale">  	
+  															<c:if test="${user.checkRuolo('CL') }">														
+ 																<tr role="row" id="${verbale.getId()}">
+																	<td>
+																		${verbale.getId()}
+																		
+																	</td>	
+																	<td>
+																	
+																			${verbale.getIntervento().getId()}
+																		
+																	</td>
+																	<td>
+																	
+																			${verbale.intervento.idCommessa}
+																		
+																	</td>
+																	<td>
+																		${verbale.numeroVerbale }
+																	</td>
+																	<td>
+																	<c:choose>
+																	<c:when test="${verbale.data_verifica!=null }">
+																		<fmt:formatDate pattern="dd/MM/yyyy" value='${verbale.data_verifica}' type='date' />
+																	</c:when>
+																	<c:otherwise>
+																		<c:choose>
+																		<c:when test="${verbale.data_verifica_interna!=null }">
+																			<fmt:formatDate pattern="dd/MM/yyyy" value='${verbale.data_verifica_interna}' type='date' />
+																		</c:when>
+																		<c:otherwise>
+																			<c:if test="${verbale.data_verifica_integrita!=null }">
+																			<fmt:formatDate pattern="dd/MM/yyyy" value='${verbale.data_verifica_integrita}' type='date' />
+																			</c:if>																	
+																		</c:otherwise>
+																		</c:choose>
+																	</c:otherwise>
+																	</c:choose>
+																	
+																	
+																	</td>
+																	<td>
+																	<c:if test="${verbale.attrezzatura!=null}">
+																	${verbale.attrezzatura.matricola_inail }
+																	</c:if>
+																	
+																	
+																	</td>
+																	
+																	<td>
+																		<c:out value='${verbale.getIntervento().getNome_sede()}'/>
+																	</td>
+																	<td>
+																		<c:out value='${verbale.getSedeUtilizzatore()}'/>
+																	</td>
+																
+																	<td>
+																		<c:out value='${verbale.getCodiceVerifica()}'/>
+																	</td>
+																	<td>
+																		<c:out value='${verbale.getIntervento().getTecnico_verificatore().getNominativo()}'/>
+																	</td>
+																	<%-- <td>
+																		<c:out value='${verbale.getDescrizioneVerifica()}'/>
+																	</td> --%>
+																	<td>
+																		<span class="label" style="color:#000000 !important; background-color:${verbale.getStato().getColore(verbale.getStato().getId())} !important;">${verbale.getStato().getDescrizione()}</span>
+																		
+																		 																	
+																	</td>
+																	<td>
+																	<c:if test="${verbale.getSchedaTecnica()!=null }">
+																			<span class="label" style="color:#000000 !important; background-color:${verbale.getStato().getColore(verbale.getSchedaTecnica().getStato().getId())} !important;">${verbale.getSchedaTecnica().getStato().getDescrizione()}</span>
+																		</c:if>  											
+																		<c:if test="${verbale.getSchedaTecnica()==null }">
+																			<span class="label" style="color:#000000 !important; background-color:grey !important;">ASSENTE</span>
+																		</c:if>	 
+																	</td>
+																	<td>
+																	
+																
+      																	<c:forEach items="${verbale.getDocumentiVerbale()}" var="docum">	
+      																		<c:if test="${docum.getType().equals('CERTIFICATO') && !docum.getInvalid()}">
+<!--       																		if(verbale.getCodiceCategoria().equals("VAL")) {
+					docPdf	= new File(Costanti.PATH_CERTIFICATI+doc.getFilePath().substring(0, doc.getFilePath().length()-4)+"_F.pdf");
+				}else {
+					docPdf	= new File(Costanti.PATH_CERTIFICATI+doc.getFilePath().substring(0, doc.getFilePath().length()-4)+"_CF.pdf");
+				} -->
+																				<c:if test="${verbale.getCodiceCategoria().equals('VAL') }">
+																					<%-- <a class="btn customTooltip" title="Click per aprire il certificato" onclick="scaricaFile(${docum.id}, ${docum.verbale.id });"> --%>
+																					<a class="btn customTooltip" title="Click per aprire l'allegato" href="gestioneDocumento.do?firmato=1&idDocumento=${docum.getId()}">
+																					<i class="glyphicon glyphicon-file"></i>
+            																	</a>
+																				</c:if>
+																				<c:if test="${!verbale.getCodiceCategoria().equals('VAL') }">
+																					<%-- <a class="btn customTooltip" title="Click per aprire il certificato" onclick="scaricaFile(${docum.id}, ${docum.verbale.id });"> --%>
+																				<a class="btn customTooltip" title="Click per aprire l'allegato" href="gestioneDocumento.do?controfirmato=1&idDocumento=${docum.getId()}">
+    	  																		<%-- <a class="btn customTooltip" title="Click per aprire il certificato" onclick="scaricaFile(${docum.id}, ${docum.verbale.id });"> --%>
+	      																			<i class="glyphicon glyphicon-file"></i>
+            																	</a>
+            																	</c:if>
+	      																	</c:if>      																		
+      																	</c:forEach>
+      																
+																																		
+																	</td>
+
+																	<td>
+																	
+																		
+      																	<c:forEach items="${verbale.getDocumentiVerbale()}" var="docum">	      																		
+      																		<c:if test="${docum.getType().equals('ALLEGATO')}">
+	      																		<%-- <a class="btn customTooltip" title="Click per aprire l'allegato" onclick="scaricaFile(${docum.id}, ${docum.verbale.id });">gestioneDocumento.do?idDocumento=${allegato.getId() --%>
+	      																		<a class="btn customTooltip" title="Click per aprire l'allegato" href="gestioneDocumento.do?idDocumento=${docum.getId()}">
+	      																		
+	      																			<i class="glyphicon glyphicon-file"></i>
+            																	</a>
+    	  																	</c:if>
+      																	</c:forEach>
+      														
+																																		
+																	</td>
+																	
+        															
+																	
+																</tr>
+																</c:if>
+																
+																
+																
+																<c:if test="${!user.checkRuolo('CL') }">														
  																<tr role="row" id="${verbale.getId()}">
 																	<td>
 																		<a href="#" class="btn customTooltip customlink" title="Click per aprire il dettaglio del Verbale" onclick="callAction('gestioneVerbale.do?idVerbale=${verbale.getId()}');">
@@ -215,6 +372,9 @@
             															</a>
         															</td>
 																</tr>
+																</c:if>
+																
+																
 															</c:forEach>
  														</tbody>
  													</table>  
@@ -230,6 +390,27 @@
 					</div>  	
 
 				    <div id="errorMsg"><!-- Place at bottom of page --></div> 
+				    
+				    
+				    
+				    <div id="myModalError" class="modal fade" role="dialog" aria-labelledby="myLargeModalLabel">
+    						<div class="modal-dialog" role="document">
+    							<div class="modal-content">
+     								<div class="modal-header">
+        								<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        								<h4 class="modal-title" id="myModalLabel">Messaggio</h4>
+      								</div>
+       								<div class="modal-body">
+										<div id="modalErrorDiv">				
+										</div>	   
+  										<div id="empty2" class="label label-danger testo12"></div>
+  		 							</div>
+      								<div class="modal-footer">
+        								<button type="button" class="btn btn-outline" data-dismiss="modal">Chiudi</button>
+      								</div>
+    							</div>
+  							</div>
+						</div> 
 				</section>  
   			</div>
   			<!-- /.content-wrapper -->
@@ -242,7 +423,7 @@
 		<!-- ./wrapper -->
 
 	</jsp:attribute>
-
+     					
 
 	<jsp:attribute name="extra_css">
 		<link type="text/css" href="css/bootstrap.min.css" />
@@ -421,6 +602,49 @@
 			  	} );
     	 		
     		});
+    		
+    		
+    		
+    		function scaricaFile(idDoc, id_verbale){
+				pleaseWaitDiv = $('#pleaseWaitDialog');
+				pleaseWaitDiv.modal();
+				$.ajax({
+					type: "POST",
+					url: "gestioneVerbale.do?action=visualizzaDocumento&idVerbale="+id_verbale,
+					data : "idDoc="+idDoc,				
+					dataType: "json",
+					success: function( data, textStatus) {
+						if(data.success){
+							var objbuilder = '';
+						    objbuilder += ('<object width="100%" height="100%"      data="data:application/pdf;base64,');
+						    objbuilder += (data.pdfString);
+						    objbuilder += ('" type="application/pdf" class="internal">');
+						    objbuilder += ('<embed src="data:application/pdf;base64,');
+						    objbuilder += (data.pdfString);
+						    objbuilder += ('" type="application/pdf" />');
+						    objbuilder += ('</object>');
+						    var win = window.open('_blank','titlebar=yes');
+					        win.document.title = 'Certificato';
+					        win.document.write('<html><body>');					       
+					        win.document.write(objbuilder);
+					        win.document.write('</body></html>');
+					        layer = jQuery(win.document);
+							// window.open(objbuilder,'_blank');
+							 pleaseWaitDiv.modal('hide');
+						}else{
+							pleaseWaitDiv.modal('hide');	
+							$('#modalErrorDiv').html(data.messaggio);
+							$('#myModalError').removeClass();
+							$('#myModalError').addClass("modal modal-danger");
+							$('#myModalError').modal('show');									
+						}						
+					},
+					error: function(jqXHR, textStatus, errorThrown){		          
+						$('#errorMsg').html("<h3 class='label label-danger'>"+textStatus+"</h3>");
+						pleaseWaitDiv.modal('hide');
+					}
+				});
+			}
     		    
   		</script>
   

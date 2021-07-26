@@ -43,6 +43,7 @@ import it.portalECI.DAO.GestioneRispostaVerbaleDAO;
 import it.portalECI.DAO.GestioneStatoInterventoDAO;
 import it.portalECI.DAO.GestioneStatoVerbaleDAO;
 import it.portalECI.DAO.GestioneVerbaleDAO;
+import it.portalECI.DTO.AllegatoClienteDTO;
 import it.portalECI.DTO.AllegatoMinisteroDTO;
 import it.portalECI.DTO.AttrezzaturaDTO;
 import it.portalECI.DTO.ColonnaTabellaQuestionarioDTO;
@@ -639,7 +640,7 @@ public class GestioneVerbaleBO {
 		if(verbale.getSedeUtilizzatore()!=null) {
 			codProv = verbale.getSedeUtilizzatore().split("\\(")[1].replace(")","");
 		}
-		if(verbale.getAttrezzatura()!=null && verbale.getAttrezzatura().getProvincia_div()!=null) {
+		else if(verbale.getAttrezzatura()!=null && verbale.getAttrezzatura().getProvincia_div()!=null) {
 			codProv = verbale.getAttrezzatura().getProvincia_div();
 		}
 		else {
@@ -1663,7 +1664,15 @@ public class GestioneVerbaleBO {
 		return GestioneVerbaleDAO.getListaEmailVerbale(id, session);
 	}
 
+	public static ArrayList<AllegatoClienteDTO> getListaAllegatiCliente(int id_cliente, int id_sede, Session session) {
+		
+		return GestioneVerbaleDAO.getListaAllegatiCliente(id_cliente,id_sede, session);
+	}
 
-	
+
+public static AllegatoClienteDTO getAllegatoCliente(int id_allegato, Session session) {
+		
+		return GestioneVerbaleDAO.getAllegatoCliente(id_allegato, session);
+	}
 
 }

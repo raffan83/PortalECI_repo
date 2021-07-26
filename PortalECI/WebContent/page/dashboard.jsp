@@ -13,7 +13,7 @@
   			<div id="corpoframe" class="content-wrapper">
   			
   			<section class="content">
-  			
+  			<c:if test="${!userObj.checkRuolo('CL') }">	
   			       							<div class="row">         
        								<div class="col-xs-6">
 										<div class="box box-danger box-solid">
@@ -68,7 +68,7 @@
 							
 									
 								</div>
-								
+	</c:if>							
 <c:if test="${userObj.checkRuolo('AM') }">								
 	<div class="row">         
        								<div class="col-xs-6">

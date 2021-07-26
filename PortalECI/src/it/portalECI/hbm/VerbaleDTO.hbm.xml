@@ -175,5 +175,9 @@
 		<property name="inviato" type="int">
 			<column name="inviato" />
 		</property> 
+		
+		<property name="visibile_cliente" type="int">
+			<column name="visibile_cliente" />
+		</property>
 	</class>
 </hibernate-mapping> 
