@@ -293,7 +293,7 @@
 	                  											
 	                  											<c:if test="${verbale.getFirmato()==1 && verbale.getControfirmato() == 1 &&  certificato.getInvalid()== false }"> --%>
 	                  											
-	                  											 <c:if test="${verbale.getFirmato()==0   && verbale.getStato().getId()== 5}">
+	                  											 <c:if test="${verbale.getFirmato()==0 && certificato.getInvalid()==false && verbale.getStato().getId()== 5}">
 	                  											<a class="btn btn-default btn-xs pull-right" onClick="modalCaricaFileFirmato('${certificato.getId()}')" style="margin-left:5px"><i class="fa fa-plus"></i> Carica Verbale Firmato</a>
 	                  											</c:if>
 	                  											
@@ -3005,15 +3005,16 @@ function modificaSedeUtilizzatore(){
 				var idstato=$("#idstatoCambioStato").val();
 				
 				if(value){
-					modificaRisposte(idverbale,idform);
+					modificaRisposte(idverbale,idform, true);
+				
 				}else{
 					annullaModifiche(idform);
 				}
 				
-				salvaCambioStato(idverbale, idform, idstato);
+				
 			}
 			
-			function modificaRisposte(idVerb,idform){
+			function modificaRisposte(idVerb,idform, cambiostato){
 				
 			if(!checkStrumentoVerificatore()){
 					
@@ -3036,16 +3037,23 @@ function modificaSedeUtilizzatore(){
 					dataType: "json",
 					success: function( data, textStatus) {
 
+						pleaseWaitDiv.modal('hide');
 						if(!data.success){	
 							$('#modalErrorDiv').html(data.messaggio);
 							$('#myModalError').removeClass();
 							$('#myModalError').addClass("modal modal-danger");
 							$('#myModalError').modal('show');
+						}else{
+							if(cambiostato!=null && cambiostato == true){
+								var idverbale=$("#idverbCambioStato").val();
+								var idform=$("#idformCambioStato").val();
+								var idstato=$("#idstatoCambioStato").val();
+								salvaCambioStato(idverbale, idform, idstato);
+							}else{
+								location.reload();	
+							}
 						}
 						
-						pleaseWaitDiv.modal('hide');
-						
-						location.reload();
 					},
 
 					error: function(jqXHR, textStatus, errorThrown){
