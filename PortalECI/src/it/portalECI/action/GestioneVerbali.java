@@ -262,9 +262,9 @@ public class GestioneVerbali extends HttpServlet {
 
 					String check_sede = request.getParameter("check_sede");
 					
-					AttrezzaturaDTO attrezzatura = verbale.getAttrezzatura();	
+					//AttrezzaturaDTO attrezzatura = verbale.getAttrezzatura();	
 					
-					if(attrezzatura!=null) {
+					if(verbale.getAttrezzatura()!=null) {
 						if(check_sede!=null && check_sede.equals("1")) {
 							
 							String presso = request.getParameter("presso");
@@ -274,20 +274,21 @@ public class GestioneVerbali extends HttpServlet {
 							String provincia = request.getParameter("provincia");
 							String regione = request.getParameter("regione");
 							
-							attrezzatura.setPresso_div(presso);
-							attrezzatura.setIndirizzo_div(indirizzo);
-							attrezzatura.setComune_div(comune);
-							attrezzatura.setCap_div(cap);
-							attrezzatura.setProvincia_div(provincia);
-							attrezzatura.setRegione_div(regione);					
+							verbale.getAttrezzatura().setPresso_div(presso);
+							verbale.getAttrezzatura().setIndirizzo_div(indirizzo);
+							verbale.getAttrezzatura().setComune_div(comune);
+							verbale.getAttrezzatura().setCap_div(cap);
+							verbale.getAttrezzatura().setProvincia_div(provincia);
+							verbale.getAttrezzatura().setRegione_div(regione);					
 						}else {
-							attrezzatura.setIndirizzo_div(null);
-							attrezzatura.setComune_div(null);
-							attrezzatura.setCap_div(null);
-							attrezzatura.setProvincia_div(null);
-							attrezzatura.setRegione_div(null);	
+							verbale.getAttrezzatura().setPresso_div(null);
+							verbale.getAttrezzatura().setIndirizzo_div(null);
+							verbale.getAttrezzatura().setComune_div(null);
+							verbale.getAttrezzatura().setCap_div(null);
+							verbale.getAttrezzatura().setProvincia_div(null);
+							verbale.getAttrezzatura().setRegione_div(null);	
 						}
-						session.update(attrezzatura);
+						session.update(verbale.getAttrezzatura());
 					}
 					
 										

@@ -311,19 +311,19 @@ public static void sendPecVerbale(ArrayList<VerbaleDTO> lista_verbali, String ma
 				  BodyPart attachPdf = new MimeBodyPart();
 				  
 				  
-				String filenamePdf = verbale.getNumeroVerbale()+"_CF.pdf";
+				String filenamePdf = "_CF.pdf";
 				String filenamePdfScheda = null;
 				String pathScheda = null;
 				
 				
 				if(verbale.getControfirmato()==0) {
-					filenamePdf = verbale.getNumeroVerbale()+"_F.pdf";
+					filenamePdf = "_F.pdf";
 				}
 				
 				
 				for (DocumentoDTO doc : verbale.getDocumentiVerbale()) {
 					if(!doc.getInvalid() && doc.getType().equals("CERTIFICATO")) {
-						DataSource source = new FileDataSource(Costanti.PATH_CERTIFICATI+doc.getFilePath().replace(doc.getFileName(), filenamePdf));
+						DataSource source = new FileDataSource(Costanti.PATH_CERTIFICATI+doc.getFilePath().replace(".pdf", filenamePdf));
 				        attachPdf.setDataHandler(new DataHandler(source));
 				        attachPdf.setFileName(verbale.getNumeroVerbale()+".pdf");					        
 				        
@@ -348,7 +348,7 @@ public static void sendPecVerbale(ArrayList<VerbaleDTO> lista_verbali, String ma
 						DocumentoDTO d = doc.next();
 						if(!d.getInvalid()) {
 							filenamePdfScheda = d.getFileName().substring(0,d.getFileName().length()-4)+"_F.pdf";
-							pathScheda = Costanti.PATH_CERTIFICATI+d.getFilePath().replace(d.getFileName(), filenamePdfScheda);
+							pathScheda = Costanti.PATH_CERTIFICATI+d.getFilePath().replace(".pdf", filenamePdfScheda);
 						}
 					}
 						

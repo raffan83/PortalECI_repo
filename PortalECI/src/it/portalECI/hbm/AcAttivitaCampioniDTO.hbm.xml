@@ -55,5 +55,8 @@
          <property name="certificato" type="java.lang.String">
             <column name="certificato" />
         </property>
+         <property name="numero_certificato" type="java.lang.String">
+            <column name="numero_certificato" />
+        </property>
     </class>
 </hibernate-mapping>

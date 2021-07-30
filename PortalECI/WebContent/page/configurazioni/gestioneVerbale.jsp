@@ -2838,7 +2838,7 @@ function modificaSedeUtilizzatore(){
 					$('#cap').focusout();
 					$('#check_sede_diversa').iCheck('check');
 				
-					
+					$('#sede_diversa').show();
 				}
 				
 				$('#esito').select2();

@@ -143,6 +143,7 @@ public class GestioneAttivitaCampione extends HttpServlet {
 				String stato = ret.get("stato");
 				String campo_sospesi = ret.get("campo_sospesi");
 				String operatore = ret.get("operatore");				
+				String numero_certificato = ret.get("numero_certificato");
 				
 				CampioneDTO campione = GestioneCampioneDAO.getCampioneFromId(idC, session);				
 				
@@ -170,7 +171,7 @@ public class GestioneAttivitaCampione extends HttpServlet {
 						campione.setDataScadenza(format.parse(data_scadenza));
 						session.update(campione);
 					}
-					
+					attivita.setNumero_certificato(numero_certificato);
 					attivita.setEtichettatura(etichettatura);
 					attivita.setStato(stato);
 					attivita.setCampo_sospesi(campo_sospesi);
@@ -253,6 +254,7 @@ public class GestioneAttivitaCampione extends HttpServlet {
 				String stato = ret.get("stato_mod");
 				String campo_sospesi = ret.get("campo_sospesi_mod");
 				String operatore = ret.get("operatore_mod");
+				String numero_certificato = ret.get("numero_certificato_mod");
 				
 				AcAttivitaCampioneDTO attivita = GestioneAttivitaCampioneBO.getAttivitaFromId(Integer.parseInt(id_attivita), session);
 				
@@ -279,6 +281,7 @@ public class GestioneAttivitaCampione extends HttpServlet {
 						session.update(attivita.getCampione());
 					}
 					
+					attivita.setNumero_certificato(numero_certificato);
 					attivita.setEtichettatura(etichettatura);
 					attivita.setStato(stato);
 					attivita.setCampo_sospesi(campo_sospesi);

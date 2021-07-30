@@ -126,12 +126,12 @@ public class GestioneVerbaleBO {
 				Boolean verificato=true;
 				
 				for(VerbaleDTO verbaleInt : intervento.getVerbali()) {
-					if(verbaleInt != null && verbaleInt.getStato().getId()!=StatoVerbaleDTO.RIFIUTATO && verbaleInt.getStato().getId()!= StatoVerbaleDTO.ACCETTATO ) {
+					if(verbaleInt != null && verbaleInt.getStato().getId()!=10 && verbaleInt.getStato().getId()!= StatoVerbaleDTO.ACCETTATO ) {
 						verificato=false;
 						break;
 					}
 					
-					if(verbaleInt != null && verbaleInt.getSchedaTecnica()!=null && verbaleInt.getSchedaTecnica().getStato().getId()!=StatoVerbaleDTO.RIFIUTATO && verbaleInt.getSchedaTecnica().getStato().getId()!= StatoVerbaleDTO.ACCETTATO) {
+					if(verbaleInt != null && verbaleInt.getSchedaTecnica()!=null && verbaleInt.getSchedaTecnica().getStato().getId()!=10 && verbaleInt.getSchedaTecnica().getStato().getId()!= StatoVerbaleDTO.ACCETTATO) {
 						verificato=false;
 						break;
 					}

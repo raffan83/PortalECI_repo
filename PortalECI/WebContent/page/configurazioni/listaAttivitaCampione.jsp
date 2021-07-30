@@ -74,10 +74,10 @@ UtenteDTO userObj = (UtenteDTO)request.getSession().getAttribute("userObj");
 <button class="btn customTooltip btn-info" onClick="dettaglioManutenzione('${utl:escapeJS(attivita.descrizione_attivita)}','${attivita.tipo_manutenzione }','${attivita.data }','${utl:escapeJS(attivita.operatore.nominativo) }')" title="Click per visualizzare l'attività di manutenzione"><i class="fa fa-arrow-right"></i></button>
 </c:if>
 <c:if test="${attivita.tipo_attivita.id==3}">
-<button class="btn customTooltip btn-info" onClick="dettaglioVerificaTaratura('${utl:escapeJS(attivita.tipo_attivita.descrizione) }','${attivita.data}','${utl:escapeJS(attivita.ente) }','${attivita.data_scadenza }','${utl:escapeJS(attivita.etichettatura) }','${attivita.stato }','${utl:escapeJS(attivita.campo_sospesi) }','${utl:escapeJS(attivita.operatore.nominativo)}','','','')" title="Click per visualizzare l'attività di taratura"><i class="fa fa-arrow-right"></i></button>
+<button class="btn customTooltip btn-info" onClick="dettaglioVerificaTaratura('${utl:escapeJS(attivita.tipo_attivita.descrizione) }','${attivita.data}','${utl:escapeJS(attivita.ente) }','${attivita.data_scadenza }','${utl:escapeJS(attivita.etichettatura) }','${attivita.stato }','${utl:escapeJS(attivita.campo_sospesi) }','${utl:escapeJS(attivita.operatore.nominativo)}','${attivita.numero_certificato }','','')" title="Click per visualizzare l'attività di taratura"><i class="fa fa-arrow-right"></i></button>
 </c:if>
 <c:if test="${userObj.checkRuolo('AM')|| userObj.checkRuolo('ST') }">
-<button class="btn customTooltip btn-warning" onClick="modificaAttivita('${attivita.id}','${attivita.tipo_attivita.id }','${utl:escapeJS(attivita.descrizione_attivita)}','${attivita.data}','${attivita.tipo_manutenzione }','${utl:escapeJS(attivita.ente) }','${attivita.data_scadenza }','${utl:escapeJS(attivita.campo_sospesi) }','${attivita.operatore.id }','${utl:escapeJS(attivita.etichettatura) }','${attivita.stato }','' )" title="Click per modificare l'attività"><i class="fa fa-edit"></i></button>
+<button class="btn customTooltip btn-warning" onClick="modificaAttivita('${attivita.id}','${attivita.tipo_attivita.id }','${utl:escapeJS(attivita.descrizione_attivita)}','${attivita.data}','${attivita.tipo_manutenzione }','${utl:escapeJS(attivita.ente) }','${attivita.data_scadenza }','${utl:escapeJS(attivita.campo_sospesi) }','${attivita.operatore.id }','${utl:escapeJS(attivita.etichettatura) }','${attivita.stato }','${attivita.numero_certificato }' )" title="Click per modificare l'attività"><i class="fa fa-edit"></i></button>
 </c:if>
  <c:if test="${attivita.allegato!=null && !attivita.allegato.equals('') }">
  	<button class="btn customTooltip btn-danger" onClick="callAction('gestioneAttivitaCampioni.do?action=download_allegato_certificato&id_attivita=${attivita.id}')" title="Click per scaricare l'allegato"><i class="fa fa-arrow-down"></i></button>
@@ -352,10 +352,10 @@ UtenteDTO userObj = (UtenteDTO)request.getSession().getAttribute("userObj");
         <label >Operatore:</label>
              <input id="operatore_dtl" class="form-control" readonly>
         </div>
-<!--         <div class="col-sm-6">
+         <div class="col-sm-6">
         <label >Numero Certificato:</label>
              <input id="certificato_dtl" class="form-control  pull-right" readonly>
-        </div> -->
+        </div>
 <!--         <div class="col-sm-3">
         <label >ID misura:</label>
              <input id="misura_dtl" class="form-control  pull-right" readonly>
@@ -456,8 +456,9 @@ UtenteDTO userObj = (UtenteDTO)request.getSession().getAttribute("userObj");
      	.concat("<div class='col-sm-2'><label class='pull-right'>Operatore:</label></div><div class='col-sm-4'><select class='form-control select2' data-placeholder='Seleziona Operatore...' id='operatore' name='operatore'><option value=''></option><c:forEach items='${lista_utenti}' var='utente'><option value='${utente.id}'>${utente.nominativo}</option></c:forEach></select></div>")
      /* 	.concat("<div class='col-sm-2' style='margin-top:15px'><label>Certificato:</label></div><div class='col-sm-4' style='margin-top:15px'><input class='form-control' id='id_certificato' name='id_certificato' type='text' readonly/></div><div>")
      	.concat("<div class='col-sm-2' style='margin-top:15px'><a class='btn btn-primary' onClick='caricaMisura()'><i class='fa fa-icon-plus'></i>Carica Misura</a></div></div>"); */
-		 .concat("<div class='col-sm-2' style='margin-top:15px'><span class='btn btn-primary fileinput-button'><i class='glyphicon glyphicon-plus'></i><span>Carica Certificato...</span><input accept='.pdf,.PDF,.p7m'  id='fileupload_certificato' name='fileupload_certificato' type='file'></span></div><div class='col-xs-1'></div><div class='col-xs-5'style='margin-top:15px'><label id='label_certificato'></label></div></div>");
 		 
+		.concat("<div class='col-sm-2' style='margin-top:15px'><label>Numero Certificato:</label></div><div class='col-sm-4' style='margin-top:15px'><input class='form-control' id='numero_certificato' name='numero_certificato' type='text'/></div>")
+     	.concat("<div class='col-sm-2' style='margin-top:15px'><span class='btn btn-primary fileinput-button'><i class='glyphicon glyphicon-plus'></i><span>Carica Certificato...</span><input accept='.pdf,.PDF,.p7m'  id='fileupload_certificato' name='fileupload_certificato' type='file'></span></div><div class='col-xs-1'></div><div class='col-xs-3'style='margin-top:15px'><label id='label_certificato'></label></div>")
 	 }
 	 
 	 
@@ -532,9 +533,10 @@ UtenteDTO userObj = (UtenteDTO)request.getSession().getAttribute("userObj");
      	.concat("<div class='col-sm-2'><label>Note:</label></div><div class='col-sm-4'><input class='form-control' id='campo_sospesi_mod' name='campo_sospesi_mod' type='text'/></div>")
      	.concat("<div class='col-sm-2'><label class='pull-right'>Operatore:</label></div><div class='col-sm-4'><select class='form-control select2' data-placeholder='Seleziona Operatore...' id='operatore_mod' name='operatore_mod' style='width:100%'><option value=''></option><c:forEach items='${lista_utenti}' var='utente'><option value='${utente.id}'>${utente.nominativo}</option></c:forEach></select></div>")
      	/* .concat("<div class='col-sm-2' style='margin-top:15px'><label>Certificato:</label></div><div class='col-sm-4' style='margin-top:15px'><input class='form-control' id='id_certificato_mod' name='id_certificato_mod' type='text' readonly/></div><div>") */
-     	.concat("<div class='col-sm-2' style='margin-top:15px'><span class='btn btn-primary fileinput-button'><i class='glyphicon glyphicon-plus'></i><span>Carica Certificato...</span><input accept='.pdf,.PDF,.p7m'  id='fileupload_certificato_mod' name='fileupload_certificato_mod' type='file'></span></div><div class='col-xs-1'></div><div class='col-xs-5'style='margin-top:15px'><label id='label_certificato_mod'></label></div></div>");
+     	//.concat("<div class='col-sm-2' style='margin-top:15px'><span class='btn btn-primary fileinput-button'><i class='glyphicon glyphicon-plus'></i><span>Carica Certificato...</span><input accept='.pdf,.PDF,.p7m'  id='fileupload_certificato_mod' name='fileupload_certificato_mod' type='file'></span></div><div class='col-xs-1'></div><div class='col-xs-5'style='margin-top:15px'><label id='label_certificato_mod'></label></div></div>");
 	
-		 
+		 .concat("<div class='col-sm-2' style='margin-top:15px'><label>Numero Certificato:</label></div><div class='col-sm-4' style='margin-top:15px'><input class='form-control' id='numero_certificato_mod' name='numero_certificato_mod' type='text'/></div>")
+		 .concat("<div class='col-sm-2' style='margin-top:15px'><span class='btn btn-primary fileinput-button'><i class='glyphicon glyphicon-plus'></i><span>Carica Certificato...</span><input accept='.pdf,.PDF,.p7m'  id='fileupload_certificato_mod' name='fileupload_certificato_mod' type='file'></span></div><div class='col-xs-1'></div><div class='col-xs-5'style='margin-top:15px'><label id='label_certificato_mod'></label></div>");
 	 }
 	 
 	 $('#content_mod').html(str_html);
@@ -643,7 +645,7 @@ function dettaglioVerificaTaratura(tipo_attivita, data_attivita, ente, data_scad
  };
  
  
- function modificaAttivita(id, tipo_attivita, descrizione, data, tipo_manutenzione, ente, data_scadenza, campo_sospesi, operatore, etichettatura, stato, id_certificato){
+ function modificaAttivita(id, tipo_attivita, descrizione, data, tipo_manutenzione, ente, data_scadenza, campo_sospesi, operatore, etichettatura, stato,  numero_certificato){
 	 
 	 $('#select_tipo_attivita_mod').val(tipo_attivita);
 	 $('#select_tipo_attivita_mod').change();
@@ -657,8 +659,9 @@ function dettaglioVerificaTaratura(tipo_attivita, data_attivita, ente, data_scad
 	 $('#id_attivita').val(id);
 	 $('#operatore_mod').val(operatore);
 	 $('#operatore_mod').change();
+	 $('#numero_certificato_mod').val(numero_certificato);
 	 
-	 $('#id_certificato_mod').val(id_certificato);
+	 //$('#id_certificato_mod').val(id_certificato);
 	 if(tipo_attivita==2 || tipo_attivita==3){
 		 $('#ente_mod').val(ente);
 		 var date = formatDate(data_scadenza);

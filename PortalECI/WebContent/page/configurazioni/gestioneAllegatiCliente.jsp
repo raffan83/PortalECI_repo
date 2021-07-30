@@ -135,7 +135,7 @@
                      </c:forEach>
                   </select> --%>
                   
-                  <select name="cliente_appoggio" id="cliente_appoggio" class="form-control select2" aria-hidden="true" data-live-search="true" style="width:100%;display:none" required>
+                  <select name="cliente_appoggio" id="cliente_appoggio" class="form-control select2" aria-hidden="true" data-live-search="true" style="width:100%;display:none" >
                 <option value=""></option>
                       <c:forEach items="${listaClienti}" var="cliente">
                      

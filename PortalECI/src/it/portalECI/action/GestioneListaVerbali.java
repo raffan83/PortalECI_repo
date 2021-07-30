@@ -73,10 +73,11 @@ public class GestioneListaVerbali extends HttpServlet {
 		
 		response.setContentType("text/html");
 		boolean ajax = false;
+		Session session=SessionFacotryDAO.get().openSession();
+		session.beginTransaction();
 		 
 		try {
-			Session session=SessionFacotryDAO.get().openSession();
-			session.beginTransaction();
+			
 			
 				
 			UtenteDTO user = (UtenteDTO)request.getSession().getAttribute("userObj");
@@ -129,6 +130,8 @@ public class GestioneListaVerbali extends HttpServlet {
 
 				RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/page/configurazioni/gestioneListaVerbaliPDF.jsp");
 		     	dispatcher.forward(request,response);
+		     	session.getTransaction().commit();
+				session.close();
 				
 			}
 			
@@ -279,16 +282,7 @@ public class GestioneListaVerbali extends HttpServlet {
 			
 			else if(action.equals("allegati_cliente")) {
 				
-				String id_cliente = request.getParameter("id_cliente");
-				String id_sede = request.getParameter("id_sede");
-				
-				if(id_cliente == null) {
-					id_cliente = "0";
-				}
-				if(id_sede == null) {
-					id_sede = "0";
-				}
-				
+								
 				List<SedeDTO> listaSedi = (List<SedeDTO>) request.getSession().getAttribute("listaSedi");
 				if(listaSedi==null) {
 					listaSedi = GestioneAnagraficaRemotaBO.getListaSedi();	
@@ -299,8 +293,15 @@ public class GestioneListaVerbali extends HttpServlet {
 				
 				List<ClienteDTO> listaClientiFull = GestioneAnagraficaRemotaBO.getListaClienti(idCompany);		
 				
+				int id_cliente = 0;
+				int id_sede = 0;
 				
-				ArrayList<AllegatoClienteDTO> lista_allegati = GestioneVerbaleBO.getListaAllegatiCliente(Integer.parseInt(id_cliente), Integer.parseInt(id_sede),session);
+				if(user.checkRuolo("CL")) {
+					id_cliente = user.getIdCliente();
+					id_sede = user.getIdSede();
+				}
+				
+				ArrayList<AllegatoClienteDTO> lista_allegati = GestioneVerbaleBO.getListaAllegatiCliente(id_cliente, id_sede,session);
 				
 				request.getSession().setAttribute("lista_allegati", lista_allegati);
 				request.getSession().setAttribute("listaClienti", listaClientiFull);
@@ -535,6 +536,8 @@ public class GestioneListaVerbali extends HttpServlet {
 			
 				
 		}catch(Exception ex){
+			session.getTransaction().rollback();
+        	session.close();
    		 	ex.printStackTrace();
    		 	request.setAttribute("error",ECIException.callException(ex));
    		 	RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/error.jsp");

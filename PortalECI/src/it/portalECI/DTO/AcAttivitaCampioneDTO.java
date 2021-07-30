@@ -19,6 +19,7 @@ public class AcAttivitaCampioneDTO {
 	private String campo_sospesi;
 	private String allegato;
 	private String obsoleta;
+	private String numero_certificato;
 	
 	public String getCampo_sospesi() {
 		return campo_sospesi;
@@ -110,6 +111,12 @@ public class AcAttivitaCampioneDTO {
 	}
 	public void setCertificato(String certificato) {
 		this.certificato = certificato;
+	}
+	public String getNumero_certificato() {
+		return numero_certificato;
+	}
+	public void setNumero_certificato(String numero_certificato) {
+		this.numero_certificato = numero_certificato;
 	}
 	
 }
