@@ -165,6 +165,7 @@ public class GestioneVerbaleBO {
 			verbale.setSedeUtilizzatore(sedeUtilizzatore);
 			verbale.setType(VerbaleDTO.VERBALE);
 			verbale.setDescrizione_sede_utilizzatore(descrizione_utilizzatore);
+			verbale.setVisibile_cliente(1);
 			if(effettuazione_verbale!=null && !effettuazione_verbale.equals("")) {
 				verbale.setEffettuazione_verifica(Integer.parseInt(effettuazione_verbale));	
 			}
