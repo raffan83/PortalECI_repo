@@ -204,7 +204,8 @@
 				break;
 			case "Divisione":
 				risultato = valore1 / valore2;
-				risultato = risultato.toFixed(1);
+				risultato = Math.round(risultato * 100) / 100
+				risultato = risultato.toString();
 				break;
 			case "Potenza":
 				risultato = Math.pow(valore1, valore2);
