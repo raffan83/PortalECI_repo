@@ -191,10 +191,10 @@ public class GestioneVerbaleDAO {
 		Query query  = null;
 		
 		if(dateFrom==null) {
-			query = session.createQuery( "from DocumentoDTO WHERE type = 'CERTIFICATO'");
+			query = session.createQuery( "from DocumentoDTO WHERE type = 'CERTIFICATO' and verbale.stato.id = 5");
 		
 		}else {
-			query = session.createQuery( "from DocumentoDTO WHERE type = 'CERTIFICATO' AND createDate between :_dateFrom and :_dateTo");
+			query = session.createQuery( "from DocumentoDTO WHERE type = 'CERTIFICATO' AND createDate between :_dateFrom and :_dateTo and verbale.stato.id = 5");
 			query.setParameter("_dateFrom", sdf.parse(dateFrom));
 			query.setParameter("_dateTo", sdf.parse(dateTo));
 		}

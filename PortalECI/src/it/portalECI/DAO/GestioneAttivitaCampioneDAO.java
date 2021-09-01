@@ -351,5 +351,19 @@ public static ArrayList<CampioneDTO> getListaCampioniPerData(String data, String
 }
 
 
+public static ArrayList<AcAttivitaCampioneDTO> getListaFuoriServizio(int id_campione, Session session) {
+	
+	ArrayList<AcAttivitaCampioneDTO> lista=null;
+
+	Query query = session.createQuery("from AcAttivitaCampioneDTO where campione.id = :_id_campione and tipo_attivita.id = 4");		
+	query.setParameter("_id_campione", id_campione);
+	
+	
+	lista= (ArrayList<AcAttivitaCampioneDTO>)query.list();	
+	
+	return lista;
+}
+
+
 
 }

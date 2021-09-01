@@ -190,12 +190,12 @@
 											</c:if>
 											<c:if test="${user.checkPermesso('INVIO_VERBALI') }">
 											<a class="btn btn-primary pull-right" onClick="getDestinatarioEmail('${intervento.id}')" style="margin-left:5px"><i class="fa fa-paper-plane-o" ></i> Invia Verbale</a>
-											</c:if>
+											</c:if><br><br>
 		      									<table id="tabPM" class="table table-bordered table-hover dataTable table-striped" role="grid" width="100%">
  													<thead>
  														<tr class="active">
  														<td><input type="checkbox" id="check_all" class="form-control"></td>
- 															<th>Codice Categoria</th> 															
+ 															<th style="width:30px">Codice Categoria</th> 															
  															<th>Codice Verifica</th>
  															<th>Data Creazione</th>
  															<th>Sede Utilizzatore</th>
@@ -203,7 +203,7 @@
  															<th>Numero Certificato</th>
  															<th>Certificato</th>
  															
- 															<th width="150px">Sc. Tecnica</th>
+ 															<th >Sc. Tecnica</th>
  															<th>Firmato</th>
  																
  																<th>S.T. Firmata</th>
@@ -963,6 +963,105 @@
 			var send_verbali;
  		
 			$(document).ready(function() {
+				
+				
+				
+				
+				table = $('#tabPM').DataTable({
+					language: {
+	        				emptyTable : 	"Nessun dato presente nella tabella",
+	        				info	:"Vista da _START_ a _END_ di _TOTAL_ elementi",
+	        				infoEmpty:	"Vista da 0 a 0 di 0 elementi",
+	        				infoFiltered:	"(filtrati da _MAX_ elementi totali)",
+	        				infoPostFix:	"",
+	        				infoThousands:	".",
+	        				lengthMenu:	"Visualizza _MENU_ elementi",
+	        				loadingRecords:	"Caricamento...",
+	        				processing:	"Elaborazione...",
+	        				search:	"Cerca:",
+	        				zeroRecords	:"La ricerca non ha portato alcun risultato.",
+	        				paginate:	{
+  	        				first:	"Inizio",
+  	        				previous:	"Precedente",
+  	        				next:	"Successivo",
+  	        				last:	"Fine",
+	        				},
+	        				aria:	{
+  	        				srtAscending:	": attiva per ordinare la colonna in ordine crescente",
+  	        				sortDescending:	": attiva per ordinare la colonna in ordine decrescente",
+	        				}
+        			},
+        			pageLength: 100,
+	      			paging: true, 
+	      			ordering: true,
+	      			info: true, 
+	      			searchable: false, 
+	      			targets: 0,
+	      			responsive: true,
+	      			scrollX: false,
+	      			order: [[ 0, "desc" ]],
+	      			columnDefs: [
+						{ responsivePriority: 1, targets: 0 },
+	                   	{ responsivePriority: 3, targets: 2 ,type:"date-eu"},
+	                   	{ responsivePriority: 4, targets: 3 },
+	                   	{ responsivePriority: 2, targets: 5 },
+	                   	{ orderable: false, targets: 5 },
+	                   	{ width: "50px", targets: 0 },
+	                   	{ width: "250px", targets: 1 },
+	                   	{ width: "80px", targets: 3 },    	                   
+	               	],             
+	               	buttons: [ {
+	               		extend: 'copy',
+	                   	text: 'Copia',
+	                   	/* exportOptions: {
+                       		modifier: {
+                           		page: 'current'
+                       		}
+                   		} */
+	               	},{
+	                	extend: 'excel',
+	                   	text: 'Esporta Excel',
+	                   	/* exportOptions: {
+	                   		modifier: {
+	                           page: 'current'
+	                       }
+	                   	} */
+	               	},{
+	                	extend: 'colvis',
+	                   	text: 'Nascondi Colonne'    	                   
+	               	}],
+	                "rowCallback": function( row, data, index ) {    	                        	       	                        	      
+	                	$('td:eq(3)', row).addClass("centered");
+	                }
+	  			});
+				
+				table.buttons().container().appendTo( '#tabPM_wrapper .col-sm-6:eq(1)' );
+ 	          	           	           	     
+				$('#tabPM thead th').each( function () {
+    				var title = $('#tabPM thead th').eq( $(this).index() ).text();
+    				$(this).append( '<div><input class="inputsearchtable" style="width:100%" type="text" /></div>');
+				} );
+
+				// DataTable
+					table = $('#tabPM').DataTable();
+				// Apply the search
+				table.columns().eq( 0 ).each( function ( colIdx ) {
+    				$( 'input', table.column( colIdx ).header() ).on( 'keyup', function () {
+        				table
+            				.column( colIdx )
+            				.search( this.value )
+            				.draw();
+    				} );
+				} ); 
+
+				table.columns.adjust().draw();
+				$('#tabPM').on( 'page.dt', function () {
+					$('.customTooltip').tooltipster({
+	        			theme: 'tooltipster-light'
+	    			});
+	  			} );
+				
+				
 				
 				
 				send_verbali = "";

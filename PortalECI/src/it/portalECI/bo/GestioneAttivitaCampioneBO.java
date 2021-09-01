@@ -66,4 +66,9 @@ public static ArrayList<AcAttivitaCampioneDTO> getListaAttivita(int idC, Session
 	
 		GestioneAttivitaCampioneDAO.updateObsolete(idC, tipo_attivita, session);
 	}
+
+	public static ArrayList<AcAttivitaCampioneDTO> getListaFuoriServizio(int id_campione, Session session) {
+	
+		return GestioneAttivitaCampioneDAO.getListaFuoriServizio(id_campione, session);
+	}
 }

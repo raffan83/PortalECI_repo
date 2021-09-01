@@ -28,14 +28,20 @@ $("#categoria-verifica-select").trigger("change");
  
 //gruppo:	scedaTecnica | verbale | opzione
 var indice = 0;
-function aggiungiDomanda(gruppo, button){
+function aggiungiDomanda(gruppo, button, tipo_button){
 	$.ajax({
 		type: "GET",
 		url: "gestioneDomandeQuestionario.do",
 		data: {gruppo:gruppo, indice:indice},
 		//if received a response from the server
 		success: function( data, textStatus) {
-			var container = $('#listaDomande'+gruppo);
+			if(tipo_button!=null && tipo_button == 'Generale'){
+				var container = $('#listaDomande'+gruppo);	
+			}else{
+				var container = $(button).parents(".domanda-div").first()	
+			}
+			//
+			
 			if(gruppo=="Opzione"){
 				container = $(button).parents(".opzione-div").first().find(".lista-domande-opzioni-div").first();
 				var counter = container.find(".numero-domande-opzione-input");
