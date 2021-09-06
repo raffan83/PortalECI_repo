@@ -1060,7 +1060,9 @@
 	        			theme: 'tooltipster-light'
 	    			});
 	  			} );
-				
+				$('.inputsearchtable').on('click', function(e){
+   					e.stopPropagation();    
+				});
 				
 				
 				
