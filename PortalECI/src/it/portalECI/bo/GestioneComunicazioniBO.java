@@ -344,17 +344,19 @@ public static void sendPecVerbale(ArrayList<VerbaleDTO> lista_verbali, String ma
 					Set<DocumentoDTO> lista_doc= verbale.getSchedaTecnica().getDocumentiVerbale();
 						
 					Iterator<DocumentoDTO> doc = lista_doc.iterator();
+					
 					while(doc.hasNext()) {
 						DocumentoDTO d = doc.next();
 						if(!d.getInvalid()) {
-							filenamePdfScheda = d.getFileName().substring(0,d.getFileName().length()-4)+"_F.pdf";
-							pathScheda = Costanti.PATH_CERTIFICATI+d.getFilePath().replace(".pdf", filenamePdfScheda);
+							//filenamePdfScheda = d.getFileName().substring(0,d.getFileName().length()-4)+"_F.pdf";
+							filenamePdfScheda = d.getFileName();
+							pathScheda = Costanti.PATH_CERTIFICATI+d.getFilePath().replace(".pdf","_F.pdf");
 						}
 					}
-						
+					
 					DataSource source = new FileDataSource(pathScheda);
 				    attachSchedaTecnica.setDataHandler(new DataHandler(source));
-				    attachSchedaTecnica.setFileName(filenamePdfScheda.replace("_F.pdf", ".pdf"));
+				    attachSchedaTecnica.setFileName(filenamePdfScheda);
 				    multipart.addBodyPart(attachSchedaTecnica);	
 				}
 			}	                  

@@ -236,7 +236,7 @@ SimpleDateFormat sdf= new SimpleDateFormat("dd/MM/yyyy");
        
 
 <div class="form-group">
-        <label for="inputName" class="col-sm-3 control-label">Data Verifica:</label>
+        <label for="inputName" class="col-sm-3 control-label">Data Taratura:</label>
         <div class="col-sm-9">
                       <input class="form-control datepicker" id="" type="text" name="dataVerifica" disabled="disabled"  required value="<% if(campione.getDataVerifica()!=null){out.println(sdf.format(campione.getDataVerifica()));} %>" data-date-format="dd/mm/yyyy"/>
 

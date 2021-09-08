@@ -73,6 +73,10 @@ UtenteDTO userObj = (UtenteDTO)request.getSession().getAttribute("userObj");
 <%-- ${fn:replace(fn:replace(evento.descrizione.replace('\'',' ').replace('\\','/'),newLineChar, ' '),newLineChar2, ' ')} --%>
 <button class="btn customTooltip btn-info" onClick="dettaglioManutenzione('${utl:escapeJS(attivita.descrizione_attivita)}','${attivita.tipo_manutenzione }','${attivita.data }','${utl:escapeJS(attivita.operatore.nominativo) }')" title="Click per visualizzare l'attività di manutenzione"><i class="fa fa-arrow-right"></i></button>
 </c:if>
+<c:if test="${attivita.tipo_attivita.id==4 }">
+<%-- ${fn:replace(fn:replace(evento.descrizione.replace('\'',' ').replace('\\','/'),newLineChar, ' '),newLineChar2, ' ')} --%>
+<button class="btn customTooltip btn-info" onClick="dettaglioFuoriServizio('${utl:escapeJS(attivita.descrizione_attivita)}','${attivita.data }','${utl:escapeJS(attivita.operatore.nominativo) }')" title="Click per visualizzare l'attività di fuori servizio"><i class="fa fa-arrow-right"></i></button>
+</c:if>
 <c:if test="${attivita.tipo_attivita.id==3}">
 <button class="btn customTooltip btn-info" onClick="dettaglioVerificaTaratura('${utl:escapeJS(attivita.tipo_attivita.descrizione) }','${attivita.data}','${utl:escapeJS(attivita.ente) }','${attivita.data_scadenza }','${utl:escapeJS(attivita.etichettatura) }','${attivita.stato }','${utl:escapeJS(attivita.campo_sospesi) }','${utl:escapeJS(attivita.operatore.nominativo)}','${attivita.numero_certificato }','','')" title="Click per visualizzare l'attività di taratura"><i class="fa fa-arrow-right"></i></button>
 </c:if>
@@ -300,7 +304,47 @@ UtenteDTO userObj = (UtenteDTO)request.getSession().getAttribute("userObj");
   </div>
 
 
- 
+   <div id="modalDettaglioFuoriServizio" class="modal fade" role="dialog" aria-labelledby="myModalLabel">
+
+    <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+     <div class="modal-header">
+        <button type="button" class="close" id="close_btn_man_fs" aria-label="Close"><span aria-hidden="true">&times;</span></button> 
+       
+        <h4 class="modal-title" id="myModalLabel">Dettaglio Fuori Servizio</h4>
+      </div>
+       <div class="modal-body" id="modalDettaglioContent" >
+     
+	<div class="form-group">
+  <div class="row">
+	 <div class="col-sm-12">
+
+        <div class="col-sm-6">
+		<label >Data:</label>
+			<input type="text" class="form-control" id="dettaglio_data_fs" readonly >
+        </div>
+		<div class="col-sm-6">
+		<label >Operatore:</label>
+			<input type="text" class="form-control" id="dettaglio_operatore_fs" readonly >
+        </div>
+      </div>
+      </div><br>
+      <div class="row">
+        <div class="col-sm-12"><div class="col-sm-12">
+             <textarea rows="5" style="width:100%" id="dettaglio_descrizione_fs" name="dettaglio_descrizione_fs" readonly></textarea>
+</div>
+        </div>
+       </div>
+       </div>
+       </div>      
+	
+  		
+      <div class="modal-footer">
+       
+      </div>
+      </div>
+    </div>
+  </div>
 
 
 
@@ -457,8 +501,17 @@ UtenteDTO userObj = (UtenteDTO)request.getSession().getAttribute("userObj");
      /* 	.concat("<div class='col-sm-2' style='margin-top:15px'><label>Certificato:</label></div><div class='col-sm-4' style='margin-top:15px'><input class='form-control' id='id_certificato' name='id_certificato' type='text' readonly/></div><div>")
      	.concat("<div class='col-sm-2' style='margin-top:15px'><a class='btn btn-primary' onClick='caricaMisura()'><i class='fa fa-icon-plus'></i>Carica Misura</a></div></div>"); */
 		 
-		.concat("<div class='col-sm-2' style='margin-top:15px'><label>Numero Certificato:</label></div><div class='col-sm-4' style='margin-top:15px'><input class='form-control' id='numero_certificato' name='numero_certificato' type='text'/></div>")
-     	.concat("<div class='col-sm-2' style='margin-top:15px'><span class='btn btn-primary fileinput-button'><i class='glyphicon glyphicon-plus'></i><span>Carica Certificato...</span><input accept='.pdf,.PDF,.p7m'  id='fileupload_certificato' name='fileupload_certificato' type='file'></span></div><div class='col-xs-1'></div><div class='col-xs-3'style='margin-top:15px'><label id='label_certificato'></label></div>")
+		.concat("<div class='col-sm-2' style='margin-top:15px'><label>Numero Certificato:</label></div><div class='col-sm-4' style='margin-top:15px'><input class='form-control' id='numero_certificato' name='numero_certificato' required type='text'/></div>")
+     	.concat("<div class='col-sm-2' style='margin-top:15px'><span class='btn btn-primary fileinput-button'><i class='glyphicon glyphicon-plus'></i><span>Carica Certificato...</span><input accept='.pdf,.PDF,.p7m' required  id='fileupload_certificato' name='fileupload_certificato' type='file'></span></div><div class='col-xs-1'></div><div class='col-xs-3'style='margin-top:15px'><label id='label_certificato'></label></div>")
+	 }
+	 
+	 else if($(this).val()==4){
+			
+		 str_html="<div class='form-group'>"				
+			 .concat("<div class='col-sm-2'><label>Operatore:</label></div><div class='col-sm-4'>")
+			 .concat("<select class='form-control select2' data-placeholder='Seleziona Operatore...' id='operatore' name='operatore'><option value=''></option><c:forEach items='${lista_utenti}' var='utente'><option value='${utente.id}'>${utente.nominativo}</option></c:forEach></select></div></div>")
+			 .concat("<div class='form-group'> <div class='col-sm-2'><label >Descrizione Attività:</label></div>")
+			 .concat("<div class='col-sm-10'><textarea rows='5' style='width:100%' id='descrizione' name='descrizione' required></textarea></div></div><div class='row'><div class='col-sm-2'><span class='btn btn-primary fileinput-button'><i class='glyphicon glyphicon-plus'></i><span>Carica Allegato...</span><input accept='.pdf,.PDF,.p7m'  id='fileupload_all' name='fileupload_all' type='file'></span></div><div class='col-xs-5'><label id='label_file'></label></div> </div>");
 	 }
 	 
 	 
@@ -535,8 +588,18 @@ UtenteDTO userObj = (UtenteDTO)request.getSession().getAttribute("userObj");
      	/* .concat("<div class='col-sm-2' style='margin-top:15px'><label>Certificato:</label></div><div class='col-sm-4' style='margin-top:15px'><input class='form-control' id='id_certificato_mod' name='id_certificato_mod' type='text' readonly/></div><div>") */
      	//.concat("<div class='col-sm-2' style='margin-top:15px'><span class='btn btn-primary fileinput-button'><i class='glyphicon glyphicon-plus'></i><span>Carica Certificato...</span><input accept='.pdf,.PDF,.p7m'  id='fileupload_certificato_mod' name='fileupload_certificato_mod' type='file'></span></div><div class='col-xs-1'></div><div class='col-xs-5'style='margin-top:15px'><label id='label_certificato_mod'></label></div></div>");
 	
-		 .concat("<div class='col-sm-2' style='margin-top:15px'><label>Numero Certificato:</label></div><div class='col-sm-4' style='margin-top:15px'><input class='form-control' id='numero_certificato_mod' name='numero_certificato_mod' type='text'/></div>")
-		 .concat("<div class='col-sm-2' style='margin-top:15px'><span class='btn btn-primary fileinput-button'><i class='glyphicon glyphicon-plus'></i><span>Carica Certificato...</span><input accept='.pdf,.PDF,.p7m'  id='fileupload_certificato_mod' name='fileupload_certificato_mod' type='file'></span></div><div class='col-xs-1'></div><div class='col-xs-5'style='margin-top:15px'><label id='label_certificato_mod'></label></div>");
+		 .concat("<div class='col-sm-2' style='margin-top:15px'><label>Numero Certificato:</label></div><div class='col-sm-4' style='margin-top:15px'><input class='form-control' id='numero_certificato_mod' name='numero_certificato_mod' required type='text'/></div>")
+		 .concat("<div class='col-sm-2' style='margin-top:15px'><span class='btn btn-primary fileinput-button'><i class='glyphicon glyphicon-plus'></i><span>Carica Certificato...</span><input accept='.pdf,.PDF,.p7m' required id='fileupload_certificato_mod' name='fileupload_certificato_mod' type='file'></span></div><div class='col-xs-1'></div><div class='col-xs-5'style='margin-top:15px'><label id='label_certificato_mod'></label></div>");
+	 }
+	 
+	 
+	 else if($(this).val()==4){
+			
+		 str_html="<div class='form-group'>"				
+			 .concat("<div class='col-sm-2'><label>Operatore:</label></div><div class='col-sm-4'>")
+			 .concat("<select class='form-control select2' data-placeholder='Seleziona Operatore...' id='operatore_mod' name='operatore_mod' style='width:100%'><option value=''></option><c:forEach items='${lista_utenti}' var='utente'><option value='${utente.id}'>${utente.nominativo}</option></c:forEach></select></div></div>")
+			 .concat("<div class='form-group'> <div class='col-sm-2'><label >Descrizione Attività:</label></div>")
+			 .concat("<div class='col-sm-10'><textarea rows='5' style='width:100%' id='descrizione_mod' name='descrizione_mod' required></textarea></div></div><div class='row'><div class='col-sm-2'><span class='btn btn-primary fileinput-button'><i class='glyphicon glyphicon-plus'></i><span>Carica Allegato...</span><input accept='.pdf,.PDF,.p7m'  id='fileupload_all_mod' name='fileupload_all_mod' type='file'></span></div><div class='col-xs-5'><label id='label_file'></label></div> </div>");
 	 }
 	 
 	 $('#content_mod').html(str_html);
@@ -644,6 +707,15 @@ function dettaglioVerificaTaratura(tipo_attivita, data_attivita, ente, data_scad
 	 $('#modalDettaglio').modal();
  };
  
+ 
+ function dettaglioFuoriServizio(descrizione,  data,operatore){
+	 $('#dettaglio_descrizione_fs').val(descrizione);
+
+	 $('#dettaglio_operatore_fs').val(operatore);
+	 $('#dettaglio_data_fs').val(formatDate(data));
+	 $('#modalDettaglioFuoriServizio').modal();
+ };
+		 
  
  function modificaAttivita(id, tipo_attivita, descrizione, data, tipo_manutenzione, ente, data_scadenza, campo_sospesi, operatore, etichettatura, stato,  numero_certificato){
 	 
@@ -833,6 +905,9 @@ $('#tabAttivitaCampione').on( 'page.dt', function () {
   $('#close_btn_man').on('click', function(){
 	  $('#modalDettaglio').modal('hide');
   });
+  $('#close_btn_man_fs').on('click', function(){
+	  $('#modalDettaglioFuoriServizio').modal('hide');
+  });
  
   $('#close_btn_nuova_man').on('click', function(){
 	  $('#modalNuovaAttivita').modal('hide');
@@ -843,7 +918,7 @@ $('#tabAttivitaCampione').on( 'page.dt', function () {
   $('#close_btn_dtl').on('click', function(){
 	  $('#modalDettaglioVerificaTaratura').modal('hide');
   });
-  close_btn_cert
+
   $('#close_btn_cert').on('click', function(){
 	  $('#modalCertificati').modal('hide');
   });
@@ -866,6 +941,11 @@ $('#tabAttivitaCampione').on( 'page.dt', function () {
 		  
 	 });   
 
+	  $('#modalDettaglioFuoriServizio').on('hidden.bs.modal', function(){
+		  contentID == "registro_attivitaTab";
+		  
+	 });  
+	  
 	  $('#modalDettaglioVerificaTaratura').on('hidden.bs.modal', function(){
 		  contentID == "registro_attivitaTab";
 		  

@@ -21,7 +21,13 @@
 	<div class="form-horizontal">
 		<c:if test="${gruppo!='Colonna'}">
 		<div class="form-group">
-			<div class="col-sm-12"><a class="btn btn-danger btn-xs pull-right margin-right elimina-domanda-button">elimina domanda</a></div>
+			<div class="col-sm-12"><a class="btn btn-danger btn-xs pull-right margin-right elimina-domanda-button">elimina domanda</a> <a style="margin-right:5px" onclick="aggiungiDomanda('Verbale', this)" class="btn btn-danger btn-xs pull-right margin-right">aggiungi domanda</a>  </div>
+			
+<!-- 																<div class="col-xs-12">
+														<a class="btn btn-default pull-right" onclick="aggiungiDomanda('Verbale', this)">
+															<i class="fa fa-plus"></i> Aggiungi domanda
+														</a>
+													</div> -->
 		</div>
 		</c:if>
 		<div class="form-group">

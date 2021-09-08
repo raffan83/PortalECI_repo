@@ -1,7 +1,7 @@
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@taglib prefix="t" tagdir="/WEB-INF/tags"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
-
+<%@ taglib uri="/WEB-INF/tld/utilities" prefix="utl" %>
 
 <%@ page import="it.portalECI.DTO.RispostaFormulaVerbaleDTO" %>
 <%@ page import="it.portalECI.DTO.RispostaSceltaVerbaleDTO" %>
@@ -166,7 +166,7 @@
                 									</li>
                 									<li class="list-group-item">
                   										<b>Sede Utilizzatore</b>                  										
-                  										<a class="pull-right "  >${verbale.sedeUtilizzatore}<c:if test="${verbale.codiceCategoria == 'VIE' }">  <c:if test="${verbale.getStato().getId()!= 5}"><i class="fa fa-edit" onclick="modalSedeUtilizzatore('${verbale.sedeUtilizzatore}')" title="Modifica sede utilizzatore"></i></c:if></c:if>
+                  										<a class="pull-right "  >${verbale.sedeUtilizzatore}<c:if test="${verbale.codiceCategoria == 'VIE' }">  <c:if test="${verbale.getStato().getId()!= 5}"><i class="fa fa-edit" onclick="modalSedeUtilizzatore('${utl:escapeJS(verbale.sedeUtilizzatore)}')" title="Modifica sede utilizzatore"></i></c:if></c:if>
                   										
                   										</a>
                   									
