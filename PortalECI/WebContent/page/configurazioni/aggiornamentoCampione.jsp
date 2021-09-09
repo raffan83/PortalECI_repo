@@ -252,7 +252,7 @@ SimpleDateFormat sdf= new SimpleDateFormat("dd/MM/yyyy");
        </div> 
        
 
-       <div class="form-group">
+<%--        <div class="form-group">
         <label for="inputName" class="col-sm-3 control-label">Data Verifica:</label>
         <div class="col-sm-9">
 
@@ -262,10 +262,10 @@ SimpleDateFormat sdf= new SimpleDateFormat("dd/MM/yyyy");
                     	 out.println(sdf.format(campione.getDataVerifica()));
                       }
                       %>" />
-<!-- data-date-format="dd/mm/yyyy" -->
+
     </div>
        </div> 
-     
+      --%>
        
 <!--          <div class="form-group">
         <label for="inputName" class="col-sm-3 control-label">Certificato:</label>
@@ -275,12 +275,12 @@ SimpleDateFormat sdf= new SimpleDateFormat("dd/MM/yyyy");
     </div>
        </div> --> 
        
-         <div class="form-group">
+<%--          <div class="form-group">
         <label for="inputName" class="col-sm-3 control-label">Numero Certificato:</label>
         <div class="col-sm-9">
                       <input class="form-control" id="numeroCerificato_mod" type="text" required name="numeroCerificato_mod"  value="<%=campione.getNumeroCertificato() %>"/>
     </div>
-       </div> 
+       </div>  --%>
        
 <%--        <div class="form-group">
         <label for="ente_certificatore" class="col-sm-3 control-label">Ente Certificatore:</label>
