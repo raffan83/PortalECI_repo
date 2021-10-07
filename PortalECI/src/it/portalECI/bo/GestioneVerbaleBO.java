@@ -638,12 +638,13 @@ public class GestioneVerbaleBO {
 		
 		
 		String codProv="";
-		if(verbale.getSedeUtilizzatore()!=null) {
-			codProv = verbale.getSedeUtilizzatore().split("\\(")[1].replace(")","");
-		}
-		else if(verbale.getAttrezzatura()!=null && verbale.getAttrezzatura().getProvincia_div()!=null) {
+		if(verbale.getAttrezzatura()!=null && verbale.getAttrezzatura().getProvincia_div()!=null) {
 			codProv = verbale.getAttrezzatura().getProvincia_div();
 		}
+		else if(verbale.getSedeUtilizzatore()!=null) {
+			codProv = verbale.getSedeUtilizzatore().split("\\(")[1].replace(")","");
+		}
+		
 		else {
 			CommessaDTO comm=GestioneCommesseBO.getCommessaById(intervento.getIdCommessa());
 			if(comm!=null && comm.getCOD_PROV()!=null ) 

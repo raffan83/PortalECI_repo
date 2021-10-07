@@ -122,12 +122,12 @@
   															<c:forEach items="${listaInterventi}" var="intervento">
  																<tr role="row" id="${intervento.getId() }">
 																	<td>
-																		<a href="#" class="btn customTooltip customlink" title="Click per aprire il dettaglio dell'Intervento" onclick="callAction('gestioneInterventoDati.do?idIntervento=${intervento.getId()}');">
+																		<a href="gestioneInterventoDati.do?idIntervento=${intervento.getId()}" class="btn customTooltip customlink" title="Click per aprire il dettaglio dell'Intervento" >
 																			${intervento.getId() }
 																		</a>
 																	</td>
 																	<td>
-																		<a href="#" class="btn customTooltip customlink" title="Click per aprire il dettaglio della Commessa" onclick="callAction('gestioneIntervento.do?idCommessa=${intervento.getIdCommessa()}');">
+																		<a href="gestioneIntervento.do?idCommessa=${intervento.getIdCommessa()}" class="btn customTooltip customlink" title="Click per aprire il dettaglio della Commessa" >
 																			<c:out value='${intervento.getIdCommessa()}'/>
 																		</a>
 																	</td>
