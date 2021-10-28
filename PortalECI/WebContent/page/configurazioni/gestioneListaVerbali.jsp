@@ -84,7 +84,7 @@ request.setAttribute("user",user);
  														<thead>
  														<c:if test="${user.checkRuolo('CL') }">
  														<th>ID Verbale</th>
- 																<th>ID Intervento</th>
+ 																<th >ID Intervento</th>
  																<th>ID Commessa</th>
  																<th>Numero Verbale</th>
  																<th>Data verifica</th>
@@ -105,9 +105,9 @@ request.setAttribute("user",user);
  														</c:if>
  														<c:if test="${!user.checkRuolo('CL') }">
  															<tr class="active"> 
- 																<th>ID Verbale</th>
- 																<th>ID Intervento</th>
- 																<th>ID Commessa</th>
+ 																<th style="max-width:20px">ID Verbale</th>
+ 																<th style="max-width:30px">ID Intervento</th>
+ 																<th style="max-width:25px">ID Commessa</th>
  																<th>Numero Verbale</th>
  																<th>Data verifica</th>
  																<th>Matricola Attrezzatura</th>
@@ -124,6 +124,7 @@ request.setAttribute("user",user);
  																<th>S.T. Firmata</th>
  													
  																<th>Data Creazione</th>
+ 																<th>Tipo Verifica</th>
  																<td></td>
  															</tr>
  															</c:if>
@@ -368,6 +369,14 @@ request.setAttribute("user",user);
 																	
         															<td>
 																		<fmt:formatDate pattern="dd/MM/yyyy" value='${verbale.getCreateDate()}' type='date' />
+																	</td>
+																	<td>
+																	<c:if test="${verbale.motivo_verifica == 1}">
+																	Periodica
+																	</c:if>
+																	<c:if test="${verbale.motivo_verifica != 0 && verbale.motivo_verifica > 1}">
+																	Straordinaria
+																	</c:if>
 																	</td>
 																	<td>
 																		<a class="btn customTooltip" title="Click per aprire il dettaglio del Verbale" onclick="callAction('gestioneVerbale.do?idVerbale=${verbale.getId()}');">

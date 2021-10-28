@@ -74,6 +74,7 @@
  																<th>ID Intervento</th>
  																<th>ID Commessa</th>
  																<th>Numero Verbale</th>
+ 																<th>Tipo Verifica</th>
  																<th>Data verifica</th>
  																<th>Matricola Attrezzatura</th>
  																<th>Sede Cliente</th>
@@ -112,6 +113,14 @@
 																	<td>
 																	<a class="btn customTooltip customlink" href="gestioneDocumento.do?idDocumento=${documento.getId()}">${documento.getFileName().split('.pdf')[0] }</a>
 																		
+																	</td>
+																	<td>
+																	<c:if test="${documento.verbale.motivo_verifica == 1}">
+																	Periodica
+																	</c:if>
+																	<c:if test="${documento.verbale.motivo_verifica != 0 && documento.verbale.motivo_verifica > 1}">
+																	Straordinaria
+																	</c:if>
 																	</td>
 																	<td><fmt:formatDate pattern="dd/MM/yyyy" value='${documento.verbale.data_verifica}' type='date' /></td>
 																	<td>
@@ -292,9 +301,9 @@
     	      		columnDefs: [
 						{ responsivePriority: 1, targets: 0 },
     	                { responsivePriority: 3, targets: 2 },
-    	                { responsivePriority: 4, targets: 3 },
-
-    	                { orderable: false, targets: 6 },
+    	                { responsivePriority: 4, targets: 12 },
+						
+    	                { orderable: false, targets: 7 },
     	            ],
     	            buttons: [ {
     	            	extend: 'copy',

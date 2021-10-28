@@ -55,11 +55,11 @@ SimpleDateFormat sdf= new SimpleDateFormat("dd/MM/yyyy");
    
  
  
-           <div class="form-group">
+                    <div class="form-group">
         <label for="inputName" class="col-sm-3 control-label">Tipo Campione:</label>
         <div class="col-sm-9">
                      
-					   <select class="form-control" id="tipoCampione_mod" name="tipoCampione_mod" required >
+					   <select class="form-control select2" id="tipoCampione_mod" name="tipoCampione_mod" required >
                       
                                             <%
                                             for(TipoCampioneDTO cmp :listaTipoCampione)
