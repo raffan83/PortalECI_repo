@@ -30,7 +30,10 @@
     			
     			<!-- Main content -->
     			<section class="content">	
-					<div class="row">
+    			
+    		
+    			
+ 					<div class="row">
         				<div class="col-xs-12">
           					<div class="box">
           						<div class="box-header">
@@ -51,7 +54,7 @@
 													<div class="row">														
 														<div class="col-lg-12">															
 
-													<c:if test="${!user.checkRuolo('CL') }">	
+													<c:if test="${user.checkRuolo('AM')}">	
 														<a class="btn btn-primary" onClick="$('#modalAllegati').modal()"><i class="fa fa-plus"></i> Carica Allegato</a><br><br>
 														</c:if>
 															
@@ -108,7 +111,10 @@
           						<!-- /.box -->
         					</div>
         					<!-- /.col -->
-
+        					
+        					</div>
+        					</div> 
+        					
 			<form id="formAllegatiCliente" name="formAllegatiCliente">
 						<div id="modalAllegati" class="modal fade" role="dialog" aria-labelledby="myLargeModalLabel">
     						<div class="modal-dialog" role="document">
@@ -424,7 +430,7 @@
     		    		   	var end = "${dateTo}";
 
 
-    					table = $('#tabSt').DataTable({
+    				 table = $('#tabSt').DataTable({
     						 language: {
     					        	emptyTable : 	"Nessun dato presente nella tabella",
     					        	info	:"Vista da _START_ a _END_ di _TOTAL_ elementi",
@@ -462,26 +468,17 @@
     									 
     					                   { responsivePriority: 1, targets: 0 },	                  
     					                 
-    					                  
-    					                  /*  { orderable: false, targets: 6 }, */
+    					              
     					               ],
     				       
     					               buttons: [ {
     					                   extend: 'copy',
     					                   text: 'Copia',
-    					                   /* exportOptions: {
-    				                     modifier: {
-    				                         page: 'current'
-    				                     }
-    				                 } */
+    					        
     					               },{
     					                   extend: 'excel',
     					                   text: 'Esporta Excel',
-    					                   /* exportOptions: {
-    					                       modifier: {
-    					                           page: 'current'
-    					                       }
-    					                   } */
+    					                  
     					               },
     					               {
     					                   extend: 'colvis',
@@ -521,7 +518,7 @@
     				      .draw();
     				} );
     				} );  
-    				table.columns.adjust().draw();
+    				table.columns.adjust().draw(); 
     					 	
     	
   						$('.removeDefault').each(function() {

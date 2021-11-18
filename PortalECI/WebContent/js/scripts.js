@@ -1176,6 +1176,9 @@ function nuovoUtente(){
 		var telefono=$('#telefono').val();
 		var company=$('#company').val();
 		var cf = $('#cf').val();
+		var tipo_utente = $("#tipo_utente").val();
+		var id_cliente = $("#select1").val();
+		var id_sede = $("#select2").val();
 		var dataObj = {};
 		
 		dataObj.codice = codice;
@@ -1191,6 +1194,9 @@ function nuovoUtente(){
 		dataObj.telefono = telefono;
 		dataObj.company = company;
 		dataObj.cf = cf;
+		dataObj.tipo_utente = tipo_utente;
+		dataObj.id_cliente = id_cliente;
+		dataObj.id_sede = id_sede;
 
 		var sList = "";
 
@@ -1199,10 +1205,10 @@ function nuovoUtente(){
 				if(sList.length>0){
 					sList += ",";
 				}
-				sList += $(this).val();
+				sList += this.id+"_"+$(this).val();
 			}		 		   
 		});
-		dataObj.ruoli = sList;
+		dataObj.check = sList;
 	  
 		$.ajax({
 			type: "POST",
@@ -1259,7 +1265,12 @@ function modificaUtente(){
 	var telefono=$('#modtelefono').val();
 	var company=$('#modcompany').val();
 	var cf = $('#modcf').val();
+	var tipo_utente = $("#tipo_utente_mod").val();
+	var id_cliente = $("#select1_mod").val();
+	var id_sede = $("#select2_mod").val();
 	var dataObj = {};
+	
+	
 	dataObj.id = id;
 	dataObj.codice = codice;
 	dataObj.qualifica = qualifica;
@@ -1274,7 +1285,22 @@ function modificaUtente(){
 	dataObj.telefono = telefono;
 	dataObj.company = company;
 	dataObj.cf = cf;
+	dataObj.tipo_utente = tipo_utente;
+	dataObj.id_cliente = id_cliente;
+	dataObj.id_sede = id_sede;
+	
+	var sList = "";
 
+	$('#formModificaUtente input[type=checkbox]').each(function () {
+		if(this.checked){
+			if(sList.length>0){
+				sList += ",";
+			}
+			sList += this.id.split("_")[0]+"_"+$(this).val();
+		}		 		   
+	});
+	dataObj.check = sList;
+	
 	$.ajax({
 		type: "POST",
 		url: "gestioneUtenti.do?action=modifica",
@@ -1357,7 +1383,10 @@ function eliminaUtente(){
 	});
 }
 
-function modalModificaUtente(id,codice,user,nome,cognome,indirizzo,comune,cap,email,telefono,company, qualifica, cf){
+function modalModificaUtente(id,codice,user,nome,cognome,indirizzo,comune,cap,email,telefono,company, qualifica, cf, tipo_utente, cliente, sede, check_vie, check_val){
+	
+	$('#tipo_utente_mod').val(tipo_utente);
+	$('#tipo_utente_mod').change();
 	
 	$('#modid').val(id);
 	$('#modcodice').val(codice)
@@ -1372,7 +1401,32 @@ function modalModificaUtente(id,codice,user,nome,cognome,indirizzo,comune,cap,em
 	$('#modcompany').val(company);
 	$('#modqualifica').val(qualifica);
 	$('#modcf').val(cf);
-	  	  
+	
+	
+	
+	if(check_vie){
+		$('#checkvie_mod').iCheck('check')
+	}
+	if(check_val){
+		$('#checkval_mod').iCheck('check')
+	}
+	
+	
+	if(cliente!=null && cliente !=0){
+		$('#select1_mod').val(cliente);
+		$('#select1_mod').change();
+	}
+
+	
+	if(sede!=null && sede==0 && id_cliente!=0){
+		$('#select2_mod').val(sede);
+		$('#select2_mod').change();
+	}else if(sede!=null && sede !=0){
+		$('#select2_mod').val(sede+"_"+cliente);
+		$('#select2_mod').change();
+	}
+	
+	
 	$('#modalModificaUtente').modal();
 	  
 }

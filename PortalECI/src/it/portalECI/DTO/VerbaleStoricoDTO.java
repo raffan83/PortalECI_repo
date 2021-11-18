@@ -23,6 +23,7 @@ public class VerbaleStoricoDTO {
 	private String ore_uomo;
 	private int tipologia_verifica;
 	private String filename;
+	private int id_verbale_storico;
 	
 	
 	public int getId() {
@@ -139,6 +140,13 @@ public class VerbaleStoricoDTO {
 	}
 	public void setStrumento_utilizzato(String strumento_utilizzato) {
 		this.strumento_utilizzato = strumento_utilizzato;
+	}
+
+	public int getId_verbale_storico() {
+		return id_verbale_storico;
+	}
+	public void setId_verbale_storico(int id_verbale_storico) {
+		this.id_verbale_storico = id_verbale_storico;
 	}
 	
 	

@@ -172,6 +172,7 @@ public class GestioneAttivitaCampione extends HttpServlet {
 						if(numero_certificato!=null) {
 							campione.setNumeroCertificato(numero_certificato);
 						}
+						campione.setStatoCampione("S");
 						session.update(campione);
 					}
 					attivita.setNumero_certificato(numero_certificato);

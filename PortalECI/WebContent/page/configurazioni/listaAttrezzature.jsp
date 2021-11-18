@@ -433,7 +433,7 @@ request.setAttribute("user",user);
 		   return str;	 		
 	}
     
-	var cliente = "${user.checkRuolo('CL')}";
+	var cliente = "${user.checkRuolo('CLVAL')}";
     $(document).ready(function() {
     	
     	$("#select2").select2();
@@ -447,8 +447,14 @@ request.setAttribute("user",user);
     		$('#select1').val(id_cliente);
     		$('#select1').change();
     		
-    	//	$('#select2').val(id_sede);
-    	//	$('#select2').change();
+    		if(id_sede == 0){
+    			$('#select2').val(id_sede);
+    		}else{
+    			$('#select2').val(id_sede+"_"+id_cliente);
+    		}
+    		
+    		
+    		$('#select2').change();
     		
     		$('#select1').attr("disabled",true);
     		$('#select2').attr("disabled",true);

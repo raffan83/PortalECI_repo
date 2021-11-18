@@ -2,18 +2,23 @@ package it.portalECI.action;
 
 import it.portalECI.DAO.GestioneAccessoDAO;
 import it.portalECI.DAO.SessionFacotryDAO;
+import it.portalECI.DTO.ClienteDTO;
 import it.portalECI.DTO.CompanyDTO;
 import it.portalECI.DTO.PermessoDTO;
 import it.portalECI.DTO.RuoloDTO;
+import it.portalECI.DTO.SedeDTO;
 import it.portalECI.DTO.UtenteDTO;
 import it.portalECI.Exception.ECIException;
 import it.portalECI.Util.Utility;
+import it.portalECI.bo.GestioneAnagraficaRemotaBO;
+import it.portalECI.bo.GestioneAttrezzatureBO;
 import it.portalECI.bo.GestioneRuoloBO;
 
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -26,6 +31,7 @@ import org.hibernate.Session;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
 /**
@@ -84,6 +90,15 @@ public class ListaUtenti extends HttpServlet {
 				ArrayList<UtenteDTO> listaUtenti =  (ArrayList<UtenteDTO>) GestioneAccessoDAO.getListUser(session);
 				ArrayList<CompanyDTO> listaCompany =  (ArrayList<CompanyDTO>) GestioneAccessoDAO.getListCompany();
 				ArrayList<RuoloDTO> listaRuoli =  (ArrayList<RuoloDTO>) GestioneAccessoDAO.getListRole();
+								
+				List<ClienteDTO> listaClienti = GestioneAnagraficaRemotaBO.getListaClienti(""+1703);		
+				List<SedeDTO> listaSedi = GestioneAnagraficaRemotaBO.getListaSedi();
+				
+		
+			
+				request.getSession().setAttribute("listaClienti",listaClienti);
+				request.getSession().setAttribute("listaSedi",listaSedi);	
+				
 				
 				request.getSession().setAttribute("listaRuoli",listaRuoli);
 		        request.getSession().setAttribute("listaUtenti",listaUtenti);

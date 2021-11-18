@@ -122,4 +122,20 @@ public class GestioneStoricoVerbaleDAO {
 		return result;
 	}
 
+	public static int getVerbaleFromIdStorico(int verbeletter_id, Session session) {
+		ArrayList<Integer> lista;
+		int result = 0;
+		
+		Query query = session.createQuery("select id from VerbaleStoricoDTO where id_verbale_storico = :_verbeletter_id order by id desc");
+		query.setParameter("_verbeletter_id", verbeletter_id);
+		
+		lista = (ArrayList<Integer>) query.list();
+		
+		if(lista.size()>0) {
+			result = lista.get(0);
+		}
+		
+		return result;
+	}
+
 }

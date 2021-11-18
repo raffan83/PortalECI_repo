@@ -64,7 +64,9 @@
           <property name="filename" type="java.lang.String">
             <column name="filename" />
         </property>
-
+          <property name="id_verbale_storico" type="int">
+            <column name="id_verbale_storico" />
+        </property>
     </class>
 </hibernate-mapping>
 

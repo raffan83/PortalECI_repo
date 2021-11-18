@@ -1379,6 +1379,20 @@ if(action!= null && action.equals("dettaglio")) {
 			myObj.addProperty("success", true);
 			out.print(myObj);
 		}
+		else if(action!=null && action.equals("elimina_allegato")) {
+			
+			String id_documento = request.getParameter("id_documento");
+			
+			DocumentoDTO doc = GestioneDocumentoDAO.getDocumento(id_documento, session);
+			doc.setInvalid(true);
+		
+			session.update(doc);
+			
+			myObj.addProperty("success", true);
+			out.print(myObj);
+			
+		}
+		
 		else {
 			//caso genericoc della ricerca del verbale per aprire gestioneVerbali					
 			List<DomandaVerbaleDTO> domandeVerbale=new ArrayList<DomandaVerbaleDTO>();

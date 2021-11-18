@@ -82,28 +82,20 @@ request.setAttribute("user",user);
 													
               										<table id="tabPM" class="table table-bordered table-hover dataTable table-striped" role="grid" width="100%">
  														<thead>
- 														<c:if test="${user.checkRuolo('CL') }">
- 														<th>ID Verbale</th>
- 																<th >ID Intervento</th>
- 																<th>ID Commessa</th>
+ 														<c:if test="${user.checkRuolo('CLVIE') }">
+ 														<th>ID Verbale</th> 																
  																<th>Numero Verbale</th>
+ 																<th>Tipo Verifica</th>
  																<th>Data verifica</th>
- 																<th>Matricola Attrezzatura</th>
- 																<th style="min-width:200px">Sede Cliente</th>
- 																<th>Sede Utilizzatore</th>
- 																
- 																<th>Codice Verifica</th>
- 																<th>Tecnico Verificatore</th><%-- 
- 																<th>Descrizione Verifica</th> --%>
- 																<th>Stato</th>
- 																<th>Stato S.T.</th>
+ 																<th>Data prossima verifica</th>
+ 															
+ 																<th style="min-width:200px">Sede Cliente</th> 																
  																<th>Certificati</th>
  																
- 																<th>Allegati</th>
- 													
+ 																<th>Allegati</th> 													
  																
  														</c:if>
- 														<c:if test="${!user.checkRuolo('CL') }">
+ 														<c:if test="${!user.checkRuolo('CLVIE') }">
  															<tr class="active"> 
  																<th style="max-width:20px">ID Verbale</th>
  																<th style="max-width:30px">ID Intervento</th>
@@ -124,7 +116,7 @@ request.setAttribute("user",user);
  																<th>S.T. Firmata</th>
  													
  																<th>Data Creazione</th>
- 																<th>Tipo Verifica</th>
+ 																
  																<td></td>
  															</tr>
  															</c:if>
@@ -132,24 +124,24 @@ request.setAttribute("user",user);
  
  														<tbody> 
   															<c:forEach items="${listaVerbali}" var="verbale">  	
-  															<c:if test="${user.checkRuolo('CL') }">														
+  															<c:if test="${user.checkRuolo('CLVIE') && verbale.visibile_cliente ==1}">		
+  																											
  																<tr role="row" id="${verbale.getId()}">
 																	<td>
 																		${verbale.getId()}
 																		
 																	</td>	
-																	<td>
 																	
-																			${verbale.getIntervento().getId()}
-																		
-																	</td>
-																	<td>
-																	
-																			${verbale.intervento.idCommessa}
-																		
-																	</td>
 																	<td>
 																		${verbale.numeroVerbale }
+																	</td>
+																		<td>
+																	<c:if test="${verbale.motivo_verifica == 1}">
+																	Periodica
+																	</c:if>
+																	<c:if test="${verbale.motivo_verifica != 0 && verbale.motivo_verifica > 1}">
+																	Straordinaria
+																	</c:if>
 																	</td>
 																	<td>
 																	<c:choose>
@@ -173,84 +165,41 @@ request.setAttribute("user",user);
 																	
 																	</td>
 																	<td>
-																	<c:if test="${verbale.attrezzatura!=null}">
-																	${verbale.attrezzatura.matricola_inail }
-																	</c:if>
+																	<c:choose>
+																	<c:when test="${verbale.data_prossima_verifica!=null }">
+																		<fmt:formatDate pattern="dd/MM/yyyy" value='${verbale.data_prossima_verifica}' type='date' />
+																	</c:when>
+																	<c:otherwise>
+																		<c:choose>
+																		<c:when test="${verbale.data_prossima_verifica_interna!=null }">
+																			<fmt:formatDate pattern="dd/MM/yyyy" value='${verbale.data_prossima_verifica_interna}' type='date' />
+																		</c:when>
+																		<c:otherwise>
+																			<c:if test="${verbale.data_prossima_verifica_integrita!=null }">
+																			<fmt:formatDate pattern="dd/MM/yyyy" value='${verbale.data_prossima_verifica_integrita}' type='date' />
+																			</c:if>																	
+																		</c:otherwise>
+																		</c:choose>
+																	</c:otherwise>
+																	</c:choose>
 																	
 																	
 																	</td>
-																	
+																
 																	<td>
 																		<c:out value='${verbale.getIntervento().getNome_sede()}'/>
 																	</td>
-																	<td>
-																		<c:out value='${verbale.getSedeUtilizzatore()}'/>
-																	</td>
-																
-																	<td>
-																		<c:out value='${verbale.getCodiceVerifica()}'/>
-																	</td>
-																	<td>
-																		<c:out value='${verbale.getIntervento().getTecnico_verificatore().getNominativo()}'/>
-																	</td>
-																	<%-- <td>
-																		<c:out value='${verbale.getDescrizioneVerifica()}'/>
-																	</td> --%>
-																	<td>
-																		<span class="label" style="color:#000000 !important; background-color:${verbale.getStato().getColore(verbale.getStato().getId())} !important;">${verbale.getStato().getDescrizione()}</span>
-																		
-																		 																	
-																	</td>
-																	<td>
-																	<c:if test="${verbale.getSchedaTecnica()!=null }">
-																			<span class="label" style="color:#000000 !important; background-color:${verbale.getStato().getColore(verbale.getSchedaTecnica().getStato().getId())} !important;">${verbale.getSchedaTecnica().getStato().getDescrizione()}</span>
-																		</c:if>  											
-																		<c:if test="${verbale.getSchedaTecnica()==null }">
-																			<span class="label" style="color:#000000 !important; background-color:grey !important;">ASSENTE</span>
-																		</c:if>	 
-																	</td>
+																	
 																	<td>
 																	
-																
-      																	<c:forEach items="${verbale.getDocumentiVerbale()}" var="docum">	
-      																		<c:if test="${docum.getType().equals('CERTIFICATO') && !docum.getInvalid()}">
-<!--       																		if(verbale.getCodiceCategoria().equals("VAL")) {
-					docPdf	= new File(Costanti.PATH_CERTIFICATI+doc.getFilePath().substring(0, doc.getFilePath().length()-4)+"_F.pdf");
-				}else {
-					docPdf	= new File(Costanti.PATH_CERTIFICATI+doc.getFilePath().substring(0, doc.getFilePath().length()-4)+"_CF.pdf");
-				} -->
-																				<c:if test="${verbale.getCodiceCategoria().equals('VAL') }">
-																					<%-- <a class="btn customTooltip" title="Click per aprire il certificato" onclick="scaricaFile(${docum.id}, ${docum.verbale.id });"> --%>
-																					<a class="btn customTooltip" title="Click per aprire l'allegato" href="gestioneDocumento.do?firmato=1&idDocumento=${docum.getId()}">
-																					<i class="glyphicon glyphicon-file"></i>
-            																	</a>
-																				</c:if>
-																				<c:if test="${!verbale.getCodiceCategoria().equals('VAL') }">
-																					<%-- <a class="btn customTooltip" title="Click per aprire il certificato" onclick="scaricaFile(${docum.id}, ${docum.verbale.id });"> --%>
-																				<a class="btn customTooltip" title="Click per aprire l'allegato" href="gestioneDocumento.do?controfirmato=1&idDocumento=${docum.getId()}">
-    	  																		<%-- <a class="btn customTooltip" title="Click per aprire il certificato" onclick="scaricaFile(${docum.id}, ${docum.verbale.id });"> --%>
-	      																			<i class="glyphicon glyphicon-file"></i>
-            																	</a>
-            																	</c:if>
-	      																	</c:if>      																		
-      																	</c:forEach>
-      																
+																		<a class="btn btn-primary customTooltip" onClick="modalAllegati('${verbale.id}', 'VERBALE')" title="Click per scaricari i certificati"><i class="fa fa-archive"></i></a>
+
 																																		
 																	</td>
 
 																	<td>
 																	
-																		
-      																	<c:forEach items="${verbale.getDocumentiVerbale()}" var="docum">	      																		
-      																		<c:if test="${docum.getType().equals('ALLEGATO')}">
-	      																		<%-- <a class="btn customTooltip" title="Click per aprire l'allegato" onclick="scaricaFile(${docum.id}, ${docum.verbale.id });">gestioneDocumento.do?idDocumento=${allegato.getId() --%>
-	      																		<a class="btn customTooltip" title="Click per aprire l'allegato" href="gestioneDocumento.do?idDocumento=${docum.getId()}">
-	      																		
-	      																			<i class="glyphicon glyphicon-file"></i>
-            																	</a>
-    	  																	</c:if>
-      																	</c:forEach>
-      														
+																		<a class="btn btn-primary customTooltip" onClick="modalAllegati('${verbale.id}', 'ALLEGATO')"title="Click per scaricari gli allegati"><i class="fa fa-archive"></i></a>
 																																		
 																	</td>
 																	
@@ -261,7 +210,7 @@ request.setAttribute("user",user);
 																
 																
 																
-																<c:if test="${!user.checkRuolo('CL') }">														
+																<c:if test="${!user.checkRuolo('CLVIE') }">														
  																<tr role="row" id="${verbale.getId()}">
 																	<td>
 																		 <a href="gestioneVerbale.do?action=dettaglio&idVerbale=${verbale.getId()}" type="submit" class="btn customTooltip customlink" title="Click per aprire il dettaglio del Verbale" >
@@ -423,6 +372,29 @@ request.setAttribute("user",user);
     							</div>
   							</div>
 						</div> 
+						
+						
+						
+						
+						  <div id="myModalAllegati" class="modal fade" role="dialog" aria-labelledby="myLargeModalLabel">
+    						<div class="modal-dialog" role="document">
+    							<div class="modal-content">
+     								<div class="modal-header">
+        								<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        								<h4 class="modal-title" id="myModalLabel">Download </h4>
+      								</div>
+       								<div class="modal-body">
+										<div id="content_allegati">				
+										</div>	   
+  										<div id="empty2" class="label label-danger testo12"></div>
+  		 							</div>
+      								<div class="modal-footer">
+        								<button type="button" class="btn btn-primary" data-dismiss="modal">Chiudi</button>
+      								</div>
+    							</div>
+  							</div>
+						</div> 
+						
 				</section>  
   			</div>
   			<!-- /.content-wrapper -->
@@ -463,6 +435,17 @@ request.setAttribute("user",user);
   		 	//exploreModal("gestioneListaVerbali.do", dataString, '#content_consuntivo');
   	}
 
+  		
+  		function modalAllegati(id_verbale, type){
+  			
+  			dataString = "action=allegati_verbale_cliente&id_verbale=" + id_verbale + "&type=" + type;
+	 
+
+	 	exploreModal("gestioneListaVerbali.do", dataString, '#content_allegati');
+  			
+	 	
+	 	$('#myModalAllegati').modal()
+  		}
 
 
 
@@ -517,6 +500,30 @@ request.setAttribute("user",user);
     		  	
     		  	 }
 
+    		   	
+    		   	columnDef =  [];
+    		   	
+    		   	if(${user.checkRuolo('CLVIE')}){
+    		   		
+    		   		columnDef =  [
+    					
+    	            ]
+    		   		
+    		   		
+    		   	}else{
+    		   		columnDef =  [
+    					{ responsivePriority: 1, targets: 0 },
+    	                { responsivePriority: 3, targets: 2 },
+    	                { responsivePriority: 4, targets: 3 },
+    	                { responsivePriority: 2, targets: 6 },
+    	                { responsivePriority: 2, targets: 8, type:"date-eu" },
+    	                { responsivePriority: 5, targets: 11 },
+    	                { orderable: false, targets: 6 },
+    	            ]
+    		   	}
+    		   	
+    		   	
+    		   	
     			
     			
      			table = $('#tabPM').DataTable({
@@ -552,15 +559,7 @@ request.setAttribute("user",user);
     	      		responsive: true,
     	      		scrollX: false,
 	      			order: [[ 0, "desc" ]],
-    	      		columnDefs: [
-						{ responsivePriority: 1, targets: 0 },
-    	                { responsivePriority: 3, targets: 2 },
-    	                { responsivePriority: 4, targets: 3 },
-    	                { responsivePriority: 2, targets: 6 },
-    	                { responsivePriority: 2, targets: 8, type:"date-eu" },
-    	                { responsivePriority: 5, targets: 11 },
-    	                { orderable: false, targets: 6 },
-    	            ],
+    	      		columnDefs: columnDef,
     	            buttons: [ {
     	            	extend: 'copy',
     	                text: 'Copia',

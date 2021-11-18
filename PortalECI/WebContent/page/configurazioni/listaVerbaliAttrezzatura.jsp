@@ -4,30 +4,37 @@
 <%@taglib prefix="t" tagdir="/WEB-INF/tags"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
-
+<%@page import="it.portalECI.DTO.UtenteDTO"%>
+<%
+	UtenteDTO user = (UtenteDTO)request.getSession().getAttribute("userObj");
+	request.setAttribute("user",user);
+%>
 
     <div class="row">
 <div class="col-lg-12">
 
 
 <table id="tabVerbali" class="table table-bordered table-hover dataTable table-striped" role="grid" width="100%">
+										<c:if test="${!user.checkRuolo('CLVAL') }">
  														<thead>
+ 														
+ 														
  															<tr class="active"> 
  																<th>ID Verbale</th>
- 																<%-- <th>ID Intervento</th> --%>
- 																<%-- <th>ID Commessa</th> --%>
+ 															
  																<th>Numero Verbale</th>
  																<th>Matricola Attrezzatura</th>
- 																<%-- <th>Sede Cliente</th> --%>
+ 															
  																<th>ID Commessa</th>
  																<th>Codice Verifica</th>
- 																<%-- <th>Tecnico Verificatore</th> --%>
+ 															
  																<th>Descrizione Verifica</th>
  																<th>Stato</th>
- 																<th>Stato S.T.</th>
+ 																
  																<th>Data Creazione</th>
  																<td></td>
  															</tr>
+ 															 															
  														</thead>
  
  														<tbody> 
@@ -38,16 +45,7 @@
 																			<c:out value='${verbale.getId()}'/>
 																		</a>
 																	</td>	
-																	<%-- <td>
-																		<a href="#" class="btn customTooltip customlink" title="Click per aprire il dettaglio dell'Intervento" onclick="callAction('gestioneInterventoDati.do?idIntervento=${verbale.getIntervento().getId()}');">
-																			${verbale.getIntervento().getId()}
-																		</a>
-																	</td> --%>
-																	<%-- <td>
-																	<a href="#" class="btn customTooltip customlink" title="Click per aprire il dettaglio della Commessa" onclick="callAction('gestioneIntervento.do?idCommessa=${verbale.intervento.idCommessa}');">
-																			${verbale.intervento.idCommessa}
-																		</a>
-																	</td> --%>
+																
 																	<td>
 																		${verbale.numeroVerbale }
 																	</td>
@@ -60,34 +58,23 @@
 																	
 																	</td>
 																	
-																	<%-- <td>
-																		<c:out value='${verbale.getIntervento().getNome_sede()}'/>
-																	</td> --%>
+																	
 																	<td>
 																		<c:out value='${verbale.intervento.idCommessa}'/>
 																	</td>
 																	<td>
 																		<c:out value='${verbale.getCodiceVerifica()}'/>
 																	</td>
-																	<%-- <td>
-																		<c:out value='${verbale.getIntervento().getTecnico_verificatore().getNominativo()}'/>
-																	</td> --%>
+																	
 																	<td>
 																		<c:out value='${verbale.getDescrizioneVerifica()}'/>
 																	</td>
 																	<td>
-																		<span class="label" style="color:#000000 !important; background-color:${verbale.getStato().getColore(verbale.getStato().getId())} !important;">${verbale.getStato().getDescrizione()}</span>
+																		<span class="label" style="color:#000000 !important; background-color:${verbale.getStato().getColore(verbale.getStato().getId())} !important;">${verbale.getStato().getDescrizione()}</span> 
 																		
 																		 																	
 																	</td>
-																	<td>
-																	<c:if test="${verbale.getSchedaTecnica()!=null }">
-																			<span class="label" style="color:#000000 !important; background-color:${verbale.getStato().getColore(verbale.getSchedaTecnica().getStato().getId())} !important;">${verbale.getSchedaTecnica().getStato().getDescrizione()}</span>
-																		</c:if>  											
-																		<c:if test="${verbale.getSchedaTecnica()==null }">
-																			<span class="label" style="color:#000000 !important; background-color:grey !important;">ASSENTE</span>
-																		</c:if>	 
-																	</td>
+																	
         															<td>
 																		<fmt:formatDate pattern="dd/MM/yyyy" value='${verbale.getCreateDate()}' type='date' />
 																	</td>
@@ -99,6 +86,138 @@
 																</tr>
 															</c:forEach>
  														</tbody>
+ 														</c:if>
+ 														<c:if test="${user.checkRuolo('CLVAL') }">
+ 														
+ 														
+ 														<thead>
+ 														
+ 														
+ 															<tr class="active"> 
+ 																<th>ID Verbale</th>
+ 															
+ 																<th>Numero Verbale</th>
+ 																<th>Matricola Attrezzatura</th>
+ 																<th>Tipo verifica</th>
+ 																
+ 																<th>Data Verifica</th>
+ 																<th>Certificati</th>
+ 																<th>Allegati</th>
+ 															</tr>
+ 															 															
+ 														</thead>
+ 
+ 														<tbody> 
+  															<c:forEach items="${listaVerbali}" var="verbale">  	
+  															<c:if test="${verbale.visibile_cliente==1 }">														
+ 																<tr role="row" id="${verbale.getId()}">
+																	<td>
+																		
+																			<c:out value='${verbale.getId()}'/>
+																		
+																	</td>	
+															
+																	<td>
+																		${verbale.numeroVerbale }
+																	</td>
+																	
+																	<td>
+																	<c:if test="${verbale.attrezzatura!=null}">
+																	${verbale.attrezzatura.matricola_inail }
+																	</c:if>
+																	
+																	
+																	</td>
+																	
+																															
+																	
+																	<td>
+																	<c:if test="${verbale.tipo_verifica == 1 || verbale.tipo_verifica == 2 }">
+																	<c:if test="${verbale.tipo_verifica_gvr == 1}">
+																	PVP
+																	</c:if>
+																	<c:if test="${verbale.tipo_verifica_gvr == 4}">
+																	PVP + Integrità
+																	</c:if>
+																	<c:if test="${verbale.tipo_verifica_gvr == 5}">
+																	PVP + Integrità + Interna
+																	</c:if>
+																	<c:if test="${verbale.tipo_verifica_gvr == 7}">
+																	PVP + Interna
+																	</c:if>
+																	
+																	</c:if>
+																	
+																	<c:if test="${verbale.tipo_verifica == 3 || verbale.tipo_verifica == 4 }">
+																	
+																	<c:if test="${verbale.tipo_verifica_gvr == 1}">
+																	Funzionamento
+																	</c:if>
+																	<c:if test="${verbale.tipo_verifica_gvr == 2}">
+																	Integrità
+																	</c:if>
+																	<c:if test="${verbale.tipo_verifica_gvr == 3}">
+																	Interna
+																	</c:if>
+																	<c:if test="${verbale.tipo_verifica_gvr == 4}">
+																	Funzionamento + Integrità
+																	</c:if>
+																	<c:if test="${verbale.tipo_verifica_gvr == 5}">
+																	Funzionamento + Integrità + Interna
+																	</c:if>
+																	<c:if test="${verbale.tipo_verifica_gvr == 6}">
+																	Interna + Integrità
+																	</c:if>
+																	<c:if test="${verbale.tipo_verifica_gvr == 7}">
+																	Funzionamento + Interna
+																	</c:if>
+																	
+																	</c:if>
+																	
+																	
+																		
+																	</td>
+																	<td>
+																		<c:choose>
+																	<c:when test="${verbale.data_verifica!=null }">
+																		<fmt:formatDate pattern="dd/MM/yyyy" value='${verbale.data_verifica}' type='date' />
+																	</c:when>
+																	<c:otherwise>
+																		<c:choose>
+																		<c:when test="${verbale.data_verifica_interna!=null }">
+																			<fmt:formatDate pattern="dd/MM/yyyy" value='${verbale.data_verifica_interna}' type='date' />
+																		</c:when>
+																		<c:otherwise>
+																			<c:if test="${verbale.data_verifica_integrita!=null }">
+																			<fmt:formatDate pattern="dd/MM/yyyy" value='${verbale.data_verifica_integrita}' type='date' />
+																			</c:if>																	
+																		</c:otherwise>
+																		</c:choose>
+																	</c:otherwise>
+																	</c:choose>
+																	</td>
+																	
+																	<td>
+																	
+																		<a class="btn btn-primary customTooltip" onClick="modalAllegati('${verbale.id}', 'VERBALE')" title="Click per scaricare i certificati"><i class="fa fa-archive"></i></a>
+
+																																		
+																	</td>
+
+																	<td>
+																	
+																		<a class="btn btn-primary customTooltip" onClick="modalAllegati('${verbale.id}', 'ALLEGATO')"title="Click per scaricare gli allegati"><i class="fa fa-archive"></i></a>
+																																		
+																	</td>
+																	
+        															
+																</tr>
+																</c:if>
+															</c:forEach>
+ 														</tbody>
+ 														
+ 														</c:if>
+ 														
  													</table>  
 
 
@@ -107,13 +226,62 @@
 </div>
 </div>
 
+
+						  <div id="myModalAllegati" class="modal fade" role="dialog" aria-labelledby="myLargeModalLabel">
+    						<div class="modal-dialog" role="document">
+    							<div class="modal-content">
+     								<div class="modal-header">
+        								<button type="button" class="close" onClick="$('#myModalAllegati').modal('hide')" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        								<h4 class="modal-title" id="myModalLabel">Download </h4>
+      								</div>
+       								<div class="modal-body">
+										<div id="content_allegati">				
+										</div>	   
+  										<div id="empty2" class="label label-danger testo12"></div>
+  		 							</div>
+      								<div class="modal-footer">
+        								<button type="button" class="btn btn-primary" onClick="$('#myModalAllegati').modal('hide')">Chiudi</button>
+      								</div>
+    							</div>
+  							</div>
+						</div> 
+
 <link rel="stylesheet" href="https://cdn.datatables.net/select/1.2.2/css/select.dataTables.min.css">
 
 <script src="https://cdn.datatables.net/select/1.2.2/js/dataTables.select.min.js"></script>
 	<script type="text/javascript">
 	
 	
+  		function modalAllegati(id_verbale, type){
+  			
+  			dataString = "action=allegati_verbale_cliente&id_verbale=" + id_verbale + "&type=" + type;
+	 
+
+	 	exploreModal("gestioneListaVerbali.do", dataString, '#content_allegati');
+  			
+	 	
+	 	$('#myModalAllegati').modal()
+  		}
+
+	
+	
 	$(document).ready(function() {
+		
+		
+		var coldef = [
+			{ responsivePriority: 1, targets: 0 },
+            { responsivePriority: 3, targets: 2 },
+            { responsivePriority: 4, targets: 3 },
+            { responsivePriority: 2, targets: 6 },
+            { responsivePriority: 2, targets: 8, type:"date-eu" },
+            { orderable: false, targets: 6 },
+        ]
+		
+		if(${user.checkRuolo('CLVAL')}){
+			
+			coldef = [];
+			
+		}
 		
 		
 		
@@ -150,14 +318,7 @@
      		responsive: true,
      		scrollX: false,
  			order: [[ 0, "desc" ]],
-     		columnDefs: [
-				{ responsivePriority: 1, targets: 0 },
-               { responsivePriority: 3, targets: 2 },
-               { responsivePriority: 4, targets: 3 },
-               { responsivePriority: 2, targets: 6 },
-               { responsivePriority: 2, targets: 8, type:"date-eu" },
-               { orderable: false, targets: 6 },
-           ]
+     		columnDefs: coldef
                   	     
    	});
 		

@@ -82,8 +82,19 @@ public class GestioneUtenti extends HttpServlet {
 	    	 	String telefono = request.getParameter("telefono");
 	    	 	String companyId = request.getParameter("company");
 	    	 	String cf = request.getParameter("cf");
+	    	 	String id_cliente = request.getParameter("id_cliente");
+	    	 	String id_sede = request.getParameter("id_sede");
+	    	 	String tipo_utente = request.getParameter("tipo_utente");
+	    	 	String check= request.getParameter("check");
 
-	    	 	CompanyDTO company = GestioneCompanyBO.getCompanyById(companyId, session);
+	    	 	CompanyDTO company = null;
+	    	 	if(companyId!=null) {
+	    	 		company = GestioneCompanyBO.getCompanyById(companyId, session);
+	    	 	}else {
+	    	 		company = GestioneCompanyBO.getCompanyById("1703", session);
+	    	 	}
+	    	 	
+	    	 	
 	    	 			    	 			
 	    	 	UtenteDTO utente = new UtenteDTO();
 	    	 	utente.setCodice(codice);
@@ -99,18 +110,53 @@ public class GestioneUtenti extends HttpServlet {
 	    	 	utente.setTelefono(telefono);
 	    	 	utente.setCompany(company);
 	    	 	utente.setNominativo(nome+" "+cognome.replace("\u2032", "'"));
-	    	 	utente.setTipoutente("2");
+	    	 	utente.setTipoutente(tipo_utente);
 	    	 	utente.setCf(cf);
+	    	 	if(id_cliente!=null && !id_cliente.equals("")) {
+	    	 		utente.setIdCliente(Integer.parseInt(id_cliente));
+	    	 	}
+	    	 	if(id_sede!=null && !id_sede.equals("")) {
+	    	 		utente.setIdSede(Integer.parseInt(id_sede.split("_")[0]));
+	    	 	}
+	    	 	
+	    	 	
+	    	 	
 	    	 	//GestioneUtenteBO.save(utente,session);
 
 	    	 	int success = GestioneUtenteBO.saveUtente(utente, action, session);
 	    	 	if(success==0){
+	    	 		
+	    	 		if(check!=null && check.split(",").length==1) {
+		    	 		if(check.split(",")[0].split("_")[0].equals("checkvie")) {
+		    	 			RuoloDTO ruolo = GestioneRuoloBO.getRuoloById("9", session);
+		    	 			
+		    	 			utente.getListaRuoli().add(ruolo);
+		    	 		}else if(check.split(",")[0].split("_")[0].equals("checkval")) {
+		    	 			RuoloDTO ruolo = GestioneRuoloBO.getRuoloById("10", session);
+		    	 			
+		    	 			utente.getListaRuoli().add(ruolo);
+		    	 		}
+		    	 		
+		    	 		
+		    	 	}else if(check!=null && check.split(",").length==2) {
+		    	 		RuoloDTO ruolo_vie = GestioneRuoloBO.getRuoloById("9", session);    	 			
+	    	 			
+		    	 		RuoloDTO ruolo_val = GestioneRuoloBO.getRuoloById("10", session);
+	    	 			
+	    	 			utente.getListaRuoli().add(ruolo_vie);
+	    	 			utente.getListaRuoli().add(ruolo_val);
+		    	 	}
+		    	 	
+	    	 		
 	    	 		myObj.addProperty("success", true);
 	    	 		myObj.addProperty("messaggio","Utente salvato con successo");
 	    	 		session.getTransaction().commit();
 	    	 		session.close();
 	    				
 	    	 	}
+	    	 	
+	    	 	
+	    	 	
 	    	 	if(success==1){
 	    	 		
 	    	 		myObj.addProperty("success", false);
@@ -141,7 +187,12 @@ public class GestioneUtenti extends HttpServlet {
 	    		String companyId = request.getParameter("company");
 	    		String cf = request.getParameter("cf");
 	    	 				
-	    	 			
+	    		String id_cliente = request.getParameter("id_cliente");
+	    	 	String id_sede = request.getParameter("id_sede");
+	    	 	String tipo_utente = request.getParameter("tipo_utente");
+	    	 	String check= request.getParameter("check");
+	    	 	
+	    	 	
 	    		UtenteDTO utente = GestioneUtenteBO.getUtenteById(id, session);
 	    	 			
 	    	 			
@@ -161,6 +212,10 @@ public class GestioneUtenti extends HttpServlet {
 	    		if(user != null && !user.equals("")){
 	    			utente.setUser(user);
 	    		}
+	    		if(tipo_utente != null && !tipo_utente.equals("")){
+	    			utente.setTipoutente(tipo_utente);
+	    		}
+	    		
 	    		if(passw != null && !passw.equals("")){
 	    			utente.setPassw(DirectMySqlDAO.getPassword(passw));
 	    		}
@@ -189,8 +244,35 @@ public class GestioneUtenti extends HttpServlet {
 	    		}
 	    		
 	    		int success = GestioneUtenteBO.saveUtente(utente, action, session);
+	    		
+	    		
 	    	 			
 	    		if(success==0){
+	    			
+	    			
+		    	 		
+		    	 		if(check!=null && check.split(",").length==1) {
+			    	 		if(check.split(",")[0].split("_")[0].equals("checkvie")) {
+			    	 			RuoloDTO ruolo = GestioneRuoloBO.getRuoloById("9", session);
+			    	 			
+			    	 			utente.getListaRuoli().add(ruolo);
+			    	 		}else if(check.split(",")[0].split("_")[0].equals("checkval")) {
+			    	 			RuoloDTO ruolo = GestioneRuoloBO.getRuoloById("10", session);
+			    	 			
+			    	 			utente.getListaRuoli().add(ruolo);
+			    	 		}
+			    	 		
+			    	 		
+			    	 	}else if(check!=null && check.split(",").length==2) {
+			    	 		RuoloDTO ruolo_vie = GestioneRuoloBO.getRuoloById("9", session);    	 			
+		    	 			
+			    	 		RuoloDTO ruolo_val = GestioneRuoloBO.getRuoloById("10", session);
+		    	 			
+		    	 			utente.getListaRuoli().add(ruolo_vie);
+		    	 			utente.getListaRuoli().add(ruolo_val);
+			    	 	}
+	    			
+	    			
 	    			myObj.addProperty("success", true);
 	    			myObj.addProperty("messaggio","Salvato con Successo");
 	    			session.getTransaction().commit();

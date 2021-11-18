@@ -6,6 +6,7 @@
 
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
+<%@ taglib uri="/WEB-INF/tld/utilities" prefix="utl" %>
 <%@taglib prefix="t" tagdir="/WEB-INF/tags"%>
 
 <%
@@ -83,7 +84,7 @@
 																			<td>${versione.note_aggiornamento}</td>
 																			<td>
 																			
-																			<a href="#" class="btn btn-warning customTooltip" title="Click per modificare la versione" onclick="modalModificaVersione('${versione.id }','${versione.versione }','${versione.data_aggiornamento }','${versione.note_aggiornamento }')"><i class="fa fa-edit"></i></a>
+																			<a href="#" class="btn btn-warning customTooltip" title="Click per modificare la versione" onclick="modalModificaVersione('${versione.id }','${versione.versione }','${versione.data_aggiornamento }','${utl:escapeJS(versione.note_aggiornamento) }')"><i class="fa fa-edit"></i></a>
 																			<a href="#" class="btn btn-danger customTooltip" title="Click per eliminare la versione" onclick="modalYesOrNo('${versione.id }')"><i class="fa fa-trash"></i></a>
 																			</td>
 																			

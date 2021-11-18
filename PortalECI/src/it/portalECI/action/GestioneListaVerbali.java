@@ -8,8 +8,11 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.Hashtable;
 import java.util.List;
+import java.util.Set;
+
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.ServletOutputStream;
@@ -18,6 +21,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
@@ -296,7 +300,7 @@ public class GestioneListaVerbali extends HttpServlet {
 				int id_cliente = 0;
 				int id_sede = 0;
 				
-				if(user.checkRuolo("CL")) {
+				if(user.checkRuolo("CLVIE") || user.checkRuolo("CLVAL")) {
 					id_cliente = user.getIdCliente();
 					id_sede = user.getIdSede();
 				}
@@ -534,6 +538,32 @@ public class GestioneListaVerbali extends HttpServlet {
 				
 			}
 			
+			else if(action.equals("allegati_verbale_cliente")) {
+				
+				String id_verbale = request.getParameter("id_verbale");
+				String type = request.getParameter("type");
+				
+				VerbaleDTO verbale = GestioneVerbaleBO.getVerbale(id_verbale, session);
+				
+				Set<DocumentoDTO> documenti = new HashSet<DocumentoDTO>();
+		
+				documenti.addAll(verbale.getDocumentiVerbale());
+				if(verbale.getSchedaTecnica()!=null) {
+					documenti.addAll(verbale.getSchedaTecnica().getDocumentiVerbale());	
+				}
+				
+				request.getSession().setAttribute("lista_allegati", documenti);
+				request.getSession().setAttribute("type", type);
+				request.getSession().setAttribute("id_verbale", id_verbale);
+
+				RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/page/configurazioni/gestioneAllegatiClienteTable.jsp");
+		     	dispatcher.forward(request,response);
+		     	
+		     	session.getTransaction().commit();
+				session.close();
+				
+				
+			}
 				
 		}catch(Exception ex){
 			session.getTransaction().rollback();

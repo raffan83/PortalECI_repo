@@ -116,8 +116,9 @@
 																			<td>${utente.company.denominazione}</td>
 																			<td>
 																				<c:if test="${user.checkPermesso('UPD_UTENTE')}">
+																				<%-- <c:set var="check_vie_mod" value="${utente.ch }"></c:set> --%>
 																					 <%-- <a href="#" onClick="modalModificaUtente('${utente.id}','${utente.codice}','${utente.user}','${utente.nome}','<c:out value="${fn:escapeXml(utente.cognome)}" />','${utente.indirizzo}','${utente.comune}','${utente.cap}','${utente.EMail}','${utente.telefono}','${utente.company.id}')" class="btn btn-warning "><i class="fa fa-edit"></i></a> --%> 
-																					 <a href="#" onClick="modalModificaUtente('${utente.id}','${utente.codice}','${utente.user}','${utente.nome}','${utente.cognome.replace('\'', '&prime;') }','${utente.indirizzo.replace('\'', '&prime;')}','${utente.comune.replace('\'', '&prime;')}','${utente.cap}','${utente.EMail}','${utente.telefono}','${utente.company.id}','${utente.qualifica }','${utente.cf }')" class="btn btn-warning "><i class="fa fa-edit"></i></a>
+																					 <a href="#" onClick="modalModificaUtente('${utente.id}','${utente.codice}','${utente.user}','${utente.nome}','${utente.cognome.replace('\'', '&prime;') }','${utente.indirizzo.replace('\'', '&prime;')}','${utente.comune.replace('\'', '&prime;')}','${utente.cap}','${utente.EMail}','${utente.telefono}','${utente.company.id}','${utente.qualifica }','${utente.cf }', '${utente.tipoutente }', '${utente.idCliente }','${utente.idSede }', ${utente.checkRuolo('CLVIE')}, ${utente.checkRuolo('CLVAL') })" class="btn btn-warning "><i class="fa fa-edit"></i></a>
 																					
 																					
 																				</c:if> 
@@ -168,6 +169,17 @@
          															<input class="form-control" id="passw" type="text" name="passw" value="" required />
      															</div>
    															</div>
+   															
+   															<div class="form-group">
+          														<label for="tipo_utente" class="col-sm-2 control-label">Tipo Utente:</label>
+         														<div class="col-sm-10">
+         															<select class="form-control select2" id="tipo_utente" name="tipo_utente" required data-placeholder="Seleziona tipo utente...">
+         															<option value="2">Interno</option>
+         															<option value="3">Cliente</option>
+         															</select>	         		
+     															</div>
+   															</div>
+   															
 	        												<div class="form-group">
           														<label for="codice" class="col-sm-2 control-label">Codice:</label>
          														<div class="col-sm-10">
@@ -236,19 +248,62 @@
     															</div>
      														</div>
 	
-       														<div class="form-group">
+       														<%-- <div class="form-group">
         														<label for="comnpany" class="col-sm-2 control-label">Company:</label>
         														<div class="col-sm-10">
 		                     
 					   												<select class="form-control required" id="company" name="company" required>
                        													<option value="">Seleziona una Company</option>
                                             							<c:forEach items="${listaCompany}" var="company" varStatus="loop">	
- 																			<option value="${company.id}">${company.denominazione}</option>
+ 																			<option value="${company.id}" selected>${company.denominazione}</option>
 	 
 																		</c:forEach>
                                                                     </select>                                           
     															</div>
-     														</div>          
+     														</div>   --%>   
+     														<div  id="content_cliente" style="display:none">
+     														<div class="form-group">
+        													 <label class="col-sm-2 control-label">Cliente:</label>
+																	<div class="col-sm-4">
+																	                  <select name="cliente_appoggio" id="cliente_appoggio" class="form-control select2" aria-hidden="true" data-live-search="true" style="width:100%;display:none" >
+																	                <option value=""></option>
+																	                      <c:forEach items="${listaClienti}" var="cliente">
+																	                     
+																	                           <option value="${cliente.__id}">${cliente.nome}</option> 
+																	                         
+																	                     </c:forEach>
+																	
+																	                  </select> 
+																	                  <input id="select1" name="select1" class="form-control" style="width:100%" required>
+																	    </div>
+																	
+																	     <label class="col-sm-2 control-label">Sede:</label>
+																	     <div class="col-sm-4">
+																	                  <select name="select2" id="select2" data-placeholder="Seleziona Sede..."  disabled class="form-control select2" aria-hidden="true" data-live-search="true" style="width:100%" required>
+																	                   <option value=""></option>
+																	             		<c:forEach items="${listaSedi}" var="sedi">
+																	                        <option value="${sedi.__id}_${sedi.id__cliente_}">${sedi.descrizione} - ${sedi.indirizzo} - ${sedi.comune} (${sedi.siglaProvincia})</option>              
+																	                     	</c:forEach>
+																	                  </select>
+																	
+																	</div>
+
+     														</div>   
+     														<div class="form-group">
+        													 <label class="col-sm-2 control-label">Visualizzazioni abilitate:</label>
+																	<div class="col-sm-4">
+																	                 
+																	                  <input id="checkvie" name="checkvie" class="form-control" style="width:100%" type="checkbox">
+																	                  <label>VIE</label>
+																	    </div>
+																	
+																	     <div class="col-sm-4">
+																	<input id="checkval" name="checkval" class="form-control" style="width:100%" type="checkbox">
+																	<label>VAL</label>
+																	</div>
+
+     														</div> 
+     														</div>    
 	 													</div>
               											<!-- /.tab-pane -->
             										</div>
@@ -297,6 +352,16 @@
          															<input class="form-control" id="modpassw" type="text" name="modpassw" value=""  />
      															</div>
    															</div>    	
+   															
+   															<div class="form-group">
+          														<label for="tipo_utente_mod" class="col-sm-2 control-label">Tipo Utente:</label>
+         														<div class="col-sm-10">
+         															<select class="form-control select2" id="tipo_utente_mod" name="tipo_utente_mod" required data-placeholder="Seleziona tipo utente...">
+         															<option value="2">Interno</option>
+         															<option value="3">Cliente</option>
+         															</select>	         		
+     															</div>
+   															</div>
     														<div class="form-group">
           														<label for="modcodice" class="col-sm-2 control-label">Codice:</label>
 
@@ -365,7 +430,7 @@
     															</div>
      														</div>
 	
-       														<div class="form-group">
+       										<%-- 				<div class="form-group">
         														<label for="modcomnpany" class="col-sm-2 control-label">Company:</label>
         														<div class="col-sm-10">
 	                     
@@ -378,7 +443,52 @@
 																		</c:forEach>	                                                                    
                 	      											</select>                                            
     															</div>
-     														</div>
+     														</div> --%>
+     														
+     														
+     														<div  id="content_cliente_mod" style="display:none">
+     														<div class="form-group">
+        													 <label class="col-sm-2 control-label">Cliente:</label>
+																	<div class="col-sm-4">
+																	                  <select name="select1_mod" id="select1_mod" class="form-control select2" aria-hidden="true" data-live-search="true" style="width:100%;display:none" >
+																	                <option value=""></option>
+																	                      <c:forEach items="${listaClienti}" var="cliente">
+																	                     
+																	                           <option value="${cliente.__id}">${cliente.nome}</option> 
+																	                         
+																	                     </c:forEach>
+																	
+																	                  </select> 
+																	                  <!-- <input id="select1_mod" name="select1_mod" class="form-control" style="width:100%" required> -->
+																	    </div>
+																	
+																	     <label class="col-sm-2 control-label">Sede:</label>
+																	     <div class="col-sm-4">
+																	                  <select name="select2_mod" id="select2_mod" data-placeholder="Seleziona Sede..."  disabled class="form-control select2" aria-hidden="true" data-live-search="true" style="width:100%" required>
+																	                   <option value=""></option>
+																	             		<c:forEach items="${listaSedi}" var="sedi">
+																	                        <option value="${sedi.__id}_${sedi.id__cliente_}">${sedi.descrizione} - ${sedi.indirizzo} - ${sedi.comune} (${sedi.siglaProvincia})</option>              
+																	                     	</c:forEach>
+																	                  </select>
+																	
+																	</div>
+
+     														</div>   
+     														<div class="form-group">
+        													 <label class="col-sm-2 control-label">Visualizzazioni abilitate:</label>
+																	<div class="col-sm-4">
+																	                 
+																	                  <input id="checkvie_mod" name="checkvie_mod" class="form-control" style="width:100%" type="checkbox">
+																	                  <label>VIE</label>
+																	    </div>
+																	
+																	     <div class="col-sm-4">
+																	<input id="checkval_mod" name="checkval_mod" class="form-control" style="width:100%" type="checkbox">
+																	<label>VAL</label>
+																	</div>
+
+     														</div> 
+     														</div>    
        
 		 												</div>
 	              										<!-- /.tab-pane -->
@@ -461,17 +571,57 @@
 	<jsp:attribute name="extra_js_footer">
 		<script src="plugins/jquery.appendGrid/jquery.appendGrid-1.6.3.js"></script>
 		<script type="text/javascript" src="https://ajax.aspnetcdn.com/ajax/jquery.validate/1.13.1/jquery.validate.min.js"></script>
-
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/lodash@4.17.11/lodash.min.js"></script>
 		<script type="text/javascript">
 
 
    		</script>
 
   		<script type="text/javascript">
-
+  
+  		
+  		$('#tipo_utente').change(function(){
+  			
+  			var value = $(this).val();
+  			
+  			if(value==2){
+  				
+  				$('#select1').attr("disabled", true);
+  				$('#select2').attr("disabled", true);
+  				$('#content_cliente').hide();
+  			}else{
+  				initSelect2('#select1');
+  				$('#select1').attr("disabled", false);
+  				$('#content_cliente').show();
+  			}
+  			
+  		});
+  		
+$('#tipo_utente_mod').change(function(){
+  			
+  			var value = $(this).val();
+  			
+  			if(value==2){
+  				
+  				$('#select1_mod').attr("disabled", true);
+  				$('#select2_mod').attr("disabled", true);
+  				$('#content_cliente_mod').hide();
+  			}else{
+  				
+  				$('#select1_mod').attr("disabled", false);
+  				$('#select2_mod').attr("disabled", false);
+  				$('#content_cliente_mod').show();
+  			}
+  			
+  		});
   
 	    	$(document).ready(function() {
-       
+	    		
+	    		
+	    		$('#select2').select2();
+	    		$('#select2_mod').select2();
+	    		$('#select1_mod').select2();
+	    		//initSelect2('#select1_mod');
     			table = $('#tabPM').DataTable({
   	    	  		paging: true, 
   	      			ordering: true,
@@ -603,7 +753,130 @@
 				}
  		
   			});
+	    	
+	    	
+	    	  var options =  $('#cliente_appoggio option').clone();
+	    	    function mockData() {
+	    	    	  return _.map(options, function(i) {		  
+	    	    	    return {
+	    	    	      id: i.value,
+	    	    	      text: i.text,
+	    	    	    };
+	    	    	  });
+	    	    	}
+	    	    	
 
+
+	    	    function initSelect2(id_input, placeholder) {
+
+	    	   	 if(placeholder==null){
+	    	  		  placeholder = "Seleziona Cliente...";
+	    	  	  }
+	    	    	$(id_input).select2({
+	    	    	    data: mockData(),
+	    	    	    placeholder: placeholder,
+	    	    	    multiple: false,
+	    	    	    // query with pagination
+	    	    	    query: function(q) {
+	    	    	      var pageSize,
+	    	    	        results,
+	    	    	        that = this;
+	    	    	      pageSize = 20; // or whatever pagesize
+	    	    	      results = [];
+	    	    	      if (q.term && q.term !== '') {
+	    	    	        // HEADS UP; for the _.filter function i use underscore (actually lo-dash) here
+	    	    	        results = _.filter(x, function(e) {
+	    	    	        	
+	    	    	          return e.text.toUpperCase().indexOf(q.term.toUpperCase()) >= 0;
+	    	    	        });
+	    	    	      } else if (q.term === '') {
+	    	    	        results = that.data;
+	    	    	      }
+	    	    	      q.callback({
+	    	    	        results: results.slice((q.page - 1) * pageSize, q.page * pageSize),
+	    	    	        more: results.length >= q.page * pageSize,
+	    	    	      });
+	    	    	    },
+	    	    	  });
+	    	    }
+
+	    	    $("#select1_mod").change(function() {
+	    	        
+	    	    	  if ($(this).data('options') == undefined) 
+	    	    	  {
+	    	    	    /*Taking an array of all options-2 and kind of embedding it on the select1*/
+	    	    	    $(this).data('options', $('#select2_mod option').clone());
+	    	    	  }
+	    	    	  
+	    	    	  var id = $(this).val();
+	    	    	  
+	    	    		  
+	    	    		var options = $(this).data('options');
+	    	    		
+	    	  	  	  var opt=[];
+	    	  	  	 
+	    	  	  		  opt.push("<option value = 0>Non Associate</option>");
+	    	  	  	
+	    	  	  	   for(var  i=0; i<options.length;i++)
+	    	  	  	   {
+	    	  	  		var str=options[i].value; 
+	    	  	  	
+	    	  	  		if(str.substring(str.indexOf("_")+1,str.length)==id)
+	    	  	  		{
+	    	  	  			opt.push(options[i]);
+	    	  	  		}   
+	    	  	  	   }
+	    	  	  	 $("#select2_mod").prop("disabled", false);
+	    	  	  	 
+	    	  	  	  $('#select2_mod').html(opt);
+	    	  	
+
+	    	  	  		$("#select2_mod").change();  
+	    	  	  			    	    	
+
+	    	    	});
+	    	    
+	    	    $("#select1").change(function() {
+	    	        
+	    	    	  if ($(this).data('options') == undefined) 
+	    	    	  {
+	    	    	    /*Taking an array of all options-2 and kind of embedding it on the select1*/
+	    	    	    $(this).data('options', $('#select2 option').clone());
+	    	    	  }
+	    	    	  
+	    	    	  var id = $(this).val();
+	    	    	  
+	    	    		  
+	    	    		var options = $(this).data('options');
+	    	    		
+	    	  	  	  var opt=[];
+	    	  	  	 
+	    	  	  		  opt.push("<option value = 0>Non Associate</option>");
+	    	  	  	
+	    	  	  	   for(var  i=0; i<options.length;i++)
+	    	  	  	   {
+	    	  	  		var str=options[i].value; 
+	    	  	  	
+	    	  	  		if(str.substring(str.indexOf("_")+1,str.length)==id)
+	    	  	  		{
+	    	  	  			opt.push(options[i]);
+	    	  	  		}   
+	    	  	  	   }
+	    	  	  	 $("#select2").prop("disabled", false);
+	    	  	  	 
+	    	  	  	  $('#select2').html(opt);
+	    	  	
+
+	    	  	  		$("#select2").change();  
+	    	  	  		
+	    	    	
+
+	    	    	
+	    	    	});
+	    	    
+	    	    
+	    	    
+	    	   
   		</script>
 	</jsp:attribute> 
 </t:layout>

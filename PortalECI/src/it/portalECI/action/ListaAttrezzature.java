@@ -108,7 +108,7 @@ public class ListaAttrezzature extends HttpServlet {
 				List<ClienteDTO> listaClientiFull = GestioneAnagraficaRemotaBO.getListaClienti(idCompany);		
 				List<SedeDTO> listaSediFull = GestioneAnagraficaRemotaBO.getListaSedi();
 				
-				if(!utente.checkRuolo("AM") && !utente.checkRuolo("ST") && !utente.checkRuolo("CL") ) {
+				if(!utente.checkRuolo("AM") && !utente.checkRuolo("ST") && !utente.checkRuolo("CLVAL") ) {
 					
 					List<ClienteDTO> listaClienti = new ArrayList<ClienteDTO>();	
 					
@@ -153,7 +153,7 @@ public class ListaAttrezzature extends HttpServlet {
 					request.getSession().setAttribute("dateTo",null);	
 					
 				}
-				else if(utente.checkRuolo("CL")) {
+				else if(utente.checkRuolo("CLVAL")) {
 					
 					List<ClienteDTO> listaClienti = new ArrayList<ClienteDTO>();	
 					
