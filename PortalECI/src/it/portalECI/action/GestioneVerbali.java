@@ -1368,6 +1368,19 @@ if(action!= null && action.equals("dettaglio")) {
 			myObj.addProperty("success", true);
 			out.print(myObj);
 		}
+		else if(action!=null && action.equals("allegato_visibile")) {
+			
+			String id_allegato = request.getParameter("id_allegato");
+			String value = request.getParameter("checked");
+			DocumentoDTO allegato = GestioneDocumentoDAO.getDocumento(id_allegato, session);
+		
+			allegato.setAllegato_visibile_cliente(Integer.parseInt(value));
+
+			session.update(allegato);
+			
+			myObj.addProperty("success", true);
+			out.print(myObj);
+		}
 		else if(action!=null && action.equals("visibile_cliente")) {
 			
 			

@@ -21,6 +21,7 @@ public class DocumentoDTO implements Serializable {
 	private CampioneDTO campione;
 	
 	private int allegato_inviabile;
+	private int allegato_visibile_cliente;
 	
 	public Date getCreateDate() {
 		return createDate;
@@ -79,6 +80,12 @@ public class DocumentoDTO implements Serializable {
 	}
 	public void setAllegato_inviabile(int allegato_inviabile) {
 		this.allegato_inviabile = allegato_inviabile;
+	}
+	public int getAllegato_visibile_cliente() {
+		return allegato_visibile_cliente;
+	}
+	public void setAllegato_visibile_cliente(int allegato_visibile_cliente) {
+		this.allegato_visibile_cliente = allegato_visibile_cliente;
 	}
 	
 }

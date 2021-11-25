@@ -32,7 +32,7 @@
 
             		
 
-	<table id="tabPM" class="table table-bordered table-hover dataTable table-striped" role="grid" width="100%">
+	<table id="tableAttr" class="table table-bordered table-hover dataTable table-striped" role="grid" width="100%">
 	<thead>
 
 	
@@ -81,8 +81,7 @@
             	       <th>N. matricola INAIL</th>		   
             		   <th>N. di fabbrica</th>
                      
-                       <th>Cliente</th>
-                       <th>Sede</th>
+                   
                        <th>Data Verifica Funzionamento</th>
                        <th>Data Prossima Verifica Funzionamento</th>
                        <th>Data Verifica Integrità</th>
@@ -125,13 +124,13 @@
  	<td>${attrezzatura.numero_fabbrica }</td>
  	<td>${attrezzatura.tipo_attivita }</td>
  	<td>${attrezzatura.descrizione }</td>
- 	<td>${attrezzatura.nome_cliente }</td>
+ 		<td>${attrezzatura.nome_cliente }</td>
  	<c:if test="${attrezzatrua.nome_sede == null || attrezzatura.nome_sede == '' }">
  	<td>${attrezzatura.nome_cliente } - ${attrezzatura.indirizzo} - ${attrezzatura.comune} (${attrezzatura.provincia})</td>
  	</c:if>	
  	<c:if test="${attrezzatrua.nome_sede != null && attrezzatura.nome_sede != '' }">
  	<td>${attrezzatura.nome_sede } - ${attrezzatura.indirizzo} - ${attrezzatura.comune} (${attrezzatura.provincia})</td>
- 	</c:if>	 	
+ 	</c:if>	
  	<td><fmt:formatDate pattern = "dd/MM/yyyy" value = "${attrezzatura.data_verifica_funzionamento }" /></td>
  	<td><fmt:formatDate pattern = "dd/MM/yyyy" value = "${attrezzatura.data_prossima_verifica_funzionamento }" /></td>
  	<td><fmt:formatDate pattern = "dd/MM/yyyy" value = "${attrezzatura.data_verifica_integrita }" /></td>
@@ -192,13 +191,7 @@
  	<td>${attrezzatura.matricola_inail }</td>
  	<td>${attrezzatura.numero_fabbrica }</td>
 
- 	<td>${attrezzatura.nome_cliente }</td>
- 	<c:if test="${attrezzatrua.nome_sede == null || attrezzatura.nome_sede == '' }">
- 	<td>${attrezzatura.nome_cliente } - ${attrezzatura.indirizzo} - ${attrezzatura.comune} (${attrezzatura.provincia})</td>
- 	</c:if>	
- 	<c:if test="${attrezzatrua.nome_sede != null && attrezzatura.nome_sede != '' }">
- 	<td>${attrezzatura.nome_sede } - ${attrezzatura.indirizzo} - ${attrezzatura.comune} (${attrezzatura.provincia})</td>
- 	</c:if>	 	
+  	
  	<td><fmt:formatDate pattern = "dd/MM/yyyy" value = "${attrezzatura.data_verifica_funzionamento }" /></td>
  	<td><fmt:formatDate pattern = "dd/MM/yyyy" value = "${attrezzatura.data_prossima_verifica_funzionamento }" /></td>
  	<td><fmt:formatDate pattern = "dd/MM/yyyy" value = "${attrezzatura.data_verifica_integrita }" /></td>
@@ -870,7 +863,7 @@ function openVerbaliModal(id_attrezzatura){
 
  var columsDatatables = [];
 
-$("#tabPM").on( 'init.dt', function ( e, settings ) {
+$("#tableAttr").on( 'init.dt', function ( e, settings ) {
 
     var api = new $.fn.dataTable.Api( settings );
     var state = api.state.loaded();
@@ -880,9 +873,9 @@ $("#tabPM").on( 'init.dt', function ( e, settings ) {
     
     columsDatatables = state.columns;
     }
-    $('#tabPM thead th').each( function () {
+    $('#tableAttr thead th').each( function () {
      	if(columsDatatables.length==0 || columsDatatables[$(this).index()]==null ){columsDatatables.push({search:{search:""}});}
-    	   var title = $('#tabPM thead th').eq( $(this).index() ).text();
+    	   var title = $('#tableAttr thead th').eq( $(this).index() ).text();
     	   
     		   $(this).append( '<div><input class="inputsearchtable" id="inputsearchtable_'+$(this).index()+'" style="width:100%" type="text" value="'+columsDatatables[$(this).index()].search.search+'" /></div>');
     	   
@@ -1038,7 +1031,7 @@ $('#modalModificaAttrezzatura').on('hidden.bs.modal', function(){
 
 function filtraObsolete(obsolete){
 	
-	var table = $('#tabPM').DataTable();
+	var table = $('#tableAttr').DataTable();
 	
 	
 		table
@@ -1094,12 +1087,12 @@ $(document).ready(function() {
 	
 	var col_azioni = 29;
 	if(${user.checkRuolo('CLVAL')}){
-		col_azioni = 15;
+		col_azioni = 13;
 	}
 	
 
 	
-	table = $('#tabPM').DataTable({
+	tableAttr = $('#tableAttr').DataTable({
 		 language: {
 	        	emptyTable : 	"Nessun dato presente nella tabella",
 	        	info	:"Vista da _START_ a _END_ di _TOTAL_ elementi",
@@ -1170,28 +1163,28 @@ $(document).ready(function() {
 	    });
 	
 	
-	table.buttons().container()
-  .appendTo( '#tabPM_wrapper .col-sm-6:eq(1)' );
+	tableAttr.buttons().container()
+  .appendTo( '#tableAttr_wrapper .col-sm-6:eq(1)' );
 	
 	
-	table.buttons().container().appendTo( '#tabPM_wrapper .col-sm-6:eq(1)');
+	tableAttr.buttons().container().appendTo( '#tableAttr_wrapper .col-sm-6:eq(1)');
 	    $('.inputsearchtable').on('click', function(e){
 	       e.stopPropagation();    
 	    });
 //DataTable
 //table = $('#tabPM').DataTable();
 //Apply the search
-table.columns().eq( 0 ).each( function ( colIdx ) {
-$( 'input', table.column( colIdx ).header() ).on( 'keyup', function () {
-  table
+tableAttr.columns().eq( 0 ).each( function ( colIdx ) {
+$( 'input', tableAttr.column( colIdx ).header() ).on( 'keyup', function () {
+	tableAttr
       .column( colIdx )
       .search( this.value )
       .draw();
 } );
 } );  
-table.columns.adjust().draw();
+tableAttr.columns.adjust().draw();
 	
-	filtraObsolete('')
+	filtraObsolete(0)
 	
 	
 });

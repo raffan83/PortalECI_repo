@@ -17,7 +17,7 @@
 <c:forEach items="${lista_allegati}" var="allegato" varStatus="loop">
 <c:choose>
 <c:when test="${type!=null && type=='ALLEGATO'}">
-<c:if test="${allegato.type=='ALLEGATO' && !allegato.getInvalid() && allegato.allegato_inviabile == 1}">
+<c:if test="${allegato.type=='ALLEGATO' && !allegato.getInvalid() && allegato.allegato_visibile_cliente == 1}">
 <li class="list-group-item">
 	       <b>${allegato.getFileName()}</b>
 	                  							       										

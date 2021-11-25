@@ -271,7 +271,7 @@
         		<li class="treeview">
         	 	<a href="#">
         	 		<i class="fa fa-clipboard "></i> 
-        	 		<span>Allegati ${user.checkRuolo("AM")?"cliente":""}</span>
+        	 		<span>Allegati ${user.checkRuolo("AM") ? "cliente" : ""}</span>
             		<span class="pull-right-container">
               			<i class="fa fa-angle-left pull-right"></i>
             		</span>

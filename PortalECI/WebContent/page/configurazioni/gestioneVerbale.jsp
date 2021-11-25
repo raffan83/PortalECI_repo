@@ -403,6 +403,12 @@
                   										 
                   										    <a class="btn btn-default btn-xs pull-right" onClick="modalYesOrNo('${allegato.getId()}')" style="margin-left:5px"><i class="fa fa-trash"></i> Elimina Allegato</a>    										
                   											<a class="btn btn-default btn-xs pull-right" href="gestioneDocumento.do?idDocumento=${allegato.getId()}" style="margin-left:5px"><i class="glyphicon glyphicon-file"></i> Download Allegato</a>
+                  											<c:if test="${allegato.allegato_visibile_cliente ==0}">
+                  											<label class="pull-right">Visibile Cliente <input type="checkbox" class="pull-right" style="position: relative" id="check_allegato_vis_${allegato.getId() }" name="check_allegato_vis_${allegato.getId() }" onChange="allegatoVisibile('${allegato.getId()}')" ></label>
+                  											</c:if>
+                  											<c:if test="${allegato.allegato_visibile_cliente ==1}">
+                  												<label class="pull-right">Visibile Cliente  <input type="checkbox" class="pull-right" style="position: relative" id="check_allegato_vis_${allegato.getId() }" name="check_allegato_vis_${allegato.getId() }" onChange="allegatoVisibile('${allegato.getId()}')" checked></label>
+                  											</c:if> 
                   											<c:if test="${allegato.allegato_inviabile ==0}">
                   											<label class="pull-right">Inviabile  <input type="checkbox" class="pull-right" style="position: relative" id="check_allegato_${allegato.getId() }" name="check_allegato_${allegato.getId() }" onChange="allegatoInviabile('${allegato.getId()}')" ></label>
                   											</c:if>
@@ -2739,6 +2745,40 @@ function modificaSedeUtilizzatore(){
 		$.ajax({
 			type: "POST",
 			url: "gestioneVerbale.do?action=allegato_inviabile&id_allegato="+id_allegato+"&checked="+value,	
+			dataType: "json",
+			success: function( data, textStatus) {
+
+				if(data.success){
+					
+					
+				}
+				
+			},
+
+			error: function(jqXHR, textStatus, errorThrown){
+				$('#errorMsg').html("<h3 class='label label-danger'>"+textStatus+"</h3>");
+				//callAction('logout.do');
+				pleaseWaitDiv.modal('hide');
+			}
+		});
+	
+		
+	
+	}
+	
+	
+	
+function allegatoVisibile(id_allegato){
+		
+		var value = 0
+		
+		if($('#check_allegato_vis_'+id_allegato).is(':checked')){
+			value = 1
+		}
+	
+		$.ajax({
+			type: "POST",
+			url: "gestioneVerbale.do?action=allegato_visibile&id_allegato="+id_allegato+"&checked="+value,	
 			dataType: "json",
 			success: function( data, textStatus) {
 

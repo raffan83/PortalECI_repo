@@ -76,7 +76,7 @@ public class GestioneDocumento extends HttpServlet {
 					path = Costanti.PATH_CERTIFICATI+filenoext+"_F.pdf";
 				}else if(!type.equals("ALLEGATO") && !doc.getType().equals("ALLEGATO") &&  verbale.getCodiceCategoria().equals("VIE") && !doc.getInvalid()){
 					path = Costanti.PATH_CERTIFICATI+filenoext+"_CF.pdf";
-				}else if(type.equals("ALLEGATO") &&  doc.getType().equals("ALLEGATO") &&  !doc.getInvalid() && doc.getAllegato_inviabile()==1){
+				}else if(type.equals("ALLEGATO") &&  doc.getType().equals("ALLEGATO") &&  !doc.getInvalid() && doc.getAllegato_visibile_cliente()==1){
 					path = Costanti.PATH_CERTIFICATI+doc.getFilePath();
 				}
 				if(!path.equals("")) {
@@ -110,7 +110,7 @@ public class GestioneDocumento extends HttpServlet {
 						path = Costanti.PATH_CERTIFICATI+filenoext+"_F.pdf";
 					}else if(!type.equals("ALLEGATO") && !doc.getType().equals("ALLEGATO") &&  verbale.getCodiceCategoria().equals("VIE") && !doc.getInvalid()){
 						path = Costanti.PATH_CERTIFICATI+filenoext+"_CF.pdf";
-					}else if(type.equals("ALLEGATO") &&  doc.getType().equals("ALLEGATO") &&  !doc.getInvalid() && doc.getAllegato_inviabile()==1){
+					}else if(type.equals("ALLEGATO") &&  doc.getType().equals("ALLEGATO") &&  !doc.getInvalid() && doc.getAllegato_visibile_cliente()==1){
 						path = Costanti.PATH_CERTIFICATI+doc.getFilePath();
 					}
 					if(!path.equals("")) {

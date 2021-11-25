@@ -114,7 +114,7 @@ request.setAttribute("user",user);
  																<th>Firmato</th>
  																
  																<th>S.T. Firmata</th>
- 													
+ 																<th>Tipo verifica</th>
  																<th>Data Creazione</th>
  																
  																<td></td>

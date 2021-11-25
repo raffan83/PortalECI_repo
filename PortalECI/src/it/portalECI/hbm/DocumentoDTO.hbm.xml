@@ -37,5 +37,8 @@
            <property name="allegato_inviabile" type="int">
             <column name="allegato_inviabile" />
         </property>	
+          <property name="allegato_visibile_cliente" type="int">
+            <column name="allegato_visibile_cliente" />
+        </property>	
 	</class>
 </hibernate-mapping> 
