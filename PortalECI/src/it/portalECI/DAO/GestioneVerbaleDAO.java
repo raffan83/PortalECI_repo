@@ -28,16 +28,16 @@ public class GestioneVerbaleDAO {
 		boolean ck_ST=user.checkRuolo("ST");
 		boolean ck_RT=user.checkRuolo("RT");
 		boolean ck_SRT=user.checkRuolo("SRT");
-		boolean ck_CL=user.checkRuolo("CL");
-		if(ck_ST==false && ck_AM==false && ck_RT==false && ck_SRT==false && ck_CL == false) 
+		boolean ck_CLVIE=user.checkRuolo("CLVIE");
+		if(ck_ST==false && ck_AM==false && ck_RT==false && ck_SRT==false && ck_CLVIE == false) 
 		{
 		 
 		query  = session.createQuery( "from VerbaleDTO WHERE type = :_type AND intervento.tecnico_verificatore.id=:_idUser");
 		query.setParameter("_type",VerbaleDTO.VERBALE);
 		query.setParameter("_idUser",user.getId());
 		}
-		else if(ck_CL == true) {
-			query  = session.createQuery( "from VerbaleDTO WHERE type = :_type AND stato.id = 5 and visibile_cliente = 1 and intervento.id_cliente = :_idCliente and intervento.idSede =:_idSede");
+		else if(ck_CLVIE == true) {
+			query  = session.createQuery( "from VerbaleDTO WHERE type = :_type AND stato.id = 5 and visibile_cliente = 1 and intervento.id_cliente = :_idCliente and intervento.idSede =:_idSede and codiceCategoria ='VIE'");
 			query.setParameter("_type",VerbaleDTO.VERBALE);
 			query.setParameter("_idCliente",user.getIdCliente());
 			query.setParameter("_idSede",user.getIdSede());
@@ -128,9 +128,10 @@ public class GestioneVerbaleDAO {
 		boolean ck_ST=user.checkRuolo("ST");
 		boolean ck_RT=user.checkRuolo("RT");
 		boolean ck_SRT=user.checkRuolo("SRT");
+		boolean ck_CLVIE=user.checkRuolo("CLVIE");
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 		
-		if(ck_ST==false && ck_AM==false && ck_RT==false && ck_SRT==false) 
+		if(ck_ST==false && ck_AM==false && ck_RT==false && ck_SRT==false && ck_CLVIE == false) 
 		{
 		 
 		query  = session.createQuery( "from VerbaleDTO WHERE type = :_type AND intervento.tecnico_verificatore.id=:_idUser and (data_verifica between :_dateFrom and :_dateTo or data_verifica_integrita between :_dateFrom and :_dateTo or data_verifica_interna between :_dateFrom and :_dateTo)");
@@ -141,10 +142,19 @@ public class GestioneVerbaleDAO {
 		}
 		else 
 		{
-			 query  = session.createQuery( "from VerbaleDTO WHERE type = :_type and (data_verifica between :_dateFrom and :_dateTo or data_verifica_integrita between :_dateFrom and :_dateTo or data_verifica_interna between :_dateFrom and :_dateTo)");
+			 String str = "from VerbaleDTO WHERE type = :_type and (data_verifica between :_dateFrom and :_dateTo or data_verifica_integrita between :_dateFrom and :_dateTo or data_verifica_interna between :_dateFrom and :_dateTo)";
+			 
+			 if(ck_CLVIE) {
+				 str += " and intervento.id_cliente = :_id_cliente and intervento.idSede = :_id_sede";
+			 }
+			query  = session.createQuery(str);
 			query.setParameter("_type",VerbaleDTO.VERBALE);
 			query.setParameter("_dateFrom", sdf.parse(dateFrom));
 			query.setParameter("_dateTo", sdf.parse(dateTo));
+			if(ck_CLVIE) {
+				query.setParameter("_id_cliente",user.getIdCliente());
+				query.setParameter("_id_sede",user.getIdSede());
+			}
 		}
 		List<VerbaleDTO> result = query.list();
 		return result;
@@ -158,9 +168,10 @@ public class GestioneVerbaleDAO {
 		boolean ck_ST=user.checkRuolo("ST");
 		boolean ck_RT=user.checkRuolo("RT");
 		boolean ck_SRT=user.checkRuolo("SRT");
+		boolean ck_CLVAL=user.checkRuolo("CLVAL");
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 		
-		if(ck_ST==false && ck_AM==false && ck_RT==false && ck_SRT==false) 
+		if(ck_ST==false && ck_AM==false && ck_RT==false && ck_SRT==false && ck_CLVAL == false) 
 		{
 		 
 		query  = session.createQuery( "from VerbaleDTO WHERE type = :_type AND intervento.tecnico_verificatore.id=:_idUser and attrezzatura.id = :_id_attrezzatura");

@@ -79,17 +79,17 @@
 	        						<div class="col-xs-7">	        
 	        							<c:choose>
 	        							<c:when test="${verbale.stato.id == 10}">
-	        							<a><span class="label label-info" style="color:#000000 !important; background-color:${verbale.getStato().getColore(verbale.getStato().getId())} !important;">${verbale.getStato().getDescrizione()}</span> --%>
-	        							
+	        							<a><span class="label label-info" style="color:#000000 !important; background-color:${verbale.getStato().getColore(verbale.getStato().getId())} !important;">${verbale.getStato().getDescrizione()}</span> 	        							
 												</a>
 	        							</c:when>
 	        							<c:otherwise>
-	        							
+	        							<a><span class="label label-info" id="stato"></span>
+												</a> 
 	        							</c:otherwise>
 	        							</c:choose>						
 <%-- 	        						<a><span class="label label-info" id="stato" style="color:#000000 !important; background-color:${verbale.getStato().getColore(verbale.getStato().getId())} !important;">${verbale.getStato().getDescrizione()}</span> --%>
-	        							<a><span class="label label-info" id="stato"></span>
-												</a>
+	        						<!-- 	<a><span class="label label-info" id="stato"></span>
+												</a> -->
 	        						</div>
 	        						<!-- <div class="col-xs-2">
 	        						</div> -->

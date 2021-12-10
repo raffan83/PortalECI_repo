@@ -89,6 +89,7 @@
  																	
  																		<th>Verificatore</th>
  																		<th>Numero verbale</th>
+ 																		<th>Tipo Verifica</th>
  																		<th>Cliente</th> 	
  																		<th>Sede Utilizzatore</th>
  																		<th>Provincia</th>		
@@ -109,7 +110,16 @@
 																			<td>${verbale.id}</td>
 																		
 																			<td>${verbale.intervento.tecnico_verificatore.nominativo}</td>
-																			<td>${verbale.numeroVerbale}</td>																			
+																			<td>${verbale.numeroVerbale}</td>
+																			
+																					<td>
+																	<c:if test="${verbale.motivo_verifica == 1}">
+																	Periodica
+																	</c:if>
+																	<c:if test="${verbale.motivo_verifica != 0 && verbale.motivo_verifica > 1}">
+																	Straordinaria
+																	</c:if>
+																	</td>																	
 																			<td>${verbale.intervento.nome_sede}</td>
 																			<td>${verbale.sedeUtilizzatore }</td>
 																			<td>${verbale.intervento.codiceProvincia }</td>		

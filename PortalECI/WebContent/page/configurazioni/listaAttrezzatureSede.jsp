@@ -20,8 +20,8 @@
 </c:if>
 
 <button class="btn btn-primary pull-right"  id="btnObsolete" >Obsolete</button>
-<button class="btn btn-primary pull-right"  style="margin-right:5px" id="btnInVerifica">In verifica</button>
-<button class="btn btn-primary pull-right"  style="margin-right:5px" id="btnTutte" disabled>Tutte</button>
+<button class="btn btn-primary pull-right"  style="margin-right:5px" id="btnInVerifica" disabled>In verifica</button>
+<button class="btn btn-primary pull-right"  style="margin-right:5px" id="btnTutte">Tutte</button>
 <div id="errorMsg" ></div>
 </div>
 </div><br>
@@ -32,8 +32,12 @@
 
             		
 
-	<table id="tabPM" class="table table-bordered table-hover dataTable table-striped" role="grid" width="100%">
-<thead><tr class="active">
+	<table id="tableAttr" class="table table-bordered table-hover dataTable table-striped" role="grid" width="100%">
+	<thead>
+
+	
+	<c:if test="${!user.checkRuolo('CLVAL') }">
+<tr class="active">
  					
  						<th>ID</th> 		
  						 <th hidden="hidden"></th>  				  
@@ -67,9 +71,35 @@
                       
                        <td style="min-width:100px;">Azioni</td>
                        
- </tr></thead>
+ </tr>
+ </c:if>
  
+ 	<c:if test="${user.checkRuolo('CLVAL') }">
+	<tr class="active">
+	<th>ID</th> 		
+ 						 <th hidden="hidden"></th>  				  
+            	       <th>N. matricola INAIL</th>		   
+            		   <th>N. di fabbrica</th>
+                     
+                   
+                       <th>Data Verifica Funzionamento</th>
+                       <th>Data Prossima Verifica Funzionamento</th>
+                       <th>Data Verifica Integrità</th>
+                       <th>Data Prossima Verifica Integrità</th>
+                       <th>Data Verifica Interna</th>
+                       <th>Data Prossima Verifica Interna</th>     
+                       <th>Anno di costruzione</th>
+                       <th>Fabbricante</th>
+                     
+                       <th>Scadenza Ventennale</th>
+                         
+                      
+                       <td style="min-width:100px;">Azioni</td>
+	</tr>
+	</c:if>
+ </thead>
  <tbody>
+ <c:if test="${!user.checkRuolo('CLVAL') }">
  	<c:forEach items="${lista_attrezzature}" var="attrezzatura" varStatus="loop">
  	<c:choose>
  	<c:when test="${attrezzatura.obsoleta==0}">
@@ -94,13 +124,13 @@
  	<td>${attrezzatura.numero_fabbrica }</td>
  	<td>${attrezzatura.tipo_attivita }</td>
  	<td>${attrezzatura.descrizione }</td>
- 	<td>${attrezzatura.nome_cliente }</td>
+ 		<td>${attrezzatura.nome_cliente }</td>
  	<c:if test="${attrezzatrua.nome_sede == null || attrezzatura.nome_sede == '' }">
  	<td>${attrezzatura.nome_cliente } - ${attrezzatura.indirizzo} - ${attrezzatura.comune} (${attrezzatura.provincia})</td>
  	</c:if>	
  	<c:if test="${attrezzatrua.nome_sede != null && attrezzatura.nome_sede != '' }">
  	<td>${attrezzatura.nome_sede } - ${attrezzatura.indirizzo} - ${attrezzatura.comune} (${attrezzatura.provincia})</td>
- 	</c:if>	 	
+ 	</c:if>	
  	<td><fmt:formatDate pattern = "dd/MM/yyyy" value = "${attrezzatura.data_verifica_funzionamento }" /></td>
  	<td><fmt:formatDate pattern = "dd/MM/yyyy" value = "${attrezzatura.data_prossima_verifica_funzionamento }" /></td>
  	<td><fmt:formatDate pattern = "dd/MM/yyyy" value = "${attrezzatura.data_verifica_integrita }" /></td>
@@ -135,8 +165,59 @@
  	
  	
  	</tr>
+ 	
+ 	
+
+ 	
  	</c:forEach>
+ 	
+ 	</c:if>
+  	
+ 	<c:if test="${user.checkRuolo('CLVAL') }">
+	 	<c:forEach items="${lista_attrezzature}" var="attrezzatura" varStatus="loop">
+ 	<c:choose>
+ 	<c:when test="${attrezzatura.obsoleta==0}">
+ 		<tr>
+ 	
+ 	
+ 	</c:when>
+ 	<c:otherwise>
+ 		<tr style="background-color:#ff6666">
+ 	</c:otherwise>
+ 	</c:choose>
  
+ 	<td>${attrezzatura.id }</td>
+ 	<td hidden="hidden">${attrezzatura.obsoleta }</td>
+ 	<td>${attrezzatura.matricola_inail }</td>
+ 	<td>${attrezzatura.numero_fabbrica }</td>
+
+  	
+ 	<td><fmt:formatDate pattern = "dd/MM/yyyy" value = "${attrezzatura.data_verifica_funzionamento }" /></td>
+ 	<td><fmt:formatDate pattern = "dd/MM/yyyy" value = "${attrezzatura.data_prossima_verifica_funzionamento }" /></td>
+ 	<td><fmt:formatDate pattern = "dd/MM/yyyy" value = "${attrezzatura.data_verifica_integrita }" /></td>
+ 	<td><fmt:formatDate pattern = "dd/MM/yyyy" value = "${attrezzatura.data_prossima_verifica_integrita }" /></td>
+ 	<td><fmt:formatDate pattern = "dd/MM/yyyy" value = "${attrezzatura.data_verifica_interna }" /></td>
+ 	<td><fmt:formatDate pattern = "dd/MM/yyyy" value = "${attrezzatura.data_prossima_verifica_interna }" /></td>
+	<td>${attrezzatura.anno_costruzione }</td>
+  	<td>${attrezzatura.fabbricante }</td>
+
+ 	<td>${attrezzatura.data_scadenza_ventennale}</td>
+ 	
+ 	<td>
+	<a class="btn btn-info" onClick="openVerbaliModal('${attrezzatura.id}')"><i class="fa fa-search"></i></a>
+ 	</td>
+ 	
+ 	
+ 	
+ 	</tr>
+ 	
+ 	
+
+ 	
+ 	</c:forEach>
+
+	
+	</c:if>
 </tbody>
 
 
@@ -419,21 +500,25 @@
 
 <form class="form-horizontal" id="formModificaAttrezzatura">
 <div id="modalModificaAttrezzatura" class="modal fade" role="dialog" aria-labelledby="myLargeModalLabel">
-    <div class="modal-dialog modal-md" role="document">
+    <div class="modal-dialog modal-${user.checkRuolo('CLVAL')? 'lg':'md'}" role="document">
     <div class="modal-content">
      <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="myModalLabel">Modifica Attrezzatura</h4>
+        <h4 class="modal-title" id="myModalLabelMod">${user.checkRuolo('CLVAL')? 'Dettaglio':'Modifica'} Attrezzatura</h4>
       </div>
        <div class="modal-body">
         <div class="nav-tabs-custom">
             <ul id="mainTabs" class="nav nav-tabs">
+            <c:if test="${!user.checkRuolo('CLVAL') }">
               <li class="active" id="tab1"><a href="#modifica" data-toggle="tab" aria-expanded="true"   id="standardTab">Modifica</a></li>
-              		<li class="" id="tab2"><a href="#verbali" data-toggle="tab" aria-expanded="false"   id="verbaliTab">Verbali</a></li>
+              
+              </c:if>
+              		<li class="${user.checkRuolo('CLVAL')? 'active':''}" id="tab2"><a href="#verbali" data-toggle="tab" aria-expanded="false"   id="verbaliTab">Verbali</a></li>
               	
               
             </ul>
             <div class="tab-content">
+         <c:if test="${!user.checkRuolo('CLVAL') }">
               <div class="tab-pane active" id="modifica">
               
               
@@ -709,18 +794,24 @@
     </div>
     
   		 </div>
+              </c:if>
               
               
               
               
-              
-              
-              <div class="tab-pane table-responsive" id="verbali">
-              
+             
+              <div class="tab-pane table-responsive ${user.checkRuolo('CLVAL')? 'active':''}"  id="verbali">
+    
+    
+    			<c:if test="${user.checkRuolo('CLVAL') }"><input type="hidden" id="id_attrezzatura" name="id_attrezzatura"></c:if>
               <div id="content_verbali"></div>
               
               
               </div>
+            
+              
+              
+              
               </div>
               </div>
       
@@ -743,6 +834,17 @@
 <script type="text/javascript">
 
 
+function openVerbaliModal(id_attrezzatura){
+	
+	//exploreModal("listaAttrezzature.do","action=verbali_attrezzatura&id_attrezzatura="+id_attrezzatura,"#verbali");
+	
+	$('#id_attrezzatura').val(id_attrezzatura)
+	
+	exploreModal("listaAttrezzature.do","action=verbali_attrezzatura&id_attrezzatura="+id_attrezzatura,"#verbali");
+	$('#modalModificaAttrezzatura').modal();
+}
+
+
  $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
 
 
@@ -759,9 +861,9 @@
 	}); 
 
 
-var columsDatatables = [];
+ var columsDatatables = [];
 
-$("#tabPM").on( 'init.dt', function ( e, settings ) {
+$("#tableAttr").on( 'init.dt', function ( e, settings ) {
 
     var api = new $.fn.dataTable.Api( settings );
     var state = api.state.loaded();
@@ -771,16 +873,16 @@ $("#tabPM").on( 'init.dt', function ( e, settings ) {
     
     columsDatatables = state.columns;
     }
-    $('#tabPM thead th').each( function () {
+    $('#tableAttr thead th').each( function () {
      	if(columsDatatables.length==0 || columsDatatables[$(this).index()]==null ){columsDatatables.push({search:{search:""}});}
-    	   var title = $('#tabPM thead th').eq( $(this).index() ).text();
+    	   var title = $('#tableAttr thead th').eq( $(this).index() ).text();
     	   
     		   $(this).append( '<div><input class="inputsearchtable" id="inputsearchtable_'+$(this).index()+'" style="width:100%" type="text" value="'+columsDatatables[$(this).index()].search.search+'" /></div>');
     	   
     	  
     	} );
 
-} );
+} ); 
 
 $('#formNuovaAttrezzatura').on('submit',function(e){
     e.preventDefault();
@@ -929,7 +1031,7 @@ $('#modalModificaAttrezzatura').on('hidden.bs.modal', function(){
 
 function filtraObsolete(obsolete){
 	
-	var table = $('#tabPM').DataTable();
+	var table = $('#tableAttr').DataTable();
 	
 	
 		table
@@ -983,10 +1085,14 @@ $(document).ready(function() {
        
     });
 	
+	var col_azioni = 29;
+	if(${user.checkRuolo('CLVAL')}){
+		col_azioni = 13;
+	}
 	
 
 	
-	table = $('#tabPM').DataTable({
+	tableAttr = $('#tableAttr').DataTable({
 		 language: {
 	        	emptyTable : 	"Nessun dato presente nella tabella",
 	        	info	:"Vista da _START_ a _END_ di _TOTAL_ elementi",
@@ -1023,7 +1129,7 @@ $(document).ready(function() {
 	      columnDefs: [
 					 
 	                   { responsivePriority: 1, targets: 0 },	                  
-	                   { responsivePriority: 2, targets: 29 }
+	                   { responsivePriority: 2, targets: col_azioni } 
 	                  
 	                  /*  { orderable: false, targets: 6 }, */
 	               ],
@@ -1055,28 +1161,32 @@ $(document).ready(function() {
 	    	
 	      
 	    });
-	table.buttons().container()
-  .appendTo( '#tabPM_wrapper .col-sm-6:eq(1)' );
 	
 	
-	table.buttons().container().appendTo( '#tabPM_wrapper .col-sm-6:eq(1)');
+	tableAttr.buttons().container()
+  .appendTo( '#tableAttr_wrapper .col-sm-6:eq(1)' );
+	
+	
+	tableAttr.buttons().container().appendTo( '#tableAttr_wrapper .col-sm-6:eq(1)');
 	    $('.inputsearchtable').on('click', function(e){
 	       e.stopPropagation();    
 	    });
 //DataTable
 //table = $('#tabPM').DataTable();
 //Apply the search
-table.columns().eq( 0 ).each( function ( colIdx ) {
-$( 'input', table.column( colIdx ).header() ).on( 'keyup', function () {
-  table
+tableAttr.columns().eq( 0 ).each( function ( colIdx ) {
+$( 'input', tableAttr.column( colIdx ).header() ).on( 'keyup', function () {
+	tableAttr
       .column( colIdx )
       .search( this.value )
       .draw();
 } );
 } );  
-table.columns.adjust().draw();
+tableAttr.columns.adjust().draw();
 	
-	filtraObsolete('')
+	filtraObsolete(0)
+	
+	
 });
 
 

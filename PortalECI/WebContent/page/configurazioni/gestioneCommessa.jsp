@@ -123,7 +123,7 @@
   															<c:forEach items="${listaCommesse}" var="commessa">
  																<tr role="row" id="${commessa.ID_COMMESSA}">
 																	<td>
-																		<a href="#" class="btn customTooltip customlink" title="Click per aprire il dettaglio della Commessa" onclick="callAction('gestioneIntervento.do?idCommessa=${commessa.ID_COMMESSA}');">
+																		<a href="gestioneIntervento.do?idCommessa=${commessa.ID_COMMESSA}" class="btn customTooltip customlink" title="Click per aprire il dettaglio della Commessa" >
 																			${commessa.ID_COMMESSA}
 																		</a>
 																	</td>

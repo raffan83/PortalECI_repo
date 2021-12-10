@@ -1,5 +1,6 @@
 <%@ tag language="java" pageEncoding="ISO-8859-1"%>
 <%@tag import="it.portalECI.DTO.UtenteDTO"%>
+<%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 
 <% 
 	UtenteDTO user =(UtenteDTO)request.getSession().getAttribute("userObj");
@@ -53,7 +54,7 @@
           		
         	</li>
         	<% }%>
-        		<% if(user.checkPermesso("GESTIONE_VERBALI")){%> 
+        		<% if(user.checkRuolo("CLVIE") || user.checkPermesso("GESTIONE_VERBALI")){%> 
         	<li class="treeview">
         	 	<a href="#">
         	 		<i class="fa fa-clipboard "></i> 
@@ -72,11 +73,7 @@
 	            	
     	        		</li>
     	        		
-    	        		<li>
-        				
-	            		<a href="#" onClick="callAction('gestioneListaVerbali.do?action=allegati_cliente')">Gestione allegati</a>
-	            			
-				</li>
+    	        		
         	  		</ul>
         	  	
         	</li>
@@ -113,7 +110,7 @@
 					<li><a href="downloadCalver.do"><i class="fa fa-link"></i>Calver Desktop</a></li>
           		</ul>
         	</li> -->
-         <% if(user.checkRuolo("AM") ||user.checkRuolo("CL") ||(user.checkPermesso("ATTREZZATURE") && user.checkCategoria("VAL"))){%> 
+         <% if(user.checkRuolo("AM") ||user.checkRuolo("CLVAL") ||(user.checkPermesso("ATTREZZATURE") && user.checkCategoria("VAL"))){%> 
         	<li class="treeview">
         	 	<a href="#">
         	 		<i class="fa fa-briefcase"></i>
@@ -272,6 +269,29 @@
         		
         		<% }%>
         		
+        		<% if(user.checkRuolo("AM") || user.checkRuolo("CLVAL") || user.checkRuolo("CLVIE")){%> 
+        		<li class="treeview">
+        	 	<a href="#">
+        	 		<i class="fa fa-clipboard "></i> 
+        	 		<span>Allegati ${user.checkRuolo("AM") ? "cliente" : ""}</span>
+            		<span class="pull-right-container">
+              			<i class="fa fa-angle-left pull-right"></i>
+            		</span>
+          		</a>
+          	
+          			<ul class="treeview-menu">
+            			
+    	        		
+    	        		<li>
+        				
+	            		<a href="#" onClick="callAction('gestioneListaVerbali.do?action=allegati_cliente')">Gestione allegati ${user.checkRuolo('AM')? "cliente":""}</a>
+	            			
+				</li>
+				
+				<% }%>
+        	  		</ul>
+        	  	
+        	</li>
         		        		
       	</ul>
       	<!-- /.sidebar-menu -->

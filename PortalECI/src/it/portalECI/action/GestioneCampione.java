@@ -449,12 +449,12 @@ public class GestioneCampione extends HttpServlet {
         		 			dataScadenzaCampione=cal.getTime();
         		 			
         		 			campione.setDataScadenza(dataScadenzaCampione);
-        				}else {
-        					campione.setDataVerifica(null);
-        					campione.setDataScadenza(null);
         				}
-        	 				 			
-        	 				campione.setNumeroCertificato(numeroCerificato);
+        	 				 
+        				if(numeroCerificato!=null) {
+        					campione.setNumeroCertificato(numeroCerificato);
+        				}
+        	 				
         	 				
         	 				int success = GestioneCampioneBO.saveCampione(campione, action, fileItem,ente_certificatore, session);
         	 				

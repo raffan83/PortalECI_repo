@@ -214,7 +214,7 @@ public class CreateScadenzarioVAL {
 		 rowTitle.createCell(35).setCellValue("sv_CF_tecn");
 		 rowTitle.createCell(36).setCellValue("tariffa_app");
 		 rowTitle.createCell(37).setCellValue("tariffa_regolare");
-		 rowTitle.createCell(38).setCellValue("contributo");
+		 rowTitle.createCell(38).setCellValue("contributo_sogg_tit");
 		 rowTitle.createCell(39).setCellValue("attr_indirizzo");
 		 rowTitle.createCell(40).setCellValue("attr_comune");
 		 rowTitle.createCell(41).setCellValue("attr_cap");

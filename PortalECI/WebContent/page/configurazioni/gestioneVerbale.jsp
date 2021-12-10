@@ -396,21 +396,30 @@
 											<div class="box-body">	
         										<ul class="list-group list-group-unbordered" id="allegatiList">
         											<c:forEach items="${listaAllegati}" var="allegato"> 
+        											 <c:if test="${allegato.getInvalid()==false}"> 
         											<li class="list-group-item">
                   										<b>${allegato.getFileName()}</b>    
-                  										<c:if test="${user.checkPermesso('DOWNLOAD_ALLEGATO')}">    
-                  										        										
+                  										<c:if test="${user.checkPermesso('DOWNLOAD_ALLEGATO')}">   
+                  										 
+                  										    <a class="btn btn-default btn-xs pull-right" onClick="modalYesOrNo('${allegato.getId()}')" style="margin-left:5px"><i class="fa fa-trash"></i> Elimina Allegato</a>    										
                   											<a class="btn btn-default btn-xs pull-right" href="gestioneDocumento.do?idDocumento=${allegato.getId()}" style="margin-left:5px"><i class="glyphicon glyphicon-file"></i> Download Allegato</a>
+                  											<c:if test="${allegato.allegato_visibile_cliente ==0}">
+                  											<label class="pull-right">Visibile Cliente <input type="checkbox" class="pull-right" style="position: relative" id="check_allegato_vis_${allegato.getId() }" name="check_allegato_vis_${allegato.getId() }" onChange="allegatoVisibile('${allegato.getId()}')" ></label>
+                  											</c:if>
+                  											<c:if test="${allegato.allegato_visibile_cliente ==1}">
+                  												<label class="pull-right">Visibile Cliente  <input type="checkbox" class="pull-right" style="position: relative" id="check_allegato_vis_${allegato.getId() }" name="check_allegato_vis_${allegato.getId() }" onChange="allegatoVisibile('${allegato.getId()}')" checked></label>
+                  											</c:if> 
                   											<c:if test="${allegato.allegato_inviabile ==0}">
                   											<label class="pull-right">Inviabile  <input type="checkbox" class="pull-right" style="position: relative" id="check_allegato_${allegato.getId() }" name="check_allegato_${allegato.getId() }" onChange="allegatoInviabile('${allegato.getId()}')" ></label>
                   											</c:if>
                   											<c:if test="${allegato.allegato_inviabile ==1}">
                   												<label class="pull-right">Inviabile  <input type="checkbox" class="pull-right" style="position: relative" id="check_allegato_${allegato.getId() }" name="check_allegato_${allegato.getId() }" onChange="allegatoInviabile('${allegato.getId()}')" checked></label>
                   											</c:if>  
-                  																								
+                  																							
                 										</c:if>
                 									</li>
-                									</c:forEach>
+                									 </c:if>
+                									 </c:forEach>
                 								</ul>
             									<div class="form-group">
 													<label for="titolo-input" class="control-label">Carica un file da allegare al verbale</label>
@@ -1202,6 +1211,29 @@
 							</div>
 						</div>
 						
+				<div id="myModalYesOrNo" class="modal fade" role="dialog" aria-labelledby="modalCambioStatoVerbale">
+   							<div class="modal-dialog modal-sm" role="document">
+    							<div class="modal-content">
+     								<div class="modal-header">
+        								<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        									<span aria-hidden="true">&times;</span>
+        								</button>
+        								<h4 class="modal-title" id="myModalLabel">Attenzione</h4>
+      								</div>
+      									
+       								<div class="modal-body" >
+       									Sei sicuro di voler eliminare l'allegato?
+    								</div>
+    								<div class="modal-footer">
+    								<input type="hidden" id="id_allegato_elimina" />
+										<button onclick="eliminaAllegato($('#id_allegato_elimina').val())" class="btn btn-default" >Si</button>
+										<button onclick="$('#myModalYesOrNo').modal('hide')" class="btn btn-default" >No</button>
+	      							</div>
+  								</div>
+							</div>
+						</div>
+						
+						
 							<div id="myModalModificaDescrUtilizzatore" class="modal fade" role="dialog" aria-labelledby="modalCambioStatoVerbale">
    							<div class="modal-dialog modal-lg" role="document">
     							<div class="modal-content">
@@ -1948,7 +1980,7 @@
 <!-- <script type="text/javascript" src="plugins/datejs/date.js"></script> -->
  		<script type="text/javascript">
 		   
- 		
+
  		
  	 	
  		$('#fileupload').fileupload({
@@ -2734,6 +2766,40 @@ function modificaSedeUtilizzatore(){
 	
 	}
 	
+	
+	
+function allegatoVisibile(id_allegato){
+		
+		var value = 0
+		
+		if($('#check_allegato_vis_'+id_allegato).is(':checked')){
+			value = 1
+		}
+	
+		$.ajax({
+			type: "POST",
+			url: "gestioneVerbale.do?action=allegato_visibile&id_allegato="+id_allegato+"&checked="+value,	
+			dataType: "json",
+			success: function( data, textStatus) {
+
+				if(data.success){
+					
+					
+				}
+				
+			},
+
+			error: function(jqXHR, textStatus, errorThrown){
+				$('#errorMsg').html("<h3 class='label label-danger'>"+textStatus+"</h3>");
+				//callAction('logout.do');
+				pleaseWaitDiv.modal('hide');
+			}
+		});
+	
+		
+	
+	}
+	
 	function visibileCliente(id_verbale){
 		
 		var value = 0
@@ -3353,6 +3419,45 @@ function modificaSedeUtilizzatore(){
 				});
 				
 			});
+			
+			
+			
+	 		function modalYesOrNo(id_allegato){
+	 			
+	 			$('#id_allegato_elimina').val(id_allegato);
+	 			
+	 			$('#myModalYesOrNo').modal();
+	 			
+	 		}
+	 		
+	 		
+	 		
+			function eliminaAllegato(){
+				
+				var id_documento = $('#id_allegato_elimina').val();
+				
+				$.ajax({
+					type: "POST",
+					url: "gestioneVerbale.do?action=elimina_allegato&id_documento="+id_documento,	
+					dataType: "json",
+					success: function( data, textStatus) {
+
+						if(data.success){
+							
+						location.reload()
+							
+						}
+						
+					},
+
+					error: function(jqXHR, textStatus, errorThrown){
+						$('#errorMsg').html("<h3 class='label label-danger'>"+textStatus+"</h3>");
+						//callAction('logout.do');
+						pleaseWaitDiv.modal('hide');
+					}
+				});
+				
+			}
 			
   		</script>	  
 	</jsp:attribute> 
