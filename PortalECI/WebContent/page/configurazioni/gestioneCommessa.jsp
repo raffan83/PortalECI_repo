@@ -89,11 +89,12 @@
  <label>Anno: </label>
 
    <select name="select1" id="select1" data-placeholder="Seleziona Cliente..." style="width:100%"  class="form-control select2" aria-hidden="true" data-live-search="true">
-	
+	<option value="0" selected="selected">TUTTI</option>
 	 <c:forEach items="${yearList}" var="year">
+	 
 	 	<c:choose>
                        <c:when test="${year == current_year}">
-                           <option value="${year}" selected="selected">${year}</option> 
+                           <option value="${year}"  selected="selected">${year}</option> 
                         </c:when>
                         <c:otherwise>
                         <option value="${year}">${year}</option> 

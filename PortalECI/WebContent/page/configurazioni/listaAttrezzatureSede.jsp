@@ -267,10 +267,10 @@
               
 
     <div class="form-group">
-          <label for="inputEmail" class="col-sm-4 control-label">Numero matricola INAIL:</label>
-
+          <label for="inputEmail" class="col-sm-4 control-label">Numero matricola INAIL: <span id="label_pattern" style="display:none"><font style="color:red">Pattern matricola errato!</font></span></label>
+			
          <div class="col-sm-8">
-         <input class="form-control" id="matricola_inail" type="text" name="matricola_inail" required value=""/>
+         <input class="form-control" id="matricola_inail" type="text" name="matricola_inail" placeholder="0000/0/00000/AA" required value=""/>
     	</div>
    </div>
 	<div class="form-group">
@@ -832,6 +832,22 @@
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/datejs/1.0/date.min.js"></script>
 
 <script type="text/javascript">
+
+
+$('#matricola_inail').focusout(function(){
+	
+	var string = $(this).val();
+
+	var pattern = /^[0-9][0-9][0-9][0-9]\/[0-9]\/[0-9][0-9][0-9][0-9][0-9]\/[A-Z][A-Z]$/.test(string);
+	
+	if(pattern==false){
+		$('#label_pattern').show();
+	}else{
+		$('#label_pattern').hide();
+	}
+	
+});
+
 
 
 function openVerbaliModal(id_attrezzatura){

@@ -304,7 +304,7 @@
             															</a>
 																 </c:if> 
 																	<c:if test="${user.checkPermesso('GESTIONE_VERBALI')}">
-																		<a class="btn customTooltip" title="Click per aprire il dettaglio del Verbale" onclick="callAction('gestioneVerbale.do?idVerbale=${verbale.id}');">
+																		<a class="btn customTooltip" title="Click per aprire il dettaglio del Verbale" href="gestioneVerbale.do?action=dettaglio&idVerbale=${verbale.getId()}" >
                 															<i class="fa fa-arrow-right"></i>
             															</a>
             														</c:if>

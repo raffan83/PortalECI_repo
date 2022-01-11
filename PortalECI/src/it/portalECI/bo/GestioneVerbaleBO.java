@@ -122,6 +122,11 @@ public class GestioneVerbaleBO {
 				//return;
 			//}
 			
+			if(intervento == null) {
+				intervento = GestioneVerbaleDAO.getVerbaleFromSkTec(String.valueOf(verbale.getId()), session).getIntervento();
+			}
+			
+			
 			if(intervento!=null) {
 				Boolean verificato=true;
 				
@@ -144,7 +149,6 @@ public class GestioneVerbaleBO {
 				}
 				session.update(intervento);
 			}
-			
 		}
 		
 		
@@ -858,7 +862,13 @@ public class GestioneVerbaleBO {
 					html = html.replaceAll("\\$\\{DATA_VERIFICA\\}", df.format(verb.getData_verifica())+" - "+df.format(verb.getData_fine_verifica()));
 				}else {
 				
-					html = html.replaceAll("\\$\\{DATA_VERIFICA\\}", df.format(verb.getData_verifica()));	
+					if(verb.getData_verifica()!=null) {
+						html = html.replaceAll("\\$\\{DATA_VERIFICA\\}", df.format(verb.getData_verifica()));
+					}else {
+						html = html.replaceAll("\\$\\{DATA_VERIFICA\\}", "");
+					}
+					
+						
 				}
 			}
 		}

@@ -316,9 +316,7 @@ request.setAttribute("user",user);
 																																		
 																	</td>
 																	
-        															<td>
-																		<fmt:formatDate pattern="dd/MM/yyyy" value='${verbale.getCreateDate()}' type='date' />
-																	</td>
+        															
 																	<td>
 																	<c:if test="${verbale.motivo_verifica == 1}">
 																	Periodica
@@ -326,6 +324,9 @@ request.setAttribute("user",user);
 																	<c:if test="${verbale.motivo_verifica != 0 && verbale.motivo_verifica > 1}">
 																	Straordinaria
 																	</c:if>
+																	</td>
+																	<td>
+																		<fmt:formatDate pattern="dd/MM/yyyy" value='${verbale.getCreateDate()}' type='date' />
 																	</td>
 																	<td>
 																		<a class="btn customTooltip" title="Click per aprire il dettaglio del Verbale" onclick="callAction('gestioneVerbale.do?idVerbale=${verbale.getId()}');">

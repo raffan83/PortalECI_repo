@@ -57,10 +57,10 @@ public class GestioneListaInterventi extends HttpServlet {
 		if(Utility.validateSession(request,response,getServletContext())) return;
 		
 		response.setContentType("text/html");
-		 
+		Session session=SessionFacotryDAO.get().openSession();
+		session.beginTransaction();
 		try {
-			Session session=SessionFacotryDAO.get().openSession();
-			session.beginTransaction();
+			
 			
 			String stato = request.getParameter("stato");			
 			
@@ -88,6 +88,10 @@ public class GestioneListaInterventi extends HttpServlet {
 	     	session.getTransaction().commit();
 			session.close();	
 		}catch(Exception ex){
+			
+			session.getTransaction().rollback();
+			session.close();
+			
    		 	ex.printStackTrace();
    		 	request.setAttribute("error",ECIException.callException(ex));
    		 	RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/error.jsp");

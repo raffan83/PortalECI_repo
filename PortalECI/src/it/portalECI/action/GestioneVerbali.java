@@ -106,10 +106,10 @@ public class GestioneVerbali extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
 		request.setCharacterEncoding("UTF-8"); 
-		
+	
 		JsonObject myObj = new JsonObject();
 		PrintWriter  out = response.getWriter();
-		
+		boolean ajax = true;
 		Session session = SessionFacotryDAO.get().openSession();
 		session.beginTransaction();
 		try {
@@ -124,6 +124,8 @@ public class GestioneVerbali extends HttpServlet {
 			
 			
 if(action!= null && action.equals("dettaglio")) {
+	
+				ajax = false;
 				
 				List<DomandaVerbaleDTO> domandeVerbale=new ArrayList<DomandaVerbaleDTO>();
 				domandeVerbale.addAll(verbale.getDomandeVerbale());
@@ -196,7 +198,7 @@ if(action!= null && action.equals("dettaglio")) {
 				ArrayList<AttrezzaturaDTO> listaAttrezzature = (ArrayList<AttrezzaturaDTO>) request.getSession().getAttribute("listaAttrezzature");
 				
 				
-				try {
+				//try {
 					
 					if(listaAttrezzature==null || listaAttrezzature.size()==0) {
 						CommessaDTO commessa = GestioneCommesseBO.getCommessaById(verbale.getIntervento().getIdCommessa());
@@ -211,15 +213,15 @@ if(action!= null && action.equals("dettaglio")) {
 						listaSedi = GestioneAnagraficaRemotaBO.getListaSedi();	
 					}
 				
-				} catch (Exception ex) {
-					ex.printStackTrace();
-					session.getTransaction().rollback();
-					session.close();
-			   		request.setAttribute("error",ECIException.callException(ex));
-			   	    request.getSession().setAttribute("exception", ex);
-			   		RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/page/error.jsp");
-			   	    dispatcher.forward(request,response);	
-				}				
+//				} catch (Exception ex) {
+//					ex.printStackTrace();
+//					session.getTransaction().rollback();
+//					session.close();
+//			   		request.setAttribute("error",ECIException.callException(ex));
+//			   	    request.getSession().setAttribute("exception", ex);
+//			   		RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/page/error.jsp");
+//			   	    dispatcher.forward(request,response);	
+//				}				
 
 				request.getSession().setAttribute("listaClienti",listaClientiFull);
 
@@ -811,24 +813,50 @@ if(action!= null && action.equals("dettaglio")) {
 			}
 			
 		
-						
+			session.getTransaction().commit();
+			session.close();			
 			myObj.addProperty("success", true);
 			myObj.addProperty("messaggio", "Stato modificato con successo");
 			
-		} catch (Exception e) {
-			e.printStackTrace();
-			myObj.addProperty("success", false);
-			myObj.addProperty("messaggio", "Errore imprevisto durante il salvataggio delle modifiche.");
+			out.print(myObj);
 			
-		}finally {
-			session.getTransaction().commit();
+		} catch (Exception ex) {
+			
+			session.getTransaction().rollback();
 			session.close();
-		}
+			
+			if(ajax) {
+				ex.printStackTrace();
+	        	
+	        	request.getSession().setAttribute("exception", ex);
+	        	//myObj = ECIException.callExceptionJsonObject(ex);
+	        	myObj.addProperty("success", false);
+				myObj.addProperty("messaggio", "Errore imprevisto durante il salvataggio delle modifiche.");
+	        	
+	        	out.print(myObj);
+	        	
+	        	
+			}else {
+				ex.printStackTrace();
+				
+		   		request.setAttribute("error",ECIException.callException(ex));
+		   	    request.getSession().setAttribute("exception", ex);
+		   		RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/page/error.jsp");
+		   	    dispatcher.forward(request,response);	
+			}
+			
+			
+			//e.printStackTrace();
+			
+		}		
+//		}finally {
+//			
+//		}
 		
 		
 		
 	
-		out.print(myObj);
+		
 	}
 		
 
@@ -843,13 +871,20 @@ if(action!= null && action.equals("dettaglio")) {
 		UtenteDTO user = (UtenteDTO)request.getSession().getAttribute("userObj");
 		String idVerbale=request.getParameter("idVerbale");
 		VerbaleDTO verbale = null;
-		if(request.getParameter("idVerbale") != null && (String)request.getParameter("idVerbale")!="" ) {
-			verbale = GestioneVerbaleBO.getVerbale(idVerbale, session);
-		}
-		//verbale.setNumeroVerbale("TMP_01");
+		boolean ajax = true;
 		JsonObject myObj = new JsonObject();
 		PrintWriter  out = response.getWriter();
-		String action=request.getParameter("action");
+		
+		
+		try {
+			
+		
+			if(request.getParameter("idVerbale") != null && (String)request.getParameter("idVerbale")!="" ) {
+				verbale = GestioneVerbaleBO.getVerbale(idVerbale, session);
+			}
+			//verbale.setNumeroVerbale("TMP_01");
+			
+			String action=request.getParameter("action");
 		
 		if(action !=null && action.equals("cambioStato")){	
 			
@@ -868,7 +903,7 @@ if(action!= null && action.equals("dettaglio")) {
 			}
 			
 			if(stato.equals("6")) {
-				try {
+			//	try {
 					
 					UtenteDTO verificatore = null;
 					String commessa = null;
@@ -888,10 +923,10 @@ if(action!= null && action.equals("dettaglio")) {
 						verbale.setControfirmato(0);
 						
 					}
-				}catch (Exception e) {
-					myObj.addProperty("success", false);
-					myObj.addProperty("messaggio", "Errore nell'invio dell'e-mail");
-				}
+//				}catch (Exception e) {
+//					myObj.addProperty("success", false);
+//					myObj.addProperty("messaggio", "Errore nell'invio dell'e-mail");
+//				}
 			}
 			
 			myObj.addProperty("success", true);
@@ -899,7 +934,7 @@ if(action!= null && action.equals("dettaglio")) {
 			out.print(myObj);
 		} else if(action !=null && action.equals("generaCertificato")) {
 			QuestionarioDTO questionario = GestioneQuestionarioBO.getQuestionarioById(verbale.getQuestionarioID(),session);
-			try {
+		//	try {
 				verbale.setData_approvazione(new Date());
 				verbale.setResponsabile_approvatore(user);
 				session.update(verbale);
@@ -939,15 +974,15 @@ if(action!= null && action.equals("dettaglio")) {
 					myObj.addProperty("success", false);
 					myObj.addProperty("messaggio", "Non &egrave; stato possibile generare il Certificato. Problema di connessione.");						
 				}
-			} catch (Exception e) {
-				e.printStackTrace();
-				myObj.addProperty("success", false);
-				myObj.addProperty("messaggio", "Non &egrave; stato possibile recuperare il Certificato. Problema di connessione.");
-			}
+//			} catch (Exception e) {
+//				e.printStackTrace();
+//				myObj.addProperty("success", false);
+//				myObj.addProperty("messaggio", "Non &egrave; stato possibile recuperare il Certificato. Problema di connessione.");
+//			}
 			out.print(myObj);
 		} else if(action !=null && action.equals("generaSchedaTecnica")) {
 			QuestionarioDTO questionario = GestioneQuestionarioBO.getQuestionarioById(verbale.getQuestionarioID(),session);
-			try {
+		//	try {
 				File certificato = GestioneVerbaleBO.getPDFVerbale(verbale, questionario, session);
 				if(certificato != null) {
 					byte[] pdfArray = loadFileForBase64(certificato);
@@ -965,10 +1000,10 @@ if(action!= null && action.equals("dettaglio")) {
 					myObj.addProperty("success", false);
 					myObj.addProperty("messaggio", "Non &egrave; stato possibile generare la Scheda Tecnica.  Problema di connessione.");						
 				}
-			} catch (Exception e) {
-				myObj.addProperty("success", false);
-				myObj.addProperty("messaggio", "Non &egrave; stato possibile recuperare la Scheda Tecnica. Problema di connessione.");
-			}
+//			} catch (Exception e) {
+//				myObj.addProperty("success", false);
+//				myObj.addProperty("messaggio", "Non &egrave; stato possibile recuperare la Scheda Tecnica. Problema di connessione.");
+//			}
 			out.print(myObj);
 		} else if(action !=null && action.equals("visualizzaDocumento")) {
 			String idDoc=request.getParameter("idDoc");
@@ -1030,7 +1065,7 @@ if(action!= null && action.equals("dettaglio")) {
 					DocumentoDTO doc = (DocumentoDTO) iterator.next();
 					
 					if(!doc.getInvalid() && doc.getType().equals(tipo)) {						
-						try {
+						//try {
 							
 							//myObj = ArubaSignService.sign(user.getId_firma(), doc, controfirma);
 							myObj = ArubaSignService.signDocumentoPades(user, "", doc, controfirma);
@@ -1046,14 +1081,14 @@ if(action!= null && action.equals("dettaglio")) {
 							}
 							
 							session.update(verbale);
-						} catch (Exception e) {
-							
-							e.printStackTrace();
-				        	
-				        	request.getSession().setAttribute("exception", e);
-				        	myObj = ECIException.callExceptionJsonObject(e);
-				        	out.print(myObj);
-						}
+//						} catch (Exception e) {
+//							
+//							e.printStackTrace();
+//				        	
+//				        	request.getSession().setAttribute("exception", e);
+//				        	myObj = ECIException.callExceptionJsonObject(e);
+//				        	out.print(myObj);
+//						}
 					}
 				}				
 				
@@ -1202,7 +1237,7 @@ if(action!= null && action.equals("dettaglio")) {
 				File file = new File(Costanti.PATH_CERTIFICATI+path+fileNoExt+"_F.pdf");
 				int counter = 0;
 
-					try {
+					//try {
 						fileUploaded.write(file);
 					
 										
@@ -1212,10 +1247,10 @@ if(action!= null && action.equals("dettaglio")) {
 					jsono.addProperty("success", true);
 					jsono.addProperty("messaggio","File caricato con successo!");
 					
-					} catch (Exception e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
+//					} catch (Exception e) {
+//						// TODO Auto-generated catch block
+//						e.printStackTrace();
+//					}
 				}
 		}
 		
@@ -1231,7 +1266,7 @@ if(action!= null && action.equals("dettaglio")) {
 			String id_intervento = request.getParameter("id_intervento");
 			InterventoDTO intervento = GestioneInterventoBO.getIntervento(id_intervento, session);
 			
-			try {
+		//	try {
 				
 			String indirizzo = "";
 			if(intervento.getIdSede()==0) {
@@ -1259,14 +1294,14 @@ if(action!= null && action.equals("dettaglio")) {
 			myObj.addProperty("indirizzo", indirizzo);
 			 out.println(myObj);
 			
-			} catch (Exception e) {
-				
-				e.printStackTrace();
-	        	
-	        	request.getSession().setAttribute("exception", e);
-	        	myObj = ECIException.callExceptionJsonObject(e);
-	        	out.print(myObj);
-			}
+//			} catch (Exception e) {
+//				
+//				e.printStackTrace();
+//	        	
+//	        	request.getSession().setAttribute("exception", e);
+//	        	myObj = ECIException.callExceptionJsonObject(e);
+//	        	out.print(myObj);
+//			}
 			
 			
 		   
@@ -1275,7 +1310,7 @@ if(action!= null && action.equals("dettaglio")) {
 		
 		else if(action!=null && action.equals("invia_email")) {
 
-			try {
+		//	try {
 				response.setContentType("text/html");
 				
 				String indirizzo = request.getParameter("destinatario");
@@ -1310,14 +1345,14 @@ if(action!= null && action.equals("dettaglio")) {
 				
 				out.println(myObj.toString());
 				
-			} catch (MessagingException e) {
-				
-				e.printStackTrace();
-	        	
-	        	request.getSession().setAttribute("exception", e);
-	        	myObj = ECIException.callExceptionJsonObject(e);
-	        	out.print(myObj);
-			}
+//			} catch (MessagingException e) {
+//				
+//				e.printStackTrace();
+//	        	
+//	        	request.getSession().setAttribute("exception", e);
+//	        	myObj = ECIException.callExceptionJsonObject(e);
+//	        	out.print(myObj);
+//			}
 				
 //				String[] destinatari = indirizzo.replace(" ", "").split(";");
 				
@@ -1407,6 +1442,10 @@ if(action!= null && action.equals("dettaglio")) {
 		}
 		
 		else {
+			
+			ajax = false;
+			
+			
 			//caso genericoc della ricerca del verbale per aprire gestioneVerbali					
 			List<DomandaVerbaleDTO> domandeVerbale=new ArrayList<DomandaVerbaleDTO>();
 			domandeVerbale.addAll(verbale.getDomandeVerbale());
@@ -1479,7 +1518,7 @@ if(action!= null && action.equals("dettaglio")) {
 			ArrayList<AttrezzaturaDTO> listaAttrezzature = (ArrayList<AttrezzaturaDTO>) request.getSession().getAttribute("listaAttrezzature");
 			
 			
-			try {
+			//try {
 				
 				if(listaAttrezzature==null || listaAttrezzature.size()==0) {
 					CommessaDTO commessa = GestioneCommesseBO.getCommessaById(verbale.getIntervento().getIdCommessa());
@@ -1494,15 +1533,15 @@ if(action!= null && action.equals("dettaglio")) {
 					listaSedi = GestioneAnagraficaRemotaBO.getListaSedi();	
 				}
 			
-			} catch (Exception ex) {
-				ex.printStackTrace();
-				session.getTransaction().rollback();
-				session.close();
-		   		request.setAttribute("error",ECIException.callException(ex));
-		   	    request.getSession().setAttribute("exception", ex);
-		   		RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/page/error.jsp");
-		   	    dispatcher.forward(request,response);	
-			}				
+//			} catch (Exception ex) {
+//				ex.printStackTrace();
+//				session.getTransaction().rollback();
+//				session.close();
+//		   		request.setAttribute("error",ECIException.callException(ex));
+//		   	    request.getSession().setAttribute("exception", ex);
+//		   		RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/page/error.jsp");
+//		   	    dispatcher.forward(request,response);	
+//			}				
 
 			request.getSession().setAttribute("listaClienti",listaClientiFull);
 
@@ -1518,7 +1557,36 @@ if(action!= null && action.equals("dettaglio")) {
 		}	
 		session.getTransaction().commit();
 		session.close();	
+		
+		
+	} catch (Exception ex) {
+		
+		session.getTransaction().rollback();
+		session.close();
+		
+		if(ajax) {
+			ex.printStackTrace();
+        	
+        	request.getSession().setAttribute("exception", ex);
+        	myObj = ECIException.callExceptionJsonObject(ex);
+        	out.print(myObj);
+		}else {
+			ex.printStackTrace();
+			
+	   		request.setAttribute("error",ECIException.callException(ex));
+	   	    request.getSession().setAttribute("exception", ex);
+	   		RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/page/error.jsp");
+	   	    dispatcher.forward(request,response);	
+		}
+		
+	
+		
+	}		
+		
+		
+		
 	}
+	
 	
 	private static byte[] loadFileForBase64(File file) throws IOException {
 	    InputStream is = new FileInputStream(file);

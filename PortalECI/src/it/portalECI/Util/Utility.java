@@ -64,6 +64,7 @@ public class Utility extends HttpServlet {
 		yearList.add(2019);
 		yearList.add(2020);
 		yearList.add(2021);
+		yearList.add(2022);
 		
 		return yearList;
 	}
