@@ -273,7 +273,7 @@ public class CreateScadenzarioVAL {
 	    		 }
 	    		 
 	    		 Date data_rilascio = null;
-	    		 Date data_pvp = getDataPvP(listaVerbali.get(i));
+	    		 Date data_pvp = Utility.getDataPvP(listaVerbali.get(i));
 	    		 
 	    		 
 	    		 if(listaVerbali.get(i).getStato().getId()!=9 && listaVerbali.get(i).getTipo_verifica_gvr()==0 || listaVerbali.get(i).getTipo_verifica_gvr()==1 || listaVerbali.get(i).getTipo_verifica_gvr()==4 || listaVerbali.get(i).getTipo_verifica_gvr()==5) {
@@ -432,8 +432,19 @@ public class CreateScadenzarioVAL {
 		    		 
 					 col++;
 		    		 cell = row.createCell(col);
+		    		 
+		    		 CommessaDTO commessa = GestioneCommesseBO.getCommessaById(listaVerbali.get(i).getIntervento().getIdCommessa());
 					
-					ClienteDTO cliente = GestioneAnagraficaRemotaBO.getClienteById(listaVerbali.get(i).getIntervento().getId_cliente()+"");
+		    		 
+		    		 
+					ClienteDTO cliente = null;
+					
+					if(commessa.getID_ANAGEN()!=commessa.getID_ANAGEN_UTIL()) {
+						cliente = GestioneAnagraficaRemotaBO.getClienteById(commessa.getID_ANAGEN_UTIL()+"");
+					}else {
+						cliente = GestioneAnagraficaRemotaBO.getClienteById(listaVerbali.get(i).getIntervento().getId_cliente()+"");
+					}
+					
 										
 					if(cliente!=null && cliente.getNome()!=null) {
 						
@@ -808,57 +819,10 @@ public class CreateScadenzarioVAL {
 	
 
 
-	private Date getDataPvP(VerbaleDTO verbale) {
-		
-		Date data_pvp = null;
-		
-			if(verbale.getStato().getId()!=9 && verbale.getTipo_verifica_gvr()==0) {
-				data_pvp = verbale.getData_prossima_verifica();
-			}else {
-				
-				 if((verbale.getTipo_verifica() == 1 || verbale.getTipo_verifica() == 2) || verbale.getTipo_verifica_gvr()==1  ) {
-					 data_pvp = verbale.getData_prossima_verifica();
-	    			 
-	    		 }else if((verbale.getTipo_verifica() != 1 && verbale.getTipo_verifica() != 2) && verbale.getTipo_verifica_gvr()==2 ) {
-	    			 data_pvp = verbale.getData_prossima_verifica_integrita();
-	    			 
-	    		 }else if((verbale.getTipo_verifica() != 1 && verbale.getTipo_verifica() != 2) && verbale.getTipo_verifica_gvr()==3 ) {
-	    			 data_pvp = verbale.getData_prossima_verifica_interna();	    			 
-	    			 
-	    		 }else if((verbale.getTipo_verifica() != 1 && verbale.getTipo_verifica() != 2) && verbale.getTipo_verifica_gvr()==7){
-	    			 data_pvp = getMinDate(verbale.getData_prossima_verifica(), verbale.getData_prossima_verifica_interna());
-	    		 }
-	    		 else if((verbale.getTipo_verifica() != 1 && verbale.getTipo_verifica() != 2) && verbale.getTipo_verifica_gvr()==4){
-	    			 data_pvp = getMinDate(verbale.getData_prossima_verifica(), verbale.getData_prossima_verifica_integrita());
-	    		 }
-	    		 else if((verbale.getTipo_verifica() != 1 && verbale.getTipo_verifica() != 2) && verbale.getTipo_verifica_gvr()==5){
-	    			 data_pvp = getMinDate(getMinDate(verbale.getData_prossima_verifica(), verbale.getData_prossima_verifica_integrita()), verbale.getData_prossima_verifica_interna());
-	    		 }
-	    		 else if((verbale.getTipo_verifica() != 1 && verbale.getTipo_verifica() != 2) && verbale.getTipo_verifica_gvr()==6){
-	    			 data_pvp = getMinDate(verbale.getData_prossima_verifica_integrita(), verbale.getData_prossima_verifica_interna());
-	    		 }
-			}
-			
-				
-		return data_pvp;
-	}
 
 
-	private Date getMinDate(Date data1, Date data2) {
-		
-		Date min = null;
-		
-		long time1 = data1.getTime();
-		long time2 = data2.getTime();
-		
-		if(time1<=time2) {
-			min = data1;
-		}else {
-			min = data2;
-		}
-		
-		return min;
-	}
+
+	
 
 
 	public static void main(String[] args) throws Exception {

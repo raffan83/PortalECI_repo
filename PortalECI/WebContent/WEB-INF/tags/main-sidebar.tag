@@ -52,7 +52,7 @@
           		
         	</li>
         	<% }%>
-        		<% if(user.checkRuolo("CLVIE") || user.checkPermesso("GESTIONE_VERBALI")){%> 
+        		<% if(user.checkPermesso("GESTIONE_VERBALI")){%> 
         	<li class="treeview">
         	 	<a href="#">
         	 		<i class="fa fa-clipboard "></i> 
@@ -76,6 +76,24 @@
         	  	
         	</li>
         	<% }%>
+        	
+        	<% if(user.checkRuolo("CLVIE")){%> 
+        	<li class="treeview">
+        	 	<a href="gestioneListaVerbali.do">
+        	 		<i class="fa fa-clipboard "></i> 
+        	 		<span>Impianti elettrici <br> DPR 462/01</span>
+            		<span class="pull-right-container">
+              			<i class="fa fa-angle-left pull-right"></i>
+            		</span>
+          		</a>
+          	
+
+        	  	
+        	</li>
+        	<% }%>
+        	
+        	
+        	
         	<% if(user.checkPermesso("GESTIONE_QUESTIONARI")){%>
         	<li class="treeview">
         	 	<a href="#">
@@ -108,7 +126,7 @@
 					<li><a href="downloadCalver.do"><i class="fa fa-link"></i>Calver Desktop</a></li>
           		</ul>
         	</li> -->
-         <% if(user.checkRuolo("AM") ||user.checkRuolo("CLVAL") ||(user.checkPermesso("ATTREZZATURE") && user.checkCategoria("VAL"))){%> 
+         <% if(user.checkRuolo("AM") || user.checkRuolo("ST") ||(user.checkPermesso("ATTREZZATURE") && user.checkCategoria("VAL"))){%> 
         	<li class="treeview">
         	 	<a href="#">
         	 		<i class="fa fa-briefcase"></i>
@@ -131,6 +149,29 @@
           	
         	</li>
         	<% }%>
+        	
+        	
+        	<% if(user.checkRuolo("CLVAL")){%> 
+        	<li class="treeview">
+        	 	<a href="listaAttrezzature.do">
+        	 		<i class="fa fa-briefcase"></i>
+        	 		<span style="align:center">Attrezzature di lavoro <br> DM 11/04/11</span>
+            		<span class="pull-right-container">
+              			<i class="fa fa-angle-left pull-right"></i>
+            		</span>
+          		</a>
+          		
+          		<!-- 	<ul class="treeview-menu">
+            			<li>
+            				<a href="listaAttrezzature.do">Attrezzature di lavoro</a>
+            			</li>
+            				
+          			</ul>   -->        		
+          	
+        	</li>
+        	<% }%>
+        	
+        	
         	 <% if(user.checkRuolo("AM") || user.checkPermesso("GESTIONE_CAMPIONI")){%> 
 			<li class="treeview">
 			<a href="#">
@@ -269,9 +310,20 @@
         		
         		<% if(user.checkRuolo("AM") || user.checkRuolo("CLVAL") || user.checkRuolo("CLVIE")){%> 
         		<li class="treeview">
-        	 	<a href="#">
+        		<c:if test='${userObj.checkRuolo("CLVAL") || userObj.checkRuolo("CLVIE") }'>
+        		<a href="gestioneListaVerbali.do?action=allegati_cliente">
         	 		<i class="fa fa-clipboard "></i> 
-        	 		<span>Allegati ${user.checkRuolo("AM") ? "cliente" : ""}</span>
+        	 		<span>Allegati </span>
+            		<span class="pull-right-container">
+              			<i class="fa fa-angle-left pull-right"></i>
+            		</span>
+          		</a>
+        		</c:if>
+        		<c:if test="${userObj.checkRuolo('AM')}">
+        		
+        		<a href="#">
+        	 		<i class="fa fa-clipboard "></i> 
+        	 		<span>Allegati cliente</span>
             		<span class="pull-right-container">
               			<i class="fa fa-angle-left pull-right"></i>
             		</span>
@@ -282,15 +334,18 @@
     	        		
     	        		<li>
         				
-	            		<a href="#" onClick="callAction('gestioneListaVerbali.do?action=allegati_cliente')">Gestione allegati ${user.checkRuolo('AM')? "cliente":""}</a>
+	            		<a href="#" onClick="callAction('gestioneListaVerbali.do?action=allegati_cliente')">Gestione allegati cliente</a>
 	            			
 				</li>
 				
-				<% }%>
+				
         	  		</ul>
+        		
+        		</c:if>
+        	 	
         	  	
         	</li>
-        		        		
+        		<% }%>        		
       	</ul>
       	<!-- /.sidebar-menu -->
       	

@@ -120,10 +120,23 @@ public class Login extends HttpServlet {
 				//HashMap<String, Integer>  map_stati = GestioneGraficiBO.getGraficoStatiVerbali(utente);
 				ArrayList<HashMap<String, String>>  list_map = GestioneGraficiBO.getGraficoStatiVerbali(utente);
 				
+				Gson gson = new Gson();
+				
+				if(utente.checkRuolo("CLVAL")) {
+					HashMap<String, Integer>  lista_dati_cliente_val = GestioneGraficiBO.getGraficoClienteVAL(utente);	
+					request.getSession().setAttribute("lista_dati_cliente_val", gson.toJsonTree(lista_dati_cliente_val).toString());
+				}
+				if(utente.checkRuolo("CLVIE")) {
+					HashMap<String, Integer>  lista_dati_cliente_vie = GestioneGraficiBO.getGraficoClienteVIE(utente);	
+					request.getSession().setAttribute("lista_dati_cliente_vie", gson.toJsonTree(lista_dati_cliente_vie).toString());
+				}
+				
+				
+				
 				HashMap<String, String> map_stati = list_map.get(0);
 				HashMap<String, String> map_color = list_map.get(1);
 				
-				Gson gson = new Gson();
+			
 				
 				JsonElement obj_codice_verifica = gson.toJsonTree(lista_dati.get(0));
 				JsonElement obj_codice_categoria = gson.toJsonTree(lista_dati.get(1));				

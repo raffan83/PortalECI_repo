@@ -1,6 +1,9 @@
 package it.portalECI.bo;
 
+import java.io.BufferedOutputStream;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.text.DateFormat;
@@ -13,6 +16,9 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipOutputStream;
+
 import javax.xml.bind.ValidationException;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
@@ -112,6 +118,9 @@ public class GestioneVerbaleBO {
 			setStatoCompilazioneWeb(intervento, stato, session);
 			intervento.setStatoIntervento(GestioneStatoInterventoDAO.getStatoInterventoById(StatoInterventoDTO.COMPILAZIONE_WEB, session));
 			session.update(intervento);
+			
+			verbale.setStato(stato);			
+			session.update(verbale);
 		} else {
 				
 			verbale.setStato(stato);			
@@ -1682,9 +1691,135 @@ public class GestioneVerbaleBO {
 	}
 
 
-public static AllegatoClienteDTO getAllegatoCliente(int id_allegato, Session session) {
+	public static AllegatoClienteDTO getAllegatoCliente(int id_allegato, Session session) {
 		
 		return GestioneVerbaleDAO.getAllegatoCliente(id_allegato, session);
 	}
+
+	public static void createZipVerbali(List<VerbaleDTO> listaVerbaliValidi, String dateFrom, String dateTo, Session session) throws Exception {
+		
+		
+		FileOutputStream fos = null;
+	    ZipOutputStream zipOut = null;
+	    FileInputStream fis = null;
+	    	    
+	    fos = new FileOutputStream(Costanti.PATH_ROOT+"//temp//fileverbali//verbali"+dateFrom+ dateTo+".zip");
+	    zipOut = new ZipOutputStream(new BufferedOutputStream(fos));
+	    
+	    //listaVerbaliValidi = GestioneVerbaleDAO.getVerbaliZip(listaVerbaliValidi, session);
+	    
+	    DateFormat df = new SimpleDateFormat("ddMMyyyy");
+	    for (VerbaleDTO v : listaVerbaliValidi) {
+	    	
+	    	//v = getVerbale(v.getId()+"", session);
+			
+	    	 Date data_pvp = Utility.getDataPvP(v);
+	    	 
+	    	 String tipo_verifica = "";
+    		 
+    		 if(v.getTipo_verifica()!=0) {
+    			 
+    			 if(v.getAttrezzatura().getTipo_attivita().equals("GVR")) {
+    				 
+    				 if(v.getTipo_verifica()<3) {
+    					 
+    					 tipo_verifica = "1";
+    				 }else {
+    					 tipo_verifica = "2"; //TIPO VERIFICA
+    				 }		    				 
+    				 
+    			 }else {
+    				 
+    				 tipo_verifica = ""+v.getTipo_verifica();
+    				 
+    			 }
+    		 }
+	    	    
+    		
+	    	for (DocumentoDTO d : v.getDocumentiVerbale()) {
+	    		 ZipEntry ze = null;
+	    		 
+	    		 String filenoext = d.getFilePath().substring(0, d.getFilePath().length()-4);
+	    		 File input =  new File(Costanti.PATH_ROOT+"documenti\\interventi\\"+filenoext+"_F.pdf");
+	    		 File renamed = null;
+				if(d.getType().equals("CERTIFICATO") && !d.getInvalid()) {
+					
+					renamed = new File(Costanti.PATH_ROOT+"temp\\verbale "+v.getAttrezzatura().getMatricola_inail().replaceAll("/", "") + tipo_verifica+df.format(data_pvp)+".pdf");
+								
+				}else if(d.getType().equals("SCHEDA_TECNICA") && !d.getInvalid()) {
+					
+					renamed = new File(Costanti.PATH_ROOT+"temp\\scheda tecnica "+v.getAttrezzatura().getMatricola_inail().replaceAll("/", "") + tipo_verifica+df.format(data_pvp)+".pdf");
+				}
+				
+				if(!d.getInvalid() && (d.getType().equals("CERTIFICATO")|| d.getType().equals("SCHEDA_TECNICA"))) {
+					//input.renameTo(renamed);
+					fis = new FileInputStream(input);
+					ze = new ZipEntry(renamed.getName());
+	                System.out.println("Zipping the file: "+renamed.getName());
+	                zipOut.putNextEntry(ze);
+	                byte[] tmp = new byte[4*1024];
+	                int size = 0;
+	                while((size = fis.read(tmp)) != -1){
+	                    zipOut.write(tmp, 0, size);
+	                }
+	                zipOut.flush();
+	                fis.close();
+				}
+				
+			}
+	    	if(v.getSchedaTecnica()!=null) {
+	    		
+	    		for (DocumentoDTO d : v.getSchedaTecnica().getDocumentiVerbale()) {
+		    		 ZipEntry ze = null;
+		    		 
+		    		 String filenoext = d.getFilePath().substring(0, d.getFilePath().length()-4);
+		    		 File input =  new File(Costanti.PATH_ROOT+"documenti\\interventi\\"+filenoext+"_F.pdf");
+		    		 File renamed = null;
+		    		 if(d.getType().equals("SCHEDA_TECNICA") && !d.getInvalid()) {
+						
+						renamed = new File(Costanti.PATH_ROOT+"temp\\scheda tecnica "+v.getAttrezzatura().getMatricola_inail().replaceAll("/", "") + tipo_verifica+df.format(data_pvp)+".pdf");
+					}
+					
+					if(!d.getInvalid() && d.getType().equals("SCHEDA_TECNICA")) {
+						//input.renameTo(renamed);
+						fis = new FileInputStream(input);
+						ze = new ZipEntry(renamed.getName());
+		                System.out.println("Zipping the file: "+renamed.getName());
+		                zipOut.putNextEntry(ze);
+		                byte[] tmp = new byte[4*1024];
+		                int size = 0;
+		                while((size = fis.read(tmp)) != -1){
+		                    zipOut.write(tmp, 0, size);
+		                }
+		                zipOut.flush();
+		                fis.close();
+					}
+					
+				}
+	    		
+	    	}
+	    	
+	    	
+		}
+	    
+	    File excel =  new File(Costanti.PATH_ROOT + "ScadenzarioVAL\\SCADVAL"+dateFrom + dateTo+".xlsx");
+    	fis = new FileInputStream(excel);
+    	ZipEntry ze = new ZipEntry(excel.getName());
+        System.out.println("Zipping the file: "+excel.getName());
+        zipOut.putNextEntry(ze);
+        byte[] tmp = new byte[4*1024];
+        int size = 0;
+        while((size = fis.read(tmp)) != -1){
+            zipOut.write(tmp, 0, size);
+        }
+        zipOut.flush();
+        fis.close();
+    		    	
+    	 zipOut.close();
+         System.out.println("Done... Zipped the files...");
+		
+	}
+	
+
 
 }

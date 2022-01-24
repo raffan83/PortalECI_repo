@@ -429,7 +429,7 @@ if(action!= null && action.equals("dettaglio")) {
 							myObj.addProperty("messaggio", "Stato modificato con successo");
 				
 							out.print(myObj);
-							return;
+						
 						}
 					
 										

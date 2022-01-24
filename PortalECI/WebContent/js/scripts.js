@@ -1418,7 +1418,7 @@ function modalModificaUtente(id,codice,user,nome,cognome,indirizzo,comune,cap,em
 	}
 
 	
-	if(sede!=null && sede==0 && id_cliente!=0){
+	if(sede!=null && sede==0 && cliente!=0){
 		$('#select2_mod').val(sede);
 		$('#select2_mod').change();
 	}else if(sede!=null && sede !=0){

@@ -13,7 +13,7 @@
   			<div id="corpoframe" class="content-wrapper">
   			
   			<section class="content">
-  			<c:if test="${!userObj.checkRuolo('CL') }">	
+  			<c:if test="${!userObj.checkRuolo('CLVIE') && !userObj.checkRuolo('CLVAL') }">	
   			       							<div class="row">         
        								<div class="col-xs-6">
 										<div class="box box-danger box-solid">
@@ -97,6 +97,64 @@
   			       						
   </c:if>     			
   			
+ <div class="row">  			
+<c:if test="${userObj.checkRuolo('CLVIE') }">								
+	        
+       								<div class="col-xs-6">
+										<div class="box box-danger box-solid">
+											<div class="box-header with-border">
+ 											Scadenza verbali VIE
+												<div class="box-tools pull-right">		
+													<button data-widget="collapse" class="btn btn-box-tool"><i class="fa fa-minus"></i></button>
+												</div>
+											</div>
+											<div class="box-body" id="box_chart_4">	
+        											 <div class="chart">
+			             							  <canvas id="graph_4" ></canvas>
+			             							  <div class="row">
+			             							  <div class="col-xs-2"></div>         
+       								<div class="col-xs-9">
+			             							<!--   <div id="chartjs-legend" style="width:100%;" ></div> -->
+			             							  </div>
+			             							  <div class="col-xs-1"></div>
+			             							  </div>
+			         							     </div>         			
+											</div>
+										</div>
+									</div>
+															  			
+  			       						
+  </c:if>     
+  
+  
+  <c:if test="${userObj.checkRuolo('CLVAL') }">								
+	       
+       								<div class="col-xs-6">
+										<div class="box box-danger box-solid">
+											<div class="box-header with-border">
+ 											Scadenza verbali VAL
+												<div class="box-tools pull-right">		
+													<button data-widget="collapse" class="btn btn-box-tool"><i class="fa fa-minus"></i></button>
+												</div>
+											</div>
+											<div class="box-body" id="box_chart_5">	
+        											 <div class="chart">
+			             							  <canvas id="graph_5" ></canvas>
+			             							  <div class="row">
+			             							  <div class="col-xs-2"></div>         
+       								<div class="col-xs-9">
+			             							<!--   <div id="chartjs-legend" style="width:100%;" ></div> -->
+			             							  </div>
+			             							  <div class="col-xs-1"></div>
+			             							  </div>
+			         							     </div>         			
+											</div>
+										</div>
+									</div>
+															  			
+  			       						
+  </c:if> 			
+  			</div>
    </section>
 	  		</div>
   			<!-- /.content-wrapper -->	
@@ -129,6 +187,13 @@
 	
 	$(document).ready(function() {
 		
+		var cl_vie = "${userObj.checkRuolo('CLVIE')}";
+		var cl_val = "${userObj.checkRuolo('CLVAL')}";
+		
+		
+		if(cl_vie=='false' && cl_val=='false'){
+			
+	
 		
 		var lista_categorie = JSON.parse('${obj_codice_categoria}');
 		var lista_verifiche = JSON.parse('${obj_codice_verifica}');
@@ -402,7 +467,130 @@
 			  });
 
 		
-	});
+
+		}
+		
+		
+		if(cl_vie=='true'){
+			
+
+			
+			var obj = JSON.parse('${lista_dati_cliente_vie}');
+			
+			data_graph_4 = [];
+			
+			data_graph_4 = Object.values(obj);
+			
+			
+			var ctx = document.getElementById('graph_4').getContext('2d');
+			
+			
+
+			  var myChart4 = new Chart(ctx, {
+				    type: 'bar',
+				    data: {
+				      labels: ["IN CORSO", "IN SCADENZA", "SCADUTI"],
+				      //labels: label_graph_3,
+				      datasets: [ {
+				        data: data_graph_4,
+				        backgroundColor: [
+				        	'rgba(119, 221, 119)',
+					         'rgba(255, 255, 128)',
+					         'rgba(255, 99, 132, 0.2)',
+					         'rgba(75, 192, 192, 0.2)',
+					         'rgba(153, 102, 255, 0.2)',
+					         'rgba(255, 159, 64, 0.2)',
+					         'rgba(255,0,0,0.2)',
+					         'rgba(46,46,255,0.2)',
+					         'rgba(255,102,143,0.2)',
+					         'rgba(255,240,36,0.2)',
+					         'rgba(255,54,255,0.2)',
+					         'rgba(107,255,235,0.2)',
+					         'rgba(255,83,64,0.2)'
+					        ],
+
+				      },]
+				    },
+				    options: {
+				      responsive: true,
+				      showAllTooltips: true,
+				      legend: {
+				        display: false,  
+				      },
+
+				      
+				      title: {
+				            display: true,
+				            text: 'Scadenza verbali VIE',
+				            fontSize: 18,
+				            fontColor: '#747474'
+				        }
+				    }
+				  }); 
+			}
+	
+	
+	if(cl_val=='true'){
+	
+
+		
+	var obj = JSON.parse('${lista_dati_cliente_val}');
+	
+	data_graph_5 = [];
+	
+	data_graph_5 = Object.values(obj);
+	
+	
+	var ctx = document.getElementById('graph_5').getContext('2d');
+	
+	
+
+	  var myChart5 = new Chart(ctx, {
+		    type: 'bar',
+		    data: {
+		      labels: ["IN CORSO", "IN SCADENZA", "SCADUTI"],
+		      //labels: label_graph_3,
+		      datasets: [ {
+		        data: data_graph_5,
+		        backgroundColor: [
+		        	'rgba(119, 221, 119)',
+			         'rgba(255, 255, 128)',
+			         'rgba(255, 99, 132, 0.2)',
+			         'rgba(75, 192, 192, 0.2)',
+			         'rgba(153, 102, 255, 0.2)',
+			         'rgba(255, 159, 64, 0.2)',
+			         'rgba(255,0,0,0.2)',
+			         'rgba(46,46,255,0.2)',
+			         'rgba(255,102,143,0.2)',
+			         'rgba(255,240,36,0.2)',
+			         'rgba(255,54,255,0.2)',
+			         'rgba(107,255,235,0.2)',
+			         'rgba(255,83,64,0.2)'
+			        ],
+
+		      },]
+		    },
+		    options: {
+		      responsive: true,
+		      showAllTooltips: true,
+		      legend: {
+		        display: false,  
+		      },
+
+		      
+		      title: {
+		            display: true,
+		            text: 'Scadenza verbali VAL',
+		            fontSize: 18,
+		            fontColor: '#747474'
+		        }
+		    }
+		  }); 
+	}
+	
+});
+	
+
 	
 	
 	</script>

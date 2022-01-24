@@ -25,4 +25,14 @@ public class GestioneGraficiBO {
 		return GestioneGraficiDAO.getGraficoStatiVerbali( user);
 	}
 
+	public static HashMap<String, Integer> getGraficoClienteVAL(UtenteDTO user) {
+		
+		return GestioneGraficiDAO.getGraficoClienteVAL( user);
+	}
+
+	public static HashMap<String, Integer> getGraficoClienteVIE(UtenteDTO user) {
+		
+		return GestioneGraficiDAO.getGraficoClienteVIE( user);
+	}
+
 }

@@ -1,7 +1,9 @@
 package it.portalECI.action;
 
+import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.text.DateFormat;
@@ -12,6 +14,8 @@ import java.util.HashSet;
 import java.util.Hashtable;
 import java.util.List;
 import java.util.Set;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipOutputStream;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -25,6 +29,7 @@ import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
+import org.apache.log4j.Logger;
 import org.hibernate.Session;
 
 import com.google.gson.JsonObject;
@@ -51,6 +56,8 @@ import it.portalECI.Util.Costanti;
  */
 @WebServlet(name = "gestioneListaVerbali", urlPatterns = { "/gestioneListaVerbali.do" })
 public class GestioneListaVerbali extends HttpServlet {
+	
+	static final Logger logger = Logger.getLogger(GestioneListaVerbali.class);
 	private static final long serialVersionUID = 1L;
        
     /**
@@ -81,7 +88,6 @@ public class GestioneListaVerbali extends HttpServlet {
 		session.beginTransaction();
 		 
 		try {
-			
 			
 				
 			UtenteDTO user = (UtenteDTO)request.getSession().getAttribute("userObj");
@@ -143,7 +149,7 @@ public class GestioneListaVerbali extends HttpServlet {
 				
 				String dateFrom = request.getParameter("dateFrom");
 				String dateTo = request.getParameter("dateTo");	
-				
+				String download_file = request.getParameter("download_file");
 				DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
 				
 				Date from = df.parse(dateFrom);
@@ -167,16 +173,33 @@ public class GestioneListaVerbali extends HttpServlet {
 				
 				DateFormat sdf = new SimpleDateFormat("ddMMyyyy");
 				
-
-				String path = Costanti.PATH_ROOT + "ScadenzarioVAL\\SCADVAL"+sdf.format(from)+ sdf.format(to)+".xlsx";
+				String path = "";
+								
+				if(download_file!=null && download_file.equals("1")) {
+										
+					GestioneVerbaleBO.createZipVerbali(listaVerbaliValidi, sdf.format(from), sdf.format(to), session);
+					
+					path = Costanti.PATH_ROOT+"\\temp\\fileverbali\\verbali"+sdf.format(from)+ sdf.format(to)+".zip";
+									     
+				}else {
+					
+					path = Costanti.PATH_ROOT + "ScadenzarioVAL\\SCADVAL"+sdf.format(from)+ sdf.format(to)+".xlsx";
+					
+				}
 				
+								
 				 File file = new File(path);
 					
 					FileInputStream fileIn = new FileInputStream(file);
 
 					ServletOutputStream outp = response.getOutputStream();
 					response.setContentType("application/octet-stream");
-					response.setHeader("Content-Disposition","attachment;filename=SCADVAL"+ sdf.format(from)+sdf.format(to)+".xlsx");
+					if(download_file!=null && download_file.equals("1")) {
+						response.setHeader("Content-Disposition","attachment;filename=verbali"+sdf.format(from)+ sdf.format(to)+".zip");
+					}else {
+						response.setHeader("Content-Disposition","attachment;filename=SCADVAL"+ sdf.format(from)+sdf.format(to)+".xlsx");
+					}
+					
 			
 					    byte[] outputByte = new byte[1];
 					    
