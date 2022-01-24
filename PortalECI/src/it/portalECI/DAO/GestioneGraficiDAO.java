@@ -1,6 +1,8 @@
 package it.portalECI.DAO;
 
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -170,6 +172,108 @@ public class GestioneGraficiDAO {
 		
 		list_map.add(map);
 		list_map.add(color_map);
+		
+		session.close();
+		
+		return list_map;
+	}
+
+
+
+	public static HashMap<String, Integer> getGraficoClienteVAL(UtenteDTO user) {
+		
+		Session session = SessionFacotryDAO.get().openSession();
+		session.beginTransaction();
+		HashMap<String, Integer> list_map = new HashMap<String, Integer>();
+
+		ArrayList<VerbaleDTO> lista = null;		
+
+		Query query  = session.createQuery( "from VerbaleDTO WHERE type = :_type and stato.id = 5 and attrezzatura.id_cliente = "+user.getIdCliente() +" and attrezzatura.id_sede = "+user.getIdSede());
+		query.setParameter("_type",VerbaleDTO.VERBALE);
+		
+		
+		lista = (ArrayList<VerbaleDTO>) query.list();		
+		
+		int countInCorso = 0;
+		int countInScadenza = 0;
+		int countScaduti = 0;
+		for (VerbaleDTO verbale : lista) {
+			
+			if(verbale.getData_prossima_verifica()!=null) {
+				
+				Calendar calendar = Calendar.getInstance();
+				calendar.add(Calendar.DAY_OF_MONTH, 30);
+				Date scadenza = calendar.getTime();
+				
+				if(verbale.getData_prossima_verifica().before(new Date())) {
+					countScaduti++;
+				}else if(verbale.getData_prossima_verifica().before(scadenza)){
+					countInScadenza++;
+				}else {
+					countInCorso++;
+				}				
+				
+			}			
+
+		}
+		
+
+		
+		list_map.put("in_corso", countInCorso);
+		list_map.put("in_scadenza", countInScadenza);
+		list_map.put("scaduti", countScaduti);
+		
+		
+		session.close();
+		
+		return list_map;
+	}
+
+
+
+	public static HashMap<String, Integer> getGraficoClienteVIE(UtenteDTO user) {
+		Session session = SessionFacotryDAO.get().openSession();
+		session.beginTransaction();
+		HashMap<String, Integer> list_map = new HashMap<String, Integer>();
+
+		ArrayList<VerbaleDTO> lista = null;		
+
+		
+		Query query  = session.createQuery( "from VerbaleDTO WHERE type = :_type AND stato.id = 5 and visibile_cliente = 1 and intervento.id_cliente = "+user.getIdCliente()+" and intervento.idSede = "+user.getIdSede() +  " and codiceCategoria ='VIE'");
+		query.setParameter("_type",VerbaleDTO.VERBALE);
+		
+		
+		lista = (ArrayList<VerbaleDTO>) query.list();		
+		
+		int countInCorso = 0;
+		int countInScadenza = 0;
+		int countScaduti = 0;
+		for (VerbaleDTO verbale : lista) {
+			
+			if(verbale.getData_prossima_verifica()!=null) {
+				
+				Calendar calendar = Calendar.getInstance();
+				calendar.add(Calendar.DAY_OF_MONTH, 30);
+				Date scadenza = calendar.getTime();
+				
+				if(verbale.getData_prossima_verifica().before(new Date())) {
+					countScaduti++;
+				}else if(verbale.getData_prossima_verifica().before(scadenza)){
+					countInScadenza++;
+				}else {
+					countInCorso++;
+				}				
+				
+			}			
+
+		}
+		
+
+		
+		list_map.put("in_corso", countInCorso);
+		list_map.put("in_scadenza", countInScadenza);
+		list_map.put("scaduti", countScaduti);
+		
 		
 		session.close();
 		

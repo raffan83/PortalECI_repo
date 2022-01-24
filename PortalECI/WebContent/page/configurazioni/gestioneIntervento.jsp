@@ -198,7 +198,7 @@
 																	</c:if>
 																</td>
 																<td class="centered">	
-	 																<c:if test="${userObj.checkPermesso('CAMBIO_STATO_INTERVENTO_METROLOGIA')}">
+	 																<%-- <c:if test="${userObj.checkPermesso('CAMBIO_STATO_INTERVENTO_METROLOGIA')}">
 																		<c:if test="${intervento.statoIntervento.id == 0}">
 																			<a href="#" class="customTooltip" title="Click per chiudere l'Intervento" onClick="chiudiIntervento(${intervento.id},1,'${loop.index}')" id="statoa_${intervento.id}">
 																				 <span class="label label-info">${intervento.statoIntervento.descrizione}</span>
@@ -220,7 +220,9 @@
 	
 	 																<c:if test="${!userObj.checkPermesso('CAMBIO_STATO_INTERVENTO_METROLOGIA')}"> 	
 	 																	<a href="#" id="stato_${intervento.id}"> <span class="label" style="color:#000000 !important; background-color:${intervento.statoIntervento.getColore(intervento.statoIntervento.id)} !important;">${intervento.statoIntervento.descrizione}</span></a>
-																	</c:if>
+																	</c:if> --%>
+																	
+																	<span class="label" style="color:#000000 !important; background-color:${intervento.getStatoIntervento().getColore(intervento.getStatoIntervento().getId())} !important;">${intervento.getStatoIntervento().getDescrizione()}</span>
 																</td>		
 																<td>${intervento.user.nominativo}</td>
 		 														<td>${intervento.tecnico_verificatore.nominativo}</td> 

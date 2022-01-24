@@ -91,7 +91,7 @@
                        <th>Anno di costruzione</th>
                        <th>Fabbricante</th>
                      
-                       <th>Scadenza Ventennale</th>
+                      
                          
                       
                        <td style="min-width:100px;">Azioni</td>
@@ -107,7 +107,7 @@
  	'${attrezzatura.data_verifica_funzionamento }','${attrezzatura.data_prossima_verifica_funzionamento }','${attrezzatura.data_verifica_integrita }','${attrezzatura.data_prossima_verifica_integrita }','${attrezzatura.data_verifica_interna }','${attrezzatura.data_prossima_verifica_interna }',
  	'${attrezzatura.anno_costruzione }','${attrezzatura.fabbricante }','${attrezzatura.modello }','${attrezzatura.settore_impiego }','${fn:replace(fn:replace(attrezzatura.note_tecniche.replace('\'',' ').replace('\\','/'),newLineChar, ' '),newLineChar2, ' ')}','${fn:replace(fn:replace(attrezzatura.note_generiche.replace('\'',' ').replace('\\','/').replace('\\n',' '),newLineChar, ' '),newLineChar2,' ')}','${attrezzatura.obsoleta }',
  	'${attrezzatura.tipo_attrezzatura }','${attrezzatura.tipo_attrezzatura_GVR }','${attrezzatura.ID_specifica }','${attrezzatura.sogg_messa_serv_GVR }',
- 	'${attrezzatura.n_panieri_idroestrattori }','${attrezzatura.marcatura }','${attrezzatura.n_id_on }','${attrezzatura.data_scadenza_ventennale }')" >
+ 	'${attrezzatura.n_panieri_idroestrattori }','${attrezzatura.marcatura }','${attrezzatura.n_id_on }')" >
  	
  	
  	
@@ -201,7 +201,7 @@
 	<td>${attrezzatura.anno_costruzione }</td>
   	<td>${attrezzatura.fabbricante }</td>
 
- 	<td>${attrezzatura.data_scadenza_ventennale}</td>
+ 	
  	
  	<td>
 	<a class="btn btn-info" onClick="openVerbaliModal('${attrezzatura.id}')"><i class="fa fa-search"></i></a>
@@ -267,10 +267,10 @@
               
 
     <div class="form-group">
-          <label for="inputEmail" class="col-sm-4 control-label">Numero matricola INAIL:</label>
-
+          <label for="inputEmail" class="col-sm-4 control-label">Numero matricola INAIL: <span id="label_pattern" style="display:none"><font style="color:red">Pattern matricola errato!</font></span></label>
+			
          <div class="col-sm-8">
-         <input class="form-control" id="matricola_inail" type="text" name="matricola_inail" required value=""/>
+         <input class="form-control" id="matricola_inail" type="text" name="matricola_inail" placeholder="0000/0/00000/AA" required value=""/>
     	</div>
    </div>
 	<div class="form-group">
@@ -834,6 +834,22 @@
 <script type="text/javascript">
 
 
+$('#matricola_inail').focusout(function(){
+	
+	var string = $(this).val();
+
+	var pattern = /^[0-9][0-9][0-9][0-9]\/[0-9]\/[0-9][0-9][0-9][0-9][0-9]\/[A-Z][A-Z]$/.test(string);
+	
+	if(pattern==false){
+		$('#label_pattern').show();
+	}else{
+		$('#label_pattern').hide();
+	}
+	
+});
+
+
+
 function openVerbaliModal(id_attrezzatura){
 	
 	//exploreModal("listaAttrezzature.do","action=verbali_attrezzatura&id_attrezzatura="+id_attrezzatura,"#verbali");
@@ -1087,7 +1103,7 @@ $(document).ready(function() {
 	
 	var col_azioni = 29;
 	if(${user.checkRuolo('CLVAL')}){
-		col_azioni = 13;
+		col_azioni = 12;
 	}
 	
 

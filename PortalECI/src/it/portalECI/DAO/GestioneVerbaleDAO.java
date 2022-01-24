@@ -174,7 +174,7 @@ public class GestioneVerbaleDAO {
 		if(ck_ST==false && ck_AM==false && ck_RT==false && ck_SRT==false && ck_CLVAL == false) 
 		{
 		 
-		query  = session.createQuery( "from VerbaleDTO WHERE type = :_type AND intervento.tecnico_verificatore.id=:_idUser and attrezzatura.id = :_id_attrezzatura");
+		query  = session.createQuery( "from VerbaleDTO WHERE type = :_type AND intervento.tecnico_verificatore.id=:_idUser and attrezzatura.id = :_id_attrezzatura and stato.id!=10");
 		query.setParameter("_type",VerbaleDTO.VERBALE);
 		query.setParameter("_idUser",user.getId());
 		query.setParameter("_id_attrezzatura",id_attrezzatura);
@@ -182,7 +182,7 @@ public class GestioneVerbaleDAO {
 		}
 		else 
 		{
-			 query  = session.createQuery( "from VerbaleDTO WHERE type = :_type and attrezzatura.id = :_id_attrezzatura");
+			 query  = session.createQuery( "from VerbaleDTO WHERE type = :_type and attrezzatura.id = :_id_attrezzatura and stato.id!=10");
 			query.setParameter("_type",VerbaleDTO.VERBALE);
 			query.setParameter("_id_attrezzatura",id_attrezzatura);
 			
@@ -314,6 +314,33 @@ public class GestioneVerbaleDAO {
 		}
 		
 		return result;
+	}
+
+	public static List<VerbaleDTO> getVerbaliZip(List<VerbaleDTO> listaVerbaliValidi, Session session) {
+		
+		
+		ArrayList<VerbaleDTO> lista = null;
+		
+		String str = "select verbale from DocumentoDTO where ";
+		
+		for (int i = 0; i<listaVerbaliValidi.size();i++) {
+			str+= " verbale.id = :_id_"+i+" or";
+		}
+		str = str.substring(0,str.length()-2);
+		
+		Query query  = session.createQuery( str);
+		for (int i = 0; i<listaVerbaliValidi.size();i++) {
+			query.setParameter("_id_"+i, listaVerbaliValidi.get(i).getId());	
+		}
+		
+		
+		lista = (ArrayList<VerbaleDTO>) query.list();		
+		
+		
+		
+		return lista;
+		
+		
 	}
 	
 }

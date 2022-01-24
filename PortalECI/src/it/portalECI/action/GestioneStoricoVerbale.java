@@ -98,196 +98,196 @@ public class GestioneStoricoVerbale extends HttpServlet {
 				
 				
 				
-				//File file = new File("C:\\Users\\antonio.dicivita\\Desktop\\tbl_verbeletter new (1).xlsx");
-				//File file = new File("C:\\Users\\antonio.dicivita\\Desktop\\tbl_upload (1).xlsx");
-				//File file = new File("C:\\Users\\antonio.dicivita\\Desktop\\tbl_verbespl.xlsx");
-				//File file = new File("C:\\Users\\antonio.dicivita\\Desktop\\tbl_espl (8).xlsx");
-				//File file = new File("C:\\Users\\antonio.dicivita\\Desktop\\tbl_verbscariche.xlsx");
-				File file = new File("C:\\Users\\antonio.dicivita\\Desktop\\tbl_scariche (9).xlsx");
-				
-				FileInputStream fis = new FileInputStream(file);   //obtaining bytes from the file  
-				//creating Workbook instance that refers to .xlsx file  
-				XSSFWorkbook wb = new XSSFWorkbook(fis);   
-				XSSFSheet sheet = wb.getSheetAt(0);     //creating a Sheet object to retrieve object  
-				Iterator<Row> itr = sheet.iterator();    //iterating over excel file  
-				
-				ArrayList<Integer> lista_inseriti = new ArrayList<Integer>();
-				ArrayList<String> lista_saltati = new ArrayList<String>();
-				HashMap<Integer, Integer> map = new HashMap<>();
-				
-				int i = 0;
-				while (itr.hasNext())                 
-				{  
-					Row row = itr.next();  
-					Iterator<Cell> cellIterator = row.cellIterator();   //iterating over each column  
-					
-					if(row.getRowNum()== 1035) {
-						System.out.println("inside");
-					}
-					
-					if(row.getRowNum()>=1 ) {
-						
-						int id =  (int)row.getCell(0).getNumericCellValue();
-						
-						
-						for (VerbaleStoricoDTO verbale : lista_verbali) {
-							lista_inseriti.add(verbale.getId_verbale_storico());
-						}
-						
-						
-						int verbeletter_id = (int) row.getCell(2-i).getNumericCellValue();	
-						String nome_file = row.getCell(1).getStringCellValue();
-						String nome_scheda = null;
-						
-						if(row.getCell(27-i)!=null) {
-							nome_scheda = row.getCell(27-i).getStringCellValue();
-						}
-						//String nome_file = nome_scheda;
-						String codice_verificatore = row.getCell(9-i).getStringCellValue();
-						String verificatore = row.getCell(10-i).getStringCellValue()+" " +row.getCell(11-i).getStringCellValue();
-						int x = (int)row.getCell(26-i).getNumericCellValue();
-						String numero_verbale =codice_verificatore+"-VS-"+String.format("%06d" , x)+"-"+row.getCell(16-i).getStringCellValue();
-						String cliente = row.getCell(5-i).getStringCellValue();
-						
-						String indirizzo_cliente = "";
-						
-						if(row.getCell(7-i).getCellType()==Cell.CELL_TYPE_STRING && row.getCell(8-i).getCellType()==Cell.CELL_TYPE_STRING) {
-							indirizzo_cliente = row.getCell(7-i).getStringCellValue()+" " +row.getCell(8-i).getStringCellValue();
-						}else if(row.getCell(7-i).getCellType()==Cell.CELL_TYPE_STRING && row.getCell(8-i).getCellType()!=Cell.CELL_TYPE_STRING){
-							indirizzo_cliente = row.getCell(7-i).getStringCellValue()+" " +(int)row.getCell(8-i).getNumericCellValue();
-						}else if(row.getCell(7-i).getCellType()!=Cell.CELL_TYPE_STRING && row.getCell(8-i).getCellType()==Cell.CELL_TYPE_STRING){
-							indirizzo_cliente = (int)row.getCell(7-i).getNumericCellValue()+" " +row.getCell(8-i).getStringCellValue();
-						}else {
-							indirizzo_cliente = row.getCell(7-i).getNumericCellValue()+" " +(int)row.getCell(8-i).getNumericCellValue();
-						}
-						
-						String localita_cliente = row.getCell(6-i).getStringCellValue();
-						String ubicazione_impianto = "";
-						
-						if(row.getCell(22-i).getCellType()!=Cell.CELL_TYPE_STRING) {
-							ubicazione_impianto=row.getCell(18-i).getStringCellValue() +" - "+row.getCell(21-i).getStringCellValue()+" - "+(int)row.getCell(22-i).getNumericCellValue();
-						}else {
-							ubicazione_impianto=row.getCell(18-i).getStringCellValue() +" - "+row.getCell(21-i).getStringCellValue()+" - "+row.getCell(22-i).getStringCellValue();
-						}
-						
-						String localita_impianto = row.getCell(19-i).getStringCellValue();
-						String provincia = row.getCell(20-i).getStringCellValue();
-						int esit = (int) row.getCell(24-i).getNumericCellValue();
-						String esito ="POSITIVO";
-						if(esit!=0) {
-							esito = "NEGATIVO";
-						}
-						String codice_commessa = row.getCell(3-i).getStringCellValue();
-						String strumento_utilizzato = row.getCell(25-i).getStringCellValue();
-						Date data_verifica = row.getCell(15-i).getDateCellValue();
-						int frequenza = (int)row.getCell(17-i).getNumericCellValue();
-						Date data_prossima_verifica = row.getCell(23-i).getDateCellValue();
-						String ore_uomo = "";
-						if(row.getCell(13-i).getCellType()==Cell.CELL_TYPE_STRING) {
-							ore_uomo = row.getCell(13-i).getStringCellValue();
-						}else {
-							ore_uomo = ""+ row.getCell(13-i).getNumericCellValue();
-						}
-						
-						int tipologia_verifica = (int)row.getCell(4-i).getNumericCellValue();
-									//AttrezzaturaDTO attrezzatura =  GestioneAttrezzatureBO.getAttrezzaturaFromMatricola(matricola, session);
-									
-						VerbaleStoricoDTO verbale = new VerbaleStoricoDTO();
-						
-						verbale.setCliente(cliente);
-						verbale.setCodice_commessa(codice_commessa);
-						verbale.setCodice_verificatore(codice_verificatore);
-						verbale.setData_prossima_verifica(data_prossima_verifica);
-						verbale.setData_verifica(data_verifica);
-						verbale.setEsito(esito);
-						verbale.setFrequenza(frequenza);
-						verbale.setIndirizzo_cliente(indirizzo_cliente);
-						verbale.setLocalita_cliente(localita_cliente);
-						verbale.setLocalita_impianto(localita_impianto);
-						verbale.setNumero_verbale(numero_verbale);
-						verbale.setOre_uomo(ore_uomo);
-						verbale.setProvincia(provincia);
-						verbale.setStrumento_utilizzato(strumento_utilizzato);
-						verbale.setTipologia_verifica(tipologia_verifica);
-						verbale.setUbicazione_impianto(ubicazione_impianto);
-						verbale.setVerificatore(verificatore);
-						verbale.setId_verbale_storico(verbeletter_id);
-						//if(!lista_inseriti.contains(verbeletter_id)) {
-						//	session.save(verbale);	
-						//	lista_inseriti.add(verbeletter_id);	
-						//	map.put(verbeletter_id, verbale.getId());
-						//}
+//				//File file = new File("C:\\Users\\antonio.dicivita\\Desktop\\tbl_verbeletter new (1).xlsx");
+//				//File file = new File("C:\\Users\\antonio.dicivita\\Desktop\\tbl_upload (1).xlsx");
+//				//File file = new File("C:\\Users\\antonio.dicivita\\Desktop\\tbl_verbespl.xlsx");
+//				//File file = new File("C:\\Users\\antonio.dicivita\\Desktop\\tbl_espl (8).xlsx");
+//				//File file = new File("C:\\Users\\antonio.dicivita\\Desktop\\tbl_verbscariche.xlsx");
+//				File file = new File("C:\\Users\\antonio.dicivita\\Desktop\\tbl_scariche (9).xlsx");
+//				
+//				FileInputStream fis = new FileInputStream(file);   //obtaining bytes from the file  
+//				//creating Workbook instance that refers to .xlsx file  
+//				XSSFWorkbook wb = new XSSFWorkbook(fis);   
+//				XSSFSheet sheet = wb.getSheetAt(0);     //creating a Sheet object to retrieve object  
+//				Iterator<Row> itr = sheet.iterator();    //iterating over excel file  
+//				
+//				ArrayList<Integer> lista_inseriti = new ArrayList<Integer>();
+//				ArrayList<String> lista_saltati = new ArrayList<String>();
+//				HashMap<Integer, Integer> map = new HashMap<>();
+//				
+//				int i = 0;
+//				while (itr.hasNext())                 
+//				{  
+//					Row row = itr.next();  
+//					Iterator<Cell> cellIterator = row.cellIterator();   //iterating over each column  
+//					
+//					if(row.getRowNum()== 1035) {
+//						System.out.println("inside");
+//					}
+//					
+//					if(row.getRowNum()>=1 ) {
 //						
-						int id_verb = GestioneStoricoVerbaleDAO.getVerbaleFromIdStorico(verbeletter_id, session);
-						
-						map.put(verbeletter_id, id_verb);
-										System.out.println("riga "+row.getRowNum());
-									
-								
-
-								//}
-						//}
-										
-										
-										
-										//String path = "C:\\Users\\antonio.dicivita\\Desktop\\app\\upload\\verbelett\\";
-										//String path = "C:\\Users\\antonio.dicivita\\Desktop\\app\\upload\\verbespl\\";
-										String path = "C:\\Users\\antonio.dicivita\\Desktop\\app\\upload\\verbscariche\\";
-										File fileToCopy = new File(path+verbeletter_id+"\\"+nome_file);
-										
-										String pathDest = Costanti.PATH_ROOT+"//Storico//Verbali//"+verbale.getId()+"//"+nome_file;
-										 
-										String path_folder =Costanti.PATH_ROOT+"//Storico//Verbali//"+map.get(verbeletter_id)+"//";
-										File folder=new File(path_folder);
-										
-										if(!folder.exists()) {
-											folder.mkdirs();
-										}
-									
-										File f = new File(path+verbeletter_id+"\\"+nome_file);
-										
-										if(f.exists()) {
-											
-											File f1 = new File(path_folder+"\\"+nome_file);
-											
-											if(!f1.exists()&& map.get(verbeletter_id)!=null) {
-												VerbaleStoricoAllegatoDTO allegato = new VerbaleStoricoAllegatoDTO();
-												allegato.setId_verbale_storico(map.get(verbeletter_id));
-												allegato.setFilename(nome_file);
-												session.save(allegato);
-											}
-																					
-											Files.copy(Paths.get(path+verbeletter_id+"\\"+nome_file), Paths.get(path_folder+"\\"+nome_file), StandardCopyOption.REPLACE_EXISTING);
-																			
-//											if(nome_scheda!=null && !nome_scheda.equals("")) {
-//												
-//												File f2 = new File(path_folder+"\\"+nome_scheda);
-//												File f3 = new File(path+verbeletter_id+"\\"+nome_scheda);
-//												
-//												if(f3.exists() && !f2.exists() && map.get(verbeletter_id)!=null) {
-//													VerbaleStoricoAllegatoDTO allegato = new VerbaleStoricoAllegatoDTO();
-//													allegato.setId_verbale_storico(map.get(verbeletter_id));
-//													allegato.setFilename(nome_scheda);
-//													session.save(allegato);
-//													
-//													Files.copy(Paths.get(path+verbeletter_id+"\\"+nome_scheda), Paths.get(path_folder+"\\"+nome_scheda), StandardCopyOption.REPLACE_EXISTING);
-//												}
+//						int id =  (int)row.getCell(0).getNumericCellValue();
+//						
+//						
+//						for (VerbaleStoricoDTO verbale : lista_verbali) {
+//							lista_inseriti.add(verbale.getId_verbale_storico());
+//						}
+//						
+//						
+//						int verbeletter_id = (int) row.getCell(2-i).getNumericCellValue();	
+//						String nome_file = row.getCell(1).getStringCellValue();
+//						String nome_scheda = null;
+//						
+//						if(row.getCell(27-i)!=null) {
+//							nome_scheda = row.getCell(27-i).getStringCellValue();
+//						}
+//						//String nome_file = nome_scheda;
+//						String codice_verificatore = row.getCell(9-i).getStringCellValue();
+//						String verificatore = row.getCell(10-i).getStringCellValue()+" " +row.getCell(11-i).getStringCellValue();
+//						int x = (int)row.getCell(26-i).getNumericCellValue();
+//						String numero_verbale =codice_verificatore+"-VS-"+String.format("%06d" , x)+"-"+row.getCell(16-i).getStringCellValue();
+//						String cliente = row.getCell(5-i).getStringCellValue();
+//						
+//						String indirizzo_cliente = "";
+//						
+//						if(row.getCell(7-i).getCellType()==Cell.CELL_TYPE_STRING && row.getCell(8-i).getCellType()==Cell.CELL_TYPE_STRING) {
+//							indirizzo_cliente = row.getCell(7-i).getStringCellValue()+" " +row.getCell(8-i).getStringCellValue();
+//						}else if(row.getCell(7-i).getCellType()==Cell.CELL_TYPE_STRING && row.getCell(8-i).getCellType()!=Cell.CELL_TYPE_STRING){
+//							indirizzo_cliente = row.getCell(7-i).getStringCellValue()+" " +(int)row.getCell(8-i).getNumericCellValue();
+//						}else if(row.getCell(7-i).getCellType()!=Cell.CELL_TYPE_STRING && row.getCell(8-i).getCellType()==Cell.CELL_TYPE_STRING){
+//							indirizzo_cliente = (int)row.getCell(7-i).getNumericCellValue()+" " +row.getCell(8-i).getStringCellValue();
+//						}else {
+//							indirizzo_cliente = row.getCell(7-i).getNumericCellValue()+" " +(int)row.getCell(8-i).getNumericCellValue();
+//						}
+//						
+//						String localita_cliente = row.getCell(6-i).getStringCellValue();
+//						String ubicazione_impianto = "";
+//						
+//						if(row.getCell(22-i).getCellType()!=Cell.CELL_TYPE_STRING) {
+//							ubicazione_impianto=row.getCell(18-i).getStringCellValue() +" - "+row.getCell(21-i).getStringCellValue()+" - "+(int)row.getCell(22-i).getNumericCellValue();
+//						}else {
+//							ubicazione_impianto=row.getCell(18-i).getStringCellValue() +" - "+row.getCell(21-i).getStringCellValue()+" - "+row.getCell(22-i).getStringCellValue();
+//						}
+//						
+//						String localita_impianto = row.getCell(19-i).getStringCellValue();
+//						String provincia = row.getCell(20-i).getStringCellValue();
+//						int esit = (int) row.getCell(24-i).getNumericCellValue();
+//						String esito ="POSITIVO";
+//						if(esit!=0) {
+//							esito = "NEGATIVO";
+//						}
+//						String codice_commessa = row.getCell(3-i).getStringCellValue();
+//						String strumento_utilizzato = row.getCell(25-i).getStringCellValue();
+//						Date data_verifica = row.getCell(15-i).getDateCellValue();
+//						int frequenza = (int)row.getCell(17-i).getNumericCellValue();
+//						Date data_prossima_verifica = row.getCell(23-i).getDateCellValue();
+//						String ore_uomo = "";
+//						if(row.getCell(13-i).getCellType()==Cell.CELL_TYPE_STRING) {
+//							ore_uomo = row.getCell(13-i).getStringCellValue();
+//						}else {
+//							ore_uomo = ""+ row.getCell(13-i).getNumericCellValue();
+//						}
+//						
+//						int tipologia_verifica = (int)row.getCell(4-i).getNumericCellValue();
+//									//AttrezzaturaDTO attrezzatura =  GestioneAttrezzatureBO.getAttrezzaturaFromMatricola(matricola, session);
+//									
+//						VerbaleStoricoDTO verbale = new VerbaleStoricoDTO();
+//						
+//						verbale.setCliente(cliente);
+//						verbale.setCodice_commessa(codice_commessa);
+//						verbale.setCodice_verificatore(codice_verificatore);
+//						verbale.setData_prossima_verifica(data_prossima_verifica);
+//						verbale.setData_verifica(data_verifica);
+//						verbale.setEsito(esito);
+//						verbale.setFrequenza(frequenza);
+//						verbale.setIndirizzo_cliente(indirizzo_cliente);
+//						verbale.setLocalita_cliente(localita_cliente);
+//						verbale.setLocalita_impianto(localita_impianto);
+//						verbale.setNumero_verbale(numero_verbale);
+//						verbale.setOre_uomo(ore_uomo);
+//						verbale.setProvincia(provincia);
+//						verbale.setStrumento_utilizzato(strumento_utilizzato);
+//						verbale.setTipologia_verifica(tipologia_verifica);
+//						verbale.setUbicazione_impianto(ubicazione_impianto);
+//						verbale.setVerificatore(verificatore);
+//						verbale.setId_verbale_storico(verbeletter_id);
+//						//if(!lista_inseriti.contains(verbeletter_id)) {
+//						//	session.save(verbale);	
+//						//	lista_inseriti.add(verbeletter_id);	
+//						//	map.put(verbeletter_id, verbale.getId());
+//						//}
+////						
+//						int id_verb = GestioneStoricoVerbaleDAO.getVerbaleFromIdStorico(verbeletter_id, session);
+//						
+//						map.put(verbeletter_id, id_verb);
+//										System.out.println("riga "+row.getRowNum());
+//									
+//								
+//
+//								//}
+//						//}
+//										
+//										
+//										
+//										//String path = "C:\\Users\\antonio.dicivita\\Desktop\\app\\upload\\verbelett\\";
+//										//String path = "C:\\Users\\antonio.dicivita\\Desktop\\app\\upload\\verbespl\\";
+//										String path = "C:\\Users\\antonio.dicivita\\Desktop\\app\\upload\\verbscariche\\";
+//										File fileToCopy = new File(path+verbeletter_id+"\\"+nome_file);
+//										
+//										String pathDest = Costanti.PATH_ROOT+"//Storico//Verbali//"+verbale.getId()+"//"+nome_file;
+//										 
+//										String path_folder =Costanti.PATH_ROOT+"//Storico//Verbali//"+map.get(verbeletter_id)+"//";
+//										File folder=new File(path_folder);
+//										
+//										if(!folder.exists()) {
+//											folder.mkdirs();
+//										}
+//									
+//										File f = new File(path+verbeletter_id+"\\"+nome_file);
+//										
+//										if(f.exists()) {
+//											
+//											File f1 = new File(path_folder+"\\"+nome_file);
+//											
+//											if(!f1.exists()&& map.get(verbeletter_id)!=null) {
+//												VerbaleStoricoAllegatoDTO allegato = new VerbaleStoricoAllegatoDTO();
+//												allegato.setId_verbale_storico(map.get(verbeletter_id));
+//												allegato.setFilename(nome_file);
+//												session.save(allegato);
 //											}
-											
-										}else {
-											System.out.println(verbeletter_id+"\\"+nome_file+"\\"+map.get(verbeletter_id));
-											lista_saltati.add(verbeletter_id+"\\"+nome_file+"\\"+map.get(verbeletter_id));
-										}				
-										
-//					}					
-////					}else if(row.getRowNum()==3602) {
-////						break;
-					}
-				}
-				
-				for (String string : lista_saltati) {
-					System.out.println(string);
-				}
+//																					
+//											Files.copy(Paths.get(path+verbeletter_id+"\\"+nome_file), Paths.get(path_folder+"\\"+nome_file), StandardCopyOption.REPLACE_EXISTING);
+//																			
+////											if(nome_scheda!=null && !nome_scheda.equals("")) {
+////												
+////												File f2 = new File(path_folder+"\\"+nome_scheda);
+////												File f3 = new File(path+verbeletter_id+"\\"+nome_scheda);
+////												
+////												if(f3.exists() && !f2.exists() && map.get(verbeletter_id)!=null) {
+////													VerbaleStoricoAllegatoDTO allegato = new VerbaleStoricoAllegatoDTO();
+////													allegato.setId_verbale_storico(map.get(verbeletter_id));
+////													allegato.setFilename(nome_scheda);
+////													session.save(allegato);
+////													
+////													Files.copy(Paths.get(path+verbeletter_id+"\\"+nome_scheda), Paths.get(path_folder+"\\"+nome_scheda), StandardCopyOption.REPLACE_EXISTING);
+////												}
+////											}
+//											
+//										}else {
+//											System.out.println(verbeletter_id+"\\"+nome_file+"\\"+map.get(verbeletter_id));
+//											lista_saltati.add(verbeletter_id+"\\"+nome_file+"\\"+map.get(verbeletter_id));
+//										}				
+//										
+////					}					
+//////					}else if(row.getRowNum()==3602) {
+//////						break;
+//					}
+//				}
+//				
+//				for (String string : lista_saltati) {
+//					System.out.println(string);
+//				}
 				
 				RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/page/configurazioni/listaStoricoVerbale.jsp");
 				dispatcher.forward(request,response);

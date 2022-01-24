@@ -37,9 +37,9 @@ public class ContextListener implements ServletContextListener {
     /**
      * Default constructor. 
      */
-    public ContextListener() {
-        // TODO Auto-generated constructor stub
-    }
+//    public ContextListener() {
+//        // TODO Auto-generated constructor stub
+//    }
 
 	/**
      * @see ServletContextListener#contextDestroyed(ServletContextEvent)
@@ -51,11 +51,13 @@ public class ContextListener implements ServletContextListener {
 	/**
      * @see ServletContextListener#contextInitialized(ServletContextEvent)
      */
+    @Override
     public void contextInitialized(ServletContextEvent event)  { 
     	// initialize log4j here
         ServletContext context = event.getServletContext();
 
-         
+        String log4jConfigFile = context.getInitParameter("log4j-config-location");
+        String fullPath = context.getRealPath("") + File.separator + "WEB-INF\\log4j.properties";
         try {
         	configCostantApplication();
 			startScheduler();
@@ -68,7 +70,7 @@ public class ContextListener implements ServletContextListener {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-       
+        PropertyConfigurator.configure(fullPath);
     }
     
     

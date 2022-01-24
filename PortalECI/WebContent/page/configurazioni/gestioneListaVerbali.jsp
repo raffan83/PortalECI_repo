@@ -59,7 +59,8 @@ request.setAttribute("user",user);
         				</div>
         				<div class="col-xs-7">
         				<c:if test="${userObj.checkRuolo('AM') || userObj.checkCategoria('VAL') }">
-        				<a class="btn btn-primary disabled pull-right" id="scadenzario_btn" style="margin-top:25px" onClick="callAction('gestioneListaVerbali.do?action=scadenzario_val&dateFrom=${dateFrom}&dateTo=${dateTo }')">Scadenzario VAL</a>
+        				<%-- <a class="btn btn-primary disabled pull-right" id="scadenzario_btn" style="margin-top:25px" onClick="callAction('gestioneListaVerbali.do?action=scadenzario_val&dateFrom=${dateFrom}&dateTo=${dateTo }')">Scadenzario VAL</a> --%>
+        				<a class="btn btn-primary disabled pull-right" id="scadenzario_btn" style="margin-top:25px" onClick="$('#modalScadVal').modal()">Scadenzario VAL</a>
         				</c:if>
         				<c:if test="${userObj.checkRuolo('AM') || userObj.checkCategoria('VIE') }">
         				<a class="btn btn-primary disabled pull-right" id="scadenzario_vie_btn" style="margin-top:25px;margin-right:5px" onClick="callAction('gestioneListaVerbali.do?action=scadenzario_vie&dateFrom=${dateFrom}&dateTo=${dateTo }')">Scadenzario VIE</a>
@@ -316,9 +317,7 @@ request.setAttribute("user",user);
 																																		
 																	</td>
 																	
-        															<td>
-																		<fmt:formatDate pattern="dd/MM/yyyy" value='${verbale.getCreateDate()}' type='date' />
-																	</td>
+        															
 																	<td>
 																	<c:if test="${verbale.motivo_verifica == 1}">
 																	Periodica
@@ -326,6 +325,9 @@ request.setAttribute("user",user);
 																	<c:if test="${verbale.motivo_verifica != 0 && verbale.motivo_verifica > 1}">
 																	Straordinaria
 																	</c:if>
+																	</td>
+																	<td>
+																		<fmt:formatDate pattern="dd/MM/yyyy" value='${verbale.getCreateDate()}' type='date' />
 																	</td>
 																	<td>
 																		<a class="btn customTooltip" title="Click per aprire il dettaglio del Verbale" onclick="callAction('gestioneVerbale.do?idVerbale=${verbale.getId()}');">
@@ -374,6 +376,25 @@ request.setAttribute("user",user);
 						</div> 
 						
 						
+						
+						 <div id="modalScadVal" class="modal fade" role="dialog" aria-labelledby="myLargeModalLabel">
+    						<div class="modal-dialog" role="document">
+    							<div class="modal-content">
+     								<div class="modal-header">
+        								<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        								<h4 class="modal-title" id="myModalLabel">Attenzione</h4>
+      								</div>
+       								<div class="modal-body">
+										Vuoi scaricare anche i file dei verbali?   
+  										<div id="empty2" class="label label-danger testo12"></div>
+  		 							</div>
+      								<div class="modal-footer">
+      								<button type="button" class="btn btn-primary" onClick="callAction('gestioneListaVerbali.do?action=scadenzario_val&download_file=1&dateFrom=${dateFrom}&dateTo=${dateTo }');$('#modalScadVal').modal('hide')">SI</button>
+        								<button type="button" class="btn btn-primary" onClick="callAction('gestioneListaVerbali.do?action=scadenzario_val&dateFrom=${dateFrom}&dateTo=${dateTo }');$('#modalScadVal').modal('hide')">NO</button>
+      								</div>
+    							</div>
+  							</div>
+						</div> 
 						
 						
 						  <div id="myModalAllegati" class="modal fade" role="dialog" aria-labelledby="myLargeModalLabel">

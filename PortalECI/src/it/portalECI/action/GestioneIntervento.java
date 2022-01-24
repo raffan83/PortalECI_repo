@@ -327,8 +327,8 @@ public class GestioneIntervento extends HttpServlet {
 				
 				String id_tecnico = request.getParameter("tecnico");	
 				String idIntervento = request.getParameter("idIntervento" );
-				String[] categoriaTipo=request.getParameterValues("categoriaTipo");
-				String[] schedaTecnicaObbligatoria=request.getParameterValues("schedaTecnica");				
+//				String[] categoriaTipo=request.getParameterValues("categoriaTipo");
+//				String[] schedaTecnicaObbligatoria=request.getParameterValues("schedaTecnica");				
 				
 				InterventoDTO intervento = GestioneInterventoBO.getIntervento(idIntervento, session);
 						
@@ -339,66 +339,66 @@ public class GestioneIntervento extends HttpServlet {
 					return;
 				}
 				
-				for(VerbaleDTO verbale : intervento.getVerbali()) {
-					try {
-						if(verbale!=null && verbale.getSchedaTecnica()!=null) {
-							session.delete(verbale.getSchedaTecnica());
-						}
-						session.delete(verbale);
-					}catch (Exception e) {
-						// TODO: handle exception
-					}
-					intervento.setVerbali(null);
-					session.save(intervento);
-				}
-				
-				for( int i = 0; i <= categoriaTipo.length - 1; i++){				
-					String id_tipo=categoriaTipo[i].substring(0, categoriaTipo[i].indexOf("_"));
-					TipoVerificaDTO tipoVerificaDTO = GestioneInterventoBO.getTipoVerifica(id_tipo, session); 
-					tipoverificalist.add(tipoVerificaDTO);
-					
-					VerbaleDTO verbaleTarget=null;
-					
-					//Nuova categoria su update
-					Boolean createSkTec=false;					
-					if(schedaTecnicaObbligatoria!=null && schedaTecnicaObbligatoria.length>0) {
-						for( int a = 0; a<= schedaTecnicaObbligatoria.length - 1; a++){
-
-							if(schedaTecnicaObbligatoria[a]!=null && schedaTecnicaObbligatoria[a].equals(categoriaTipo[i])) {
-								schedaTecnicaObbligatoria[a]=null;
-								createSkTec=true;
-							
-								break;
-							}
-						}
-					}
-											
-					verbaleTarget =GestioneVerbaleBO.buildVerbale(tipoVerificaDTO.getCodice(), session, createSkTec,"",null,"","",null, null, null);
-						
-					if(verbaleTarget ==null) {														
-						myObj.addProperty("success", false);
-						myObj.addProperty("messaggio", "Questionario inesistente per Codice Verifica : "+tipoVerificaDTO.getCodice());
-							
-						out.print(myObj);
-						return;
-					}
-										
-					verbali.add(verbaleTarget);
-					
-				}
+//				for(VerbaleDTO verbale : intervento.getVerbali()) {
+//					try {
+//						if(verbale!=null && verbale.getSchedaTecnica()!=null) {
+//							session.delete(verbale.getSchedaTecnica());
+//						}
+//						session.delete(verbale);
+//					}catch (Exception e) {
+//						// TODO: handle exception
+//					}
+//					intervento.setVerbali(null);
+//					session.save(intervento);
+//				}
+//				
+//				for( int i = 0; i <= categoriaTipo.length - 1; i++){				
+//					String id_tipo=categoriaTipo[i].substring(0, categoriaTipo[i].indexOf("_"));
+//					TipoVerificaDTO tipoVerificaDTO = GestioneInterventoBO.getTipoVerifica(id_tipo, session); 
+//					tipoverificalist.add(tipoVerificaDTO);
+//					
+//					VerbaleDTO verbaleTarget=null;
+//					
+//					//Nuova categoria su update
+//					Boolean createSkTec=false;					
+//					if(schedaTecnicaObbligatoria!=null && schedaTecnicaObbligatoria.length>0) {
+//						for( int a = 0; a<= schedaTecnicaObbligatoria.length - 1; a++){
+//
+//							if(schedaTecnicaObbligatoria[a]!=null && schedaTecnicaObbligatoria[a].equals(categoriaTipo[i])) {
+//								schedaTecnicaObbligatoria[a]=null;
+//								createSkTec=true;
+//							
+//								break;
+//							}
+//						}
+//					}
+//											
+//					verbaleTarget =GestioneVerbaleBO.buildVerbale(tipoVerificaDTO.getCodice(), session, createSkTec,"",null,"","",null, null, null);
+//						
+//					if(verbaleTarget ==null) {														
+//						myObj.addProperty("success", false);
+//						myObj.addProperty("messaggio", "Questionario inesistente per Codice Verifica : "+tipoVerificaDTO.getCodice());
+//							
+//						out.print(myObj);
+//						return;
+//					}
+//										
+//					verbali.add(verbaleTarget);
+//					
+//				}
 				
 				UtenteDTO tecnico = GestioneUtenteBO.getUtenteById(id_tecnico, session);							
 				if(intervento.getTecnico_verificatore()!=tecnico) {
 					intervento.setTecnico_verificatore(tecnico);
 				}
 				
-				if(!tipoverificalist.isEmpty()) {
-					intervento.setTipo_verifica(tipoverificalist);				
-				}
-				
-				if(!verbali.isEmpty()) {
-					intervento.setVerbali(verbali);
-				}				
+//				if(!tipoverificalist.isEmpty()) {
+//					intervento.setTipo_verifica(tipoverificalist);				
+//				}
+//				
+//				if(!verbali.isEmpty()) {
+//					intervento.setVerbali(verbali);
+//				}				
 				
 				GestioneInterventoBO.update(intervento,session);
 				

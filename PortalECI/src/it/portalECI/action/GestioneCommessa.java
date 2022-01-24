@@ -69,10 +69,7 @@ public class GestioneCommessa extends HttpServlet {
 				
 				int year=0;
 				
-				if(anno==null) {
-					year = Calendar.getInstance().get(Calendar.YEAR);
-				}else 
-				{
+				if(anno!=null) {
 					year=Integer.parseInt(anno);
 				}
 				

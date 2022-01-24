@@ -101,7 +101,7 @@
         										</ul>
         										<div class="row">    
         											<c:if test='${intervento.getStatoIntervento().getDescrizione().equals("CREATO") && user.checkPermesso("UPD_INTERVENTO")}'>    											
-        												<button class="btn btn-default pull-right" onClick="$('#modalModificaIntervento').modal('show');" style="margin-right:10px">
+        												<button class="btn btn-default pull-right" onClick="$('#modalModificaVerificatore').modal('show');" style="margin-right:10px">
         													<i class="glyphicon glyphicon-edit"></i>
         												 	Modifica
         												</button>  
@@ -304,7 +304,7 @@
             															</a>
 																 </c:if> 
 																	<c:if test="${user.checkPermesso('GESTIONE_VERBALI')}">
-																		<a class="btn customTooltip" title="Click per aprire il dettaglio del Verbale" onclick="callAction('gestioneVerbale.do?idVerbale=${verbale.id}');">
+																		<a class="btn customTooltip" title="Click per aprire il dettaglio del Verbale" href="gestioneVerbale.do?action=dettaglio&idVerbale=${verbale.getId()}" >
                 															<i class="fa fa-arrow-right"></i>
             															</a>
             														</c:if>
@@ -324,7 +324,52 @@
 						</div>
   						
 <!--  -->
-  						<%-- <div id="modalModificaIntervento" class="modal fade" role="dialog" aria-labelledby="myLargeModalLabel">
+
+
+ <div id="modalModificaVerificatore" class="modal fade" role="dialog" aria-labelledby="myLargeModalLabel">
+   							<div class="modal-dialog modal-lg" role="document">
+    							<div class="modal-content">
+     								<div class="modal-header">
+        								<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        									<span aria-hidden="true">&times;</span>
+        								</button>
+        								<h4 class="modal-title" id="myModalLabel">Modifica Tecnico Verificatore</h4>
+      								</div>
+      									
+       								<div class="modal-body" >
+	       								<form class="form-horizontal"  id="formModificaIntervento">
+  											<div class="col-sm-12 ">	
+    											<div class="form-group">
+        											<label>Tecnico Verificatore</label>
+													<select class="form-control" id="tecnici_mod" class="selectpicker">
+														<option value="" selected>Seleziona Tecnico...</option>
+														<c:forEach items="${tecnici}" var="tecnico">
+					  										<option value="${tecnico.id}" <c:if test='${tecnico.id == intervento.getTecnico_verificatore().getId()}'> selected</c:if>>${tecnico.nominativo} </option>
+														</c:forEach>
+													</select>
+            	    							</div>
+            	    						</div>
+            	    						
+  														
+					  						
+       
+		 													              										
+            								<div id="empty" class="label label-danger testo12"></div>
+  		 									
+      										<div class="modal-footer">
+												<span id="ulError" class="pull-left"></span>
+											
+													<button type="submit" class="btn btn-danger" >Salva</button>
+												
+      										</div>
+        								</form>
+    								</div>
+  								</div>
+							</div>
+						</div>   
+
+
+   						 <%-- <div id="modalModificaIntervento" class="modal fade" role="dialog" aria-labelledby="myLargeModalLabel">
    							<div class="modal-dialog modal-lg" role="document">
     							<div class="modal-content">
      								<div class="modal-header">
@@ -378,6 +423,8 @@
   												<div class="col-sm-12 ">		
   													 <table id="tabVerifica" class="table table-bordered table-hover dataTable table-striped" role="grid" width="100%">
  														<thead>
+ 														
+ 														
  															<tr class="active">
  																<th>Categoria Verifica</th>
  																<th>Tipo Verifica</th> 		
@@ -385,6 +432,24 @@
  																<td></td>
 															</tr>
 														</thead>
+														
+														<thead>
+ 														<tr class="active">
+ 															<th>Categoria Verifica</th>
+ 															<th>Tipo Gruppo</th>
+ 															<th>ST obbligatoria</th>
+ 															<th>Attrezzatura</th>
+ 															<th style="display:none"></th>
+ 															<th>Sede</th>
+ 															<th>Esercente</th> 	
+ 															<th>Descrizione Utilizzatore</th>														
+ 															<th>Effettuazione verifica</th>
+ 															<th>Tipo verifica</th>
+ 															<th>Note</th>		 														
+ 															<td></td>
+														</tr>
+													</thead>
+														
  														<tbody id="bodytabVerifica">
  																		
  															<c:forEach items="${listIdCodiciCategoria}" var="codCateg" varStatus="loop">
@@ -427,7 +492,7 @@
     								</div>
   								</div>
 							</div>
-						</div> --%>
+						</div>   --%>
 						
 						
 						
@@ -597,6 +662,10 @@
 			    				</div>
   							</div>
 						</div>
+						
+						
+						
+						
 						
 <!--  -->							
 
@@ -1094,7 +1163,7 @@
 			    	}
 			    	
 			    $('#tecnici').val(${intervento.tecnico_verificatore.id})	
-		    	$('#tecnici').attr('disabled', true);
+		    	//$('#tecnici').attr('disabled', true);
 			    
 			    
 			    
@@ -1449,9 +1518,9 @@
 
 			function updateIntervento(){
 										
-				var str1=$('#tecnici').val();
+				var str1=$('#tecnici_mod').val();
 
-				var listCatVer='';
+/* 				var listCatVer='';
 				$('.categoriaTipiRow').each(function(index, item){
 					listCatVer+="&categoriaTipo="+item.id;
 				});
@@ -1465,7 +1534,7 @@
 				   
 				if(listCatVer==""){
 					$('#empty').html("Devi inserire almeno un 'Tipo Verifica'!"); 
-				}else if(str1!= null){					
+				}else if(str1!= null){	 */				
 					
 					pleaseWaitDiv = $('#pleaseWaitDialog');
 					pleaseWaitDiv.modal();
@@ -1473,7 +1542,7 @@
 					$.ajax({
 						type: "POST",
 						url: "gestioneIntervento.do?action=update",
-						data : "idIntervento=${intervento.getId()}&tecnico="+str1 +listCatVer+skTecObb,				
+						data : "idIntervento=${intervento.getId()}&tecnico="+str1,				
 						dataType: "json",
 						success: function( data, textStatus) {
 							
@@ -1502,9 +1571,9 @@
 							pleaseWaitDiv.modal('hide');
 						}
 					});
-				}else{
+/* 				}else{
 					$('#empty').html("Il campo 'Tecnico Verificatore' non pu&ograve; essere vuoto"); 
-				}
+				} */
 				  	   
 			}
 			
