@@ -103,7 +103,7 @@
        								<div class="col-xs-6">
 										<div class="box box-danger box-solid">
 											<div class="box-header with-border">
- 											Scadenza verbali VIE
+ 											Scadenze verbali impianti elettrici DPR 462/01
 												<div class="box-tools pull-right">		
 													<button data-widget="collapse" class="btn btn-box-tool"><i class="fa fa-minus"></i></button>
 												</div>
@@ -132,7 +132,7 @@
        								<div class="col-xs-6">
 										<div class="box box-danger box-solid">
 											<div class="box-header with-border">
- 											Scadenza verbali VAL
+ 											Scadenza verbali attrezzature di lavoro DM 11/04/11
 												<div class="box-tools pull-right">		
 													<button data-widget="collapse" class="btn btn-box-tool"><i class="fa fa-minus"></i></button>
 												</div>
@@ -180,7 +180,11 @@
 	</jsp:attribute>
 
 	<jsp:attribute name="extra_js_footer">
-	 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.js"></script>
+	<!--  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/chart.js"></script> -->
+
+<script src="https://hammerjs.github.io/dist/hammer.min.js"></script>
+	  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.js"></script> 
+	<script type="text/javascript"  src="https://cdnjs.cloudflare.com/ajax/libs/chartjs-plugin-zoom/1.0.1/chartjs-plugin-zoom.min.js"></script>
 	<script>
 	
 	
@@ -463,6 +467,9 @@
 			            fontSize: 18,
 			            fontColor: '#747474'
 			        }
+			      
+			      
+			      
 			    }
 			  });
 
@@ -489,7 +496,7 @@
 			  var myChart4 = new Chart(ctx, {
 				    type: 'bar',
 				    data: {
-				      labels: ["IN CORSO", "IN SCADENZA", "SCADUTI"],
+				      labels: ["IN CORSO", "IN SCADENZA ENTRO 30GG", "SCADUTI"],
 				      //labels: label_graph_3,
 				      datasets: [ {
 				        data: data_graph_4,
@@ -521,7 +528,7 @@
 				      
 				      title: {
 				            display: true,
-				            text: 'Scadenza verbali VIE',
+				            text: 'Scadenze verbali impianti elettrici DPR 462/01',
 				            fontSize: 18,
 				            fontColor: '#747474'
 				        }
@@ -548,7 +555,7 @@
 	  var myChart5 = new Chart(ctx, {
 		    type: 'bar',
 		    data: {
-		      labels: ["IN CORSO", "IN SCADENZA", "SCADUTI"],
+		      labels: ["IN CORSO", "IN SCADENZA ENTRO 30GG", "SCADUTI"],
 		      //labels: label_graph_3,
 		      datasets: [ {
 		        data: data_graph_5,
@@ -577,13 +584,16 @@
 		        display: false,  
 		      },
 
-		      
 		      title: {
 		            display: true,
-		            text: 'Scadenza verbali VAL',
+		            text: 'Scadenza verbali attrezzature di lavoro DM 11/04/11',
 		            fontSize: 18,
 		            fontColor: '#747474'
 		        }
+		        
+    	    
+	        		    	    
+		        
 		    }
 		  }); 
 	}

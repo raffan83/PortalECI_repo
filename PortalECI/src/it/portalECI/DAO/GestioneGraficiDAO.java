@@ -10,6 +10,7 @@ import java.util.Map;
 import org.hibernate.Query;
 import org.hibernate.Session;
 
+import it.portalECI.DTO.AttrezzaturaDTO;
 import it.portalECI.DTO.StatoVerbaleDTO;
 import it.portalECI.DTO.UtenteDTO;
 import it.portalECI.DTO.VerbaleDTO;
@@ -186,28 +187,28 @@ public class GestioneGraficiDAO {
 		session.beginTransaction();
 		HashMap<String, Integer> list_map = new HashMap<String, Integer>();
 
-		ArrayList<VerbaleDTO> lista = null;		
+		ArrayList<AttrezzaturaDTO> lista = null;		
 
-		Query query  = session.createQuery( "from VerbaleDTO WHERE type = :_type and stato.id = 5 and attrezzatura.id_cliente = "+user.getIdCliente() +" and attrezzatura.id_sede = "+user.getIdSede());
-		query.setParameter("_type",VerbaleDTO.VERBALE);
+		Query query  = session.createQuery( "from AttrezzaturaDTO WHERE id_cliente = "+user.getIdCliente() +" and id_sede = "+user.getIdSede());
+		//query.setParameter("_type",VerbaleDTO.VERBALE);
 		
 		
-		lista = (ArrayList<VerbaleDTO>) query.list();		
+		lista = (ArrayList<AttrezzaturaDTO>) query.list();		
 		
 		int countInCorso = 0;
 		int countInScadenza = 0;
 		int countScaduti = 0;
-		for (VerbaleDTO verbale : lista) {
+		for (AttrezzaturaDTO attrezzatura : lista) {
 			
-			if(verbale.getData_prossima_verifica()!=null) {
+			if(attrezzatura.getData_prossima_verifica_funzionamento()!=null) {
 				
 				Calendar calendar = Calendar.getInstance();
 				calendar.add(Calendar.DAY_OF_MONTH, 30);
 				Date scadenza = calendar.getTime();
 				
-				if(verbale.getData_prossima_verifica().before(new Date())) {
+				if(attrezzatura.getData_prossima_verifica_funzionamento().before(new Date())) {
 					countScaduti++;
-				}else if(verbale.getData_prossima_verifica().before(scadenza)){
+				}else if(attrezzatura.getData_prossima_verifica_funzionamento().before(scadenza)){
 					countInScadenza++;
 				}else {
 					countInCorso++;
