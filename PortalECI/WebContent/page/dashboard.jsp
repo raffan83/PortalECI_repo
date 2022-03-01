@@ -409,7 +409,7 @@
 			  
 		 $("#chartjs-legend").html(myChart.generateLegend());
     		
-    		
+		     		
 
 		var height = $('#box_chart_1').height();
 		$('#box_chart_2').height(height);
