@@ -324,7 +324,13 @@ public class CreateScadenzarioVIE {
 		 	 Date data_prossima_verifica = null;
 		 	 SimpleDateFormat df = new SimpleDateFormat("dd/MM/yyyy");
 		 	 
-		 	cell.setCellValue(df.format(verbale.getData_verifica())+""); 		 
+		 	 if(verbale.getData_verifica()!=null) {
+		 		cell.setCellValue(df.format(verbale.getData_verifica())+""); 
+		 	 }else {
+	   		 		cell.setCellValue("");
+	   		 }
+		 	 
+		 			 
 		 	
    		 	 if(verbale.getMotivo_verifica()<2 && verbale.getData_verifica()!=null) {   		 		
    		 		
@@ -337,8 +343,6 @@ public class CreateScadenzarioVIE {
    		 			data_prossima_verifica = c.getTime();
    		 			
    		 		}
-   		 	 }else {
-   		 		cell.setCellValue("");
    		 	 }
    		 	
    		 	 col++;

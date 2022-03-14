@@ -182,7 +182,7 @@ public class GestioneVerbaleDAO {
 		}
 		else 
 		{
-			 query  = session.createQuery( "from VerbaleDTO WHERE type = :_type and attrezzatura.id = :_id_attrezzatura and stato.id!=10");
+			 query  = session.createQuery( "from VerbaleDTO WHERE type = :_type and attrezzatura.id = :_id_attrezzatura and stato.id!=10 and stato.id = 5");
 			query.setParameter("_type",VerbaleDTO.VERBALE);
 			query.setParameter("_id_attrezzatura",id_attrezzatura);
 			

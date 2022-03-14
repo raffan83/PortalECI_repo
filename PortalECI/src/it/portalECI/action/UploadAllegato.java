@@ -64,8 +64,8 @@ public class UploadAllegato extends HttpServlet {
 		        
 		        myObj.addProperty("idDocumento", allegato.getId());
 			} else {
-				myObj.addProperty("success", false);
-				return;
+				//myObj.addProperty("success", false);
+				//return;
 			}
 
 			FileUtils.copyInputStreamToFile(fileContent, fileTarget);

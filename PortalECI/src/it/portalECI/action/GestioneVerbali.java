@@ -265,7 +265,7 @@ if(action!= null && action.equals("dettaglio")) {
 						if(data_verifica!=null && !data_verifica.equals("")) {
 							verbale.setData_verifica(df.parse(data_verifica));
 							session.update(verbale);
-							if(verbale.getAttrezzatura()!=null) {
+							if(verbale.getAttrezzatura()!=null && action!=null &&  !action.equals("salvaRisposteCompWeb")) {
 								verbale.getAttrezzatura().setData_verifica_funzionamento(df.parse(data_verifica));						
 								session.update(verbale.getAttrezzatura());
 							}
@@ -280,7 +280,7 @@ if(action!= null && action.equals("dettaglio")) {
 						SimpleDateFormat df = new SimpleDateFormat("dd/MM/yyyy");
 						if(data_prossima_verifica!=null && !data_prossima_verifica.equals("")) {
 							verbale.setData_prossima_verifica(df.parse(data_prossima_verifica));
-							if(verbale.getAttrezzatura()!=null) {
+							if(verbale.getAttrezzatura()!=null && action!=null && !action.equals("salvaRisposteCompWeb")) {
 								verbale.getAttrezzatura().setData_prossima_verifica_funzionamento(df.parse(data_prossima_verifica));
 								session.update(verbale.getAttrezzatura());
 							}						
@@ -296,7 +296,7 @@ if(action!= null && action.equals("dettaglio")) {
 						
 						if(data_verifica_integrita!=null && !data_verifica_integrita.equals("")) {
 							verbale.setData_verifica_integrita(df.parse(data_verifica_integrita));
-							if(verbale.getAttrezzatura()!=null) {
+							if(verbale.getAttrezzatura()!=null && action!=null &&  !action.equals("salvaRisposteCompWeb")) {
 								verbale.getAttrezzatura().setData_verifica_integrita(df.parse(data_verifica_integrita));
 								session.update(verbale.getAttrezzatura());
 							}
@@ -313,7 +313,7 @@ if(action!= null && action.equals("dettaglio")) {
 						if(data_prossima_verifica_integrita!=null && !data_prossima_verifica_integrita.equals("")) {
 							verbale.setData_prossima_verifica_integrita(df.parse(data_prossima_verifica_integrita));
 							
-							if(verbale.getAttrezzatura()!=null) {
+							if(verbale.getAttrezzatura()!=null && action!=null &&  !action.equals("salvaRisposteCompWeb")) {
 								verbale.getAttrezzatura().setData_prossima_verifica_integrita(df.parse(data_prossima_verifica_integrita));
 								session.update(verbale.getAttrezzatura());
 							}
@@ -329,7 +329,7 @@ if(action!= null && action.equals("dettaglio")) {
 						SimpleDateFormat df = new SimpleDateFormat("dd/MM/yyyy");
 						if(data_verifica_interna!=null && !data_verifica_interna.equals("")) {
 							verbale.setData_verifica_interna(df.parse(data_verifica_interna));
-							if(verbale.getAttrezzatura()!=null) {
+							if(verbale.getAttrezzatura()!=null && action!=null && !action.equals("salvaRisposteCompWeb")) {
 								verbale.getAttrezzatura().setData_verifica_interna(df.parse(data_verifica_interna));
 								session.update(verbale.getAttrezzatura());	
 							}
@@ -347,7 +347,7 @@ if(action!= null && action.equals("dettaglio")) {
 						SimpleDateFormat df = new SimpleDateFormat("dd/MM/yyyy");
 						if(data_prossima_verifica_interna!=null && !data_prossima_verifica_interna.equals("")) {
 							verbale.setData_prossima_verifica_interna(df.parse(data_prossima_verifica_interna));
-							if(verbale.getAttrezzatura()!=null) {
+							if(verbale.getAttrezzatura()!=null && action!=null && !action.equals("salvaRisposteCompWeb")) {
 								verbale.getAttrezzatura().setData_prossima_verifica_interna(df.parse(data_prossima_verifica_interna));
 								session.update(verbale.getAttrezzatura());
 							}
