@@ -742,8 +742,8 @@ public static void sendPecVerbale(ArrayList<VerbaleDTO> lista_verbali, String ma
 				  email.setHtmlMsg("<html>Si comunica che la scadenza ventennale delle seguenti attrezzature scadr&agrave; entro i prossimi 60 giorni<br><br>"+str+"</html>"); 
 		
 			  
-		  email.addTo("antonio.dicivita@ncsnetwork.it");
-		  email.addTo("antoniodicivita@live.it");	
+		  email.addTo("marco.deciantis@ecisrl.it");
+		  email.addTo("luciano.dambrosio@ecisrl.it");	
 		  		 
 		  email.setFrom("info@ecisrl.it", "info@ecisrl.it");
 		  
