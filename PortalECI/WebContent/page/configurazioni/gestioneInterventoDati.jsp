@@ -870,6 +870,29 @@
  	}
  		
  		
+ 		
+ 		$('#check_descrizione').on('ifChecked', function(event) {
+				
+				if($('#sede').val()!=''){
+					$('#sede').change();	
+				}
+				
+				$('#content_descrizione_utilizzatore').show();
+				
+				
+				
+			});
+			
+
+	 		
+		$('#check_descrizione').on('ifUnchecked', function(event) {
+				
+			$('#content_descrizione_utilizzatore').hide();
+			$('#descrizione_sede_util').val('');
+				
+			});
+ 		
+ 		
  		function modalStorico(id_verbale){
  			
  			exploreModal("gestioneVerbale.do?action=storico_email&idVerbale="+id_verbale, null, null, function(datab){

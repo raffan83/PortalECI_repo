@@ -50,6 +50,7 @@ public class AttrezzaturaDTO {
 	private String provincia_div;
 	private String regione_div;
 	private String codice_milestone;	
+	private int scadenza_ventennale_segnalata;
 	
 	
 	public int getAnno_costruzione() {
@@ -303,6 +304,12 @@ public class AttrezzaturaDTO {
 	}
 	public void setCodice_milestone(String codice_milestone) {
 		this.codice_milestone = codice_milestone;
+	}
+	public int getScadenza_ventennale_segnalata() {
+		return scadenza_ventennale_segnalata;
+	}
+	public void setScadenza_ventennale_segnalata(int scadenza_ventennale_segnalata) {
+		this.scadenza_ventennale_segnalata = scadenza_ventennale_segnalata;
 	}
 
 	

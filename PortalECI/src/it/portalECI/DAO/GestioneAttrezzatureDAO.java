@@ -4,6 +4,7 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -330,6 +331,26 @@ public static AttrezzaturaDTO checkMatricola(String matricola_inail, Session ses
 		result = lista.get(0);
 	}
 	return result;
+}
+
+public static ArrayList<AttrezzaturaDTO> getAttrezzatureScadenzaVentennale(Session session) {
+	
+	ArrayList<AttrezzaturaDTO> lista =null;
+	
+	Date today = new Date();
+	Calendar c = Calendar.getInstance();
+	c.add(Calendar.DAY_OF_YEAR, 60);
+	
+	Query query = session.createQuery("from AttrezzaturaDTO where data_scadenza_ventennale is not null and scadenza_ventennale_segnalata = 0 and (data_scadenza_ventennale < :_data or data_scadenza_ventennale = :_data) ");
+	query.setParameter("_data", c.getTime());
+	
+	lista= (ArrayList<AttrezzaturaDTO>)query.list();
+	
+
+	
+	return lista;
+	
+	
 }
 
 }

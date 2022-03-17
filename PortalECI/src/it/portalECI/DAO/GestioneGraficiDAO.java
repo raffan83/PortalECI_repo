@@ -189,7 +189,7 @@ public class GestioneGraficiDAO {
 
 		ArrayList<AttrezzaturaDTO> lista = null;		
 
-		Query query  = session.createQuery( "from AttrezzaturaDTO WHERE id_cliente = "+user.getIdCliente() +" and id_sede = "+user.getIdSede());
+		Query query  = session.createQuery( "from AttrezzaturaDTO WHERE id_cliente = "+user.getIdCliente() +" and id_sede = "+user.getIdSede() +" and obsoleta = 0");
 		//query.setParameter("_type",VerbaleDTO.VERBALE);
 		
 		

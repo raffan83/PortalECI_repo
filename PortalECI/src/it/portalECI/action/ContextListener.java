@@ -99,6 +99,7 @@ public class ContextListener implements ServletContextListener {
 public void startScheduler() throws SchedulerException {
     	
     	JobDetail job = JobBuilder.newJob(AggiornamentoCampioneScheduler.class).withIdentity("aggiornaCampione", "group1").build();    	
+    	JobDetail jobScadenzaVentennale = JobBuilder.newJob(ControlloScadenzaVentennaleScheduler.class).withIdentity("scadenzaVentennale", "group2").build();
     	
         Trigger trigger = TriggerBuilder
                 .newTrigger()
@@ -106,11 +107,18 @@ public void startScheduler() throws SchedulerException {
                 .withSchedule(SimpleScheduleBuilder.simpleSchedule().withIntervalInHours(12).repeatForever())
                 .build();
         
+        Trigger trigger2 = TriggerBuilder
+                .newTrigger()
+                .withIdentity("scadenzaVentennale", "group2").withSchedule(
+                        CronScheduleBuilder.cronSchedule("0 0 7 * * ?"))
+                   .build();
+        
 
 
         Scheduler scheduler = new StdSchedulerFactory().getScheduler();
         scheduler.start();
         scheduler.scheduleJob(job, trigger);
+        scheduler.scheduleJob(jobScadenzaVentennale, trigger2);
 
     }
 	

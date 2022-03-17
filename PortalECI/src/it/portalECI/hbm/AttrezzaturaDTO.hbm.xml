@@ -135,5 +135,9 @@
 	  <property name="codice_milestone" type="java.lang.String">
             <column name="codice_milestone" />
         </property>
+        
+        <property name="scadenza_ventennale_segnalata" type="int">
+            <column name="scadenza_ventennale_segnalata" />
+        </property>
     </class>
 </hibernate-mapping>

@@ -24,6 +24,7 @@ public class GestioneDocumentoDAO {
 			query.setParameter("_id",Integer.parseInt(idDocumento));			
 			
 			if(query.list().size()>0){	
+
 				return (DocumentoDTO) query.list().get(0);
 			}
 			return null;
