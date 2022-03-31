@@ -276,7 +276,7 @@ public class CreateScadenzarioVAL {
 	    		 Date data_pvp = Utility.getDataPvP(listaVerbali.get(i));
 	    		 
 	    		 
-	    		 if(listaVerbali.get(i).getStato().getId()!=9 && listaVerbali.get(i).getTipo_verifica_gvr()==0 || listaVerbali.get(i).getTipo_verifica_gvr()==1 || listaVerbali.get(i).getTipo_verifica_gvr()==4 || listaVerbali.get(i).getTipo_verifica_gvr()==5) {
+	    		 if(listaVerbali.get(i).getStato().getId()!=9 && listaVerbali.get(i).getTipo_verifica_gvr()==0 || listaVerbali.get(i).getTipo_verifica_gvr()==1 || listaVerbali.get(i).getTipo_verifica_gvr()==4 || listaVerbali.get(i).getTipo_verifica_gvr()==5 || listaVerbali.get(i).getTipo_verifica_gvr()==7) {
 	    			 data_rilascio = listaVerbali.get(i).getData_verifica();
 	    			// data_pvp = listaVerbali.get(i).getData_prossima_verifica();
 	    		 }
