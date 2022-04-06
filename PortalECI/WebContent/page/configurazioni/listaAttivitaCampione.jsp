@@ -77,6 +77,10 @@ UtenteDTO userObj = (UtenteDTO)request.getSession().getAttribute("userObj");
 <%-- ${fn:replace(fn:replace(evento.descrizione.replace('\'',' ').replace('\\','/'),newLineChar, ' '),newLineChar2, ' ')} --%>
 <button class="btn customTooltip btn-info" onClick="dettaglioFuoriServizio('${utl:escapeJS(attivita.descrizione_attivita)}','${attivita.data }','${utl:escapeJS(attivita.operatore.nominativo) }')" title="Click per visualizzare l'attività di fuori servizio"><i class="fa fa-arrow-right"></i></button>
 </c:if>
+<c:if test="${attivita.tipo_attivita.id==5 }">
+<%-- ${fn:replace(fn:replace(evento.descrizione.replace('\'',' ').replace('\\','/'),newLineChar, ' '),newLineChar2, ' ')} --%>
+<button class="btn customTooltip btn-info" onClick="dettaglioFuoriTaratura('${utl:escapeJS(attivita.descrizione_attivita)}','${attivita.data }')" title="Click per visualizzare l'attività di fuori taratura"><i class="fa fa-arrow-right"></i></button>
+</c:if>
 <c:if test="${attivita.tipo_attivita.id==3}">
 <button class="btn customTooltip btn-info" onClick="dettaglioVerificaTaratura('${utl:escapeJS(attivita.tipo_attivita.descrizione) }','${attivita.data}','${utl:escapeJS(attivita.ente) }','${attivita.data_scadenza }','${utl:escapeJS(attivita.etichettatura) }','${attivita.stato }','${utl:escapeJS(attivita.campo_sospesi) }','${utl:escapeJS(attivita.operatore.nominativo)}','${attivita.numero_certificato }','','')" title="Click per visualizzare l'attività di taratura"><i class="fa fa-arrow-right"></i></button>
 </c:if>
@@ -345,6 +349,46 @@ UtenteDTO userObj = (UtenteDTO)request.getSession().getAttribute("userObj");
       </div>
     </div>
   </div>
+  
+   <div id="modalDettaglioFuoriTaratura" class="modal fade" role="dialog" aria-labelledby="myModalLabel">
+
+    <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+     <div class="modal-header">
+        <button type="button" class="close" id="close_btn_man_ft" aria-label="Close"><span aria-hidden="true">&times;</span></button> 
+       
+        <h4 class="modal-title" id="myModalLabel">Dettaglio Fuori Taratura</h4>
+      </div>
+       <div class="modal-body" id="" >
+     
+	<div class="form-group">
+  <div class="row">
+	 <div class="col-sm-12">
+
+        <div class="col-sm-6">
+		<label >Data:</label>
+			<input type="text" class="form-control" id="dettaglio_data_ft" readonly >
+        </div>
+
+      </div>
+      </div><br>
+      <div class="row">
+        <div class="col-sm-12"><div class="col-sm-12">
+             <textarea rows="5" style="width:100%" id="dettaglio_descrizione_ft" name="dettaglio_descrizione_ft" readonly></textarea>
+</div>
+        </div>
+       </div>
+       </div>
+       </div>      
+	
+  		
+      <div class="modal-footer">
+       
+      </div>
+      </div>
+    </div>
+  </div>
+  
 
 
 
@@ -514,6 +558,15 @@ UtenteDTO userObj = (UtenteDTO)request.getSession().getAttribute("userObj");
 			 .concat("<div class='col-sm-10'><textarea rows='5' style='width:100%' id='descrizione' name='descrizione' required></textarea></div></div><div class='row'><div class='col-sm-2'><span class='btn btn-primary fileinput-button'><i class='glyphicon glyphicon-plus'></i><span>Carica Allegato...</span><input accept='.pdf,.PDF,.p7m'  id='fileupload_all' name='fileupload_all' type='file'></span></div><div class='col-xs-5'><label id='label_file'></label></div> </div>");
 	 }
 	 
+	 else if($(this).val()==5){
+			
+		 str_html="<div class='form-group'>"				
+			/*  .concat("<div class='col-sm-2'><label>Operatore:</label></div><div class='col-sm-4'>")
+			 .concat("<select class='form-control select2' data-placeholder='Seleziona Operatore...' id='operatore' name='operatore'><option value=''></option><c:forEach items='${lista_utenti}' var='utente'><option value='${utente.id}'>${utente.nominativo}</option></c:forEach></select></div></div>") */
+			 .concat(" <div class='col-sm-2'><label >Descrizione Attività:</label></div>")
+			 .concat("<div class='col-sm-10'><textarea rows='5' style='width:100%' id='descrizione' name='descrizione' required></textarea></div></div><div class='row'><div class='col-sm-2'><span class='btn btn-primary fileinput-button'><i class='glyphicon glyphicon-plus'></i><span>Carica Allegato...</span><input accept='.pdf,.PDF,.p7m'  id='fileupload_all' name='fileupload_all' type='file'></span></div><div class='col-xs-5'><label id='label_file'></label></div> </div>");
+	 }
+	 
 	 
 	 $('#content').html(str_html);
 	 $('#select_tipo_manutenzione').select2();
@@ -600,6 +653,16 @@ UtenteDTO userObj = (UtenteDTO)request.getSession().getAttribute("userObj");
 			 .concat("<select class='form-control select2' data-placeholder='Seleziona Operatore...' id='operatore_mod' name='operatore_mod' style='width:100%'><option value=''></option><c:forEach items='${lista_utenti}' var='utente'><option value='${utente.id}'>${utente.nominativo}</option></c:forEach></select></div></div>")
 			 .concat("<div class='form-group'> <div class='col-sm-2'><label >Descrizione Attività:</label></div>")
 			 .concat("<div class='col-sm-10'><textarea rows='5' style='width:100%' id='descrizione_mod' name='descrizione_mod' required></textarea></div></div><div class='row'><div class='col-sm-2'><span class='btn btn-primary fileinput-button'><i class='glyphicon glyphicon-plus'></i><span>Carica Allegato...</span><input accept='.pdf,.PDF,.p7m'  id='fileupload_all_mod' name='fileupload_all_mod' type='file'></span></div><div class='col-xs-5'><label id='label_file'></label></div> </div>");
+	 }
+	 
+	 
+	 else if($(this).val()==5){
+			
+		 str_html="<div class='form-group'>"				
+			/*  .concat("<div class='col-sm-2'><label>Operatore:</label></div><div class='col-sm-4'>")
+			 .concat("<select class='form-control select2' data-placeholder='Seleziona Operatore...' id='operatore' name='operatore'><option value=''></option><c:forEach items='${lista_utenti}' var='utente'><option value='${utente.id}'>${utente.nominativo}</option></c:forEach></select></div></div>") */
+			 .concat(" <div class='col-sm-2'><label >Descrizione Attività:</label></div>")
+			 .concat("<div class='col-sm-10'><textarea rows='5' style='width:100%' id='descrizione_mod' name='descrizione_mod' required></textarea></div></div><div class='row'><div class='col-sm-2'><span class='btn btn-primary fileinput-button'><i class='glyphicon glyphicon-plus'></i><span>Carica Allegato...</span><input accept='.pdf,.PDF,.p7m'  id='fileupload_all' name='fileupload_all' type='file'></span></div><div class='col-xs-5'><label id='label_file'></label></div> </div>");
 	 }
 	 
 	 $('#content_mod').html(str_html);
@@ -714,6 +777,14 @@ function dettaglioVerificaTaratura(tipo_attivita, data_attivita, ente, data_scad
 	 $('#dettaglio_operatore_fs').val(operatore);
 	 $('#dettaglio_data_fs').val(formatDate(data));
 	 $('#modalDettaglioFuoriServizio').modal();
+ };
+ 
+ function dettaglioFuoriTaratura(descrizione,  data){
+	 $('#dettaglio_descrizione_ft').val(descrizione);
+
+
+	 $('#dettaglio_data_ft').val(formatDate(data));
+	 $('#modalDettaglioFuoriTaratura').modal();
  };
 		 
  
@@ -908,6 +979,9 @@ $('#tabAttivitaCampione').on( 'page.dt', function () {
   $('#close_btn_man_fs').on('click', function(){
 	  $('#modalDettaglioFuoriServizio').modal('hide');
   });
+  $('#close_btn_man_ft').on('click', function(){
+	  $('#modalDettaglioFuoriTaratura').modal('hide');
+  });
  
   $('#close_btn_nuova_man').on('click', function(){
 	  $('#modalNuovaAttivita').modal('hide');
@@ -942,6 +1016,11 @@ $('#tabAttivitaCampione').on( 'page.dt', function () {
 	 });   
 
 	  $('#modalDettaglioFuoriServizio').on('hidden.bs.modal', function(){
+		  contentID == "registro_attivitaTab";
+		  
+	 });  
+	  
+	  $('#modalDettaglioFuoriTaratura').on('hidden.bs.modal', function(){
 		  contentID == "registro_attivitaTab";
 		  
 	 });  
