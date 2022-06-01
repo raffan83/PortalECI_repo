@@ -113,6 +113,8 @@ public class GestioneVerbaleBO {
 		
 		InterventoDTO intervento= verbale.getIntervento();
 		
+		
+		
 		if (stato.getId()==StatoVerbaleDTO.COMPILAZIONE_WEB) {
 			
 			setStatoCompilazioneWeb(intervento, stato, session);
@@ -125,6 +127,13 @@ public class GestioneVerbaleBO {
 				
 			verbale.setStato(stato);			
 			session.update(verbale);
+			
+			
+			if (stato.getId()==10 && verbale.getSchedaTecnica()!=null) {
+				verbale.getSchedaTecnica().setStato(stato);
+				session.update(verbale.getSchedaTecnica());
+			}
+			
 			//InterventoDTO intervento= verbale.getIntervento();	
 			//if(intervento==null) {
 				//la scheda tecnica non ha un intervento associato per il momento

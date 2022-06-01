@@ -707,7 +707,7 @@
 												 <!-- <div class="row"> -->
 												
 												<div class="col-xs-6">
-												<label>Data Verifica Integrit�</label>
+												<label>Data Verifica Integrit&agrave;</label>
 												  <div class='input-group date datepicker' id='datepicker_data_inizio'>
 												  <fmt:formatDate value="${verbale.data_verifica_integrita }" pattern="dd/MM/yyyy" var="myDate" />
 												               <input type='text' class="form-control input-small" id="data_verifica_integrita_verb" name="data_verifica_integrita_verb" value="${myDate }">
@@ -721,7 +721,7 @@
 												<!-- <div class="col-xs-4"></div> -->
 												
 												<div class="col-xs-6">
-												<label>Data Prossima Verifica Integrit�</label>
+												<label>Data Prossima Verifica Integrit&agrave;</label>
 												  <div class='input-group date datepicker'>
 												  <fmt:formatDate value="${verbale.data_prossima_verifica_integrita }" pattern="dd/MM/yyyy" var="myDate" />
 												               <input type='text' class="form-control input-small" id="data_prossima_verifica_integrita_verb" name="data_prossima_verifica_integrita_verb" value="${myDate }">
@@ -774,8 +774,8 @@
 												   <select id="tipo_verifica_gvr" name="tipo_verifica_gvr" class="form-control select2" data-placeholder="Seleziona Tipo Verifica GVR" style="width:100%">
 												 <option value=""></option>
 												 <option value="1">PVP</option>
-												 <option value="4">PVP + Integrit�</option>
-												 <option value="5">PVP + Integrit� + Interna</option>
+												 <option value="4">PVP + Integrit&agrave;</option>
+												 <option value="5">PVP + Integrit&agrave;+ Interna</option>
 												 <option value="7">PVP + Interna</option>
 												 </select>	
 												</c:if>
@@ -784,11 +784,11 @@
 												   <select id="tipo_verifica_gvr" name="tipo_verifica_gvr" class="form-control select2" data-placeholder="Seleziona Tipo Verifica GVR" style="width:100%">
 												 <option value=""></option>
 												 <option value="1">Funzionamento</option>
-												 <option value="2">Integrit�</option>
+												 <option value="2">Integrit&agrave;</option>
 												 <option value="3">Interna</option>
-												 <option value="4">Funzionamento + Integrit�</option>
-												 <option value="5">Funzionamento + Integrit� + Interna</option>
-												 <option value="6">Interna + Integrit�</option>
+												 <option value="4">Funzionamento + Integrit&agrave;</option>
+												 <option value="5">Funzionamento + Integrit&agrave; + Interna</option>
+												 <option value="6">Interna + Integrit&agrave;</option>
 												 <option value="7">Funzionamento + Interna</option>
 												 </select>	
 												</c:if>
@@ -1848,14 +1848,14 @@
        </div> 
        
              <div class="form-group">
-        <label for="inputName" class="col-sm-4 control-label">Data verifica integrit�:</label>
+        <label for="inputName" class="col-sm-4 control-label">Data verifica integrit&agrave;:</label>
         <div class="col-sm-8">
                       <input class="form-control " id="data_verifica_integrita" type="text" name="data_verifica_integrita"  value="" data-date-format="dd/mm/yyyy" readonly/>
     </div>
        </div> 
        
          <div class="form-group">
-        <label for="inputName" class="col-sm-4 control-label">Data prossima verifica integrit�:</label>
+        <label for="inputName" class="col-sm-4 control-label">Data prossima verifica integrit&agrave;:</label>
         <div class="col-sm-8">
                       <input class="form-control " id="data_prossima_verifica_integrita" type="text" name="data_prossima_verifica_integrita"  value="" data-date-format="dd/mm/yyyy" readonly/>
     </div>
@@ -3277,14 +3277,14 @@ function allegatoVisibile(id_allegato){
 			}
 			else if(gvr !='' && gvr=='1'&& !$('#data_verifica_integrita_verb').attr("disabled")  &&$('#data_verifica_integrita_verb').val()=='' && $('#esito').val()!='S' && !salva_mod){
 				
-				$('#modalErrorDiv').html("Il campo data verifica integrit� � obbligatorio");
+				$('#modalErrorDiv').html("Il campo data verifica integrit&agrave; obbligatorio");
 				$('#myModalError').removeClass();
 				$('#myModalError').addClass("modal modal-danger");
 				$('#myModalError').modal('show');	
 			}
 			else if(gvr !='' && gvr=='1'&& !$('#data_prossima_verifica_integrita_verb').attr("disabled")  &&$('#data_prossima_verifica_integrita_verb').val()=='' && $('#esito').val()!='S' && !salva_mod){
 				
-				$('#modalErrorDiv').html("Il campo data prossima verifica integrit� � obbligatorio" && !salva_mod);
+				$('#modalErrorDiv').html("Il campo data prossima verifica integrit&agrave; obbligatorio" && !salva_mod);
 				$('#myModalError').removeClass();
 				$('#myModalError').addClass("modal modal-danger");
 				$('#myModalError').modal('show');	

@@ -539,6 +539,11 @@ public class GestioneIntervento extends HttpServlet {
 				}else {
 					StatoVerbaleDTO stato = GestioneStatoVerbaleDAO.getStatoVerbaleById( 10, session);
 					verbale.setStato(stato);
+					
+					if (verbale.getSchedaTecnica()!=null) {
+						verbale.getSchedaTecnica().setStato(stato);
+						session.update(verbale.getSchedaTecnica());
+					}
 				}
 				
 				myObj.addProperty("success", true);
