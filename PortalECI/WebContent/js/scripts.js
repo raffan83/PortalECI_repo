@@ -1101,8 +1101,17 @@ function modificaCampione(idCamampione){
 		success: function( data, textStatus) {
 
 			if(data.success){ 
-				$('#myModal').modal('hide');
-				location.reload();
+				//$('#myModal').modal('hide');
+				//location.reload();
+				
+			//	exploreModal("aggiornamentoCampione.do","idCamp="+idCamampione,"#aggiorna")
+				
+				$('#myModalErrorContent').html(data.messaggio);
+  			  	$('#myModalError').removeClass();
+  				$('#myModalError').addClass("modal modal-success");
+  				$('#myModalError').modal('show');
+				
+				
 			}else{
 				$('#errorModifica').html("<h3 class='label label-danger' style=\"color:green\">Errore Salvataggio Campione</h3>");			
 			}

@@ -23,6 +23,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
+import org.apache.commons.io.FilenameUtils;
 import org.hibernate.Session;
 
 import com.google.gson.JsonObject;
@@ -191,8 +192,8 @@ public class GestioneAttivitaCampione extends HttpServlet {
 				
 				if(fileItemCertificato!=null && !filenameCertificato.equals("")) {
 
-					saveFile(fileItemCertificato, campione.getId(), 1, filenameCertificato);
-					attivita.setCertificato(filenameCertificato);
+					String filename = saveFile(fileItemCertificato, campione.getId(), 1, filenameCertificato);
+					attivita.setCertificato(filename);
 				}
 				
 				if(fileItemAllegato!=null && !filenameAllegato.equals("")) {
@@ -305,8 +306,8 @@ public class GestioneAttivitaCampione extends HttpServlet {
 				
 				if(fileItemCertificato!=null && !filenameCertificato.equals("")) {
 
-					saveFile(fileItemCertificato, attivita.getCampione().getId(), 1, filenameCertificato);
-					attivita.setCertificato(filenameCertificato);
+					String filename = saveFile(fileItemCertificato, attivita.getCampione().getId(), 1, filenameCertificato);
+					attivita.setCertificato(filename);
 				}
 				
 				if(fileItemAllegato!=null && !filenameAllegato.equals("")) {
@@ -526,7 +527,7 @@ public class GestioneAttivitaCampione extends HttpServlet {
 	
 	
 	
-	 private void saveFile(FileItem item, int id_campione,int tipo_file, String filename) {
+	 private String saveFile(FileItem item, int id_campione,int tipo_file, String filename) {
 
 		 
 		 String tipo = "Allegati";
@@ -539,16 +540,23 @@ public class GestioneAttivitaCampione extends HttpServlet {
 			if(!folder.exists()) {
 				folder.mkdirs();
 			}
-		
-			
+					
+			int index = 1;
+			String ext1 = FilenameUtils.getExtension(item.getName());
+			File file=null;
 			while(true)
 			{
-				File file=null;
 				
 				
-				file = new File(path_folder+filename);					
 				
+				file = new File(path_folder+filename);			
+				if(file.exists()) {
+					filename = filename.replace("_"+(index-1), "").replace("."+ext1, "_"+index+"."+ext1);				
+					index++;
+				}
+				else {
 					try {
+						
 						item.write(file);
 						break;
 
@@ -558,9 +566,16 @@ public class GestioneAttivitaCampione extends HttpServlet {
 						e.printStackTrace();
 						break;
 					}
+				}
+				
+				
 			}
+			
+			return filename;
 		
 		}
 	
+	 
+
 
 }

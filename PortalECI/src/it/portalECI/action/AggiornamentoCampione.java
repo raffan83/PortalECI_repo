@@ -77,8 +77,8 @@ public class AggiornamentoCampione extends HttpServlet {
 
 		ArrayList<UtenteDTO> listaVerificatori = (ArrayList<UtenteDTO>) GestioneUtenteBO.getTecnici("2", session);
 		
-		CampioneDTO dettaglio =getCampione(listaCampioni,idC);
-
+		//CampioneDTO dettaglio =getCampione(listaCampioni,idC);
+		CampioneDTO dettaglio =GestioneCampioneDAO.getCampioneFromId(idC, session);	
 		
 		 Gson gson = new Gson(); 
 	        JsonObject myObj = new JsonObject();

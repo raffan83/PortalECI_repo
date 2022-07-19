@@ -1026,6 +1026,10 @@ var listaStrumenti = ${listaCampioniJson};
 
 		 });   
 	
+ 
+ 
+ var  contentID;
+ 
     $(document).ready(function() {
     	
     	
@@ -1188,7 +1192,7 @@ var listaStrumenti = ${listaCampioniJson};
      	$('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
 
 
-        	var  contentID = e.target.id;
+        	contentID = e.target.id;
 
         	
         	if(contentID == "dettaglioTab"){
@@ -1271,7 +1275,76 @@ var listaStrumenti = ${listaCampioniJson};
      	
        $('#myModalError').on('hidden.bs.modal', function (e) {
 				if($( "#myModalError" ).hasClass( "modal-success" )&& !$('#modificaSingoloValCampioneModal').hasClass('in')){
-					callAction("gestioneCampione.do?action=lista");
+				//	callAction("gestioneCampione.do?action=lista");
+				
+				
+					if(contentID == "dettaglioTab"){
+		        		$("#myModal").addClass("modal-fullscreen");
+		        		exploreModal("dettaglioCampione.do","idCamp="+datax[0],"#dettaglio");
+		        	}
+
+		        	if(contentID == "certificatiTab"){
+		        		$("#myModal").addClass("modal-fullscreen");
+		        		exploreModal("listaCertificatiCampione.do","idCamp="+datax[0],"#certificati")
+		        	}
+		        	 if(contentID == "registro_eventiTab"){
+		        		  //$("#myModal").addClass("modal-fullscreen"); 
+		        		 $("#myModal").removeClass("modal-fullscreen");
+		        			exploreModal("registroEventi.do","idCamp="+datax[0],"#registro_eventi");      
+		        	 } 
+		        	 if(contentID == "registro_attivitaTab"){
+		       		  //$("#myModal").addClass("modal-fullscreen"); 
+		       		 $("#myModal").removeClass("modal-fullscreen");
+		       			exploreModal("gestioneAttivitaCampioni.do?action=lista","idCamp="+datax[0],"#registro_attivita");      
+		       	 } 
+		        	 
+
+		        	if(contentID == "prenotazioneTab"){
+		        		$("#myModal").removeClass("modal-fullscreen");
+
+		        		 if(listaStrumenti[indexCampione[1]].statoCampione == "N")
+		        	     {
+		        	
+		        			 $("#prenotazioneCalendario").html("CAMPIONE NON DISPONIBILE");
+		        			 $("#prenotazioneRange").hide();
+		        			
+		        		 }else{
+		        			
+		        			 
+		             		//exploreModal("richiestaDatePrenotazioni.do","idCamp="+datax[0],"#prenotazione")
+
+		        			loadCalendar("richiestaDatePrenotazioni.do","idCamp="+datax[0],"#prenotazioneCalendario")
+		        			 $("#prenotazioneRange").show();
+		        		 }
+		        		
+		        		
+		        	}
+		        	
+		        	if(contentID == "aggiornaTab"){
+		        		$("#myModal").addClass("modal-fullscreen");
+		        	//	if(listaStrumenti[indexCampione[1]].company.id != '${utente.company.id}' && '${utente.trasversale}'!=1 )
+		        	 //    {
+		        		
+		        		//	 $('#aggiornaTab').hide();
+		        			
+		        	//	 }else{
+		        			 //$('#aggiornaTab').show();
+		        			 
+		        			 console.log(contentID)
+		        			 
+		        		exploreModal("aggiornamentoCampione.do","idCamp="+datax[0],"#aggiorna")
+		        	//	 }
+		        	}
+		        	if(contentID == "documenti_esterniTab"){
+		        		$("#myModal").removeClass("modal-fullscreen");
+		        	
+		           		exploreModal("documentiEsterni.do?action=campioni&id_str="+datax[0],"","#documenti_esterni")
+		           	//	exploreModal("dettaglioStrumento.do","id_str="+datax[1],"#documentiesterni");
+		           	}
+
+				
+				
+				
 				}
      		
       	}); 
@@ -1332,53 +1405,12 @@ var listaStrumenti = ${listaCampioniJson};
 	    });
 
 
-/* 	    var validator = $("#formNuovoCampione").validate({
-	    	showErrors: function(errorMap, errorList) {
-	    	  
-	    	    this.defaultShowErrors();
-	    	  },
-	    	  errorPlacement: function(error, element) {
-	    		  $("#ulError").html("<span class='label label-danger'>Errore inserimento valori ("+error[0].innerHTML+")</span>");
-	    		 },
-	    		 
-	    		    highlight: function(element) {
-	    		        $(element).closest('.form-group').addClass('has-error');
-	    		        $(element).closest('.ui-widget-content input').addClass('error');
-	    		        
-	    		    },
-	    		    unhighlight: function(element) {
-	    		        $(element).closest('.form-group').removeClass('has-error');
-	    		        $(element).closest('.ui-widget-content input').removeClass('error');
-	    		       
-	    		    }
-	    }); */
-
-	
-/* 	    jQuery.validator.addMethod("controllocodicecampione", function(value, element) {
-	    	  return this.optional(element) || /^[a-zA-Z0-9]*$/.test(value);	    	 
-	    	}, "Codice non corretto, Inserire solo numeri e lettere");
-	    
-	    jQuery.validator.addMethod("numberfloat", function(value, element) {
-	    	  return this.optional(element) || /^(-?\d+(?:[\.]\d{1,30})?)$/.test(value);
-	    	}, "Questo campo deve essere un numero");
-	     */
-	    
 	    $("#slash").focusout(function(){
 	    	var codice = $("#codice").val()+"/"+$('#slash').val();
 	    	
 	    	var regex = /^[a-zA-Z0-9]*$/;
 	    		    	
 
-	    	/* if(validator.element( "#codice" )){
-	    		checkCodiceCampione(codice);
-	    	}else{
-
-		    	if(codice.length>0){
-		    		  $("#codiceError").html("Il codice deve contenere solo lettere e numeri");
-	
-		    	}
-
-	    	} */
 	    });
 	    
 	    
@@ -1394,16 +1426,6 @@ var listaStrumenti = ${listaCampioniJson};
 	    	
 	    	
 
-	    	/* if(validator.element( "#codice" )){
-	    		checkCodiceCampione(codice);
-	    	}else{
-
-		    	if(codice.length>0){
-		    		  $("#codiceError").html("Il codice deve contenere solo lettere e numeri");
-	
-		    	}
-
-	    	} */
 	    });
 	    
 	    $("#codice").focusin(function(){
