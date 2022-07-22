@@ -1261,6 +1261,77 @@ if(action!= null && action.equals("dettaglio")) {
 		
 		}
 		
+else if(action!=null && action.equals("carica_scheda_firmata")) {
+			
+
+			PrintWriter writer = response.getWriter();
+			JsonObject jsono = new JsonObject();
+			
+			ServletFileUpload uploadHandler = new ServletFileUpload(new DiskFileItemFactory());
+			List<FileItem> items = null;
+			try {
+				items = uploadHandler.parseRequest(request);
+			} catch (FileUploadException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+			String id_certificato = "";
+	
+			FileItem fileUploaded = null;
+			String filename = "";
+			for (FileItem item : items) {
+				if (!item.isFormField()) {
+
+					fileUploaded = item;
+					filename = item.getName();
+				}else {
+					
+					if(item.getFieldName().equals("id_documento")) {
+						id_certificato = item.getString();
+					}
+					
+
+				}
+				
+			
+			}
+			
+		DocumentoDTO documento = GestioneDocumentoDAO.getDocumento(id_certificato, session);
+		verbale = documento.getVerbale();
+			
+		String filename_pdf = documento.getFilePath().split("\\\\")[2];
+	
+			if(fileUploaded != null) {
+				
+				String path = documento.getFilePath().replace(filename_pdf,"");
+				//String path = "Intervento_"+intervento.getId()+File.separator+verbale.getType()+"_"+verbale.getCodiceCategoria()+"_"+verbale.getId()+File.separator;
+				new File(Costanti.PATH_CERTIFICATI+path).mkdirs();
+				String fileNoExt = filename.substring(0, filename.length()-4);
+				File file = new File(Costanti.PATH_CERTIFICATI+path+fileNoExt+"_F.pdf");
+				int counter = 0;
+
+					//try {
+						fileUploaded.write(file);
+					
+										
+					verbale.setFirmato(1);
+					session.update(documento);
+					//GestioneComunicazioniBO.sendEmail(verbale.getResponsabile_approvatore(), verbale.getIntervento(), verbale, null,1);
+					jsono.addProperty("success", true);
+					jsono.addProperty("messaggio","File caricato con successo!");
+					
+
+				}
+	
+		
+			
+
+			writer.write(jsono.toString());
+			writer.close();
+		
+		}
+		
 		else if(action!=null && action.equals("email_destinatario")) {			
 		
 			String id_intervento = request.getParameter("id_intervento");

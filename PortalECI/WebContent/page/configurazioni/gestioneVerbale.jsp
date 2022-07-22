@@ -354,19 +354,26 @@
 												<ul class="list-group list-group-unbordered" id="">
 	       											<c:forEach items="${listaSchedeTecniche}" var="schedaTec"> 
 	        											<li class="list-group-item">
-	        											  <div class="row">
+	        											<div class="row">
                     											 <div class="col-xs-12"> 
-	        											
-	                  										<b>${schedaTec.getFileName()}</b>
-	                  									
+	        											 
+                    											 <div class="col-xs-4">
+	                  										<label>${schedaTec.getFileName()}</label>
+	                  									</div>
+	                  									<div class="col-xs-8">
 	                  										<c:if test="${user.checkPermesso('DOWNLOAD_SKTECNICA')}">             										
-	                  											<a class="btn btn-default btn-xs pull-right" href="gestioneDocumento.do?idDocumento=${schedaTec.getId()}" style="margin-left:5px"><i class="glyphicon glyphicon-file"></i> Download SchedaTecnica</a>														
+	                  											<a class="btn btn-default btn-xs pull-right" href="gestioneDocumento.do?idDocumento=${schedaTec.getId()}" style="margin-left:5px"><i class="glyphicon glyphicon-file"></i> Download Scheda Tecnica</a>														
 	                										</c:if>
+	                										
+	                										 <c:if test="${schedaTec.getVerbale().getFirmato()==0 && schedaTec.getInvalid()==false && schedaTec.getVerbale().getStato().getId()== 5}">
+	                  											<a class="btn btn-default btn-xs pull-right" onClick="modalCaricaFileFirmato('${schedaTec.getId()}', true)" style="margin-left:5px"><i class="fa fa-plus"></i> Carica Scheda Firmata</a>
+	                  											</c:if>
+	                  											
 	                										
 	                										<c:if test="${schedaTec.getVerbale().getFirmato()==1 && schedaTec.getInvalid()== false }">
 	                  											<a class="btn btn-default btn-xs pull-right" href="gestioneDocumento.do?firmato=1&idDocumento=${schedaTec.getId()}" style="margin-left:5px"><i class="glyphicon glyphicon-file"></i> Download Scheda Tecnica Firmata</a>
 	                  											</c:if>	
-	                  											
+	                  											</div>
 	                  											</div>
 	                  											</div>
 	                									</li>
@@ -1981,126 +1988,8 @@
  		<script type="text/javascript">
 		   
 
- 		
  	 	
- 		$('#fileupload').fileupload({
- 	        url: "gestioneVerbale.do?action=carica_verbale_firmato",
- 	        dataType: 'json',
- 	        maxNumberOfFiles : 1,
- 	        getNumberOfFiles: function () {
- 	            return this.filesContainer.children()
- 	                .not('.processing').length;
- 	        },
- 	        start: function(e){
- 	        	pleaseWaitDiv = $('#pleaseWaitDialog');
- 				pleaseWaitDiv.modal();
- 	        },
- 	        add: function(e, data) {
- 	            var uploadErrors = [];
- 	            var acceptFileTypes = /(\.|\/)(pdf|PDF)$/i;
- 	            if(data.originalFiles[0]['name'].length && !acceptFileTypes.test(data.originalFiles[0]['name'])) {
- 	                uploadErrors.push('Tipo File non accettato. ');
- 	            }
- 	            if(data.originalFiles[0]['size'] > 30000000) {
- 	                uploadErrors.push('File troppo grande, dimensione massima 30mb');
- 	            }
- 	            if(uploadErrors.length > 0) {
- 	            	//$('#files').html(uploadErrors.join("\n"));
- 	            	$('#modalErrorDiv').html(uploadErrors.join("\n"));
- 					$('#modalErrorDiv').removeClass();
- 					$('#modalErrorDiv').addClass("modal modal-danger");
- 					
- 					$('#modalErrorDiv').modal('show');
- 				
- 	            } else {
- 	                data.submit();
- 	            }
- 	    	},
- 	        done: function (e, data) {
- 				
- 	        	pleaseWaitDiv.modal('hide');
- 	        	$('#modalUploadFileFirmato').modal('hide');
- 	        	if(data.result.success)
- 				{
- 	        		
- 	        			$('#modalErrorDiv').html("File caricato con successo!");
- 					$('#myModalError').removeClass();
- 					$('#myModalError').addClass("modal modal-success");
- 					$('#myModalError').modal('show');
- 					$('#progress .progress-bar').css(
- 		                    'width',
- 		                    '0%'
- 		                );
- 				
- 				}else{
- 					
- 					$('#modalErrorDiv').html(data.result.messaggio);
- 					$('#myModalError').removeClass();
- 					$('#myModalError').addClass("modal modal-danger");
- 					
- 					$('#myModalError').modal('show');
- 					
- 					$('#progress .progress-bar').css(
- 		                    'width',
- 		                    '0%'
- 		                );
-
- 				}
-
-
- 	        },
- 	        fail: function (e, data) {
- 	        	pleaseWaitDiv.modal('hide');
- 	        	$('#files').html("");
- 	        	var errorMsg = "";
- 	            $.each(data.messages, function (index, error) {
-
- 	            	errorMsg = errorMsg + '<p>ERRORE UPLOAD FILE: ' + error + '</p>';
- 	       
-
- 	            });
- 	        		$('#myModalErrorContent').html(errorMsg);
- 				$('#myModalError').removeClass();
- 				$('#myModalError').addClass("modal modal-danger");
- 				$('#myModalError').find('.modal-footer').append('<button type="button" class="btn btn-outline" id="report_button" onClick="sendReport($(this).parents(\'.modal\'))">Invia Report</button>');
- 				$('#myModalError').modal('show');
- 				$('#progress .progress-bar').css(
- 	                    'width',
- 	                    '0%'
- 	                );
- 				$('#myModal').on('hidden.bs.modal', function(){
- 					$('#myModal').find('#report_button').remove();
- 				});
- 	        },
- 	        progressall: function (e, data) {
- 	            var progress = parseInt(data.loaded / data.total * 100, 10);
- 	            $('#progress .progress-bar').css(
- 	                'width',
- 	                progress + '%'
- 	            );
-
- 	        }
- 	    }).prop('disabled', !$.support.fileInput)
- 	        .parent().addClass($.support.fileInput ? undefined : 'disabled');
- 		
- 		
- 	 	$('#fileupload').bind('fileuploadsubmit', function (e, data) {
- 		    // The example input, doesn't have to be part of the upload form:
- 		  var id =  $('#id_certificato_p7m').val();
- 		    data.formData = { id_documento: id};
- 		    
- 
- 		}); 
- 		
- 	 	
- 	 	
- 	 	
- 	 	
- 	 	
- 	 	
- 	 	
- 	 	
- 	 	
+ 	
  	 	
  	 	
  	 	
@@ -2820,9 +2709,129 @@ function modificaSedeUtilizzatore(){
 	
 	
 	
-	function modalCaricaFileFirmato(id_certificato){
+	function modalCaricaFileFirmato(id_certificato, scheda_tecnica){
 		
 		$('#id_certificato_p7m').val(id_certificato);
+		
+		var url;
+		
+		if(scheda_tecnica == true){
+			url = "gestioneVerbale.do?action=carica_scheda_firmata";
+		}else{
+			url = "gestioneVerbale.do?action=carica_verbale_firmato";
+		}
+		
+		
+		
+		$('#fileupload').fileupload({
+ 	        url: url,
+ 	        dataType: 'json',
+ 	        maxNumberOfFiles : 1,
+ 	        getNumberOfFiles: function () {
+ 	            return this.filesContainer.children()
+ 	                .not('.processing').length;
+ 	        },
+ 	        start: function(e){
+ 	        	pleaseWaitDiv = $('#pleaseWaitDialog');
+ 				pleaseWaitDiv.modal();
+ 	        },
+ 	        add: function(e, data) {
+ 	            var uploadErrors = [];
+ 	            var acceptFileTypes = /(\.|\/)(pdf|PDF)$/i;
+ 	            if(data.originalFiles[0]['name'].length && !acceptFileTypes.test(data.originalFiles[0]['name'])) {
+ 	                uploadErrors.push('Tipo File non accettato. ');
+ 	            }
+ 	            if(data.originalFiles[0]['size'] > 30000000) {
+ 	                uploadErrors.push('File troppo grande, dimensione massima 30mb');
+ 	            }
+ 	            if(uploadErrors.length > 0) {
+ 	            	//$('#files').html(uploadErrors.join("\n"));
+ 	            	$('#modalErrorDiv').html(uploadErrors.join("\n"));
+ 					$('#modalErrorDiv').removeClass();
+ 					$('#modalErrorDiv').addClass("modal modal-danger");
+ 					
+ 					$('#modalErrorDiv').modal('show');
+ 				
+ 	            } else {
+ 	                data.submit();
+ 	            }
+ 	    	},
+ 	        done: function (e, data) {
+ 				
+ 	        	pleaseWaitDiv.modal('hide');
+ 	        	$('#modalUploadFileFirmato').modal('hide');
+ 	        	if(data.result.success)
+ 				{
+ 	        		
+ 	        			$('#modalErrorDiv').html("File caricato con successo!");
+ 					$('#myModalError').removeClass();
+ 					$('#myModalError').addClass("modal modal-success");
+ 					$('#myModalError').modal('show');
+ 					$('#progress .progress-bar').css(
+ 		                    'width',
+ 		                    '0%'
+ 		                );
+ 				
+ 				}else{
+ 					
+ 					$('#modalErrorDiv').html(data.result.messaggio);
+ 					$('#myModalError').removeClass();
+ 					$('#myModalError').addClass("modal modal-danger");
+ 					
+ 					$('#myModalError').modal('show');
+ 					
+ 					$('#progress .progress-bar').css(
+ 		                    'width',
+ 		                    '0%'
+ 		                );
+
+ 				}
+
+
+ 	        },
+ 	        fail: function (e, data) {
+ 	        	pleaseWaitDiv.modal('hide');
+ 	        	$('#files').html("");
+ 	        	var errorMsg = "";
+ 	            $.each(data.messages, function (index, error) {
+
+ 	            	errorMsg = errorMsg + '<p>ERRORE UPLOAD FILE: ' + error + '</p>';
+ 	       
+
+ 	            });
+ 	        		$('#myModalErrorContent').html(errorMsg);
+ 				$('#myModalError').removeClass();
+ 				$('#myModalError').addClass("modal modal-danger");
+ 				$('#myModalError').find('.modal-footer').append('<button type="button" class="btn btn-outline" id="report_button" onClick="sendReport($(this).parents(\'.modal\'))">Invia Report</button>');
+ 				$('#myModalError').modal('show');
+ 				$('#progress .progress-bar').css(
+ 	                    'width',
+ 	                    '0%'
+ 	                );
+ 				$('#myModal').on('hidden.bs.modal', function(){
+ 					$('#myModal').find('#report_button').remove();
+ 				});
+ 	        },
+ 	        progressall: function (e, data) {
+ 	            var progress = parseInt(data.loaded / data.total * 100, 10);
+ 	            $('#progress .progress-bar').css(
+ 	                'width',
+ 	                progress + '%'
+ 	            );
+
+ 	        }
+ 	    }).prop('disabled', !$.support.fileInput)
+ 	        .parent().addClass($.support.fileInput ? undefined : 'disabled');
+ 		
+ 		
+ 	 	$('#fileupload').bind('fileuploadsubmit', function (e, data) {
+ 		    // The example input, doesn't have to be part of the upload form:
+ 		  var id =  $('#id_certificato_p7m').val();
+ 		    data.formData = { id_documento: id};
+ 		    
+ 
+ 		}); 
+ 		
 		
 		
 		$('#modalUploadFileFirmato').modal();
