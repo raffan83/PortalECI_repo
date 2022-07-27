@@ -642,7 +642,7 @@ UtenteDTO userObj = (UtenteDTO)request.getSession().getAttribute("userObj");
      	//.concat("<div class='col-sm-2' style='margin-top:15px'><span class='btn btn-primary fileinput-button'><i class='glyphicon glyphicon-plus'></i><span>Carica Certificato...</span><input accept='.pdf,.PDF,.p7m'  id='fileupload_certificato_mod' name='fileupload_certificato_mod' type='file'></span></div><div class='col-xs-1'></div><div class='col-xs-5'style='margin-top:15px'><label id='label_certificato_mod'></label></div></div>");
 	
 		 .concat("<div class='col-sm-2' style='margin-top:15px'><label>Numero Certificato:</label></div><div class='col-sm-4' style='margin-top:15px'><input class='form-control' id='numero_certificato_mod' name='numero_certificato_mod' required type='text'/></div>")
-		 .concat("<div class='col-sm-2' style='margin-top:15px'><span class='btn btn-primary fileinput-button'><i class='glyphicon glyphicon-plus'></i><span>Carica Certificato...</span><input accept='.pdf,.PDF,.p7m' required id='fileupload_certificato_mod' name='fileupload_certificato_mod' type='file'></span></div><div class='col-xs-1'></div><div class='col-xs-5'style='margin-top:15px'><label id='label_certificato_mod'></label></div>");
+		 .concat("<div class='col-sm-2' style='margin-top:15px'><span class='btn btn-primary fileinput-button'><i class='glyphicon glyphicon-plus'></i><span>Carica Certificato...</span><input accept='.pdf,.PDF,.p7m'  id='fileupload_certificato_mod' name='fileupload_certificato_mod' type='file'></span></div><div class='col-xs-1'></div><div class='col-xs-5'style='margin-top:15px'><label id='label_certificato_mod'></label></div>");
 	 }
 	 
 	 
@@ -662,7 +662,7 @@ UtenteDTO userObj = (UtenteDTO)request.getSession().getAttribute("userObj");
 			/*  .concat("<div class='col-sm-2'><label>Operatore:</label></div><div class='col-sm-4'>")
 			 .concat("<select class='form-control select2' data-placeholder='Seleziona Operatore...' id='operatore' name='operatore'><option value=''></option><c:forEach items='${lista_utenti}' var='utente'><option value='${utente.id}'>${utente.nominativo}</option></c:forEach></select></div></div>") */
 			 .concat(" <div class='col-sm-2'><label >Descrizione Attività:</label></div>")
-			 .concat("<div class='col-sm-10'><textarea rows='5' style='width:100%' id='descrizione_mod' name='descrizione_mod' required></textarea></div></div><div class='row'><div class='col-sm-2'><span class='btn btn-primary fileinput-button'><i class='glyphicon glyphicon-plus'></i><span>Carica Allegato...</span><input accept='.pdf,.PDF,.p7m'  id='fileupload_all' name='fileupload_all' type='file'></span></div><div class='col-xs-5'><label id='label_file'></label></div> </div>");
+			 .concat("<div class='col-sm-10'><textarea rows='5' style='width:100%' id='descrizione_mod' name='descrizione_mod' required></textarea></div></div><div class='row'><div class='col-sm-2'><span class='btn btn-primary fileinput-button'><i class='glyphicon glyphicon-plus'></i><span>Carica Allegato...</span><input accept='.pdf,.PDF,.p7m'  id='fileupload_all_mod' name='fileupload_all_mod' type='file'></span></div><div class='col-xs-5'><label id='label_file'></label></div> </div>");
 	 }
 	 
 	 $('#content_mod').html(str_html);
