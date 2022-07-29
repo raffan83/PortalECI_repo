@@ -280,7 +280,7 @@ public class GestioneAttivitaCampione extends HttpServlet {
 					attivita.setEnte(ente);					
 					attivita.setData_scadenza(format.parse(data_scadenza));
 					
-					if(Integer.parseInt(tipo_attivita)==3) {
+					if(Integer.parseInt(tipo_attivita)==3 && attivita.getObsoleta().equals("N")) {
 						attivita.getCampione().setDataVerifica(date);
 						attivita.getCampione().setDataScadenza(format.parse(data_scadenza));
 						if(numero_certificato!=null) {
