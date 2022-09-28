@@ -41,6 +41,7 @@ import com.itextpdf.text.pdf.PdfReader;
 import com.itextpdf.text.pdf.PdfStamper;
 import com.sun.xml.internal.ws.api.server.SDDocumentFilter;
 
+import it.portalECI.DAO.GestioneCampioneDAO;
 import it.portalECI.DAO.GestioneDocumentoDAO;
 import it.portalECI.DAO.GestioneDomandaVerbaleDAO;
 import it.portalECI.DAO.GestioneQuestionarioDAO;
@@ -49,6 +50,7 @@ import it.portalECI.DAO.GestioneRispostaVerbaleDAO;
 import it.portalECI.DAO.GestioneStatoInterventoDAO;
 import it.portalECI.DAO.GestioneStatoVerbaleDAO;
 import it.portalECI.DAO.GestioneVerbaleDAO;
+import it.portalECI.DTO.AcAttivitaCampioneDTO;
 import it.portalECI.DTO.AllegatoClienteDTO;
 import it.portalECI.DTO.AllegatoMinisteroDTO;
 import it.portalECI.DTO.AttrezzaturaDTO;
@@ -855,14 +857,32 @@ public class GestioneVerbaleBO {
 			html = html.replaceAll("\\$\\{STR_SCADENZA\\}", df.format(verbale.getStrumento_verificatore().getScadenza()));
 		}
 		
+		AcAttivitaCampioneDTO attivita = null;
+		
 		if(verbale.getCampione() != null && verbale.getCampione().getDataVerifica()!=null) 
 		{			
-			html = html.replaceAll("\\$\\{STR_ULT_TAR\\}", df.format(verbale.getCampione().getDataVerifica()));
+			if(verbale.getCampione().getDataVerifica().getTime()>verbale.getData_verifica().getTime()) {
+				ArrayList<AcAttivitaCampioneDTO> lista_attivita = GestioneAttivitaCampioneBO.getListaTaratureVerificheIntermedie(verbale.getCampione().getId(), session);
+				
+				attivita = getDataVerificaCampioneOld(lista_attivita, verbale.getData_verifica().getTime());
+				html = html.replaceAll("\\$\\{STR_ULT_TAR\\}", df.format(attivita.getData()));
+				
+			}else {
+				html = html.replaceAll("\\$\\{STR_ULT_TAR\\}", df.format(verbale.getCampione().getDataVerifica()));
+			}
+			
 		}
 		
 		if(verbale.getCampione() != null && verbale.getCampione().getDataScadenza()!=null) 
 		{			
-			html = html.replaceAll("\\$\\{STR_SCADENZA\\}", df.format(verbale.getCampione().getDataScadenza()));
+			
+			if(attivita!=null) {
+				html = html.replaceAll("\\$\\{STR_SCADENZA\\}", df.format(attivita.getData_scadenza()));
+			}else {
+				html = html.replaceAll("\\$\\{STR_SCADENZA\\}", df.format(verbale.getCampione().getDataScadenza()));
+			}
+			
+			
 		}
 				
 		
@@ -1256,6 +1276,22 @@ public class GestioneVerbaleBO {
 		return html;
 	}
 	
+	private static AcAttivitaCampioneDTO getDataVerificaCampioneOld(ArrayList<AcAttivitaCampioneDTO> lista_attivita, long data_verifica) {
+		
+		int max = 0;
+		AcAttivitaCampioneDTO ret = null;
+		for (AcAttivitaCampioneDTO attivita : lista_attivita) {
+			
+			if(attivita.getTipo_attivita().getId()==3 && attivita.getData().getTime()<=data_verifica && data_verifica <=attivita.getData_scadenza().getTime() && attivita.getId()>max) {
+				max = attivita.getId();
+				ret = attivita;
+			}
+		}
+		
+		
+		return ret;
+	}
+
 	private static String replacePlaceholderDomanda(String html,DomandaVerbaleDTO domanda, Session session) {
 		String placeholder = domanda.getDomandaQuestionario().getPlaceholder();
 		html = html.replaceAll("\\$\\{"+placeholder+"\\}", domanda.getDomandaQuestionario().getTesto());

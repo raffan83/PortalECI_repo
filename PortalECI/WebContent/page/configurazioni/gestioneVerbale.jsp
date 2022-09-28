@@ -26,11 +26,16 @@
 <t:layout title="Dashboard" bodyClass="skin-red sidebar-mini wysihtml5-supported">
 
 	<jsp:attribute name="body_area">
+	
+		<t:main-header  /> 
+		<t:main-sidebar />
 
 		<div class="wrapper">
 	
-		<t:main-header  />
-  		<t:main-sidebar />
+	
+  		
+
+  	
  
   		<!-- Content Wrapper. Contains page content -->
  		<div id="corpoframe" class="content-wrapper">
@@ -1189,6 +1194,8 @@
 						
  							</div>
 						</div>
+						</div>
+						</div>
 						  		
 						
 						
@@ -1354,12 +1361,12 @@
                   							
                   							<div class="col-sm-12" style="margin:5px ; text-align:center;">
                   								<c:if test="${user.checkPermesso('CH_STA_VERBALE')}">
-                  									<button type="button  pull-left" class="btn-sm " onclick="salvaCambioStato(null,null,'6')" style="color:#000000 !important; background-color:${verbale.getStato().getColore(6)} !important;">
+                  									<button type="button pull-left" class="btn-sm " onclick="salvaCambioStato(null,null,'6')" style="color:#000000 !important; background-color:${verbale.getStato().getColore(6)} !important;">
                   										<i class="glyphicon glyphicon-remove"></i>
                   										<span >RIFIUTATO</span>
                   									</button>
 										
-													<button type="button  pull-right" class="btn-sm" onclick="salvaCambioStato(null,null,'5')" style="color:#000000 !important; background-color:${verbale.getStato().getColore(5)} !important;">
+													<button type="button pull-right" class="btn-sm" onclick="salvaCambioStato(null,null,'5')" style="color:#000000 !important; background-color:${verbale.getStato().getColore(5)} !important;">
 														<i class="glyphicon glyphicon glyphicon-ok"></i>
 														<span >ACCETTATO</span>
 													</button>
@@ -1496,7 +1503,7 @@
       								</div>
        								<div class="modal-body">
 										<h3 class="text-center">Attenzione, stai per generare un certificato!<br/>
-											Questa operazione non pu� essere annullata. <br/>
+											Questa operazione non puè essere annullata. <br/>
 											Sei sicuro di voler generare il certificato?</h3>
   		 							</div>
       								<div class="modal-footer">
@@ -1515,7 +1522,7 @@
       								</div>
        								<div class="modal-body">
 										<h3 class="text-center">Attenzione, stai per generare una scheda tecnica!<br/>
-											Questa operazione non pu� essere annullata. <br/>
+											Questa operazione non puè essere annullata. <br/>
 											Sei sicuro di voler generare la scheda tecnica?</h3>
   		 							</div>
       								<div class="modal-footer">
@@ -1536,7 +1543,7 @@
       								</div>
        								<div class="modal-body">
 										<h3 class="text-center">Attenzione, stai per annullare una scheda tecnica!<br/>
-											Questa operazione non pu� essere annullata. <br/>
+											Questa operazione non puè essere annullata. <br/>
 											Sei sicuro di voler annullare la scheda tecnica?</h3>
   		 							</div>
       								<div class="modal-footer">
@@ -1557,7 +1564,7 @@
       								</div>
        								<div class="modal-body">
 										<h3 class="text-center">Attenzione, stai per annullare un certificato!<br/>
-											Questa operazione non pu� essere annullata. <br/>
+											Questa operazione non puè essere annullata. <br/>
 											Sei sicuro di voler annullare il certificato?</h3>
   		 							</div>
       								<div class="modal-footer">
@@ -1581,7 +1588,7 @@
       								</div>
        								<div class="modal-body">
 										<h3 class="text-center">Attenzione, stai per annullare un certificato!<br/>
-											Questa operazione non pu� essere annullata. <br/>
+											Questa operazione non puè essere annullata. <br/>
 											Sei sicuro di voler annullare il certificato?</h3>
   		 							</div>
       								<div class="modal-footer">
@@ -1601,7 +1608,7 @@
       								</div>
        								<div class="modal-body">
 										<h3 class="text-center">
-										Il verbale sar� inviato in approvazione al RT. <br> Sicuro di voler procedere?
+										Il verbale sarè inviato in approvazione al RT. <br> Sicuro di voler procedere?
 											
 											</h3>
   		 							</div>
@@ -1622,7 +1629,7 @@
       								</div>
        								<div class="modal-body">
 										<h3 class="text-center">
-										La scheda tecnica sar� inviata in approvazione al RT. <br> Sicuro di voler procedere?
+										La scheda tecnica sarè inviata in approvazione al RT. <br> Sicuro di voler procedere?
 											
 											</h3>
   		 							</div>
@@ -1952,6 +1959,7 @@
      					<div id="errorMsg"><!-- Place at bottom of page --></div> 
 					</section>
   				</div>
+  			
   				<!-- /.content-wrapper -->	
   				
 
@@ -3211,7 +3219,7 @@ function allegatoVisibile(id_allegato){
 				
 			if(!checkStrumentoVerificatore()){
 					
-					$('#modalErrorDiv').html("Il campo strumento verificatore � obbligatorio");
+					$('#modalErrorDiv').html("Il campo strumento verificatore è obbligatorio");
 					$('#myModalError').removeClass();
 					$('#myModalError').addClass("modal modal-danger");
 					$('#myModalError').modal('show');	
@@ -3264,7 +3272,7 @@ function allegatoVisibile(id_allegato){
 				
 			if(!checkStrumentoVerificatore() && !salva_mod){
 					
-				$('#modalErrorDiv').html("Il campo strumento verificatore � obbligatorio");
+				$('#modalErrorDiv').html("Il campo strumento verificatore è obbligatorio");
 				$('#myModalError').removeClass();
 				$('#myModalError').addClass("modal modal-danger");
 				$('#myModalError').modal('show');	
@@ -3272,14 +3280,14 @@ function allegatoVisibile(id_allegato){
 			}
 			else if(!$('#data_verifica').attr("disabled") &&$('#data_verifica').val()=='' && $('#esito').val()!='S' && !salva_mod){
 				
-				$('#modalErrorDiv').html("Il campo data verifica � obbligatorio");
+				$('#modalErrorDiv').html("Il campo data verifica è obbligatorio");
 				$('#myModalError').removeClass();
 				$('#myModalError').addClass("modal modal-danger");
 				$('#myModalError').modal('show');	
 			}
 			else if(!$('#data_prossima_verifica_verb').attr("disabled") && $('#data_prossima_verifica_verb').val()=='' && $('#esito').val()!='S' && $('#tipo_verifica_vie').val()!=2 && !salva_mod){
 				
-				$('#modalErrorDiv').html("Il campo data prossima verifica � obbligatorio");
+				$('#modalErrorDiv').html("Il campo data prossima verifica è obbligatorio");
 				$('#myModalError').removeClass();
 				$('#myModalError').addClass("modal modal-danger");
 				$('#myModalError').modal('show');	
@@ -3300,14 +3308,14 @@ function allegatoVisibile(id_allegato){
 			}
 			else if(gvr !='' && gvr=='1' && !$('#data_verifica_interna_verb').attr("disabled") && $('#data_verifica_interna_verb').val()=='' && $('#esito').val()!='S' && !salva_mod){
 				
-				$('#modalErrorDiv').html("Il campo data verifica interna � obbligatorio");
+				$('#modalErrorDiv').html("Il campo data verifica interna è obbligatorio");
 				$('#myModalError').removeClass();
 				$('#myModalError').addClass("modal modal-danger");
 				$('#myModalError').modal('show');	
 			}
 			else if(gvr !='' && gvr=='1' && !$('#data_prossima_verifica_interna_verb').attr("disabled") && $('#data_prossima_verifica_interna_verb').val()=='' && $('#esito').val()!='S'  && !salva_mod){
 				
-				$('#modalErrorDiv').html("Il campo data prossima verifica interna � obbligatorio");
+				$('#modalErrorDiv').html("Il campo data prossima verifica interna è obbligatorio");
 				$('#myModalError').removeClass();
 				$('#myModalError').addClass("modal modal-danger");
 				$('#myModalError').modal('show');	
@@ -3315,14 +3323,14 @@ function allegatoVisibile(id_allegato){
 			
 			else if($('#esito').val()=='' && !salva_mod){
 				
-				$('#modalErrorDiv').html("Il campo Esito verifica � obbligatorio");
+				$('#modalErrorDiv').html("Il campo Esito verifica è obbligatorio");
 				$('#myModalError').removeClass();
 				$('#myModalError').addClass("modal modal-danger");
 				$('#myModalError').modal('show');	
 			}
 			else if($('#esito').val()=='S' && $('#descrizione_sospensione').val()=='' && !salva_mod){
 				
-				$('#modalErrorDiv').html("Il campo Motivo sospensione � obbligatorio");
+				$('#modalErrorDiv').html("Il campo Motivo sospensione è obbligatorio");
 				$('#myModalError').removeClass();
 				$('#myModalError').addClass("modal modal-danger");
 				$('#myModalError').modal('show');	
@@ -3330,7 +3338,7 @@ function allegatoVisibile(id_allegato){
 			
 			else if(gvr !='' && gvr=='1' &&$('#tipo_verifica_gvr').val()=='' && !salva_mod){
 				
-				$('#modalErrorDiv').html("Il campo Tipo verifica GVR � obbligatorio");
+				$('#modalErrorDiv').html("Il campo Tipo verifica GVR è obbligatorio");
 				$('#myModalError').removeClass();
 				$('#myModalError').addClass("modal modal-danger");
 				$('#myModalError').modal('show');	
@@ -3338,7 +3346,7 @@ function allegatoVisibile(id_allegato){
 			
 			else if($('#check_sede_diversa').is(':checked')  && $('#presso').val()=='' && !salva_mod){
 				
-				$('#modalErrorDiv').html("Il campo presso � obbligatorio");
+				$('#modalErrorDiv').html("Il campo presso è obbligatorio");
 				$('#myModalError').removeClass();
 				$('#myModalError').addClass("modal modal-danger");
 				$('#myModalError').modal('show');	
@@ -3346,7 +3354,7 @@ function allegatoVisibile(id_allegato){
 			
 			else if($('#check_sede_diversa').is(':checked')  && $('#indirizzo').val()=='' && !salva_mod){
 				
-				$('#modalErrorDiv').html("Il campo indirizzo � obbligatorio");
+				$('#modalErrorDiv').html("Il campo indirizzo è obbligatorio");
 				$('#myModalError').removeClass();
 				$('#myModalError').addClass("modal modal-danger");
 				$('#myModalError').modal('show');	
@@ -3354,25 +3362,25 @@ function allegatoVisibile(id_allegato){
 			
 			else if($('#check_sede_diversa').is(':checked') && $('#cap').val()=='' && !salva_mod){
 				
-				$('#modalErrorDiv').html("Il campo cap � obbligatorio");
+				$('#modalErrorDiv').html("Il campo cap è obbligatorio");
 				$('#myModalError').removeClass();
 				$('#myModalError').addClass("modal modal-danger");
 				$('#myModalError').modal('show');	
 			}
 			else if($('#frequenza').val()=='' && $('#check_motivo').val()=='1' && !salva_mod){
-				$('#modalErrorDiv').html("Il campo frequenza � obbligatorio");
+				$('#modalErrorDiv').html("Il campo frequenza è obbligatorio");
 				$('#myModalError').removeClass();
 				$('#myModalError').addClass("modal modal-danger");
 				$('#myModalError').modal('show');	
 			}
  			else if($('#check_motivo').val()=='' && !salva_mod){
-				$('#modalErrorDiv').html("Il campo tipo verifica � obbligatorio");
+				$('#modalErrorDiv').html("Il campo tipo verifica è obbligatorio");
 				$('#myModalError').removeClass();
 				$('#myModalError').addClass("modal modal-danger");
 				$('#myModalError').modal('show');	
 			} 
 			else if($('#tipologia_verifica').val()=='' && !salva_mod){
-				$('#modalErrorDiv').html("Il campo tipologia verifica � obbligatorio");
+				$('#modalErrorDiv').html("Il campo tipologia verifica è obbligatorio");
 				$('#myModalError').removeClass();
 				$('#myModalError').addClass("modal modal-danger");
 				$('#myModalError').modal('show');	
@@ -3380,13 +3388,13 @@ function allegatoVisibile(id_allegato){
 			
 			//else if(($('#ore').val()=='' || $('#minuti').val()=='') && $('#ore_uomo').val()=='' && !salva_mod){
 			else if($('#ore_uomo').val()=='' && !salva_mod){
-				$('#modalErrorDiv').html("Il campo ore/uomo � obbligatorio");
+				$('#modalErrorDiv').html("Il campo ore/uomo è obbligatorio");
 				$('#myModalError').removeClass();
 				$('#myModalError').addClass("modal modal-danger");
 				$('#myModalError').modal('show');	
 			}
 			else if($('#matricola_vie').val()=='' && !salva_mod){
-				$('#modalErrorDiv').html("Il campo matricola � obbligatorio");
+				$('#modalErrorDiv').html("Il campo matricola è obbligatorio");
 				$('#myModalError').removeClass();
 				$('#myModalError').addClass("modal modal-danger");
 				$('#myModalError').modal('show');	
@@ -3465,7 +3473,7 @@ function allegatoVisibile(id_allegato){
 						$("#allegatiList").append('<li class="list-group-item"><b>'+data.fileName+'</b><a class="btn btn-default btn-xs pull-right" href="gestioneDocumento.do?idDocumento='+data.idDocumento+'" style="margin-left:5px"><i class="glyphicon glyphicon-file"></i> Download Allegato</a></li>');		
 					},
 					error : function(jqXHR, textStatus, errorThrown) {
-						$('#modalErrorDiv').html("Si � verificato un errore durante l'upload del file. Riprova pi� tardi");	
+						$('#modalErrorDiv').html("Si è verificato un errore durante l'upload del file. Riprova più tardi");	
 						$('#myModalError').removeClass();
 						$('#myModalError').addClass("modal modal-danger");
 					},
