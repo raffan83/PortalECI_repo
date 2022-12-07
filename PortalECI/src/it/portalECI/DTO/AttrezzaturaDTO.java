@@ -51,6 +51,8 @@ public class AttrezzaturaDTO {
 	private String regione_div;
 	private String codice_milestone;	
 	private int scadenza_ventennale_segnalata;
+	private Integer id_insieme;
+	private int has_insieme;
 	
 	
 	public int getAnno_costruzione() {
@@ -310,6 +312,18 @@ public class AttrezzaturaDTO {
 	}
 	public void setScadenza_ventennale_segnalata(int scadenza_ventennale_segnalata) {
 		this.scadenza_ventennale_segnalata = scadenza_ventennale_segnalata;
+	}
+	public Integer getId_insieme() {
+		return id_insieme;
+	}
+	public void setId_insieme(Integer id_insieme) {
+		this.id_insieme = id_insieme;
+	}
+	public int getHas_insieme() {
+		return has_insieme;
+	}
+	public void setHas_insieme(int has_insieme) {
+		this.has_insieme = has_insieme;
 	}
 
 	

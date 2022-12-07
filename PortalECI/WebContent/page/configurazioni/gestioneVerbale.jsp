@@ -171,13 +171,59 @@
                 									</li>
                 									<li class="list-group-item">
                   										<b>Sede Utilizzatore</b>                  										
-                  										<a class="pull-right "  >${verbale.sedeUtilizzatore}<c:if test="${verbale.codiceCategoria == 'VIE' }">  <c:if test="${verbale.getStato().getId()!= 5}"><i class="fa fa-edit" onclick="modalSedeUtilizzatore('${utl:escapeJS(verbale.sedeUtilizzatore)}')" title="Modifica sede utilizzatore"></i></c:if></c:if>
+                  										<a class="pull-right "  >${verbale.sedeUtilizzatore}<c:if test="${verbale.codiceCategoria == 'VIE' }">  <c:if test="${verbale.getStato().getId()!= 5}"><i class="fa fa-edit" onclick="modalSedeUtilizzatore('${utl:escapeJS(verbale.sedeUtilizzatore)}')" title="Modifica sede utilizzatore"></i></c:if></c:if> 
+                  										
                   										
                   										</a>
                   									
                   									 
                   									       										
                 									</li>
+                									<c:if test="${verbale.codiceCategoria == 'VAL' }">
+                									<li class="list-group-item">
+                  										<b>Effettuazione verifica</b>
+                  										<c:if test="${verbale.effettuazione_verifica == 1}">
+                  										<a class="pull-right "  >Affidamento da parte del titolare della funzione <c:if test="${verbale.getStato().getId()!= 5}"><i class="fa fa-edit" onclick="modalEffVerifica('${verbale.effettuazione_verifica}')" title="Modifica effettuazione verifica"></i></c:if></a>
+                  										</c:if>          
+                  										<c:if test="${verbale.effettuazione_verifica == 2}">
+                  										<a class="pull-right "  >Affidamento diretto da parte del datore di lavoro <c:if test="${verbale.getStato().getId()!= 5}"><i class="fa fa-edit" onclick="modalEffVerifica('${verbale.effettuazione_verifica}')" title="Modifica effettuazione verifica"></i></c:if></a>
+                  										</c:if>       
+                  									       										
+                									</li>
+                									
+                									
+                									<li class="list-group-item">
+                  										<b>Tipo verifica</b>  
+                  										
+                  										<c:if test="${verbale.getCodiceVerifica().startsWith('GVR') }">
+	                  										<c:if test="${verbale.tipo_verifica == 1 }">
+	                  										<a class="pull-right "  >Prima verifica periodica attr. e attr. di insiemi soggetti a verifica (art.4) <c:if test="${verbale.getStato().getId()!= 5}"><i class="fa fa-edit" onclick="modalTipoVerifica('${verbale.tipo_verifica}')" title="Modifica tipo verifica"></i></c:if></a>
+	                  										</c:if>
+	                  										<c:if test="${verbale.tipo_verifica == 2 }">
+	                  										<a class="pull-right "  >Prima verifica periodica attr. di insiemi NON soggetti a verifica (art.5)<c:if test="${verbale.getStato().getId()!= 5}"><i class="fa fa-edit" onclick="modalTipoVerifica('${verbale.tipo_verifica}')" title="Modifica tipo verifica"></i></c:if></a>
+	                  										</c:if>
+	                  										<c:if test="${verbale.tipo_verifica == 3 }">
+	                  										<a class="pull-right "  >Verifica successiva alla prima (funzionamento e/o interna)<c:if test="${verbale.getStato().getId()!= 5}"><i class="fa fa-edit" onclick="modalTipoVerifica('${verbale.tipo_verifica}')" title="Modifica tipo verifica"></i></c:if></a>
+	                  										</c:if>
+	                  										<c:if test="${verbale.tipo_verifica == 4 }">
+	                  										<a class="pull-right "  >Verifica successiva alla prima (funzionamento e/o interna e integrit&agrave;)<c:if test="${verbale.getStato().getId()!= 5}"><i class="fa fa-edit" onclick="modalTipoVerifica('${verbale.tipo_verifica}')" title="Modifica tipo verifica"></i></c:if></a>
+	                  										</c:if>
+                  										</c:if>
+                  										       
+                  										 <c:if test="${!verbale.getCodiceVerifica().startsWith('GVR') }">
+	                  										<c:if test="${verbale.tipo_verifica == 1 }">
+	                  										<a class="pull-right "  >Prima periodica <c:if test="${verbale.getStato().getId()!= 5}"><i class="fa fa-edit" onclick="modalTipoVerifica('${verbale.tipo_verifica}')" title="Modifica tipo verifica"></i></c:if></a>
+	                  										</c:if>
+	                  										<c:if test="${verbale.tipo_verifica == 2 }">
+	                  										<a class="pull-right "  >Periodica successiva<c:if test="${verbale.getStato().getId()!= 5}"><i class="fa fa-edit" onclick="modalTipoVerifica('${verbale.tipo_verifica}')" title="Modifica tipo verifica"></i></c:if></a>
+	                  										</c:if>
+                  										</c:if>        										
+                  										
+                  									
+                  									 
+                  									       										
+                									</li>
+                									</c:if>
                 									<c:if test="${verbale.codiceCategoria == 'VIE' }">
                 									<li class="list-group-item">
                   										<b>Esercente</b>
@@ -1303,6 +1349,65 @@
 							</div>
 						</div>
 						
+						<div id="myModalEffVerifica" class="modal fade" role="dialog" aria-labelledby="modalCambioStatoVerbale">
+   							<div class="modal-dialog modal-lg" role="document">
+    							<div class="modal-content">
+     								<div class="modal-header">
+        								<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        									<span aria-hidden="true">&times;</span>
+        								</button>
+        								<h4 class="modal-title" id="myModalLabel">Modifica effettuazione verifica</h4>
+      								</div>
+      									
+       								<div class="modal-body" >
+       									<div class="row">
+											<label class="col-sm-3" >Effettuazione Verifica </label>
+                  							
+                  							<div class="col-sm-9">
+                  							<select name="eff_verifica_mod" id="eff_verifica_mod" data-placeholder="Seleziona Effettuazione Verifica..."  class="form-control select2" aria-hidden="true" data-live-search="true">
+	                								<option value=""></option>
+	                								<option value="1">Affidamento da parte del titolare della funzione</option>
+	                								<option value="2">Affidamento diretto da parte del datore di lavoro</option>
+	        	         							</select>   							      										
+											</div>											
+										</div>
+    								</div>
+    								<div class="modal-footer">
+										<button onclick="modificaEffettuazioneVerifica()" class="btn btn-danger" >Salva</button>
+	      							</div>
+  								</div>
+							</div>
+						</div>
+						
+						<div id="myModalTipoVerifica" class="modal fade" role="dialog" aria-labelledby="modalCambioStatoVerbale">
+   							<div class="modal-dialog modal-lg" role="document">
+    							<div class="modal-content">
+     								<div class="modal-header">
+        								<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        									<span aria-hidden="true">&times;</span>
+        								</button>
+        								<h4 class="modal-title" id="myModalLabel">Modifica tipo verifica</h4>
+      								</div>
+      									
+       								<div class="modal-body" >
+       									<div class="row">
+											<label class="col-sm-3" >Tipo verifica </label>
+                  							
+                  							<div class="col-sm-9">
+                  							 <select name="tipo_verifica_mod" id="tipo_verifica_mod" data-placeholder="Seleziona Effettuazione Verifica..."  class="form-control select2" aria-hidden="true" data-live-search="true">
+
+	        	         							</select>  						      										
+											</div>											
+										</div>
+    								</div>
+    								<div class="modal-footer">
+    								<input type="hidden" id="com_prov" name="com_prov">
+										<button onclick="modificaTipoVerifica()" class="btn btn-danger" >Salva</button>
+	      							</div>
+  								</div>
+							</div>
+						</div>
+						
 						
 						<div id="myModalModificaAttrezzatura" class="modal fade" role="dialog" aria-labelledby="modalCambioStatoVerbale">
    							<div class="modal-dialog modal-md" role="document">
@@ -1992,6 +2097,7 @@
 <script src="plugins/jqueryuploadfile/js/jquery.fileupload-validate.js"></script>
 <script src="plugins/jqueryuploadfile/js/jquery.fileupload-ui.js"></script>
 <script src="plugins/fileSaver/FileSaver.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 <!-- <script type="text/javascript" src="plugins/datejs/date.js"></script> -->
  		<script type="text/javascript">
 		   
@@ -2419,20 +2525,56 @@ $('#minuti').change(function(){
 	
 	function modalSedeUtilizzatore(sedeUtilizzatore){
 		
-		var length = sedeUtilizzatore.split("-").length;
+	//	var length = sedeUtilizzatore.split("-").length;
 		
-		var com_prov = sedeUtilizzatore.split("-")[length-2] +"-"+ sedeUtilizzatore.split("-")[length-1];
+		//var com_prov = sedeUtilizzatore.split("-")[length-2] +"-"+ sedeUtilizzatore.split("-")[length-1];
 		
-		var indirizzo = sedeUtilizzatore.substring(0,sedeUtilizzatore.indexOf(com_prov)-2); 
+		//var indirizzo = sedeUtilizzatore.substring(0,sedeUtilizzatore.indexOf(com_prov)-2); 
 		
-		$('#sede_util_mod').val(indirizzo);
-		$('#com_prov').val(com_prov);
+		$('#sede_util_mod').val(sedeUtilizzatore);
+		//$('#com_prov').val(com_prov);
 		
 		$('#myModalModificaSedeUtilizzatore').modal();
 		
 				
 	}
 	
+	function modalEffVerifica(eff_verifica){
+		
+			$('#eff_verifica_mod').val(eff_verifica);
+			$('#eff_verifica_mod').change()
+
+			$('#myModalEffVerifica').modal();
+			
+					
+		}
+	
+	
+	function modalTipoVerifica(tipo_verifica){
+		
+	var opt = [];
+		
+		var gruppo = "${verbale.getCodiceVerifica()}"
+		
+		if(gruppo.startsWith("GVR")){
+				opt.push("<option value='1'>Prima verifica periodica attr. e attr. di insiemi soggetti a verifica (art.4)</option>");
+				opt.push("<option value='2'>Prima verifica periodica attr. di insiemi NON soggetti a verifica (art.5)</option>");
+				opt.push("<option value='3'>Verifica successiva alla prima (funzionamento e/o interna)</option>");
+				opt.push("<option value='4'>Verifica successiva alla prima (funzionamento e/o interna e integrit&agrave;)</option>");
+			}else{
+				opt.push("<option value='1'>Prima periodica</option>");
+				opt.push("<option value='2'>Periodica successiva</option>");
+			}
+		
+		$('#tipo_verifica_mod').html(opt);
+		
+		$('#tipo_verifica_mod').val(tipo_verifica);
+		$('#tipo_verifica_mod').change();
+		
+		$('#myModalTipoVerifica').modal();
+		
+				
+	}
 	
 	function modalAttrezzatura(){
 		
@@ -2648,12 +2790,90 @@ function modificaSedeUtilizzatore(){
 	pleaseWaitDiv.modal();
 	
 	var id ="${verbale.id}";
-	var sede_utilizzatore = $('#sede_util_mod').val()+" - "+$('#com_prov').val();
+	var sede_utilizzatore = $('#sede_util_mod').val();
 	
 	$.ajax({
 		type: "POST",
 		url: "gestioneVerbale.do?action=modifica_sede_utilizzatore",
 		data : "idVerbale="+id+"&sede_utilizzatore_mod="+sede_utilizzatore,				
+		dataType: "json",
+		success: function( data, textStatus) {
+			
+			pleaseWaitDiv.modal('hide');
+			$('#modalErrorDiv').html(data.messaggio);
+			$('#myModalError').removeClass();
+			$('#myModalError').addClass("modal modal-success");
+			$('#myModalError').modal('show');		
+			$('#myModalError').on('hidden.bs.modal', function(){
+				location.reload()
+			});
+			
+		},
+		error: function(jqXHR, textStatus, errorThrown){
+			pleaseWaitDiv.modal('hide');
+			$('#modalErrorDiv').html(jqXHR.responseText);
+			$('#myModalError').removeClass();
+			$('#myModalError').addClass("modal modal-danger");
+			$('#myModalError').modal('show');															
+		}
+	});
+	
+}
+
+
+
+function modificaEffettuazioneVerifica(){
+	
+	$("#myModalEffVerifica").modal('hide');
+	pleaseWaitDiv = $('#pleaseWaitDialog');
+	pleaseWaitDiv.modal();
+	
+	var id ="${verbale.id}";
+	var eff_verifica = $('#eff_verifica_mod').val();
+	
+	$.ajax({
+		type: "POST",
+		url: "gestioneVerbale.do?action=modifica_effettuazione_verifica",
+		data : "idVerbale="+id+"&effettuazione_verifica="+eff_verifica,				
+		dataType: "json",
+		success: function( data, textStatus) {
+			
+			pleaseWaitDiv.modal('hide');
+			$('#modalErrorDiv').html(data.messaggio);
+			$('#myModalError').removeClass();
+			$('#myModalError').addClass("modal modal-success");
+			$('#myModalError').modal('show');		
+			$('#myModalError').on('hidden.bs.modal', function(){
+				location.reload()
+			});
+			
+		},
+		error: function(jqXHR, textStatus, errorThrown){
+			pleaseWaitDiv.modal('hide');
+			$('#modalErrorDiv').html(jqXHR.responseText);
+			$('#myModalError').removeClass();
+			$('#myModalError').addClass("modal modal-danger");
+			$('#myModalError').modal('show');															
+		}
+	});
+	
+}
+
+
+
+function modificaTipoVerifica(){
+	
+	$("#myModalTipoVerifica").modal('hide');
+	pleaseWaitDiv = $('#pleaseWaitDialog');
+	pleaseWaitDiv.modal();
+	
+	var id ="${verbale.id}";
+	var tipo_verifica = $('#tipo_verifica_mod').val();
+	
+	$.ajax({
+		type: "POST",
+		url: "gestioneVerbale.do?action=modifica_tipo_verifica",
+		data : "idVerbale="+id+"&tipo_verifica="+tipo_verifica,				
 		dataType: "json",
 		success: function( data, textStatus) {
 			
@@ -3593,6 +3813,54 @@ function allegatoVisibile(id_allegato){
 				});
 				
 			}
+			
+		function exportaExcel(id_tabella){
+			
+			var data = [];
+			var table = document.getElementById(id_tabella);
+
+			var rowLength = table.rows.length;
+			for (i = 0; i < rowLength; i++){
+
+			   var cells = table.rows.item(i).cells;
+			   var cellLength = cells.length;
+
+			   var data_row = [];
+			   for(var j = 0; j < cellLength-1; j++){
+			      var row = cells.item(j);
+			      var cellVal = "";			      
+			      if(cells[0].tagName=="TH"){
+			    	  cellVal=  $(row).closest('th')[0].innerText
+			      }else{
+			    	  
+			    	  $(row).closest('td').find("select").each(function() {
+				    	  cellVal = this.options[this.selectedIndex].outerText;
+				      });
+			      
+			    	  if(cellVal == null ||cellVal==""){
+			    		  $(row).closest('td').find("input").each(function() {
+					    	  cellVal = this.value;
+					      });
+			    	  }
+			    	  
+			      }
+			      			     
+			      data_row.push(cellVal);
+			   }
+			   
+			   data.push(data_row);
+			}
+			
+			var workbook = XLSX.utils.book_new(),
+		    worksheet = XLSX.utils.aoa_to_sheet(data);
+		workbook.SheetNames.push("First");
+		workbook.Sheets["First"] = worksheet;
+		
+		XLSX.writeFile(workbook, "table_export.xlsx");
+		}
+			
+
+ 	    		       	           	           	 	
 			
   		</script>	  
 	</jsp:attribute> 

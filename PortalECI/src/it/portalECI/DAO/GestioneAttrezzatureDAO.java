@@ -353,6 +353,20 @@ public static ArrayList<AttrezzaturaDTO> getAttrezzatureScadenzaVentennale(Sessi
 	
 }
 
+public static ArrayList<AttrezzaturaDTO> getListaAttrezzatureInsieme(int id_attrezzatura, Session session) {
+	
+	ArrayList<AttrezzaturaDTO> lista =null;
+	
+	Query query = session.createQuery("from AttrezzaturaDTO where id_insieme = :_id_attrezzatura");
+	query.setParameter("_id_attrezzatura", id_attrezzatura);
+	
+	lista= (ArrayList<AttrezzaturaDTO>)query.list();
+	
+
+	
+	return lista;
+}
+
 }
 
 

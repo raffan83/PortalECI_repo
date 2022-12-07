@@ -155,17 +155,19 @@
 			<p><a class="label label-warning" onclick="detailStorico('${risposta.getId()}')" title="Clicca per vedere lo storico delle modifiche"> Elemento modificato <i class="fa fa-pencil" aria-hidden="true"></i></a></p>
 		</c:if>
 		<div class="col-sm-12">
+		<button class="btn btn-primary" onclick="exportaExcel('tabella_${domVerbale.getRisposta().getId()}')">Esporta Excel</button>
 		<span class="btn btn-primary fileinput-button pull-right">
 		        <i class="glyphicon glyphicon-plus"></i>
 		        <span>Importa da Excel</span>
 		        <!-- The file input field used as target for the file upload widget -->
 		        		<input accept=".xls, .xlsx, .XLS, .XLSX" id="fileupload_excel_${risposta.getId()}" onChange="importaExcel(${risposta.getId()})" type="file" name="files">
+		        		
 		        		<input  id="fileupload_excel_id" type="hidden" value="${risposta.getId()}">
 		        		
 		   	 </span><br><br>
 		
 		<div class="table-responsive">
-		<table class="table table-bordered table-condensed">
+		<table class="table table-bordered table-condensed" id="tabella_${domVerbale.getRisposta().getId()}">
 			<thead>
 				<tr>
 					<c:forEach items="${colonne}" var="colonnaVerbale" varStatus="loop">

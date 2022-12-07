@@ -85,4 +85,9 @@ public class GestioneAttrezzatureBO {
 		
 		return GestioneAttrezzatureDAO.getAttrezzatureScadenzaVentennale(session);
 	}
+
+	public static ArrayList<AttrezzaturaDTO> getListaAttrezzatureInsieme(int id_attrezzatura, Session session) {
+		
+		return GestioneAttrezzatureDAO.getListaAttrezzatureInsieme(id_attrezzatura, session);
+	}
 }

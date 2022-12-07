@@ -396,6 +396,19 @@ function saveInterventoFromModal(){
 		var data = table.rows().data();
 		data.each(function (value, index) {
 			
+		//	var eff_verifica_opt = $('#effettuazione_verifica').find('option[text="'+value[8]+'"]').val();
+			//var tipo_verifica_opt = $('#tipo_verifica').find('option[text="'+value[9]+'"]').val();
+			var eff_verifica_opt = $('#effettuazione_verifica option').filter(function () { return $(this).html() == value[8]; }).val();
+			var tipo_verifica_opt = $('#tipo_verifica option').filter(function () { return $(this).html() == value[9]; }).val();
+			
+			if(eff_verifica_opt==null){
+				eff_verifica_opt = "";
+			}
+			
+			if(tipo_verifica_opt==null){
+				tipo_verifica_opt = "";
+			}
+			
 			var x = stripHtml(value[2]);
 			
 			noteVerb+="&note="+value[10];
@@ -403,8 +416,8 @@ function saveInterventoFromModal(){
 			attrezzature+='&attrezzature='+value[4];
 			esercenti+='&esercenti='+value[6];
 			descrizione_util+='&descrizione_util='+value[7];
-			eff_ver+='&effettuazione_verifica='+value[8];
-			tipo_ver+='&tipo_verifica='+value[9];
+			eff_ver+='&effettuazione_verifica='+eff_verifica_opt;
+			tipo_ver+='&tipo_verifica='+tipo_verifica_opt;
 		 });
 	            
 		
@@ -3119,6 +3132,7 @@ function nuovaAttrezzatura(){
 	var n_id_on = $('#n_id_on').val();
 	var data_scadenza_ventennale = $('#data_scadenza_ventennale').val();
 	var codice_milestone = $('#codice_milestone').val();
+	var id_insieme = $('#id_insieme').val();
 
 	var dataObj = {};
 	          
@@ -3149,6 +3163,7 @@ function nuovaAttrezzatura(){
 	dataObj.n_id_on = n_id_on;
 	dataObj.data_scadenza_ventennale = data_scadenza_ventennale;
 	dataObj.codice_milestone = codice_milestone;
+	dataObj.id_insieme = id_insieme;
 
 	$.ajax({
 		type: "POST",
@@ -4483,13 +4498,24 @@ function aggiungiVerbale(id_intervento){
 			
 			var x = stripHtml(value[2]);
 			
+			var eff_verifica_opt = $('#effettuazione_verifica option').filter(function () { return $(this).html() == value[8]; }).val();
+			var tipo_verifica_opt = $('#tipo_verifica option').filter(function () { return $(this).html() == value[9]; }).val();
+			
+			if(eff_verifica_opt==null){
+				eff_verifica_opt = "";
+			}
+			
+			if(tipo_verifica_opt==null){
+				tipo_verifica_opt = "";
+			}
+			
 			noteVerb+="&note="+value[10];
 			sedi+= "&sedi="+value[5];
 			attrezzature+='&attrezzature='+value[4];
 			esercenti+='&esercenti='+value[6];
 			descrizione_util+='&descrizione_util='+value[7];
-			eff_ver+='&effettuazione_verifica='+value[8];
-			tipo_ver+='&tipo_verifica='+value[9];
+			eff_ver+='&effettuazione_verifica='+eff_verifica_opt;
+			tipo_ver+='&tipo_verifica='+tipo_verifica_opt;
 		 });
 	            
 		

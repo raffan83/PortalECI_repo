@@ -101,6 +101,7 @@
  <tbody>
  <c:if test="${!user.checkRuolo('CLVAL') }">
  	<c:forEach items="${lista_attrezzature}" var="attrezzatura" varStatus="loop">
+ 	<c:if test="${attrezzatura.id_insieme==null }">
  	<c:choose>
  	<c:when test="${attrezzatura.obsoleta==0}">
  		<tr  onDblClick="openTab('${attrezzatura.id }','${attrezzatura.matricola_inail }','${attrezzatura.numero_fabbrica }','${attrezzatura.tipo_attivita }','${attrezzatura.descrizione }','${attrezzatura.id_cliente }','${attrezzatura.id_sede }',
@@ -117,7 +118,7 @@
  		<tr style="background-color:#ff6666">
  	</c:otherwise>
  	</c:choose>
- 
+
  	<td>${attrezzatura.id }</td>
  	<td hidden="hidden">${attrezzatura.obsoleta }</td>
  	<td>${attrezzatura.matricola_inail }</td>
@@ -165,7 +166,7 @@
  	
  	
  	</tr>
- 	
+ 	 </c:if>
  	
 
  	
@@ -229,7 +230,7 @@
 </div>
 
  <form class="form-horizontal" id="formNuovaAttrezzatura">
-<div id="modalNuovaAttrezzatura" class="modal fade" role="dialog" aria-labelledby="myLargeModalLabel">
+<div id="modalNuovaAttrezzatura" class="modal fade" role="dialog" aria-labelledby="myLargeModalLabel" style="z-index:9999">
     <div class="modal-dialog modal-md" role="document">
     <div class="modal-content">
      <div class="modal-header">
@@ -339,7 +340,7 @@
     </div>
     
     
-        <div class="form-group">
+        <div class="form-group" id="form_group_id">
         <label for="inputName" class="col-sm-4 control-label">Tipo attrezzatura:</label>
         <div class="col-sm-8">
                      
@@ -373,7 +374,7 @@
     </div>
     
     
-     <div class="form-group">
+     <div class="form-group" id="sogg_messa_serv_GVR_content">
         <label for="inputName" class="col-sm-4 control-label">Sogg. messa servizio GVR:</label>
         <div class="col-sm-8">
                      
@@ -386,7 +387,7 @@
     </div>
     
     
-             <div class="form-group">
+             <div class="form-group" id="n_panieri_idroestrattori_content">
         <label for="inputName" class="col-sm-4 control-label">N. panieri idroestrattori:</label>
         <div class="col-sm-8">
                       <input class="form-control" id="n_panieri_idroestrattori" type="text" name="n_panieri_idroestrattori"  value=""/>
@@ -414,7 +415,7 @@
     </div>
        </div> 
        
-                <div class="form-group">
+                <div class="form-group" id="data_scadenza_ventennale_content">
         <label for="inputName" class="col-sm-4 control-label">Data scadenza ventennale:</label>
         <div class="col-sm-8">
                       <input class="form-control datepicker disabled" id="data_scadenza_ventennale" type="text" name="data_scadenza_ventennale"  value="" data-date-format="dd/mm/yyyy"/>
@@ -422,41 +423,41 @@
        </div> 
        
 
-         <div class="form-group">
+         <div class="form-group" id="data_verifica_funzionamento_content">
         <label for="inputName" class="col-sm-4 control-label">Data verifica funzionamento:</label>
         <div class="col-sm-8">
                       <input class="form-control datepicker" id="data_verifica_funzionamento" type="text" name="data_verifica_funzionamento"  value="" data-date-format="dd/mm/yyyy"/>
     </div>
        </div> 
        
-         <div class="form-group">
+         <div class="form-group" id="data_prossima_verifica_funzionamento_content">
         <label for="inputName" class="col-sm-4 control-label">Data prossima verifica funzionamento:</label>
         <div class="col-sm-8">
                       <input class="form-control datepicker" id="data_prossima_verifica_funzionamento" type="text" name="data_prossima_verifica_funzionamento"  value="" data-date-format="dd/mm/yyyy"/>
     </div>
        </div> 
        
-             <div class="form-group">
+             <div class="form-group" id="data_verifica_integrita_content">
         <label for="inputName" class="col-sm-4 control-label">Data verifica integrità:</label>
         <div class="col-sm-8">
                       <input class="form-control datepicker" id="data_verifica_integrita" type="text" name="data_verifica_integrita"  value="" data-date-format="dd/mm/yyyy"/>
     </div>
        </div> 
        
-         <div class="form-group">
+         <div class="form-group" id="data_prossima_verifica_integrita_content">
         <label for="inputName" class="col-sm-4 control-label">Data prossima verifica integrità:</label>
         <div class="col-sm-8">
                       <input class="form-control datepicker" id="data_prossima_verifica_integrita" type="text" name="data_prossima_verifica_integrita"  value="" data-date-format="dd/mm/yyyy"/>
     </div>
        </div>
-             <div class="form-group">
+             <div class="form-group" id="data_verifica_interna_content">
         <label for="inputName" class="col-sm-4 control-label">Data verifica interna:</label>
         <div class="col-sm-8">
                       <input class="form-control datepicker" id="data_verifica_interna" type="text" name="data_verifica_interna"  value="" data-date-format="dd/mm/yyyy"/>
     </div>
        </div> 
        
-         <div class="form-group">
+         <div class="form-group" id="data_prossima_verifica_interna_content">
         <label for="inputName" class="col-sm-4 control-label">Data prossima verifica interna:</label>
         <div class="col-sm-8">
                       <input class="form-control datepicker" id="data_prossima_verifica_interna" type="text" name="data_prossima_verifica_interna"  value="" data-date-format="dd/mm/yyyy"/>
@@ -486,6 +487,7 @@
 
   		 </div>
       <div class="modal-footer">
+       <input type="hidden" id="id_insieme" name="id_insieme"/>
 <button type="submit" class="btn btn-primary pull-right" >Salva</button>
       </div>
     </div>
@@ -500,7 +502,8 @@
 
 <form class="form-horizontal" id="formModificaAttrezzatura">
 <div id="modalModificaAttrezzatura" class="modal fade" role="dialog" aria-labelledby="myLargeModalLabel">
-    <div class="modal-dialog modal-${user.checkRuolo('CLVAL')? 'lg':'md'}" role="document">
+    <%-- <div class="modal-dialog modal-${user.checkRuolo('CLVAL')? 'lg':'md'}" role="document"> --%>
+     <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content">
      <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
@@ -514,6 +517,8 @@
               
               </c:if>
               		<li class="${user.checkRuolo('CLVAL')? 'active':''}" id="tab2"><a href="#verbali" data-toggle="tab" aria-expanded="false"   id="verbaliTab">Verbali</a></li>
+              		
+              		<li class="${user.checkRuolo('CLVAL')? 'active':''}" id="tab3"><a href="#attrezzature_insieme" data-toggle="tab" aria-expanded="false"   id="attrezzatureInsiemeTab">Attrezzature insieme</a></li>
               	
               
             </ul>
@@ -810,7 +815,7 @@
               </div>
             
               
-              
+               <div class="tab-pane table-responsive ${user.checkRuolo('CLVAL')? 'active':''}"  id="attrezzature_insieme"></div>
               
               </div>
               </div>
@@ -871,6 +876,11 @@ function openVerbaliModal(id_attrezzatura){
 		
 		exploreModal("listaAttrezzature.do","action=verbali_attrezzatura&id_attrezzatura="+$('#id_attrezzatura').val(),"#verbali");
 	}
+	
+if(contentID == "attrezzatureInsiemeTab"){
+		
+		exploreModal("listaAttrezzature.do","action=attrezzature_insieme&id_attrezzatura="+$('#id_attrezzatura').val(),"#attrezzature_insieme");
+	}
 
 	
 	
@@ -912,13 +922,56 @@ $('#formModificaAttrezzatura').on('submit',function(e){
     modificaAttrezzatura();
 });
 
-function modalNuovaAttrezzatura(){
+function modalNuovaAttrezzatura(attrezzatura_insieme, id_insieme){
 	
 	$('#cliente').val($('#select1').val());
 	$('#cliente').change();
 	
 	$('#sede').val($('#select2').val());
-	$('#sede').change();
+	$('#sede').change(); 
+	
+	if(attrezzatura_insieme){
+		
+		$('#settore_impiego_content').hide();
+		$('#sogg_messa_serv_GVR_content').hide();
+		$('#n_panieri_idroestrattori_content').hide();
+		$('#data_scadenza_ventennale_content').hide();
+		$('#data_verifica_funzionamento_content').hide();
+		$('#data_prossima_verifica_funzionamento_content').hide();
+		$('#data_verifica_integrita_content').hide();
+		$('#data_prossima_verifica_integrita_content').hide();
+		$('#data_verifica_interna_content').hide();
+		$('#data_prossima_verifica_interna_content').hide();
+		$('#matricola_inail').attr("required", false);
+		$('#id_insieme').val(id_insieme);		
+		
+	} else{
+		
+		$('#settore_impiego_content').show();
+		$('#sogg_messa_serv_GVR_content').show();
+		$('#n_panieri_idroestrattori_content').show();
+		$('#data_scadenza_ventennale_content').show();
+		$('#data_verifica_funzionamento_content').show();
+		$('#data_prossima_verifica_funzionamento_content').show();
+		$('#data_verifica_integrita_content').show();
+		$('#data_prossima_verifica_integrita_content').show();
+		$('#data_verifica_interna_content').show();
+		$('#data_prossima_verifica_interna_content').show();
+		$('#matricola_inail').attr("required", true);
+		
+		
+	}
+	
+	
+$("#modalNuovaAttrezzatura select.select2").each(function (index, element) {
+        
+		if(element.id!="cliente_appoggio" && element.id!="select2"){
+			$('#'+element.id).select2(
+					
+					{dropdownParent: $('#form_group_id')});
+		}
+       
+    });
 	
 	$('#modalNuovaAttrezzatura').modal();
 }
@@ -1093,13 +1146,17 @@ $(document).ready(function() {
 	console.log("test");
 	$('.datepicker').datepicker();
 
-	$("select.select2").each(function (index, element) {
+/* 	$("select.select2").each(function (index, element) {
         
 		if(element.id!="cliente_appoggio" && element.id!="select2"){
-			$(element).select2();
+			$(element).select2(
+					
+					{dropdownParent: $('#modalNuovaAttrezzatura')});
 		}
        
     });
+	 */
+
 	
 	var col_azioni = 29;
 	if(${user.checkRuolo('CLVAL')}){

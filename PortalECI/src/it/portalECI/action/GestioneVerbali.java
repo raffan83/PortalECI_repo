@@ -1160,6 +1160,32 @@ if(action!= null && action.equals("dettaglio")) {
 			
 		}
 		
+		else if(action!=null && action.equals("modifica_effettuazione_verifica")) {
+			
+			String effettuazione_verifica = request.getParameter("effettuazione_verifica");
+			verbale.setEffettuazione_verifica(Integer.parseInt(effettuazione_verifica));
+			session.update(verbale);
+			
+			myObj.addProperty("success", true);
+			myObj.addProperty("messaggio", "effettuazione verifica modificata con successo!");
+
+			out.print(myObj);
+			
+		}
+		
+		else if(action!=null && action.equals("modifica_tipo_verifica")) {
+			
+			String tipo_verifica = request.getParameter("tipo_verifica");
+			verbale.setTipo_verifica(Integer.parseInt(tipo_verifica));
+			session.update(verbale);
+			
+			myObj.addProperty("success", true);
+			myObj.addProperty("messaggio", "Tipo vertifica modificato con successo!");
+
+			out.print(myObj);
+			
+		}
+		
 		else if(action!=null && action.equals("modifica_attrezzatura")) {
 		
 			
