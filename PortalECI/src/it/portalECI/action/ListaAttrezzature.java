@@ -585,7 +585,7 @@ public class ListaAttrezzature extends HttpServlet {
 				
 				AttrezzaturaDTO attrezzatura = GestioneAttrezzatureBO.checkMatricola(matricola_inail, session);
 				
-				if(attrezzatura!=null) {
+				if(attrezzatura!=null && (id_insieme==null|| id_insieme.equals(""))) {
 					session.getTransaction().commit();
 					session.close();
 					

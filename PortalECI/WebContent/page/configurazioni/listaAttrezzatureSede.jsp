@@ -104,11 +104,7 @@
  	<c:if test="${attrezzatura.id_insieme==null }">
  	<c:choose>
  	<c:when test="${attrezzatura.obsoleta==0}">
- 		<tr  onDblClick="openTab('${attrezzatura.id }','${attrezzatura.matricola_inail }','${attrezzatura.numero_fabbrica }','${attrezzatura.tipo_attivita }','${attrezzatura.descrizione }','${attrezzatura.id_cliente }','${attrezzatura.id_sede }',
- 	'${attrezzatura.data_verifica_funzionamento }','${attrezzatura.data_prossima_verifica_funzionamento }','${attrezzatura.data_verifica_integrita }','${attrezzatura.data_prossima_verifica_integrita }','${attrezzatura.data_verifica_interna }','${attrezzatura.data_prossima_verifica_interna }',
- 	'${attrezzatura.anno_costruzione }','${attrezzatura.fabbricante }','${attrezzatura.modello }','${attrezzatura.settore_impiego }','${fn:replace(fn:replace(attrezzatura.note_tecniche.replace('\'',' ').replace('\\','/'),newLineChar, ' '),newLineChar2, ' ')}','${fn:replace(fn:replace(attrezzatura.note_generiche.replace('\'',' ').replace('\\','/').replace('\\n',' '),newLineChar, ' '),newLineChar2,' ')}','${attrezzatura.obsoleta }',
- 	'${attrezzatura.tipo_attrezzatura }','${attrezzatura.tipo_attrezzatura_GVR }','${attrezzatura.ID_specifica }','${attrezzatura.sogg_messa_serv_GVR }',
- 	'${attrezzatura.n_panieri_idroestrattori }','${attrezzatura.marcatura }','${attrezzatura.n_id_on }')" >
+ 		<tr>
  	
  	
  	
@@ -240,7 +236,7 @@
        <div class="modal-body">
 
        
-        
+        <div id="cliente_content">
          <div class="form-group">
           <label for="inputEmail" class="col-sm-4 control-label">Cliente:</label>
 
@@ -265,7 +261,7 @@
                   </select>
     	</div>
    </div>
-              
+      </div>        
 
     <div class="form-group">
           <label for="inputEmail" class="col-sm-4 control-label">Numero matricola INAIL: <span id="label_pattern" style="display:none"><font style="color:red">Pattern matricola errato!</font></span></label>
@@ -327,7 +323,7 @@
                       <input class="form-control" id="modello" type="text" name="modello"  value=""/>
     </div>
     </div>
-    <div class="form-group">
+    <div class="form-group" id="settore_impiego_content">
         <label for="inputName" class="col-sm-4 control-label">Settore d'impiego:</label>
         <div class="col-sm-8">
                      <!--  <input class="form-control" id="settore_impiego" type="text" name="settore_impiego"  value=""/> -->
@@ -518,8 +514,9 @@
               </c:if>
               		<li class="${user.checkRuolo('CLVAL')? 'active':''}" id="tab2"><a href="#verbali" data-toggle="tab" aria-expanded="false"   id="verbaliTab">Verbali</a></li>
               		
-              		<li class="${user.checkRuolo('CLVAL')? 'active':''}" id="tab3"><a href="#attrezzature_insieme" data-toggle="tab" aria-expanded="false"   id="attrezzatureInsiemeTab">Attrezzature insieme</a></li>
-              	
+              		
+              		<li class="${user.checkRuolo('CLVAL')? 'active':''}" style="display:none" id="tab3"><a href="#attrezzature_insieme" data-toggle="tab" aria-expanded="false"   id="attrezzatureInsiemeTab">Attrezzature insieme</a></li>
+              
               
             </ul>
             <div class="tab-content">
@@ -551,7 +548,7 @@
                   </select>
     	</div>
    </div>
-              
+           
 
     <div class="form-group">
           <label for="inputEmail" class="col-sm-4 control-label">Numero matricola INAIL:</label>
@@ -626,7 +623,7 @@
                       <input class="form-control" id="modello_mod" type="text" name="modello_mod"  value=""/>
     </div>
     </div>
-    <div class="form-group">
+    <div class="form-group" >
         <label for="inputName" class="col-sm-4 control-label">Settore d'impiego:</label>
         <div class="col-sm-8">
         <!--               <input class="form-control" id="settore_impiego_mod" type="text" name="settore_impiego_mod"  value=""/> -->
@@ -932,6 +929,8 @@ function modalNuovaAttrezzatura(attrezzatura_insieme, id_insieme){
 	
 	if(attrezzatura_insieme){
 		
+		$('#cliente_content').hide();
+
 		$('#settore_impiego_content').hide();
 		$('#sogg_messa_serv_GVR_content').hide();
 		$('#n_panieri_idroestrattori_content').hide();
@@ -943,9 +942,16 @@ function modalNuovaAttrezzatura(attrezzatura_insieme, id_insieme){
 		$('#data_verifica_interna_content').hide();
 		$('#data_prossima_verifica_interna_content').hide();
 		$('#matricola_inail').attr("required", false);
-		$('#id_insieme').val(id_insieme);		
+		$('#id_insieme').val(id_insieme);	
+		$('#tipo_attivita').val("GVR");
+		$('#tipo_attivita').change();
+		$('#tipo_attivita').attr("disabled", true);
+		$('#settore_impiego_content').hide();
 		
 	} else{
+		
+		$('#cliente_content').show();
+	
 		
 		$('#settore_impiego_content').show();
 		$('#sogg_messa_serv_GVR_content').show();
@@ -957,8 +963,9 @@ function modalNuovaAttrezzatura(attrezzatura_insieme, id_insieme){
 		$('#data_prossima_verifica_integrita_content').show();
 		$('#data_verifica_interna_content').show();
 		$('#data_prossima_verifica_interna_content').show();
+		$('#settore_impiego_content').show();
 		$('#matricola_inail').attr("required", true);
-		
+		$('#tipo_attivita').attr("disabled", false);
 		
 	}
 	
@@ -1094,6 +1101,11 @@ function formatDate(data){
 
 $('#modalModificaAttrezzatura').on('hidden.bs.modal', function(){
 	   $(document.body).css('padding-right', '0px'); 
+	   $('#tab1').addClass("active", true);
+	   $('#modifica').addClass("active", true);
+	   
+	   $('#tab2').removeClass("active", true);
+	   $('#tab3').removeClass("active", true);
 });
 
 
@@ -1470,6 +1482,8 @@ $("#tipo_attivita_mod").change(function() {
 
 
 $("#descrizione").change(function() {
+	
+
     
 	$('#n_panieri_idroestrattori').attr("disabled",true);
 	$("#tipo_attrezzatura_gvr").prop("disabled", true);
@@ -1478,7 +1492,9 @@ $("#descrizione").change(function() {
 	  var gruppo = $(this).val().split('_')[0];
 	 
 	  var descrizione = $(this).val().split("_")[1];
-	
+	  
+
+
 	 // var id_spec = $(this).val().split("_")[3];
 	  var id_spec = $(this).val().split("_")[2].split("@")[0];
 	  var codice_milestone = $(this).val().split("@")[1];
@@ -1665,6 +1681,15 @@ $("#descrizione_mod").change(function() {
 		 var gruppo = $(this).val().split('_')[0];
 		 
 		  var descrizione = $(this).val().split("_")[1];
+		  
+			if(descrizione.startsWith("Insieme")){
+				$('#tab3').show();
+			}else{
+				$('#tab3').hide();
+			}
+				
+		  
+		  
 		  if($(this).val().split("_").length>2){
 			  var id_spec = $(this).val().split("_")[2].split("@")[0];
 		  }else{

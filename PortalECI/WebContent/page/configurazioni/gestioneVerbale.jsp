@@ -638,7 +638,7 @@
 															</button>
 																<%-- <button type="button" class="btn btn-default ml-1 changestate formVerbalebox" onclick="salvaRisposteCompWeb(${verbale.getId()},'formVerbale', 'confermaRisposteCompWeb')" style="margin-left: 1em; color:#000000 !important; background-color:${verbale.getStato().getColore(5)} !important; float: right;"> --%>
 																<c:if test="${verbale.getIntervento().getTecnico_verificatore().getId() == userObj.getId()}"> 
-																<button type="button" class="btn btn-default ml-1 changestate formVerbalebox" onclick="$('#confirmConferma').modal('show')" style="margin-left: 1em; color:#000000 !important; background-color:${verbale.getStato().getColore(5)} !important; float: right;">
+																<button type="button" id="conferma_button" class="btn btn-default ml-1 changestate formVerbalebox" onclick="$('#confirmConferma').modal('show')" style="margin-left: 1em; color:#000000 !important; background-color:${verbale.getStato().getColore(5)} !important; float: right;">
 																
 																<i class="glyphicon glyphicon glyphicon-ok"></i>
 																<span >CONFERMA</span>
@@ -997,6 +997,15 @@
 												        </div> 	
 												
 												
+												</div>
+												
+												<div id="content_motivo_sospensione">
+												<div class="col-xs-6">
+												<label>Motivo sospensione</label>
+												<input type="text" class="form-control" id="motivo_sospensione_vie" name="motivo_sospensione_vie" value="${verbale.motivo_sospensione_vie }">
+												
+												
+												</div>
 												</div>
 												
 												<div class="col-xs-6">
@@ -2420,8 +2429,135 @@ function importaExcel(id_risposta){
 		var value = $('#data_verifica').val();
 		
 		$('#data_fine_verifica').val(value);
+
+		    $('#data_fine_verifica').datepicker({
+ 			 format: "dd/mm/yyyy"
+ 		 });    
+		
+		    $('#data_fine_verifica').change();
 		
 	});
+	
+	
+	
+	$('#data_fine_verifica').change(function(){
+		
+		var today = new Date();
+		var date = $('#data_fine_verifica').val();
+		var d = moment(date, "DD-MM-YYYY");
+		
+
+		if(date!='' && d._isValid){
+			
+			   var year = d._pf.parsedDateParts[0];
+			   var month = d._pf.parsedDateParts[1];
+			   var day = d._pf.parsedDateParts[2];
+			   var data_fine = new Date(year, month, day);
+			   
+				 var data_verifica = $('#data_verifica').val();
+				   
+				   var dv = moment(data_verifica, "DD-MM-YYYY");
+					if(data_verifica!='' && dv._isValid){
+						
+						   var year = dv._pf.parsedDateParts[0];
+						   var month = dv._pf.parsedDateParts[1];
+						   var day = dv._pf.parsedDateParts[2];
+						   var data_inizio = new Date(year, month, day);
+						   
+						   
+						if(data_inizio>data_fine){
+							   
+							   $('#conferma_button').attr("disabled", true);
+							   
+							   $('#modalErrorDiv').html("Attenzione! La data fine verifica non pu&ograve; essere precedente alla data verifica! ");
+								$('#myModalError').removeClass();
+								$('#myModalError').addClass("modal modal-danger");
+								$('#myModalError').modal('show');	
+								
+								var value = $('#data_verifica').val();
+								
+								$('#data_fine_verifica').val(value);
+						   	}
+						   
+						
+						if(data_inizio>today){
+							   
+							   $('#conferma_button').attr("disabled", true);
+							   
+							   $('#modalErrorDiv').html("Attenzione! La data fine verifica non pu&ograve; essere maggiore della data odierna! ");
+								$('#myModalError').removeClass();
+								$('#myModalError').addClass("modal modal-danger");
+								$('#myModalError').modal('show');	
+								
+								var value = $('#data_verifica').val();
+								
+								$('#data_fine_verifica').val(value);
+						   	}
+						
+						  
+						   var difference = Math.floor((data_fine - data_inizio)/(24*3600*1000));
+						  
+						   if(difference>30){
+							   
+							   $('#conferma_button').attr("disabled", true);
+							   
+							   $('#modalErrorDiv').html("Attenzione! La data fine verifica non pu&ograve; essere superiore di pi&ugrave; di 30 giorni rispetto alla data verifica! ");
+								$('#myModalError').removeClass();
+								$('#myModalError').addClass("modal modal-danger");
+								$('#myModalError').modal('show');	
+								
+								var value = $('#data_verifica').val();
+								
+								$('#data_fine_verifica').val(value);
+						   
+						   }
+					}
+				
+			   
+			   
+			   var year_t = today.getFullYear();
+			   var month_t = today.getMonth();
+			   var day_t = today.getDate();
+			   
+			   today30 = new Date(year_t, month_t, day_t-30);
+			   
+			   today90 = new Date(year_t, month_t, day_t-90);
+			 
+			   if(data_fine>=today30){
+				
+				   $('#conferma_button').attr("disabled", false);
+				   $('#content_motivo_sospensione').hide();
+			   }
+			   else if(data_fine<today30 && data_fine>=today90){
+				   $('#conferma_button').attr("disabled", true);
+				   $('#content_motivo_sospensione').show();
+			   }
+			   else if(data_fine<today90){
+				   $('#conferma_button').attr("disabled", true);
+				   $('#content_motivo_sospensione').hide();
+			   }
+			   
+			  
+		}
+
+	});
+	
+	
+	$('#motivo_sospensione_vie').change(function(){
+		
+		if($(this).val()!=''){
+			
+			$('#conferma_button').attr("disabled", false);
+			
+		}else{
+			
+			$('#conferma_button').attr("disabled", true);
+			
+		}
+		
+		
+	});
+	
 	
 	$('#ore').change(function(){
 		
@@ -3188,6 +3324,9 @@ function allegatoVisibile(id_allegato){
 	
 			$(document).ready(function() {
 				
+				
+				$('#content_motivo_sospensione').hide();
+				
 				var ore_uomo = '${verbale.ore_uomo}';
 				
 				$('#ore_uomo').select2();
@@ -3244,6 +3383,7 @@ function allegatoVisibile(id_allegato){
 				var frequenza = "${verbale.frequenza}";
 				
 				
+				$('#data_fine_verifica').change()
 				
 			$('#tipologia_verifica').select2();
 			$('#tipo_verifica_vie').select2();

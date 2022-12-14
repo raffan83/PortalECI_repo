@@ -505,6 +505,18 @@ if(action!= null && action.equals("dettaglio")) {
 						}
 						
 					}
+					
+					if(paramName.equals("motivo_sospensione_vie")) {
+						
+						String motivo_sospensione_vie = request.getParameter("motivo_sospensione_vie");
+						
+						//if(matricola_vie!=null && !matricola_vie.equals("")) {
+							verbale.setMotivo_sospensione_vie(motivo_sospensione_vie);
+							session.save(verbale);
+					//	}
+						
+					}
+					
 					// RISPOSTA FORMULA
 					if(paramName.contains("value1") || paramName.contains("value2") || paramName.contains("responseValue")) {				
 						id=paramName.replaceAll("value1", "").replaceAll("value2", "").replaceAll("responseValue", "");

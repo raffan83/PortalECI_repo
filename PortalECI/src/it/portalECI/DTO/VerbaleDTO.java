@@ -70,6 +70,8 @@ public class VerbaleDTO implements Serializable {
 	private int inviato;
 	private int visibile_cliente;
 	
+	private String motivo_sospensione_vie;
+	
 	public int getId() {
 		return id;
 	}
@@ -495,6 +497,15 @@ public class VerbaleDTO implements Serializable {
 
 	public void setVisibile_cliente(int visibile_cliente) {
 		this.visibile_cliente = visibile_cliente;
+	}
+
+
+	public String getMotivo_sospensione_vie() {
+		return motivo_sospensione_vie;
+	}
+
+	public void setMotivo_sospensione_vie(String motivo_sospensione_vie) {
+		this.motivo_sospensione_vie = motivo_sospensione_vie;
 	}
 
 	

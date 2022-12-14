@@ -179,5 +179,9 @@
 		<property name="visibile_cliente" type="int">
 			<column name="visibile_cliente" />
 		</property>
+		
+			<property name="motivo_sospensione_vie">
+			<column name="motivo_sospensione_vie" />
+		</property> 
 	</class>
 </hibernate-mapping> 
