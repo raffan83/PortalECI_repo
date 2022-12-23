@@ -724,6 +724,7 @@ public class ListaAttrezzature extends HttpServlet {
 				String n_id_on = request.getParameter("n_id_on");
 				String data_scadenza_ventennale = request.getParameter("data_scadenza_ventennale");
 				String codici_milestone = request.getParameter("codice_milestone");
+				String id_insieme = request.getParameter("id_insieme_mod");
 				
 				List<SedeDTO> listaSedi = (List<SedeDTO>) request.getSession().getAttribute("listaSedi");
 				SedeDTO sede = null;
@@ -817,7 +818,11 @@ public class ListaAttrezzature extends HttpServlet {
 				attrezzatura.setModello(modello);
 				attrezzatura.setSettore_impiego(settore_impiego);
 				attrezzatura.setNote_tecniche(note_tecniche);
-				attrezzatura.setNote_generiche(note_generiche);
+				attrezzatura.setNote_generiche(note_generiche);		
+				if(id_insieme!=null && !id_insieme.equals("")) {
+					attrezzatura.setId_insieme(Integer.parseInt(id_insieme));	
+				}
+				
 				
 				session.update(attrezzatura);
 				session.getTransaction().commit();

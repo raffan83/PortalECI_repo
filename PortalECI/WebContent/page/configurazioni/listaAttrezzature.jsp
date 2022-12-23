@@ -2,6 +2,7 @@
 <%@taglib prefix="t" tagdir="/WEB-INF/tags"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 <%@ page import="it.portalECI.DTO.UtenteDTO" %>
+<%@ taglib uri="/WEB-INF/tld/utilities" prefix="utl" %>
 <%
 UtenteDTO user = (UtenteDTO)request.getSession().getAttribute("userObj");
 request.setAttribute("user",user);
@@ -214,7 +215,7 @@ request.setAttribute("user",user);
   </div>
 </div>
 
-<div id="myModalError" class="modal fade" role="dialog" aria-labelledby="myLargeModalLabel">
+<div id="myModalError" class="modal fade" role="dialog" aria-labelledby="myLargeModalLabel" style="z-index:9999">
   					<div class="modal-dialog" role="document">
   						<div class="modal-content">
   							<div class="modal-header">
