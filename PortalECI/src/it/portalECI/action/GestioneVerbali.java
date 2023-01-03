@@ -505,6 +505,18 @@ if(action!= null && action.equals("dettaglio")) {
 						}
 						
 					}
+					
+					if(paramName.equals("motivo_sospensione_vie")) {
+						
+						String motivo_sospensione_vie = request.getParameter("motivo_sospensione_vie");
+						
+						//if(matricola_vie!=null && !matricola_vie.equals("")) {
+							verbale.setMotivo_sospensione_vie(motivo_sospensione_vie);
+							session.save(verbale);
+					//	}
+						
+					}
+					
 					// RISPOSTA FORMULA
 					if(paramName.contains("value1") || paramName.contains("value2") || paramName.contains("responseValue")) {				
 						id=paramName.replaceAll("value1", "").replaceAll("value2", "").replaceAll("responseValue", "");
@@ -1160,6 +1172,32 @@ if(action!= null && action.equals("dettaglio")) {
 			
 		}
 		
+		else if(action!=null && action.equals("modifica_effettuazione_verifica")) {
+			
+			String effettuazione_verifica = request.getParameter("effettuazione_verifica");
+			verbale.setEffettuazione_verifica(Integer.parseInt(effettuazione_verifica));
+			session.update(verbale);
+			
+			myObj.addProperty("success", true);
+			myObj.addProperty("messaggio", "effettuazione verifica modificata con successo!");
+
+			out.print(myObj);
+			
+		}
+		
+		else if(action!=null && action.equals("modifica_tipo_verifica")) {
+			
+			String tipo_verifica = request.getParameter("tipo_verifica");
+			verbale.setTipo_verifica(Integer.parseInt(tipo_verifica));
+			session.update(verbale);
+			
+			myObj.addProperty("success", true);
+			myObj.addProperty("messaggio", "Tipo vertifica modificato con successo!");
+
+			out.print(myObj);
+			
+		}
+		
 		else if(action!=null && action.equals("modifica_attrezzatura")) {
 		
 			
@@ -1253,6 +1291,77 @@ if(action!= null && action.equals("dettaglio")) {
 //					}
 				}
 		}
+		
+			
+
+			writer.write(jsono.toString());
+			writer.close();
+		
+		}
+		
+else if(action!=null && action.equals("carica_scheda_firmata")) {
+			
+
+			PrintWriter writer = response.getWriter();
+			JsonObject jsono = new JsonObject();
+			
+			ServletFileUpload uploadHandler = new ServletFileUpload(new DiskFileItemFactory());
+			List<FileItem> items = null;
+			try {
+				items = uploadHandler.parseRequest(request);
+			} catch (FileUploadException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+			String id_certificato = "";
+	
+			FileItem fileUploaded = null;
+			String filename = "";
+			for (FileItem item : items) {
+				if (!item.isFormField()) {
+
+					fileUploaded = item;
+					filename = item.getName();
+				}else {
+					
+					if(item.getFieldName().equals("id_documento")) {
+						id_certificato = item.getString();
+					}
+					
+
+				}
+				
+			
+			}
+			
+		DocumentoDTO documento = GestioneDocumentoDAO.getDocumento(id_certificato, session);
+		verbale = documento.getVerbale();
+			
+		String filename_pdf = documento.getFilePath().split("\\\\")[2];
+	
+			if(fileUploaded != null) {
+				
+				String path = documento.getFilePath().replace(filename_pdf,"");
+				//String path = "Intervento_"+intervento.getId()+File.separator+verbale.getType()+"_"+verbale.getCodiceCategoria()+"_"+verbale.getId()+File.separator;
+				new File(Costanti.PATH_CERTIFICATI+path).mkdirs();
+				String fileNoExt = filename.substring(0, filename.length()-4);
+				File file = new File(Costanti.PATH_CERTIFICATI+path+fileNoExt+"_F.pdf");
+				int counter = 0;
+
+					//try {
+						fileUploaded.write(file);
+					
+										
+					verbale.setFirmato(1);
+					session.update(documento);
+					//GestioneComunicazioniBO.sendEmail(verbale.getResponsabile_approvatore(), verbale.getIntervento(), verbale, null,1);
+					jsono.addProperty("success", true);
+					jsono.addProperty("messaggio","File caricato con successo!");
+					
+
+				}
+	
 		
 			
 

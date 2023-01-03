@@ -143,9 +143,11 @@ public class GestioneGraficiDAO {
 		lista = (ArrayList<StatoVerbaleDTO>) query.list();		
 		
 		int count = 1;
+		int i = 0;
 		for (StatoVerbaleDTO stato : lista) {
 			
 			if(map.containsKey(stato.getDescrizione().replace(" ", "_"))) {
+				count = Integer.parseInt(map.get(stato.getDescrizione().replace(" ", "_")));
 				count++;
 			}else {
 				count=1;
@@ -153,7 +155,9 @@ public class GestioneGraficiDAO {
 
 			map.put(stato.getDescrizione().replace(" ", "_"), ""+count);
 			color_map.put(stato.getDescrizione().replace(" ", "_"), stato.getColore(stato.getId()));
+			
 		}
+		
 		
 		query  = session.createQuery( "from StatoVerbaleDTO");
 		
@@ -189,7 +193,7 @@ public class GestioneGraficiDAO {
 
 		ArrayList<AttrezzaturaDTO> lista = null;		
 
-		Query query  = session.createQuery( "from AttrezzaturaDTO WHERE id_cliente = "+user.getIdCliente() +" and id_sede = "+user.getIdSede());
+		Query query  = session.createQuery( "from AttrezzaturaDTO WHERE id_cliente = "+user.getIdCliente() +" and id_sede = "+user.getIdSede() +" and obsoleta = 0");
 		//query.setParameter("_type",VerbaleDTO.VERBALE);
 		
 		

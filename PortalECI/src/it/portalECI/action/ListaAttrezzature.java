@@ -568,6 +568,7 @@ public class ListaAttrezzature extends HttpServlet {
 				String settore_impiego = request.getParameter("settore_impiego");
 				String note_tecniche = request.getParameter("note_tecniche");
 				String note_generiche = request.getParameter("note_generiche");
+				String id_insieme = request.getParameter("id_insieme");
 				
 				
 				
@@ -584,7 +585,7 @@ public class ListaAttrezzature extends HttpServlet {
 				
 				AttrezzaturaDTO attrezzatura = GestioneAttrezzatureBO.checkMatricola(matricola_inail, session);
 				
-				if(attrezzatura!=null) {
+				if(attrezzatura!=null && (id_insieme==null|| id_insieme.equals(""))) {
 					session.getTransaction().commit();
 					session.close();
 					
@@ -670,6 +671,13 @@ public class ListaAttrezzature extends HttpServlet {
 					attrezzatura.setSettore_impiego(settore_impiego);
 					attrezzatura.setNote_tecniche(note_tecniche);
 					attrezzatura.setNote_generiche(note_generiche);
+					if(id_insieme!=null && !id_insieme.equals("")) {
+						attrezzatura.setId_insieme(Integer.parseInt(id_insieme));	
+						AttrezzaturaDTO attrezzatura_insieme = GestioneAttrezzatureBO.getAttrezzaturaFromId(Integer.parseInt(id_insieme), session);
+						attrezzatura_insieme.setHas_insieme(1);
+						session.update(attrezzatura_insieme);
+					}
+					
 					
 					session.save(attrezzatura);
 					session.getTransaction().commit();
@@ -716,6 +724,7 @@ public class ListaAttrezzature extends HttpServlet {
 				String n_id_on = request.getParameter("n_id_on");
 				String data_scadenza_ventennale = request.getParameter("data_scadenza_ventennale");
 				String codici_milestone = request.getParameter("codice_milestone");
+				String id_insieme = request.getParameter("id_insieme_mod");
 				
 				List<SedeDTO> listaSedi = (List<SedeDTO>) request.getSession().getAttribute("listaSedi");
 				SedeDTO sede = null;
@@ -809,7 +818,11 @@ public class ListaAttrezzature extends HttpServlet {
 				attrezzatura.setModello(modello);
 				attrezzatura.setSettore_impiego(settore_impiego);
 				attrezzatura.setNote_tecniche(note_tecniche);
-				attrezzatura.setNote_generiche(note_generiche);
+				attrezzatura.setNote_generiche(note_generiche);		
+				if(id_insieme!=null && !id_insieme.equals("")) {
+					attrezzatura.setId_insieme(Integer.parseInt(id_insieme));	
+				}
+				
 				
 				session.update(attrezzatura);
 				session.getTransaction().commit();
@@ -957,6 +970,23 @@ public class ListaAttrezzature extends HttpServlet {
 				session.close();
 				 
 				RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/page/configurazioni/listaVerbaliAttrezzatura.jsp");
+				dispatcher.forward(request,response);
+				
+			}
+			
+			else if(action.equals("attrezzature_insieme")) {
+				
+				String id_attrezzatura = request.getParameter("id_attrezzatura");				
+				
+				ArrayList<AttrezzaturaDTO> listaAttrezzatureInsieme = GestioneAttrezzatureBO.getListaAttrezzatureInsieme(Integer.parseInt(id_attrezzatura), session);
+				
+				
+				request.getSession().setAttribute("listaAttrezzatureInsieme",listaAttrezzatureInsieme);
+				request.getSession().setAttribute("id_insieme",id_attrezzatura);
+				 
+				session.close();
+				 
+				RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/page/configurazioni/listaAttrezzatureInsieme.jsp");
 				dispatcher.forward(request,response);
 				
 			}

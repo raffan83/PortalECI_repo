@@ -4,6 +4,7 @@
 <%@page import="java.util.List"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@taglib prefix="t" tagdir="/WEB-INF/tags"%>
+<%@ taglib uri="/WEB-INF/tld/utilities" prefix="utl" %>
 <%@taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 
 
@@ -54,7 +55,7 @@
 		<input type="hidden" class="input_hidden_id_risposta_colonna" value="${rispostaTabella.getId()}">
 		<c:choose>
 			<c:when test="${rispostaTabella.getTipo().equals('RES_TEXT')}">
-				<input class="form-control" type="text" name="${rispostaTabella.id}" value="${rispostaPage.responseValue}"/>
+				<input class="form-control" type="text" name="${rispostaTabella.id}" value="${utl:escapeHTML(rispostaPage.responseValue)}"/>
 			</c:when>
 			<c:when test="${rispostaTabella.getTipo().equals('RES_FORMULA')}">
 				<input class="form-control" type="text" name="value1${rispostaTabella.id}" value="${rispostaPage.value1}"/>

@@ -26,11 +26,16 @@
 <t:layout title="Dashboard" bodyClass="skin-red sidebar-mini wysihtml5-supported">
 
 	<jsp:attribute name="body_area">
+	
+		<t:main-header  /> 
+		<t:main-sidebar />
 
 		<div class="wrapper">
 	
-		<t:main-header  />
-  		<t:main-sidebar />
+	
+  		
+
+  	
  
   		<!-- Content Wrapper. Contains page content -->
  		<div id="corpoframe" class="content-wrapper">
@@ -166,13 +171,59 @@
                 									</li>
                 									<li class="list-group-item">
                   										<b>Sede Utilizzatore</b>                  										
-                  										<a class="pull-right "  >${verbale.sedeUtilizzatore}<c:if test="${verbale.codiceCategoria == 'VIE' }">  <c:if test="${verbale.getStato().getId()!= 5}"><i class="fa fa-edit" onclick="modalSedeUtilizzatore('${utl:escapeJS(verbale.sedeUtilizzatore)}')" title="Modifica sede utilizzatore"></i></c:if></c:if>
+                  										<a class="pull-right "  >${verbale.sedeUtilizzatore}<c:if test="${verbale.codiceCategoria == 'VIE' }">  <c:if test="${verbale.getStato().getId()!= 5}"><i class="fa fa-edit" onclick="modalSedeUtilizzatore('${utl:escapeJS(verbale.sedeUtilizzatore)}')" title="Modifica sede utilizzatore"></i></c:if></c:if> 
+                  										
                   										
                   										</a>
                   									
                   									 
                   									       										
                 									</li>
+                									<c:if test="${verbale.codiceCategoria == 'VAL' }">
+                									<li class="list-group-item">
+                  										<b>Effettuazione verifica</b>
+                  										<c:if test="${verbale.effettuazione_verifica == 1}">
+                  										<a class="pull-right "  >Affidamento da parte del titolare della funzione <c:if test="${verbale.getStato().getId()!= 5}"><i class="fa fa-edit" onclick="modalEffVerifica('${verbale.effettuazione_verifica}')" title="Modifica effettuazione verifica"></i></c:if></a>
+                  										</c:if>          
+                  										<c:if test="${verbale.effettuazione_verifica == 2}">
+                  										<a class="pull-right "  >Affidamento diretto da parte del datore di lavoro <c:if test="${verbale.getStato().getId()!= 5}"><i class="fa fa-edit" onclick="modalEffVerifica('${verbale.effettuazione_verifica}')" title="Modifica effettuazione verifica"></i></c:if></a>
+                  										</c:if>       
+                  									       										
+                									</li>
+                									
+                									
+                									<li class="list-group-item">
+                  										<b>Tipo verifica</b>  
+                  										
+                  										<c:if test="${verbale.getCodiceVerifica().startsWith('GVR') }">
+	                  										<c:if test="${verbale.tipo_verifica == 1 }">
+	                  										<a class="pull-right "  >Prima verifica periodica attr. e attr. di insiemi soggetti a verifica (art.4) <c:if test="${verbale.getStato().getId()!= 5}"><i class="fa fa-edit" onclick="modalTipoVerifica('${verbale.tipo_verifica}')" title="Modifica tipo verifica"></i></c:if></a>
+	                  										</c:if>
+	                  										<c:if test="${verbale.tipo_verifica == 2 }">
+	                  										<a class="pull-right "  >Prima verifica periodica attr. di insiemi NON soggetti a verifica (art.5)<c:if test="${verbale.getStato().getId()!= 5}"><i class="fa fa-edit" onclick="modalTipoVerifica('${verbale.tipo_verifica}')" title="Modifica tipo verifica"></i></c:if></a>
+	                  										</c:if>
+	                  										<c:if test="${verbale.tipo_verifica == 3 }">
+	                  										<a class="pull-right "  >Verifica successiva alla prima (funzionamento e/o interna)<c:if test="${verbale.getStato().getId()!= 5}"><i class="fa fa-edit" onclick="modalTipoVerifica('${verbale.tipo_verifica}')" title="Modifica tipo verifica"></i></c:if></a>
+	                  										</c:if>
+	                  										<c:if test="${verbale.tipo_verifica == 4 }">
+	                  										<a class="pull-right "  >Verifica successiva alla prima (funzionamento e/o interna e integrit&agrave;)<c:if test="${verbale.getStato().getId()!= 5}"><i class="fa fa-edit" onclick="modalTipoVerifica('${verbale.tipo_verifica}')" title="Modifica tipo verifica"></i></c:if></a>
+	                  										</c:if>
+                  										</c:if>
+                  										       
+                  										 <c:if test="${!verbale.getCodiceVerifica().startsWith('GVR') }">
+	                  										<c:if test="${verbale.tipo_verifica == 1 }">
+	                  										<a class="pull-right "  >Prima periodica <c:if test="${verbale.getStato().getId()!= 5}"><i class="fa fa-edit" onclick="modalTipoVerifica('${verbale.tipo_verifica}')" title="Modifica tipo verifica"></i></c:if></a>
+	                  										</c:if>
+	                  										<c:if test="${verbale.tipo_verifica == 2 }">
+	                  										<a class="pull-right "  >Periodica successiva<c:if test="${verbale.getStato().getId()!= 5}"><i class="fa fa-edit" onclick="modalTipoVerifica('${verbale.tipo_verifica}')" title="Modifica tipo verifica"></i></c:if></a>
+	                  										</c:if>
+                  										</c:if>        										
+                  										
+                  									
+                  									 
+                  									       										
+                									</li>
+                									</c:if>
                 									<c:if test="${verbale.codiceCategoria == 'VIE' }">
                 									<li class="list-group-item">
                   										<b>Esercente</b>
@@ -354,19 +405,26 @@
 												<ul class="list-group list-group-unbordered" id="">
 	       											<c:forEach items="${listaSchedeTecniche}" var="schedaTec"> 
 	        											<li class="list-group-item">
-	        											  <div class="row">
+	        											<div class="row">
                     											 <div class="col-xs-12"> 
-	        											
-	                  										<b>${schedaTec.getFileName()}</b>
-	                  									
+	        											 
+                    											 <div class="col-xs-4">
+	                  										<label>${schedaTec.getFileName()}</label>
+	                  									</div>
+	                  									<div class="col-xs-8">
 	                  										<c:if test="${user.checkPermesso('DOWNLOAD_SKTECNICA')}">             										
-	                  											<a class="btn btn-default btn-xs pull-right" href="gestioneDocumento.do?idDocumento=${schedaTec.getId()}" style="margin-left:5px"><i class="glyphicon glyphicon-file"></i> Download SchedaTecnica</a>														
+	                  											<a class="btn btn-default btn-xs pull-right" href="gestioneDocumento.do?idDocumento=${schedaTec.getId()}" style="margin-left:5px"><i class="glyphicon glyphicon-file"></i> Download Scheda Tecnica</a>														
 	                										</c:if>
+	                										
+	                										 <c:if test="${schedaTec.getVerbale().getFirmato()==0 && schedaTec.getInvalid()==false && schedaTec.getVerbale().getStato().getId()== 5}">
+	                  											<a class="btn btn-default btn-xs pull-right" onClick="modalCaricaFileFirmato('${schedaTec.getId()}', true)" style="margin-left:5px"><i class="fa fa-plus"></i> Carica Scheda Firmata</a>
+	                  											</c:if>
+	                  											
 	                										
 	                										<c:if test="${schedaTec.getVerbale().getFirmato()==1 && schedaTec.getInvalid()== false }">
 	                  											<a class="btn btn-default btn-xs pull-right" href="gestioneDocumento.do?firmato=1&idDocumento=${schedaTec.getId()}" style="margin-left:5px"><i class="glyphicon glyphicon-file"></i> Download Scheda Tecnica Firmata</a>
 	                  											</c:if>	
-	                  											
+	                  											</div>
 	                  											</div>
 	                  											</div>
 	                									</li>
@@ -580,7 +638,7 @@
 															</button>
 																<%-- <button type="button" class="btn btn-default ml-1 changestate formVerbalebox" onclick="salvaRisposteCompWeb(${verbale.getId()},'formVerbale', 'confermaRisposteCompWeb')" style="margin-left: 1em; color:#000000 !important; background-color:${verbale.getStato().getColore(5)} !important; float: right;"> --%>
 																<c:if test="${verbale.getIntervento().getTecnico_verificatore().getId() == userObj.getId()}"> 
-																<button type="button" class="btn btn-default ml-1 changestate formVerbalebox" onclick="$('#confirmConferma').modal('show')" style="margin-left: 1em; color:#000000 !important; background-color:${verbale.getStato().getColore(5)} !important; float: right;">
+																<button type="button" id="conferma_button" class="btn btn-default ml-1 changestate formVerbalebox" onclick="$('#confirmConferma').modal('show')" style="margin-left: 1em; color:#000000 !important; background-color:${verbale.getStato().getColore(5)} !important; float: right;">
 																
 																<i class="glyphicon glyphicon glyphicon-ok"></i>
 																<span >CONFERMA</span>
@@ -707,7 +765,7 @@
 												 <!-- <div class="row"> -->
 												
 												<div class="col-xs-6">
-												<label>Data Verifica Integrit‡</label>
+												<label>Data Verifica Integrit&agrave;</label>
 												  <div class='input-group date datepicker' id='datepicker_data_inizio'>
 												  <fmt:formatDate value="${verbale.data_verifica_integrita }" pattern="dd/MM/yyyy" var="myDate" />
 												               <input type='text' class="form-control input-small" id="data_verifica_integrita_verb" name="data_verifica_integrita_verb" value="${myDate }">
@@ -721,7 +779,7 @@
 												<!-- <div class="col-xs-4"></div> -->
 												
 												<div class="col-xs-6">
-												<label>Data Prossima Verifica Integrit‡</label>
+												<label>Data Prossima Verifica Integrit&agrave;</label>
 												  <div class='input-group date datepicker'>
 												  <fmt:formatDate value="${verbale.data_prossima_verifica_integrita }" pattern="dd/MM/yyyy" var="myDate" />
 												               <input type='text' class="form-control input-small" id="data_prossima_verifica_integrita_verb" name="data_prossima_verifica_integrita_verb" value="${myDate }">
@@ -774,8 +832,8 @@
 												   <select id="tipo_verifica_gvr" name="tipo_verifica_gvr" class="form-control select2" data-placeholder="Seleziona Tipo Verifica GVR" style="width:100%">
 												 <option value=""></option>
 												 <option value="1">PVP</option>
-												 <option value="4">PVP + Integrit‡</option>
-												 <option value="5">PVP + Integrit‡ + Interna</option>
+												 <option value="4">PVP + Integrit&agrave;</option>
+												 <option value="5">PVP + Integrit&agrave;+ Interna</option>
 												 <option value="7">PVP + Interna</option>
 												 </select>	
 												</c:if>
@@ -784,11 +842,11 @@
 												   <select id="tipo_verifica_gvr" name="tipo_verifica_gvr" class="form-control select2" data-placeholder="Seleziona Tipo Verifica GVR" style="width:100%">
 												 <option value=""></option>
 												 <option value="1">Funzionamento</option>
-												 <option value="2">Integrit‡</option>
+												 <option value="2">Integrit&agrave;</option>
 												 <option value="3">Interna</option>
-												 <option value="4">Funzionamento + Integrit‡</option>
-												 <option value="5">Funzionamento + Integrit‡ + Interna</option>
-												 <option value="6">Interna + Integrit‡</option>
+												 <option value="4">Funzionamento + Integrit&agrave;</option>
+												 <option value="5">Funzionamento + Integrit&agrave; + Interna</option>
+												 <option value="6">Interna + Integrit&agrave;</option>
 												 <option value="7">Funzionamento + Interna</option>
 												 </select>	
 												</c:if>
@@ -939,6 +997,15 @@
 												        </div> 	
 												
 												
+												</div>
+												
+												<div id="content_motivo_sospensione">
+												<div class="col-xs-6">
+												<label>Motivo sospensione</label>
+												<input type="text" class="form-control" id="motivo_sospensione_vie" name="motivo_sospensione_vie" value="${verbale.motivo_sospensione_vie }">
+												
+												
+												</div>
 												</div>
 												
 												<div class="col-xs-6">
@@ -1182,6 +1249,8 @@
 						
  							</div>
 						</div>
+						</div>
+						</div>
 						  		
 						
 						
@@ -1289,6 +1358,65 @@
 							</div>
 						</div>
 						
+						<div id="myModalEffVerifica" class="modal fade" role="dialog" aria-labelledby="modalCambioStatoVerbale">
+   							<div class="modal-dialog modal-lg" role="document">
+    							<div class="modal-content">
+     								<div class="modal-header">
+        								<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        									<span aria-hidden="true">&times;</span>
+        								</button>
+        								<h4 class="modal-title" id="myModalLabel">Modifica effettuazione verifica</h4>
+      								</div>
+      									
+       								<div class="modal-body" >
+       									<div class="row">
+											<label class="col-sm-3" >Effettuazione Verifica </label>
+                  							
+                  							<div class="col-sm-9">
+                  							<select name="eff_verifica_mod" id="eff_verifica_mod" data-placeholder="Seleziona Effettuazione Verifica..."  class="form-control select2" aria-hidden="true" data-live-search="true">
+	                								<option value=""></option>
+	                								<option value="1">Affidamento da parte del titolare della funzione</option>
+	                								<option value="2">Affidamento diretto da parte del datore di lavoro</option>
+	        	         							</select>   							      										
+											</div>											
+										</div>
+    								</div>
+    								<div class="modal-footer">
+										<button onclick="modificaEffettuazioneVerifica()" class="btn btn-danger" >Salva</button>
+	      							</div>
+  								</div>
+							</div>
+						</div>
+						
+						<div id="myModalTipoVerifica" class="modal fade" role="dialog" aria-labelledby="modalCambioStatoVerbale">
+   							<div class="modal-dialog modal-lg" role="document">
+    							<div class="modal-content">
+     								<div class="modal-header">
+        								<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        									<span aria-hidden="true">&times;</span>
+        								</button>
+        								<h4 class="modal-title" id="myModalLabel">Modifica tipo verifica</h4>
+      								</div>
+      									
+       								<div class="modal-body" >
+       									<div class="row">
+											<label class="col-sm-3" >Tipo verifica </label>
+                  							
+                  							<div class="col-sm-9">
+                  							 <select name="tipo_verifica_mod" id="tipo_verifica_mod" data-placeholder="Seleziona Effettuazione Verifica..."  class="form-control select2" aria-hidden="true" data-live-search="true">
+
+	        	         							</select>  						      										
+											</div>											
+										</div>
+    								</div>
+    								<div class="modal-footer">
+    								<input type="hidden" id="com_prov" name="com_prov">
+										<button onclick="modificaTipoVerifica()" class="btn btn-danger" >Salva</button>
+	      							</div>
+  								</div>
+							</div>
+						</div>
+						
 						
 						<div id="myModalModificaAttrezzatura" class="modal fade" role="dialog" aria-labelledby="modalCambioStatoVerbale">
    							<div class="modal-dialog modal-md" role="document">
@@ -1347,12 +1475,12 @@
                   							
                   							<div class="col-sm-12" style="margin:5px ; text-align:center;">
                   								<c:if test="${user.checkPermesso('CH_STA_VERBALE')}">
-                  									<button type="button  pull-left" class="btn-sm " onclick="salvaCambioStato(null,null,'6')" style="color:#000000 !important; background-color:${verbale.getStato().getColore(6)} !important;">
+                  									<button type="button pull-left" class="btn-sm " onclick="salvaCambioStato(null,null,'6')" style="color:#000000 !important; background-color:${verbale.getStato().getColore(6)} !important;">
                   										<i class="glyphicon glyphicon-remove"></i>
                   										<span >RIFIUTATO</span>
                   									</button>
 										
-													<button type="button  pull-right" class="btn-sm" onclick="salvaCambioStato(null,null,'5')" style="color:#000000 !important; background-color:${verbale.getStato().getColore(5)} !important;">
+													<button type="button pull-right" class="btn-sm" onclick="salvaCambioStato(null,null,'5')" style="color:#000000 !important; background-color:${verbale.getStato().getColore(5)} !important;">
 														<i class="glyphicon glyphicon glyphicon-ok"></i>
 														<span >ACCETTATO</span>
 													</button>
@@ -1489,7 +1617,7 @@
       								</div>
        								<div class="modal-body">
 										<h3 class="text-center">Attenzione, stai per generare un certificato!<br/>
-											Questa operazione non puÚ essere annullata. <br/>
+											Questa operazione non pu√® essere annullata. <br/>
 											Sei sicuro di voler generare il certificato?</h3>
   		 							</div>
       								<div class="modal-footer">
@@ -1508,7 +1636,7 @@
       								</div>
        								<div class="modal-body">
 										<h3 class="text-center">Attenzione, stai per generare una scheda tecnica!<br/>
-											Questa operazione non puÚ essere annullata. <br/>
+											Questa operazione non pu√® essere annullata. <br/>
 											Sei sicuro di voler generare la scheda tecnica?</h3>
   		 							</div>
       								<div class="modal-footer">
@@ -1529,7 +1657,7 @@
       								</div>
        								<div class="modal-body">
 										<h3 class="text-center">Attenzione, stai per annullare una scheda tecnica!<br/>
-											Questa operazione non puÚ essere annullata. <br/>
+											Questa operazione non pu√® essere annullata. <br/>
 											Sei sicuro di voler annullare la scheda tecnica?</h3>
   		 							</div>
       								<div class="modal-footer">
@@ -1550,7 +1678,7 @@
       								</div>
        								<div class="modal-body">
 										<h3 class="text-center">Attenzione, stai per annullare un certificato!<br/>
-											Questa operazione non puÚ essere annullata. <br/>
+											Questa operazione non pu√® essere annullata. <br/>
 											Sei sicuro di voler annullare il certificato?</h3>
   		 							</div>
       								<div class="modal-footer">
@@ -1574,7 +1702,7 @@
       								</div>
        								<div class="modal-body">
 										<h3 class="text-center">Attenzione, stai per annullare un certificato!<br/>
-											Questa operazione non puÚ essere annullata. <br/>
+											Questa operazione non pu√® essere annullata. <br/>
 											Sei sicuro di voler annullare il certificato?</h3>
   		 							</div>
       								<div class="modal-footer">
@@ -1594,7 +1722,7 @@
       								</div>
        								<div class="modal-body">
 										<h3 class="text-center">
-										Il verbale sar‡ inviato in approvazione al RT. <br> Sicuro di voler procedere?
+										Il verbale sar√® inviato in approvazione al RT. <br> Sicuro di voler procedere?
 											
 											</h3>
   		 							</div>
@@ -1615,7 +1743,7 @@
       								</div>
        								<div class="modal-body">
 										<h3 class="text-center">
-										La scheda tecnica sar‡ inviata in approvazione al RT. <br> Sicuro di voler procedere?
+										La scheda tecnica sar√® inviata in approvazione al RT. <br> Sicuro di voler procedere?
 											
 											</h3>
   		 							</div>
@@ -1848,14 +1976,14 @@
        </div> 
        
              <div class="form-group">
-        <label for="inputName" class="col-sm-4 control-label">Data verifica integrit‡:</label>
+        <label for="inputName" class="col-sm-4 control-label">Data verifica integrit&agrave;:</label>
         <div class="col-sm-8">
                       <input class="form-control " id="data_verifica_integrita" type="text" name="data_verifica_integrita"  value="" data-date-format="dd/mm/yyyy" readonly/>
     </div>
        </div> 
        
          <div class="form-group">
-        <label for="inputName" class="col-sm-4 control-label">Data prossima verifica integrit‡:</label>
+        <label for="inputName" class="col-sm-4 control-label">Data prossima verifica integrit&agrave;:</label>
         <div class="col-sm-8">
                       <input class="form-control " id="data_prossima_verifica_integrita" type="text" name="data_prossima_verifica_integrita"  value="" data-date-format="dd/mm/yyyy" readonly/>
     </div>
@@ -1945,6 +2073,7 @@
      					<div id="errorMsg"><!-- Place at bottom of page --></div> 
 					</section>
   				</div>
+  			
   				<!-- /.content-wrapper -->	
   				
 
@@ -1977,121 +2106,122 @@
 <script src="plugins/jqueryuploadfile/js/jquery.fileupload-validate.js"></script>
 <script src="plugins/jqueryuploadfile/js/jquery.fileupload-ui.js"></script>
 <script src="plugins/fileSaver/FileSaver.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 <!-- <script type="text/javascript" src="plugins/datejs/date.js"></script> -->
  		<script type="text/javascript">
 		   
 
- 		
  	 	
- 		$('#fileupload').fileupload({
- 	        url: "gestioneVerbale.do?action=carica_verbale_firmato",
- 	        dataType: 'json',
- 	        maxNumberOfFiles : 1,
- 	        getNumberOfFiles: function () {
- 	            return this.filesContainer.children()
- 	                .not('.processing').length;
- 	        },
- 	        start: function(e){
- 	        	pleaseWaitDiv = $('#pleaseWaitDialog');
- 				pleaseWaitDiv.modal();
- 	        },
- 	        add: function(e, data) {
- 	            var uploadErrors = [];
- 	            var acceptFileTypes = /(\.|\/)(pdf|PDF)$/i;
- 	            if(data.originalFiles[0]['name'].length && !acceptFileTypes.test(data.originalFiles[0]['name'])) {
- 	                uploadErrors.push('Tipo File non accettato. ');
- 	            }
- 	            if(data.originalFiles[0]['size'] > 30000000) {
- 	                uploadErrors.push('File troppo grande, dimensione massima 30mb');
- 	            }
- 	            if(uploadErrors.length > 0) {
- 	            	//$('#files').html(uploadErrors.join("\n"));
- 	            	$('#modalErrorDiv').html(uploadErrors.join("\n"));
- 					$('#modalErrorDiv').removeClass();
- 					$('#modalErrorDiv').addClass("modal modal-danger");
- 					
- 					$('#modalErrorDiv').modal('show');
- 				
- 	            } else {
- 	                data.submit();
- 	            }
- 	    	},
- 	        done: function (e, data) {
- 				
- 	        	pleaseWaitDiv.modal('hide');
- 	        	$('#modalUploadFileFirmato').modal('hide');
- 	        	if(data.result.success)
- 				{
- 	        		
- 	        			$('#modalErrorDiv').html("File caricato con successo!");
- 					$('#myModalError').removeClass();
- 					$('#myModalError').addClass("modal modal-success");
- 					$('#myModalError').modal('show');
- 					$('#progress .progress-bar').css(
- 		                    'width',
- 		                    '0%'
- 		                );
- 				
- 				}else{
- 					
- 					$('#modalErrorDiv').html(data.result.messaggio);
- 					$('#myModalError').removeClass();
- 					$('#myModalError').addClass("modal modal-danger");
- 					
- 					$('#myModalError').modal('show');
- 					
- 					$('#progress .progress-bar').css(
- 		                    'width',
- 		                    '0%'
- 		                );
+ 	
+ 	 	
+ 	 	
+ 	 	
+ 	 	
+function importaExcel(id_risposta){
+ 	 	$('#fileupload_excel_'+id_risposta).fileupload({
+ 	 	    url: "gestioneTabellaVerbale.do?action=importa_excel&rispostaId="+id_risposta,
+ 	 	    dataType: 'json',
+ 	 	    maxNumberOfFiles : 1,
+ 	 	    getNumberOfFiles: function () {
+ 	 	        return this.filesContainer.children()
+ 	 	            .not('.processing').length;
+ 	 	    },
+ 	 	    start: function(e){
+ 	 	    	pleaseWaitDiv = $('#pleaseWaitDialog');
+ 	 			pleaseWaitDiv.modal();
+ 	 	    },
+ 	 	    add: function(e, data) {
+ 	 	    	
+ 	 	        var uploadErrors = [];
+ 	 	        var acceptFileTypes = /(\.|\/)(xlsx|XLSX|xls|XLS)$/i;
+ 	 	        if(data.originalFiles[0]['name'].length && !acceptFileTypes.test(data.originalFiles[0]['name'])) {
+ 	 	            uploadErrors.push('Tipo File non accettato. ');
+ 	 	        }
+ 	 	        if(data.originalFiles[0]['size'] > 30000000) {
+ 	 	            uploadErrors.push('File troppo grande, dimensione massima 30mb');
+ 	 	        }
+ 	 	        if(uploadErrors.length > 0) {
+ 	 	        	//$('#files').html(uploadErrors.join("\n"));
+ 	 	        	$('#modalErrorDiv').html(uploadErrors.join("\n"));
+ 	 				$('#modalErrorDiv').removeClass();
+ 	 				$('#modalErrorDiv').addClass("modal modal-danger");
+ 	 				
+ 	 				$('#modalErrorDiv').modal('show');
+ 	 			
+ 	 	        } else {
+ 	 	            data.submit();
+ 	 	        }
+ 	 		},
+ 	 	    done: function (e, data) {
+ 	 			
+ 	 	    	pleaseWaitDiv.modal('hide');
+ 	 	    	$('#modalUploadFileFirmato').modal('hide');
+ 	 	    	if(data.result.success)
+ 	 			{
+ 	 	    		
+ 	 	    			$('#modalErrorDiv').html("File caricato con successo!");
+ 	 				$('#myModalError').removeClass();
+ 	 				$('#myModalError').addClass("modal modal-success");
+ 	 				$('#myModalError').modal('show');
+ 	 				$('#progress .progress-bar').css(
+ 	 	                    'width',
+ 	 	                    '0%'
+ 	 	                );
+ 	 			
+ 	 			}else{
+ 	 				
+ 	 				$('#modalErrorDiv').html(data.result.messaggio);
+ 	 				$('#myModalError').removeClass();
+ 	 				$('#myModalError').addClass("modal modal-danger");
+ 	 				
+ 	 				$('#myModalError').modal('show');
+ 	 				
+ 	 				$('#progress .progress-bar').css(
+ 	 	                    'width',
+ 	 	                    '0%'
+ 	 	                );
 
- 				}
+ 	 			}
 
 
- 	        },
- 	        fail: function (e, data) {
- 	        	pleaseWaitDiv.modal('hide');
- 	        	$('#files').html("");
- 	        	var errorMsg = "";
- 	            $.each(data.messages, function (index, error) {
+ 	 	    },
+ 	 	    fail: function (e, data) {
+ 	 	    	pleaseWaitDiv.modal('hide');
+ 	 	    	$('#files').html("");
+ 	 	    	var errorMsg = "";
+ 	 	        $.each(data.messages, function (index, error) {
 
- 	            	errorMsg = errorMsg + '<p>ERRORE UPLOAD FILE: ' + error + '</p>';
- 	       
+ 	 	        	errorMsg = errorMsg + '<p>ERRORE UPLOAD FILE: ' + error + '</p>';
+ 	 	   
 
- 	            });
- 	        		$('#myModalErrorContent').html(errorMsg);
- 				$('#myModalError').removeClass();
- 				$('#myModalError').addClass("modal modal-danger");
- 				$('#myModalError').find('.modal-footer').append('<button type="button" class="btn btn-outline" id="report_button" onClick="sendReport($(this).parents(\'.modal\'))">Invia Report</button>');
- 				$('#myModalError').modal('show');
- 				$('#progress .progress-bar').css(
- 	                    'width',
- 	                    '0%'
- 	                );
- 				$('#myModal').on('hidden.bs.modal', function(){
- 					$('#myModal').find('#report_button').remove();
- 				});
- 	        },
- 	        progressall: function (e, data) {
- 	            var progress = parseInt(data.loaded / data.total * 100, 10);
- 	            $('#progress .progress-bar').css(
- 	                'width',
- 	                progress + '%'
- 	            );
+ 	 	        });
+ 	 	    		$('#myModalErrorContent').html(errorMsg);
+ 	 			$('#myModalError').removeClass();
+ 	 			$('#myModalError').addClass("modal modal-danger");
+ 	 			$('#myModalError').find('.modal-footer').append('<button type="button" class="btn btn-outline" id="report_button" onClick="sendReport($(this).parents(\'.modal\'))">Invia Report</button>');
+ 	 			$('#myModalError').modal('show');
+ 	 			$('#progress .progress-bar').css(
+ 	 	                'width',
+ 	 	                '0%'
+ 	 	            );
+ 	 			$('#myModal').on('hidden.bs.modal', function(){
+ 	 				$('#myModal').find('#report_button').remove();
+ 	 			});
+ 	 	    },
+ 	 	    progressall: function (e, data) {
+ 	 	        var progress = parseInt(data.loaded / data.total * 100, 10);
+ 	 	        $('#progress .progress-bar').css(
+ 	 	            'width',
+ 	 	            progress + '%'
+ 	 	        );
 
- 	        }
- 	    }).prop('disabled', !$.support.fileInput)
- 	        .parent().addClass($.support.fileInput ? undefined : 'disabled');
- 		
- 		
- 	 	$('#fileupload').bind('fileuploadsubmit', function (e, data) {
- 		    // The example input, doesn't have to be part of the upload form:
- 		  var id =  $('#id_certificato_p7m').val();
- 		    data.formData = { id_documento: id};
- 		    
- 
- 		}); 
- 		
+ 	 	    }
+ 	 	}).prop('disabled', !$.support.fileInput)
+ 	 	    .parent().addClass($.support.fileInput ? undefined : 'disabled');
+
+}
+
+ 	 	
  	 	
  	 	$('#myModalError').on('hidden.bs.modal', function(){
  	 		if($('#myModalError').hasClass("modal-success")){
@@ -2299,8 +2429,135 @@
 		var value = $('#data_verifica').val();
 		
 		$('#data_fine_verifica').val(value);
+
+		    $('#data_fine_verifica').datepicker({
+ 			 format: "dd/mm/yyyy"
+ 		 });    
+		
+		    $('#data_fine_verifica').change();
 		
 	});
+	
+	
+	
+	$('#data_fine_verifica').change(function(){
+		
+		var today = new Date();
+		var date = $('#data_fine_verifica').val();
+		var d = moment(date, "DD-MM-YYYY");
+		
+
+		if(date!='' && d._isValid){
+			
+			   var year = d._pf.parsedDateParts[0];
+			   var month = d._pf.parsedDateParts[1];
+			   var day = d._pf.parsedDateParts[2];
+			   var data_fine = new Date(year, month, day);
+			   
+				 var data_verifica = $('#data_verifica').val();
+				   
+				   var dv = moment(data_verifica, "DD-MM-YYYY");
+					if(data_verifica!='' && dv._isValid){
+						
+						   var year = dv._pf.parsedDateParts[0];
+						   var month = dv._pf.parsedDateParts[1];
+						   var day = dv._pf.parsedDateParts[2];
+						   var data_inizio = new Date(year, month, day);
+						   
+						   
+						if(data_inizio>data_fine){
+							   
+							   $('#conferma_button').attr("disabled", true);
+							   
+							   $('#modalErrorDiv').html("Attenzione! La data fine verifica non pu&ograve; essere precedente alla data verifica! ");
+								$('#myModalError').removeClass();
+								$('#myModalError').addClass("modal modal-danger");
+								$('#myModalError').modal('show');	
+								
+								var value = $('#data_verifica').val();
+								
+								$('#data_fine_verifica').val(value);
+						   	}
+						   
+						
+						if(data_inizio>today){
+							   
+							   $('#conferma_button').attr("disabled", true);
+							   
+							   $('#modalErrorDiv').html("Attenzione! La data fine verifica non pu&ograve; essere maggiore della data odierna! ");
+								$('#myModalError').removeClass();
+								$('#myModalError').addClass("modal modal-danger");
+								$('#myModalError').modal('show');	
+								
+								var value = $('#data_verifica').val();
+								
+								$('#data_fine_verifica').val(value);
+						   	}
+						
+						  
+						   var difference = Math.floor((data_fine - data_inizio)/(24*3600*1000));
+						  
+						   if(difference>30){
+							   
+							   $('#conferma_button').attr("disabled", true);
+							   
+							   $('#modalErrorDiv').html("Attenzione! La data fine verifica non pu&ograve; essere superiore di pi&ugrave; di 30 giorni rispetto alla data verifica! ");
+								$('#myModalError').removeClass();
+								$('#myModalError').addClass("modal modal-danger");
+								$('#myModalError').modal('show');	
+								
+								var value = $('#data_verifica').val();
+								
+								$('#data_fine_verifica').val(value);
+						   
+						   }
+					}
+				
+			   
+			   
+			   var year_t = today.getFullYear();
+			   var month_t = today.getMonth();
+			   var day_t = today.getDate();
+			   
+			   today30 = new Date(year_t, month_t, day_t-30);
+			   
+			   today90 = new Date(year_t, month_t, day_t-90);
+			 
+			   if(data_fine>=today30){
+				
+				   $('#conferma_button').attr("disabled", false);
+				   $('#content_motivo_sospensione').hide();
+			   }
+			   else if(data_fine<today30 && data_fine>=today90){
+				   $('#conferma_button').attr("disabled", true);
+				   $('#content_motivo_sospensione').show();
+			   }
+			   else if(data_fine<today90){
+				   $('#conferma_button').attr("disabled", true);
+				   $('#content_motivo_sospensione').hide();
+			   }
+			   
+			  
+		}
+
+	});
+	
+	
+	$('#motivo_sospensione_vie').change(function(){
+		
+		if($(this).val()!=''){
+			
+			$('#conferma_button').attr("disabled", false);
+			
+		}else{
+			
+			$('#conferma_button').attr("disabled", true);
+			
+		}
+		
+		
+	});
+	
 	
 	$('#ore').change(function(){
 		
@@ -2404,20 +2661,56 @@ $('#minuti').change(function(){
 	
 	function modalSedeUtilizzatore(sedeUtilizzatore){
 		
-		var length = sedeUtilizzatore.split("-").length;
+	//	var length = sedeUtilizzatore.split("-").length;
 		
-		var com_prov = sedeUtilizzatore.split("-")[length-2] +"-"+ sedeUtilizzatore.split("-")[length-1];
+		//var com_prov = sedeUtilizzatore.split("-")[length-2] +"-"+ sedeUtilizzatore.split("-")[length-1];
 		
-		var indirizzo = sedeUtilizzatore.substring(0,sedeUtilizzatore.indexOf(com_prov)-2); 
+		//var indirizzo = sedeUtilizzatore.substring(0,sedeUtilizzatore.indexOf(com_prov)-2); 
 		
-		$('#sede_util_mod').val(indirizzo);
-		$('#com_prov').val(com_prov);
+		$('#sede_util_mod').val(sedeUtilizzatore);
+		//$('#com_prov').val(com_prov);
 		
 		$('#myModalModificaSedeUtilizzatore').modal();
 		
 				
 	}
 	
+	function modalEffVerifica(eff_verifica){
+		
+			$('#eff_verifica_mod').val(eff_verifica);
+			$('#eff_verifica_mod').change()
+
+			$('#myModalEffVerifica').modal();
+			
+					
+		}
+	
+	
+	function modalTipoVerifica(tipo_verifica){
+		
+	var opt = [];
+		
+		var gruppo = "${verbale.getCodiceVerifica()}"
+		
+		if(gruppo.startsWith("GVR")){
+				opt.push("<option value='1'>Prima verifica periodica attr. e attr. di insiemi soggetti a verifica (art.4)</option>");
+				opt.push("<option value='2'>Prima verifica periodica attr. di insiemi NON soggetti a verifica (art.5)</option>");
+				opt.push("<option value='3'>Verifica successiva alla prima (funzionamento e/o interna)</option>");
+				opt.push("<option value='4'>Verifica successiva alla prima (funzionamento e/o interna e integrit&agrave;)</option>");
+			}else{
+				opt.push("<option value='1'>Prima periodica</option>");
+				opt.push("<option value='2'>Periodica successiva</option>");
+			}
+		
+		$('#tipo_verifica_mod').html(opt);
+		
+		$('#tipo_verifica_mod').val(tipo_verifica);
+		$('#tipo_verifica_mod').change();
+		
+		$('#myModalTipoVerifica').modal();
+		
+				
+	}
 	
 	function modalAttrezzatura(){
 		
@@ -2633,12 +2926,90 @@ function modificaSedeUtilizzatore(){
 	pleaseWaitDiv.modal();
 	
 	var id ="${verbale.id}";
-	var sede_utilizzatore = $('#sede_util_mod').val()+" - "+$('#com_prov').val();
+	var sede_utilizzatore = $('#sede_util_mod').val();
 	
 	$.ajax({
 		type: "POST",
 		url: "gestioneVerbale.do?action=modifica_sede_utilizzatore",
 		data : "idVerbale="+id+"&sede_utilizzatore_mod="+sede_utilizzatore,				
+		dataType: "json",
+		success: function( data, textStatus) {
+			
+			pleaseWaitDiv.modal('hide');
+			$('#modalErrorDiv').html(data.messaggio);
+			$('#myModalError').removeClass();
+			$('#myModalError').addClass("modal modal-success");
+			$('#myModalError').modal('show');		
+			$('#myModalError').on('hidden.bs.modal', function(){
+				location.reload()
+			});
+			
+		},
+		error: function(jqXHR, textStatus, errorThrown){
+			pleaseWaitDiv.modal('hide');
+			$('#modalErrorDiv').html(jqXHR.responseText);
+			$('#myModalError').removeClass();
+			$('#myModalError').addClass("modal modal-danger");
+			$('#myModalError').modal('show');															
+		}
+	});
+	
+}
+
+
+
+function modificaEffettuazioneVerifica(){
+	
+	$("#myModalEffVerifica").modal('hide');
+	pleaseWaitDiv = $('#pleaseWaitDialog');
+	pleaseWaitDiv.modal();
+	
+	var id ="${verbale.id}";
+	var eff_verifica = $('#eff_verifica_mod').val();
+	
+	$.ajax({
+		type: "POST",
+		url: "gestioneVerbale.do?action=modifica_effettuazione_verifica",
+		data : "idVerbale="+id+"&effettuazione_verifica="+eff_verifica,				
+		dataType: "json",
+		success: function( data, textStatus) {
+			
+			pleaseWaitDiv.modal('hide');
+			$('#modalErrorDiv').html(data.messaggio);
+			$('#myModalError').removeClass();
+			$('#myModalError').addClass("modal modal-success");
+			$('#myModalError').modal('show');		
+			$('#myModalError').on('hidden.bs.modal', function(){
+				location.reload()
+			});
+			
+		},
+		error: function(jqXHR, textStatus, errorThrown){
+			pleaseWaitDiv.modal('hide');
+			$('#modalErrorDiv').html(jqXHR.responseText);
+			$('#myModalError').removeClass();
+			$('#myModalError').addClass("modal modal-danger");
+			$('#myModalError').modal('show');															
+		}
+	});
+	
+}
+
+
+
+function modificaTipoVerifica(){
+	
+	$("#myModalTipoVerifica").modal('hide');
+	pleaseWaitDiv = $('#pleaseWaitDialog');
+	pleaseWaitDiv.modal();
+	
+	var id ="${verbale.id}";
+	var tipo_verifica = $('#tipo_verifica_mod').val();
+	
+	$.ajax({
+		type: "POST",
+		url: "gestioneVerbale.do?action=modifica_tipo_verifica",
+		data : "idVerbale="+id+"&tipo_verifica="+tipo_verifica,				
 		dataType: "json",
 		success: function( data, textStatus) {
 			
@@ -2702,9 +3073,129 @@ function modificaSedeUtilizzatore(){
 	
 	
 	
-	function modalCaricaFileFirmato(id_certificato){
+	function modalCaricaFileFirmato(id_certificato, scheda_tecnica){
 		
 		$('#id_certificato_p7m').val(id_certificato);
+		
+		var url;
+		
+		if(scheda_tecnica == true){
+			url = "gestioneVerbale.do?action=carica_scheda_firmata";
+		}else{
+			url = "gestioneVerbale.do?action=carica_verbale_firmato";
+		}
+		
+		
+		
+		$('#fileupload').fileupload({
+ 	        url: url,
+ 	        dataType: 'json',
+ 	        maxNumberOfFiles : 1,
+ 	        getNumberOfFiles: function () {
+ 	            return this.filesContainer.children()
+ 	                .not('.processing').length;
+ 	        },
+ 	        start: function(e){
+ 	        	pleaseWaitDiv = $('#pleaseWaitDialog');
+ 				pleaseWaitDiv.modal();
+ 	        },
+ 	        add: function(e, data) {
+ 	            var uploadErrors = [];
+ 	            var acceptFileTypes = /(\.|\/)(pdf|PDF)$/i;
+ 	            if(data.originalFiles[0]['name'].length && !acceptFileTypes.test(data.originalFiles[0]['name'])) {
+ 	                uploadErrors.push('Tipo File non accettato. ');
+ 	            }
+ 	            if(data.originalFiles[0]['size'] > 30000000) {
+ 	                uploadErrors.push('File troppo grande, dimensione massima 30mb');
+ 	            }
+ 	            if(uploadErrors.length > 0) {
+ 	            	//$('#files').html(uploadErrors.join("\n"));
+ 	            	$('#modalErrorDiv').html(uploadErrors.join("\n"));
+ 					$('#modalErrorDiv').removeClass();
+ 					$('#modalErrorDiv').addClass("modal modal-danger");
+ 					
+ 					$('#modalErrorDiv').modal('show');
+ 				
+ 	            } else {
+ 	                data.submit();
+ 	            }
+ 	    	},
+ 	        done: function (e, data) {
+ 				
+ 	        	pleaseWaitDiv.modal('hide');
+ 	        	$('#modalUploadFileFirmato').modal('hide');
+ 	        	if(data.result.success)
+ 				{
+ 	        		
+ 	        			$('#modalErrorDiv').html("File caricato con successo!");
+ 					$('#myModalError').removeClass();
+ 					$('#myModalError').addClass("modal modal-success");
+ 					$('#myModalError').modal('show');
+ 					$('#progress .progress-bar').css(
+ 		                    'width',
+ 		                    '0%'
+ 		                );
+ 				
+ 				}else{
+ 					
+ 					$('#modalErrorDiv').html(data.result.messaggio);
+ 					$('#myModalError').removeClass();
+ 					$('#myModalError').addClass("modal modal-danger");
+ 					
+ 					$('#myModalError').modal('show');
+ 					
+ 					$('#progress .progress-bar').css(
+ 		                    'width',
+ 		                    '0%'
+ 		                );
+
+ 				}
+
+
+ 	        },
+ 	        fail: function (e, data) {
+ 	        	pleaseWaitDiv.modal('hide');
+ 	        	$('#files').html("");
+ 	        	var errorMsg = "";
+ 	            $.each(data.messages, function (index, error) {
+
+ 	            	errorMsg = errorMsg + '<p>ERRORE UPLOAD FILE: ' + error + '</p>';
+ 	       
+
+ 	            });
+ 	        		$('#myModalErrorContent').html(errorMsg);
+ 				$('#myModalError').removeClass();
+ 				$('#myModalError').addClass("modal modal-danger");
+ 				$('#myModalError').find('.modal-footer').append('<button type="button" class="btn btn-outline" id="report_button" onClick="sendReport($(this).parents(\'.modal\'))">Invia Report</button>');
+ 				$('#myModalError').modal('show');
+ 				$('#progress .progress-bar').css(
+ 	                    'width',
+ 	                    '0%'
+ 	                );
+ 				$('#myModal').on('hidden.bs.modal', function(){
+ 					$('#myModal').find('#report_button').remove();
+ 				});
+ 	        },
+ 	        progressall: function (e, data) {
+ 	            var progress = parseInt(data.loaded / data.total * 100, 10);
+ 	            $('#progress .progress-bar').css(
+ 	                'width',
+ 	                progress + '%'
+ 	            );
+
+ 	        }
+ 	    }).prop('disabled', !$.support.fileInput)
+ 	        .parent().addClass($.support.fileInput ? undefined : 'disabled');
+ 		
+ 		
+ 	 	$('#fileupload').bind('fileuploadsubmit', function (e, data) {
+ 		    // The example input, doesn't have to be part of the upload form:
+ 		  var id =  $('#id_certificato_p7m').val();
+ 		    data.formData = { id_documento: id};
+ 		    
+ 
+ 		}); 
+ 		
 		
 		
 		$('#modalUploadFileFirmato').modal();
@@ -2833,6 +3324,9 @@ function allegatoVisibile(id_allegato){
 	
 			$(document).ready(function() {
 				
+				
+				$('#content_motivo_sospensione').hide();
+				
 				var ore_uomo = '${verbale.ore_uomo}';
 				
 				$('#ore_uomo').select2();
@@ -2889,6 +3383,7 @@ function allegatoVisibile(id_allegato){
 				var frequenza = "${verbale.frequenza}";
 				
 				
+				$('#data_fine_verifica').change()
 				
 			$('#tipologia_verifica').select2();
 			$('#tipo_verifica_vie').select2();
@@ -3084,7 +3579,7 @@ function allegatoVisibile(id_allegato){
 				
 			if(!checkStrumentoVerificatore()){
 					
-					$('#modalErrorDiv').html("Il campo strumento verificatore Ë obbligatorio");
+					$('#modalErrorDiv').html("Il campo strumento verificatore √® obbligatorio");
 					$('#myModalError').removeClass();
 					$('#myModalError').addClass("modal modal-danger");
 					$('#myModalError').modal('show');	
@@ -3137,7 +3632,7 @@ function allegatoVisibile(id_allegato){
 				
 			if(!checkStrumentoVerificatore() && !salva_mod){
 					
-				$('#modalErrorDiv').html("Il campo strumento verificatore Ë obbligatorio");
+				$('#modalErrorDiv').html("Il campo strumento verificatore √® obbligatorio");
 				$('#myModalError').removeClass();
 				$('#myModalError').addClass("modal modal-danger");
 				$('#myModalError').modal('show');	
@@ -3145,42 +3640,42 @@ function allegatoVisibile(id_allegato){
 			}
 			else if(!$('#data_verifica').attr("disabled") &&$('#data_verifica').val()=='' && $('#esito').val()!='S' && !salva_mod){
 				
-				$('#modalErrorDiv').html("Il campo data verifica Ë obbligatorio");
+				$('#modalErrorDiv').html("Il campo data verifica √® obbligatorio");
 				$('#myModalError').removeClass();
 				$('#myModalError').addClass("modal modal-danger");
 				$('#myModalError').modal('show');	
 			}
 			else if(!$('#data_prossima_verifica_verb').attr("disabled") && $('#data_prossima_verifica_verb').val()=='' && $('#esito').val()!='S' && $('#tipo_verifica_vie').val()!=2 && !salva_mod){
 				
-				$('#modalErrorDiv').html("Il campo data prossima verifica Ë obbligatorio");
+				$('#modalErrorDiv').html("Il campo data prossima verifica √® obbligatorio");
 				$('#myModalError').removeClass();
 				$('#myModalError').addClass("modal modal-danger");
 				$('#myModalError').modal('show');	
 			}
 			else if(gvr !='' && gvr=='1'&& !$('#data_verifica_integrita_verb').attr("disabled")  &&$('#data_verifica_integrita_verb').val()=='' && $('#esito').val()!='S' && !salva_mod){
 				
-				$('#modalErrorDiv').html("Il campo data verifica integrit‡ Ë obbligatorio");
+				$('#modalErrorDiv').html("Il campo data verifica integrit&agrave; obbligatorio");
 				$('#myModalError').removeClass();
 				$('#myModalError').addClass("modal modal-danger");
 				$('#myModalError').modal('show');	
 			}
 			else if(gvr !='' && gvr=='1'&& !$('#data_prossima_verifica_integrita_verb').attr("disabled")  &&$('#data_prossima_verifica_integrita_verb').val()=='' && $('#esito').val()!='S' && !salva_mod){
 				
-				$('#modalErrorDiv').html("Il campo data prossima verifica integrit‡ Ë obbligatorio" && !salva_mod);
+				$('#modalErrorDiv').html("Il campo data prossima verifica integrit&agrave; obbligatorio" && !salva_mod);
 				$('#myModalError').removeClass();
 				$('#myModalError').addClass("modal modal-danger");
 				$('#myModalError').modal('show');	
 			}
 			else if(gvr !='' && gvr=='1' && !$('#data_verifica_interna_verb').attr("disabled") && $('#data_verifica_interna_verb').val()=='' && $('#esito').val()!='S' && !salva_mod){
 				
-				$('#modalErrorDiv').html("Il campo data verifica interna Ë obbligatorio");
+				$('#modalErrorDiv').html("Il campo data verifica interna √® obbligatorio");
 				$('#myModalError').removeClass();
 				$('#myModalError').addClass("modal modal-danger");
 				$('#myModalError').modal('show');	
 			}
 			else if(gvr !='' && gvr=='1' && !$('#data_prossima_verifica_interna_verb').attr("disabled") && $('#data_prossima_verifica_interna_verb').val()=='' && $('#esito').val()!='S'  && !salva_mod){
 				
-				$('#modalErrorDiv').html("Il campo data prossima verifica interna Ë obbligatorio");
+				$('#modalErrorDiv').html("Il campo data prossima verifica interna √® obbligatorio");
 				$('#myModalError').removeClass();
 				$('#myModalError').addClass("modal modal-danger");
 				$('#myModalError').modal('show');	
@@ -3188,14 +3683,14 @@ function allegatoVisibile(id_allegato){
 			
 			else if($('#esito').val()=='' && !salva_mod){
 				
-				$('#modalErrorDiv').html("Il campo Esito verifica Ë obbligatorio");
+				$('#modalErrorDiv').html("Il campo Esito verifica √® obbligatorio");
 				$('#myModalError').removeClass();
 				$('#myModalError').addClass("modal modal-danger");
 				$('#myModalError').modal('show');	
 			}
 			else if($('#esito').val()=='S' && $('#descrizione_sospensione').val()=='' && !salva_mod){
 				
-				$('#modalErrorDiv').html("Il campo Motivo sospensione Ë obbligatorio");
+				$('#modalErrorDiv').html("Il campo Motivo sospensione √® obbligatorio");
 				$('#myModalError').removeClass();
 				$('#myModalError').addClass("modal modal-danger");
 				$('#myModalError').modal('show');	
@@ -3203,7 +3698,7 @@ function allegatoVisibile(id_allegato){
 			
 			else if(gvr !='' && gvr=='1' &&$('#tipo_verifica_gvr').val()=='' && !salva_mod){
 				
-				$('#modalErrorDiv').html("Il campo Tipo verifica GVR Ë obbligatorio");
+				$('#modalErrorDiv').html("Il campo Tipo verifica GVR √® obbligatorio");
 				$('#myModalError').removeClass();
 				$('#myModalError').addClass("modal modal-danger");
 				$('#myModalError').modal('show');	
@@ -3211,7 +3706,7 @@ function allegatoVisibile(id_allegato){
 			
 			else if($('#check_sede_diversa').is(':checked')  && $('#presso').val()=='' && !salva_mod){
 				
-				$('#modalErrorDiv').html("Il campo presso Ë obbligatorio");
+				$('#modalErrorDiv').html("Il campo presso √® obbligatorio");
 				$('#myModalError').removeClass();
 				$('#myModalError').addClass("modal modal-danger");
 				$('#myModalError').modal('show');	
@@ -3219,7 +3714,7 @@ function allegatoVisibile(id_allegato){
 			
 			else if($('#check_sede_diversa').is(':checked')  && $('#indirizzo').val()=='' && !salva_mod){
 				
-				$('#modalErrorDiv').html("Il campo indirizzo Ë obbligatorio");
+				$('#modalErrorDiv').html("Il campo indirizzo √® obbligatorio");
 				$('#myModalError').removeClass();
 				$('#myModalError').addClass("modal modal-danger");
 				$('#myModalError').modal('show');	
@@ -3227,25 +3722,25 @@ function allegatoVisibile(id_allegato){
 			
 			else if($('#check_sede_diversa').is(':checked') && $('#cap').val()=='' && !salva_mod){
 				
-				$('#modalErrorDiv').html("Il campo cap Ë obbligatorio");
+				$('#modalErrorDiv').html("Il campo cap √® obbligatorio");
 				$('#myModalError').removeClass();
 				$('#myModalError').addClass("modal modal-danger");
 				$('#myModalError').modal('show');	
 			}
 			else if($('#frequenza').val()=='' && $('#check_motivo').val()=='1' && !salva_mod){
-				$('#modalErrorDiv').html("Il campo frequenza Ë obbligatorio");
+				$('#modalErrorDiv').html("Il campo frequenza √® obbligatorio");
 				$('#myModalError').removeClass();
 				$('#myModalError').addClass("modal modal-danger");
 				$('#myModalError').modal('show');	
 			}
  			else if($('#check_motivo').val()=='' && !salva_mod){
-				$('#modalErrorDiv').html("Il campo tipo verifica Ë obbligatorio");
+				$('#modalErrorDiv').html("Il campo tipo verifica √® obbligatorio");
 				$('#myModalError').removeClass();
 				$('#myModalError').addClass("modal modal-danger");
 				$('#myModalError').modal('show');	
 			} 
 			else if($('#tipologia_verifica').val()=='' && !salva_mod){
-				$('#modalErrorDiv').html("Il campo tipologia verifica Ë obbligatorio");
+				$('#modalErrorDiv').html("Il campo tipologia verifica √® obbligatorio");
 				$('#myModalError').removeClass();
 				$('#myModalError').addClass("modal modal-danger");
 				$('#myModalError').modal('show');	
@@ -3253,13 +3748,13 @@ function allegatoVisibile(id_allegato){
 			
 			//else if(($('#ore').val()=='' || $('#minuti').val()=='') && $('#ore_uomo').val()=='' && !salva_mod){
 			else if($('#ore_uomo').val()=='' && !salva_mod){
-				$('#modalErrorDiv').html("Il campo ore/uomo Ë obbligatorio");
+				$('#modalErrorDiv').html("Il campo ore/uomo √® obbligatorio");
 				$('#myModalError').removeClass();
 				$('#myModalError').addClass("modal modal-danger");
 				$('#myModalError').modal('show');	
 			}
 			else if($('#matricola_vie').val()=='' && !salva_mod){
-				$('#modalErrorDiv').html("Il campo matricola Ë obbligatorio");
+				$('#modalErrorDiv').html("Il campo matricola √® obbligatorio");
 				$('#myModalError').removeClass();
 				$('#myModalError').addClass("modal modal-danger");
 				$('#myModalError').modal('show');	
@@ -3338,7 +3833,7 @@ function allegatoVisibile(id_allegato){
 						$("#allegatiList").append('<li class="list-group-item"><b>'+data.fileName+'</b><a class="btn btn-default btn-xs pull-right" href="gestioneDocumento.do?idDocumento='+data.idDocumento+'" style="margin-left:5px"><i class="glyphicon glyphicon-file"></i> Download Allegato</a></li>');		
 					},
 					error : function(jqXHR, textStatus, errorThrown) {
-						$('#modalErrorDiv').html("Si Ë verificato un errore durante l'upload del file. Riprova pi˘ tardi");	
+						$('#modalErrorDiv').html("Si √® verificato un errore durante l'upload del file. Riprova pi√π tardi");	
 						$('#myModalError').removeClass();
 						$('#myModalError').addClass("modal modal-danger");
 					},
@@ -3458,6 +3953,54 @@ function allegatoVisibile(id_allegato){
 				});
 				
 			}
+			
+		function exportaExcel(id_tabella){
+			
+			var data = [];
+			var table = document.getElementById(id_tabella);
+
+			var rowLength = table.rows.length;
+			for (i = 0; i < rowLength; i++){
+
+			   var cells = table.rows.item(i).cells;
+			   var cellLength = cells.length;
+
+			   var data_row = [];
+			   for(var j = 0; j < cellLength-1; j++){
+			      var row = cells.item(j);
+			      var cellVal = "";			      
+			      if(cells[0].tagName=="TH"){
+			    	  cellVal=  $(row).closest('th')[0].innerText
+			      }else{
+			    	  
+			    	  $(row).closest('td').find("select").each(function() {
+				    	  cellVal = this.options[this.selectedIndex].outerText;
+				      });
+			      
+			    	  if(cellVal == null ||cellVal==""){
+			    		  $(row).closest('td').find("input").each(function() {
+					    	  cellVal = this.value;
+					      });
+			    	  }
+			    	  
+			      }
+			      			     
+			      data_row.push(cellVal);
+			   }
+			   
+			   data.push(data_row);
+			}
+			
+			var workbook = XLSX.utils.book_new(),
+		    worksheet = XLSX.utils.aoa_to_sheet(data);
+		workbook.SheetNames.push("First");
+		workbook.Sheets["First"] = worksheet;
+		
+		XLSX.writeFile(workbook, "table_export.xlsx");
+		}
+			
+
+ 	    		       	           	           	 	
 			
   		</script>	  
 	</jsp:attribute> 

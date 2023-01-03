@@ -80,4 +80,14 @@ public class GestioneAttrezzatureBO {
 		
 		return GestioneAttrezzatureDAO.checkMatricola(matricola_inail, session);
 	}
+
+	public static ArrayList<AttrezzaturaDTO> getAttrezzatureScadenzaVentennale(Session session) {
+		
+		return GestioneAttrezzatureDAO.getAttrezzatureScadenzaVentennale(session);
+	}
+
+	public static ArrayList<AttrezzaturaDTO> getListaAttrezzatureInsieme(int id_attrezzatura, Session session) {
+		
+		return GestioneAttrezzatureDAO.getListaAttrezzatureInsieme(id_attrezzatura, session);
+	}
 }

@@ -252,18 +252,25 @@ public class GestioneUtenti extends HttpServlet {
 	    			
 		    	 		
 		    	 		if(check!=null && check.split(",").length==1) {
+		    	 			
+		    	 			RuoloDTO ruolovie = GestioneRuoloBO.getRuoloById("9", session);
+		    	 			RuoloDTO ruoloval = GestioneRuoloBO.getRuoloById("10", session);
+		    	 			
+		    	 			utente.getListaRuoli().remove(ruolovie);		    	 			
+		    	 			utente.getListaRuoli().remove(ruoloval);
+		    	 			
 			    	 		if(check.split(",")[0].split("_")[0].equals("checkvie")) {
-			    	 			RuoloDTO ruolo = GestioneRuoloBO.getRuoloById("9", session);
 			    	 			
-			    	 			utente.getListaRuoli().add(ruolo);
+			    	 			utente.getListaRuoli().add(ruolovie);
+			    	 			
 			    	 		}else if(check.split(",")[0].split("_")[0].equals("checkval")) {
-			    	 			RuoloDTO ruolo = GestioneRuoloBO.getRuoloById("10", session);
 			    	 			
-			    	 			utente.getListaRuoli().add(ruolo);
+			    	 			utente.getListaRuoli().add(ruoloval);
 			    	 		}
 			    	 		
 			    	 		
 			    	 	}else if(check!=null && check.split(",").length==2) {
+			    	 		
 			    	 		RuoloDTO ruolo_vie = GestioneRuoloBO.getRuoloById("9", session);    	 			
 		    	 			
 			    	 		RuoloDTO ruolo_val = GestioneRuoloBO.getRuoloById("10", session);

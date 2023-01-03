@@ -135,5 +135,18 @@
 	  <property name="codice_milestone" type="java.lang.String">
             <column name="codice_milestone" />
         </property>
+        
+        <property name="scadenza_ventennale_segnalata" type="int">
+            <column name="scadenza_ventennale_segnalata" />
+        </property>
+        
+         <property name="id_insieme" type="java.lang.Integer">
+            <column name="id_insieme" />
+        </property>
+        
+         <property name="has_insieme" type="int">
+            <column name="has_insieme" />
+        </property>
+        
     </class>
 </hibernate-mapping>

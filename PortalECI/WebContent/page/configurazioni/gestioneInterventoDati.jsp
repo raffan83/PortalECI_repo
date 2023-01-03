@@ -870,6 +870,29 @@
  	}
  		
  		
+ 		
+ 		$('#check_descrizione').on('ifChecked', function(event) {
+				
+				if($('#sede').val()!=''){
+					$('#sede').change();	
+				}
+				
+				$('#content_descrizione_utilizzatore').show();
+				
+				
+				
+			});
+			
+
+	 		
+		$('#check_descrizione').on('ifUnchecked', function(event) {
+				
+			$('#content_descrizione_utilizzatore').hide();
+			$('#descrizione_sede_util').val('');
+				
+			});
+ 		
+ 		
  		function modalStorico(id_verbale){
  			
  			exploreModal("gestioneVerbale.do?action=storico_email&idVerbale="+id_verbale, null, null, function(datab){
@@ -1336,8 +1359,14 @@
 								}
 								objectdata+="<td></td>";
 								
-								objectdata+='<td>'+eff_ver+'</td>'+
-								'<td>'+tipo_ver+'</td>';	
+								/* objectdata+='<td>'+eff_ver+'</td>'+
+								'<td>'+tipo_ver+'</td>';	 */
+								
+								
+								objectdata+='<td>'+$('#effettuazione_verifica').find('[value='+eff_ver+']').text()+'</td>'+
+								'<td>'+$('#tipo_verifica').find('[value='+tipo_ver+']').text()+'</td>';	 
+							
+								
 								objectdata+='<td>'+$("#noteVerbale").val()+'</td>'+    
 									'<td><a class="btn customTooltip" title="Click per eliminare la riga" onclick="removeRow(\'row_'+id_row_intervento+'\')"><i class="fa fa-minus"></i></a></td></tr>';
 								
@@ -1424,8 +1453,13 @@
 							}else{
 								objectdata+="<td></td>";
 							}
-							objectdata+='<td></td>'+
-							'<td></td>';	
+						 	objectdata+='<td></td>'+
+							'<td></td>';	 
+							
+							/* objectdata+='<td>'+$('#effettuazione_verifica').find('[value='+eff_ver+']').text()+'</td>'+
+							'<td>'+$('#tipo_verifica').find('[value='+tipo_ver+']').text()+'</td>';	  */
+						
+							
 							objectdata+='<td>'+$("#noteVerbale").val()+'</td>'+    
 								'<td><a class="btn customTooltip" title="Click per eliminare la riga" onclick="removeRow(\'row_'+id_row_intervento+'\')"><i class="fa fa-minus"></i></a></td></tr>';
 							

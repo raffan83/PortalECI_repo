@@ -9,7 +9,8 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-
+import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.Properties;
 
 import org.hibernate.Session;
@@ -159,9 +160,11 @@ public class DirectMySqlDAO {
 	}
 	
 	
-	public static void aggiornaCampioniScadenza() throws Exception {
+	public static ArrayList<Integer> aggiornaCampioniScadenza() throws Exception {
 
-		String query = "update campione set stato_campione='F' where stato_campione != 'N' and (campione.data_Scadenza<now() or campione.data_scadenza is null)";
+		
+		String query = "select __id from campione where stato_campione != 'N' and stato_campione != 'F' and (campione.data_Scadenza<now() or campione.data_scadenza is null)";
+		
 
 		Connection con=null;
 		PreparedStatement pst=null;
@@ -169,10 +172,26 @@ public class DirectMySqlDAO {
 		con=getConnection();
 		pst=con.prepareStatement(query);
 
-		pst.executeUpdate();
+		
+		ResultSet rs = pst.executeQuery();
+		
+		ArrayList<Integer> list = new ArrayList<Integer>();
+		
+		while (rs.next()) {
+			list.add(rs.getInt(1));
+		}
 
+		query = "update campione set stato_campione='F' where stato_campione != 'N' and (campione.data_Scadenza<now() or campione.data_scadenza is null)";
+		
+		pst=con.prepareStatement(query);
+
+		pst.executeUpdate();
+		
+		
 		pst.close();
-		con.close();
+		con.close();	
+		
+		return list;
 	}
 		
 	

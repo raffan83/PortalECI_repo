@@ -1,5 +1,7 @@
 package it.portalECI.bo;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Map;
@@ -29,6 +31,7 @@ import org.apache.log4j.Logger;
 import it.portalECI.DAO.GestioneCommesseDAO;
 import it.portalECI.DAO.GestioneComunicazioniDAO;
 import it.portalECI.DAO.GestioneDocumentoDAO;
+import it.portalECI.DTO.AttrezzaturaDTO;
 import it.portalECI.DTO.CommessaDTO;
 import it.portalECI.DTO.DocumentoDTO;
 import it.portalECI.DTO.InterventoDTO;
@@ -700,5 +703,54 @@ public static void sendPecVerbale(ArrayList<VerbaleDTO> lista_verbali, String ma
 		  email.send();
 		
 	}
+
+	public static void sendEmailScadenzaVentennale(ArrayList<AttrezzaturaDTO> lista_attrezzature_scadenza, Session session) throws EmailException {
+		
+		
+		  HtmlEmail email = new HtmlEmail();
+		  email.setHostName("smtps.aruba.it");
+		 //email.setDebug(true);
+
 	
+		  email.setAuthentication("info@ecisrl.it", Costanti.PASS_EMAIL);
+
+	        email.getMailSession().getProperties().put("mail.smtp.auth", "true");
+	        email.getMailSession().getProperties().put("mail.debug", "true");
+	        email.getMailSession().getProperties().put("mail.smtp.port", "465");
+	        email.getMailSession().getProperties().put("mail.smtp.socketFactory.port", "465");
+	        email.getMailSession().getProperties().put("mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
+	        email.getMailSession().getProperties().put("mail.smtp.socketFactory.fallback", "false");
+	        email.getMailSession().getProperties().put("mail.smtp.ssl.enable", "true");
+	        
+					
+		    email.setSubject("Avviso scadenza ventennale attrezzature");
+				  
+			DateFormat df = new SimpleDateFormat("dd/MM/yyyy");	  
+			String str = "";
+			
+			for (AttrezzaturaDTO attrezzatura : lista_attrezzature_scadenza) {
+				
+				if(attrezzatura.getId_sede()==0) {
+					str += "ID: "+attrezzatura.getId()+" - Cliente: "+attrezzatura.getNome_cliente()+" - Sede: Non Associate - Data scadenza: "+df.format(attrezzatura.getData_scadenza_ventennale())+"<br>";
+				}else {
+					str += "ID: "+attrezzatura.getId()+" - Cliente: "+attrezzatura.getNome_cliente()+" - Sede: "+attrezzatura.getNome_sede()+" - Data scadenza: "+df.format(attrezzatura.getData_scadenza_ventennale())+"<br>";
+				}
+				
+				attrezzatura.setScadenza_ventennale_segnalata(1);
+			}
+				  
+				  email.setHtmlMsg("<html>Si comunica che la scadenza ventennale delle seguenti attrezzature scadr&agrave; entro i prossimi 60 giorni<br><br>"+str+"</html>"); 
+		
+			  
+		  email.addTo("marco.deciantis@ecisrl.it");
+		  email.addTo("luciano.dambrosio@ecisrl.it");	
+		  		 
+		  email.setFrom("info@ecisrl.it", "info@ecisrl.it");
+		  
+
+		  email.send();
+		
+		  
+	}
+
 }

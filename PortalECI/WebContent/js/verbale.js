@@ -18,7 +18,7 @@ function aggiungiRigaTabella(risposta_id, button){
 	$.ajax({
 		type: "GET",
 		url: "gestioneTabellaVerbale.do",
-		data: {rispostaId:risposta_id},
+		data: {rispostaId:risposta_id, action:"importa_excel"},
 		success: function( data, textStatus) {
 			var tr_element = $(button).parents("tr").first();
 			$(data).insertBefore(tr_element);
@@ -31,3 +31,5 @@ function aggiungiRigaTabella(risposta_id, button){
 		}
 	});
 }
+
+

@@ -396,6 +396,19 @@ function saveInterventoFromModal(){
 		var data = table.rows().data();
 		data.each(function (value, index) {
 			
+		//	var eff_verifica_opt = $('#effettuazione_verifica').find('option[text="'+value[8]+'"]').val();
+			//var tipo_verifica_opt = $('#tipo_verifica').find('option[text="'+value[9]+'"]').val();
+			var eff_verifica_opt = $('#effettuazione_verifica option').filter(function () { return $(this).html() == value[8]; }).val();
+			var tipo_verifica_opt = $('#tipo_verifica option').filter(function () { return $(this).html() == value[9]; }).val();
+			
+			if(eff_verifica_opt==null){
+				eff_verifica_opt = "";
+			}
+			
+			if(tipo_verifica_opt==null){
+				tipo_verifica_opt = "";
+			}
+			
 			var x = stripHtml(value[2]);
 			
 			noteVerb+="&note="+value[10];
@@ -403,8 +416,8 @@ function saveInterventoFromModal(){
 			attrezzature+='&attrezzature='+value[4];
 			esercenti+='&esercenti='+value[6];
 			descrizione_util+='&descrizione_util='+value[7];
-			eff_ver+='&effettuazione_verifica='+value[8];
-			tipo_ver+='&tipo_verifica='+value[9];
+			eff_ver+='&effettuazione_verifica='+eff_verifica_opt;
+			tipo_ver+='&tipo_verifica='+tipo_verifica_opt;
 		 });
 	            
 		
@@ -1101,8 +1114,17 @@ function modificaCampione(idCamampione){
 		success: function( data, textStatus) {
 
 			if(data.success){ 
-				$('#myModal').modal('hide');
-				location.reload();
+				//$('#myModal').modal('hide');
+				//location.reload();
+				
+			//	exploreModal("aggiornamentoCampione.do","idCamp="+idCamampione,"#aggiorna")
+				
+				$('#myModalErrorContent').html(data.messaggio);
+  			  	$('#myModalError').removeClass();
+  				$('#myModalError').addClass("modal modal-success");
+  				$('#myModalError').modal('show');
+				
+				
 			}else{
 				$('#errorModifica').html("<h3 class='label label-danger' style=\"color:green\">Errore Salvataggio Campione</h3>");			
 			}
@@ -3110,6 +3132,7 @@ function nuovaAttrezzatura(){
 	var n_id_on = $('#n_id_on').val();
 	var data_scadenza_ventennale = $('#data_scadenza_ventennale').val();
 	var codice_milestone = $('#codice_milestone').val();
+	var id_insieme = $('#id_insieme').val();
 
 	var dataObj = {};
 	          
@@ -3140,6 +3163,7 @@ function nuovaAttrezzatura(){
 	dataObj.n_id_on = n_id_on;
 	dataObj.data_scadenza_ventennale = data_scadenza_ventennale;
 	dataObj.codice_milestone = codice_milestone;
+	dataObj.id_insieme = id_insieme;
 
 	$.ajax({
 		type: "POST",
@@ -3152,11 +3176,19 @@ function nuovaAttrezzatura(){
 			if(data.success){ 
 				$('#modalNuovaAttrezzatura').modal('hide');
 				
-				 dataString ="action=cliente_sede&id_cliente="+ cliente_return+"&id_sede="+sede_return;
-		          exploreModal("listaAttrezzature.do",dataString,"#posTab",function(data,textStatus){
+				if(id_insieme!=null && id_insieme!=''){
+					
+					exploreModal("listaAttrezzature.do","action=attrezzature_insieme&id_attrezzatura="+$('#id_attrezzatura').val(),"#attrezzature_insieme");
+					
+				}else{
+					 dataString ="action=cliente_sede&id_cliente="+ cliente_return+"&id_sede="+sede_return;
+			          exploreModal("listaAttrezzature.do",dataString,"#posTab",function(data,textStatus){
+					
+			        	  
+					});
+				}
+				pleaseWaitDiv.modal('hide');
 				
-		        	  pleaseWaitDiv.modal('hide');
-				});
 		          $('.modal-backdrop').hide();          		
 			}else{
 				pleaseWaitDiv.modal('hide');
@@ -3288,6 +3320,91 @@ function modificaAttrezzatura(scadenzario, date, tipo_data){
 		}
 	});	  	  	  	  
 }
+
+
+
+function modificaAttrezzaturaInsieme(){
+
+	pleaseWaitDiv = $('#pleaseWaitDialog');
+	pleaseWaitDiv.modal();
+	
+	var cliente_return = $('#select1').val();	
+	var sede_return = $('#select2').val();	
+	var id_attrezzatura = $('#id_attrezzatura_ins').val();
+	var id_cliente = $('#cliente_mod').val();
+	var id_sede = $('#sede_mod').val();
+	var matricola_inail = $('#matricola_inail_mod_ins').val();
+	var numero_fabbrica = $('#numero_fabbrica_mod_ins').val();
+	var descrizione = $('#descrizione_mod_ins').val();
+	var tipo_attivita = $('#tipo_attivita_mod_ins').val();	
+	var anno_costruzione = $('#anno_costruzione_mod_ins').val();
+	var fabbricante = $('#fabbricante_mod_ins').val();
+	var modello = $('#modello_mod_ins').val();
+	var note_tecniche = $('#note_tecniche_mod_ins').val();
+	var note_generiche = $('#note_generiche_mod_ins').val();	
+	var tipo_attrezzatura = $('#tipo_attrezzatura_mod_ins').val();
+	var tipo_attrezzatura_gvr = $('#tipo_attrezzatura_gvr_mod_ins').val();
+	var id_specifica = $('#id_specifica_mod_ins').val();	
+	var marcatura = $('#marcatura_mod_ins').val();
+	var n_id_on = $('#n_id_on_mod_ins').val();
+	var codice_milestone = $('#codice_milestone_mod_ins').val();
+	var id_insieme_mod = $('#id_insieme_mod').val();
+	  		
+	var dataObj = {};
+	 
+	dataObj.id_attrezzatura = id_attrezzatura;
+	dataObj.id_cliente = id_cliente;
+	dataObj.id_sede = id_sede;
+	dataObj.matricola_inail = matricola_inail;
+	dataObj.numero_fabbrica = numero_fabbrica;
+	dataObj.descrizione = descrizione;
+	dataObj.tipo_attivita = tipo_attivita;
+	dataObj.anno_costruzione = anno_costruzione;
+	dataObj.fabbricante = fabbricante;
+	dataObj.modello = modello;
+	dataObj.note_tecniche = note_tecniche;
+	dataObj.note_generiche = note_generiche;
+	dataObj.tipo_attrezzatura = tipo_attrezzatura;
+	dataObj.tipo_attrezzatura_gvr = tipo_attrezzatura_gvr;
+	dataObj.id_specifica = id_specifica;
+	dataObj.marcatura = marcatura;
+	dataObj.n_id_on = n_id_on;
+	dataObj.codice_milestone = codice_milestone;
+	dataObj.id_insieme_mod = id_insieme_mod;
+	
+	$.ajax({
+		type: "POST",
+		url: "listaAttrezzature.do?action=modifica",
+		data: dataObj,
+		dataType: "json",
+
+		success: function( data, textStatus) {
+
+			if(data.success){ 
+				$('#modalModificaAttrezzaturaInsieme').modal('hide');
+				
+				exploreModal("listaAttrezzature.do","action=attrezzature_insieme&id_attrezzatura="+$('#id_attrezzatura').val(),"#attrezzature_insieme");
+			        	  pleaseWaitDiv.modal('hide');
+				
+				
+		          $('.modal-backdrop').hide();          		
+			}else{
+				pleaseWaitDiv.modal('hide');				
+				$("#myModalErrorContent").html(data.messaggio);
+				$("#myModalError").modal();
+			}
+		},
+
+		error: function(jqXHR, textStatus, errorThrown){	          
+			// $('#empty').html("<h3 class='label label-danger'>"+textStatus+"</h3>");
+			pleaseWaitDiv.modal('hide');
+			$("#myModalErrorContent").html(textStatus);
+			$("#myModalError").modal();
+			
+		}
+	});	  	  	  	  
+}
+
 
 
 
@@ -4474,13 +4591,24 @@ function aggiungiVerbale(id_intervento){
 			
 			var x = stripHtml(value[2]);
 			
+			var eff_verifica_opt = $('#effettuazione_verifica option').filter(function () { return $(this).html() == value[8]; }).val();
+			var tipo_verifica_opt = $('#tipo_verifica option').filter(function () { return $(this).html() == value[9]; }).val();
+			
+			if(eff_verifica_opt==null){
+				eff_verifica_opt = "";
+			}
+			
+			if(tipo_verifica_opt==null){
+				tipo_verifica_opt = "";
+			}
+			
 			noteVerb+="&note="+value[10];
 			sedi+= "&sedi="+value[5];
 			attrezzature+='&attrezzature='+value[4];
 			esercenti+='&esercenti='+value[6];
 			descrizione_util+='&descrizione_util='+value[7];
-			eff_ver+='&effettuazione_verifica='+value[8];
-			tipo_ver+='&tipo_verifica='+value[9];
+			eff_ver+='&effettuazione_verifica='+eff_verifica_opt;
+			tipo_ver+='&tipo_verifica='+tipo_verifica_opt;
 		 });
 	            
 		
