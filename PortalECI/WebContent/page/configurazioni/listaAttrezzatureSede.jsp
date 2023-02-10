@@ -63,7 +63,7 @@
                        <th>Sogg. messa servizio GVR</th>
                        <th>N. panieri idroestrattori</th>
                        <th>Marcatura</th>
-                       <th>N. ID ON</th>
+                       <th>N. ID ON GVR</th>
                        <th>Scadenza Ventennale</th>
                        <th>Codici Milestone</th>
                        <th>Note tecniche</th>
@@ -405,9 +405,10 @@
     
     
        <div class="form-group">
-        <label for="inputName" class="col-sm-4 control-label">N. ID ON:</label>
+        <label for="inputName" class="col-sm-4 control-label">N. ID ON GVR:</label>
         <div class="col-sm-8">
                       <input class="form-control" id="n_id_on" type="text" name="n_id_on"  value=""/>
+                       <span id="label_id_on" style="display:none"><font style="color:red">Il campo se compilato deve contenere 4 caratteri!</font></span></label>
     </div>
        </div> 
        
@@ -704,9 +705,10 @@
     
     
        <div class="form-group">
-        <label for="inputName" class="col-sm-4 control-label">N. ID ON:</label>
+        <label for="inputName" class="col-sm-4 control-label">N. ID ON GVR:</label>
         <div class="col-sm-8">
                       <input class="form-control" id="n_id_on_mod" type="text" name="n_id_on_mod"  value=""/>
+                      <span id="label_id_on_mod" style="display:none"><font style="color:red">Il campo se compilato deve contenere 4 caratteri!</font></span></label>
     </div>
        </div> 
        
@@ -987,9 +989,9 @@
     
     
        <div class="form-group">
-        <label for="inputName" class="col-sm-4 control-label">N. ID ON:</label>
+        <label for="inputName" class="col-sm-4 control-label">N. ID ON GVR:</label>
         <div class="col-sm-8">
-                      <input class="form-control" id="n_id_on_mod_ins" type="text" name="n_id_on_mod_ins"  value=""/>
+                      <input class="form-control" id="n_id_on_mod_ins" type="text" name="n_id_on_mod_ins"  value=""/><span id="label_id_on_ins" style="display:none"><font style="color:red">Il campo se compilato deve contenere 4 caratteri!</font></span></label>
     </div>
        </div> 
        
@@ -1132,19 +1134,61 @@ $("#tableAttr").on( 'init.dt', function ( e, settings ) {
 $('#formNuovaAttrezzatura').on('submit',function(e){
     e.preventDefault();
 	
-	nuovaAttrezzatura();
+    
+    var flag = true; 
+    var n_id_on = $('#n_id_on').val();
+    
+    if(n_id_on!='' && n_id_on.length!=4){
+    	flag = false;
+    	
+    }
+    if(flag){
+    	nuovaAttrezzatura();
+    	$('#label_id_on').hide();
+    }else{
+    	$('#label_id_on').show();
+    }
+	
 });
 
 $('#formModificaAttrezzatura').on('submit',function(e){
     e.preventDefault();
+    
+    var flag = true; 
+    var n_id_on = $('#n_id_on_mod').val();
+    
+    if(n_id_on!='' && n_id_on.length!=4){
+    	flag = false;
+    	
+    }
+    if(flag){
+    	   modificaAttrezzatura();
+    	$('#label_id_on_mod').hide();
+    }else{
+    	$('#label_id_on_mod').show();
+    }
 	
-    modificaAttrezzatura();
+ 
 });
 
 $('#formModificaAttrezzaturaInsieme').on('submit',function(e){
     e.preventDefault();
+    
+    var flag = true; 
+    var n_id_on = $('#n_id_on_ins').val();
+    
+    if(n_id_on!='' && n_id_on.length!=4){
+    	flag = false;
+    	
+    }
+    if(flag){
+    	 modificaAttrezzaturaInsieme();
+    	$('#label_id_on_ins').hide();
+    }else{
+    	$('#label_id_on_ins').show();
+    }
 	
-    modificaAttrezzaturaInsieme();
+   
 });
 
 function modalNuovaAttrezzatura(attrezzatura_insieme, id_insieme){
@@ -1674,8 +1718,10 @@ $("#tipo_attivita").change(function() {
 			if(gruppo == 'GVR'){
 				$('#tipo_attrezzatura_gvr').attr("disabled", true);
 				$('#sogg_messa_serv_GVR').attr("disabled", false);	
+				$('#n_id_on').attr("disabled", false);	
 			}else{
 				$('#data_scadenza_ventennale').removeClass("disabled");
+				$('#n_id_on').attr("disabled", true);
 			}
 			
 						
@@ -1686,7 +1732,7 @@ $("#tipo_attivita").change(function() {
 			settore_opt.push('<option value="siderurgico">Siderurgico</option>');
 			settore_opt.push('<option value="estrattivo">Estrattivo</option>');
 			settore_opt.push('<option value="porturale">Portuale</option>');		
-			
+			$('#n_id_on').attr("disabled", true);	
 			$('#data_scadenza_ventennale').removeClass("disabled");
 		}
 		
@@ -1742,8 +1788,10 @@ $("#tipo_attivita_mod").change(function() {
 			if(gruppo == 'GVR'){
 				$('#tipo_attrezzatura_gvr_mod').attr("disabled", true);
 				$('#sogg_messa_serv_GVR_mod').attr("disabled", false);	
+				$('#n_id_on_mod').attr("disabled", false);	
 			}else{
 				$('#data_scadenza_ventennale_mod').removeClass("disabled");
+				$('#n_id_on_mod').attr("disabled", true);	
 			}
 			
 		}else if(gruppo == "SC"){
@@ -1752,7 +1800,7 @@ $("#tipo_attivita_mod").change(function() {
 			settore_opt.push('<option value="siderurgico">Siderurgico</option>');
 			settore_opt.push('<option value="estrattivo">Estrattivo</option>');
 			settore_opt.push('<option value="rorturale">Portuale</option>');		
-			
+			$('#n_id_on_mod').attr("disabled", true);	
 			$('#data_scadenza_ventennale_mod').removeClass("disabled");
 		}
 		 $("#settore_impiego_mod").prop("disabled", false);

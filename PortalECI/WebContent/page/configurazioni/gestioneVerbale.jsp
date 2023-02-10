@@ -1042,7 +1042,7 @@
 												 </div>
 												</div>
 												       		
-												<c:if test="${verbale.codiceVerifica == 'VT' }">      		
+												<c:if test="${verbale.codiceVerifica.startsWith('VT') }">      		
 												<div class="col-xs-6">
 												<label>Tipologia verifica</label>
 												<select id="tipologia_verifica" name="tipologia_verifica" class="form-control select2" data-placeholder="Seleziona tipologia verifica..." style="width:100%">
@@ -2497,11 +2497,11 @@ function importaExcel(id_risposta){
 						  
 						   var difference = Math.floor((data_fine - data_inizio)/(24*3600*1000));
 						  
-						   if(difference>30){
+						   if(difference>45){
 							   
 							   $('#conferma_button').attr("disabled", true);
 							   
-							   $('#modalErrorDiv').html("Attenzione! La data fine verifica non pu&ograve; essere superiore di pi&ugrave; di 30 giorni rispetto alla data verifica! ");
+							   $('#modalErrorDiv').html("Attenzione! La data fine verifica non pu&ograve; essere superiore di pi&ugrave; di 45 giorni rispetto alla data verifica! ");
 								$('#myModalError').removeClass();
 								$('#myModalError').addClass("modal modal-danger");
 								$('#myModalError').modal('show');	
@@ -2519,16 +2519,16 @@ function importaExcel(id_risposta){
 			   var month_t = today.getMonth();
 			   var day_t = today.getDate();
 			   
-			   today30 = new Date(year_t, month_t, day_t-30);
+			   today45 = new Date(year_t, month_t, day_t-45);
 			   
 			   today90 = new Date(year_t, month_t, day_t-90);
 			 
-			   if(data_fine>=today30){
+			   if(data_fine>=today45){
 				
 				   $('#conferma_button').attr("disabled", false);
 				   $('#content_motivo_sospensione').hide();
 			   }
-			   else if(data_fine<today30 && data_fine>=today90){
+			   else if(data_fine<today45 && data_fine>=today90){
 				   $('#conferma_button').attr("disabled", true);
 				   $('#content_motivo_sospensione').show();
 			   }

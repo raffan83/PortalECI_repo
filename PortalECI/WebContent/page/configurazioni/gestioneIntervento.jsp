@@ -350,8 +350,10 @@
 	        	         							<select name="attrezzatura_temp" id="attrezzatura_temp" data-placeholder="Seleziona Attrezzatura"  class="form-control select2" aria-hidden="true" data-live-search="true" style="display:none">
 	                									<option value="" disabled selected>Seleziona Tipo...</option>
 	                									<option value="0">Nessuna</option>
-	                									<c:forEach items="${listaAttrezzature}" var="attrezzatura">                		
-		                        							<option value="${attrezzatura.id}_${attrezzatura.matricola_inail}_${attrezzatura.tipo_attivita}">${attrezzatura.matricola_inail}</option>     	                            
+	                									<c:forEach items="${listaAttrezzature}" var="attrezzatura">     
+	                										<c:if test="${attrezzatura.id_insieme==null }">      		
+		                        							<option value="${attrezzatura.id}_${attrezzatura.matricola_inail}_${attrezzatura.tipo_attivita}">${attrezzatura.matricola_inail}</option>
+		                        							</c:if>          	                            
 	    	                 							</c:forEach>
 	        	         							</select>    
 	        									</div>  
