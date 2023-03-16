@@ -1175,7 +1175,7 @@ $('#formModificaAttrezzaturaInsieme').on('submit',function(e){
     e.preventDefault();
     
     var flag = true; 
-    var n_id_on = $('#n_id_on_ins').val();
+    var n_id_on = $('#n_id_on_mod_ins').val();
     
     if(n_id_on!='' && n_id_on.length!=4){
     	flag = false;
