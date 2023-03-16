@@ -810,7 +810,7 @@ if(action!= null && action.equals("dettaglio")) {
 						commessa = verbale.getIntervento().getIdCommessa();
 					}
 
-					if(verificatore.getEMail()!=null) {
+					if(verificatore.getEMail()!=null  && verbale.getCodiceCategoria().equals("VIE")) {
 						ArrayList<UtenteDTO> lista_utenti = GestioneComunicazioniBO.getListaUtentiComunicazione(verbale.getCodiceCategoria(), session);
 						String destinatari = "";
 						for (UtenteDTO utenteDTO : lista_utenti) {
@@ -973,7 +973,7 @@ if(action!= null && action.equals("dettaglio")) {
 							commessa = verbale.getIntervento().getIdCommessa();
 						}
 						
-						if(verificatore.getEMail()!=null && user.getEMail()!=null) {
+						if(verificatore.getEMail()!=null && user.getEMail()!=null && verbale.getCodiceCategoria().equals("VIE")) {
 							GestioneComunicazioniBO.sendEmailVerbale(verbale, commessa, verificatore.getEMail(), user.getEMail(), 5, verbale.getType(), verbale_origine);
 						}
 						
@@ -1086,10 +1086,14 @@ if(action!= null && action.equals("dettaglio")) {
 							
 							if(controfirma!=null && controfirma.equals("1")) {
 								verbale.setControfirmato(1);
-								GestioneComunicazioniBO.sendEmail(intervento.getTecnico_verificatore(), intervento, verbale, verbale_principale, 2);
+								if(verbale.getCodiceCategoria().equals("VIE")) {
+									GestioneComunicazioniBO.sendEmail(intervento.getTecnico_verificatore(), intervento, verbale, verbale_principale, 2);
+								}
 							}else {
 								verbale.setFirmato(1);
-								GestioneComunicazioniBO.sendEmail(verbale.getResponsabile_approvatore(), intervento, verbale,verbale_principale, 1);	
+								if(verbale.getCodiceCategoria().equals("VIE")) {
+									GestioneComunicazioniBO.sendEmail(verbale.getResponsabile_approvatore(), intervento, verbale,verbale_principale, 1);
+								}
 							}
 							
 							session.update(verbale);

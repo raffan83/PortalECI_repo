@@ -262,14 +262,14 @@ public class CreateScadenzarioVAL {
 		 rowTitle.createCell(40).setCellValue("attr_regione");
 		 rowTitle.createCell(41).setCellValue("fattura");
 		 rowTitle.createCell(42).setCellValue("verbale");
-		 rowTitle.createCell(43).setCellValue("scheda_tecnica");
+		 rowTitle.createCell(43).setCellValue("scheda tecnica");
 		 rowTitle.createCell(44).setCellValue("user_inserimento");
 		// rowTitle.createCell(48).setCellValue("inail_conferma");
 		 rowTitle.createCell(45).setCellValue("cs_is_ragionesociale");
 		 rowTitle.createCell(46).setCellValue("sv_cod_fiscale");
 		 rowTitle.createCell(47).setCellValue("cs_is_cod_fiscale");
 		 rowTitle.createCell(48).setCellValue("matr_insieme");
-		 rowTitle.createCell(49).setCellValue("id_pacco");
+		 rowTitle.createCell(49).setCellValue("id_pacco_bombola");
 		 rowTitle.createCell(50).setCellValue("num_add");
 		 rowTitle.createCell(51).setCellValue("tipo_atv");
 		 rowTitle.createCell(52).setCellValue("pot_inst_(kw)");
@@ -615,7 +615,18 @@ public class CreateScadenzarioVAL {
 						if(listaAttrVerbale.get(j)!=null && listaAttrVerbale.get(j).getSogg_messa_serv_GVR()!=null) {						
 							cell.setCellValue(listaAttrVerbale.get(j).getSogg_messa_serv_GVR());
 						}else {
-							cell.setCellValue("");
+							if(listaAttrVerbale.get(j).getId_insieme()!=null) {
+								AttrezzaturaDTO attr = GestioneAttrezzatureBO.getAttrezzaturaFromId(listaAttrVerbale.get(j).getId_insieme(), session);
+								if(attr.getSogg_messa_serv_GVR()!=null) {
+									cell.setCellValue(attr.getSogg_messa_serv_GVR());
+								}else {
+									cell.setCellValue("");	
+								}
+								
+							}else {
+								cell.setCellValue("");	
+							}
+							
 						}
 						
 						 col++;
