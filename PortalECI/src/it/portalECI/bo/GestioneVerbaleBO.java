@@ -979,7 +979,10 @@ public class GestioneVerbaleBO {
 			html = html.replaceAll("\\$\\{DATA_CONFERMA\\}", df.format(verbale.getData_conferma()));
 		}
 		
-	
+		if(verbale.getPotenza()!=null)
+		{
+			html = html.replaceAll("\\$\\{POTENZA_IMPIEGATA\\}", verbale.getPotenza()+"");
+		}
 		
 		
 		String esito ="";

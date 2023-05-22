@@ -271,7 +271,7 @@ public class CreateScadenzarioVAL {
 		 rowTitle.createCell(48).setCellValue("matr_insieme");
 		 rowTitle.createCell(49).setCellValue("id_pacco_bombola");
 		 rowTitle.createCell(50).setCellValue("num_add");
-		 rowTitle.createCell(51).setCellValue("tipo_atv");
+		 rowTitle.createCell(51).setCellValue("tipol_atv");
 		 rowTitle.createCell(52).setCellValue("pot_inst_(kw)");
 		 rowTitle.createCell(53).setCellValue("alimentazione");
 		 rowTitle.createCell(54).setCellValue("num_prf_asta");
@@ -305,637 +305,645 @@ public class CreateScadenzarioVAL {
 	    		 
 	    		 
 	    		for(int j = 0; j<listaAttrVerbale.size();j++) {
-	    			Row row = sheet0.createRow(2+row_index);
-		    		 
-		    		 int col = 0;
-		    		 
-		    		 Cell cell = row.createCell(col);
-		    		 
-		    		 //cell.setCellValue("");
-		    		 
-		    		 //col++;
-		    		 //cell = row.createCell(col);
-		    		 
-		    		 
-		    		 String tipo_verifica = "";
-		    		 
-		    		 if(listaVerbali.get(i).getTipo_verifica()!=0) {
-		    			 
-		    			 if(listaAttrVerbale.get(j).getTipo_attivita().equals("GVR")) {
-		    				 
-		    				 if(listaVerbali.get(i).getTipo_verifica()<3) {
-		    					 
-		    					 tipo_verifica = "1";
-		    				 }else {
-		    					 tipo_verifica = "2"; //TIPO VERIFICA
-		    				 }		    				 
-		    				 
-		    			 }else {
-		    				 
-		    				 tipo_verifica = ""+listaVerbali.get(i).getTipo_verifica();
-		    				 
-		    			 }
-		    		 }
-		    		 
-		    		 Date data_rilascio = null;
-		    		 Date data_pvp = Utility.getDataPvP(listaVerbali.get(i));
-		    		 
-		    		 
-		    		 if(listaVerbali.get(i).getStato().getId()!=9 && listaVerbali.get(i).getTipo_verifica_gvr()==0 || listaVerbali.get(i).getTipo_verifica_gvr()==1 || listaVerbali.get(i).getTipo_verifica_gvr()==4 || listaVerbali.get(i).getTipo_verifica_gvr()==5 || listaVerbali.get(i).getTipo_verifica_gvr()==7) {
-		    			 data_rilascio = listaVerbali.get(i).getData_verifica();
-		    			// data_pvp = listaVerbali.get(i).getData_prossima_verifica();
-		    		 }
-		    		 else if(listaVerbali.get(i).getStato().getId()!=9 && listaVerbali.get(i).getTipo_verifica_gvr()!=0 && (listaVerbali.get(i).getTipo_verifica_gvr()==3 || listaVerbali.get(i).getTipo_verifica_gvr()==6)) {
-		    			 data_rilascio = listaVerbali.get(i).getData_verifica_interna();
-		    		//	 data_pvp = listaVerbali.get(i).getData_prossima_verifica_interna();
-		    		 }
-		    		 else if(listaVerbali.get(i).getStato().getId()!=9 && listaVerbali.get(i).getTipo_verifica_gvr()!=0 && listaVerbali.get(i).getTipo_verifica_gvr()==2) {
-		    			 data_rilascio = listaVerbali.get(i).getData_verifica_integrita();
-		    			// data_pvp = listaVerbali.get(i).getData_prossima_verifica_integrita();
-		    		 }
-		    		 
-		    		 
-		    		 
-		    		 SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");	
-		    		 
-		    		 if(listaAttrVerbale.get(j)!=null && listaAttrVerbale.get(j).getMatricola_inail().split("/").length>0) {
-		    			 
-		    			 df.applyPattern("yyyy-MM-dd");	
+	    			
+	    			if(listaAttrVerbale.get(j).getHas_insieme()==0) {
+	    				
+	    				Row row = sheet0.createRow(2+row_index);
 			    		 
-			    		 Date date = df.parse(df.format(data_pvp)); 
+			    		 int col = 0;
 			    		 
-			    		 df.applyPattern("ddMMyyyy");				    		 
-		    			 
-		    		//	 cell.setCellValue(listaAttrVerbale.get(j).getMatricola_inail().replaceAll("/", "") + tipo_verifica+df.format(date));
-		    		 }else {
-		    		//	 cell.setCellValue("");	 
-		    		 }
-		    		 
-		    		// col++;
-		    		// cell = row.createCell(col);
-		    		 
-		    		 if(listaVerbali.get(i).getEffettuazione_verifica()!=0) {
-		    			 cell.setCellValue(listaVerbali.get(i).getEffettuazione_verifica());
-		    		 }else {
-		    			 cell.setCellValue("");	 
-		    		 }
-		    		 
-		    		 col++;
-		    		 cell = row.createCell(col);
-		    		 
-		    		 
-		    		 String matr_anno ="";
-		    		 String matr_cod_att = "";
-		    		 String matr_numero = "";
-		    		 String matr_prov ="";
-		    		 
-		    		 
-		    		 if(listaAttrVerbale.get(j)!=null && listaAttrVerbale.get(j).getMatricola_inail().split("/").length>0) {
-													
-							matr_anno = listaAttrVerbale.get(j).getMatricola_inail().split("/")[0];
-		    		 }
-					
-		    		 cell.setCellValue(matr_anno);
-		    		
-		    		 
-		    		 col++;
-		    		 cell = row.createCell(col);
-		    		 if(listaAttrVerbale.get(j)!=null && listaAttrVerbale.get(j).getMatricola_inail().split("/").length>1) {
-		    			 
-							matr_cod_att = listaAttrVerbale.get(j).getMatricola_inail().split("/")[1];
-							
-						}
-		    		 
-		    		 cell.setCellValue(matr_cod_att);
-		    		 
-		    		 col++;
-		    		 cell = row.createCell(col);	
-						if(listaAttrVerbale.get(j)!=null && listaAttrVerbale.get(j).getMatricola_inail().split("/").length>2) {
-							
-							matr_numero = listaAttrVerbale.get(j).getMatricola_inail().split("/")[2];
-							
-						}
-						
-						cell.setCellValue(matr_numero);
-						
-						 col++;
-			    		 cell = row.createCell(col);	
-						if(listaAttrVerbale.get(j)!=null && listaAttrVerbale.get(j).getMatricola_inail().split("/").length>3) {
-							
-							matr_prov = listaAttrVerbale.get(j).getMatricola_inail().split("/")[3];
-							
-						}
-						
-						cell.setCellValue(matr_prov);
-						
-//						 col++;
-//			    		 cell = row.createCell(col);
-//						if(listaAttrVerbale.get(j)!=null) {
-//							cell.setCellValue(listaAttrVerbale.get(j).getMatricola_inail());
-//						}else {
-//							cell.setCellValue("");
-//						}
-						 col++;
-			    		 cell = row.createCell(col);
+			    		 Cell cell = row.createCell(col);
 			    		 
-			    		 String esito ="";
-			    		 String sospensione = "";
+			    		 //cell.setCellValue("");
 			    		 
-			    		 if(listaVerbali.get(i).getEsito()!=null && listaVerbali.get(i).getEsito().equals("P")) {
-			    			 esito = "Positivo";
-			    		 }else if(listaVerbali.get(i).getEsito()!=null && listaVerbali.get(i).getEsito().equals("N")) {
-			    			 esito = "Negativo";
-			    		 }else if(listaVerbali.get(i).getEsito()!=null && listaVerbali.get(i).getEsito().equals("S")) {
-			    			 esito = "Sospeso";
-			    			 sospensione = listaVerbali.get(i).getDescrizione_sospensione();
-			    		 }
-			    		 
-						cell.setCellValue(esito); //ESITO VERIFICA
-						 col++;
-			    		 cell = row.createCell(col);
-			    		 
-
-						
-			    		 cell.setCellValue(tipo_verifica); //TIPO VERIFICA	 
+			    		 //col++;
+			    		 //cell = row.createCell(col);
 			    		 
 			    		 
-						 col++;
-			    		 cell = row.createCell(col);
-						cell.setCellValue(sospensione); //SOSPENSIONE
-						 col++;
-			    		 cell = row.createCell(col);
-
-			    		 	    		 
-			    	
-			    		 Date date =null; 
-			    				 
-			    		 if(data_rilascio!=null) {
-			    			 date = df.parse(df.format(data_rilascio));
-				    		 
-				    		 df.applyPattern("dd/MM/yyyy");		    		
-				    		 
-							 cell.setCellValue(""+df.format(date)); //DATA RILASCIO
-			    		 }else {
-			    			 cell.setCellValue("");
-			    		 }
-			    				 
-						 col++;
-			    		 cell = row.createCell(col);
-			    		 
-			    		 
-			    		 if(data_pvp!=null) {
-			    			 df.applyPattern("yyyy-MM-dd");	
-				    		 
-				    		 date = df.parse(df.format(data_pvp)); 
-				    		 
-				    		 df.applyPattern("dd/MM/yyyy");		
-				    		 
-							 cell.setCellValue(""+df.format(date)); //DATA PROSSIMA VERIFICA PERIODICA
-			    		 }else {
-			    			 cell.setCellValue("");
-			    		 }
-			    		 
-						 col++;
-			    		 cell = row.createCell(col);
-			    		 
-			    		 CommessaDTO commessa = GestioneCommesseBO.getCommessaById(listaVerbali.get(i).getIntervento().getIdCommessa());
-						
-			    		 
-			    		 
-						ClienteDTO cliente = null;
-						
-						if(commessa.getID_ANAGEN()!=commessa.getID_ANAGEN_UTIL()) {
-							cliente = GestioneAnagraficaRemotaBO.getClienteById(commessa.getID_ANAGEN_UTIL()+"");
-						}else {
-							cliente = GestioneAnagraficaRemotaBO.getClienteById(listaVerbali.get(i).getIntervento().getId_cliente()+"");
-						}
-						
-											
-						if(cliente!=null && cliente.getNome()!=null) {
-							
-							cell.setCellValue(cliente.getNome());
-						}else {
-							cell.setCellValue("");
-						}
-						 col++;
-			    		 cell = row.createCell(col);
-						if(cliente!=null && cliente.getIndirizzo()!=null) {
-							cell.setCellValue(cliente.getIndirizzo());
-						}else {
-							cell.setCellValue("");
-						}
-						 col++;
-			    		 cell = row.createCell(col);
-						
-						if(cliente!=null && cliente.getCitta()!=null) {						
-							cell.setCellValue(cliente.getCitta());
-						}else {
-							cell.setCellValue("");
-						}
-						 col++;
-			    		 cell = row.createCell(col);
-						if(cliente!=null && cliente.getCap()!=null) {						
-							cell.setCellValue(cliente.getCap());
-						}else {
-							cell.setCellValue("");
-						}
-						 col++;
-			    		 cell = row.createCell(col);
-						if(cliente!=null && cliente.getProvincia()!=null) {						
-							cell.setCellValue(cliente.getProvincia());
-						}else {
-							cell.setCellValue("");
-						}
-						 col++;
-			    		 cell = row.createCell(col);
-			    		 if(cliente!=null && cliente.getProvincia()!=null) {	
-			    			 cell.setCellValue(GestioneAnagraficaRemotaBO.getRegioneFromProvincia(cliente.getProvincia(), session)); //DL REGIONE	 
-			    		 }else {
-			    			 cell.setCellValue("");
-			    		 }
-						
-						 col++;
-			    		 cell = row.createCell(col);
-						if(cliente!=null && cliente.getCf()!=null) {						
-							cell.setCellValue(cliente.getCf());
-						}else {
-							cell.setCellValue("");
-						}
-						col++;
-			    		 cell = row.createCell(col);
-						if(cliente!=null && cliente.getPartita_iva()!=null) {						
-							cell.setCellValue(cliente.getPartita_iva());
-						}else {
-							cell.setCellValue("");
-						}
-						 col++;
-			    		 cell = row.createCell(col);
-						if(listaAttrVerbale.get(j)!=null && listaAttrVerbale.get(j).getTipo_attivita()!=null) {						
-							cell.setCellValue(listaAttrVerbale.get(j).getTipo_attivita());
-						}else {
-							cell.setCellValue("");
-						}
-						 col++;
-			    		 cell = row.createCell(col);
-						if(listaAttrVerbale.get(j)!=null && listaAttrVerbale.get(j).getTipo_attrezzatura()!=null) {						
-							cell.setCellValue(listaAttrVerbale.get(j).getTipo_attrezzatura());
-						}else {
-							cell.setCellValue("");
-						}
-						 col++;
-			    		 cell = row.createCell(col);
-						if(listaAttrVerbale.get(j)!=null && listaAttrVerbale.get(j).getTipo_attrezzatura_GVR()!=null) {						
-							cell.setCellValue(listaAttrVerbale.get(j).getTipo_attrezzatura_GVR());
-						}else {
-							cell.setCellValue("");
-						}
-						 col++;
-			    		 cell = row.createCell(col);
-					
-			    		 
-			    		 String tipo_ver_gvr="";
-			    		
-			    		 if(listaVerbali.get(i).getTipo_verifica_gvr()!=0) {
-			    			 if((listaVerbali.get(i).getTipo_verifica() == 1 ||listaVerbali.get(i).getTipo_verifica() == 2) || listaVerbali.get(i).getTipo_verifica_gvr()==1 || listaVerbali.get(i).getTipo_verifica_gvr()==7) {
-				    			 tipo_ver_gvr = "Verifica di funzionamento";
-				    			 
-				    		 }else if((listaVerbali.get(i).getTipo_verifica() != 1 && listaVerbali.get(i).getTipo_verifica() != 2) && listaVerbali.get(i).getTipo_verifica_gvr()==2 || listaVerbali.get(i).getTipo_verifica_gvr()==4 || listaVerbali.get(i).getTipo_verifica_gvr()==5|| listaVerbali.get(i).getTipo_verifica_gvr()==6) {
-				    			 tipo_ver_gvr = "Verifica di integrità";
-				    			 
-				    		 }else if((listaVerbali.get(i).getTipo_verifica() != 1 && listaVerbali.get(i).getTipo_verifica() != 2) && listaVerbali.get(i).getTipo_verifica_gvr()==3 ) {
-				    			 tipo_ver_gvr = "Verifica interna";
-				    			 
-				    		 }
-			    		 }
-			    		
-						cell.setCellValue(tipo_ver_gvr); //TIPO VERIFICA GVR
-						
-						 col++;
-			    		 cell = row.createCell(col);				
-						if(listaAttrVerbale.get(j)!=null && listaAttrVerbale.get(j).getSogg_messa_serv_GVR()!=null) {						
-							cell.setCellValue(listaAttrVerbale.get(j).getSogg_messa_serv_GVR());
-						}else {
-							if(listaAttrVerbale.get(j).getId_insieme()!=null) {
-								AttrezzaturaDTO attr = GestioneAttrezzatureBO.getAttrezzaturaFromId(listaAttrVerbale.get(j).getId_insieme(), session);
-								if(attr.getSogg_messa_serv_GVR()!=null) {
-									cell.setCellValue(attr.getSogg_messa_serv_GVR());
-								}else {
-									cell.setCellValue("");	
-								}
-								
-							}else {
-								cell.setCellValue("");	
-							}
-							
-						}
-						
-						 col++;
-			    		 cell = row.createCell(col);
-						if(listaAttrVerbale.get(j)!=null && listaAttrVerbale.get(j).getID_specifica()!=null) {						
-							cell.setCellValue(listaAttrVerbale.get(j).getID_specifica());
-						}else {
-							cell.setCellValue("");
-						}
-						 col++;
-			    		 cell = row.createCell(col);
-						if(listaAttrVerbale.get(j)!=null && listaAttrVerbale.get(j).getN_panieri_idroestrattori()!=null) {						
-							cell.setCellValue(listaAttrVerbale.get(j).getN_panieri_idroestrattori()+"");
-						}else {
-							cell.setCellValue("");
-						}
-						 col++;
-			    		 cell = row.createCell(col);
-						if(listaAttrVerbale.get(j)!=null && listaAttrVerbale.get(j).getModello()!=null) {						
-							cell.setCellValue(listaAttrVerbale.get(j).getModello());
-						}else {
-							cell.setCellValue("");
-						}
-						 col++;
-			    		 cell = row.createCell(col);
-						if(listaAttrVerbale.get(j)!=null && listaAttrVerbale.get(j).getNumero_fabbrica()!=null) {						
-							cell.setCellValue(listaAttrVerbale.get(j).getNumero_fabbrica());
-						}else {
-							cell.setCellValue("");
-						}
-						 col++;
-			    		 cell = row.createCell(col);
-						if(listaAttrVerbale.get(j)!=null && listaAttrVerbale.get(j).getMarcatura()!=null) {						
-							cell.setCellValue(listaAttrVerbale.get(j).getMarcatura());
-						}else {
-							cell.setCellValue("");
-						}
-						 col++;
-			    		 cell = row.createCell(col);
-						if(listaAttrVerbale.get(j)!=null && listaAttrVerbale.get(j).getN_id_on()!=null) {
-							cell.setCellValue(listaAttrVerbale.get(j).getN_id_on());
-						}else {
-							cell.setCellValue("");
-						}
-						 col++;
-			    		 cell = row.createCell(col);
-						
-						cell.setCellValue(listaVerbali.get(i).getIntervento().getTecnico_verificatore().getCompany().getDenominazione());
-						 col++;
-			    		 cell = row.createCell(col);
-						cell.setCellValue(listaVerbali.get(i).getIntervento().getTecnico_verificatore().getNome());
-						 col++;
-			    		 cell = row.createCell(col);
-						cell.setCellValue(listaVerbali.get(i).getIntervento().getTecnico_verificatore().getCognome());
-						
-						 col++;
-			    		 cell = row.createCell(col);
-			    		 
-			    		 String cf = "";
-			    		 
-			    		 if(listaVerbali.get(i).getIntervento().getTecnico_verificatore().getCf()!=null) {
-			    			 cf = listaVerbali.get(i).getIntervento().getTecnico_verificatore().getCf(); 
-			    		 }
-			    		 
-						cell.setCellValue(cf); //CF VERIFICATORE
-						
-						 col++;
-			    		 cell = row.createCell(col);		    		 
+			    		 String tipo_verifica = "";
 			    		 
 			    		 if(listaVerbali.get(i).getTipo_verifica()!=0) {
 			    			 
-			    		 String articolo = GestioneAttrezzatureBO.getArticoloFromDescrizione(listaAttrVerbale.get(j).getDescrizione(), listaVerbali.get(i).getTipo_verifica(), session);
-			    		 	    		 		    		 
-			    		 String tariffe = GestioneCommesseDAO.getTariffeFromArticolo(articolo, listaVerbali.get(i).getIntervento().getIdCommessa());
-			    		 
-			    		 if(!tariffe.equals("") && tariffe.split(";").length>1) {
-			    			 
-				    		 String tariffa_app = tariffe.split(";")[0];
-				    		 String tariffa_regolare = tariffe.split(";")[1];
-				    		 
-				    		 if(listaAttrVerbale.get(j).getId_insieme()==null) {
-				    			 cell.setCellValue(new Double(tariffa_app)); //TARIFFA
-				    		 }else {
-				    			 cell.setCellValue(""); //TARIFFA
-				    		 }
-				    		
-							 col++;
-				    		 cell = row.createCell(col);
-							cell.setCellValue(new Double(tariffa_regolare)); //TARIFFA REGOLARE
-							
-							 col++;
-				    		 cell = row.createCell(col);
-				    		 
-				    		 Double contributo = 0.0;
-				    		 
-				    		 if(listaVerbali.get(i).getEffettuazione_verifica()==1) {
-				    			 
-				    			 contributo = new Double(tariffa_regolare)*0.15;
-				    			 
-				    		 }else if(listaVerbali.get(i).getEffettuazione_verifica()==2){
-				    			 contributo = new Double(tariffa_regolare)*0.05;
-				    		 }
-				    		 
-							cell.setCellValue(contributo); //CONTRIBUTO
-			    		 
-			    		 }else {
-			    			 cell.setCellValue(""); //TARIFFA
-							 col++;
-				    		 cell = row.createCell(col);
-							cell.setCellValue(""); //TARIFFA REGOLARE
-							 col++;
-				    		 cell = row.createCell(col);
-							cell.setCellValue(""); //CONTRIBUTO
-			    		 }
-			    		
-			    		 
-			    		 }else {
-			    			 
-			    			 cell.setCellValue(""); //TARIFFA
-							 col++;
-				    		 cell = row.createCell(col);
-							cell.setCellValue(""); //TARIFFA REGOLARE
-							 col++;
-				    		 cell = row.createCell(col);
-							cell.setCellValue(""); //CONTRIBUTO
-			    			 
-			    		 }
-						
-						 col++;
-			    		 cell = row.createCell(col);
-			    		 
-			    		 if(listaAttrVerbale.get(j).getComune_div()!=null) {
-			    			 cell.setCellValue(listaAttrVerbale.get(j).getIndirizzo_div()); // ATTR INDIRIZZO
-							 col++;
-				    		 cell = row.createCell(col);
-							cell.setCellValue(listaAttrVerbale.get(j).getComune_div()); // ATTR COMUNE
-							 col++;
-				    		 cell = row.createCell(col);
-							cell.setCellValue(listaAttrVerbale.get(j).getCap_div()); // ATTR CAP
-							 col++;
-				    		 cell = row.createCell(col);
-							cell.setCellValue(listaAttrVerbale.get(j).getProvincia_div()); // ATTR PROVINCIA
-							 col++;
-				    		 cell = row.createCell(col);
-							cell.setCellValue(listaAttrVerbale.get(j).getRegione_div()); // ATTR REGIONE 
-			    		 }else {
-			    			 cell.setCellValue(listaAttrVerbale.get(j).getIndirizzo()); // ATTR INDIRIZZO
-							 col++;
-				    		 cell = row.createCell(col);
-							cell.setCellValue(listaAttrVerbale.get(j).getComune()); // ATTR COMUNE
-							 col++;
-				    		 cell = row.createCell(col);
-							cell.setCellValue(listaAttrVerbale.get(j).getCap()); // ATTR CAP
-							 col++;
-				    		 cell = row.createCell(col);
-							cell.setCellValue(listaAttrVerbale.get(j).getProvincia()); // ATTR PROVINCIA
-							 col++;
-				    		 cell = row.createCell(col);
-							cell.setCellValue(listaAttrVerbale.get(j).getRegione()); // ATTR REGIONE 
-			    		 }
-						
-			    		 
-			    		 df.applyPattern("yyyy-MM-dd");	
-			    		 if(data_pvp!=null) {
-			    			 date = df.parse(df.format(data_pvp)); 
-				    		 
-				    		 df.applyPattern("ddMMyyyy");		
-				    		 
-							 col++;
-				    		 cell = row.createCell(col);
-							cell.setCellValue("fattura "+matr_anno+matr_cod_att+matr_numero+matr_prov+tipo_verifica+df.format(date)); // FATTURA
-							 col++;
-				    		 cell = row.createCell(col);		    		 
-				    				  	    		 
-				    		 
-							cell.setCellValue("verbale "+matr_anno+matr_cod_att+matr_numero+matr_prov+tipo_verifica+df.format(date)); //VERBALE
-							 col++;
-				    		 cell = row.createCell(col);
-				    		 
-							if(listaVerbali.get(i).getSchedaTecnica()!=null) {
-								cell.setCellValue("scheda tecnica "+matr_anno+matr_cod_att+matr_numero+matr_prov+tipo_verifica+df.format(date)); //SCHEDA TECNICA
-							}else {
-								cell.setCellValue("scheda tecnica non rilasciata"); //SCHEDA TECNICA	
-							} 
-			    		 }else {
-			    			 
-			    			 col++;
-				    		 cell = row.createCell(col);
-							cell.setCellValue(""); // FATTURA
-							 col++;
-				    		 cell = row.createCell(col);		    		 
-				    				  	    		 
-				    		 
-							cell.setCellValue(""); //VERBALE
-							 col++;
-				    		 cell = row.createCell(col);
-				    		 
-					
-							cell.setCellValue(""); //SCHEDA TECNICA
-							
+			    			 if(listaAttrVerbale.get(j).getTipo_attivita().equals("GVR")) {
+			    				 
+			    				 if(listaVerbali.get(i).getTipo_verifica()<3) {
+			    					 
+			    					 tipo_verifica = "1";
+			    				 }else {
+			    					 tipo_verifica = "2"; //TIPO VERIFICA
+			    				 }		    				 
+			    				 
+			    			 }else {
+			    				 
+			    				 tipo_verifica = ""+listaVerbali.get(i).getTipo_verifica();
+			    				 
+			    			 }
 			    		 }
 			    		 
-						
-						
-					    col++;
-			    		cell = row.createCell(col);
-						cell.setCellValue("ecientespa027");// USER INSERIMENTO
-						
-//						 col++;
-//			    		 cell = row.createCell(col);
-//						cell.setCellValue("");
-						
-						 col++;
-			    		 cell = row.createCell(col);
-			    		 cell.setCellValue(listaAttrVerbale.get(j).getFabbricante()); // COSTRUTTORE RAG SOCIALE
-						
-						 col++;
-			    		 cell = row.createCell(col);
-						cell.setCellValue("02795170600");
-						
-						 col++;
-			    		 cell = row.createCell(col);
-						cell.setCellValue("");
-						
-						 col++;
-			    		 cell = row.createCell(col);
+			    		 Date data_rilascio = null;
+			    		 Date data_pvp = Utility.getDataPvP(listaVerbali.get(i));
 			    		 
-			    		 if(listaAttrVerbale.get(j).getId_insieme()!=null) {
-			    			 
-			    			cell.setCellValue(GestioneAttrezzatureBO.getAttrezzaturaFromId(listaAttrVerbale.get(j).getId_insieme(), session).getMatricola_inail());
-			    		 }else {
-			    			 cell.setCellValue("");
+			    		 
+			    		 if(listaVerbali.get(i).getStato().getId()!=9 && listaVerbali.get(i).getTipo_verifica_gvr()==0 || listaVerbali.get(i).getTipo_verifica_gvr()==1 || listaVerbali.get(i).getTipo_verifica_gvr()==4 || listaVerbali.get(i).getTipo_verifica_gvr()==5 || listaVerbali.get(i).getTipo_verifica_gvr()==7) {
+			    			 data_rilascio = listaVerbali.get(i).getData_verifica();
+			    			// data_pvp = listaVerbali.get(i).getData_prossima_verifica();
+			    		 }
+			    		 else if(listaVerbali.get(i).getStato().getId()!=9 && listaVerbali.get(i).getTipo_verifica_gvr()!=0 && (listaVerbali.get(i).getTipo_verifica_gvr()==3 || listaVerbali.get(i).getTipo_verifica_gvr()==6)) {
+			    			 data_rilascio = listaVerbali.get(i).getData_verifica_interna();
+			    		//	 data_pvp = listaVerbali.get(i).getData_prossima_verifica_interna();
+			    		 }
+			    		 else if(listaVerbali.get(i).getStato().getId()!=9 && listaVerbali.get(i).getTipo_verifica_gvr()!=0 && listaVerbali.get(i).getTipo_verifica_gvr()==2) {
+			    			 data_rilascio = listaVerbali.get(i).getData_verifica_integrita();
+			    			// data_pvp = listaVerbali.get(i).getData_prossima_verifica_integrita();
 			    		 }
 			    		 
-						
-						
-						 col++;
-			    		 cell = row.createCell(col);
-						cell.setCellValue("");
-						
-						 col++;
-			    		 cell = row.createCell(col);
-						cell.setCellValue("");
-						
-						 col++;
-			    		 cell = row.createCell(col);
-						cell.setCellValue("");
-						
-						 col++;
-			    		 cell = row.createCell(col);
-						cell.setCellValue("");
-						
-						 col++;
-			    		 cell = row.createCell(col);
-						cell.setCellValue("");
-						
-						 col++;
-			    		 cell = row.createCell(col);
-						cell.setCellValue("");
-						
-						 col++;
-			    		 cell = row.createCell(col);
-						cell.setCellValue("");
-						
-						 col++;
-			    		 cell = row.createCell(col);
-						cell.setCellValue("");
-						
-						 col++;
-			    		 cell = row.createCell(col);
-						cell.setCellValue("");
-						
-						 col++;
-			    		 cell = row.createCell(col);
-						cell.setCellValue("");
-						
-									
-				
-						
-						
-//						 rowTitle.createCell(46).setCellValue("cf_eci");
-//						 rowTitle.createCell(47).setCellValue("matricola_insieme");
-						 
-						 col++;
-			    		 cell = row.createCell(col);
-						cell.setCellValue("");
-						
-						
-						 col++;
-			    		 cell = row.createCell(col);
-						cell.setCellValue("");
-						
-						 col++;
-			    		 cell = row.createCell(col);
-			    		 if(listaVerbali.get(i).getIntervento()!=null) {
-			    			 cell.setCellValue(listaVerbali.get(i).getIntervento().getIdCommessa());
+			    		 
+			    		 
+			    		 SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");	
+			    		 
+			    		 if(listaAttrVerbale.get(j)!=null && listaAttrVerbale.get(j).getMatricola_inail().split("/").length>0) {
+			    			 
+			    			 df.applyPattern("yyyy-MM-dd");	
+				    		 
+				    		 Date date = df.parse(df.format(data_pvp)); 
+				    		 
+				    		 df.applyPattern("ddMMyyyy");				    		 
+			    			 
+			    		//	 cell.setCellValue(listaAttrVerbale.get(j).getMatricola_inail().replaceAll("/", "") + tipo_verifica+df.format(date));
+			    		 }else {
+			    		//	 cell.setCellValue("");	 
+			    		 }
+			    		 
+			    		// col++;
+			    		// cell = row.createCell(col);
+			    		 
+			    		 if(listaVerbali.get(i).getEffettuazione_verifica()!=0) {
+			    			 cell.setCellValue(listaVerbali.get(i).getEffettuazione_verifica());
 			    		 }else {
 			    			 cell.setCellValue("");	 
 			    		 }
 			    		 
 			    		 col++;
 			    		 cell = row.createCell(col);
-			    		 if(listaVerbali.get(i).getNumeroVerbale()!=null) {
-			    			 cell.setCellValue(listaVerbali.get(i).getNumeroVerbale());
-			    		 }else {
-			    			 cell.setCellValue("");	 
-			    		 }
 			    		 
-			    		 row_index++;
+			    		 
+			    		 String matr_anno ="";
+			    		 String matr_cod_att = "";
+			    		 String matr_numero = "";
+			    		 String matr_prov ="";
+			    		 
+			    		 
+			    		 if(listaAttrVerbale.get(j)!=null && listaAttrVerbale.get(j).getMatricola_inail().split("/").length>0) {
+														
+								matr_anno = listaAttrVerbale.get(j).getMatricola_inail().split("/")[0];
+			    		 }
+						
+			    		 cell.setCellValue(matr_anno);
+			    		
+			    		 
+			    		 col++;
+			    		 cell = row.createCell(col);
+			    		 if(listaAttrVerbale.get(j)!=null && listaAttrVerbale.get(j).getMatricola_inail().split("/").length>1) {
+			    			 
+								matr_cod_att = listaAttrVerbale.get(j).getMatricola_inail().split("/")[1];
+								
+							}
+			    		 
+			    		 cell.setCellValue(matr_cod_att);
+			    		 
+			    		 col++;
+			    		 cell = row.createCell(col);	
+							if(listaAttrVerbale.get(j)!=null && listaAttrVerbale.get(j).getMatricola_inail().split("/").length>2) {
+								
+								matr_numero = listaAttrVerbale.get(j).getMatricola_inail().split("/")[2];
+								
+							}
+							
+							cell.setCellValue(matr_numero);
+							
+							 col++;
+				    		 cell = row.createCell(col);	
+							if(listaAttrVerbale.get(j)!=null && listaAttrVerbale.get(j).getMatricola_inail().split("/").length>3) {
+								
+								matr_prov = listaAttrVerbale.get(j).getMatricola_inail().split("/")[3];
+								
+							}
+							
+							cell.setCellValue(matr_prov);
+							
+//							 col++;
+//				    		 cell = row.createCell(col);
+//							if(listaAttrVerbale.get(j)!=null) {
+//								cell.setCellValue(listaAttrVerbale.get(j).getMatricola_inail());
+//							}else {
+//								cell.setCellValue("");
+//							}
+							 col++;
+				    		 cell = row.createCell(col);
+				    		 
+				    		 String esito ="";
+				    		 String sospensione = "";
+				    		 
+				    		 if(listaVerbali.get(i).getEsito()!=null && listaVerbali.get(i).getEsito().equals("P")) {
+				    			 esito = "Positivo";
+				    		 }else if(listaVerbali.get(i).getEsito()!=null && listaVerbali.get(i).getEsito().equals("N")) {
+				    			 esito = "Negativo";
+				    		 }else if(listaVerbali.get(i).getEsito()!=null && listaVerbali.get(i).getEsito().equals("S")) {
+				    			 esito = "Sospeso";
+				    			 sospensione = listaVerbali.get(i).getDescrizione_sospensione();
+				    		 }
+				    		 
+							cell.setCellValue(esito); //ESITO VERIFICA
+							 col++;
+				    		 cell = row.createCell(col);
+				    		 
+
+							
+				    		 cell.setCellValue(tipo_verifica); //TIPO VERIFICA	 
+				    		 
+				    		 
+							 col++;
+				    		 cell = row.createCell(col);
+							cell.setCellValue(sospensione); //SOSPENSIONE
+							 col++;
+				    		 cell = row.createCell(col);
+
+				    		 	    		 
+				    	
+				    		 Date date =null; 
+				    				 
+				    		 if(data_rilascio!=null) {
+				    			 date = df.parse(df.format(data_rilascio));
+					    		 
+					    		 df.applyPattern("dd/MM/yyyy");		    		
+					    		 
+								 cell.setCellValue(""+df.format(date)); //DATA RILASCIO
+				    		 }else {
+				    			 cell.setCellValue("");
+				    		 }
+				    				 
+							 col++;
+				    		 cell = row.createCell(col);
+				    		 
+				    		 
+				    		 if(data_pvp!=null) {
+				    			 df.applyPattern("yyyy-MM-dd");	
+					    		 
+					    		 date = df.parse(df.format(data_pvp)); 
+					    		 
+					    		 df.applyPattern("dd/MM/yyyy");		
+					    		 
+								 cell.setCellValue(""+df.format(date)); //DATA PROSSIMA VERIFICA PERIODICA
+				    		 }else {
+				    			 cell.setCellValue("");
+				    		 }
+				    		 
+							 col++;
+				    		 cell = row.createCell(col);
+				    		 
+				    		 CommessaDTO commessa = GestioneCommesseBO.getCommessaById(listaVerbali.get(i).getIntervento().getIdCommessa());
+							
+				    		 
+				    		 
+							ClienteDTO cliente = null;
+							
+							if(commessa.getID_ANAGEN()!=commessa.getID_ANAGEN_UTIL()) {
+								cliente = GestioneAnagraficaRemotaBO.getClienteById(commessa.getID_ANAGEN_UTIL()+"");
+							}else {
+								cliente = GestioneAnagraficaRemotaBO.getClienteById(listaVerbali.get(i).getIntervento().getId_cliente()+"");
+							}
+							
+												
+							if(cliente!=null && cliente.getNome()!=null) {
+								
+								cell.setCellValue(cliente.getNome());
+							}else {
+								cell.setCellValue("");
+							}
+							 col++;
+				    		 cell = row.createCell(col);
+							if(cliente!=null && cliente.getIndirizzo()!=null) {
+								cell.setCellValue(cliente.getIndirizzo());
+							}else {
+								cell.setCellValue("");
+							}
+							 col++;
+				    		 cell = row.createCell(col);
+							
+							if(cliente!=null && cliente.getCitta()!=null) {						
+								cell.setCellValue(cliente.getCitta());
+							}else {
+								cell.setCellValue("");
+							}
+							 col++;
+				    		 cell = row.createCell(col);
+							if(cliente!=null && cliente.getCap()!=null) {						
+								cell.setCellValue(cliente.getCap());
+							}else {
+								cell.setCellValue("");
+							}
+							 col++;
+				    		 cell = row.createCell(col);
+							if(cliente!=null && cliente.getProvincia()!=null) {						
+								cell.setCellValue(cliente.getProvincia());
+							}else {
+								cell.setCellValue("");
+							}
+							 col++;
+				    		 cell = row.createCell(col);
+				    		 if(cliente!=null && cliente.getProvincia()!=null) {	
+				    			 cell.setCellValue(GestioneAnagraficaRemotaBO.getRegioneFromProvincia(cliente.getProvincia(), session)); //DL REGIONE	 
+				    		 }else {
+				    			 cell.setCellValue("");
+				    		 }
+							
+							 col++;
+				    		 cell = row.createCell(col);
+							if(cliente!=null && cliente.getCf()!=null) {						
+								cell.setCellValue(cliente.getCf());
+							}else {
+								cell.setCellValue("");
+							}
+							col++;
+				    		 cell = row.createCell(col);
+							if(cliente!=null && cliente.getPartita_iva()!=null) {						
+								cell.setCellValue(cliente.getPartita_iva());
+							}else {
+								cell.setCellValue("");
+							}
+							 col++;
+				    		 cell = row.createCell(col);
+							if(listaAttrVerbale.get(j)!=null && listaAttrVerbale.get(j).getTipo_attivita()!=null) {						
+								cell.setCellValue(listaAttrVerbale.get(j).getTipo_attivita());
+							}else {
+								cell.setCellValue("");
+							}
+							 col++;
+				    		 cell = row.createCell(col);
+							if(listaAttrVerbale.get(j)!=null && listaAttrVerbale.get(j).getTipo_attrezzatura()!=null) {						
+								cell.setCellValue(listaAttrVerbale.get(j).getTipo_attrezzatura());
+							}else {
+								cell.setCellValue("");
+							}
+							 col++;
+				    		 cell = row.createCell(col);
+							if(listaAttrVerbale.get(j)!=null && listaAttrVerbale.get(j).getTipo_attrezzatura_GVR()!=null) {						
+								cell.setCellValue(listaAttrVerbale.get(j).getTipo_attrezzatura_GVR());
+							}else {
+								cell.setCellValue("");
+							}
+							 col++;
+				    		 cell = row.createCell(col);
+						
+				    		 
+				    		 String tipo_ver_gvr="";
+				    		
+				    		 if(listaVerbali.get(i).getTipo_verifica_gvr()!=0) {
+				    			 if((listaVerbali.get(i).getTipo_verifica() == 1 ||listaVerbali.get(i).getTipo_verifica() == 2) || listaVerbali.get(i).getTipo_verifica_gvr()==1 || listaVerbali.get(i).getTipo_verifica_gvr()==7) {
+					    			 tipo_ver_gvr = "Verifica di funzionamento";
+					    			 
+					    		 }else if((listaVerbali.get(i).getTipo_verifica() != 1 && listaVerbali.get(i).getTipo_verifica() != 2) && listaVerbali.get(i).getTipo_verifica_gvr()==2 || listaVerbali.get(i).getTipo_verifica_gvr()==4 || listaVerbali.get(i).getTipo_verifica_gvr()==5|| listaVerbali.get(i).getTipo_verifica_gvr()==6) {
+					    			 tipo_ver_gvr = "Verifica di integrità";
+					    			 
+					    		 }else if((listaVerbali.get(i).getTipo_verifica() != 1 && listaVerbali.get(i).getTipo_verifica() != 2) && listaVerbali.get(i).getTipo_verifica_gvr()==3 ) {
+					    			 tipo_ver_gvr = "Verifica interna";
+					    			 
+					    		 }
+				    		 }
+				    		
+							cell.setCellValue(tipo_ver_gvr); //TIPO VERIFICA GVR
+							
+							 col++;
+				    		 cell = row.createCell(col);				
+							if(listaAttrVerbale.get(j)!=null && listaAttrVerbale.get(j).getSogg_messa_serv_GVR()!=null && !listaAttrVerbale.get(j).getSogg_messa_serv_GVR().equals("")) {						
+								cell.setCellValue(listaAttrVerbale.get(j).getSogg_messa_serv_GVR());
+							}else {
+								if(listaAttrVerbale.get(j).getId_insieme()!=null) {
+									AttrezzaturaDTO attr = GestioneAttrezzatureBO.getAttrezzaturaFromId(listaAttrVerbale.get(j).getId_insieme(), session);
+									if(attr.getSogg_messa_serv_GVR()!=null) {
+										cell.setCellValue(attr.getSogg_messa_serv_GVR());
+									}else {
+										cell.setCellValue("");	
+									}
+									
+								}else {
+									cell.setCellValue("");	
+								}
+								
+							}
+							
+							 col++;
+				    		 cell = row.createCell(col);
+							if(listaAttrVerbale.get(j)!=null && listaAttrVerbale.get(j).getID_specifica()!=null) {						
+								cell.setCellValue(listaAttrVerbale.get(j).getID_specifica());
+							}else {
+								cell.setCellValue("");
+							}
+							 col++;
+				    		 cell = row.createCell(col);
+							if(listaAttrVerbale.get(j)!=null && listaAttrVerbale.get(j).getN_panieri_idroestrattori()!=null) {						
+								cell.setCellValue(listaAttrVerbale.get(j).getN_panieri_idroestrattori()+"");
+							}else {
+								cell.setCellValue("");
+							}
+							 col++;
+				    		 cell = row.createCell(col);
+							if(listaAttrVerbale.get(j)!=null && listaAttrVerbale.get(j).getModello()!=null) {						
+								cell.setCellValue(listaAttrVerbale.get(j).getModello());
+							}else {
+								cell.setCellValue("");
+							}
+							 col++;
+				    		 cell = row.createCell(col);
+							if(listaAttrVerbale.get(j)!=null && listaAttrVerbale.get(j).getNumero_fabbrica()!=null) {						
+								cell.setCellValue(listaAttrVerbale.get(j).getNumero_fabbrica());
+							}else {
+								cell.setCellValue("");
+							}
+							 col++;
+				    		 cell = row.createCell(col);
+							if(listaAttrVerbale.get(j)!=null && listaAttrVerbale.get(j).getMarcatura()!=null) {						
+								cell.setCellValue(listaAttrVerbale.get(j).getMarcatura());
+							}else {
+								cell.setCellValue("");
+							}
+							 col++;
+				    		 cell = row.createCell(col);
+							if(listaAttrVerbale.get(j)!=null && listaAttrVerbale.get(j).getN_id_on()!=null) {
+								cell.setCellValue(listaAttrVerbale.get(j).getN_id_on());
+							}else {
+								cell.setCellValue("");
+							}
+							 col++;
+				    		 cell = row.createCell(col);
+							
+							cell.setCellValue(listaVerbali.get(i).getIntervento().getTecnico_verificatore().getCompany().getDenominazione());
+							 col++;
+				    		 cell = row.createCell(col);
+							cell.setCellValue(listaVerbali.get(i).getIntervento().getTecnico_verificatore().getNome());
+							 col++;
+				    		 cell = row.createCell(col);
+							cell.setCellValue(listaVerbali.get(i).getIntervento().getTecnico_verificatore().getCognome());
+							
+							 col++;
+				    		 cell = row.createCell(col);
+				    		 
+				    		 String cf = "";
+				    		 
+				    		 if(listaVerbali.get(i).getIntervento().getTecnico_verificatore().getCf()!=null) {
+				    			 cf = listaVerbali.get(i).getIntervento().getTecnico_verificatore().getCf(); 
+				    		 }
+				    		 
+							cell.setCellValue(cf); //CF VERIFICATORE
+							
+							 col++;
+				    		 cell = row.createCell(col);		    		 
+				    		 
+				    		 if(listaVerbali.get(i).getTipo_verifica()!=0) {
+				    			 
+				    		 String articolo = GestioneAttrezzatureBO.getArticoloFromDescrizione(listaAttrVerbale.get(j).getDescrizione(), listaVerbali.get(i).getTipo_verifica(), session);
+				    		 	    		 		    		 
+				    		 String tariffe = GestioneCommesseDAO.getTariffeFromArticolo(articolo, listaVerbali.get(i).getIntervento().getIdCommessa());
+				    		 
+				    		 if(!tariffe.equals("") && tariffe.split(";").length>1) {
+				    			 
+					    		 String tariffa_app = tariffe.split(";")[0];
+					    		 String tariffa_regolare = tariffe.split(";")[1];
+					    		 
+					    		 if(listaAttrVerbale.get(j).getId_insieme()==null) {
+					    			 cell.setCellValue(new Double(tariffa_app)); //TARIFFA
+					    		 }else {
+					    			 cell.setCellValue(""); //TARIFFA
+					    		 }
+					    		
+								 col++;
+					    		 cell = row.createCell(col);
+								cell.setCellValue(new Double(tariffa_regolare)); //TARIFFA REGOLARE
+								
+								 col++;
+					    		 cell = row.createCell(col);
+					    		 
+					    		 Double contributo = 0.0;
+					    		 
+					    		 if(listaVerbali.get(i).getEffettuazione_verifica()==1) {
+					    			 
+					    			 contributo = new Double(tariffa_regolare)*0.15;
+					    			 
+					    		 }else if(listaVerbali.get(i).getEffettuazione_verifica()==2){
+					    			 contributo = new Double(tariffa_regolare)*0.05;
+					    		 }
+					    		 
+								cell.setCellValue(contributo); //CONTRIBUTO
+				    		 
+				    		 }else {
+				    			 cell.setCellValue(""); //TARIFFA
+								 col++;
+					    		 cell = row.createCell(col);
+								cell.setCellValue(""); //TARIFFA REGOLARE
+								 col++;
+					    		 cell = row.createCell(col);
+								cell.setCellValue(""); //CONTRIBUTO
+				    		 }
+				    		
+				    		 
+				    		 }else {
+				    			 
+				    			 cell.setCellValue(""); //TARIFFA
+								 col++;
+					    		 cell = row.createCell(col);
+								cell.setCellValue(""); //TARIFFA REGOLARE
+								 col++;
+					    		 cell = row.createCell(col);
+								cell.setCellValue(""); //CONTRIBUTO
+				    			 
+				    		 }
+							
+							 col++;
+				    		 cell = row.createCell(col);
+				    		 
+				    		 if(listaAttrVerbale.get(j).getComune_div()!=null) {
+				    			 cell.setCellValue(listaAttrVerbale.get(j).getIndirizzo_div()); // ATTR INDIRIZZO
+								 col++;
+					    		 cell = row.createCell(col);
+								cell.setCellValue(listaAttrVerbale.get(j).getComune_div()); // ATTR COMUNE
+								 col++;
+					    		 cell = row.createCell(col);
+								cell.setCellValue(listaAttrVerbale.get(j).getCap_div()); // ATTR CAP
+								 col++;
+					    		 cell = row.createCell(col);
+								cell.setCellValue(listaAttrVerbale.get(j).getProvincia_div()); // ATTR PROVINCIA
+								 col++;
+					    		 cell = row.createCell(col);
+								cell.setCellValue(listaAttrVerbale.get(j).getRegione_div()); // ATTR REGIONE 
+				    		 }else {
+				    			 cell.setCellValue(listaAttrVerbale.get(j).getIndirizzo()); // ATTR INDIRIZZO
+								 col++;
+					    		 cell = row.createCell(col);
+								cell.setCellValue(listaAttrVerbale.get(j).getComune()); // ATTR COMUNE
+								 col++;
+					    		 cell = row.createCell(col);
+								cell.setCellValue(listaAttrVerbale.get(j).getCap()); // ATTR CAP
+								 col++;
+					    		 cell = row.createCell(col);
+								cell.setCellValue(listaAttrVerbale.get(j).getProvincia()); // ATTR PROVINCIA
+								 col++;
+					    		 cell = row.createCell(col);
+								cell.setCellValue(listaAttrVerbale.get(j).getRegione()); // ATTR REGIONE 
+				    		 }
+							
+				    		 
+				    		 df.applyPattern("yyyy-MM-dd");	
+				    		 if(data_pvp!=null) {
+				    			 date = df.parse(df.format(data_pvp)); 
+					    		 
+					    		 df.applyPattern("ddMMyyyy");		
+					    		 
+								 col++;
+					    		 cell = row.createCell(col);
+								//cell.setCellValue("fattura "+matr_anno+matr_cod_att+matr_numero+matr_prov+tipo_verifica+df.format(date)); // FATTURA
+					    		 cell.setCellValue("fattura "+matr_anno+matr_cod_att+matr_numero+matr_prov+df.format(date)); // FATTURA
+								 col++;
+					    		 cell = row.createCell(col);		    		 
+					    				  	    		 
+					    		 
+								//cell.setCellValue("verbale "+matr_anno+matr_cod_att+matr_numero+matr_prov+tipo_verifica+df.format(date)); //VERBALE
+					    		 cell.setCellValue("verbale "+matr_anno+matr_cod_att+matr_numero+matr_prov+df.format(date)); //VERBALE
+								 col++;
+					    		 cell = row.createCell(col);
+					    		 
+								if(listaVerbali.get(i).getSchedaTecnica()!=null) {
+									//cell.setCellValue("scheda tecnica "+matr_anno+matr_cod_att+matr_numero+matr_prov+tipo_verifica+df.format(date)); //SCHEDA TECNICA
+									cell.setCellValue("scheda tecnica "+matr_anno+matr_cod_att+matr_numero+matr_prov+df.format(date)); //SCHEDA TECNICA
+								}else {
+									cell.setCellValue(""); //SCHEDA TECNICA	
+								} 
+				    		 }else {
+				    			 
+				    			 col++;
+					    		 cell = row.createCell(col);
+								cell.setCellValue(""); // FATTURA
+								 col++;
+					    		 cell = row.createCell(col);		    		 
+					    				  	    		 
+					    		 
+								cell.setCellValue(""); //VERBALE
+								 col++;
+					    		 cell = row.createCell(col);
+					    		 
+						
+								cell.setCellValue(""); //SCHEDA TECNICA
+								
+				    		 }
+				    		 
+							
+							
+						    col++;
+				    		cell = row.createCell(col);
+							cell.setCellValue("ecientespa027");// USER INSERIMENTO
+							
+//							 col++;
+//				    		 cell = row.createCell(col);
+//							cell.setCellValue("");
+							
+							 col++;
+				    		 cell = row.createCell(col);
+				    		 cell.setCellValue(listaAttrVerbale.get(j).getFabbricante()); // COSTRUTTORE RAG SOCIALE
+							
+							 col++;
+				    		 cell = row.createCell(col);
+							cell.setCellValue("02795170600");
+							
+							 col++;
+				    		 cell = row.createCell(col);
+							cell.setCellValue("");
+							
+							 col++;
+				    		 cell = row.createCell(col);
+				    		 
+				    		 if(listaAttrVerbale.get(j).getId_insieme()!=null) {
+				    			 
+				    			cell.setCellValue(GestioneAttrezzatureBO.getAttrezzaturaFromId(listaAttrVerbale.get(j).getId_insieme(), session).getMatricola_inail());
+				    		 }else {
+				    			 cell.setCellValue("");
+				    		 }
+				    		 
+							
+							
+							 col++;
+				    		 cell = row.createCell(col);
+							cell.setCellValue("");
+							
+							 col++;
+				    		 cell = row.createCell(col);
+							cell.setCellValue("");
+							
+							 col++;
+				    		 cell = row.createCell(col);
+							cell.setCellValue("");
+							
+							 col++;
+				    		 cell = row.createCell(col);
+							cell.setCellValue("");
+							
+							 col++;
+				    		 cell = row.createCell(col);
+							cell.setCellValue("");
+							
+							 col++;
+				    		 cell = row.createCell(col);
+							cell.setCellValue("");
+							
+							 col++;
+				    		 cell = row.createCell(col);
+							cell.setCellValue("");
+							
+							 col++;
+				    		 cell = row.createCell(col);
+							cell.setCellValue("");
+							
+							 col++;
+				    		 cell = row.createCell(col);
+							cell.setCellValue("");
+							
+							 col++;
+				    		 cell = row.createCell(col);
+							cell.setCellValue("");
+							
+										
+					
+							
+							
+//							 rowTitle.createCell(46).setCellValue("cf_eci");
+//							 rowTitle.createCell(47).setCellValue("matricola_insieme");
+							 
+							 col++;
+				    		 cell = row.createCell(col);
+							cell.setCellValue("");
+							
+							
+							 col++;
+				    		 cell = row.createCell(col);
+							cell.setCellValue("");
+							
+							 col++;
+				    		 cell = row.createCell(col);
+				    		 if(listaVerbali.get(i).getIntervento()!=null) {
+				    			 cell.setCellValue(listaVerbali.get(i).getIntervento().getIdCommessa());
+				    		 }else {
+				    			 cell.setCellValue("");	 
+				    		 }
+				    		 
+				    		 col++;
+				    		 cell = row.createCell(col);
+				    		 if(listaVerbali.get(i).getNumeroVerbale()!=null) {
+				    			 cell.setCellValue(listaVerbali.get(i).getNumeroVerbale());
+				    		 }else {
+				    			 cell.setCellValue("");	 
+				    		 }
+				    		 
+				    		 row_index++;
+	    			}
+	    			
 	    		}
 				
 	    		 

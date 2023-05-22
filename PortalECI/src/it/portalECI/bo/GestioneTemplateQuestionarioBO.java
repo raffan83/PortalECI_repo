@@ -314,6 +314,8 @@ public class GestioneTemplateQuestionarioBO {
 
 		html = html.replaceAll("\\$\\{FIRMA_RIESAME\\}", "FIRMA RIESAME");
 		
+		html = html.replaceAll("\\$\\{POTENZA_IMPIEGATA\\}", "POTENZA IMPIEGATA");
+		
 		
 		String qr = "<img src=\"" + Costanti.PATH_FONT_IMAGE +"qr_example.png" + "\" style=\"height:50px;\" />";
 		html = html.replaceAll("\\$\\{QR_CODE\\}", qr);

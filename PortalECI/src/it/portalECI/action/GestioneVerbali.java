@@ -517,6 +517,20 @@ if(action!= null && action.equals("dettaglio")) {
 						
 					}
 					
+					if(paramName.equals("potenza")) {
+						
+						String potenza = request.getParameter("potenza");
+						
+						if(potenza!=null) {
+							verbale.setPotenza(Double.parseDouble(potenza));
+							session.save(verbale);
+						}else {
+							verbale.setPotenza(null);
+							session.save(verbale);
+						}
+						
+					}
+					
 					// RISPOSTA FORMULA
 					if(paramName.contains("value1") || paramName.contains("value2") || paramName.contains("responseValue")) {				
 						id=paramName.replaceAll("value1", "").replaceAll("value2", "").replaceAll("responseValue", "");

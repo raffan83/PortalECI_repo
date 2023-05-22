@@ -1033,6 +1033,17 @@
 
 
 												 </div>
+												 
+												 <c:if test="${verbale.codiceVerifica=='VT' || verbale.codiceVerifica=='VT_IT-M' }">   
+												 <div class="col-xs-3">
+												<label>Potenza impegnata [kW]</label>
+													<input type="number" step=".1"pattern="^\d*(\.\d{0,1})?$"  class="form-control" id="potenza" name="potenza">
+
+
+												 </div>
+												 
+												 </c:if>
+												 
 												 <div id="check_motivo_content" style="display:none">
 												 <div class="col-xs-3">
 												 <label>Motivo</label><br>
@@ -2221,7 +2232,18 @@ function importaExcel(id_risposta){
 
 }
 
- 	 	
+$(document).on('keydown', 'input[pattern]', function(e){
+	  var input = $(this);
+	  var oldVal = input.val();
+	  var regex = new RegExp(input.attr('pattern'), 'g');
+
+	  setTimeout(function(){
+	    var newVal = input.val();
+	    if(!regex.test(newVal)){
+	      input.val(oldVal); 
+	    }
+	  }, 1);
+	});
  	 	
  	 	$('#myModalError').on('hidden.bs.modal', function(){
  	 		if($('#myModalError').hasClass("modal-success")){
@@ -3381,14 +3403,14 @@ function allegatoVisibile(id_allegato){
 				var motivo_verifica = "${verbale.motivo_verifica}";
 				var tipologia_verifica = "${verbale.tipologia_verifica}";
 				var frequenza = "${verbale.frequenza}";
-				
+				var potenza = "${verbale.potenza}"
 				
 				$('#data_fine_verifica').change()
 				
 			$('#tipologia_verifica').select2();
 			$('#tipo_verifica_vie').select2();
 			$('#frequenza').select2();
-			
+			$('#potenza').val(potenza)
 	
 			if(frequenza!=''){
 				$('#frequenza').val(frequenza);
@@ -3755,6 +3777,12 @@ function allegatoVisibile(id_allegato){
 			}
 			else if($('#matricola_vie').val()=='' && !salva_mod){
 				$('#modalErrorDiv').html("Il campo matricola è obbligatorio");
+				$('#myModalError').removeClass();
+				$('#myModalError').addClass("modal modal-danger");
+				$('#myModalError').modal('show');	
+			}
+			else if($('#potenza').val()=='' && !salva_mod){
+				$('#modalErrorDiv').html("Il campo potenza è obbligatorio");
 				$('#myModalError').removeClass();
 				$('#myModalError').addClass("modal modal-danger");
 				$('#myModalError').modal('show');	

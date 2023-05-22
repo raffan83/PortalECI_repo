@@ -182,6 +182,10 @@
 		
 			<property name="motivo_sospensione_vie">
 			<column name="motivo_sospensione_vie" />
+		</property>
+		
+		<property name="potenza" type="double">
+			<column name="potenza" />
 		</property> 
 	</class>
 </hibernate-mapping> 
