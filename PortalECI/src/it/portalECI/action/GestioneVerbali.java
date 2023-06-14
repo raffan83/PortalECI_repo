@@ -912,6 +912,628 @@ if(action!= null && action.equals("dettaglio")) {
 			
 			String action=request.getParameter("action");
 		
+			
+			if (action!=null && (action.equals("salvaRisposteCompWeb") || action.equals("confermaRisposteCompWeb"))) {
+				Enumeration<String> parameterNames = request.getParameterNames(); //lista id elementi modificati
+				ArrayList<String> listaFormulaAggiornate=new ArrayList<String>();
+				String currentState = request.getParameter("currentState");
+
+				while (parameterNames.hasMoreElements()) {
+					String paramName = parameterNames.nextElement();
+
+					String id="";
+					
+					if(paramName.equals("strumento_verificatore")) {
+						
+						String id_strumento = request.getParameter("strumento_verificatore");
+						if(id_strumento!=null && !id_strumento.equals("") && !id_strumento.equals("0")) {
+							//verbale.setStrumento_verificatore(new StrumentoVerificatoreDTO(Integer.parseInt(id_strumento)));
+							CampioneDTO campione = GestioneCampioneDAO.getCampioneFromId(id_strumento, session);
+							verbale.setCampione(campione);
+							session.update(verbale);
+						}else {
+							//verbale.setStrumento_verificatore(null);
+							verbale.setCampione(null);
+							session.update(verbale);
+						}
+					}
+					
+					if(paramName.equals("data_verifica")) {
+						
+						String data_verifica = request.getParameter("data_verifica");
+					
+						SimpleDateFormat df = new SimpleDateFormat("dd/MM/yyyy");
+						
+						if(data_verifica!=null && !data_verifica.equals("")) {
+							verbale.setData_verifica(df.parse(data_verifica));
+							session.update(verbale);
+							if(verbale.getAttrezzatura()!=null && action!=null &&  !action.equals("salvaRisposteCompWeb")) {
+								verbale.getAttrezzatura().setData_verifica_funzionamento(df.parse(data_verifica));						
+								session.update(verbale.getAttrezzatura());
+							}
+						}
+						
+					}
+					
+					if(paramName.equals("data_prossima_verifica_verb")) {
+						
+						String data_prossima_verifica = request.getParameter("data_prossima_verifica_verb");
+					
+						SimpleDateFormat df = new SimpleDateFormat("dd/MM/yyyy");
+						if(data_prossima_verifica!=null && !data_prossima_verifica.equals("")) {
+							verbale.setData_prossima_verifica(df.parse(data_prossima_verifica));
+							if(verbale.getAttrezzatura()!=null && action!=null && !action.equals("salvaRisposteCompWeb")) {
+								verbale.getAttrezzatura().setData_prossima_verifica_funzionamento(df.parse(data_prossima_verifica));
+								session.update(verbale.getAttrezzatura());
+							}						
+							session.update(verbale);						
+						}
+						
+					}
+					if(verbale.getAttrezzatura()!=null && verbale.getAttrezzatura().getTipo_attivita().equals("GVR") && paramName.equals("data_verifica_integrita_verb")) {
+						
+						String data_verifica_integrita = request.getParameter("data_verifica_integrita_verb");
+					
+						SimpleDateFormat df = new SimpleDateFormat("dd/MM/yyyy");
+						
+						if(data_verifica_integrita!=null && !data_verifica_integrita.equals("")) {
+							verbale.setData_verifica_integrita(df.parse(data_verifica_integrita));
+							if(verbale.getAttrezzatura()!=null && action!=null &&  !action.equals("salvaRisposteCompWeb")) {
+								verbale.getAttrezzatura().setData_verifica_integrita(df.parse(data_verifica_integrita));
+								session.update(verbale.getAttrezzatura());
+							}
+							session.update(verbale);
+							
+						}
+						
+					}
+					if(verbale.getAttrezzatura()!=null && verbale.getAttrezzatura().getTipo_attivita().equals("GVR") && paramName.equals("data_prossima_verifica_integrita_verb")) {
+						
+						String data_prossima_verifica_integrita = request.getParameter("data_prossima_verifica_integrita_verb");
+					
+						SimpleDateFormat df = new SimpleDateFormat("dd/MM/yyyy");
+						if(data_prossima_verifica_integrita!=null && !data_prossima_verifica_integrita.equals("")) {
+							verbale.setData_prossima_verifica_integrita(df.parse(data_prossima_verifica_integrita));
+							
+							if(verbale.getAttrezzatura()!=null && action!=null &&  !action.equals("salvaRisposteCompWeb")) {
+								verbale.getAttrezzatura().setData_prossima_verifica_integrita(df.parse(data_prossima_verifica_integrita));
+								session.update(verbale.getAttrezzatura());
+							}
+							session.update(verbale);
+							
+						}
+						
+					}
+					if(verbale.getAttrezzatura()!=null && verbale.getAttrezzatura().getTipo_attivita().equals("GVR") && paramName.equals("data_verifica_interna_verb")) {
+						
+						String data_verifica_interna = request.getParameter("data_verifica_interna_verb");
+					
+						SimpleDateFormat df = new SimpleDateFormat("dd/MM/yyyy");
+						if(data_verifica_interna!=null && !data_verifica_interna.equals("")) {
+							verbale.setData_verifica_interna(df.parse(data_verifica_interna));
+							if(verbale.getAttrezzatura()!=null && action!=null && !action.equals("salvaRisposteCompWeb")) {
+								verbale.getAttrezzatura().setData_verifica_interna(df.parse(data_verifica_interna));
+								session.update(verbale.getAttrezzatura());	
+							}
+							
+							session.update(verbale);
+							
+						}
+						
+						
+					}
+					if(verbale.getAttrezzatura()!=null && verbale.getAttrezzatura().getTipo_attivita().equals("GVR") && paramName.equals("data_prossima_verifica_interna_verb")) {
+						
+						String data_prossima_verifica_interna = request.getParameter("data_prossima_verifica_interna_verb");
+					
+						SimpleDateFormat df = new SimpleDateFormat("dd/MM/yyyy");
+						if(data_prossima_verifica_interna!=null && !data_prossima_verifica_interna.equals("")) {
+							verbale.setData_prossima_verifica_interna(df.parse(data_prossima_verifica_interna));
+							if(verbale.getAttrezzatura()!=null && action!=null && !action.equals("salvaRisposteCompWeb")) {
+								verbale.getAttrezzatura().setData_prossima_verifica_interna(df.parse(data_prossima_verifica_interna));
+								session.update(verbale.getAttrezzatura());
+							}
+							session.update(verbale);
+							
+						}
+						
+					}
+					
+					if(verbale.getAttrezzatura()!=null && verbale.getAttrezzatura().getTipo_attivita().equals("GVR") && paramName.equals("tipo_verifica_gvr")) {
+						
+						String tipo_verifica_gvr = request.getParameter("tipo_verifica_gvr");
+				
+						if(tipo_verifica_gvr!=null && !tipo_verifica_gvr.equals("")) {
+							verbale.setTipo_verifica_gvr(Integer.parseInt(tipo_verifica_gvr));
+							session.update(verbale);
+						}else {
+							verbale.setTipo_verifica_gvr(0);
+							session.update(verbale);
+						}
+						
+					}				
+
+
+					if(paramName.equals("check_sede")) {					
+
+						String check_sede = request.getParameter("check_sede");
+						
+						//AttrezzaturaDTO attrezzatura = verbale.getAttrezzatura();	
+						
+						if(verbale.getAttrezzatura()!=null) {
+							if(check_sede!=null && check_sede.equals("1")) {
+								
+								String presso = request.getParameter("presso");
+								String comune = request.getParameter("comune");
+								String indirizzo = request.getParameter("indirizzo");
+								String cap = request.getParameter("cap");
+								String provincia = request.getParameter("provincia");
+								String regione = request.getParameter("regione");
+								
+								verbale.getAttrezzatura().setPresso_div(presso);
+								verbale.getAttrezzatura().setIndirizzo_div(indirizzo);
+								verbale.getAttrezzatura().setComune_div(comune);
+								verbale.getAttrezzatura().setCap_div(cap);
+								verbale.getAttrezzatura().setProvincia_div(provincia);
+								verbale.getAttrezzatura().setRegione_div(regione);					
+							}else {
+								verbale.getAttrezzatura().setPresso_div(null);
+								verbale.getAttrezzatura().setIndirizzo_div(null);
+								verbale.getAttrezzatura().setComune_div(null);
+								verbale.getAttrezzatura().setCap_div(null);
+								verbale.getAttrezzatura().setProvincia_div(null);
+								verbale.getAttrezzatura().setRegione_div(null);	
+							}
+							session.update(verbale.getAttrezzatura());
+						}
+						
+											
+					}
+					
+					if(paramName.equals("esito")) {
+						
+						 String esito = request.getParameter("esito");
+						 String descrizione_sospensione = request.getParameter("descrizione_sospensione");
+						 
+						 
+						 verbale.setEsito(esito);					 	
+											 
+						 
+						if(!esito.equals("S")) {
+							verbale.setDescrizione_sospensione(null);
+							session.update(verbale);	
+						}else {
+							
+							GestioneVerbaleBO.cambioStato( verbale, GestioneStatoVerbaleDAO.getStatoVerbaleById( StatoVerbaleDTO.SOSPESO, session) , session);
+							verbale.setDescrizione_sospensione(descrizione_sospensione);
+							session.update(verbale);	
+							myObj.addProperty("success", true);
+							myObj.addProperty("messaggio", "Stato modificato con successo");
+				
+							out.print(myObj);
+						
+						}
+					
+										
+					}
+					if(paramName.equals("frequenza")) {
+						
+						String frequenza = request.getParameter("frequenza");
+						
+						if(frequenza!=null && !frequenza.equals("")) {
+							verbale.setFrequenza(Integer.parseInt(frequenza));
+							session.update(verbale);
+						}
+						
+					}
+					if(paramName.equals("check_motivo")) {
+						
+						String motivo = request.getParameter("check_motivo");
+						
+						if(motivo!=null && !motivo.equals("")) {
+							verbale.setMotivo_verifica(Integer.parseInt(motivo));						
+							
+							if(Integer.parseInt(motivo)>1) {
+								verbale.setFrequenza(0);
+								verbale.setData_prossima_verifica(null);
+								verbale.setData_prossima_verifica_integrita(null);
+								verbale.setData_prossima_verifica_interna(null);
+							}
+							session.save(verbale);
+						}
+						
+					}
+					if(paramName.equals("tipologia_verifica")) {
+						
+						String tipologia_verifica = request.getParameter("tipologia_verifica");
+						
+						if(tipologia_verifica!=null && !tipologia_verifica.equals("")) {
+							verbale.setTipologia_verifica(Integer.parseInt(tipologia_verifica));
+							session.save(verbale);
+						}
+						
+					}
+					if(paramName.equals("ore_uomo")) {
+						
+						String ore_uomo = request.getParameter("ore_uomo");
+						
+						//if(ore_uomo!=null && !ore_uomo.equals("")) {
+							verbale.setOre_uomo(ore_uomo);
+							session.save(verbale);
+						//}
+						
+					}
+					if(paramName.equals("matricola_vie")) {
+						
+						String matricola_vie = request.getParameter("matricola_vie");
+						
+						//if(matricola_vie!=null && !matricola_vie.equals("")) {
+							verbale.setMatricola_vie(matricola_vie);
+							session.save(verbale);
+					//	}
+						
+					}
+					
+
+					if(paramName.equals("data_fine_verifica")) {
+						
+						String data_fine_verifica = request.getParameter("data_fine_verifica");
+					
+						SimpleDateFormat df = new SimpleDateFormat("dd/MM/yyyy");
+						
+						if(data_fine_verifica!=null && !data_fine_verifica.equals("")) {
+							verbale.setData_fine_verifica(df.parse(data_fine_verifica));					
+							session.update(verbale);					
+						}
+						
+					}
+					
+					if(paramName.equals("motivo_sospensione_vie")) {
+						
+						String motivo_sospensione_vie = request.getParameter("motivo_sospensione_vie");
+						
+						//if(matricola_vie!=null && !matricola_vie.equals("")) {
+							verbale.setMotivo_sospensione_vie(motivo_sospensione_vie);
+							session.save(verbale);
+					//	}
+						
+					}
+					
+					if(paramName.equals("potenza")) {
+						
+						String potenza = request.getParameter("potenza");
+						
+						if(potenza!=null && !potenza.equals("")) {
+							verbale.setPotenza(Double.parseDouble(potenza));
+							session.save(verbale);
+						}else {
+							verbale.setPotenza(null);
+							session.save(verbale);
+						}
+						
+					}
+					
+					// RISPOSTA FORMULA
+					if(paramName.contains("value1") || paramName.contains("value2") || paramName.contains("responseValue")) {				
+						id=paramName.replaceAll("value1", "").replaceAll("value2", "").replaceAll("responseValue", "");
+										
+						if(!listaFormulaAggiornate.contains(id)) {
+							listaFormulaAggiornate.add(id);
+							String value1=request.getParameter("value1"+id);
+							String value2=request.getParameter("value2"+id);
+							String responseValue=request.getParameter("responseValue"+id);
+					
+							RispostaFormulaVerbaleDTO rispostaFormula = GestioneRispostaVerbaleDAO.getRispostaInstance(RispostaFormulaVerbaleDTO.class, Integer.parseInt(id), session);
+							
+							String val1 = rispostaFormula.getValue1(); 
+							String val2 = rispostaFormula.getValue2(); 
+							String respVal = rispostaFormula.getResponseValue();
+							
+							if(val1 == null) val1 = new String();
+							if(val2 == null) val2 = new String();
+							if(respVal == null) respVal = new String();
+							
+							if(!val1.equals(value1) || !val2.equals(value2) || !respVal.equals(responseValue)  ) {
+								
+								if (val1.isEmpty()) val1 = "null";
+								if (val2.isEmpty()) val2 = "null";						
+								if (respVal.isEmpty()) respVal = "null";
+								//if (rispostaFormula.getValue1().isEmpty()) val1 = "null";
+								//if (rispostaFormula.getValue2().isEmpty()) val2 = "null";						
+								//if (rispostaFormula.getResponseValue().isEmpty()) respVal = "null";
+								
+								//se stiamo compilando il verbale sull'app WEB non dobbiamo salvare lo storico
+								// lo storico è gestito solo in caso di verbale DA VERIFICARE o stati successivi
+								if (currentState == null || !currentState.equals("compilazioneWeb")) {
+									addStorico(verbale, 
+											val1+"|"+ val2+"|"+respVal , 
+											null, 
+											rispostaFormula.getId(), 
+											StoricoModificheDTO.UPDATE, 
+											request, 
+											session);
+								}
+							}
+							
+							rispostaFormula.setValue1(value1);
+							rispostaFormula.setValue2(value2);
+							rispostaFormula.setResponseValue(responseValue);
+							GestioneRispostaVerbaleDAO.save(rispostaFormula, session);
+						}
+					
+					// RISPOSTA MULTIPLA
+					}else if(paramName.contains("options")) {		
+						Boolean change=false;					
+						String oldCheck="";
+						String idrispostaSceltaVerbale=paramName.replaceAll("options", "");
+				
+						Set<OpzioneRispostaVerbaleDTO> listaOpzioni= GestioneRispostaVerbaleDAO.getRispostaSceltaVerbaleDTO(Integer.parseInt(idrispostaSceltaVerbale), session).getOpzioni();
+					
+						String[] listaid = request.getParameterValues(paramName);
+					
+						for (OpzioneRispostaVerbaleDTO s : listaOpzioni) {
+																	
+							Boolean value=false;
+							if(Arrays.asList(listaid).contains(String.valueOf(s.getId()))) {
+								value=true;
+							}
+							
+							if(s.getChecked()!=value) {
+								change=true;
+							}
+							
+							if (s.getChecked() == true) {
+								oldCheck += s.getId()+"|";
+							}
+							
+							OpzioneRispostaVerbaleDTO opzioneRispostaVerbaleDTO = GestioneRispostaVerbaleDAO.getOpzioneVerbale(s.getId(), session);
+							opzioneRispostaVerbaleDTO.setChecked(value);
+							GestioneRispostaVerbaleDAO.saveOpzioneVerbale(opzioneRispostaVerbaleDTO, session);
+						}
+
+						if(change) {
+							if (currentState == null || !currentState.equals("compilazioneWeb")) {
+								addStorico(verbale, oldCheck, null, Integer.parseInt(idrispostaSceltaVerbale), StoricoModificheDTO.UPDATE, request, session);
+							}
+						}						
+					
+					// RISPOSTA TESTO
+					}else if(isInt(paramName)){			
+						
+						String testo=request.getParameter(paramName);
+
+						RispostaTestoVerbaleDTO rispostaTesto = GestioneRispostaVerbaleDAO.getRispostaInstance(RispostaTestoVerbaleDTO.class, Integer.parseInt(paramName), session);
+						String rispostaTestoVal = rispostaTesto.getResponseValue();
+
+						if (rispostaTestoVal == null) rispostaTestoVal = new String();
+						
+							if(!rispostaTestoVal.equals(testo)) {
+								if (currentState == null || !currentState.equals("compilazioneWeb")) {
+									addStorico(verbale, 
+											rispostaTestoVal, 
+											null, 
+											rispostaTesto.getId(), 
+											StoricoModificheDTO.UPDATE, 
+											request, 
+											session);
+								}
+							}
+						
+						rispostaTesto.setResponseValue(testo);
+						GestioneRispostaVerbaleDAO.save(rispostaTesto, session);
+
+					}
+					
+				}
+				String[] idRisposteEliminate = request.getParameterValues("risposte_eliminate");
+				if(idRisposteEliminate!=null) {
+					Map<String,String> storici = new HashMap<String,String>();
+					for(String idRispString:idRisposteEliminate) {
+						Integer idRisp = Integer.parseInt(idRispString);
+						RispostaVerbaleDTO risposta = (RispostaVerbaleDTO)session.get(RispostaVerbaleDTO.class,idRisp);
+						if(risposta==null) continue;
+						String  valoreStorico ="<td>";
+						switch (risposta.getTipo()) {
+						case RispostaVerbaleDTO.TIPO_TESTO:
+							RispostaTestoVerbaleDTO rispT = (RispostaTestoVerbaleDTO)session.get(RispostaTestoVerbaleDTO.class, idRisp);
+							valoreStorico=valoreStorico.concat(rispT.toString());
+							break;
+						case RispostaVerbaleDTO.TIPO_SCELTA:
+							RispostaSceltaVerbaleDTO rispS = (RispostaSceltaVerbaleDTO)session.get(RispostaSceltaVerbaleDTO.class, idRisp);
+							valoreStorico=valoreStorico.concat(rispS.toString());
+							break;
+						case RispostaVerbaleDTO.TIPO_FORMULA:
+							RispostaFormulaVerbaleDTO rispF = (RispostaFormulaVerbaleDTO) session.get(RispostaFormulaVerbaleDTO.class, idRisp);
+							valoreStorico=valoreStorico.concat(rispF.toString());
+						}
+						valoreStorico=valoreStorico.concat("</td>");
+						
+						String id_risposta_tabella = request.getParameter("id_risposta_tabella"+idRispString);
+						String riga = request.getParameter("riga_risposta"+idRispString);
+						String pointer = id_risposta_tabella+"_"+riga;
+						if(storici.get(pointer)==null) 
+							storici.put(pointer, valoreStorico); 
+						else 
+							storici.put(pointer,storici.get(pointer).concat(valoreStorico));
+						RispostaTabellaVerbaleDTO rispostaTabella = (RispostaTabellaVerbaleDTO) session.get(RispostaTabellaVerbaleDTO.class, Integer.parseInt(id_risposta_tabella));
+						for (ColonnaTabellaVerbaleDTO colonna: rispostaTabella.getColonne()) {
+							colonna.getRisposte().remove(risposta);
+						}
+						session.save(rispostaTabella);
+					    session.delete(risposta);
+						
+					}
+				    Iterator<Map.Entry<String,String>> it = storici.entrySet().iterator();
+				    while (it.hasNext()) {
+				        Map.Entry<String, String> pair = (Map.Entry<String, String>)it.next();
+				        if(!pair.getValue().replaceAll("<td>", "").replaceAll("</td>", "").isEmpty()) {
+					        String pointer = pair.getKey();
+					        String idRispostaTabellaId = pointer.split("_")[0];
+					        if (currentState == null || !currentState.equals("compilazioneWeb")) {
+					        	addStorico(verbale, pair.getValue(), "riga", Integer.parseInt(idRispostaTabellaId), StoricoModificheDTO.DELETE, request, session);
+				        
+					        }
+				        }
+				    }
+				}	
+			
+				for (DomandaVerbaleDTO domanda:verbale.getDomandeVerbale()) {
+					int valueRicercato=domanda.getRisposta().getId();
+
+					if(domanda.getRisposta().getTipo().equals(RispostaVerbaleDTO.TIPO_SCELTA)) {
+						if(!request.getParameterMap().containsKey("options"+String.valueOf(valueRicercato))){			
+							// se stiamo solo salvando il verbale nello stato COMPILAZIONE WEB non facciamo controlli sulle domande obbligatorie
+							// il controllo verrà fatto quando si proverà a confermare il verbale in COMPILAZIONE WEB oppure quando si modificherà il verbale
+							if (action == null || !action.equals("salvaRisposteCompWeb")) {
+								if(domanda.getDomandaQuestionario().getObbligatoria()) {
+									myObj.addProperty("success", false);
+									myObj.addProperty("messaggio", "La domanda '"+domanda.getDomandaQuestionario().getTesto()+"' &egrave; obbligatoria.");
+							
+									out.print(myObj);
+									return;
+								}
+							}
+						
+							Set<OpzioneRispostaVerbaleDTO> listaOpzioni= GestioneRispostaVerbaleDAO.getRispostaSceltaVerbaleDTO(valueRicercato, session).getOpzioni();
+						
+							for (OpzioneRispostaVerbaleDTO s : listaOpzioni) {							
+								OpzioneRispostaVerbaleDTO opzioneRispostaVerbaleDTO = GestioneRispostaVerbaleDAO.getOpzioneVerbale(s.getId(), session);
+								opzioneRispostaVerbaleDTO.setChecked(false);
+								GestioneRispostaVerbaleDAO.saveOpzioneVerbale(opzioneRispostaVerbaleDTO, session);
+								
+								Set<DomandaVerbaleDTO> listaDomandeOpzione = s.getDomande();
+								for (DomandaVerbaleDTO d : listaDomandeOpzione) {	
+									int value = d.getRisposta().getId();
+									
+									RispostaSceltaVerbaleDTO risp = GestioneRispostaVerbaleDAO.getRispostaSceltaVerbaleDTO(value, session);
+									
+									if(risp!=null) {
+									Set<OpzioneRispostaVerbaleDTO> listaOpzioniOpzione= risp.getOpzioni();
+									
+										for (OpzioneRispostaVerbaleDTO op : listaOpzioniOpzione) {	
+											if(!request.getParameterMap().containsKey("options"+value)){
+												OpzioneRispostaVerbaleDTO opt = GestioneRispostaVerbaleDAO.getOpzioneVerbale(op.getId(), session);
+												opt.setChecked(false);
+												GestioneRispostaVerbaleDAO.saveOpzioneVerbale(opt, session);
+											}
+										}
+									}
+								}
+							}		
+						}else {
+							if (action == null || !action.equals("salvaRisposteCompWeb")) {
+								if(domanda.getDomandaQuestionario().getObbligatoria() && domanda.getRisposta()== null) {
+									myObj.addProperty("success", false);
+									myObj.addProperty("messaggio", "La domanda '"+domanda.getDomandaQuestionario().getTesto()+"' &egrave; obbligatoria.");
+							
+									out.print(myObj);
+									return;
+								}
+							}
+						
+							Set<OpzioneRispostaVerbaleDTO> listaOpzioni= GestioneRispostaVerbaleDAO.getRispostaSceltaVerbaleDTO(valueRicercato, session).getOpzioni();
+						
+							for (OpzioneRispostaVerbaleDTO s : listaOpzioni) {							
+								Set<DomandaVerbaleDTO> listaDomandeOpzione = s.getDomande();
+								for (DomandaVerbaleDTO d : listaDomandeOpzione) {	
+									int value = d.getRisposta().getId();
+									
+									RispostaSceltaVerbaleDTO risp = GestioneRispostaVerbaleDAO.getRispostaSceltaVerbaleDTO(value, session);
+									
+									if(risp!=null) {
+									Set<OpzioneRispostaVerbaleDTO> listaOpzioniOpzione= risp.getOpzioni();
+									
+										for (OpzioneRispostaVerbaleDTO op : listaOpzioniOpzione) {	
+											if(!request.getParameterMap().containsKey("options"+value)){
+												OpzioneRispostaVerbaleDTO opt = GestioneRispostaVerbaleDAO.getOpzioneVerbale(op.getId(), session);
+												opt.setChecked(false);
+												GestioneRispostaVerbaleDAO.saveOpzioneVerbale(opt, session);
+											}
+										}
+									}
+								}
+							}
+						}
+					} else if(domanda.getRisposta().getTipo().equals(RispostaVerbaleDTO.TIPO_TESTO)) {
+						if (action != null && action.equals("confermaRisposteCompWeb")) {
+							if(domanda.getDomandaQuestionario().getObbligatoria()) {
+								String rispostaTesto = request.getParameter(String.valueOf(valueRicercato));
+								if (rispostaTesto == null || rispostaTesto.equals("")) {
+									myObj.addProperty("success", false);
+									myObj.addProperty("messaggio", "La domanda '"+domanda.getDomandaQuestionario().getTesto()+"' &egrave; obbligatoria.");
+							
+									out.print(myObj);
+									return;
+								}
+							}
+						}
+					} else if(domanda.getRisposta().getTipo().equals(RispostaVerbaleDTO.TIPO_FORMULA)) {
+						if (action != null && action.equals("confermaRisposteCompWeb")) {
+							if(domanda.getDomandaQuestionario().getObbligatoria()) {
+								String value1 = request.getParameter("value1"+String.valueOf(valueRicercato));
+								String value2 = request.getParameter("value2"+String.valueOf(valueRicercato));	
+								String responseValue = request.getParameter("responseValue"+String.valueOf(valueRicercato));	
+								if (value1 == null || value1.equals("")
+									|| value2 == null || value2.equals("")
+									|| responseValue == null || responseValue.equals("")) {
+									myObj.addProperty("success", false);
+									myObj.addProperty("messaggio", "La domanda '"+domanda.getDomandaQuestionario().getTesto()+"' &egrave; obbligatoria.");
+							
+									out.print(myObj);
+									return;
+								}
+							}
+						}
+					}
+				}
+				
+				
+				if (action != null && action.equals("confermaRisposteCompWeb")) {
+					
+					verbale.setData_conferma(new Date());
+					GestioneVerbaleBO.cambioStato( verbale, GestioneStatoVerbaleDAO.getStatoVerbaleById( StatoVerbaleDTO.DA_VERIFICARE, session) , session);		
+					
+					UtenteDTO verificatore = null;
+					String commessa = null;
+					
+					VerbaleDTO verbale_origine = null;
+					if(verbale.getType().equals(VerbaleDTO.SK_TEC)){
+						verbale_origine=GestioneVerbaleDAO.getVerbaleFromSkTec(String.valueOf(verbale.getId()), session);
+						verificatore = verbale_origine.getIntervento().getTecnico_verificatore();
+						commessa = verbale_origine.getIntervento().getIdCommessa();
+					}else {
+						verificatore = verbale.getIntervento().getTecnico_verificatore();
+						commessa = verbale.getIntervento().getIdCommessa();
+					}
+
+					if(verificatore.getEMail()!=null  && verbale.getCodiceCategoria().equals("VIE")) {
+						ArrayList<UtenteDTO> lista_utenti = GestioneComunicazioniBO.getListaUtentiComunicazione(verbale.getCodiceCategoria(), session);
+						String destinatari = "";
+						for (UtenteDTO utenteDTO : lista_utenti) {
+							destinatari = destinatari+utenteDTO.getEMail()+";";
+						}				
+											
+						GestioneComunicazioniBO.sendEmailVerbale(verbale, commessa, destinatari, verificatore.getEMail(), StatoVerbaleDTO.DA_VERIFICARE, verbale.getType(), verbale_origine);
+					}
+					
+				}
+
+				
+				myObj.addProperty("success", true);
+				myObj.addProperty("messaggio", "Stato modificato con successo");
+		
+				out.print(myObj);
+				
+				session.getTransaction().commit();
+				session.close();	
+				return;
+				
+			}
+			
+			
+			
+			
+		
 		if(action !=null && action.equals("cambioStato")){	
 			
 			String stato = request.getParameter("stato" );

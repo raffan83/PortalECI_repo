@@ -155,9 +155,9 @@
                   											<c:if test="${verbale.getStato().getId()== 1 }">
                   										<a class="pull-right btn"><i class="fa fa-edit" onclick="modalAttrezzatura()" title="Modifica attrezzatura"></i></a>
                   										</c:if>
-                  										<a class="pull-right btn customTooltip customlink"   onClick="dettaglioAttrezzatura('${verbale.attrezzatura.id }','${verbale.attrezzatura.matricola_inail }','${verbale.attrezzatura.numero_fabbrica }','${verbale.attrezzatura.tipo_attivita }','${verbale.attrezzatura.descrizione }','${verbale.attrezzatura.id_cliente }','${verbale.attrezzatura.id_sede }',
+                  										<a class="pull-right btn customTooltip customlink"   onClick="dettaglioAttrezzatura('${verbale.attrezzatura.id }','${verbale.attrezzatura.matricola_inail }','${verbale.attrezzatura.numero_fabbrica }','${verbale.attrezzatura.tipo_attivita }','${utl:escapeJS(verbale.attrezzatura.descrizione) }','${verbale.attrezzatura.id_cliente }','${verbale.attrezzatura.id_sede }',
  																'${verbale.attrezzatura.data_verifica_funzionamento }','${verbale.attrezzatura.data_prossima_verifica_funzionamento }','${verbale.attrezzatura.data_verifica_integrita }','${verbale.attrezzatura.data_prossima_verifica_integrita }','${verbale.attrezzatura.data_verifica_interna }','${verbale.attrezzatura.data_prossima_verifica_interna }',
- 																'${verbale.attrezzatura.anno_costruzione }','${verbale.attrezzatura.fabbricante }','${verbale.attrezzatura.modello }','${verbale.attrezzatura.settore_impiego }','${fn:replace(fn:replace(verbale.attrezzatura.note_tecniche.replace('\'',' ').replace('\\','/'),newLineChar, ' '),newLineChar2, ' ')}','${fn:replace(fn:replace(verbale.attrezzatura.note_generiche.replace('\'',' ').replace('\\','/').replace('\\n',' '),newLineChar, ' '),newLineChar2,' ')}','${verbale.attrezzatura.obsoleta }',
+ 																'${verbale.attrezzatura.anno_costruzione }','${verbale.attrezzatura.fabbricante }','${utl:escapeJS(verbale.attrezzatura.modello) }','${verbale.attrezzatura.settore_impiego }','${utl:escapeJS(verbale.attrezzatura.note_tecniche)}','${utl:escapeJS(verbale.attrezzatura.note_generiche)}','${verbale.attrezzatura.obsoleta }',
  																'${verbale.attrezzatura.tipo_attrezzatura }','${verbale.attrezzatura.tipo_attrezzatura_GVR }','${verbale.attrezzatura.ID_specifica }','${verbale.attrezzatura.sogg_messa_serv_GVR }','${verbale.attrezzatura.n_panieri_idroestrattori }','${verbale.attrezzatura.marcatura }','${verbale.attrezzatura.n_id_on }','${verbale.attrezzatura.data_scadenza_ventennale }')">
  																
  																
@@ -3792,8 +3792,14 @@ function allegatoVisibile(id_allegato){
 				pleaseWaitDiv = $('#pleaseWaitDialog');
 				pleaseWaitDiv.modal();		
 				
+				
+		
+				
+				var x =  $("#"+idform).serializeArray();
+				var y = x;
+				
 				$.ajax({
-					type: "GET",
+					type: "POST",
 					url: "gestioneVerbale.do?action="+action+"&currentState=compilazioneWeb&idVerbale="+idVerb,
 					data : $("#"+idform).serializeArray(),				
 					dataType: "json",

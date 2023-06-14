@@ -9,6 +9,7 @@ import java.io.PrintWriter;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Hashtable;
@@ -111,7 +112,17 @@ public class GestioneListaVerbali extends HttpServlet {
 			else if(action.equals("filtra_date")){				
 				
 				String dateFrom = request.getParameter("dateFrom");
-				String dateTo = request.getParameter("dateTo");		
+				String dateTo = request.getParameter("dateTo");	
+				
+				if(dateFrom == null && dateTo == null) {
+					DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+					dateTo = df.format(new Date());
+					
+					Calendar calendar = Calendar.getInstance();
+					calendar.setTime(new Date());
+					calendar.add(Calendar.DAY_OF_MONTH, -365);
+					dateFrom = df.format(calendar.getTime());
+				}
 				
 				List<VerbaleDTO> listaVerbali =GestioneVerbaleBO.getListaVerbaliDate(session,user, dateFrom, dateTo);
 				

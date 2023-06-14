@@ -172,7 +172,9 @@
  	</c:if>
   	
  	<c:if test="${user.checkRuolo('CLVAL') }">
+ 	
 	 	<c:forEach items="${lista_attrezzature}" var="attrezzatura" varStatus="loop">
+	 		<c:if test="${attrezzatura.id_insieme==null }">
  	<c:choose>
  	<c:when test="${attrezzatura.obsoleta==0}">
  		<tr>
@@ -211,7 +213,7 @@
  	
  	
 
- 	
+ 	</c:if>
  	</c:forEach>
 
 	

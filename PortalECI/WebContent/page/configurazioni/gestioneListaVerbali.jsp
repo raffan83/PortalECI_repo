@@ -522,7 +522,7 @@ request.setAttribute("user",user);
   	function resetDate(){
   		pleaseWaitDiv = $('#pleaseWaitDialog');
   			  pleaseWaitDiv.modal();
-  		callAction("gestioneListaVerbali.do");
+  		callAction("gestioneListaVerbali.do?action=filtra_date");
 
   	}
 
