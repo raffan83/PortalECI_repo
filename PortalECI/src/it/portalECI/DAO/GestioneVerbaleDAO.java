@@ -342,5 +342,45 @@ public class GestioneVerbaleDAO {
 		
 		
 	}
+
+	public static List<VerbaleDTO> getListaVerbaliDataCreazione(Session session, UtenteDTO user, String dateFrom,
+			String dateTo) throws HibernateException, ParseException {
+Query query=null;
+		
+		boolean ck_AM=user.checkRuolo("AM");
+		boolean ck_ST=user.checkRuolo("ST");
+		boolean ck_RT=user.checkRuolo("RT");
+		boolean ck_SRT=user.checkRuolo("SRT");
+		boolean ck_CLVIE=user.checkRuolo("CLVIE");
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		
+		if(ck_ST==false && ck_AM==false && ck_RT==false && ck_SRT==false && ck_CLVIE == false) 
+		{
+		 
+		query  = session.createQuery( "from VerbaleDTO WHERE type = :_type AND intervento.tecnico_verificatore.id=:_idUser and createDate between :_dateFrom and :_dateTo");
+		query.setParameter("_type",VerbaleDTO.VERBALE);
+		query.setParameter("_idUser",user.getId());
+		query.setParameter("_dateFrom", sdf.parse(dateFrom));
+		query.setParameter("_dateTo", sdf.parse(dateTo));
+		}
+		else 
+		{
+			 String str = "from VerbaleDTO WHERE type = :_type and createDate between :_dateFrom and :_dateTo";
+			 
+			 if(ck_CLVIE) {
+				 str += " and intervento.id_cliente = :_id_cliente and intervento.idSede = :_id_sede";
+			 }
+			query  = session.createQuery(str);
+			query.setParameter("_type",VerbaleDTO.VERBALE);
+			query.setParameter("_dateFrom", sdf.parse(dateFrom));
+			query.setParameter("_dateTo", sdf.parse(dateTo));
+			if(ck_CLVIE) {
+				query.setParameter("_id_cliente",user.getIdCliente());
+				query.setParameter("_id_sede",user.getIdSede());
+			}
+		}
+		List<VerbaleDTO> result = query.list();
+		return result;
+	}
 	
 }

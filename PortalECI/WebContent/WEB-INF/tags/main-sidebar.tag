@@ -65,7 +65,7 @@
           			<ul class="treeview-menu">
             			<li>
 	            			<!-- <a href="gestioneListaVerbali.do">Gestione Verbali</a> -->
-	            			<a href="gestioneListaVerbali.do?action=filtra_date">Gestione Verbali</a>
+	            			<a href="gestioneListaVerbali.do">Gestione Verbali</a>
 	            			<% if(user.checkRuolo("AM")){%>
 	            			<a href="#" onClick="callAction('gestioneListaVerbali.do?action=lista_file')">Lista Verbali PDF</a> 
 	            			

@@ -95,7 +95,19 @@ public class GestioneListaVerbali extends HttpServlet {
 			
 			String action = request.getParameter("action");
 			if(action == null || action.equals("") ) {
-				List<VerbaleDTO> listaVerbali =GestioneVerbaleBO.getListaVerbali(session,user) ;					
+				
+				
+				DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+				String dateTo = df.format(new Date());
+					
+				Calendar calendar = Calendar.getInstance();
+				calendar.setTime(new Date());
+				calendar.add(Calendar.DAY_OF_MONTH, -365);
+				String dateFrom = df.format(calendar.getTime());
+				
+				
+				
+				List<VerbaleDTO> listaVerbali =GestioneVerbaleBO.getListaVerbaliDataCreazione(session,user,dateFrom, dateTo) ;					
 
 							
 				request.getSession().setAttribute("listaVerbali", listaVerbali);
@@ -114,15 +126,15 @@ public class GestioneListaVerbali extends HttpServlet {
 				String dateFrom = request.getParameter("dateFrom");
 				String dateTo = request.getParameter("dateTo");	
 				
-				if(dateFrom == null && dateTo == null) {
-					DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
-					dateTo = df.format(new Date());
-					
-					Calendar calendar = Calendar.getInstance();
-					calendar.setTime(new Date());
-					calendar.add(Calendar.DAY_OF_MONTH, -365);
-					dateFrom = df.format(calendar.getTime());
-				}
+//				if(dateFrom == null && dateTo == null) {
+//					DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+//					dateTo = df.format(new Date());
+//					
+//					Calendar calendar = Calendar.getInstance();
+//					calendar.setTime(new Date());
+//					calendar.add(Calendar.DAY_OF_MONTH, -365);
+//					dateFrom = df.format(calendar.getTime());
+//				}
 				
 				List<VerbaleDTO> listaVerbali =GestioneVerbaleBO.getListaVerbaliDate(session,user, dateFrom, dateTo);
 				

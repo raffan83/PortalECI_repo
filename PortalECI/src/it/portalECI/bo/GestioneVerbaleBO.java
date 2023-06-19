@@ -22,6 +22,7 @@ import java.util.zip.ZipOutputStream;
 import javax.xml.bind.ValidationException;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
+import org.hibernate.HibernateException;
 import org.hibernate.Session;
 
 
@@ -1867,6 +1868,12 @@ public class GestioneVerbaleBO {
     	 zipOut.close();
          System.out.println("Done... Zipped the files...");
 		
+	}
+
+	public static List<VerbaleDTO> getListaVerbaliDataCreazione(Session session, UtenteDTO user, String dateFrom,
+			String dateTo) throws HibernateException, ParseException {
+		// TODO Auto-generated method stub
+		return GestioneVerbaleDAO.getListaVerbaliDataCreazione(session, user, dateFrom, dateTo);
 	}
 	
 
