@@ -638,8 +638,10 @@ $('#data_scadenza_ventennale_mod_ins').addClass("disabled");
 		if(gruppo == 'GVR'){
 			$('#tipo_attrezzatura_gvr_mod_ins').attr("disabled", true);
 			$('#sogg_messa_serv_GVR_mod_ins').attr("disabled", false);	
+			$('#n_id_on_ins').attr("disabled", false);	
 		}else{
 			$('#data_scadenza_ventennale_mod_ins').removeClass("disabled");
+			$('#n_id_on_ins').attr("disabled", true);	
 		}
 		
 	}else if(gruppo == "SC"){
@@ -648,6 +650,7 @@ $('#data_scadenza_ventennale_mod_ins').addClass("disabled");
 		settore_opt.push('<option value="siderurgico">Siderurgico</option>');
 		settore_opt.push('<option value="estrattivo">Estrattivo</option>');
 		settore_opt.push('<option value="rorturale">Portuale</option>');		
+		$('#n_id_on_ins').attr("disabled", true);	
 		
 
 	}

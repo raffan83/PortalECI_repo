@@ -16,6 +16,10 @@
         <function-class>it.portalECI.Util.Utility</function-class>
         <function-signature> java.lang.String escapeHTML(java.lang.String)</function-signature>
     </function> 
-        
+         <function>
+        <name>getDataPvP</name>
+        <function-class>it.portalECI.Util.Utility</function-class>
+        <function-signature> java.util.Date getDataPvP(it.portalECI.DTO.VerbaleDTO)</function-signature>
+    </function> 
   
 </taglib>

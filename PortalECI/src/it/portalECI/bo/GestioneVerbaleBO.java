@@ -666,7 +666,8 @@ public class GestioneVerbaleBO {
 			codProv = verbale.getAttrezzatura().getProvincia_div();
 		}
 		else if(verbale.getSedeUtilizzatore()!=null) {
-			codProv = verbale.getSedeUtilizzatore().split("\\(")[1].replace(")","");
+			//codProv = verbale.getSedeUtilizzatore().split("\\(")[1].replace(")","");
+			codProv = verbale.getSedeUtilizzatore().substring(verbale.getSedeUtilizzatore().length()-4, verbale.getSedeUtilizzatore().length()).replace(")","").replace("(","");
 		}
 		
 		else {
@@ -978,7 +979,10 @@ public class GestioneVerbaleBO {
 			html = html.replaceAll("\\$\\{DATA_CONFERMA\\}", df.format(verbale.getData_conferma()));
 		}
 		
-	
+		if(verbale.getPotenza()!=null)
+		{
+			html = html.replaceAll("\\$\\{POTENZA_IMPIEGATA\\}", verbale.getPotenza()+"");
+		}
 		
 		
 		String esito ="";

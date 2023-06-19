@@ -19,10 +19,17 @@
 	<input type="hidden" class="domanda-indice-input" name="domanda.indice" value="${indice}"/>
 	<input type="hidden" name="domanda.gruppo${indice}" class="domanda-gruppo-input" value="${gruppo}" >
 	<div class="form-horizontal">
+	
+
 		<c:if test="${gruppo!='Colonna'}">
+	
 		<div class="form-group">
+			<c:if test="${gruppo=='Verbale'}">
 			<div class="col-sm-12"><a class="btn btn-danger btn-xs pull-right margin-right elimina-domanda-button">elimina domanda</a> <a style="margin-right:5px" onclick="aggiungiDomanda('Verbale', this)" class="btn btn-danger btn-xs pull-right margin-right">aggiungi domanda</a>  </div>
-			
+			</c:if>
+				<c:if test="${gruppo=='SchedaTecnica'}">
+				<div class="col-sm-12"><a class="btn btn-danger btn-xs pull-right margin-right elimina-domanda-button">elimina domanda</a> <a style="margin-right:5px" onclick="aggiungiDomanda('SchedaTecnica', this)" class="btn btn-danger btn-xs pull-right margin-right">aggiungi domanda</a>  </div>
+				</c:if>
 <!-- 																<div class="col-xs-12">
 														<a class="btn btn-default pull-right" onclick="aggiungiDomanda('Verbale', this)">
 															<i class="fa fa-plus"></i> Aggiungi domanda

@@ -72,6 +72,8 @@ public class VerbaleDTO implements Serializable {
 	
 	private String motivo_sospensione_vie;
 	
+	private Double potenza;
+	
 	public int getId() {
 		return id;
 	}
@@ -506,6 +508,14 @@ public class VerbaleDTO implements Serializable {
 
 	public void setMotivo_sospensione_vie(String motivo_sospensione_vie) {
 		this.motivo_sospensione_vie = motivo_sospensione_vie;
+	}
+
+	public Double getPotenza() {
+		return potenza;
+	}
+
+	public void setPotenza(Double potenza) {
+		this.potenza = potenza;
 	}
 
 	

@@ -13,7 +13,8 @@
  <head>
 
  <title>${title}</title>
-	 <t:header />
+
+ 	 <t:header /> 
      <jsp:invoke fragment="extra_css"/>
      <jsp:invoke fragment="extra_js_header"/>
      

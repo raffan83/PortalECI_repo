@@ -2,7 +2,7 @@
 
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 
-<link id="metalinkicon" rel="icon" type="image/x-icon" href="images/favico.ico" >
+<link id="metalinkicon" rel="shortcut icon" type="image/x-icon" href="images/favico.ico" >
  
 <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
 <!-- Bootstrap 3.3.6 -->
@@ -27,13 +27,13 @@
 <link rel="stylesheet" href="css/prism.css">
 <link rel="stylesheet" href="css/chosen.css">
 <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
-<link rel="stylesheet" href="//cdn.datatables.net/1.10.13/css/dataTables.bootstrap.min.css">
-<link rel="stylesheet" href="//cdn.datatables.net/responsive/2.1.1/css/responsive.bootstrap.min.css">
+ <link rel="stylesheet" href="//cdn.datatables.net/1.10.13/css/dataTables.bootstrap.min.css">
+<link rel="stylesheet" href="//cdn.datatables.net/responsive/2.1.1/css/responsive.bootstrap.min.css"> 
 <link rel="stylesheet" type="text/css" href="plugins/tooltipster/dist/css/tooltipster.bundle.min.css" />
 <link rel="stylesheet" type="text/css" href="plugins/tooltipster/dist/css/plugins/tooltipster/sideTip/themes/tooltipster-sideTip-light.min.css" />
 <link rel="stylesheet" href="//cdn.datatables.net/buttons/1.2.4/css/buttons.bootstrap.min.css">
 
-<link rel="stylesheet" href="plugins/jQueryFileUpload/css/jquery.fileupload.css">
+<link rel="stylesheet" href="plugins/jQueryFileUpload/css/jquery.fileupload.css"> 
 
  
 

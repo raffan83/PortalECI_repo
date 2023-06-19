@@ -155,9 +155,9 @@
                   											<c:if test="${verbale.getStato().getId()== 1 }">
                   										<a class="pull-right btn"><i class="fa fa-edit" onclick="modalAttrezzatura()" title="Modifica attrezzatura"></i></a>
                   										</c:if>
-                  										<a class="pull-right btn customTooltip customlink"   onClick="dettaglioAttrezzatura('${verbale.attrezzatura.id }','${verbale.attrezzatura.matricola_inail }','${verbale.attrezzatura.numero_fabbrica }','${verbale.attrezzatura.tipo_attivita }','${verbale.attrezzatura.descrizione }','${verbale.attrezzatura.id_cliente }','${verbale.attrezzatura.id_sede }',
+                  										<a class="pull-right btn customTooltip customlink"   onClick="dettaglioAttrezzatura('${verbale.attrezzatura.id }','${verbale.attrezzatura.matricola_inail }','${verbale.attrezzatura.numero_fabbrica }','${verbale.attrezzatura.tipo_attivita }','${utl:escapeJS(verbale.attrezzatura.descrizione) }','${verbale.attrezzatura.id_cliente }','${verbale.attrezzatura.id_sede }',
  																'${verbale.attrezzatura.data_verifica_funzionamento }','${verbale.attrezzatura.data_prossima_verifica_funzionamento }','${verbale.attrezzatura.data_verifica_integrita }','${verbale.attrezzatura.data_prossima_verifica_integrita }','${verbale.attrezzatura.data_verifica_interna }','${verbale.attrezzatura.data_prossima_verifica_interna }',
- 																'${verbale.attrezzatura.anno_costruzione }','${verbale.attrezzatura.fabbricante }','${verbale.attrezzatura.modello }','${verbale.attrezzatura.settore_impiego }','${fn:replace(fn:replace(verbale.attrezzatura.note_tecniche.replace('\'',' ').replace('\\','/'),newLineChar, ' '),newLineChar2, ' ')}','${fn:replace(fn:replace(verbale.attrezzatura.note_generiche.replace('\'',' ').replace('\\','/').replace('\\n',' '),newLineChar, ' '),newLineChar2,' ')}','${verbale.attrezzatura.obsoleta }',
+ 																'${verbale.attrezzatura.anno_costruzione }','${verbale.attrezzatura.fabbricante }','${utl:escapeJS(verbale.attrezzatura.modello) }','${verbale.attrezzatura.settore_impiego }','${utl:escapeJS(verbale.attrezzatura.note_tecniche)}','${utl:escapeJS(verbale.attrezzatura.note_generiche)}','${verbale.attrezzatura.obsoleta }',
  																'${verbale.attrezzatura.tipo_attrezzatura }','${verbale.attrezzatura.tipo_attrezzatura_GVR }','${verbale.attrezzatura.ID_specifica }','${verbale.attrezzatura.sogg_messa_serv_GVR }','${verbale.attrezzatura.n_panieri_idroestrattori }','${verbale.attrezzatura.marcatura }','${verbale.attrezzatura.n_id_on }','${verbale.attrezzatura.data_scadenza_ventennale }')">
  																
  																
@@ -1033,6 +1033,17 @@
 
 
 												 </div>
+												 
+												 <c:if test="${verbale.codiceVerifica=='VT' || verbale.codiceVerifica=='VT_IT-M' }">   
+												 <div class="col-xs-3">
+												<label>Potenza impegnata [kW]</label>
+													<input type="number" step=".1"pattern="^\d*(\.\d{0,1})?$"  class="form-control" id="potenza" name="potenza">
+
+
+												 </div>
+												 
+												 </c:if>
+												 
 												 <div id="check_motivo_content" style="display:none">
 												 <div class="col-xs-3">
 												 <label>Motivo</label><br>
@@ -1042,7 +1053,7 @@
 												 </div>
 												</div>
 												       		
-												<c:if test="${verbale.codiceVerifica == 'VT' }">      		
+												<c:if test="${verbale.codiceVerifica.startsWith('VT') }">      		
 												<div class="col-xs-6">
 												<label>Tipologia verifica</label>
 												<select id="tipologia_verifica" name="tipologia_verifica" class="form-control select2" data-placeholder="Seleziona tipologia verifica..." style="width:100%">
@@ -2221,7 +2232,18 @@ function importaExcel(id_risposta){
 
 }
 
- 	 	
+$(document).on('keydown', 'input[pattern]', function(e){
+	  var input = $(this);
+	  var oldVal = input.val();
+	  var regex = new RegExp(input.attr('pattern'), 'g');
+
+	  setTimeout(function(){
+	    var newVal = input.val();
+	    if(!regex.test(newVal)){
+	      input.val(oldVal); 
+	    }
+	  }, 1);
+	});
  	 	
  	 	$('#myModalError').on('hidden.bs.modal', function(){
  	 		if($('#myModalError').hasClass("modal-success")){
@@ -2497,11 +2519,11 @@ function importaExcel(id_risposta){
 						  
 						   var difference = Math.floor((data_fine - data_inizio)/(24*3600*1000));
 						  
-						   if(difference>30){
+						   if(difference>45){
 							   
 							   $('#conferma_button').attr("disabled", true);
 							   
-							   $('#modalErrorDiv').html("Attenzione! La data fine verifica non pu&ograve; essere superiore di pi&ugrave; di 30 giorni rispetto alla data verifica! ");
+							   $('#modalErrorDiv').html("Attenzione! La data fine verifica non pu&ograve; essere superiore di pi&ugrave; di 45 giorni rispetto alla data verifica! ");
 								$('#myModalError').removeClass();
 								$('#myModalError').addClass("modal modal-danger");
 								$('#myModalError').modal('show');	
@@ -2519,16 +2541,16 @@ function importaExcel(id_risposta){
 			   var month_t = today.getMonth();
 			   var day_t = today.getDate();
 			   
-			   today30 = new Date(year_t, month_t, day_t-30);
+			   today45 = new Date(year_t, month_t, day_t-45);
 			   
 			   today90 = new Date(year_t, month_t, day_t-90);
 			 
-			   if(data_fine>=today30){
+			   if(data_fine>=today45){
 				
 				   $('#conferma_button').attr("disabled", false);
 				   $('#content_motivo_sospensione').hide();
 			   }
-			   else if(data_fine<today30 && data_fine>=today90){
+			   else if(data_fine<today45 && data_fine>=today90){
 				   $('#conferma_button').attr("disabled", true);
 				   $('#content_motivo_sospensione').show();
 			   }
@@ -3381,14 +3403,14 @@ function allegatoVisibile(id_allegato){
 				var motivo_verifica = "${verbale.motivo_verifica}";
 				var tipologia_verifica = "${verbale.tipologia_verifica}";
 				var frequenza = "${verbale.frequenza}";
-				
+				var potenza = "${verbale.potenza}"
 				
 				$('#data_fine_verifica').change()
 				
 			$('#tipologia_verifica').select2();
 			$('#tipo_verifica_vie').select2();
 			$('#frequenza').select2();
-			
+			$('#potenza').val(potenza)
 	
 			if(frequenza!=''){
 				$('#frequenza').val(frequenza);
@@ -3759,13 +3781,25 @@ function allegatoVisibile(id_allegato){
 				$('#myModalError').addClass("modal modal-danger");
 				$('#myModalError').modal('show');	
 			}
+			else if($('#potenza').val()=='' && !salva_mod){
+				$('#modalErrorDiv').html("Il campo potenza è obbligatorio");
+				$('#myModalError').removeClass();
+				$('#myModalError').addClass("modal modal-danger");
+				$('#myModalError').modal('show');	
+			}
 			else{
 				
 				pleaseWaitDiv = $('#pleaseWaitDialog');
 				pleaseWaitDiv.modal();		
 				
+				
+		
+				
+				var x =  $("#"+idform).serializeArray();
+				var y = x;
+				
 				$.ajax({
-					type: "GET",
+					type: "POST",
 					url: "gestioneVerbale.do?action="+action+"&currentState=compilazioneWeb&idVerbale="+idVerb,
 					data : $("#"+idform).serializeArray(),				
 					dataType: "json",

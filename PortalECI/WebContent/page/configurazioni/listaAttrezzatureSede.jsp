@@ -5,6 +5,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@page import="it.portalECI.DTO.UtenteDTO"%>
+<%@ taglib uri="/WEB-INF/tld/utilities" prefix="utl" %>
 <% pageContext.setAttribute("newLineChar", "\r\n"); %>
 <% pageContext.setAttribute("newLineChar2", "\n"); %>
 <%
@@ -63,7 +64,7 @@
                        <th>Sogg. messa servizio GVR</th>
                        <th>N. panieri idroestrattori</th>
                        <th>Marcatura</th>
-                       <th>N. ID ON</th>
+                       <th>N. ID ON GVR</th>
                        <th>Scadenza Ventennale</th>
                        <th>Codici Milestone</th>
                        <th>Note tecniche</th>
@@ -153,7 +154,7 @@
  	<c:if test="${user.checkPermesso('MODIFICA_ATTREZZATURE') }">	
  	<a class="btn btn-warning" onClick="modalModificaAttrezzatura('${attrezzatura.id }','${attrezzatura.matricola_inail }','${attrezzatura.numero_fabbrica }','${attrezzatura.tipo_attivita }','${attrezzatura.descrizione }','${attrezzatura.id_cliente }','${attrezzatura.id_sede }',
  	'${attrezzatura.data_verifica_funzionamento }','${attrezzatura.data_prossima_verifica_funzionamento }','${attrezzatura.data_verifica_integrita }','${attrezzatura.data_prossima_verifica_integrita }','${attrezzatura.data_verifica_interna }','${attrezzatura.data_prossima_verifica_interna }',
- 	'${attrezzatura.anno_costruzione }','${attrezzatura.fabbricante }','${attrezzatura.modello }','${attrezzatura.settore_impiego }','${fn:replace(fn:replace(attrezzatura.note_tecniche.replace('\'',' ').replace('\\','/'),newLineChar, ' '),newLineChar2, ' ')}','${fn:replace(fn:replace(attrezzatura.note_generiche.replace('\'',' ').replace('\\','/').replace('\\n',' '),newLineChar, ' '),newLineChar2,' ')}','${attrezzatura.obsoleta }',
+ 	'${attrezzatura.anno_costruzione }','${utl:escapeJS(attrezzatura.fabbricante) }','${utl:escapeJS(attrezzatura.modello) }','${attrezzatura.settore_impiego }','${utl:escapeJS(attrezzatura.note_tecniche)}','${utl:escapeJS(attrezzatura.note_generiche)}','${attrezzatura.obsoleta }',
  	'${attrezzatura.tipo_attrezzatura }','${attrezzatura.tipo_attrezzatura_GVR }','${attrezzatura.ID_specifica }','${attrezzatura.sogg_messa_serv_GVR }',
  	'${attrezzatura.n_panieri_idroestrattori }','${attrezzatura.marcatura }','${attrezzatura.n_id_on }','${attrezzatura.data_scadenza_ventennale }', '${attrezzatura.codice_milestone }')"><i class="fa fa-edit"></i></a>
  	</c:if>
@@ -171,7 +172,9 @@
  	</c:if>
   	
  	<c:if test="${user.checkRuolo('CLVAL') }">
+ 	
 	 	<c:forEach items="${lista_attrezzature}" var="attrezzatura" varStatus="loop">
+	 		<c:if test="${attrezzatura.id_insieme==null }">
  	<c:choose>
  	<c:when test="${attrezzatura.obsoleta==0}">
  		<tr>
@@ -210,7 +213,7 @@
  	
  	
 
- 	
+ 	</c:if>
  	</c:forEach>
 
 	
@@ -405,9 +408,10 @@
     
     
        <div class="form-group">
-        <label for="inputName" class="col-sm-4 control-label">N. ID ON:</label>
+        <label for="inputName" class="col-sm-4 control-label">N. ID ON GVR:</label>
         <div class="col-sm-8">
                       <input class="form-control" id="n_id_on" type="text" name="n_id_on"  value=""/>
+                       <span id="label_id_on" style="display:none"><font style="color:red">Il campo se compilato deve contenere 4 caratteri!</font></span></label>
     </div>
        </div> 
        
@@ -704,9 +708,10 @@
     
     
        <div class="form-group">
-        <label for="inputName" class="col-sm-4 control-label">N. ID ON:</label>
+        <label for="inputName" class="col-sm-4 control-label">N. ID ON GVR:</label>
         <div class="col-sm-8">
                       <input class="form-control" id="n_id_on_mod" type="text" name="n_id_on_mod"  value=""/>
+                      <span id="label_id_on_mod" style="display:none"><font style="color:red">Il campo se compilato deve contenere 4 caratteri!</font></span></label>
     </div>
        </div> 
        
@@ -987,9 +992,9 @@
     
     
        <div class="form-group">
-        <label for="inputName" class="col-sm-4 control-label">N. ID ON:</label>
+        <label for="inputName" class="col-sm-4 control-label">N. ID ON GVR:</label>
         <div class="col-sm-8">
-                      <input class="form-control" id="n_id_on_mod_ins" type="text" name="n_id_on_mod_ins"  value=""/>
+                      <input class="form-control" id="n_id_on_mod_ins" type="text" name="n_id_on_mod_ins"  value=""/><span id="label_id_on_ins" style="display:none"><font style="color:red">Il campo se compilato deve contenere 4 caratteri!</font></span></label>
     </div>
        </div> 
        
@@ -1132,19 +1137,61 @@ $("#tableAttr").on( 'init.dt', function ( e, settings ) {
 $('#formNuovaAttrezzatura').on('submit',function(e){
     e.preventDefault();
 	
-	nuovaAttrezzatura();
+    
+    var flag = true; 
+    var n_id_on = $('#n_id_on').val();
+    
+    if(n_id_on!='' && n_id_on.length!=4){
+    	flag = false;
+    	
+    }
+    if(flag){
+    	nuovaAttrezzatura();
+    	$('#label_id_on').hide();
+    }else{
+    	$('#label_id_on').show();
+    }
+	
 });
 
 $('#formModificaAttrezzatura').on('submit',function(e){
     e.preventDefault();
+    
+    var flag = true; 
+    var n_id_on = $('#n_id_on_mod').val();
+    
+    if(n_id_on!='' && n_id_on.length!=4){
+    	flag = false;
+    	
+    }
+    if(flag){
+    	   modificaAttrezzatura();
+    	$('#label_id_on_mod').hide();
+    }else{
+    	$('#label_id_on_mod').show();
+    }
 	
-    modificaAttrezzatura();
+ 
 });
 
 $('#formModificaAttrezzaturaInsieme').on('submit',function(e){
     e.preventDefault();
+    
+    var flag = true; 
+    var n_id_on = $('#n_id_on_mod_ins').val();
+    
+    if(n_id_on!='' && n_id_on.length!=4){
+    	flag = false;
+    	
+    }
+    if(flag){
+    	 modificaAttrezzaturaInsieme();
+    	$('#label_id_on_ins').hide();
+    }else{
+    	$('#label_id_on_ins').show();
+    }
 	
-    modificaAttrezzaturaInsieme();
+   
 });
 
 function modalNuovaAttrezzatura(attrezzatura_insieme, id_insieme){
@@ -1674,8 +1721,10 @@ $("#tipo_attivita").change(function() {
 			if(gruppo == 'GVR'){
 				$('#tipo_attrezzatura_gvr').attr("disabled", true);
 				$('#sogg_messa_serv_GVR').attr("disabled", false);	
+				$('#n_id_on').attr("disabled", false);	
 			}else{
 				$('#data_scadenza_ventennale').removeClass("disabled");
+				$('#n_id_on').attr("disabled", true);
 			}
 			
 						
@@ -1686,7 +1735,7 @@ $("#tipo_attivita").change(function() {
 			settore_opt.push('<option value="siderurgico">Siderurgico</option>');
 			settore_opt.push('<option value="estrattivo">Estrattivo</option>');
 			settore_opt.push('<option value="porturale">Portuale</option>');		
-			
+			$('#n_id_on').attr("disabled", true);	
 			$('#data_scadenza_ventennale').removeClass("disabled");
 		}
 		
@@ -1742,8 +1791,10 @@ $("#tipo_attivita_mod").change(function() {
 			if(gruppo == 'GVR'){
 				$('#tipo_attrezzatura_gvr_mod').attr("disabled", true);
 				$('#sogg_messa_serv_GVR_mod').attr("disabled", false);	
+				$('#n_id_on_mod').attr("disabled", false);	
 			}else{
 				$('#data_scadenza_ventennale_mod').removeClass("disabled");
+				$('#n_id_on_mod').attr("disabled", true);	
 			}
 			
 		}else if(gruppo == "SC"){
@@ -1752,7 +1803,7 @@ $("#tipo_attivita_mod").change(function() {
 			settore_opt.push('<option value="siderurgico">Siderurgico</option>');
 			settore_opt.push('<option value="estrattivo">Estrattivo</option>');
 			settore_opt.push('<option value="rorturale">Portuale</option>');		
-			
+			$('#n_id_on_mod').attr("disabled", true);	
 			$('#data_scadenza_ventennale_mod').removeClass("disabled");
 		}
 		 $("#settore_impiego_mod").prop("disabled", false);

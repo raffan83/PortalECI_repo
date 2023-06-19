@@ -3,6 +3,7 @@
 <%@page import="java.text.SimpleDateFormat"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 <%@ page import="it.portalECI.DTO.UtenteDTO" %>
+<%@ taglib uri="/WEB-INF/tld/utilities" prefix="utl" %>
 <%
 UtenteDTO user = (UtenteDTO)request.getSession().getAttribute("userObj");
 request.setAttribute("user",user);
@@ -100,9 +101,10 @@ request.setAttribute("user",user);
  															<tr class="active"> 
  																<th style="max-width:20px">ID Verbale</th>
  																<th style="max-width:30px">ID Intervento</th>
- 																<th style="max-width:25px">ID Commessa</th>
+ 																<th style="max-width:20px">ID Commessa</th>
  																<th>Numero Verbale</th>
  																<th>Data verifica</th>
+ 																<th>Data prossima verifica</th>
  																<th>Matricola Attrezzatura</th>
  																<th style="min-width:200px">Sede Cliente</th>
  																<th>Sede Utilizzatore</th>
@@ -165,6 +167,7 @@ request.setAttribute("user",user);
 																	
 																	
 																	</td>
+																	
 																	<td>
 																	<c:choose>
 																	<c:when test="${verbale.data_prossima_verifica!=null }">
@@ -255,6 +258,52 @@ request.setAttribute("user",user);
 																	
 																	
 																	</td>
+																	
+																	
+																	<td>
+																	<c:choose>
+																	<c:when test="${verbale.getCodiceCategoria() == 'VIE'}">
+																	<c:if test="${verbale.data_prossima_verifica!=null }">
+																		<fmt:formatDate pattern="dd/MM/yyyy" value='${verbale.data_prossima_verifica}' type='date' />
+																		</c:if>
+																	</c:when>
+																	<c:otherwise>
+																	<c:choose>
+																	<c:when test="${verbale.getCodiceVerifica().startsWith('GVR') }">
+																	<fmt:formatDate pattern="dd/MM/yyyy" value='${utl:getDataPvP(verbale)}' type='date' />
+																	</c:when>
+																	<c:otherwise>
+																	<c:if test="${verbale.data_prossima_verifica!=null }">
+																		<fmt:formatDate pattern="dd/MM/yyyy" value='${verbale.data_prossima_verifica}' type='date' />
+																		</c:if>
+																	</c:otherwise>
+																	</c:choose>
+																	
+																	
+																<%-- 	<c:when test="${verbale.data_prossima_verifica!=null }">
+																		<fmt:formatDate pattern="dd/MM/yyyy" value='${verbale.data_prossima_verifica}' type='date' />
+																	</c:when>
+																	<c:otherwise>
+																		<c:choose>
+																		<c:when test="${verbale.data_prossima_verifica_interna!=null }">
+																			<fmt:formatDate pattern="dd/MM/yyyy" value='${verbale.data_prossima_verifica_interna}' type='date' />
+																		</c:when>
+																		<c:otherwise>
+																			<c:if test="${verbale.data_prossima_verifica_integrita!=null }">
+																			<fmt:formatDate pattern="dd/MM/yyyy" value='${verbale.data_prossima_verifica_integrita}' type='date' />
+																			</c:if>																	
+																		</c:otherwise>
+																		</c:choose>
+																	</c:otherwise>
+																	 --%>
+																	</c:otherwise>
+																	</c:choose>
+																	
+																	
+																	</td>
+																	
+																	
+																	
 																	<td>
 																	<c:if test="${verbale.attrezzatura!=null}">
 																	${verbale.attrezzatura.matricola_inail }
@@ -473,7 +522,7 @@ request.setAttribute("user",user);
   	function resetDate(){
   		pleaseWaitDiv = $('#pleaseWaitDialog');
   			  pleaseWaitDiv.modal();
-  		callAction("gestioneListaVerbali.do");
+  		callAction("gestioneListaVerbali.do?action=filtra_date");
 
   	}
 
@@ -538,7 +587,7 @@ request.setAttribute("user",user);
     	                { responsivePriority: 4, targets: 3 },
     	                { responsivePriority: 2, targets: 6 },
     	                { responsivePriority: 2, targets: 8, type:"date-eu" },
-    	                { responsivePriority: 5, targets: 11 },
+    	                { responsivePriority: 5, targets: 12 },
     	                { orderable: false, targets: 6 },
     	            ]
     		   	}
@@ -591,12 +640,21 @@ request.setAttribute("user",user);
 	                   	} */
     	            },{
     	            	extend: 'excel',
-    	               	text: 'Esporta Excel',
-    	                /* exportOptions: {
-    	                	modifier: {
-    	                    	page: 'current'
-    	                    }
-    	                } */
+    	               	text: 'Esporta Excel'
+    	               /* 	exportOptions: {
+    	               	  format: {
+    	               	     body: function(data, row, column, node) {
+    	               	    	 if(column == 4 || column == 5){
+    	               	    		 if(data instanceof Date && !isNaN(data)){
+    	               	    			return moment(data, 'DD.MM.YYYY').format('MM/DD/YYYY')	 
+    	               	    		 }
+    	               	    		 
+    	               	    	 }
+    	               	    	 
+    	               	    
+    	               	     }
+    	               	  }    
+    	               	}  */ 
     	            },{
     	            	extend: 'colvis',
     	                text: 'Nascondi Colonne'    	                  
