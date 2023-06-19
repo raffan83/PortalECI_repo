@@ -125,22 +125,6 @@
             }
                 
            /**
-            * auto generated Axis2 call back method for xmlsignature_multiple method
-            * override this method for handling normal response from xmlsignature_multiple operation
-            */
-           public void receiveResultxmlsignature_multiple(
-                    it.arubapec.arubasignservice.ArubaSignServiceServiceStub.Xmlsignature_multipleResponseE result
-                        ) {
-           }
-
-          /**
-           * auto generated Axis2 Error handler
-           * override this method for handling error response from xmlsignature_multiple operation
-           */
-            public void receiveErrorxmlsignature_multiple(java.lang.Exception e) {
-            }
-                
-           /**
             * auto generated Axis2 call back method for listprocess method
             * override this method for handling normal response from listprocess operation
             */
@@ -154,6 +138,22 @@
            * override this method for handling error response from listprocess operation
            */
             public void receiveErrorlistprocess(java.lang.Exception e) {
+            }
+                
+           /**
+            * auto generated Axis2 call back method for xmlsignature_multiple method
+            * override this method for handling normal response from xmlsignature_multiple operation
+            */
+           public void receiveResultxmlsignature_multiple(
+                    it.arubapec.arubasignservice.ArubaSignServiceServiceStub.Xmlsignature_multipleResponseE result
+                        ) {
+           }
+
+          /**
+           * auto generated Axis2 Error handler
+           * override this method for handling error response from xmlsignature_multiple operation
+           */
+            public void receiveErrorxmlsignature_multiple(java.lang.Exception e) {
             }
                 
            /**
@@ -237,6 +237,38 @@
             }
                 
            /**
+            * auto generated Axis2 call back method for sendCredentialAuth method
+            * override this method for handling normal response from sendCredentialAuth operation
+            */
+           public void receiveResultsendCredentialAuth(
+                    it.arubapec.arubasignservice.ArubaSignServiceServiceStub.SendCredentialAuthResponseE result
+                        ) {
+           }
+
+          /**
+           * auto generated Axis2 Error handler
+           * override this method for handling error response from sendCredentialAuth operation
+           */
+            public void receiveErrorsendCredentialAuth(java.lang.Exception e) {
+            }
+                
+           /**
+            * auto generated Axis2 call back method for updateSignature method
+            * override this method for handling normal response from updateSignature operation
+            */
+           public void receiveResultupdateSignature(
+                    it.arubapec.arubasignservice.ArubaSignServiceServiceStub.UpdateSignatureResponseE result
+                        ) {
+           }
+
+          /**
+           * auto generated Axis2 Error handler
+           * override this method for handling error response from updateSignature operation
+           */
+            public void receiveErrorupdateSignature(java.lang.Exception e) {
+            }
+                
+           /**
             * auto generated Axis2 call back method for closesession method
             * override this method for handling normal response from closesession operation
             */
@@ -250,6 +282,22 @@
            * override this method for handling error response from closesession operation
            */
             public void receiveErrorclosesession(java.lang.Exception e) {
+            }
+                
+           /**
+            * auto generated Axis2 call back method for listCert method
+            * override this method for handling normal response from listCert operation
+            */
+           public void receiveResultlistCert(
+                    it.arubapec.arubasignservice.ArubaSignServiceServiceStub.ListCertResponseE result
+                        ) {
+           }
+
+          /**
+           * auto generated Axis2 Error handler
+           * override this method for handling error response from listCert operation
+           */
+            public void receiveErrorlistCert(java.lang.Exception e) {
             }
                 
            /**
@@ -285,19 +333,19 @@
             }
                 
            /**
-            * auto generated Axis2 call back method for listCert method
-            * override this method for handling normal response from listCert operation
+            * auto generated Axis2 call back method for jwsSignature_multiple method
+            * override this method for handling normal response from jwsSignature_multiple operation
             */
-           public void receiveResultlistCert(
-                    it.arubapec.arubasignservice.ArubaSignServiceServiceStub.ListCertResponseE result
+           public void receiveResultjwsSignature_multiple(
+                    it.arubapec.arubasignservice.ArubaSignServiceServiceStub.JwsSignature_multipleResponseE result
                         ) {
            }
 
           /**
            * auto generated Axis2 Error handler
-           * override this method for handling error response from listCert operation
+           * override this method for handling error response from jwsSignature_multiple operation
            */
-            public void receiveErrorlistCert(java.lang.Exception e) {
+            public void receiveErrorjwsSignature_multiple(java.lang.Exception e) {
             }
                 
            /**
@@ -461,6 +509,38 @@
             }
                 
            /**
+            * auto generated Axis2 call back method for pdfsignatureDTS method
+            * override this method for handling normal response from pdfsignatureDTS operation
+            */
+           public void receiveResultpdfsignatureDTS(
+                    it.arubapec.arubasignservice.ArubaSignServiceServiceStub.PdfsignatureDTSResponseE result
+                        ) {
+           }
+
+          /**
+           * auto generated Axis2 Error handler
+           * override this method for handling error response from pdfsignatureDTS operation
+           */
+            public void receiveErrorpdfsignatureDTS(java.lang.Exception e) {
+            }
+                
+           /**
+            * auto generated Axis2 call back method for jwsSignature method
+            * override this method for handling normal response from jwsSignature operation
+            */
+           public void receiveResultjwsSignature(
+                    it.arubapec.arubasignservice.ArubaSignServiceServiceStub.JwsSignatureResponseE result
+                        ) {
+           }
+
+          /**
+           * auto generated Axis2 Error handler
+           * override this method for handling error response from jwsSignature operation
+           */
+            public void receiveErrorjwsSignature(java.lang.Exception e) {
+            }
+                
+           /**
             * auto generated Axis2 call back method for verify method
             * override this method for handling normal response from verify operation
             */
@@ -522,6 +602,22 @@
            * override this method for handling error response from opensession operation
            */
             public void receiveErroropensession(java.lang.Exception e) {
+            }
+                
+           /**
+            * auto generated Axis2 call back method for change_password method
+            * override this method for handling normal response from change_password operation
+            */
+           public void receiveResultchange_password(
+                    it.arubapec.arubasignservice.ArubaSignServiceServiceStub.Change_passwordResponseE result
+                        ) {
+           }
+
+          /**
+           * auto generated Axis2 Error handler
+           * override this method for handling error response from change_password operation
+           */
+            public void receiveErrorchange_password(java.lang.Exception e) {
             }
                 
 
