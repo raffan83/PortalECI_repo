@@ -2519,11 +2519,11 @@ $(document).on('keydown', 'input[pattern]', function(e){
 						  
 						   var difference = Math.floor((data_fine - data_inizio)/(24*3600*1000));
 						  
-						   if(difference>45){
+						   if(difference>30){
 							   
 							   $('#conferma_button').attr("disabled", true);
 							   
-							   $('#modalErrorDiv').html("Attenzione! La data fine verifica non pu&ograve; essere superiore di pi&ugrave; di 45 giorni rispetto alla data verifica! ");
+							   $('#modalErrorDiv').html("Attenzione! La data fine verifica non pu&ograve; essere superiore di pi&ugrave; di 30 giorni rispetto alla data verifica! ");
 								$('#myModalError').removeClass();
 								$('#myModalError').addClass("modal modal-danger");
 								$('#myModalError').modal('show');	
@@ -2541,20 +2541,20 @@ $(document).on('keydown', 'input[pattern]', function(e){
 			   var month_t = today.getMonth();
 			   var day_t = today.getDate();
 			   
-			   today45 = new Date(year_t, month_t, day_t-45);
+			   today30 = new Date(year_t, month_t, day_t-30);
 			   
-			   today90 = new Date(year_t, month_t, day_t-90);
+			   today60 = new Date(year_t, month_t, day_t-60);
 			 
-			   if(data_fine>=today45){
+			   if(data_fine>=today30){
 				
 				   $('#conferma_button').attr("disabled", false);
 				   $('#content_motivo_sospensione').hide();
 			   }
-			   else if(data_fine<today45 && data_fine>=today90){
+			   else if(data_fine<today30 && data_fine>=today60){
 				   $('#conferma_button').attr("disabled", true);
 				   $('#content_motivo_sospensione').show();
 			   }
-			   else if(data_fine<today90){
+			   else if(data_fine<today60){
 				   $('#conferma_button').attr("disabled", true);
 				   $('#content_motivo_sospensione').hide();
 			   }
