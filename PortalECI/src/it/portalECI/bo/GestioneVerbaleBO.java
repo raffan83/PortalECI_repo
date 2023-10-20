@@ -1017,14 +1017,14 @@ public class GestioneVerbaleBO {
 					check1 = "checked";
 										
 					
-					if(verbale.getTipo_verifica_gvr()==1) {
+					if(verbale.getTipo_verifica_gvr()==1 || verbale.getTipo_verifica_gvr()==8 || verbale.getTipo_verifica_gvr()==9 || verbale.getTipo_verifica_gvr()==10) {
 						
 						check2 = "unchecked";
 						check3 = "unchecked";
 						check4 = "unchecked";
 					}
 					
-					if(verbale.getTipo_verifica_gvr()==4) {
+					if(verbale.getTipo_verifica_gvr()==4 || verbale.getTipo_verifica_gvr()==11 || verbale.getTipo_verifica_gvr()==12  || verbale.getTipo_verifica_gvr()==13) {
 					
 						check2 = "unchecked";
 						check3 = "unchecked";
@@ -1047,7 +1047,7 @@ public class GestioneVerbaleBO {
 				}
 
 				else if(verbale.getTipo_verifica()==3 || verbale.getTipo_verifica()==4) {
-					if(verbale.getTipo_verifica_gvr()==1) {
+					if(verbale.getTipo_verifica_gvr()==1 || verbale.getTipo_verifica_gvr()==8 || verbale.getTipo_verifica_gvr()==9 || verbale.getTipo_verifica_gvr()==10) {
 						check1 = "unchecked";
 						check2 = "checked";
 						check3 = "unchecked";
@@ -1065,7 +1065,7 @@ public class GestioneVerbaleBO {
 						check3 = "checked";
 						check4 = "unchecked";
 					}
-					if(verbale.getTipo_verifica_gvr()==4) {
+					if(verbale.getTipo_verifica_gvr()==4 || verbale.getTipo_verifica_gvr()==11 || verbale.getTipo_verifica_gvr()==12  || verbale.getTipo_verifica_gvr()==13) {
 						check1 = "unchecked";
 						check2 = "checked";
 						check3 = "unchecked";
@@ -1766,25 +1766,25 @@ public class GestioneVerbaleBO {
 	    	 Date data_pvp = Utility.getDataPvP(v);
 	    	 
 	    	 String tipo_verifica = "";
-    		 
-    		 if(v.getTipo_verifica()!=0) {
-    			 
-    			 if(v.getAttrezzatura().getTipo_attivita().equals("GVR")) {
-    				 
-    				 if(v.getTipo_verifica()<3) {
-    					 
-    					 tipo_verifica = "1";
-    				 }else {
-    					 tipo_verifica = "2"; //TIPO VERIFICA
-    				 }		    				 
-    				 
-    			 }else {
-    				 
-    				 tipo_verifica = ""+v.getTipo_verifica();
-    				 
-    			 }
-    		 }
-	    	    
+//    		 
+//    		 if(v.getTipo_verifica()!=0) {
+//    			 
+//    			 if(v.getAttrezzatura().getTipo_attivita().equals("GVR")) {
+//    				 
+//    				 if(v.getTipo_verifica()<3) {
+//    					 
+//    					 tipo_verifica = "1";
+//    				 }else {
+//    					 tipo_verifica = "2"; //TIPO VERIFICA
+//    				 }		    				 
+//    				 
+//    			 }else {
+//    				 
+//    				 tipo_verifica = ""+v.getTipo_verifica();
+//    				 
+//    			 }
+//    		 }
+//	    	    
     		
 	    	for (DocumentoDTO d : v.getDocumentiVerbale()) {
 	    		 ZipEntry ze = null;
@@ -1874,6 +1874,11 @@ public class GestioneVerbaleBO {
 			String dateTo) throws HibernateException, ParseException {
 		// TODO Auto-generated method stub
 		return GestioneVerbaleDAO.getListaVerbaliDataCreazione(session, user, dateFrom, dateTo);
+	}
+
+	public static List<VerbaleDTO> getVerbaliAttivi(Session session, UtenteDTO user, String dateFrom, String dateTo) throws HibernateException, ParseException {
+		// TODO Auto-generated method stub
+		return GestioneVerbaleDAO.getVerbaliAttivi(session, user, dateFrom, dateTo);
 	}
 	
 

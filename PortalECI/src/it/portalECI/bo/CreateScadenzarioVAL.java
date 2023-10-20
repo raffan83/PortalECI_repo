@@ -598,17 +598,68 @@ public class CreateScadenzarioVAL {
 				    		 
 				    		 String tipo_ver_gvr="";
 				    		
+//				    		 if(listaVerbali.get(i).getTipo_verifica_gvr()!=0) {
+//				    			 if((listaVerbali.get(i).getTipo_verifica() == 1 ||listaVerbali.get(i).getTipo_verifica() == 2) || listaVerbali.get(i).getTipo_verifica_gvr()==1 || listaVerbali.get(i).getTipo_verifica_gvr()==7) {
+//					    			 tipo_ver_gvr = "Verifica di funzionamento";
+//					    			 
+//					    		 }else if((listaVerbali.get(i).getTipo_verifica() != 1 && listaVerbali.get(i).getTipo_verifica() != 2) && listaVerbali.get(i).getTipo_verifica_gvr()==2 || listaVerbali.get(i).getTipo_verifica_gvr()==4 || listaVerbali.get(i).getTipo_verifica_gvr()==5|| listaVerbali.get(i).getTipo_verifica_gvr()==6) {
+//					    			 tipo_ver_gvr = "Verifica di integrità";
+//					    			 
+//					    		 }else if((listaVerbali.get(i).getTipo_verifica() != 1 && listaVerbali.get(i).getTipo_verifica() != 2) && listaVerbali.get(i).getTipo_verifica_gvr()==3 ) {
+//					    			 tipo_ver_gvr = "Verifica interna";
+//					    			 
+//					    		 }
+//				    		 }
+				    		 
+				    		 
 				    		 if(listaVerbali.get(i).getTipo_verifica_gvr()!=0) {
-				    			 if((listaVerbali.get(i).getTipo_verifica() == 1 ||listaVerbali.get(i).getTipo_verifica() == 2) || listaVerbali.get(i).getTipo_verifica_gvr()==1 || listaVerbali.get(i).getTipo_verifica_gvr()==7) {
-					    			 tipo_ver_gvr = "Verifica di funzionamento";
-					    			 
-					    		 }else if((listaVerbali.get(i).getTipo_verifica() != 1 && listaVerbali.get(i).getTipo_verifica() != 2) && listaVerbali.get(i).getTipo_verifica_gvr()==2 || listaVerbali.get(i).getTipo_verifica_gvr()==4 || listaVerbali.get(i).getTipo_verifica_gvr()==5|| listaVerbali.get(i).getTipo_verifica_gvr()==6) {
-					    			 tipo_ver_gvr = "Verifica di integrità";
-					    			 
-					    		 }else if((listaVerbali.get(i).getTipo_verifica() != 1 && listaVerbali.get(i).getTipo_verifica() != 2) && listaVerbali.get(i).getTipo_verifica_gvr()==3 ) {
-					    			 tipo_ver_gvr = "Verifica interna";
+				    			 if(listaVerbali.get(i).getTipo_verifica_gvr() == 1) {
+					    			 tipo_ver_gvr = "Verifica funzionamento: biennale";
 					    			 
 					    		 }
+				    			 else if(listaVerbali.get(i).getTipo_verifica_gvr() == 8) {
+				    				 tipo_ver_gvr = "Verifica funzionamento: triennale";
+				    			 }
+				    			 else if(listaVerbali.get(i).getTipo_verifica_gvr() == 9) {
+				    				 tipo_ver_gvr = "Verifica funzionamento: quadriennale";
+				    			 }
+				    			 else if(listaVerbali.get(i).getTipo_verifica_gvr() == 10) {
+				    				 tipo_ver_gvr = "Verifica funzionamento: quinquennale";
+				    			 }
+				    			 
+				    			 else if(listaVerbali.get(i).getTipo_verifica_gvr() == 2) {
+					    			 tipo_ver_gvr = "Verifica integrità: decennale";
+					    			 
+					    		 }else if(listaVerbali.get(i).getTipo_verifica_gvr()==3 ) {
+					    			 tipo_ver_gvr = "Visita interna: biennale";
+					    			 
+					    		 
+					    		 }else if(listaVerbali.get(i).getTipo_verifica_gvr()==4 ) {
+					    			 tipo_ver_gvr = "Ver. funzionamento biennale + Ver. integrità";
+					    			 
+					    		 
+					    		 }else if(listaVerbali.get(i).getTipo_verifica_gvr()==11 ) {
+							    			 tipo_ver_gvr = "Ver. funzionamento triennale + Ver. integrità";
+							    			 
+							    		 
+				    			 }else if(listaVerbali.get(i).getTipo_verifica_gvr()==12 ) {
+					    			 tipo_ver_gvr = "Ver. funzionamento quadriennale + Ver. integrità";
+					    			 
+					    		 
+				    			 }else if(listaVerbali.get(i).getTipo_verifica_gvr()==13 ) {
+				    				 tipo_ver_gvr = "Ver. funzionamento quinquennale + Ver. integrità";
+				    			 
+				    			 
+				    			 }else if(listaVerbali.get(i).getTipo_verifica_gvr()==5 ) {
+				    				 tipo_ver_gvr = "Ver. funzionamento biennale + Ver. integrità + Visita interna";
+			    			 
+				    		 	}else if(listaVerbali.get(i).getTipo_verifica_gvr()==6 ) {
+				    				 tipo_ver_gvr = "Visita interna + Ver. integrità";
+					    			 
+				    		 	}else if(listaVerbali.get(i).getTipo_verifica_gvr()==7 ) {
+				    				 tipo_ver_gvr = "Ver. funzionamento biennale + Visita interna";
+					    			 
+				    		 	}
 				    		 }
 				    		
 							cell.setCellValue(tipo_ver_gvr); //TIPO VERIFICA GVR

@@ -828,7 +828,7 @@
 													<c:set var="tipo_ver_gvr" value="${verbale.tipo_verifica_gvr }"></c:set>
 												<label>Tipo Verifica GVR</label>
 												
-												<c:if test="${verbale.tipo_verifica == 1 || verbale.tipo_verifica == 2 }">
+											<%-- 	<c:if test="${verbale.tipo_verifica == 1 || verbale.tipo_verifica == 2 }">
 												   <select id="tipo_verifica_gvr" name="tipo_verifica_gvr" class="form-control select2" data-placeholder="Seleziona Tipo Verifica GVR" style="width:100%">
 												 <option value=""></option>
 												 <option value="1">PVP</option>
@@ -836,20 +836,48 @@
 												 <option value="5">PVP + Integrit&agrave;+ Interna</option>
 												 <option value="7">PVP + Interna</option>
 												 </select>	
-												</c:if>
+												</c:if> --%>
 												
-												<c:if test="${verbale.tipo_verifica == 3 || verbale.tipo_verifica == 4 }">
+												
+													<c:if test="${verbale.tipo_verifica == 1 || verbale.tipo_verifica == 2 }">
 												   <select id="tipo_verifica_gvr" name="tipo_verifica_gvr" class="form-control select2" data-placeholder="Seleziona Tipo Verifica GVR" style="width:100%">
 												 <option value=""></option>
-												 <option value="1">Funzionamento</option>
-												 <option value="2">Integrit&agrave;</option>
-												 <option value="3">Interna</option>
-												 <option value="4">Funzionamento + Integrit&agrave;</option>
-												 <option value="5">Funzionamento + Integrit&agrave; + Interna</option>
-												 <option value="6">Interna + Integrit&agrave;</option>
-												 <option value="7">Funzionamento + Interna</option>
+												 <option value="1">PVP: biennale</option>
+												 <option value="8">PVP: triennale</option>
+												 <option value="9">PVP: quadriennale</option>
+												 <option value="10">PVP: quinquennale</option>
+												 <option value="4">PVP biennale + Ver. integrit&agrave;</option>
+												 <option value="11">PVP triennale + Ver. integrit&agrave;</option>
+												 <option value="12">PVP quadriennale + Ver. integrit&agrave;</option>
+												 <option value="13">PVP quinquennale + Ver. integrit&agrave;</option>
+												 <option value="5">PVP biennale + Ver. integrit&agrave; + Visita interna</option>
+												 <option value="7">PVP biennale + Interna</option>
 												 </select>	
 												</c:if>
+												
+											
+												
+												
+												 <c:if test="${verbale.tipo_verifica == 3 || verbale.tipo_verifica == 4 }">
+												   <select id="tipo_verifica_gvr" name="tipo_verifica_gvr" class="form-control select2" data-placeholder="Seleziona Tipo Verifica GVR" style="width:100%">
+												 <option value=""></option>
+												 <option value="1">Verifica funzionamento: biennale</option>
+												 <option value="8">Verifica funzionamento: triennale</option>
+												 <option value="9">Verifica funzionamento: quadriennale</option>
+												 <option value="10">Verifica funzionamento: quinquennale</option>
+												 <option value="2">Verifica integrit&agrave;: decennale</option>
+												 <option value="3">Visita interna: biennale</option>
+												 <option value="4">Ver. funzionamento biennale + Ver. integrit&agrave;</option>
+												 <option value="11">Ver. funzionamento triennale + Ver. integrit&agrave;</option>
+												 <option value="12">Ver. funzionamento quadriennale + Ver. integrit&agrave;</option>
+												 <option value="13">Ver. funzionamento quinquennale + Ver. integrit&agrave;</option>
+												 <option value="5">Ver. funzionamento biennale +Ver. integrit&agrave; + Visita interna</option>
+												 <option value="6">Visita interna + Ver. integrit&agrave;</option>
+												 <option value="7">Ver. funzionamento biennale + Visita interna</option>
+												 </select>	
+												</c:if> 
+												
+												
 												<!-- </div> -->
 											</div>
 												

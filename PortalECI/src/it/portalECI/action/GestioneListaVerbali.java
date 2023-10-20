@@ -8,6 +8,9 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -97,19 +100,18 @@ public class GestioneListaVerbali extends HttpServlet {
 			if(action == null || action.equals("") ) {
 				
 				
-				DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
-				String dateTo = df.format(new Date());
-					
-				Calendar calendar = Calendar.getInstance();
-				calendar.setTime(new Date());
-				calendar.add(Calendar.DAY_OF_MONTH, -365);
-				String dateFrom = df.format(calendar.getTime());
 				
+				LocalDateTime startDate = LocalDateTime.now().minusYears(1);
+				LocalDateTime endDate  = LocalDateTime.now();
 				
+				String dateTo = endDate.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss "));
 				
+				String dateFrom = startDate.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));				
+								
 				List<VerbaleDTO> listaVerbali =GestioneVerbaleBO.getListaVerbaliDataCreazione(session,user,dateFrom, dateTo) ;					
-
+				List<VerbaleDTO> listaVerbaliInCorso = GestioneVerbaleBO.getVerbaliAttivi(session, user,dateFrom, dateTo );
 							
+				listaVerbali.addAll(listaVerbaliInCorso);
 				request.getSession().setAttribute("listaVerbali", listaVerbali);
 				request.getSession().setAttribute("dateFrom", null);
 				request.getSession().setAttribute("dateTo", null);
@@ -126,16 +128,7 @@ public class GestioneListaVerbali extends HttpServlet {
 				String dateFrom = request.getParameter("dateFrom");
 				String dateTo = request.getParameter("dateTo");	
 				
-//				if(dateFrom == null && dateTo == null) {
-//					DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
-//					dateTo = df.format(new Date());
-//					
-//					Calendar calendar = Calendar.getInstance();
-//					calendar.setTime(new Date());
-//					calendar.add(Calendar.DAY_OF_MONTH, -365);
-//					dateFrom = df.format(calendar.getTime());
-//				}
-				
+
 				List<VerbaleDTO> listaVerbali =GestioneVerbaleBO.getListaVerbaliDate(session,user, dateFrom, dateTo);
 				
 				request.getSession().setAttribute("listaVerbali", listaVerbali);
