@@ -2311,12 +2311,12 @@ $(document).on('keydown', 'input[pattern]', function(e){
  	    	$('#data_prossima_verifica_interna_verb').attr("disabled", true);
  	    
  	    	 
- 	    	 if(value == 1 || value == 4 || value == 5 || value == 7){
+ 	    	 if(value == 1 || value == 4 || value == 5 || value == 7 || value == 8 || value == 9 || value == 10|| value == 11|| value == 12|| value == 13){
  	    		$('#data_verifica').prop("disabled", false);
  	    		$('#data_prossima_verifica_verb').prop("disabled", false);
  	    		  
  	    	 }
- 	    	if(value == 2 || value == 4 || value == 5 || value == 6){
+ 	    	if(value == 2 || value == 4 || value == 5 || value == 6|| value == 11|| value == 12|| value == 13){
  	    		$('#data_verifica_integrita_verb').prop("disabled", false);
  	    		$('#data_prossima_verifica_integrita_verb').prop("disabled", false);
  	    	 }

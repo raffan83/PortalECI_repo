@@ -265,7 +265,7 @@ public class Utility extends HttpServlet {
 				data_pvp = verbale.getData_prossima_verifica();
 			}else {
 				
-				 if((verbale.getTipo_verifica() == 1 || verbale.getTipo_verifica() == 2) || verbale.getTipo_verifica_gvr()==1  ) {
+				 if((verbale.getTipo_verifica() == 1 || verbale.getTipo_verifica() == 2) || verbale.getTipo_verifica_gvr()==1 || verbale.getTipo_verifica_gvr()==8 || verbale.getTipo_verifica_gvr()==9|| verbale.getTipo_verifica_gvr()==10 ) {
 					 data_pvp = verbale.getData_prossima_verifica();
 	    			 
 	    		 }else if((verbale.getTipo_verifica() != 1 && verbale.getTipo_verifica() != 2) && verbale.getTipo_verifica_gvr()==2 ) {
@@ -277,7 +277,7 @@ public class Utility extends HttpServlet {
 	    		 }else if((verbale.getTipo_verifica() != 1 && verbale.getTipo_verifica() != 2) && verbale.getTipo_verifica_gvr()==7){
 	    			 data_pvp = getMinDate(verbale.getData_prossima_verifica(), verbale.getData_prossima_verifica_interna());
 	    		 }
-	    		 else if((verbale.getTipo_verifica() != 1 && verbale.getTipo_verifica() != 2) && verbale.getTipo_verifica_gvr()==4){
+	    		 else if((verbale.getTipo_verifica() != 1 && verbale.getTipo_verifica() != 2) && (verbale.getTipo_verifica_gvr()==4 || verbale.getTipo_verifica_gvr()==11 || verbale.getTipo_verifica_gvr()==12 || verbale.getTipo_verifica_gvr()==13)){
 	    			 data_pvp = getMinDate(verbale.getData_prossima_verifica(), verbale.getData_prossima_verifica_integrita());
 	    		 }
 	    		 else if((verbale.getTipo_verifica() != 1 && verbale.getTipo_verifica() != 2) && verbale.getTipo_verifica_gvr()==5){

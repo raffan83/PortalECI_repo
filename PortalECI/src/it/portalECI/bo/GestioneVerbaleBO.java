@@ -1158,6 +1158,7 @@ public class GestioneVerbaleBO {
 			check5 = "checked";
 			
 		}
+				
 		
 		String tipo_verifica_vie = "<img src=\"" + Costanti.PATH_FONT_IMAGE + check1+"-"+"checkbox"+".png" + "\" style=\"height:12px;\" />&nbsp;" + "Verifica periodica"+"<br/>";		
 		tipo_verifica_vie = tipo_verifica_vie+"<img src=\"" + Costanti.PATH_FONT_IMAGE + check2+"-"+"checkbox"+".png" + "\" style=\"height:12px;\" />&nbsp;" + "Verifica straordinaria"+"<br/>";
@@ -1202,6 +1203,39 @@ public class GestioneVerbaleBO {
 				
 				lista_date_multi.add(verbale.getData_verifica());
 				lista_date_multi.add(verbale.getData_verifica_interna());
+				
+			}
+			else if(verbale.getTipo_verifica_gvr()==8) {
+							
+				lista_date_multi.add(verbale.getData_verifica());		
+							
+			}
+			else if(verbale.getTipo_verifica_gvr()==9) {
+				
+				lista_date_multi.add(verbale.getData_verifica());				
+				
+			}
+			else if(verbale.getTipo_verifica_gvr()==10) {
+				
+				lista_date_multi.add(verbale.getData_verifica());
+				
+			}
+			else if(verbale.getTipo_verifica_gvr()==11) {
+				
+				lista_date_multi.add(verbale.getData_verifica());
+				lista_date_multi.add(verbale.getData_verifica_integrita());
+				
+			}
+			else if(verbale.getTipo_verifica_gvr()==12) {
+				
+				lista_date_multi.add(verbale.getData_verifica());
+				lista_date_multi.add(verbale.getData_verifica_integrita());
+				
+			}
+			else if(verbale.getTipo_verifica_gvr()==13) {
+				
+				lista_date_multi.add(verbale.getData_verifica());
+				lista_date_multi.add(verbale.getData_verifica_integrita());
 				
 			}
 			
