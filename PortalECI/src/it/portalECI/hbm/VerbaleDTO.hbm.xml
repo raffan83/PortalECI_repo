@@ -184,7 +184,7 @@
 			<column name="motivo_sospensione_vie" />
 		</property>
 		
-		<property name="potenza" type="double">
+		<property name="potenza" type="java.lang.String">
 			<column name="potenza" />
 		</property> 
 	</class>

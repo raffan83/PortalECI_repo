@@ -23,28 +23,34 @@
 	org.hibernate.Session hibernateSession = (org.hibernate.Session) request.getAttribute("hibernateSession");
 	
 	
-	if(rispostaTabella.getTipo().equals("RES_FORMULA")){
+	if(rispostaTabella!=null && rispostaTabella.getTipo().equals("RES_FORMULA")){
 		RispostaFormulaVerbaleDTO risp =(RispostaFormulaVerbaleDTO) hibernateSession.get(RispostaFormulaVerbaleDTO.class, rispostaTabella.getId());
 		pageContext.setAttribute("rispostaPage",risp);
 	
-	}else if(rispostaTabella.getTipo().equals("RES_CHOICE")){
-		RispostaSceltaVerbaleDTO risp =(RispostaSceltaVerbaleDTO) hibernateSession.get(RispostaSceltaVerbaleDTO.class, rispostaTabella.getId());
-		List<OpzioneRispostaVerbaleDTO> opzioni=new ArrayList<OpzioneRispostaVerbaleDTO>();
-		opzioni.addAll(risp.getOpzioni());
-		
-		Collections.sort(opzioni, new Comparator<OpzioneRispostaVerbaleDTO>() {
-	        @Override
-	        public int compare(OpzioneRispostaVerbaleDTO op2, OpzioneRispostaVerbaleDTO op1){
-				int pos1=op1.getOpzioneQuestionario().getPosizione();
-				int pos2=op2.getOpzioneQuestionario().getPosizione();
-	            return  pos2 - pos1;
-	        }
-	    });
+	}else if(rispostaTabella!=null && rispostaTabella.getTipo().equals("RES_CHOICE")){
+
+			RispostaSceltaVerbaleDTO risp =(RispostaSceltaVerbaleDTO) hibernateSession.get(RispostaSceltaVerbaleDTO.class, rispostaTabella.getId());
+			List<OpzioneRispostaVerbaleDTO> opzioni=new ArrayList<OpzioneRispostaVerbaleDTO>();
 			
-		pageContext.setAttribute("opzioniPage",opzioni);
-		pageContext.setAttribute("rispostaPage",risp);
+				opzioni.addAll(risp.getOpzioni());
+				
+				Collections.sort(opzioni, new Comparator<OpzioneRispostaVerbaleDTO>() {
+			        @Override
+			        public int compare(OpzioneRispostaVerbaleDTO op2, OpzioneRispostaVerbaleDTO op1){
+						int pos1=op1.getOpzioneQuestionario().getPosizione();
+						int pos2=op2.getOpzioneQuestionario().getPosizione();
+			            return  pos2 - pos1;
+			        }
+			    });
+		
+
+			pageContext.setAttribute("opzioniPage", opzioni);		
+			pageContext.setAttribute("rispostaPage",risp);
+
+
+		
 	
-	}else if(rispostaTabella.getTipo().equals("RES_TEXT")){
+	}else if(rispostaTabella!=null && rispostaTabella.getTipo().equals("RES_TEXT")){
 		RispostaTestoVerbaleDTO risp =(RispostaTestoVerbaleDTO) hibernateSession.get(RispostaTestoVerbaleDTO.class, rispostaTabella.getId());
 		pageContext.setAttribute("rispostaPage",risp);
 	}
@@ -52,19 +58,21 @@
 %>
 <td>
 	<div class="input-group">
+
 		<input type="hidden" class="input_hidden_id_risposta_colonna" value="${rispostaTabella.getId()}">
+	
 		<c:choose>
-			<c:when test="${rispostaTabella.getTipo().equals('RES_TEXT')}">
+			<c:when test="${rispostaTabella!=null && rispostaTabella.getTipo()!=null && rispostaTabella.getTipo().equals('RES_TEXT')}">
 				<input class="form-control" type="text" name="${rispostaTabella.id}" value="${utl:escapeHTML(rispostaPage.responseValue)}"/>
 			</c:when>
-			<c:when test="${rispostaTabella.getTipo().equals('RES_FORMULA')}">
+			<c:when test="${rispostaTabella!=null && rispostaTabella.getTipo()!=null && rispostaTabella.getTipo().equals('RES_FORMULA')}">
 				<input class="form-control" type="text" name="value1${rispostaTabella.id}" value="${rispostaPage.value1}"/>
 				<span class="input-group-addon">${rispostaPage.getRispostaQuestionario().getSimboloOperatore()}</span>
 				<input class="form-control" type="text" name="value2${rispostaTabella.id}" value="${rispostaPage.value2}"/>
 				<span class="input-group-addon">=</span>			
 				<input class="form-control" type="text" name="responseValue${rispostaTabella.id}" value="${rispostaPage.responseValue}"/>
 			</c:when>
-			<c:when test="${rispostaTabella.getTipo().equals('RES_CHOICE')}">
+			<c:when test="${rispostaTabella!=null && rispostaTabella.getTipo()!=null && rispostaTabella.getTipo().equals('RES_CHOICE')}">
 				<select class="form-control" name="options${rispostaTabella.id}">
 					<option value="" ></option>
 					<c:forEach items="${opzioniPage}" var="opzionePage" varStatus="loopOPT">
@@ -73,7 +81,7 @@
 				</select>
 			</c:when>
 		</c:choose>
-		<c:if test="${storico.contains(rispostaTabella.getId()) }">
+		<c:if test="${storico!=null && storico.contains(rispostaTabella.getId()) }">
 			<span class="input-group-btn">
 				<a class="btn btn-warning" onclick="detailStorico('${rispostaTabella.getId()}')" title="ELEMENTO MODIFICATO - Clicca per vedere lo storico delle modifiche">
 					<i class="fa fa-pencil" aria-hidden="true"></i>

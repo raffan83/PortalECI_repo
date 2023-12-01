@@ -195,15 +195,15 @@
  													<thead>
  														<tr class="active">
  														<td><input type="checkbox" id="check_all" class="form-control"></td>
- 															<th style="width:30px">Codice Categoria</th> 															
+ 															<th style="max-width:30px">Codice Categoria</th> 															
  															<th>Codice Verifica</th>
  															<th>Data Creazione</th>
- 															<th>Sede Utilizzatore</th>
+ 															<th style="min-width:180px">Sede Utilizzatore</th>
  															<th>Stato</th>
  															<th>Numero Certificato</th>
  															<th>Certificato</th>
  															
- 															<th >Sc. Tecnica</th>
+ 															<th >Scheda Tecnica</th>
  															<th>Firmato</th>
  																
  																<th>S.T. Firmata</th>
@@ -211,7 +211,7 @@
  															<th>Attrezzatura</th>
  															<th>Storico invio</th>
  															<th>Note</th>
- 															<td></td>
+ 															<td style="min-width:60px"></td>
 														</tr>
 													</thead>
  													<tbody>
@@ -1098,10 +1098,10 @@
 						{ responsivePriority: 1, targets: 0 },
 	                   	{ responsivePriority: 3, targets: 2 ,type:"date-eu"},
 	                   	{ responsivePriority: 4, targets: 3 },
-	                   	{ responsivePriority: 2, targets: 5 },
+	                   	{ responsivePriority: 2, targets: 14 },
 	                   	{ orderable: false, targets: 5 },
 	                   	{ width: "50px", targets: 0 },
-	                   	{ width: "250px", targets: 1 },
+	                
 	                   	{ width: "80px", targets: 3 },    	                   
 	               	],             
 	               	buttons: [ {

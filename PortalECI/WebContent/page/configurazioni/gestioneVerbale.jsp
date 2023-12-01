@@ -1065,7 +1065,7 @@
 												 <c:if test="${verbale.codiceVerifica=='VT' || verbale.codiceVerifica=='VT_IT-M' }">   
 												 <div class="col-xs-3">
 												<label>Potenza impegnata [kW]</label>
-													<input type="number" step=".1"pattern="^\d*(\.\d{0,1})?$"  class="form-control" id="potenza" name="potenza">
+													<input type="text" class="form-control" id="potenza" name="potenza">
 
 
 												 </div>

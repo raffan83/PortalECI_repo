@@ -181,6 +181,7 @@
 					<tr>
 						<c:forEach items="${colonne}" var="colonnaVerbale" varStatus="loopCol">
 							<c:set var="rispostaTabella" value="${colonnaVerbale.getRisposte().get(loopRes.index)}" scope="request"></c:set>
+														
 							<jsp:include page="gestioneVerbaleDettaglioTabella.jsp"></jsp:include>
 						</c:forEach>
 						<td>

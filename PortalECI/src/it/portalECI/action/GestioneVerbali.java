@@ -522,7 +522,7 @@ if(action!= null && action.equals("dettaglio")) {
 						String potenza = request.getParameter("potenza");
 						
 						if(potenza!=null) {
-							verbale.setPotenza(Double.parseDouble(potenza));
+							verbale.setPotenza(potenza);
 							session.save(verbale);
 						}else {
 							verbale.setPotenza(null);
@@ -1204,7 +1204,7 @@ if(action!= null && action.equals("dettaglio")) {
 						String potenza = request.getParameter("potenza");
 						
 						if(potenza!=null && !potenza.equals("")) {
-							verbale.setPotenza(Double.parseDouble(potenza));
+							verbale.setPotenza(potenza);
 							session.save(verbale);
 						}else {
 							verbale.setPotenza(null);

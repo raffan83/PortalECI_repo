@@ -5,7 +5,7 @@ import java.util.Date;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
-public abstract class RispostaVerbaleDTO {
+public  class RispostaVerbaleDTO {
 	
 	public static final String TIPO_TESTO="RES_TEXT";
 	public static final String TIPO_SCELTA="RES_CHOICE";
@@ -58,6 +58,6 @@ public abstract class RispostaVerbaleDTO {
 		this.updateDate = updateDate;
 	}
 
-	public abstract JsonElement getJsonObject();
+	//public abstract JsonElement getJsonObject();
 	
 }
