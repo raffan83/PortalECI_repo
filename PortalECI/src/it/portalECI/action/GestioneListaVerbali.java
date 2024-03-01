@@ -44,7 +44,6 @@ import it.portalECI.DTO.AllegatoMinisteroDTO;
 import it.portalECI.DTO.ClienteDTO;
 import it.portalECI.DTO.CompanyDTO;
 import it.portalECI.DTO.DocumentoDTO;
-import it.portalECI.DTO.RispostaVerbaleDTO;
 import it.portalECI.DTO.SedeDTO;
 import it.portalECI.DTO.UtenteDTO;
 import it.portalECI.DTO.VerbaleDTO;
@@ -100,13 +99,6 @@ public class GestioneListaVerbali extends HttpServlet {
 			String action = request.getParameter("action");
 			if(action == null || action.equals("") ) {
 				
-				for (int i = 0; i < 23; i++) {
-					RispostaVerbaleDTO r = new RispostaVerbaleDTO();
-					r.setTipo("RES_TEXT");
-					r.setCreateDate(new Date());
-					r.setUpdateDate(new Date());
-					session.save(r);
-				}
 				
 				
 				LocalDateTime startDate = LocalDateTime.now().minusYears(1);
