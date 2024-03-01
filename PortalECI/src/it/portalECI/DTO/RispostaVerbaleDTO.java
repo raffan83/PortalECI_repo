@@ -58,6 +58,18 @@ public  class RispostaVerbaleDTO {
 		this.updateDate = updateDate;
 	}
 
-	//public abstract JsonElement getJsonObject();
+	public JsonElement getJsonObject() {
+		
+		JsonObject jobj = new JsonObject();
+		jobj.addProperty("id", this.getId());
+		jobj.addProperty("tipo", this.getTipo());
+		jobj.addProperty("createDate", this.getCreateDate()+"");
+		jobj.addProperty("updateDate", this.getUpdateDate()+"");
+		
+		
+		return jobj;
+	}
+
+	//public abstract  JsonElement getJsonObject();
 	
 }

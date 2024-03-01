@@ -343,8 +343,9 @@ public class CreateScadenzarioVAL {
 			    		 Date data_rilascio = null;
 			    		 Date data_pvp = Utility.getDataPvP(listaVerbali.get(i));
 			    		 
+			
 			    		 
-			    		 if(listaVerbali.get(i).getStato().getId()!=9 && listaVerbali.get(i).getTipo_verifica_gvr()==0 || listaVerbali.get(i).getTipo_verifica_gvr()==1 || listaVerbali.get(i).getTipo_verifica_gvr()==4 || listaVerbali.get(i).getTipo_verifica_gvr()==5 || listaVerbali.get(i).getTipo_verifica_gvr()==7) {
+			    		 if(listaVerbali.get(i).getStato().getId()!=9 && listaVerbali.get(i).getTipo_verifica_gvr()==0 || listaVerbali.get(i).getTipo_verifica_gvr()==1 || listaVerbali.get(i).getTipo_verifica_gvr()==4 || listaVerbali.get(i).getTipo_verifica_gvr()==5 || listaVerbali.get(i).getTipo_verifica_gvr()==7 || listaVerbali.get(i).getTipo_verifica_gvr()==8 || listaVerbali.get(i).getTipo_verifica_gvr()==9 || listaVerbali.get(i).getTipo_verifica_gvr()==10 || listaVerbali.get(i).getTipo_verifica_gvr()==11 || listaVerbali.get(i).getTipo_verifica_gvr()==12 || listaVerbali.get(i).getTipo_verifica_gvr()==13) {
 			    			 data_rilascio = listaVerbali.get(i).getData_verifica();
 			    			// data_pvp = listaVerbali.get(i).getData_prossima_verifica();
 			    		 }

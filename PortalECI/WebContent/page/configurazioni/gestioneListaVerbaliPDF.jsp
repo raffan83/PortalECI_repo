@@ -80,6 +80,7 @@
  																<th>Sede Cliente</th>
 
  																<th>Stato</th>
+ 																<th>Esito</th>
  															
  																<th>Data Creazione</th>
  																<th>Riemesso</th>
@@ -140,6 +141,14 @@
 																	<td>
 																		<span class="label" style="color:#000000 !important; background-color:${documento.verbale.getStato().getColore(documento.verbale.getStato().getId())} !important;">${documento.verbale.getStato().getDescrizione()}</span>
 																																	
+																	</td>
+																	<td>
+																	<c:if test="${documento.verbale.esito=='P' }">
+																		<span class="label" style="color:#000000 !important; background-color:#77DD77">POSITIVO</span>
+																		</c:if>
+																		<c:if test="${documento.verbale.esito=='N' }">
+																		<span class="label" style="color:#000000 !important; background-color:#CE3018">NEGATIVO</span>
+																		</c:if>												
 																	</td>
 						
         															<td>
@@ -301,9 +310,9 @@
     	      		columnDefs: [
 						{ responsivePriority: 1, targets: 0 },
     	                { responsivePriority: 3, targets: 2 },
-    	                { responsivePriority: 4, targets: 12 },
+    	                { responsivePriority: 4, targets: 13 }
 						
-    	                { orderable: false, targets: 7 },
+    	               
     	            ],
     	            buttons: [ {
     	            	extend: 'copy',
