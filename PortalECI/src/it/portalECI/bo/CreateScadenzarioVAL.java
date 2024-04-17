@@ -141,10 +141,10 @@ public class CreateScadenzarioVAL {
 //			 }
 			 if(j==7 ||  j==20||j==21|| j==22|| j==24|| j==48|| j==49) {
 				 rowHeader.getCell(j).setCellStyle(yellowStyle);
-			 }else if(j==28|| j==47|| j==59|| j==60){
+			 }else if(j==28|| j==29 || j==44|| j==47|| j==59|| j==60 ||j==61){
 				 rowHeader.getCell(j).setCellStyle(greenStyle);
 			 }
-			 else if(j== 61 || j == 62) {
+			 else if(j== 62 || j == 63) {
 				 rowHeader.getCell(j).setCellStyle(titleStyle);
 			 }else {
 				 rowHeader.getCell(j).setCellStyle(redStyle);
@@ -172,7 +172,7 @@ public class CreateScadenzarioVAL {
 		 
 		 sheet0.getRow(0).getCell(23).setCellValue("Dato obbligatorio per SC, SP, GVR");
 		 
-		 sheet0.getRow(0).getCell(24).setCellValue("Dati obbligatori per attrezzature SC/D1, SC/D2, SC/D3 vedi anche (Informazioni");		 
+		 sheet0.getRow(0).getCell(24).setCellValue("Dati obbligatori per attrezzature SC/D1, SC/D2, SC/D3 vedi anche (Informazioni)");		 
 		 
 		 sheet0.addMergedRegion(CellRangeAddress.valueOf("Z1:AB1"));
 		 
@@ -180,13 +180,15 @@ public class CreateScadenzarioVAL {
 		 
 		 sheet0.getRow(0).getCell(28).setCellValue("Solo per GVR (opzionale)");		 
 		 
-		 sheet0.getRow(0).getCell(29).setCellValue("Dati obbligatori");
+		 sheet0.getRow(0).getCell(29).setCellValue("Dato opzionale");
 		 
-		 sheet0.addMergedRegion(CellRangeAddress.valueOf("AD1:AQ1"));	
+		 sheet0.getRow(0).getCell(30).setCellValue("Obbligatorio");
+		 
+		 sheet0.addMergedRegion(CellRangeAddress.valueOf("AE1:AQ1"));	
 		 
 		 sheet0.getRow(0).getCell(43).setCellValue("Dato obbligatorio per GVR, SP, SC tipo verifica 1 (prima verifica periodica)");
 		 
-		 sheet0.getRow(0).getCell(44).setCellValue("Dato obbligatorio");
+		 sheet0.getRow(0).getCell(44).setCellValue("Dato opzionale");
 		 
 		 sheet0.getRow(0).getCell(45).setCellValue("Dato obbligatorio");
 		 
@@ -210,9 +212,11 @@ public class CreateScadenzarioVAL {
 		 
 		 sheet0.getRow(0).getCell(54).setCellValue("Dati obbligatori per ITP A");		 
 		 
+		 sheet0.addMergedRegion(CellRangeAddress.valueOf("BH1:BJ1"));	
+		 
 		 sheet0.getRow(0).getCell(59).setCellValue("Dato opzionale");
 		 
-		 sheet0.getRow(0).getCell(60).setCellValue("Dato opzionale");
+
 		 
 		 Row rowTitle = sheet0.createRow(1);
 		 		 
@@ -281,11 +285,12 @@ public class CreateScadenzarioVAL {
 		 rowTitle.createCell(58).setCellValue("superf_prot_(mq)");
 		 rowTitle.createCell(59).setCellValue("sv_CF_tecn_aff");
 		 rowTitle.createCell(60).setCellValue("riferimento_Interno_Sa");
+		 rowTitle.createCell(61).setCellValue("Note");
 		 
-		 rowTitle.createCell(61).setCellValue("codice_commessa");
-		 rowTitle.createCell(62).setCellValue("numero_verbale");
+		 rowTitle.createCell(62).setCellValue("codice_commessa");
+		 rowTitle.createCell(63).setCellValue("numero_verbale");
 		 
-		 for(int j = 0; j<63; j++) {
+		 for(int j = 0; j<64; j++) {
 			 rowTitle.getCell(j).setCellStyle(titleStyle);
 		 }
 		 
@@ -976,7 +981,9 @@ public class CreateScadenzarioVAL {
 							 col++;
 				    		 cell = row.createCell(col);
 							cell.setCellValue("");
-							
+							col++;
+				    		 cell = row.createCell(col);
+				    		 
 							 col++;
 				    		 cell = row.createCell(col);
 				    		 if(listaVerbali.get(i).getIntervento()!=null) {
