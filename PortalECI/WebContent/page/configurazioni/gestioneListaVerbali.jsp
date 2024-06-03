@@ -114,6 +114,7 @@ request.setAttribute("user",user);
  																<th>Descrizione Verifica</th> --%>
  																<th>Stato</th>
  																<th>Stato S.T.</th>
+ 																<th>Data Approvazione</th>
  																<th>Firmato</th>
  																
  																<th>S.T. Firmata</th>
@@ -343,6 +344,12 @@ request.setAttribute("user",user);
 																			<span class="label" style="color:#000000 !important; background-color:grey !important;">ASSENTE</span>
 																		</c:if>	 
 																	</td>
+																	
+																	
+																	<td><c:if test="${verbale.data_approvazione!=null }">
+																		<fmt:formatDate pattern="dd/MM/yyyy" value='${verbale.data_approvazione}' type='date' />
+																		</c:if> </td>
+																	
 																	<td>
 																	
 																	<c:if test="${verbale.firmato == 1 && verbale.controfirmato == 1}">
@@ -353,7 +360,7 @@ request.setAttribute("user",user);
 																	</c:if>
 																																		
 																	</td>
-
+																	
 																	<td>
 																	
 																	<c:if test="${verbale.getSchedaTecnica()!=null && verbale.getSchedaTecnica().getFirmato() == 1 && verbale.getSchedaTecnica().getControfirmato()  == 1}">

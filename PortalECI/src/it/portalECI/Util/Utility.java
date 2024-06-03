@@ -299,14 +299,17 @@ public static Date getMinDate(Date data1, Date data2) {
 		
 		Date min = null;
 		
-		long time1 = data1.getTime();
-		long time2 = data2.getTime();
-		
-		if(time1<=time2) {
-			min = data1;
-		}else {
-			min = data2;
+		if(data1!=null && data2!=null) {
+			long time1 = data1.getTime();
+			long time2 = data2.getTime();
+			
+			if(time1<=time2) {
+				min = data1;
+			}else {
+				min = data2;
+			}
 		}
+		
 		
 		return min;
 	}

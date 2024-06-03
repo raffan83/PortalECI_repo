@@ -123,7 +123,7 @@ public class GestioneVerbali extends HttpServlet {
 			ArrayList<String> listaFormulaAggiornate=new ArrayList<String>();
 			
 			
-if(action!= null && action.equals("dettaglio")) {
+			if(action!= null && action.equals("dettaglio")) {
 	
 				ajax = false;
 				
@@ -1577,6 +1577,18 @@ if(action!= null && action.equals("dettaglio")) {
 //				}
 			}
 			
+			if(stato.equals("10")) {
+				verbale.setData_verifica(null);
+				verbale.setData_prossima_verifica(null);
+				verbale.setData_verifica_integrita(null);
+				verbale.setData_prossima_verifica_integrita(null);
+				verbale.setData_verifica_interna(null);
+				verbale.setData_prossima_verifica_interna(null);
+				verbale.setNumeroVerbale(null);
+				session.update(verbale);
+			}
+			
+			
 			myObj.addProperty("success", true);
 			myObj.addProperty("messaggio", "Stato modificato con successo");			
 			out.print(myObj);
@@ -2149,7 +2161,7 @@ else if(action!=null && action.equals("carica_scheda_firmata")) {
 
 			session.update(allegato);
 			
-			myObj.addProperty("success", true);
+			
 			out.print(myObj);
 		}
 		else if(action!=null && action.equals("allegato_visibile")) {

@@ -540,10 +540,29 @@ public class GestioneIntervento extends HttpServlet {
 					StatoVerbaleDTO stato = GestioneStatoVerbaleDAO.getStatoVerbaleById( 10, session);
 					verbale.setStato(stato);
 					
+					verbale.setStato(stato);
+					verbale.setData_verifica(null);
+					verbale.setData_prossima_verifica(null);
+					verbale.setData_verifica_integrita(null);
+					verbale.setData_prossima_verifica_integrita(null);
+					verbale.setData_verifica_interna(null);
+					verbale.setData_prossima_verifica_interna(null);
+					verbale.setNumeroVerbale(null);
+					
 					if (verbale.getSchedaTecnica()!=null) {
 						verbale.getSchedaTecnica().setStato(stato);
+						verbale.getSchedaTecnica().setStato(stato);
+						verbale.getSchedaTecnica().setData_verifica(null);
+						verbale.getSchedaTecnica().setData_prossima_verifica(null);
+						verbale.getSchedaTecnica().setData_verifica_integrita(null);
+						verbale.getSchedaTecnica().setData_prossima_verifica_integrita(null);
+						verbale.getSchedaTecnica().setData_verifica_interna(null);
+						verbale.getSchedaTecnica().setData_prossima_verifica_interna(null);
+						verbale.getSchedaTecnica().setNumeroVerbale(null);
+						
 						session.update(verbale.getSchedaTecnica());
 					}
+					session.update(verbale);
 				}
 				
 				myObj.addProperty("success", true);

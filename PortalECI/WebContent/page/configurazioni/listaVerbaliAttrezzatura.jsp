@@ -133,10 +133,16 @@
 																	
 																	<td>
 																	<c:if test="${verbale.tipo_verifica == 1 || verbale.tipo_verifica == 2 }">
-																	<c:if test="${verbale.tipo_verifica_gvr == 1}">
+																	<c:if test="${verbale.tipo_verifica_gvr == 0 && verbale.tipo_verifica == 1}">
 																	PVP
 																	</c:if>
-																	<c:if test="${verbale.tipo_verifica_gvr == 4}">
+																	<c:if test="${verbale.tipo_verifica_gvr == 0 && verbale.tipo_verifica == 2}">
+																	Funzionamento
+																	</c:if>
+																	<c:if test="${verbale.tipo_verifica_gvr == 1 || verbale.tipo_verifica_gvr == 8 || verbale.tipo_verifica_gvr == 9 || verbale.tipo_verifica_gvr == 10}">
+																	PVP
+																	</c:if>
+																	<c:if test="${verbale.tipo_verifica_gvr == 4|| verbale.tipo_verifica_gvr == 11|| verbale.tipo_verifica_gvr == 12|| verbale.tipo_verifica_gvr == 13}">
 																	PVP + Integrità
 																	</c:if>
 																	<c:if test="${verbale.tipo_verifica_gvr == 5}">
@@ -150,7 +156,7 @@
 																	
 																	<c:if test="${verbale.tipo_verifica == 3 || verbale.tipo_verifica == 4 }">
 																	
-																	<c:if test="${verbale.tipo_verifica_gvr == 1}">
+																	<c:if test="${verbale.tipo_verifica_gvr == 0||verbale.tipo_verifica_gvr == 1 || verbale.tipo_verifica_gvr == 8 || verbale.tipo_verifica_gvr == 9 || verbale.tipo_verifica_gvr == 10}">
 																	Funzionamento
 																	</c:if>
 																	<c:if test="${verbale.tipo_verifica_gvr == 2}">
@@ -159,7 +165,7 @@
 																	<c:if test="${verbale.tipo_verifica_gvr == 3}">
 																	Interna
 																	</c:if>
-																	<c:if test="${verbale.tipo_verifica_gvr == 4}">
+																	<c:if test="${verbale.tipo_verifica_gvr == 4|| verbale.tipo_verifica_gvr == 11|| verbale.tipo_verifica_gvr == 12|| verbale.tipo_verifica_gvr == 13}">
 																	Funzionamento + Integrità
 																	</c:if>
 																	<c:if test="${verbale.tipo_verifica_gvr == 5}">

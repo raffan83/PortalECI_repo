@@ -368,12 +368,14 @@ Query query=null;
 			 String str = "from VerbaleDTO WHERE type = :_type and (createDate between :_dateFrom and :_dateTo or createDate = :_dateTo)";
 			 
 			 if(ck_CLVIE) {
-				 str += " and intervento.id_cliente = :_id_cliente and intervento.idSede = :_id_sede";
+				 str = "from VerbaleDTO WHERE type = :_type and codiceCategoria = 'VIE' and intervento.id_cliente = :_id_cliente and intervento.idSede = :_id_sede";
 			 }
 			query  = session.createQuery(str);
 			query.setParameter("_type",VerbaleDTO.VERBALE);
-			query.setParameter("_dateFrom", sdf.parse(dateFrom));
-			query.setParameter("_dateTo", sdf.parse(dateTo));
+			 if(!ck_CLVIE) {
+				 query.setParameter("_dateFrom", sdf.parse(dateFrom));
+				query.setParameter("_dateTo", sdf.parse(dateTo));
+			 }
 			if(ck_CLVIE) {
 				query.setParameter("_id_cliente",user.getIdCliente());
 				query.setParameter("_id_sede",user.getIdSede());
