@@ -1513,7 +1513,7 @@ public class GestioneVerbali extends HttpServlet {
 							destinatari = destinatari+utenteDTO.getEMail()+";";
 						}				
 											
-						GestioneComunicazioniBO.sendEmailVerbale(verbale, commessa, destinatari, verificatore.getEMail(), StatoVerbaleDTO.DA_VERIFICARE, verbale.getType(), verbale_origine);
+						//GestioneComunicazioniBO.sendEmailVerbale(verbale, commessa, destinatari, verificatore.getEMail(), StatoVerbaleDTO.DA_VERIFICARE, verbale.getType(), verbale_origine);
 					}
 					
 				}
@@ -1545,7 +1545,9 @@ public class GestioneVerbali extends HttpServlet {
 			
 			GestioneVerbaleBO.cambioStato( verbale, GestioneStatoVerbaleDAO.getStatoVerbaleById( Integer.parseInt(stato), session) , session);
 			if(stato.equals("5")) {
-				verbale.setFirmato(0);
+				//verbale.setFirmato(0);
+				GestioneVerbaleBO.addFirmaImage(verbale, session);
+				verbale.setFirmato(1);
 				verbale.setControfirmato(0);
 				session.update(verbale);
 			}
@@ -1622,7 +1624,7 @@ public class GestioneVerbali extends HttpServlet {
 						}
 						
 						if(verificatore.getEMail()!=null && user.getEMail()!=null && verbale.getCodiceCategoria().equals("VIE")) {
-							GestioneComunicazioniBO.sendEmailVerbale(verbale, commessa, verificatore.getEMail(), user.getEMail(), 5, verbale.getType(), verbale_origine);
+							//GestioneComunicazioniBO.sendEmailVerbale(verbale, commessa, verificatore.getEMail(), user.getEMail(), 5, verbale.getType(), verbale_origine);
 						}
 						
 						myObj.addProperty("pdfString", pdfBytes);
@@ -1734,13 +1736,13 @@ public class GestioneVerbali extends HttpServlet {
 							
 							if(controfirma!=null && controfirma.equals("1")) {
 								verbale.setControfirmato(1);
-								if(verbale.getCodiceCategoria().equals("VIE")) {
-									GestioneComunicazioniBO.sendEmail(intervento.getTecnico_verificatore(), intervento, verbale, verbale_principale, 2);
-								}
+//								if(verbale.getCodiceCategoria().equals("VIE")) {
+//									GestioneComunicazioniBO.sendEmail(intervento.getTecnico_verificatore(), intervento, verbale, verbale_principale, 2);
+//								}
 							}else {
 								verbale.setFirmato(1);
 								if(verbale.getCodiceCategoria().equals("VIE")) {
-									GestioneComunicazioniBO.sendEmail(verbale.getResponsabile_approvatore(), intervento, verbale,verbale_principale, 1);
+								//	GestioneComunicazioniBO.sendEmail(verbale.getResponsabile_approvatore(), intervento, verbale,verbale_principale, 1);
 								}
 							}
 							

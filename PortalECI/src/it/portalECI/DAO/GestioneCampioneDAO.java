@@ -276,9 +276,19 @@ public class GestioneCampioneDAO {
 		if(attivita!=null) {
 			for (AcAttivitaCampioneDTO a : attivita) {
 				if(a.getData_scadenza().after(df.parse(data_start)) && a.getData_scadenza().before(df.parse(data_end))) {
-					lista.add(a.getCampione());
-					lista_tipo.add(a.getTipo_attivita().getId());
-					lista_date.add(df.format(a.getData_scadenza()));
+					
+					if(a.getTipo_attivita().getId() == 1) {
+						if(a.getCampione().getFrequenza_manutenzione()>0) {
+							lista.add(a.getCampione());
+							lista_tipo.add(a.getTipo_attivita().getId());
+							lista_date.add(df.format(a.getData_scadenza()));
+						}
+					}else {
+						lista.add(a.getCampione());
+						lista_tipo.add(a.getTipo_attivita().getId());
+						lista_date.add(df.format(a.getData_scadenza()));
+					}
+					
 				}
 			}
 		}

@@ -328,7 +328,7 @@
 	        											<li class="list-group-item ${certificato.getInvalid()?"text-muted":""}">
 	                  										<b>${certificato.getFileName()}</b>
 	                  										<c:if test="${user.checkPermesso('DOWNLOAD_CERTIFICATO')}">             										
-	                  											<a class="btn btn-default btn-xs pull-right" href="gestioneDocumento.do?idDocumento=${certificato.getId()}" style="margin-left:5px"><i class="glyphicon glyphicon-file"></i> Download Certificato</a>
+	                  											<%-- <a class="btn btn-default btn-xs pull-right" href="gestioneDocumento.do?idDocumento=${certificato.getId()}" style="margin-left:5px"><i class="glyphicon glyphicon-file"></i> Download Certificato</a> --%>
 	                  											
 	                  											
 	                  											
@@ -344,14 +344,14 @@
 	                  											
 	                  											<c:if test="${verbale.getFirmato()==1 && verbale.getControfirmato() == 1 &&  certificato.getInvalid()== false }"> --%>
 	                  											
-	                  											 <c:if test="${verbale.getFirmato()==0 && certificato.getInvalid()==false && verbale.getStato().getId()== 5}">
+	                  									<%-- 		 <c:if test="${verbale.getFirmato()==0 && certificato.getInvalid()==false && verbale.getStato().getId()== 5}">
 	                  											<a class="btn btn-default btn-xs pull-right" onClick="modalCaricaFileFirmato('${certificato.getId()}')" style="margin-left:5px"><i class="fa fa-plus"></i> Carica Verbale Firmato</a>
-	                  											</c:if>
+	                  											</c:if> --%>
 	                  											
 	                  											
 	                  											
-	                  											<c:if test="${verbale.getFirmato()==1  }">
-	                  											<a class="btn btn-default btn-xs pull-right" href="gestioneDocumento.do?firmato=1&idDocumento=${certificato.getId()}" style="margin-left:5px"><i class="glyphicon glyphicon-file"></i> Download Verbale Firmato</a>
+	                  											<c:if test="${verbale.getFirmato()==1 && certificato.getInvalid()==false}">
+	                  											<a class="btn btn-default btn-xs pull-right" href="gestioneDocumento.do?firmato=1&idDocumento=${certificato.getId()}" style="margin-left:5px"><i class="glyphicon glyphicon-file"></i> Download Verbale</a>
 	                  											</c:if>			
 	                  											
 	                  											<c:if test="${verbale.getFirmato()==1 && verbale.getControfirmato() == 1   }"> 

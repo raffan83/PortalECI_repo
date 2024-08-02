@@ -261,7 +261,7 @@ public class GestioneIntervento extends HttpServlet {
 				
 				GestioneInterventoBO.save(intervento,session);
 				
-				GestioneComunicazioniBO.sendEmail(intervento.getTecnico_verificatore(),intervento,null, null,0);
+				//GestioneComunicazioniBO.sendEmail(intervento.getTecnico_verificatore(),intervento,null, null,0);
 				
 				myObj.addProperty("success", true);
 				myObj.add("intervento", intervento.getInterventoJsonObject());
@@ -443,6 +443,13 @@ public class GestioneIntervento extends HttpServlet {
 						statoVerb.setId(10);
 						for (VerbaleDTO verbaleDTO : listaVerbali) {
 							verbaleDTO.setStato(statoVerb);
+							verbaleDTO.setData_verifica(null);
+							verbaleDTO.setData_prossima_verifica(null);
+							verbaleDTO.setData_verifica_integrita(null);
+							verbaleDTO.setData_prossima_verifica_integrita(null);
+							verbaleDTO.setData_verifica_interna(null);
+							verbaleDTO.setData_prossima_verifica_interna(null);
+							verbaleDTO.setNumeroVerbale(null);
 						}
 					}
 					

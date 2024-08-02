@@ -10,18 +10,21 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
 import javax.xml.bind.ValidationException;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 
@@ -29,19 +32,27 @@ import org.hibernate.Session;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import com.itextpdf.text.Annotation;
 import com.itextpdf.text.BaseColor;
 import com.itextpdf.text.DocumentException;
 import com.itextpdf.text.Element;
 import com.itextpdf.text.Font;
+import com.itextpdf.text.Image;
 import com.itextpdf.text.Font.FontFamily;
 import com.itextpdf.text.Phrase;
+import com.itextpdf.text.Rectangle;
 import com.itextpdf.text.pdf.ColumnText;
 import com.itextpdf.text.pdf.PdfContentByte;
 import com.itextpdf.text.pdf.PdfGState;
 import com.itextpdf.text.pdf.PdfReader;
 import com.itextpdf.text.pdf.PdfStamper;
+import com.itextpdf.text.pdf.parser.ImageRenderInfo;
+import com.itextpdf.text.pdf.parser.PdfReaderContentParser;
+import com.itextpdf.text.pdf.parser.RenderListener;
+import com.itextpdf.text.pdf.parser.TextRenderInfo;
 import com.sun.xml.internal.ws.api.server.SDDocumentFilter;
 
+import it.arubapec.arubasignservice.ArubaSignService;
 import it.portalECI.DAO.GestioneCampioneDAO;
 import it.portalECI.DAO.GestioneDocumentoDAO;
 import it.portalECI.DAO.GestioneDomandaVerbaleDAO;
@@ -1914,7 +1925,138 @@ public class GestioneVerbaleBO {
 		// TODO Auto-generated method stub
 		return GestioneVerbaleDAO.getVerbaliAttivi(session, user, dateFrom, dateTo);
 	}
+
+	public static void addFirmaImage(VerbaleDTO verbale, Session session) throws IOException, DocumentException {
+		
+		
+		Set<DocumentoDTO> listaDocumenti = verbale.getDocumentiVerbale();
+		
+		Iterator iterator = listaDocumenti.iterator();
+		String filename = new SimpleDateFormat("yyyyMMddHHmm").format(new Date());
+		String path = "";
+		
+		while(iterator.hasNext()) {
+			DocumentoDTO documento = (DocumentoDTO) iterator.next();
+			
+			if(!documento.getInvalid() && documento.getType().equals("CERTIFICATO")) {		
+				
+				
+				path = Costanti.PATH_CERTIFICATI+documento.getFilePath();
+				PdfReader reader = new PdfReader(path);	
+				PdfStamper stamper = new PdfStamper(reader,new FileOutputStream(Costanti.PATH_ROOT+"\\temp\\"+filename+".pdf"));
+		
+
+	    		    	
+		   // String keyWord = verbale.getIntervento().getTecnico_verificatore().getNominativo();
+			String keyWord = "Il verificatore";
+		    Integer[] fontPosition = null;
+			for(int i = 1;i<=reader.getNumberOfPages();i++) {
+				fontPosition = getFontPosition(reader, keyWord, i);
+				 PdfContentByte content = stamper.getOverContent(i);	   
+				
+				if(fontPosition[0] != null && fontPosition[1] != null) {
+					
+					int x = fontPosition[0] -30;
+					int y = fontPosition[1] -45;
+					int w = x + 85;
+					int h = y + 25;
+					
+					 Rectangle rect = new Rectangle(x, y, w, h);
+				    
+					 Image image =  Image.getInstance(Costanti.PATH_ROOT + "FileFirme\\"+ verbale.getIntervento().getTecnico_verificatore().getFile_firma());	
+				    	
+				    	
+				    	image.setAnnotation(new Annotation(0, 0, 0, 0, 3));	   
+					    
+						 image.scaleAbsolute(rect);
+						
+						image.setAbsolutePosition(fontPosition[0] , fontPosition[1] -35);
+						
+						content.addImage(image);
+					
+					break;
+				}
+			}
+			
+			
+			 stamper.close();
+			 reader.close();
+				System.out.println(Arrays.toString(fontPosition));
+				
+			    File targetFile=  new File(path.replace(".pdf", "_F.pdf"));
+							File source = new File(Costanti.PATH_ROOT+"\\temp\\"+filename+".pdf");
+					     	FileUtils.copyFile(source, targetFile);
+					     	
+					     
+					     	source.delete();
+			}
+
+		
+	}
+		
 	
+	
+}
+	    private static Integer[] getFontPosition(  PdfReader pdfReader, final String keyWord, Integer pageNum) throws IOException {
+		    final Integer[] result = new Integer[2];
+		    final List<Integer[]> list =new ArrayList<Integer[]>();
+		    if (pageNum == null) {
+		        pageNum = pdfReader.getNumberOfPages();
+		    }
+		    new PdfReaderContentParser(pdfReader).processContent(pageNum, new RenderListener() {
+		        public void beginTextBlock() {
 
+		        }
 
+		        public void renderText(TextRenderInfo textRenderInfo) {
+		        	
+//		        	 LineSegment segment = textRenderInfo.getBaseline();
+//		        	    int x = (int) segment.getStartPoint().get(Vector.I1);
+//		        	    // smaller Y means closer to the BOTTOM of the page. So we negate the Y to get proper top-to-bottom ordering
+//		        	    int y = -(int) segment.getStartPoint().get(Vector.I2);
+//		        	    int endx = (int) segment.getEndPoint().get(Vector.I1);
+//		        	    System.out.println("renderText "+x+".."+endx+"/"+y+": "+textRenderInfo.getText());
+//		     
+		            String text = textRenderInfo.getText();
+		            
+		            if (text != null && StringUtils.containsIgnoreCase(text, keyWord)) {
+		                                 
+		                com.itextpdf.awt.geom.Rectangle2D.Float textFloat = textRenderInfo.getBaseline().getBoundingRectange();
+		                float x = textFloat.x;
+		                float y = textFloat.y;
+		                Integer[] integer = new Integer[2];
+		                integer[0] = (int) x;
+		                integer[1] = (int) y;
+		                list.add(integer);
+		                
+		                 //                    System.out.println(String.format("The signature text field absolute position is x:%s, y:%s", x, y));
+		            }
+		        }
+
+		        public void endTextBlock() {
+
+		        }
+
+		        public void renderImage(ImageRenderInfo renderInfo) {
+
+		        }
+		    });
+		    int max = 0;
+		   	if(list.size()>0) {
+		   		Integer[] integer = list.get(0);
+		   		max = integer[0];
+		   		result[0] = integer[0];
+	   			result[1] = integer[1];
+		   	}
+		   	
+		   	for (int i = 1; i < list.size(); i++) {
+		   		Integer[] integer = list.get(i);
+		   		if(integer[0]>max) {
+		   			result[0] = integer[0];
+		   			result[1] = integer[1];
+		   		}
+			}
+
+		    return result;
+		}
 }

@@ -304,7 +304,7 @@ public static ArrayList<CampioneDTO> getListaCampioniPerData(String data, String
 	
 
 		if(tipo_data_lat.equals("1")) {
-			query = session.createQuery("from AcAttivitaCampioneDTO where data_scadenza = :_date and tipo_attivita.id = 1 and (obsoleta = null or obsoleta = 'N')");	
+			query = session.createQuery("from AcAttivitaCampioneDTO where data_scadenza = :_date and tipo_attivita.id = 1 and (obsoleta = null or obsoleta = 'N') and campione.frequenza_manutenzione > 0 and campione.statoCampione != 'N'");	
 			query.setParameter("_date", df.parse(data));			
 			attivita = (ArrayList<AcAttivitaCampioneDTO>) query.list();
 			

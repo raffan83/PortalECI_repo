@@ -1279,6 +1279,14 @@ function modalModificaAttrezzatura(id_attrezzatura, matricola_inail, numero_fabb
 	$('#tipo_attivita_mod').change();
 	
 
+	$('#data_verifica_funzionamento_mod').val("")
+	$('#data_prossima_verifica_funzionamento_mod').val("")
+	$('#data_verifica_integrita_mod').val("")
+	$('#data_prossima_verifica_integrita_mod').val("")
+	$('#data_verifica_interna_mod').val("")
+	$('#data_prossima_verifica_interna_mod').val("")
+	$('#data_scadenza_ventennale_mod').val("");
+	
 	
 	
 	if(id_specifica!=null && id_specifica!=''){
@@ -1343,6 +1351,7 @@ function modalModificaAttrezzatura(id_attrezzatura, matricola_inail, numero_fabb
 		$('#data_prossima_verifica_interna_content_mod').show();
 		$('#matricola_inail').attr("required", false);
 		
+	
 		if(data_verifica_funzionamento!=null && data_verifica_funzionamento!= ''){
 			$('#data_verifica_funzionamento_mod').val(Date.parse(data_verifica_funzionamento).toString("dd/MM/yyyy"));	
 		}
