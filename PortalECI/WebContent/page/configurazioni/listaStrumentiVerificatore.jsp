@@ -14,6 +14,7 @@
 	
 <t:layout title="Dashboard" bodyClass="skin-red sidebar-mini wysihtml5-supported">
 
+
 	<jsp:attribute name="body_area">
 
 		<div class="wrapper">
