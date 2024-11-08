@@ -39,11 +39,21 @@ request.setAttribute("user",user);
             					<div class="box-body">
             					
             		<div class="row">
+            		
+            		<div class="col-xs-2">
+            		<label class="control-label">Tipo Data:</label>
+					 <select class="form-control select2" style="width:100%" id="tipo_data" name="tipo_data">					
+					<option value="data_verifica" >Data Verifica</option>			
+					<option value="data_prossima_verifica">Data Prossima Verifica</option>
+					<option value="data_creazione" >Data Creazione</option>
+				
+					 </select>
+            		</div>
         				
         				
         					<div class="col-xs-5">
 			 <div class="form-group">
-				 <label for="datarange" class="control-label">Filtra Data Verifica:</label>
+				 <label for="datarange" class="control-label">Filtra Data:</label>
 					<div class="col-md-10 input-group" >
 						<div class="input-group-addon">
 				             <i class="fa fa-calendar"></i>
@@ -58,7 +68,7 @@ request.setAttribute("user",user);
 			 
 			 
         				</div>
-        				<div class="col-xs-7">
+        				<div class="col-xs-5">
         				<c:if test="${userObj.checkRuolo('AM') || userObj.checkCategoria('VAL') }">
         				<%-- <a class="btn btn-primary disabled pull-right" id="scadenzario_btn" style="margin-top:25px" onClick="callAction('gestioneListaVerbali.do?action=scadenzario_val&dateFrom=${dateFrom}&dateTo=${dateTo }')">Scadenzario VAL</a> --%>
         				<a class="btn btn-primary disabled pull-right" id="scadenzario_btn" style="margin-top:25px" onClick="$('#modalScadVal').modal()">Scadenzario VAL</a>
@@ -499,9 +509,11 @@ request.setAttribute("user",user);
   		
   		function filtraDate(){
   			
+  			var tipo_data = $('#tipo_data').val();
+  			
   			var startDatePicker = $("#datarange").data('daterangepicker').startDate;
   		 	var endDatePicker = $("#datarange").data('daterangepicker').endDate;
-  		 	dataString = "?action=filtra_date&dateFrom=" + startDatePicker.format('YYYY-MM-DD') + "&dateTo=" + 
+  		 	dataString = "?action=filtra_date&tipo_data="+tipo_data+"&dateFrom=" + startDatePicker.format('YYYY-MM-DD') + "&dateTo=" + 
   		 			endDatePicker.format('YYYY-MM-DD');
   		 	
   		 	 pleaseWaitDiv = $('#pleaseWaitDialog');
@@ -529,7 +541,7 @@ request.setAttribute("user",user);
   	function resetDate(){
   		pleaseWaitDiv = $('#pleaseWaitDialog');
   			  pleaseWaitDiv.modal();
-  		callAction("gestioneListaVerbali.do?action=filtra_date");
+  		callAction("gestioneListaVerbali.do");
 
   	}
 
@@ -552,6 +564,15 @@ request.setAttribute("user",user);
     			
     		     var start = "${dateFrom}";
     		   	var end = "${dateTo}";
+    		   	
+    		   	var tipo_data_filtro = "${tipo_data}";
+    		   	
+    		   	if(tipo_data_filtro == null || tipo_data_filtro == ''){
+    		   		tipo_data_filtro = "data_verifica";
+    		   	}
+    		   	
+    		   	$('#tipo_data').val(tipo_data_filtro);
+    		   	$('#tipo_data').change()
 
     		   	if(start !='' && end !=''){
     		   		$('#scadenzario_btn').removeClass("disabled");

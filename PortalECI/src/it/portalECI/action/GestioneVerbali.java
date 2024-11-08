@@ -1513,7 +1513,7 @@ public class GestioneVerbali extends HttpServlet {
 							destinatari = destinatari+utenteDTO.getEMail()+";";
 						}				
 											
-						//GestioneComunicazioniBO.sendEmailVerbale(verbale, commessa, destinatari, verificatore.getEMail(), StatoVerbaleDTO.DA_VERIFICARE, verbale.getType(), verbale_origine);
+						GestioneComunicazioniBO.sendEmailVerbale(verbale, commessa, destinatari, verificatore.getEMail(), StatoVerbaleDTO.DA_VERIFICARE, verbale.getType(), verbale_origine);
 					}
 					
 				}
@@ -1546,8 +1546,14 @@ public class GestioneVerbali extends HttpServlet {
 			GestioneVerbaleBO.cambioStato( verbale, GestioneStatoVerbaleDAO.getStatoVerbaleById( Integer.parseInt(stato), session) , session);
 			if(stato.equals("5")) {
 				//verbale.setFirmato(0);
-				GestioneVerbaleBO.addFirmaImage(verbale, session);
-				verbale.setFirmato(1);
+				if(verbale.getCodiceCategoria().equals("VIE")) {
+					GestioneVerbaleBO.addFirmaImage(verbale, session);
+					verbale.setFirmato(1);
+				}else {
+			
+					verbale.setFirmato(0);
+				}
+				
 				verbale.setControfirmato(0);
 				session.update(verbale);
 			}
@@ -1935,7 +1941,7 @@ public class GestioneVerbali extends HttpServlet {
 										
 					verbale.setFirmato(1);
 					session.update(documento);
-					GestioneComunicazioniBO.sendEmail(verbale.getResponsabile_approvatore(), verbale.getIntervento(), verbale, null,1);
+					//GestioneComunicazioniBO.sendEmail(verbale.getResponsabile_approvatore(), verbale.getIntervento(), verbale, null,1);
 					jsono.addProperty("success", true);
 					jsono.addProperty("messaggio","File caricato con successo!");
 					

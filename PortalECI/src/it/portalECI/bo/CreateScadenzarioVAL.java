@@ -1063,7 +1063,7 @@ public class CreateScadenzarioVAL {
 		
 		
 		
-		List<VerbaleDTO> listaVerbali =GestioneVerbaleBO.getListaVerbaliDate(session,user, dateFrom, dateTo);
+		List<VerbaleDTO> listaVerbali =GestioneVerbaleBO.getListaVerbaliDate(session,user,null, dateFrom, dateTo);
 		
 		new CreateScadenzarioVAL(listaVerbali, dateFrom, dateTo, session);
 		

@@ -446,7 +446,7 @@ public class CreateScadenzarioVIE {
 		
 		
 		
-		List<VerbaleDTO> listaVerbali =GestioneVerbaleBO.getListaVerbaliDate(session,user, dateFrom, dateTo);
+		List<VerbaleDTO> listaVerbali =GestioneVerbaleBO.getListaVerbaliDate(session,user,null, dateFrom, dateTo);
 		
 		new CreateScadenzarioVIE(listaVerbali, dateFrom, dateTo, session);
 		

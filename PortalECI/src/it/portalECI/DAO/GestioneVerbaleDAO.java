@@ -121,7 +121,7 @@ public class GestioneVerbaleDAO {
 	}
 	
 	
-	public static List<VerbaleDTO> getListaVerbaliDate(Session session, UtenteDTO user, String dateFrom, String dateTo) throws Exception{
+	public static List<VerbaleDTO> getListaVerbaliDate(Session session, UtenteDTO user,String tipo_data, String dateFrom, String dateTo) throws Exception{
 		Query query=null;
 		
 		boolean ck_AM=user.checkRuolo("AM");
@@ -134,7 +134,16 @@ public class GestioneVerbaleDAO {
 		if(ck_ST==false && ck_AM==false && ck_RT==false && ck_SRT==false && ck_CLVIE == false) 
 		{
 		 
-		query  = session.createQuery( "from VerbaleDTO WHERE type = :_type AND intervento.tecnico_verificatore.id=:_idUser and (data_verifica between :_dateFrom and :_dateTo or data_verifica_integrita between :_dateFrom and :_dateTo or data_verifica_interna between :_dateFrom and :_dateTo)");
+		//query  = session.createQuery( "from VerbaleDTO WHERE type = :_type AND intervento.tecnico_verificatore.id=:_idUser and (data_verifica between :_dateFrom and :_dateTo or data_verifica_integrita between :_dateFrom and :_dateTo or data_verifica_interna between :_dateFrom and :_dateTo)");
+			
+		if(tipo_data == null || tipo_data.equals("data_verifica")) {
+			query  = session.createQuery( "from VerbaleDTO WHERE type = :_type AND intervento.tecnico_verificatore.id=:_idUser and (data_verifica >= :_dateFrom and data_verifica <= :_dateTo or data_verifica_integrita >= :_dateFrom and data_verifica_integrita <=  :_dateTo or data_verifica_interna >= :_dateFrom and data_verifica_interna <= :_dateTo)");
+		}else if(tipo_data.equals("data_prossima_verifica")) {
+			query  = session.createQuery( "from VerbaleDTO WHERE type = :_type AND intervento.tecnico_verificatore.id=:_idUser and (data_prossima_verifica >= :_dateFrom and data_prossima_verifica <= :_dateTo or data_prossima_verifica_integrita >= :_dateFrom and data_prossima_verifica_integrita <= :_dateTo or data_prossima_verifica_interna >= :_dateFrom and data_prossima_verifica_interna <= :_dateTo)");
+		}else if(tipo_data.equals("data_creazione")) {
+			query  = session.createQuery( "from VerbaleDTO WHERE type = :_type AND intervento.tecnico_verificatore.id=:_idUser and DATE(create_date) >= :_dateFrom and DATE(create_date) <= :_dateTo");
+		}
+			
 		query.setParameter("_type",VerbaleDTO.VERBALE);
 		query.setParameter("_idUser",user.getId());
 		query.setParameter("_dateFrom", sdf.parse(dateFrom));
@@ -142,7 +151,15 @@ public class GestioneVerbaleDAO {
 		}
 		else 
 		{
-			 String str = "from VerbaleDTO WHERE type = :_type and (data_verifica between :_dateFrom and :_dateTo or data_verifica_integrita between :_dateFrom and :_dateTo or data_verifica_interna between :_dateFrom and :_dateTo)";
+			String str = "";
+			if(tipo_data == null || tipo_data.equals("data_verifica")) {
+				str = "from VerbaleDTO WHERE type = :_type and (data_verifica >= :_dateFrom and data_verifica <= :_dateTo or data_verifica_integrita >= :_dateFrom and data_verifica_integrita <=  :_dateTo or data_verifica_interna >= :_dateFrom and data_verifica_interna <= :_dateTo)";
+			}else if(tipo_data.equals("data_prossima_verifica")) {
+				str = "from VerbaleDTO WHERE type = :_type and (data_prossima_verifica >= :_dateFrom and data_prossima_verifica <= :_dateTo or data_prossima_verifica_integrita >= :_dateFrom and data_prossima_verifica_integrita <= :_dateTo or data_prossima_verifica_interna >= :_dateFrom and data_prossima_verifica_interna <= :_dateTo)";
+			}else if(tipo_data.equals("data_creazione")) {
+				str = "from VerbaleDTO WHERE type = :_type and  DATE(create_date) >= :_dateFrom and DATE(create_date) <= :_dateTo";
+			}
+			  
 			 
 			 if(ck_CLVIE) {
 				 str += " and intervento.id_cliente = :_id_cliente and intervento.idSede = :_id_sede";

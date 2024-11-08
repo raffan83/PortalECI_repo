@@ -1745,9 +1745,9 @@ public class GestioneVerbaleBO {
 		}
 	}
 
-	public static List<VerbaleDTO> getListaVerbaliDate(Session session, UtenteDTO user, String dateFrom,String dateTo) throws Exception {
+	public static List<VerbaleDTO> getListaVerbaliDate(Session session, UtenteDTO user, String tipo_data,String dateFrom,String dateTo) throws Exception {
 		
-		return GestioneVerbaleDAO.getListaVerbaliDate(session, user, dateFrom, dateTo);
+		return GestioneVerbaleDAO.getListaVerbaliDate(session, user,tipo_data, dateFrom, dateTo);
 	}
 
 	public static ArrayList<VerbaleDTO> getListaVerbaliFromAttrezzatura(int id_attrezzatura,UtenteDTO user, Session session) {

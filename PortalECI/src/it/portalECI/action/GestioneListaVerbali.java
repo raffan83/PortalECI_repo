@@ -115,6 +115,7 @@ public class GestioneListaVerbali extends HttpServlet {
 				request.getSession().setAttribute("listaVerbali", listaVerbali);
 				request.getSession().setAttribute("dateFrom", null);
 				request.getSession().setAttribute("dateTo", null);
+				request.getSession().setAttribute("tipo_data", null);
 
 				RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/page/configurazioni/gestioneListaVerbali.jsp");
 		     	dispatcher.forward(request,response);
@@ -127,13 +128,15 @@ public class GestioneListaVerbali extends HttpServlet {
 				
 				String dateFrom = request.getParameter("dateFrom");
 				String dateTo = request.getParameter("dateTo");	
+				String tipo_data = request.getParameter("tipo_data");
 				
 
-				List<VerbaleDTO> listaVerbali =GestioneVerbaleBO.getListaVerbaliDate(session,user, dateFrom, dateTo);
+				List<VerbaleDTO> listaVerbali =GestioneVerbaleBO.getListaVerbaliDate(session,user, tipo_data, dateFrom, dateTo);
 				
 				request.getSession().setAttribute("listaVerbali", listaVerbali);
 				request.getSession().setAttribute("dateFrom", dateFrom);
 				request.getSession().setAttribute("dateTo", dateTo);
+				request.getSession().setAttribute("tipo_data", tipo_data);
 
 				RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/page/configurazioni/gestioneListaVerbali.jsp");
 		     	dispatcher.forward(request,response);
