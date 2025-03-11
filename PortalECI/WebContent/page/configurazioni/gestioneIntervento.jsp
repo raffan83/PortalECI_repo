@@ -731,7 +731,10 @@
     					$('#esercente').val("${esercente}");
     				}else if(id=="1"){
     					$('#content_sede').show();	
-    					$('#sede').select2();
+    				//	$('#sede').select2();
+    					$("#sede").select2({
+    				        dropdownParent: $('#myModal')
+    				    });	
     					$('#content_esercente').show();
     				}
     				

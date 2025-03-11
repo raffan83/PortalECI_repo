@@ -2547,11 +2547,11 @@ $(document).on('keydown', 'input[pattern]', function(e){
 						  
 						   var difference = Math.floor((data_fine - data_inizio)/(24*3600*1000));
 						  
-						   if(difference>30){
+						   if(difference>60){
 							   
 							   $('#conferma_button').attr("disabled", true);
 							   
-							   $('#modalErrorDiv').html("Attenzione! La data fine verifica non pu&ograve; essere superiore di pi&ugrave; di 30 giorni rispetto alla data verifica! ");
+							   $('#modalErrorDiv').html("Attenzione! La data fine verifica non pu&ograve; essere superiore di pi&ugrave; di 60 giorni rispetto alla data verifica! ");
 								$('#myModalError').removeClass();
 								$('#myModalError').addClass("modal modal-danger");
 								$('#myModalError').modal('show');	

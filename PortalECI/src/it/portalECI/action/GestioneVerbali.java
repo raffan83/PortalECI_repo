@@ -1630,7 +1630,7 @@ public class GestioneVerbali extends HttpServlet {
 						}
 						
 						if(verificatore.getEMail()!=null && user.getEMail()!=null && verbale.getCodiceCategoria().equals("VIE")) {
-							//GestioneComunicazioniBO.sendEmailVerbale(verbale, commessa, verificatore.getEMail(), user.getEMail(), 5, verbale.getType(), verbale_origine);
+							GestioneComunicazioniBO.sendEmailVerbale(verbale, commessa, verificatore.getEMail(), user.getEMail(), 5, verbale.getType(), verbale_origine);
 						}
 						
 						myObj.addProperty("pdfString", pdfBytes);
@@ -1796,8 +1796,10 @@ public class GestioneVerbali extends HttpServlet {
 		
 			
 			String esercente = request.getParameter("esercente_mod");
-			verbale.setEsercente(esercente);
-			session.update(verbale);
+			//verbale.setEsercente(esercente);
+			//session.update(verbale);
+			
+			GestioneVerbaleBO.updateCampiVerbale("esercente", esercente, idVerbale);
 			
 			myObj.addProperty("success", true);
 			myObj.addProperty("messaggio", "Esercente modificato con successo!");
@@ -1810,8 +1812,11 @@ public class GestioneVerbali extends HttpServlet {
 		
 			
 			String descrizione = request.getParameter("descr_util_mod");
-			verbale.setDescrizione_sede_utilizzatore(descrizione);
-			session.update(verbale);
+		//	verbale.setDescrizione_sede_utilizzatore(descrizione);
+	//		session.update(verbale);
+			
+			GestioneVerbaleBO.updateCampiVerbale("descrizione_sede_utilizzatore", descrizione, idVerbale);
+			
 			
 			myObj.addProperty("success", true);
 			myObj.addProperty("messaggio", "Descrizione utilizzatore modificata con successo!");
@@ -1822,8 +1827,10 @@ public class GestioneVerbali extends HttpServlet {
 		else if(action!=null && action.equals("modifica_sede_utilizzatore")) {
 		
 			String sede_utilizzatore = request.getParameter("sede_utilizzatore_mod");
-			verbale.setSedeUtilizzatore(sede_utilizzatore);
-			session.update(verbale);
+			//verbale.setSedeUtilizzatore(sede_utilizzatore);
+			//session.update(verbale);
+			
+			GestioneVerbaleBO.updateCampiVerbale("sede_utilizzatore", sede_utilizzatore, idVerbale);
 			
 			myObj.addProperty("success", true);
 			myObj.addProperty("messaggio", "Sede utilizzatore modificata con successo!");

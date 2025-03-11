@@ -53,6 +53,7 @@ import com.itextpdf.text.pdf.parser.TextRenderInfo;
 import com.sun.xml.internal.ws.api.server.SDDocumentFilter;
 
 import it.arubapec.arubasignservice.ArubaSignService;
+import it.portalECI.DAO.DirectMySqlDAO;
 import it.portalECI.DAO.GestioneCampioneDAO;
 import it.portalECI.DAO.GestioneDocumentoDAO;
 import it.portalECI.DAO.GestioneDomandaVerbaleDAO;
@@ -2058,5 +2059,11 @@ public class GestioneVerbaleBO {
 			}
 
 		    return result;
+		}
+
+		public static void updateCampiVerbale(String campo, String value, String id) throws Exception {
+			
+			DirectMySqlDAO.updateCampiVerbale(campo, value, id);
+			
 		}
 }

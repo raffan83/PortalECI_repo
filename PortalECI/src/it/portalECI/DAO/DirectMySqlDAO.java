@@ -193,6 +193,39 @@ public class DirectMySqlDAO {
 		
 		return list;
 	}
+
+	public static void updateCampiVerbale(String campo, String value, String id) throws Exception {
+		 Connection con = null;
+		    PreparedStatement pst = null;
+
+		    try {
+		        con = getConnection();
+
+		       
+		        String query = "UPDATE verbale SET " + campo + " = ? WHERE id = ?";
+
+		        pst = con.prepareStatement(query);
+
+		
+		        pst.setString(1, value);
+		        pst.setInt(2, Integer.parseInt(id));
+
+		 
+		        pst.executeUpdate();
+		    } finally {
+		       
+		        if (pst != null) {
+		            pst.close();
+		        }
+		        if (con != null) {
+		            con.close();
+		        }
+		    }
+		
+
+		
+		
+	}
 		
 	
 }
