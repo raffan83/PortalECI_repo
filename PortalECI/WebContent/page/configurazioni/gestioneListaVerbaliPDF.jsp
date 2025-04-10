@@ -75,7 +75,9 @@
  																<th>ID Commessa</th>
  																<th>Numero Verbale</th>
  																<th>Tipo Verifica</th>
- 																<th>Data verifica</th>
+ 																<th>Data Verifica</th>
+ 																<th>Data Fine Verifica</th>
+ 																<th>Data Approvazione</th>
  																<th>Matricola Attrezzatura</th>
  																<th>Sede Cliente</th>
 
@@ -124,6 +126,16 @@
 																	</td>
 																	<td><fmt:formatDate pattern="dd/MM/yyyy" value='${documento.verbale.data_verifica}' type='date' /></td>
 																	<td>
+																	<c:if test="${documento.verbale.data_fine_verifica!=null }">
+																		<fmt:formatDate pattern="dd/MM/yyyy" value='${documento.verbale.data_fine_verifica}' type='date' />
+																	</c:if>
+																	</td>
+																	<td>
+																	<c:if test="${documento.verbale.data_approvazione!=null }">
+																		<fmt:formatDate pattern="dd/MM/yyyy" value='${documento.verbale.data_approvazione}' type='date' />
+																	</c:if>
+																	</td>
+																	<td>
 																	<c:if test="${documento.verbale.attrezzatura!=null}">
 																	${documento.verbale.attrezzatura.matricola_inail }
 																	</c:if>
@@ -150,6 +162,7 @@
 																	<strong>X</strong>
 																	</c:if>
 																	</td>
+																	
 																	<td>
 																		<a class="btn btn-primary" title="Click per scaricare il verbale" href="gestioneDocumento.do?idDocumento=${documento.getId()}"><i class="glyphicon glyphicon-file"></i></a>
         															</td>
@@ -301,9 +314,9 @@
     	      		columnDefs: [
 						{ responsivePriority: 1, targets: 0 },
     	                { responsivePriority: 3, targets: 2 },
-    	                { responsivePriority: 4, targets: 12 },
+    	                { responsivePriority: 4, targets: 14 },
 						
-    	                { orderable: false, targets: 7 },
+    	                /* { orderable: false, targets: 7 }, */
     	            ],
     	            buttons: [ {
     	            	extend: 'copy',

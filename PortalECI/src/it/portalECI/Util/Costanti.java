@@ -6,8 +6,7 @@ import java.util.Properties;
 public class Costanti {
 
 
-
-//public static final String CON_STR_MYSQL = "jdbc:mysql://158.58.172.111:3306/gtv_db?user=root&password=5243FWF5344R";
+//public static final String CON_STR_MYSQL = "jdbc:mysql://192.168.3.9:3306/eci_db?user=root&password=5243FWF5344R";
 	public static final String CON_STR_MYSQL = "jdbc:mysql://89.46.227.105:3306/eci_db?user=root&password=5243FWF5344R";
 //  IP MACROSOLUTION
 //	public static final String CON_STR_MYSQL = "jdbc:mysql://212.237.23.231:3306/gtv_db?user=root&password=5243FWF5344R";

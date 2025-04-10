@@ -130,7 +130,7 @@ request.setAttribute("user",user);
  																<th>S.T. Firmata</th>
  																<th>Tipo verifica</th>
  																<th>Data Creazione</th>
- 																
+ 														
  																<td></td>
  															</tr>
  															</c:if>
@@ -395,6 +395,7 @@ request.setAttribute("user",user);
 																	<td>
 																		<fmt:formatDate pattern="dd/MM/yyyy" value='${verbale.getCreateDate()}' type='date' />
 																	</td>
+																	
 																	<td>
 																		<a class="btn customTooltip" title="Click per aprire il dettaglio del Verbale" onclick="callAction('gestioneVerbale.do?idVerbale=${verbale.getId()}');">
                 															<i class="fa fa-arrow-right"></i>
