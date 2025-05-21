@@ -2365,7 +2365,7 @@ function select_settore_impiego(mod){
 			  
 			
 			  	
-			  $('#id_specifica_mod').val(id_spec);
+			  $('#id_specifica_mod_ins').val(id_spec);
 			  
 			  
 				if(gruppo == "GVR"){
