@@ -164,7 +164,23 @@
 																	</td>
 																	
 																	<td>
-																		<a class="btn btn-primary" title="Click per scaricare il verbale" href="gestioneDocumento.do?idDocumento=${documento.getId()}"><i class="glyphicon glyphicon-file"></i></a>
+																	
+																		
+	                  											<c:if test="${documento.verbale.codiceCategoria == 'VAL' && documento.verbale.getFirmato()==1}">
+	                  											<a class="btn btn-primary" href="gestioneDocumento.do?firmato=1&idDocumento=${documento.getId()}" style="margin-left:5px"><i class="glyphicon glyphicon-file"></i></a>
+	                  											</c:if>			
+	                  											
+	                  											<c:if test="${documento.verbale.getFirmato()==1 && documento.verbale.getControfirmato() == 1   }"> 
+	                  											<a class="btn btn-primary" href="gestioneDocumento.do?controfirmato=1&idDocumento=${documento.getId()}" style="margin-left:5px"><i class="glyphicon glyphicon-file"></i></a>
+	                  											
+	                  												
+	                  											</c:if>		
+	                  											
+	                  											
+	                  										
+	                  											
+																	
+																		<%-- <a class="btn btn-primary" title="Click per scaricare il verbale" href="gestioneDocumento.do?idDocumento=${documento.getId()}"><i class="glyphicon glyphicon-file"></i></a> --%>
         															</td>
 																</tr>
 															</c:forEach>

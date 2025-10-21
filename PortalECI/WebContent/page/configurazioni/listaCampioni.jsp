@@ -111,6 +111,7 @@
  <th>Stato</th>
   <th>Settore</th>
  <th>Proprietario</th>
+ <th>Azioni</th>
 <%--  <th>Utilizzatore</th> 
  <th>Tipo Campione</th> --%>
 <%--  <th>Data Taratura</th>
@@ -177,6 +178,7 @@
 	</td>
 
 	<td>${campione.proprietario}</td>
+	<td><a  target='_blank' class="btn btn-primary customTooltip" title="Click per scaricare il PDF dell'etichetta" href="scaricaEtichetta.do?action=stampaEtichetta&idcampione=${campione.id}"  ><i class="fa fa-print"></i></a></td>
 	<%-- <td>${campione.company_utilizzatore.denominazione}</td>	 --%>
 	<%-- <td>${campione.tipo_campione.nome}</td> --%>
 	
@@ -1032,15 +1034,6 @@ var listaStrumenti = ${listaCampioniJson};
  
     $(document).ready(function() {
     	
-    	
-    	
-	    $('#tabPM thead th').each( function () {
-	     	if(columsDatatables.length==0 || columsDatatables[$(this).index()]==null ){columsDatatables.push({search:{search:""}});}
-	        var title = $('#tabPM thead th').eq( $(this).index() -1 ).text();	       
-	        $(this).append( '<div><input class="inputsearchtable" id="inputsearchtable_'+$(this).index()+'" style="width:100%" type="text"  value="'+columsDatatables[$(this).index()].search.search+'"/></div>');
-	    } );
-    
-
     	$('#select_manutenzione').select2();
     	$('#settore').select2();
     	$('#tipoCampione').select2();
@@ -1112,11 +1105,11 @@ var listaStrumenti = ${listaCampioniJson};
   	      info: true, 
   	      searchable: false, 
   	      targets: 0,
-  	      responsive: false,
-  	      scrollX: true,
+  	      responsive: true,
+  	      scrollX: false,
   	    stateSave: false,
   	      columnDefs: [
-/* 						   { responsivePriority: 1, targets: 0 },
+ 						   { responsivePriority: 1, targets: 13 }/*,
   	                   { responsivePriority: 2, targets: 1 },
   	                   { responsivePriority: 3, targets: 2 },
   	                   { responsivePriority: 4, targets: 6 },
@@ -1165,7 +1158,15 @@ var listaStrumenti = ${listaCampioniJson};
   	    	
   	      
   	    });
+    
     	
+	    $('#tabPM thead th').each( function () {
+	     	if(columsDatatables.length==0 || columsDatatables[$(this).index()]==null ){columsDatatables.push({search:{search:""}});}
+	        var title = $('#tabPM thead th').eq( $(this).index() -1 ).text();	       
+	        $(this).append( '<div><input class="inputsearchtable" id="inputsearchtable_'+$(this).index()+'" style="width:100%" type="text"  value="'+columsDatatables[$(this).index()].search.search+'"/></div>');
+	    } );
+    
+	    
   	table.buttons().container().appendTo( '#tabPM_wrapper .col-sm-6:eq(1)');
   	var indexCampione;
     $('#tabPM').on( 'dblclick','tr', function () {   

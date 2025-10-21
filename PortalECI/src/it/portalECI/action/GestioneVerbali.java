@@ -1824,6 +1824,20 @@ public class GestioneVerbali extends HttpServlet {
 			out.print(myObj);
 			
 		}
+	else if(action!=null && action.equals("modifica_note_verbale")) {
+		
+			
+			String note_verbale = request.getParameter("note_verbale_mod");
+
+			GestioneVerbaleBO.updateCampiVerbale("note", note_verbale, idVerbale);
+			
+			
+			myObj.addProperty("success", true);
+			myObj.addProperty("messaggio", "Note verbale salvate con successo!");
+
+			out.print(myObj);
+			
+		}
 		else if(action!=null && action.equals("modifica_sede_utilizzatore")) {
 		
 			String sede_utilizzatore = request.getParameter("sede_utilizzatore_mod");

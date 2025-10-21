@@ -101,7 +101,8 @@ request.setAttribute("user",user);
  																<th>Data verifica</th>
  																<th>Data prossima verifica</th>
  															
- 																<th style="min-width:200px">Sede Cliente</th> 																
+ 																<%-- <th style="min-width:200px">Sede Cliente</th> 		 --%>
+ 																<th style="min-width:200px">Sede Utilizzatore</th>														
  																<th>Certificati</th>
  																
  																<th>Allegati</th> 													
@@ -138,7 +139,7 @@ request.setAttribute("user",user);
  
  														<tbody> 
   															<c:forEach items="${listaVerbali}" var="verbale">  	
-  															<c:if test="${user.checkRuolo('CLVIE') && verbale.visibile_cliente ==1}">		
+  															<c:if test="${user.checkRuolo('CLVIE') && verbale.visibile_cliente ==1 && verbale.getStato().getId()==5}">		
   																											
  																<tr role="row" id="${verbale.getId()}">
 																	<td>
@@ -202,7 +203,8 @@ request.setAttribute("user",user);
 																	</td>
 																
 																	<td>
-																		<c:out value='${verbale.getIntervento().getNome_sede()}'/>
+																		<%-- <c:out value='${verbale.getIntervento().getNome_sede()}'/> --%>
+																		<c:out value='${verbale.getSedeUtilizzatore()}'/>
 																	</td>
 																	
 																	<td>

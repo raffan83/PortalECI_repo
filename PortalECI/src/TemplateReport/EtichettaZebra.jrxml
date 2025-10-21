@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.5.1.final utlizzo versione della libreria JasperReports6.5.1  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="SchedaRiconsegnaDPI" language="javascript" pageWidth="141" pageHeight="70" orientation="Landscape" whenNoDataType="NoDataSection" columnWidth="141" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="88fac77a-e789-4a1f-8eef-932a400e9cf3">
+	<property name="com.jaspersoft.studio.unit." value="cm"/>
+	<property name="com.jaspersoft.studio.unit.pageHeight" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.pageWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.topMargin" value="cm"/>
+	<property name="com.jaspersoft.studio.unit.bottomMargin" value="cm"/>
+	<property name="com.jaspersoft.studio.unit.leftMargin" value="cm"/>
+	<property name="com.jaspersoft.studio.unit.rightMargin" value="cm"/>
+	<property name="com.jaspersoft.studio.unit.columnWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnSpacing" value="cm"/>
+	<queryString>
+		<![CDATA[]]>
+	</queryString>
+	<detail>
+		<band height="68" splitType="Stretch">
+			<textField>
+				<reportElement positionType="Float" x="50" y="5" width="60" height="12" uuid="2084735c-2329-4645-b2e6-ec280dfcab0f"/>
+				<textElement rotation="None">
+					<font fontName="Arial" size="7" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{codiceInterno}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="5" y="5" width="45" height="12" uuid="5378a99e-5d86-412b-bcfe-3b4ea4bd1afd"/>
+				<textElement rotation="None">
+					<font fontName="Arial" size="6" isItalic="true" pdfFontName="Helvetica-Oblique" pdfEncoding=""/>
+				</textElement>
+				<text><![CDATA[Codice Interno:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="5" y="17" width="30" height="12" uuid="db8e1b06-decb-4ae0-94ca-449080848a3e"/>
+				<textElement rotation="None">
+					<font fontName="Arial" size="6" isItalic="true" pdfFontName="Helvetica-Oblique"/>
+				</textElement>
+				<text><![CDATA[Matricola:]]></text>
+			</staticText>
+			<textField>
+				<reportElement positionType="Float" x="35" y="17" width="75" height="12" uuid="83a5aa6d-0692-4511-b29c-84b7c51794a7"/>
+				<textElement rotation="None">
+					<font fontName="Arial" size="7" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{matricola}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="5" y="29" width="45" height="12" uuid="60cce8bd-8132-4ad7-9a92-1968098043ce"/>
+				<textElement rotation="None">
+					<font fontName="Arial" size="6" isItalic="true" pdfFontName="Helvetica-Oblique"/>
+				</textElement>
+				<text><![CDATA[Data Verifica:]]></text>
+			</staticText>
+			<textField>
+				<reportElement positionType="Float" x="50" y="29" width="48" height="12" uuid="fd85a54f-9068-45f5-be2d-7105906a6ccf"/>
+				<textElement rotation="None">
+					<font fontName="Arial" size="7" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{dataVerifica}]]></textFieldExpression>
+			</textField>
+			<image scaleImage="FillFrame" hAlign="Center" vAlign="Middle">
+				<reportElement positionType="FixRelativeToBottom" x="110" y="5" width="27" height="58" uuid="973e0005-4a9f-4e23-94ff-bb9facd8e668"/>
+				<imageExpression><![CDATA[$P{logo}]]></imageExpression>
+			</image>
+			<textField>
+				<reportElement positionType="Float" x="50" y="41" width="48" height="12" uuid="dc6efb79-1e2e-42e1-a696-3d9c64fdbe6b"/>
+				<textElement rotation="None">
+					<font fontName="Arial" size="7" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{dataProVerifica}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="5" y="53" width="40" height="15" uuid="2327048e-9d22-45ca-bc51-c6916f8cce48"/>
+				<textElement rotation="None">
+					<font fontName="Arial" size="6" isItalic="true" pdfFontName="Helvetica-Oblique"/>
+				</textElement>
+				<text><![CDATA[Firma:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="5" y="41" width="45" height="12" uuid="41359fb9-4e7e-4909-8e73-eeca8ff32cb1"/>
+				<textElement rotation="None">
+					<font fontName="Arial" size="6" isItalic="true" pdfFontName="Helvetica-Oblique"/>
+				</textElement>
+				<text><![CDATA[Data Scadenza:]]></text>
+			</staticText>
+		</band>
+	</detail>
+</jasperReport>
