@@ -180,7 +180,7 @@
   			}
   			
   			$('#sede_mod_ins').change();
-  			$('#anno_costruzione_mod').val(anno_costruzione);
+  			$('#anno_costruzione_mod_ins').val(anno_costruzione);
   			$('#fabbricante_mod_ins').val(fabbricante);
   			$('#modello_mod_ins').val(modello);
   			
