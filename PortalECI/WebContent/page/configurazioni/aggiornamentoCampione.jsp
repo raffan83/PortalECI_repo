@@ -42,11 +42,17 @@ SimpleDateFormat sdf= new SimpleDateFormat("dd/MM/yyyy");
          <select class="form-control select2" id="settore_mod" name="settore_mod" required>
          <option value=""></option>
         <%if(campione.getSettore()==0){ %>
-         <option value="0" selected>Organismo di ispezione</option>
-         <option value="1" >Soggetto abilitato</option>
+         <option value="0" selected>DPR 462/01</option>
+         <option value="1" >DM 11/04/11</option>
+          <option value="2" >PROVE E MISURE</option>
+             <%}else if(campione.getSettore()==1){ %>
+                   <option value="0" >DPR 462/01</option>
+         <option value="1" selected>DM 11/04/11</option>
+          <option value="2">PROVE E MISURE</option>
          <%}else{ %>
-         <option value="0" >Organismo di ispezione</option>
-         <option value="1" selected>Soggetto abilitato</option>
+         <option value="0" >DPR 462/01</option>
+         <option value="1" >DM 11/04/11</option>
+          <option value="2" selected>PROVE E MISURE</option>
          <%} %>
          </select>
 			

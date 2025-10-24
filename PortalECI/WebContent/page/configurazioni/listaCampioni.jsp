@@ -168,12 +168,16 @@
 	<td>
 	<c:if test="${campione.settore == 0}">
 	
-	Organismo di ispezione
+	DPR 462/01
 	</c:if>
 	
 		<c:if test="${campione.settore == 1}">
 	
-	Soggetto abilitato
+	DM 11/04/11
+	</c:if>
+	<c:if test="${campione.settore == 2}">
+	
+PROVE E MISURE
 	</c:if>
 	</td>
 
@@ -452,9 +456,9 @@ req
                      
 					   <select class="form-control  select2" id="settore" data-placeholder="Seleziona settore..." name="settore"    style="width:100%" required>
                        					<option value=""></option>
-                       					<option value="0" >Organismo di ispezione</option>
-                       					<option value="1" >Soggetto abilitato</option>
-
+                       					<option value="0" >DPR 462/01</option>
+                       					<option value="1" >DM 11/04/11</option>
+										<option value="2" >PROVE E MISURE</option>
                       </select>
                       
     </div>
