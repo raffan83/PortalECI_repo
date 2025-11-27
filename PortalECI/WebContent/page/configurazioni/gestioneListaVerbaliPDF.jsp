@@ -98,17 +98,17 @@
 																		
 																	</td>
 																	<td>
-																		<a href="#" class="btn customTooltip customlink" title="Click per aprire il dettaglio del Verbale" onclick="callAction('gestioneVerbale.do?idVerbale=${documento.verbale.getId()}');">
+																		<a href="gestioneVerbale.do?action=dettaglio&idVerbale=${documento.verbale.getId()}" class="btn customTooltip customlink" title="Click per aprire il dettaglio del Verbale" >
 																			<c:out value='${documento.verbale.getId()}'/>
 																		</a>
 																	</td>	
 																	<td>
-																		<a href="#" class="btn customTooltip customlink" title="Click per aprire il dettaglio dell'Intervento" onclick="callAction('gestioneInterventoDati.do?idIntervento=${documento.verbale.getIntervento().getId()}');">
+																		<a href="gestioneInterventoDati.do?idIntervento=${documento.verbale.getIntervento().getId()}" class="btn customTooltip customlink" title="Click per aprire il dettaglio dell'Intervento" >
 																			${documento.verbale.getIntervento().getId()}
 																		</a>
 																	</td>
 																	<td>
-																	<a href="#" class="btn customTooltip customlink" title="Click per aprire il dettaglio della Commessa" onclick="callAction('gestioneIntervento.do?idCommessa=${documento.verbale.intervento.idCommessa}');">
+																	<a href="gestioneIntervento.do?idCommessa=${documento.verbale.intervento.idCommessa}" class="btn customTooltip customlink" title="Click per aprire il dettaglio della Commessa" >
 																			${documento.verbale.intervento.idCommessa}
 																		</a>
 																	</td>
