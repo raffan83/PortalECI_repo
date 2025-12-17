@@ -1057,7 +1057,7 @@
 												   <option value=""></option>
 												   <option value="1">Verifica periodica</option>
 													  <option value="2">Verifica straordinaria</option>
-													 
+													 <option value="3">Verifica periodica + straordinaria</option>
 											 
 											</select>	
 
@@ -1724,7 +1724,7 @@
       								</div>
        								<div class="modal-body">
 										<h3 class="text-center">Attenzione, stai per annullare una scheda tecnica!<br/>
-											Questa operazione non puï&ograve; essere annullata. <br/>
+											Questa operazione non puï¿½&ograve; essere annullata. <br/>
 											Sei sicuro di voler annullare la scheda tecnica?</h3>
   		 							</div>
       								<div class="modal-footer">
@@ -2675,11 +2675,16 @@ $('#minuti').change(function(){
 		
 		var value=$(this).val();
 
-		if(value=="2"){
+		if(value=="2"  ){
 			$('#motivo_1').iCheck('check');	
 			$('#check_motivo').val("2");
 			$('#check_motivo_content').show();
 			$('#frequenza').attr("disabled", true);
+		}else if( value=="3"){
+			$('#motivo_1').iCheck('check');	
+			$('#check_motivo').val("2");
+			$('#check_motivo_content').show();
+			$('#frequenza').attr("disabled", false);
 		}else{
 			$('#check_motivo_content').hide();
 			$('#motivo_1').iCheck('check');		
@@ -3567,11 +3572,16 @@ function allegatoVisibile(id_allegato){
 					if(motivo_verifica == '1'){
 						$('#tipo_verifica_vie').val(motivo_verifica);
 						$('#tipo_verifica_vie').change();
-					}else{
+					}else if(motivo_verifica > 1 && motivo_verifica <= 4){
 						$('#tipo_verifica_vie').val("2");
 						$('#tipo_verifica_vie').change();
 						
 						$('#motivo_'+(motivo_verifica-1)).iCheck('check');
+					}else{
+						$('#tipo_verifica_vie').val("3");
+						$('#tipo_verifica_vie').change();
+						
+						$('#motivo_'+(motivo_verifica-4)).iCheck('check');
 					}
 					
 					

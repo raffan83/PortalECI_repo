@@ -120,8 +120,11 @@
 																	<c:if test="${documento.verbale.motivo_verifica == 1}">
 																	Periodica
 																	</c:if>
-																	<c:if test="${documento.verbale.motivo_verifica != 0 && documento.verbale.motivo_verifica > 1}">
+																	<c:if test="${documento.verbale.motivo_verifica != 0 && documento.verbale.motivo_verifica > 1 &&  documento.verbale.motivo_verifica<=4}">
 																	Straordinaria
+																	</c:if>
+																	<c:if test="${documento.verbale.motivo_verifica != 0 && documento.verbale.motivo_verifica > 4}">
+																	Periodica + Straordinaria
 																	</c:if>
 																	</td>
 																	<td><fmt:formatDate pattern="dd/MM/yyyy" value='${documento.verbale.data_verifica}' type='date' /></td>

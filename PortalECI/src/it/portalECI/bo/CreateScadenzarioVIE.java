@@ -180,9 +180,12 @@ public class CreateScadenzarioVIE {
 	    			 cell.setCellValue("Verifica periodica");
 	    		
 	    	 }
-	    	 else if(verbale.getMotivo_verifica()>1) {
+	    	 else if(verbale.getMotivo_verifica()>2 && verbale.getMotivo_verifica()<=4) {
 	    		 
 	    		 cell.setCellValue("Verifica straordinaria");	 
+	    	 }
+	    	 else if(verbale.getMotivo_verifica()>4) {
+	    		 cell.setCellValue("Verifica periodica + straordinaria");	 
 	    	 }
 	    	 else {
 	    		 cell.setCellValue("");
@@ -191,17 +194,17 @@ public class CreateScadenzarioVIE {
 	    	 col++;
 	    	 cell = row.createCell(col);
 	    	 
-	    	 if(verbale.getMotivo_verifica()==2) {
+	    	 if(verbale.getMotivo_verifica()==2 || verbale.getMotivo_verifica()==5) {
 	    		 
     			 cell.setCellValue("Verifica periodica con esito negativo");
     		
 	    	 }
-	    	 else if(verbale.getMotivo_verifica()==3) {
+	    	 else if(verbale.getMotivo_verifica()==3 || verbale.getMotivo_verifica()==6) {
     		 
 	    		 cell.setCellValue("Modifiche sostanziali all'impianto");	 
     		 
 	    	 }
-	    	 else if(verbale.getMotivo_verifica()==4) {
+	    	 else if(verbale.getMotivo_verifica()==4 || verbale.getMotivo_verifica()==7) {
 	    		 
 	    		 cell.setCellValue("Richiesta del datore di lavoro");	 
 	    		 
@@ -334,7 +337,7 @@ public class CreateScadenzarioVIE {
 		 	 
 		 			 
 		 	
-   		 	 if(verbale.getMotivo_verifica()<2 && verbale.getData_verifica()!=null) {   		 		
+   		 	 if(verbale.getMotivo_verifica()!=2 && verbale.getData_verifica()!=null) {   		 		
    		 		
    		 		if(verbale.getFrequenza()!=0) {
    		 			
@@ -350,7 +353,7 @@ public class CreateScadenzarioVIE {
    		 	 col++;
 		 	 cell = row.createCell(col); 
 		 	 
-   		 	 if(verbale.getMotivo_verifica()<2 && verbale.getFrequenza()!=0 ) {
+   		 	 if(verbale.getMotivo_verifica()!=2 && verbale.getFrequenza()!=0 ) {
    		 		cell.setCellValue(verbale.getFrequenza()); 
    		 	 }else {
    		 		cell.setCellValue("");

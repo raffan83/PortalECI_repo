@@ -1130,14 +1130,25 @@ public class GestioneVerbali extends HttpServlet {
 						
 						String motivo = request.getParameter("check_motivo");
 						
+						String tipo_verifica_vie = request.getParameter("tipo_verifica_vie");
+						
 						if(motivo!=null && !motivo.equals("")) {
-							verbale.setMotivo_verifica(Integer.parseInt(motivo));						
+							
+							if(tipo_verifica_vie.equals("3")) {
+								verbale.setMotivo_verifica(Integer.parseInt(motivo)+3);	
+							}else {
+								verbale.setMotivo_verifica(Integer.parseInt(motivo));	
+							}
+												
 							
 							if(Integer.parseInt(motivo)>1) {
-								verbale.setFrequenza(0);
-								verbale.setData_prossima_verifica(null);
-								verbale.setData_prossima_verifica_integrita(null);
-								verbale.setData_prossima_verifica_interna(null);
+								if(Integer.parseInt(tipo_verifica_vie)==2) {
+									verbale.setFrequenza(0);
+									verbale.setData_prossima_verifica(null);
+									verbale.setData_prossima_verifica_integrita(null);
+									verbale.setData_prossima_verifica_interna(null);
+								}
+							
 							}
 							session.save(verbale);
 						}

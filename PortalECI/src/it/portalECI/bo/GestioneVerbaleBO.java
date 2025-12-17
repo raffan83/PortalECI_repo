@@ -1020,6 +1020,7 @@ public class GestioneVerbaleBO {
 		String check3="";
 		String check4="";
 		String check5="";
+		String check6="";
 	
 		if(verbale.getAttrezzatura()!=null) {			
 			
@@ -1134,7 +1135,8 @@ public class GestioneVerbaleBO {
 		
 		html = html.replaceAll("\\$\\{TIPO_VERIFICA_VAL\\}", tipo_verifica_val);
 		
-
+	
+		
 		
 		if(verbale.getMotivo_verifica() == 1 ) 
 		{
@@ -1144,22 +1146,25 @@ public class GestioneVerbaleBO {
 			check3 = "unchecked";
 			check4 = "unchecked";
 			check5 = "unchecked";
+			check6 = "unchecked";
 			
 		} else if(verbale.getMotivo_verifica() == 2) {
-			
-			check1 = "unchecked";
-			check2 = "checked";
-			check3 = "checked";
-			check4 = "unchecked";
-			check5 = "unchecked";
-			
-		}else if(verbale.getMotivo_verifica() == 3) {
 			
 			check1 = "unchecked";
 			check2 = "checked";
 			check3 = "unchecked";
 			check4 = "checked";
 			check5 = "unchecked";
+			check6 = "unchecked";
+			
+		}else if(verbale.getMotivo_verifica() == 3) {
+			
+			check1 = "unchecked";
+			check2 = "checked";
+			check3 = "unchecked";
+			check4 = "unchecked";
+			check5 = "checked";
+			check6 = "unchecked";
 			
 		}else if(verbale.getMotivo_verifica() == 4) {
 			
@@ -1167,16 +1172,55 @@ public class GestioneVerbaleBO {
 			check2 = "checked";
 			check3 = "unchecked";
 			check4 = "unchecked";
-			check5 = "checked";
+			check5 = "unchecked";
+			check6 = "checked";
+			
+		}
+		else if(verbale.getMotivo_verifica() == 5) {
+			
+			
+			
+			check1 = "unchecked";
+			check2 = "unchecked";
+			check3 = "checked";
+			check4 = "checked";
+			check5 = "unchecked";
+			check6 = "unchecked";
+			
+		}
+		else if(verbale.getMotivo_verifica() == 6) {
+					
+					
+					
+					check1 = "unchecked";
+					check2 = "unchecked";
+					check3 = "checked";
+					check4 = "unchecked";
+					check5 = "checked";
+					check6 = "unchecked";
+					
+				}
+				
+		else if(verbale.getMotivo_verifica() == 7) {
+			
+			
+			
+			check1 = "unchecked";
+			check2 = "unchecked";
+			check3 = "checked";
+			check4 = "unchecked";
+			check5 = "unchecked";
+			check6 = "checked";
 			
 		}
 				
 		
 		String tipo_verifica_vie = "<img src=\"" + Costanti.PATH_FONT_IMAGE + check1+"-"+"checkbox"+".png" + "\" style=\"height:12px;\" />&nbsp;" + "Verifica periodica"+"<br/>";		
 		tipo_verifica_vie = tipo_verifica_vie+"<img src=\"" + Costanti.PATH_FONT_IMAGE + check2+"-"+"checkbox"+".png" + "\" style=\"height:12px;\" />&nbsp;" + "Verifica straordinaria"+"<br/>";
-		tipo_verifica_vie = tipo_verifica_vie+"&nbsp;&nbsp;&nbsp;  <img src=\"" + Costanti.PATH_FONT_IMAGE + check3+"-"+"checkbox"+".png" + "\" style=\"margin-left:25px;height:12px;\" />&nbsp;" + "Verifica periodica con esito negativo"+"<br/>";
-		tipo_verifica_vie = tipo_verifica_vie+"&nbsp;&nbsp;&nbsp;  <img src=\"" + Costanti.PATH_FONT_IMAGE + check4+"-"+"checkbox"+".png" + "\" style=\"margin-left:25px;height:12px;\" />&nbsp;" + "Modifiche sostanziali all'impianto"+"<br/>";
-		tipo_verifica_vie = tipo_verifica_vie+"&nbsp;&nbsp;&nbsp;  <img src=\"" + Costanti.PATH_FONT_IMAGE + check5+"-"+"checkbox"+".png" + "\" style=\"margin-left:15px;height:12px;\" />&nbsp;" + "Richiesta del datore di lavoro"+"<br/>";
+		tipo_verifica_vie = tipo_verifica_vie+"<img src=\"" + Costanti.PATH_FONT_IMAGE + check3+"-"+"checkbox"+".png" + "\" style=\"height:12px;\" />&nbsp;" + "Verifica periodica + straordinaria"+"<br/>";
+		tipo_verifica_vie = tipo_verifica_vie+"&nbsp;&nbsp;&nbsp;  <img src=\"" + Costanti.PATH_FONT_IMAGE + check4+"-"+"checkbox"+".png" + "\" style=\"margin-left:25px;height:12px;\" />&nbsp;" + "Verifica periodica con esito negativo"+"<br/>";
+		tipo_verifica_vie = tipo_verifica_vie+"&nbsp;&nbsp;&nbsp;  <img src=\"" + Costanti.PATH_FONT_IMAGE + check5+"-"+"checkbox"+".png" + "\" style=\"margin-left:25px;height:12px;\" />&nbsp;" + "Modifiche sostanziali all'impianto"+"<br/>";
+		tipo_verifica_vie = tipo_verifica_vie+"&nbsp;&nbsp;&nbsp;  <img src=\"" + Costanti.PATH_FONT_IMAGE + check6+"-"+"checkbox"+".png" + "\" style=\"margin-left:15px;height:12px;\" />&nbsp;" + "Richiesta del datore di lavoro"+"<br/>";
 		
 
 		html = html.replaceAll("\\$\\{TIPO_VERIFICA_VIE\\}", tipo_verifica_vie);
