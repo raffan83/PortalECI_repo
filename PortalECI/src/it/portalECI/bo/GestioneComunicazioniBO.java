@@ -332,7 +332,7 @@ public static void sendPecVerbale(ArrayList<VerbaleDTO> lista_verbali, String ma
 				        
 				        multipart.addBodyPart(attachPdf);
 					}
-					else if(doc.getType().equals("ALLEGATO") && doc.getAllegato_inviabile()==1) {
+					else if(doc.getType().equals("ALLEGATO") && doc.getAllegato_inviabile()==1 && !doc.getInvalid()) {
 						BodyPart attachAllegato = new MimeBodyPart();
 						DataSource source = new FileDataSource(Costanti.PATH_CERTIFICATI+doc.getFilePath());
 						attachAllegato.setDataHandler(new DataHandler(source));

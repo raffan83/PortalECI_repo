@@ -127,7 +127,32 @@
 																	Periodica + Straordinaria
 																	</c:if>
 																	</td>
-																	<td><fmt:formatDate pattern="dd/MM/yyyy" value='${documento.verbale.data_verifica}' type='date' /></td>
+																	<td>
+																	<c:choose>
+																	<c:when test="${documento.verbale.data_verifica!=null }">
+																		<fmt:formatDate pattern="dd/MM/yyyy" value='${documento.verbale.data_verifica}' type='date' />
+																	</c:when>
+																	<c:otherwise>
+																		<c:choose>
+																		<c:when test="${documento.verbale.data_verifica_interna!=null }">
+																			<fmt:formatDate pattern="dd/MM/yyyy" value='${documento.verbale.data_verifica_interna}' type='date' />
+																		</c:when>
+																		<c:otherwise>
+																			<c:if test="${documento.verbale.data_verifica_integrita!=null }">
+																			<fmt:formatDate pattern="dd/MM/yyyy" value='${documento.verbale.data_verifica_integrita}' type='date' />
+																			</c:if>																	
+																		</c:otherwise>
+																		</c:choose>
+																	</c:otherwise>
+																	</c:choose>
+																	
+																	
+																	
+																	<%-- 
+																	<fmt:formatDate pattern="dd/MM/yyyy" value='${documento.verbale.data_verifica}' type='date' /></td>
+																	 --%>
+																	
+																	
 																	<td>
 																	<c:if test="${documento.verbale.data_fine_verifica!=null }">
 																		<fmt:formatDate pattern="dd/MM/yyyy" value='${documento.verbale.data_fine_verifica}' type='date' />
