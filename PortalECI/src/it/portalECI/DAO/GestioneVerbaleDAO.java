@@ -441,4 +441,15 @@ Query query=null;
 		return result;
 	}
 	
+	
+	public static  ProgressivoVerbaleDTO getProgressivoVerbaleAdmin(UtenteDTO utente, String tipo, Session session) {
+		
+		Query query = session.createQuery("from ProgressivoVerbaleDTO where idUtente= :_idUtente and sigla= :_idTipo");
+		query.setString("_idTipo", tipo);
+		query.setInteger("_idUtente", utente.getId());
+		ProgressivoVerbaleDTO progressivo  = (ProgressivoVerbaleDTO) query.uniqueResult();
+
+		return progressivo;
+	}
+	
 }

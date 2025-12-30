@@ -72,6 +72,10 @@
 	            			<a href="#" onClick="callAction('gestioneListaVerbali.do?action=lista_file')">Lista Verbali PDF</a> 
 	            			
 	            		<% }%>
+	            		<% if(user.checkRuolo("AM")){%>
+	            			<a href="#" onClick="callAction('gestioneListaVerbali.do?action=gestione_verbali_admin')">Gestione Verbali Admin</a> 
+	            			
+	            		<% }%>
 	            	
     	        		</li>
     	        		

@@ -151,12 +151,17 @@ request.setAttribute("user",user);
 																		${verbale.numeroVerbale }
 																	</td>
 																		<td>
-																	<c:if test="${verbale.motivo_verifica == 1}">
+																	<c:choose>	
+																	<c:when test="${verbale.motivo_verifica == 1}">
 																	Periodica
-																	</c:if>
-																	<c:if test="${verbale.motivo_verifica != 0 && verbale.motivo_verifica > 1}">
-																	Straordinaria
-																	</c:if>
+																	</c:when>
+																	<c:when test="${verbale.motivo_verifica != 0 && verbale.motivo_verifica > 1 && verbale.motivo_verifica <= 4}">
+																	Straordinaria ${verbale.motivo_verifica}
+																	</c:when>
+																	<c:when test="${verbale.motivo_verifica != 0 && verbale.motivo_verifica > 4}">
+																	Periodica + Straordinaria
+																	</c:when>
+																	</c:choose>
 																	</td>
 																	<td>
 																	<c:choose>
@@ -390,8 +395,11 @@ request.setAttribute("user",user);
 																	<c:if test="${verbale.motivo_verifica == 1}">
 																	Periodica
 																	</c:if>
-																	<c:if test="${verbale.motivo_verifica != 0 && verbale.motivo_verifica > 1}">
+																	<c:if test="${verbale.motivo_verifica != 0 && verbale.motivo_verifica > 1 && verbale.motivo_verifica <=4}">
 																	Straordinaria
+																	</c:if>
+																	<c:if test="${verbale.motivo_verifica != 0 && verbale.motivo_verifica > 4}">
+																	Periodica + Straordinaria
 																	</c:if>
 																	</td>
 																	<td>

@@ -16,6 +16,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Hashtable;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 import java.util.zip.ZipEntry;
@@ -38,13 +39,17 @@ import org.hibernate.Session;
 
 import com.google.gson.JsonObject;
 
+import it.portalECI.DAO.GestioneDocumentoDAO;
+import it.portalECI.DAO.GestioneVerbaleDAO;
 import it.portalECI.DAO.SessionFacotryDAO;
 import it.portalECI.DTO.AllegatoClienteDTO;
 import it.portalECI.DTO.AllegatoMinisteroDTO;
 import it.portalECI.DTO.ClienteDTO;
 import it.portalECI.DTO.CompanyDTO;
 import it.portalECI.DTO.DocumentoDTO;
+import it.portalECI.DTO.ProgressivoVerbaleDTO;
 import it.portalECI.DTO.SedeDTO;
+import it.portalECI.DTO.StatoVerbaleDTO;
 import it.portalECI.DTO.UtenteDTO;
 import it.portalECI.DTO.VerbaleDTO;
 import it.portalECI.Exception.ECIException;
@@ -605,6 +610,75 @@ public class GestioneListaVerbali extends HttpServlet {
 				session.close();
 				
 				
+			}
+			else if(action.equals("gestione_verbali_admin")) {				
+				
+				RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/page/configurazioni/gestioneVerbaliAdmin.jsp");
+		     	dispatcher.forward(request,response);
+		     	
+		     	session.getTransaction().commit();
+				session.close();
+			}
+			else if(action.equals("ricerca")) {
+				
+		
+				String id = request.getParameter("id");
+				
+				VerbaleDTO verbale = GestioneVerbaleBO.getVerbale(id, session);
+				
+								
+				
+				request.getSession().setAttribute("verbale", verbale);
+				
+				RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/page/configurazioni/gestioneVerbaliAdminTabella.jsp");
+		     	dispatcher.forward(request,response);
+		     	
+		    	session.getTransaction().commit();
+				session.close();
+			}
+			else if(action.equals("cambia_stato_verbale_admin")) {
+				
+				String id_verbale = request.getParameter("id_verbale");
+				String id_stato = request.getParameter("id_stato");
+				
+				VerbaleDTO verbale = GestioneVerbaleBO.getVerbale(id_verbale, session);
+				Iterator<DocumentoDTO> iter = verbale.getDocumentiVerbale().iterator();
+				
+				//1 eliminazione documento 
+				while(iter.hasNext()) {
+					
+					DocumentoDTO doc =  iter.next();
+					if(!doc.getInvalid() && doc.getType().equals("CERTIFICATO")) {
+						session.delete(doc);
+						break;
+					}
+				}
+				
+				//2 aggioramento contatore 
+				
+				String n_verbale = verbale.getNumeroVerbale();
+				
+				UtenteDTO utente = verbale.getIntervento().getTecnico_verificatore();
+				
+				String[] data = n_verbale.split("-");
+				
+				ProgressivoVerbaleDTO progressivo = GestioneVerbaleDAO.getProgressivoVerbaleAdmin(utente, data[1], session);
+				
+				if(progressivo.getProgressivo() != Integer.parseInt(data[2])) {
+					
+					
+				}else {
+					
+					progressivo.setProgressivo(progressivo.getProgressivo()-1);
+					session.update(progressivo);
+					
+					verbale.setStato(new StatoVerbaleDTO(Integer.parseInt(id_stato)));
+					session.update(verbale);
+				}
+				
+				
+				session.getTransaction().commit();
+				session.close();
 			}
 				
 		}catch(Exception ex){

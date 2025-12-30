@@ -67,4 +67,13 @@ public class StatoVerbaleDTO  implements Serializable{
 		return jobj;
 	}
 	
+	public StatoVerbaleDTO() {
+	
+	}
+	
+	public StatoVerbaleDTO(int id) {
+		super();
+		this.id = id;
+	}
+	
 }
