@@ -5127,8 +5127,8 @@ success: function( data, textStatus) {
   		
   		$('#report_button').hide();
 		$('#visualizza_report').hide();
-	  $("#modalNuovoReferente").modal("hide");
-	  $('#myModalErrorContent').html(data.messaggio);
+	 
+	  $('#modalErrorDiv').html(data.messaggio);
 	  	$('#myModalError').removeClass();
 		$('#myModalError').addClass("modal modal-success");
 		$('#myModalError').modal('show');
@@ -5142,7 +5142,7 @@ success: function( data, textStatus) {
 		
 	
 	  }else{
-		  $('#myModalErrorContent').html(data.messaggio);
+		  $('#modalErrorDiv').html(data.messaggio);
 		  	$('#myModalError').removeClass();
 			$('#myModalError').addClass("modal modal-danger");
 			$('#report_button').hide();
@@ -5152,7 +5152,7 @@ success: function( data, textStatus) {
 },
 error: function( data, textStatus) {
 	  $('#myModalYesOrNo').modal('hide');
-	  $('#myModalErrorContent').html(data.messaggio);
+	  $('#modalErrorDiv').html(data.messaggio);
 		  	$('#myModalError').removeClass();
 			$('#myModalError').addClass("modal modal-danger");	  
 			$('#report_button').show();

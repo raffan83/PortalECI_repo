@@ -31,7 +31,7 @@
  																<th>Tipo verifica</th>
  																<th>Data Creazione</th>
  														
- 																<th>Azioni</th>
+ 																<th style="min-width:80px">Azioni</th>
  															</tr>
  															
  														</thead>
@@ -193,8 +193,10 @@
 																	
 															<td  align="center" >
 		
-														<a class="btn btn-info" onclick="cambiaStatoVerbaleAdmin(8, ${verbale.getId()})"><i class="glyphicon glyphicon-refresh"></i></a>
-														<a class="btn btn-info" onclick="cambiaStatoVerbaleAdmin(4, ${verbale.getId()})"><i class="glyphicon glyphicon-refresh"></i></a>
+														<c:if test="${verbale.stato.id == 5 }">
+														<a class="btn btn-default customTooltip" title="Cambia stato IN CORSO" style="color:#000000 !important; background-color:${verbale.getStato().getColore(8)} !important;" onclick="cambiaStatoVerbaleAdmin(8, ${verbale.getId()})"><i class="glyphicon glyphicon-refresh"></i></a>
+														<a class="btn btn-defalut customTooltip" title="Cambia stato IN APPROVAZIONE" style="color:#000000 !important; background-color:${verbale.getStato().getColore(4)} !important;" onclick="cambiaStatoVerbaleAdmin(4, ${verbale.getId()})"><i class="glyphicon glyphicon-refresh"></i></a>
+														</c:if>
 													</td>
         														
 																</tr>

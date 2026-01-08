@@ -638,6 +638,8 @@ public class GestioneListaVerbali extends HttpServlet {
 			}
 			else if(action.equals("cambia_stato_verbale_admin")) {
 				
+				ajax = true;
+				
 				String id_verbale = request.getParameter("id_verbale");
 				String id_stato = request.getParameter("id_stato");
 				
@@ -649,6 +651,7 @@ public class GestioneListaVerbali extends HttpServlet {
 					
 					DocumentoDTO doc =  iter.next();
 					if(!doc.getInvalid() && doc.getType().equals("CERTIFICATO")) {
+						 iter.remove(); 
 						session.delete(doc);
 						break;
 					}
@@ -666,7 +669,11 @@ public class GestioneListaVerbali extends HttpServlet {
 				
 				if(progressivo.getProgressivo() != Integer.parseInt(data[2])) {
 					
-					
+					JsonObject myObj = new JsonObject();
+					PrintWriter  out = response.getWriter();
+					myObj.addProperty("success", false);
+					myObj.addProperty("messaggio", "Attenzione sono stati emessi verbali con progressivo successivo!");
+					out.print(myObj);
 				}else {
 					
 					progressivo.setProgressivo(progressivo.getProgressivo()-1);
@@ -674,6 +681,11 @@ public class GestioneListaVerbali extends HttpServlet {
 					
 					verbale.setStato(new StatoVerbaleDTO(Integer.parseInt(id_stato)));
 					session.update(verbale);
+					JsonObject myObj = new JsonObject();
+					PrintWriter  out = response.getWriter();
+					myObj.addProperty("success", true);
+					myObj.addProperty("messaggio", "Stato verbale cambiato con successo!");
+					out.print(myObj);
 				}
 				
 				
