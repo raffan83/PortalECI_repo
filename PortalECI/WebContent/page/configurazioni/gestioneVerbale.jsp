@@ -2849,7 +2849,10 @@ $('#minuti').change(function(){
 		$.ajax({
 			type: "POST",
 			url: "gestioneVerbale.do?action=modifica_esercente",
-			data : "idVerbale="+id+"&esercente_mod="+esercente,				
+			data: {
+		        idVerbale: id,
+		        esercente_mod: esercente
+		    },				
 			dataType: "json",
 			success: function( data, textStatus) {
 				
@@ -2887,7 +2890,10 @@ function modificaDescrizioneUtilizzatore(){
 		$.ajax({
 			type: "POST",
 			url: "gestioneVerbale.do?action=modifica_descrizione_utilizzatore",
-			data : "idVerbale="+id+"&descr_util_mod="+descrizione,				
+			 data: {
+			        idVerbale: id,
+			        descr_util_mod: descrizione
+			    },				
 			dataType: "json",
 			success: function( data, textStatus) {
 				
@@ -2930,7 +2936,10 @@ function modificaNoteVerbale(){
 	$.ajax({
 		type: "POST",
 		url: "gestioneVerbale.do?action=modifica_note_verbale",
-		data : "idVerbale="+id+"&note_verbale_mod="+descrizione,				
+		 data: {
+		        idVerbale: id,
+		        note_verbale_mod: descrizione
+		    },										
 		dataType: "json",
 		success: function( data, textStatus) {
 			
@@ -3079,7 +3088,10 @@ function modificaSedeUtilizzatore(){
 	$.ajax({
 		type: "POST",
 		url: "gestioneVerbale.do?action=modifica_sede_utilizzatore",
-		data : "idVerbale="+id+"&sede_utilizzatore_mod="+sede_utilizzatore,				
+		 data: {
+		        idVerbale: id,
+		        sede_utilizzatore_mod: sede_utilizzatore
+		    },						
 		dataType: "json",
 		success: function( data, textStatus) {
 			
@@ -3118,7 +3130,10 @@ function modificaEffettuazioneVerifica(){
 	$.ajax({
 		type: "POST",
 		url: "gestioneVerbale.do?action=modifica_effettuazione_verifica",
-		data : "idVerbale="+id+"&effettuazione_verifica="+eff_verifica,				
+		data: {
+	        idVerbale: id,
+	        effettuazione_verifica: eff_verifica
+	    },					
 		dataType: "json",
 		success: function( data, textStatus) {
 			
@@ -3157,7 +3172,10 @@ function modificaTipoVerifica(){
 	$.ajax({
 		type: "POST",
 		url: "gestioneVerbale.do?action=modifica_tipo_verifica",
-		data : "idVerbale="+id+"&tipo_verifica="+tipo_verifica,				
+		data: {
+	        idVerbale: id,
+	        tipo_verifica: tipo_verifica
+	    },				
 		dataType: "json",
 		success: function( data, textStatus) {
 			
