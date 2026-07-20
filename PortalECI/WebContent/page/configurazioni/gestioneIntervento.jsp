@@ -912,7 +912,10 @@
 									}
 									$("#bodytabVerifica").append(objectdata);	
 										 
-									 var table = $('#tabVerifica').DataTable({language : lang, responsive: true, ordering: false,paging: true, pageLength: 100,columnDefs: [{ responsivePriority: 1, targets: 10 }]});
+									 var table = $('#tabVerifica').DataTable({language : lang, responsive: true, ordering: false,paging: true, pageLength: 100, columnDefs: [
+									        { responsivePriority: 1, targets: 10 },
+									        { width: "400px", targets: 5 }   // colonna Sede
+									    ]});
 									var column =  table.column(4 );
 									column.visible(!column.visible());
 									$('#str_attrezzature').val(str_attrezzature)
@@ -1006,7 +1009,10 @@
 								}
 								$("#bodytabVerifica").append(objectdata);	
 									 
-								 var table = $('#tabVerifica').DataTable({language : lang, responsive: true, ordering: false,paging: true, pageLength: 100,columnDefs: [{ responsivePriority: 1, targets: 10 }]});
+								 var table = $('#tabVerifica').DataTable({language : lang, responsive: true, ordering: false,paging: true, pageLength: 100, columnDefs: [
+								        { responsivePriority: 1, targets: 10 },
+								        { width: "400px", targets: 5 }   // colonna Sede
+								    ]});
 								var column =  table.column(4 );
 								column.visible(!column.visible());
 								$('#str_attrezzature').val(str_attrezzature)
