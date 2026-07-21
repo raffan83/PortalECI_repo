@@ -246,7 +246,8 @@
                 									</c:if>
                 								</c:if>	
                 								
-                								
+                								<c:if test='${user.checkRuolo("AM") || user.checkRuolo("RT") || user.checkRuolo("SRT")|| user.checkRuolo("ST")}'>
+                					
                 								<li class="list-group-item">
                 								
                 								<c:if test="${verbale.visibile_cliente ==0}">
@@ -256,7 +257,7 @@
                   												<b>Visibile al cliente  <input type="checkbox" class="pull-right" style="position: relative" id="check_visibile_${verbale.getId() }" name="check_visibile_${verbale.getId() }" onChange="visibileCliente('${verbale.getId()}')" checked></b>
                   											</c:if>  
                 								</li>
-                								
+                								</c:if>
         										</ul> 
         										
         										<c:if test='${verbale.getStato().getId()== 5 && verbale.getFirmato() == 1 && (user.checkRuolo("AM") || user.checkRuolo("RT") || user.checkRuolo("SRT"))  && verbale.getResponsabile_approvatore().getId() == userObj.getId() && verbale.codiceCategoria != "VAL" && verbale.getControfirmato()==0}'>										
