@@ -60,7 +60,8 @@ public class ArubaSignService {
 		identity.setUser(utente);
 		
 		identity.setDelegated_user("admin.firma");
-		identity.setDelegated_password("uBFqc8YYslTG");
+	//	identity.setDelegated_password("uBFqc8YYslTG");
+		identity.setDelegated_password(Costanti.	PASS_FIRMA);
 		
 		sign.setIdentity(identity);
 		//${certificato.nomeCertificato}&pack=${certificato.misura.intervento.nomePack}
@@ -142,7 +143,8 @@ public class ArubaSignService {
 		identity.setUser(utente.getId_firma());
 		
 		identity.setDelegated_user("admin.firma");
-		identity.setDelegated_password("uBFqc8YYslTG");
+		//identity.setDelegated_password("uBFqc8YYslTG");
+		identity.setDelegated_password(Costanti.	PASS_FIRMA);
 		
 		sign.setIdentity(identity);
 		

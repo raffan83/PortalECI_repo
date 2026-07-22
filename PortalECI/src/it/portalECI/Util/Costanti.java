@@ -19,7 +19,7 @@ public class Costanti {
 	public static String PATH_HEADER_IMAGE;
 	public static String PASS_EMAIL;
 	public static String PASS_PEC;
-	
+	public static String PASS_FIRMA;
 	
 	//Usare il placehlder %s se si vuole inserire il numero del nuovo documento generato nella dicitura 
 	public static String DOCUMENT_IS_INVALID_PHRASE = "Questo documento \u00E8 stato sostituito dal documento %s";
